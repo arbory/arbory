@@ -5,6 +5,8 @@
         </button>
     </div>
     <nav>
+        {{dd(app('menu'))}}
+        asd
         <ul class="block">
             <li data-name="releaf/content/nodes">
                 <a class="trigger" href="/admin/nodes">
