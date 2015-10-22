@@ -1,5 +1,7 @@
 <?php namespace Cubesystems\Leaf;
 
+use CubeSystems\Leaf\Builders\Menu;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class LeafServiceProvider extends ServiceProvider
@@ -27,7 +29,9 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->app->bind( 'leaf.menu', function ( Application $app ){
+            return new Menu( config( 'leaf.menu' ) );
+        }, true );
     }
 
     /**
