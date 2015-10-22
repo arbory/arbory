@@ -1,0 +1,13 @@
+{
+    "name": "cubesystems/leaf",
+    "description": "Administration interface for Laravel",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Roberts",
+            "email": "roberts@cubesystems.lv"
+        }
+    ],
+    "require": {}
+}
