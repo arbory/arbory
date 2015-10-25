@@ -1,4 +1,4 @@
-@extends('leaf::admin.index')
+@extends('leaf::admin.layout.main')
 
 @section('content')
     @yield('breadcrumbs')
