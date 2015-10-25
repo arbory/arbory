@@ -50,7 +50,7 @@ class LeafServiceProvider extends ServiceProvider
     private function publishResources()
     {
         $this->publishes( [
-            __DIR__ . '/config/leaf.php' => config_path( 'leaf.php' )
+            __DIR__ . '/../config/leaf.php' => config_path( 'leaf.php' )
         ], 'config' );
 
         $this->publishes( [
@@ -64,8 +64,8 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function publishMigrations()
     {
-        $this->publishes( [ __DIR__ . '/../database/migrations/' => base_path( 'database/migrations' ) ], 'migrations' );
-        $this->publishes( [ __DIR__ . '/../database/seeds/' => base_path( 'database/seeds' ) ], 'seeds' );
+//        $this->publishes( [ __DIR__ . '/../database/migrations/' => base_path( 'database/migrations' ) ], 'migrations' );
+//        $this->publishes( [ __DIR__ . '/../database/seeds/' => base_path( 'database/seeds' ) ], 'seeds' );
     }
 
 }
