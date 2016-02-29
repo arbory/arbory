@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Admin/news - Ndpculture</title>
+        <title>Leaf</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <link href="/application.css" media="all" rel="stylesheet"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     </head>
     <body class="view-index">
 
-        @include('leaf::admin.partials.header')
-        @include('leaf::admin.partials.menu')
+        @include('leaf::layout.partials.header')
+        @include('leaf::layout.partials.menu')
 
         <main id="main">
+            @yield('content.header')
             @yield('content')
         </main>
 
         <div class="notifications" data-close-text="Close"></div>
 
         <script src="/application.js"></script>
+        <script src="//cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
     </body>
 </html>

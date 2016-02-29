@@ -1,4 +1,4 @@
-@extends('leaf::admin.layout.main')
+@extends('leaf::layout.main')
 
 @section('content')
     Welcome

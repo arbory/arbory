@@ -1,7 +1,6 @@
 <?php namespace Cubesystems\Leaf;
 
-use CubeSystems\Leaf\Builders\Menu;
-use Illuminate\Contracts\Foundation\Application;
+use CubeSystems\Leaf\Menu\Menu;
 use Illuminate\Support\ServiceProvider;
 
 class LeafServiceProvider extends ServiceProvider
@@ -13,7 +12,8 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom( base_path( 'resources/views/vendor/leaf/admin' ), 'leaf' );
+        $this->loadViewsFrom( base_path( 'packages/CubeSystems/Leaf/resources/views' ), 'leaf' );
+//        $this->loadViewsFrom( base_path( 'resources/views/vendor/leaf/admin' ), 'leaf' );
         $this->loadTranslationsFrom( __DIR__ . '/../resources/lang', 'leaf' );
 
         $this->publishResources();
@@ -29,7 +29,8 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind( 'leaf.menu', function ( Application $app ){
+        $this->app->bind( 'leaf.menu', function ()
+        {
             return new Menu( config( 'leaf.menu' ) );
         }, true );
     }
@@ -41,7 +42,7 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array( 'leaf' );
+        return array( 'Leaf' );
     }
 
     /**
@@ -54,7 +55,7 @@ class LeafServiceProvider extends ServiceProvider
         ], 'config' );
 
         $this->publishes( [
-            realpath( __DIR__ . '/../resources/views/' ) => base_path( 'resources/views/vendor/leaf/admin' ),
+            __DIR__ . '/../resources/views/' => base_path( 'resources/views/vendor/leaf/admin' ),
         ], 'view' );
     }
 

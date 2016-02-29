@@ -4,22 +4,17 @@ return [
     'uri' => 'admin',
     'menu' => [
         [
-            'title' => 'users',
-            'icon' => 'user',
-            'route' => 'admin.users.index',
+            'title' => 'Users',
+            'controller' => \CubeSystems\Leaf\Http\Controllers\UsersController::class,
         ],
-        [
-            'title' => 'permissions',
-            'icon' => 'user',
-            'route' => 'admin.users.index',
-        ],
-        [
-            'title' => 'shits',
-            'icon' => 'globe',
-            'items' => [
-                'admin.users.index',
-                'admin.users.index'
-            ]
-        ],
+    ],
+    'pagination' => [
+        'items_per_page' => 15,
+    ],
+    'field_types' => [
+        'belongsTo' => \CubeSystems\Leaf\Fields\BelongsTo::class,
+        'richtext' => \CubeSystems\Leaf\Fields\Richtext::class,
+        'text' => \CubeSystems\Leaf\Fields\Text::class,
+        'toolbox' => \CubeSystems\Leaf\Fields\Toolbox::class,
     ],
 ];
