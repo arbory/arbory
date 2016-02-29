@@ -8,15 +8,22 @@ use CubeSystems\Leaf\Builder\IndexBuilder;
 use CubeSystems\Leaf\Menu\Item;
 use CubeSystems\Leaf\Scheme;
 use Eloquent;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
-use Input;
 use Lang;
 use Redirect;
 use Response;
 use Session;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 abstract class AdminController
 {
+    /**
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app;
+
     /**
      * @var string
      */
@@ -31,6 +38,16 @@ abstract class AdminController
      * @var string
      */
     protected $formView = 'leaf::controllers.resource.form';
+
+
+    /**
+     * ResourceController constructor.
+     * @param Application $app
+     */
+    public function __construct( Application $app )
+    {
+        $this->app = $app;
+    }
 
     /**
      * @return string
@@ -105,7 +122,7 @@ abstract class AdminController
         /**
          * @var $menuItem Item
          */
-        $menuItem = app( 'leaf.menu' )->findItemByController( static::class );
+        $menuItem = $this->app['leaf.menu']->findItemByController( static::class );
 
         if( !$menuItem )
         {
@@ -123,7 +140,7 @@ abstract class AdminController
             route( 'admin.dashboard' )
         );
         $breadcrumbs->add(
-            app( 'leaf.menu' )->findItemByController( static::class )->getTitle(),
+            $this->app['leaf.menu']->findItemByController( static::class )->getTitle(),
             route( 'admin.model.index', $this->getSlug() )
         );
 
@@ -139,29 +156,24 @@ abstract class AdminController
     }
 
     /**
-     * @return Scheme
-     */
-    protected function createScheme()
-    {
-        return new Scheme( $this->getResource(), $this );
-    }
-
-    /**
-     * @param null $id
+     * @param null $resourceId
      * @return FormBuilder
      */
-    protected function getFormBuilder( $id = null )
+    protected function getFormBuilder( $resourceId = null )
     {
         $builder = new FormBuilder;
-        $scheme = $this->createScheme();
+        $scheme = new Scheme( $this->getResource(), $this );
 
-        $this->formFields( $scheme );
+        if( method_exists( $this, 'formFields' ) )
+        {
+            $this->formFields( $scheme );
+        }
 
         $builder->setScheme( $scheme )
             ->setResource( $this->getResource() )
             ->setController( $this )
-            ->setIdentifier( $id )
-            ->setContext( $id === null ? FormBuilder::CONTEXT_CREATE : FormBuilder::CONTEXT_EDIT );
+            ->setIdentifier( $resourceId )
+            ->setContext( $resourceId === null ? FormBuilder::CONTEXT_CREATE : FormBuilder::CONTEXT_EDIT );
 
         return $builder;
     }
@@ -171,9 +183,12 @@ abstract class AdminController
      */
     public function index()
     {
-        $scheme = $this->createScheme();
+        $scheme = new Scheme( $this->getResource(), $this );
 
-        $this->indexFields( $scheme );
+        if( method_exists( $this, 'indexFields' ) )
+        {
+            $this->indexFields( $scheme );
+        }
 
         $builder = new IndexBuilder;
         $builder->setScheme( $scheme );
@@ -215,18 +230,19 @@ abstract class AdminController
     }
 
     /**
+     * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function store()
+    public function store( Request $request )
     {
         $name = $this->getSlug();
         $form = $this->getFormBuilder();
-        $result = $form->create( Input::all() );
+        $result = $form->create( $request->input() );
 
         // Check validation errors
         if( get_class( $result ) === Validator::class )
         {
-            Session::flash( 'message.error', trans( 'leaf::messages.error.validation-errors' ) );
+            Session::flash( 'message.error', Lang::get( 'leaf.messages.error.validation-errors' ) );
 
             return Redirect::route( 'admin.model.create', [ $name ] )
                 ->withInput()
@@ -235,8 +251,7 @@ abstract class AdminController
 
         // TODO: Redirect support
 
-        // Set the flash message
-        Session::flash( 'message.success', trans( 'leaf::messages.success.model-created', [
+        Session::flash( 'message.success', Lang::get( 'leaf.messages.success.model-created', [
             'model' => $name
         ] ) );
 
@@ -244,24 +259,24 @@ abstract class AdminController
     }
 
     /**
-     * @param $id
+     * @param $resourceId
      * @return \Illuminate\View\View
      */
-    public function edit( $id )
+    public function edit( $resourceId )
     {
         $slug = $this->getSlug();
 
-        $builder = $this->getFormBuilder( $id );
+        $builder = $this->getFormBuilder( $resourceId );
         $result = $builder->build();
 
         $breadcrumbs = $this->getBreadcrumbs();
         $breadcrumbs->add(
             (string) $builder->getModel(),
-            route( 'admin.model.edit', [ $slug, $id ] )
+            route( 'admin.model.edit', [ $slug, $resourceId ] )
         );
 
         return view( $this->getFormView(), [
-            'id' => $id,
+            'id' => $resourceId,
             'slug' => $slug,
             'result' => $result,
             'breadcrumbs' => $breadcrumbs->get()
@@ -269,21 +284,22 @@ abstract class AdminController
     }
 
     /**
-     * @param $id
+     * @param Request $request
+     * @param $resourceId
      * @return $this|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function update( $id )
+    public function update( Request $request, $resourceId )
     {
         $name = $this->getSlug();
 
-        $form = $this->getFormBuilder( $id );
+        $form = $this->getFormBuilder( $resourceId );
 
-        $result = $form->update( Input::all() );
+        $result = $form->update( $request->input() );
 
         // Check validation errors
         if( get_class( $result ) === Validator::class )
         {
-            Session::flash( 'message.error', trans( 'leaf::messages.error.validation-errors' ) );
+            Session::flash( 'message.error', Lang::get( 'leaf.messages.error.validation-errors' ) );
 
             // TODO: Handle ajax response
             /**
@@ -309,8 +325,7 @@ abstract class AdminController
             ], 422 );
         }
 
-        // Set the flash message
-        Session::flash( 'message.success', trans( 'leaf::messages.success.model-updated', [
+        Session::flash( 'message.success', Lang::get( 'leaf.messages.success.model-updated', [
             'model' => $name
         ] ) );
 
@@ -318,76 +333,61 @@ abstract class AdminController
     }
 
     /**
-     * @param $id
+     * @param $resourceId
      * @return \Illuminate\View\View
      */
-    public function confirmDestroy( $id )
+    public function confirmDestroy( $resourceId )
     {
         $slug = $this->getSlug();
         $class = $this->getResource();
-        $model = $class::find( $id );
+        $model = $class::find( $resourceId );
 
         return view( 'leaf::modals.confirm_delete', [
-            'form_target' => route( 'admin.model.destroy', [ $slug, $id ] ),
+            'form_target' => route( 'admin.model.destroy', [ $slug, $resourceId ] ),
             'list_url' => route( 'admin.model.index', $slug ),
             'object_name' => (string) $model,
         ] );
     }
 
     /**
-     * @param $id
+     * @param $resourceId
      * @return FormBuilder|\Illuminate\Http\RedirectResponse|null
+     * @throws HttpException
      */
-    public function destroy( $id )
+    public function destroy( $resourceId )
     {
         $name = $this->getSlug();
 
-        $form = $this->getFormBuilder( $id );
+        $form = $this->getFormBuilder( $resourceId );
 
-        $response = $form->destroy();
+        try
+        {
+            $response = $form->destroy();
+        }
+        catch( \Exception $e )
+        {
+            $this->app->abort( \Symfony\Component\HttpFoundation\Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage() );
+
+            return null;
+        }
 
         if( $response instanceof \Illuminate\Http\Response )
         {
             return $response;
         }
 
-        Session::flash( 'message.success', trans( 'leaf::messages.success.model-updated', [
+        Session::flash( 'message.success', Lang::get( 'leaf.messages.success.model-updated', [
             'model' => $name
         ] ) );
 
         return Redirect::route( 'admin.model.index', $name );
     }
 
-    public function handleGetAction( $id, $action )
+    public function handleGetAction( $resourceId, $action )
     {
-        $url = route( 'admin.model.confirm_destroy', [ $this->getSlug(), $id ] );
+        $url = route( 'admin.model.confirm_destroy', [ $this->getSlug(), $resourceId ] );
 
         // TODO: Builder + view
-        return '<li><a class="button ajaxbox danger" title="Delete" href="' . e( $url ) . '" data-modal="true">' . trans( 'Delete' ) . '</a></li>';
+        return '<li><a class="button ajaxbox danger" title="Delete" href="' . e( $url ) . '" data-modal="true">' . Lang::get( 'Delete' ) . '</a></li>';
     }
-
-    /**
-     * @param Scheme $scheme
-     */
-    public function indexFields( Scheme $scheme )
-    {
-
-    }
-
-    /**
-     * @param Scheme $scheme
-     */
-    public function filterFields( Scheme $scheme )
-    {
-
-    }
-
-    /**
-     * @param Scheme $scheme
-     */
-    public function formFields( Scheme $scheme )
-    {
-
-    }
-
 }
