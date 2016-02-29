@@ -30,119 +30,105 @@ class ResourceController extends Controller
     }
 
     /**
-     * @param  string $name
+     * @param  string $slug
      * @return Response
      * @throws HttpException
      */
-    public function index( $name )
+    public function index( $slug )
     {
-        $controller = $this->getClassFromSlug( $name );
+        $controller = $this->findControllerBySlug( $slug );
 
         return $this->app->call( "{$controller}@index" );
     }
 
     /**
-     * @param  string $name
+     * @param  string $slug
      * @return Response
      * @throws HttpException
      */
-    public function create( $name )
+    public function create( $slug )
     {
-        $controller = $this->getClassFromSlug( $name );
+        $controller = $this->findControllerBySlug( $slug );
 
         return $this->app->call( "{$controller}@create" );
     }
 
     /**
-     * @param  string $name
+     * @param  string $slug
      * @return Response
      * @throws HttpException
      */
-    public function store( $name )
+    public function store( $slug )
     {
-        $controller = $this->getClassFromSlug( $name );
+        $controller = $this->findControllerBySlug( $slug );
 
         return $this->app->call( "{$controller}@store" );
     }
 
     /**
-     * @param  string $name
-     * @param  int $id
+     * @param  string $slug
+     * @param  int $resourceId
      * @return Response
      * @throws HttpException
      */
-    public function edit( $name, $id )
+    public function edit( $slug, $resourceId )
     {
-        $controller = $this->getClassFromSlug( $name );
+        $controller = $this->findControllerBySlug( $slug );
 
-        return $this->app->call( "{$controller}@edit", [ $id ] );
+        return $this->app->call( "{$controller}@edit", [ $resourceId ] );
     }
 
     /**
-     * @param  string $name
-     * @param  int $id
+     * @param  string $slug
+     * @param  int $resourceId
      * @return Response
      * @throws HttpException
      */
-    public function update( $name, $id )
+    public function update( $slug, $resourceId )
     {
-        $controller = $this->getClassFromSlug( $name );
+        $controller = $this->findControllerBySlug( $slug );
 
-        return $this->app->call( "{$controller}@update", [ $id ] );
+        return $this->app->call( "{$controller}@update", [ $resourceId ] );
     }
 
     /**
-     * @param $name
-     * @param $id
+     * @param $slug
+     * @param $resourceId
      * @return Response
      * @throws HttpException
      */
-    public function confirmDestroy( $name, $id )
+    public function confirmDestroy( $slug, $resourceId )
     {
-        $controller = $this->getClassFromSlug( $name );
+        $controller = $this->findControllerBySlug( $slug );
 
-        return $this->app->call( "{$controller}@confirmDestroy", [ $id ] );
+        return $this->app->call( "{$controller}@confirmDestroy", [ $resourceId ] );
     }
 
     /**
-     * @param $name
-     * @param $id
+     * @param $slug
+     * @param $resourceId
      * @return Response
      * @throws HttpException
      */
-    public function destroy( $name, $id )
+    public function destroy( $slug, $resourceId )
     {
-        $controller = $this->getClassFromSlug( $name );
+        $controller = $this->findControllerBySlug( $slug );
 
-        return $this->app->call( "{$controller}@destroy", [ $id ] );
+        return $this->app->call( "{$controller}@destroy", [ $resourceId ] );
     }
 
     /**
-     * @param $name
-     * @param $id
+     * @param $slug
+     * @param $resourceId
      * @param $action
      * @return Response
      * @throws HttpException
      */
-    public function handleGetAction( $name, $id, $action )
+    public function handleGetAction( $slug, $resourceId, $action )
     {
-        $controller = $this->getClassFromSlug( $name );
+        $controller = $this->findControllerBySlug( $slug );
 
-        return $this->app->call( "{$controller}@handleGetAction", [ $id, $action ] );
-    }
-
-    /**
-     * @param $name
-     * @param $id
-     * @param $action
-     * @return Response
-     * @throws HttpException
-     */
-    public function handlePostAction( $name, $id, $action )
-    {
-        $controller = $this->getClassFromSlug( $name );
-
-        return $this->app->call( "{$controller}@handlePostAction", [ $id, $action ] );
+        return $this->app->call( "{$controller}@handleGetAction", [ $resourceId, $action ] );
     }
 
     /**
@@ -150,7 +136,7 @@ class ResourceController extends Controller
      * @return string
      * @throws HttpException
      */
-    public function getClassFromSlug( $slug )
+    protected function findControllerBySlug( $slug )
     {
         /**
          * @var $menuItem Item
@@ -160,7 +146,7 @@ class ResourceController extends Controller
 
         if( !$menuItem )
         {
-            $this->app->abort( \Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND );
+            $this->app->abort( Response::HTTP_NOT_FOUND );
         }
 
         return $menuItem->getController();
