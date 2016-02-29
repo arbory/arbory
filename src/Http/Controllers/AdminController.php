@@ -391,17 +391,6 @@ abstract class AdminController
     }
 
     /**
-     * @param $name
-     * @return static
-     */
-    public static function getInstance( $name )
-    {
-        $class = static::getClassFromSlug( $name );
-
-        return new $class;
-    }
-
-    /**
      * @param $slug
      * @return null|string
      */
