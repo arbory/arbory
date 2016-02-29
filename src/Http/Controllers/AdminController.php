@@ -390,23 +390,4 @@ abstract class AdminController
 
     }
 
-    /**
-     * @param $slug
-     * @return null|string
-     */
-    public static function getClassFromSlug( $slug )
-    {
-        /**
-         * @var $menuItem Item
-         */
-        $menuItem = app( 'leaf.menu' )->findItemBySlug( $slug );
-
-        if( !$menuItem )
-        {
-            return null;
-        }
-
-        return $menuItem->getController();
-    }
-
 }

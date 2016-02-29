@@ -2,8 +2,11 @@
 
 namespace CubeSystems\Leaf\Http\Controllers;
 
+use CubeSystems\Leaf\Menu\Item;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 
 /**
@@ -13,70 +16,105 @@ use Illuminate\Routing\Controller;
 class ResourceController extends Controller
 {
     /**
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app;
+
+    /**
+     * ResourceController constructor.
+     * @param Application $app
+     */
+    public function __construct( Application $app )
+    {
+        $this->app = $app;
+    }
+
+    /**
      * @param  string $name
      * @return Response
+     * @throws HttpException
      */
     public function index( $name )
     {
-        return \App::call( AdminController::getClassFromSlug( $name ) . '@index' );
+        $controller = $this->getClassFromSlug( $name );
+
+        return $this->app->call( "{$controller}@index" );
     }
 
     /**
      * @param  string $name
      * @return Response
+     * @throws HttpException
      */
     public function create( $name )
     {
-        return \App::call( AdminController::getClassFromSlug( $name ) . '@create' );
+        $controller = $this->getClassFromSlug( $name );
+
+        return $this->app->call( "{$controller}@create" );
     }
 
     /**
      * @param  string $name
      * @return Response
+     * @throws HttpException
      */
     public function store( $name )
     {
-        return \App::call( AdminController::getClassFromSlug( $name ) . '@store' );
+        $controller = $this->getClassFromSlug( $name );
+
+        return $this->app->call( "{$controller}@store" );
     }
 
     /**
      * @param  string $name
      * @param  int $id
      * @return Response
+     * @throws HttpException
      */
     public function edit( $name, $id )
     {
-        return \App::call( AdminController::getClassFromSlug( $name ) . '@edit', [ $id ] );
+        $controller = $this->getClassFromSlug( $name );
+
+        return $this->app->call( "{$controller}@edit", [ $id ] );
     }
 
     /**
      * @param  string $name
      * @param  int $id
      * @return Response
+     * @throws HttpException
      */
     public function update( $name, $id )
     {
-        return \App::call( AdminController::getClassFromSlug( $name ) . '@update', [ $id ] );
+        $controller = $this->getClassFromSlug( $name );
+
+        return $this->app->call( "{$controller}@update", [ $id ] );
     }
 
     /**
      * @param $name
      * @param $id
      * @return Response
+     * @throws HttpException
      */
     public function confirmDestroy( $name, $id )
     {
-        return \App::call( AdminController::getClassFromSlug( $name ) . '@confirmDestroy', [ $id ] );
+        $controller = $this->getClassFromSlug( $name );
+
+        return $this->app->call( "{$controller}@confirmDestroy", [ $id ] );
     }
 
     /**
      * @param $name
      * @param $id
      * @return Response
+     * @throws HttpException
      */
     public function destroy( $name, $id )
     {
-        return \App::call( AdminController::getClassFromSlug( $name ) . '@destroy', [ $id ] );
+        $controller = $this->getClassFromSlug( $name );
+
+        return $this->app->call( "{$controller}@destroy", [ $id ] );
     }
 
     /**
@@ -84,10 +122,13 @@ class ResourceController extends Controller
      * @param $id
      * @param $action
      * @return Response
+     * @throws HttpException
      */
     public function handleGetAction( $name, $id, $action )
     {
-        return \App::call( AdminController::getClassFromSlug( $name ) . '@handleGetAction', [ $id, $action ] );
+        $controller = $this->getClassFromSlug( $name );
+
+        return $this->app->call( "{$controller}@handleGetAction", [ $id, $action ] );
     }
 
     /**
@@ -95,10 +136,33 @@ class ResourceController extends Controller
      * @param $id
      * @param $action
      * @return Response
+     * @throws HttpException
      */
     public function handlePostAction( $name, $id, $action )
     {
-        return \App::call( AdminController::getClassFromSlug( $name ) . '@handlePostAction', [ $id, $action ] );
+        $controller = $this->getClassFromSlug( $name );
+
+        return $this->app->call( "{$controller}@handlePostAction", [ $id, $action ] );
     }
 
+    /**
+     * @param $slug
+     * @return string
+     * @throws HttpException
+     */
+    public function getClassFromSlug( $slug )
+    {
+        /**
+         * @var $menuItem Item
+         */
+
+        $menuItem = $this->app['leaf.menu']->findItemBySlug( $slug );
+
+        if( !$menuItem )
+        {
+            $this->app->abort( \Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND );
+        }
+
+        return $menuItem->getController();
+    }
 }
