@@ -3,14 +3,19 @@
 @section('content.header')
     <header>
         @include('leaf::partials.breadcrumbs')
-        {{--<form class="search clear-inside has-text-search" action="">--}}
-        {{--<div class="text-search"><input name="search" type="text" autofocus="autofocus"/>--}}
-        {{--<button class="button only-icon" title="Search" type="submit"><i class="fa fa-search"></i></button>--}}
-        {{--</div>--}}
-        {{--@if ($model->getFilterBuilder()->getResult()->getFields())--}}
-        {{--@include($model->getView('filter'))--}}
-        {{--@endif--}}
-        {{--</form>--}}
+        <form class="search has-text-search" action="{{ route('admin.model.index', [$controller->getSlug()])}}">
+            <div class="text-search">
+                <div class="search-field" data-name="search">
+                    <input name="search" type="search" class="text" autofocus="autofocus" value="{{Input::get('search')}}"/>
+                    <button class="button only-icon" title="@lang('leaf.filter.search')" type="submit" autocomplete="off">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            {{--@if ($filter->hasFields())--}}
+            {{--@include($model->getView('filter'))--}}
+            {{--@endif--}}
+        </form>
     </header>
 @stop
 
@@ -18,7 +23,7 @@
 
     <section>
         <header>
-            <h1>All resources</h1>
+            <h1>@lang('leaf.resources.all_resources')</h1>
             <span class="extras totals only-text">@lang('leaf.pagination.items_found',['total'=>$paginator->total()])</span>
         </header>
         <div class="body">
@@ -27,7 +32,7 @@
                 <tbody>
                 <tr>
                     <th>
-                        <div class="nothing_found">Nothing found</div>
+                        <div class="nothing_found">@lang('leaf.resources.nothing_found')</div>
                     </th>
                 </tr>
                 </tbody>
@@ -38,12 +43,21 @@
                 <tr>
                     @foreach ($scheme->getFields() as $field)
                         <th>
-                            <a href="{{ route('admin.model.index', [$controller->getSlug(), '_order_by' => $field->getName(), '_order' => Input::get('_order') === 'ASC' ? 'DESC' : 'ASC']) }}">
+                            @if( $field->isSortable())
+                            <a href="{{ route('admin.model.index', [
+                                    $controller->getSlug(),
+                                    'search' => Input::get('search'),
+                                    '_order_by' => $field->getName(),
+                                    '_order' => Input::get('_order') === 'ASC' ? 'DESC' : 'ASC',
+                                ]) }}">
                                 {{ $field->getLabel() }}
-                                @if (Input::has('_order_by') && Input::get('_order_by') === $field->getName())
+                                @if (Input::get('_order_by') === $field->getName())
                                     <i class="fa fa-sort-{{ Input::get('_order') === 'DESC' ? 'up' : 'down' }}"></i>
                                 @endif
                             </a>
+                            @else
+                                {{ $field->getLabel() }}
+                            @endif
                         </th>
                     @endforeach
                 </tr>

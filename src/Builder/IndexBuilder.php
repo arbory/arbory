@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Builder;
 
+use CubeSystems\Leaf\Fields\FieldInterface;
 use CubeSystems\Leaf\Results\IndexResult;
 use CubeSystems\Leaf\Results\Row;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -19,6 +20,35 @@ class IndexBuilder extends AbstractBuilder
     // TODO: Search / filter / order / pagination
 
     /**
+     * @var IndexResult
+     */
+    protected $result;
+
+    /**
+     * IndexBuilder constructor.
+     */
+    public function __construct(  )
+    {
+        $this->setResult( new IndexResult );
+    }
+
+    /**
+     * @return IndexResult
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * @param IndexResult $result
+     */
+    public function setResult( $result )
+    {
+        $this->result = $result;
+    }
+
+    /**
      * @return integer
      */
     public function getItemsPerPage()
@@ -27,11 +57,73 @@ class IndexBuilder extends AbstractBuilder
     }
 
     /**
+     * @param Builder $queryBuilder
+     * @param FieldInterface[]|array $fields
      * @return array
      */
-    public function getFilterValues()
+    protected function handleSearchParams( Builder $queryBuilder, $fields )
     {
-        return [ ]; // TODO
+        if( !$this->hasParameter('search') )
+        {
+            return $queryBuilder;
+        }
+
+        $keywords = explode( ' ', $this->getParameters('search') );
+
+        foreach( $keywords as $string )
+        {
+            $queryBuilder->where( function( $query ) use ( $string, $fields )
+            {
+                /** @var $query Builder */
+                foreach( $fields as $field )
+                {
+                    if( !$field->getName() )
+                    {
+                        continue;
+                    }
+
+                    $query->where( $field->getName(), 'LIKE', "$string%", 'OR' );
+                }
+            } );
+        }
+
+        return $queryBuilder;
+    }
+
+    /**
+     * @param Builder|\Illuminate\Database\Query\Builder $queryBuilder
+     */
+    protected function handlePagination( Builder $queryBuilder )
+    {
+        /**
+         * @var $paginator Paginator|AbstractPaginator
+         */
+
+        $paginator = $queryBuilder->paginate( $this->getItemsPerPage() );
+
+        if( $this->hasParameter('_order_by') && $this->hasParameter('_order') )
+        {
+            $queryBuilder->orderBy( $this->getParameters('_order_by'), $this->getParameters('_order') );
+
+            $paginator->addQuery( '_order_by', $this->getParameters('_order_by') );
+            $paginator->addQuery( '_order', $this->getParameters('_order') );
+        }
+
+        if( $this->hasParameter('search') )
+        {
+            $paginator->addQuery( 'search', $this->getParameters('search') );
+        }
+
+        $this->getResult()->setPaginator( $paginator );
+    }
+
+    /**
+     * @param Model $resource
+     * @return Builder
+     */
+    protected function getQueryBuilder( $resource )
+    {
+        return ( new $resource )->newQuery();
     }
 
     /**
@@ -41,31 +133,18 @@ class IndexBuilder extends AbstractBuilder
     {
         /**
          * @var $item Model
-         * @var $eloquentBuilder Builder|\Illuminate\Database\Query\Builder
-         * @var $paginator Paginator|AbstractPaginator
+         * @var $queryBuilder Builder|\Illuminate\Database\Query\Builder
          */
-
-        $results = new IndexResult();
 
         $resource = $this->getResource();
         $fields = $this->getScheme()->getFields();
 
-        $eloquentBuilder = $resource::where( $this->getFilterValues() );
-        $paginator = $eloquentBuilder->paginate( $this->getItemsPerPage() );
+        $queryBuilder = $this->getQueryBuilder( $resource );
 
-        if( \Input::has( '_order_by' ) && \Input::has( '_order' ) )
-        {
-            $eloquentBuilder->orderBy( \Input::get( '_order_by' ), \Input::get( '_order' ) );
+        $this->handleSearchParams( $queryBuilder, $fields );
+        $this->handlePagination( $queryBuilder );
 
-            $paginator->addQuery( '_order_by', \Input::get( '_order_by' ) );
-            $paginator->addQuery( '_order', \Input::get( '_order' ) );
-        }
-
-        $collection = $eloquentBuilder->get();
-
-        $results->setPaginator( $paginator );
-
-        foreach( $collection as $item )
+        foreach( $queryBuilder->get() as $item )
         {
             $row = new Row();
             $row->setResource( $resource );
@@ -91,9 +170,9 @@ class IndexBuilder extends AbstractBuilder
                 $row->add( $field );
             }
 
-            $results->addRow( $row );
+            $this->getResult()->addRow( $row );
         }
 
-        return $results;
+        return $this->getResult();
     }
 }

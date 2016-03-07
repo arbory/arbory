@@ -181,7 +181,7 @@ abstract class AdminController
     /**
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index( Request $request )
     {
         $scheme = new Scheme( $this->getResource(), $this );
 
@@ -193,6 +193,7 @@ abstract class AdminController
         $builder = new IndexBuilder;
         $builder->setScheme( $scheme );
         $builder->setResource( $this->getResource() );
+        $builder->setParameters( $request->input() );
 
         $this->buildFilters();
 

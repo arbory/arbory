@@ -28,6 +28,22 @@ class Toolbox extends AbstractField
     }
 
     /**
+     * @return bool
+     */
+    public function isSortable()
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSearchable()
+    {
+        return false;
+    }
+
+    /**
      * @return \Illuminate\View\View
      */
     public function render()

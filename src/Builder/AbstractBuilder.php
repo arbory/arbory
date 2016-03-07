@@ -29,9 +29,9 @@ abstract class AbstractBuilder
     protected $controller;
 
     /**
-     * @var ResultInterface
+     * @var array
      */
-    protected $result;
+    protected $parameters;
 
     /**
      * @return Scheme
@@ -88,6 +88,32 @@ abstract class AbstractBuilder
         $this->controller = $controller;
 
         return $this;
+    }
+
+    /**
+     * @param null $key
+     * @return array
+     */
+    public function getParameters( $key = null )
+    {
+        return array_get( (array) $this->parameters, $key );
+    }
+
+    /**
+     * @param array $parameters
+     */
+    public function setParameters( array $parameters = [] )
+    {
+        $this->parameters = $parameters;
+    }
+
+    /**
+     * @param $key
+     * @return bool
+     */
+    public function hasParameter( $key )
+    {
+        return array_has( (array) $this->parameters, $key );
     }
 
     abstract public function build();

@@ -288,6 +288,22 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isSearchable()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSortable()
+    {
+        return true;
+    }
+
+    /**
      * @return View
      */
     abstract public function render();
