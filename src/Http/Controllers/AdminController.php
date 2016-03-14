@@ -6,7 +6,7 @@ use CubeSystems\Leaf\Breadcrumbs;
 use CubeSystems\Leaf\Builder\FormBuilder;
 use CubeSystems\Leaf\Builder\IndexBuilder;
 use CubeSystems\Leaf\Menu\Item;
-use CubeSystems\Leaf\Scheme;
+use CubeSystems\Leaf\FieldSet;
 use Eloquent;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
@@ -162,14 +162,14 @@ abstract class AdminController
     protected function getFormBuilder( $resourceId = null )
     {
         $builder = new FormBuilder;
-        $scheme = new Scheme( $this->getResource(), $this );
+        $fieldSet = new FieldSet( $this->getResource(), $this );
 
         if( method_exists( $this, 'formFields' ) )
         {
-            $this->formFields( $scheme );
+            $this->formFields( $fieldSet );
         }
 
-        $builder->setScheme( $scheme )
+        $builder->setFieldSet( $fieldSet )
             ->setResource( $this->getResource() )
             ->setController( $this )
             ->setIdentifier( $resourceId )
@@ -183,15 +183,15 @@ abstract class AdminController
      */
     public function index( Request $request )
     {
-        $scheme = new Scheme( $this->getResource(), $this );
+        $fieldSet = new FieldSet( $this->getResource(), $this );
 
         if( method_exists( $this, 'indexFields' ) )
         {
-            $this->indexFields( $scheme );
+            $this->indexFields( $fieldSet );
         }
 
         $builder = new IndexBuilder;
-        $builder->setScheme( $scheme );
+        $builder->setFieldSet( $fieldSet );
         $builder->setResource( $this->getResource() );
         $builder->setParameters( $request->input() );
 
@@ -201,7 +201,7 @@ abstract class AdminController
 
         return view( $this->getIndexView(), [
             'controller' => $this,
-            'scheme' => $scheme,
+            'field_set' => $fieldSet,
             'results' => $results,
             'paginator' => $results->getPaginator(),
             'breadcrumbs' => $this->getBreadcrumbs()->get(),

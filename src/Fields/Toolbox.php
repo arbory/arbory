@@ -50,7 +50,7 @@ class Toolbox extends AbstractField
     {
         return view( $this->getViewName(), [
             'toolbox_url' => route( 'admin.model.action', [
-                'model' => $this->getScheme()->getController()->getSlug(),
+                'model' => $this->getFieldSet()->getController()->getSlug(),
                 'id' => $this->getRow()->getIdentifier(),
                 'action' => 'toolbox'
             ] ),

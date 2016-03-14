@@ -10,7 +10,7 @@ class Richtext extends AbstractField
         {
             return view( $this->getViewName(), [
                 'field' => $this,
-                'url' => route( 'admin.model.edit', [ class_basename( $this->getScheme()->getResource() ), $this->getRow()->getIdentifier() ] ),
+                'url' => route( 'admin.model.edit', [ class_basename( $this->getFieldSet()->getResource() ), $this->getRow()->getIdentifier() ] ),
             ] );
         }
         elseif( $this->isForForm() )

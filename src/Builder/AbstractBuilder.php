@@ -4,7 +4,7 @@ namespace CubeSystems\Leaf\Builder;
 
 use CubeSystems\Leaf\Http\Controllers\AdminController;
 use CubeSystems\Leaf\Results\ResultInterface;
-use CubeSystems\Leaf\Scheme;
+use CubeSystems\Leaf\FieldSet;
 use Eloquent;
 
 /**
@@ -14,9 +14,9 @@ use Eloquent;
 abstract class AbstractBuilder
 {
     /**
-     * @var Scheme
+     * @var FieldSet
      */
-    protected $scheme;
+    protected $fieldSet;
 
     /**
      * @var string
@@ -34,20 +34,20 @@ abstract class AbstractBuilder
     protected $parameters;
 
     /**
-     * @return Scheme
+     * @return FieldSet
      */
-    public function getScheme()
+    public function getFieldSet()
     {
-        return $this->scheme;
+        return $this->fieldSet;
     }
 
     /**
-     * @param Scheme $scheme
+     * @param FieldSet $fieldSet
      * @return $this
      */
-    public function setScheme( Scheme $scheme )
+    public function setFieldSet( FieldSet $fieldSet )
     {
-        $this->scheme = $scheme;
+        $this->fieldSet = $fieldSet;
 
         return $this;
     }

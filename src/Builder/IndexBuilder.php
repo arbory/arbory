@@ -137,7 +137,7 @@ class IndexBuilder extends AbstractBuilder
          */
 
         $resource = $this->getResource();
-        $fields = $this->getScheme()->getFields();
+        $fields = $this->getFieldSet()->getFields();
 
         $queryBuilder = $this->getQueryBuilder( $resource );
 

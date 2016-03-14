@@ -12,7 +12,7 @@
     <table class="table">
         <thead>
         <tr>
-            @foreach ($scheme->getFields() as $field)
+            @foreach ($field_set->getFields() as $field)
                 <th>
                     @if( $field->isSortable())
                         <a href="{{ route('admin.model.index', [

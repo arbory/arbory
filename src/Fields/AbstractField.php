@@ -4,7 +4,7 @@ namespace CubeSystems\Leaf\Fields;
 
 use Closure;
 use CubeSystems\Leaf\Results\Row;
-use CubeSystems\Leaf\Scheme;
+use CubeSystems\Leaf\FieldSet;
 use Illuminate\View\View;
 
 /**
@@ -52,9 +52,9 @@ abstract class AbstractField implements FieldInterface
     protected $after;
 
     /**
-     * @var Scheme
+     * @var FieldSet
      */
-    protected $scheme;
+    protected $fieldSet;
 
     /**
      * @var Closure
@@ -242,20 +242,20 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
-     * @return Scheme
+     * @return FieldSet
      */
-    public function getScheme()
+    public function getFieldSet()
     {
-        return $this->scheme;
+        return $this->fieldSet;
     }
 
     /**
-     * @param Scheme $scheme
+     * @param FieldSet $fieldSet
      * @return $this
      */
-    public function setScheme( Scheme $scheme )
+    public function setFieldSet( FieldSet $fieldSet )
     {
-        $this->scheme = $scheme;
+        $this->fieldSet = $fieldSet;
 
         return $this;
     }

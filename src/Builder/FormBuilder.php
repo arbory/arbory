@@ -100,7 +100,7 @@ class FormBuilder extends AbstractBuilder
 
         $result = new FormResult( $this );
 
-        foreach( $this->getScheme()->getFields() as $field )
+        foreach( $this->getFieldSet()->getFields() as $field )
         {
             $item = clone $field;
             $name = $item->getName();
@@ -139,13 +139,13 @@ class FormBuilder extends AbstractBuilder
     {
         $input = array_get( $input, 'resource' );
 
-        $scheme = $this->getScheme();
+        $fieldSet = $this->getFieldSet();
         $controller = $this->getController();
 
         $model = $this->getResource();
         $primaryKey = $this->getModel()->getKeyName();
 
-        foreach( $scheme->getFields() as $field )
+        foreach( $fieldSet->getFields() as $field )
         {
             if( $field->hasSaveWith() )
             {
@@ -180,7 +180,7 @@ class FormBuilder extends AbstractBuilder
 
         $this->setIdentifier( $model->{$primaryKey} );
 
-//        foreach( $scheme->getFields() as $field )
+//        foreach( $fieldSet->getFields() as $field )
 //        {
 //            $field->postUpdate( $input ); // TODO:
 //        }
@@ -204,7 +204,7 @@ class FormBuilder extends AbstractBuilder
         $model = $this->getResource();
         $controller = $this->getController();
 
-        foreach( $this->getScheme()->getFields() as $field )
+        foreach( $this->getFieldSet()->getFields() as $field )
         {
             if( $field->hasSaveWith() )
             {
@@ -238,7 +238,7 @@ class FormBuilder extends AbstractBuilder
                 ->update( $input );
         }
 
-//        foreach( $this->getScheme()->getFields() as $field )
+//        foreach( $this->getFieldSet()->getFields() as $field )
 //        {
 //            $field->postUpdate( $input );
 //        }

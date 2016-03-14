@@ -4,7 +4,7 @@ namespace CubeSystems\Leaf\Fields;
 
 use Closure;
 use CubeSystems\Leaf\Results\Row;
-use CubeSystems\Leaf\Scheme;
+use CubeSystems\Leaf\FieldSet;
 
 /**
  * Interface FieldInterface
@@ -115,15 +115,15 @@ interface FieldInterface
     public function hasBefore();
 
     /**
-     * @return Scheme
+     * @return FieldSet
      */
-    public function getScheme();
+    public function getFieldSet();
 
     /**
-     * @param Scheme $scheme
+     * @param FieldSet $fieldSet
      * @return $this
      */
-    public function setScheme( Scheme $scheme );
+    public function setFieldSet( FieldSet $fieldSet );
 
     /**
      * @return Closure

@@ -40,7 +40,7 @@ class BelongsTo extends AbstractField
     {
         return view( $this->getViewName(), [
             'field' => $this,
-            'url' => route( 'admin.model.edit', [ class_basename( $this->getScheme()->getController()->getSlug() ), $this->getRow()->getIdentifier() ] ),
+            'url' => route( 'admin.model.edit', [ class_basename( $this->getFieldSet()->getController()->getSlug() ), $this->getRow()->getIdentifier() ] ),
         ] );
     }
 
@@ -67,7 +67,7 @@ class BelongsTo extends AbstractField
      */
     protected function getRelatedModel()
     {
-        $resource = $this->getScheme()->getResource();
+        $resource = $this->getFieldSet()->getResource();
         $model = new $resource;
 
         return $model->{$this->getName()}()->getRelated();
