@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Builder;
 use Closure;
 use CubeSystems\Leaf\Fields\AbstractField;
 use CubeSystems\Leaf\Results\FormResult;
+use Illuminate\Database\Eloquent\Model;
 use Validator;
 
 /**
@@ -13,55 +14,18 @@ use Validator;
  */
 class FormBuilder extends AbstractBuilder
 {
-    const CONTEXT_CREATE = 'create';
-    const CONTEXT_EDIT = 'edit';
+    /**
+     * @var Model
+     */
+    protected $model;
 
     /**
-     * @var integer
+     * FormBuilder constructor.
+     * @param Model $model
      */
-    protected $identifier;
-
-    /**
-     * @var string
-     */
-    protected $context;
-
-    /**
-     * @return integer
-     */
-    public function getIdentifier()
+    public function __construct( Model $model )
     {
-        return $this->identifier;
-    }
-
-    /**
-     * @param integer $identifier
-     * @return $this
-     */
-    public function setIdentifier( $identifier )
-    {
-        $this->identifier = $identifier;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContext()
-    {
-        return $this->context;
-    }
-
-    /**
-     * @param string $context
-     * @return $this
-     */
-    public function setContext( $context )
-    {
-        $this->context = $context;
-
-        return $this;
+        $this->setModel( $model );
     }
 
     /**
@@ -69,14 +33,18 @@ class FormBuilder extends AbstractBuilder
      */
     public function getModel()
     {
-        $class = $this->getResource();
+        return $this->model;
+    }
 
-        if( $this->getIdentifier() )
-        {
-            return $class::find( $this->getIdentifier() );
-        }
+    /**
+     * @param Model $model
+     * @return $this
+     */
+    public function setModel( Model $model )
+    {
+        $this->model = $model;
 
-        return new $class;
+        return $this;
     }
 
     /**
@@ -84,20 +52,7 @@ class FormBuilder extends AbstractBuilder
      */
     public function build()
     {
-        $class = $this->getResource();
-
-        switch( $this->getContext() )
-        {
-            case static::CONTEXT_EDIT:
-                $model = $class::find( $this->getIdentifier() );
-                break;
-
-            default:
-            case static::CONTEXT_CREATE:
-                $model = new $class;
-                break;
-        }
-
+        $model = $this->getModel();
         $result = new FormResult( $this );
 
         foreach( $this->getFieldSet()->getFields() as $field )
@@ -141,9 +96,7 @@ class FormBuilder extends AbstractBuilder
 
         $fieldSet = $this->getFieldSet();
         $controller = $this->getController();
-
-        $model = $this->getResource();
-        $primaryKey = $this->getModel()->getKeyName();
+        $model = $this->getModel();
 
         foreach( $fieldSet->getFields() as $field )
         {
@@ -178,12 +131,12 @@ class FormBuilder extends AbstractBuilder
             $model = $model::create( $input );
         }
 
-        $this->setIdentifier( $model->{$primaryKey} );
+        $this->setModel( $model );
 
-//        foreach( $fieldSet->getFields() as $field )
-//        {
-//            $field->postUpdate( $input ); // TODO:
-//        }
+        foreach( $fieldSet->getFields() as $field )
+        {
+            $field->postUpdate( $model, $input ); // TODO:
+        }
 
         if( method_exists( $controller, 'afterCreate' ) )
         {
@@ -201,7 +154,7 @@ class FormBuilder extends AbstractBuilder
     {
         $input = array_get( $input, 'resource' );
 
-        $model = $this->getResource();
+        $model = $this->getModel();
         $controller = $this->getController();
 
         foreach( $this->getFieldSet()->getFields() as $field )
@@ -230,18 +183,17 @@ class FormBuilder extends AbstractBuilder
 
         if( method_exists( $controller, 'updating' ) )
         {
-            $controller->update( $input );
+            $controller->updating( $model, $input );
         }
         else
         {
-            $model::find( $this->getIdentifier() )
-                ->update( $input );
+            $model->update( $input );
         }
 
-//        foreach( $this->getFieldSet()->getFields() as $field )
-//        {
-//            $field->postUpdate( $input );
-//        }
+        foreach( $this->getFieldSet()->getFields() as $field )
+        {
+            $field->postUpdate( $model, $input );
+        }
 
         if( method_exists( $controller, 'afterUpdate' ) )
         {
@@ -259,8 +211,7 @@ class FormBuilder extends AbstractBuilder
     {
         $controller = $this->getController();
 
-        $model = $this->getResource();
-        $model = $model::find( $this->getIdentifier() );
+        $model = $this->getModel();
 
         if( method_exists( $controller, 'beforeDelete' ) )
         {

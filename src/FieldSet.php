@@ -56,11 +56,14 @@ class FieldSet
 
     /**
      * @param FieldInterface $field
+     * @return FieldInterface
      */
     public function add( FieldInterface $field )
     {
         $field->setFieldSet( $this );
-        $this->fields[$field->getName()] = $field;
+        $this->fields[] = $field;
+
+        return $field;
     }
 
     /**

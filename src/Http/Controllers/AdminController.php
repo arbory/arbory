@@ -161,7 +161,13 @@ abstract class AdminController
      */
     protected function getFormBuilder( $resourceId = null )
     {
-        $builder = new FormBuilder;
+        $class = $this->getResource();
+
+        $model = $resourceId
+            ? $class::find( $resourceId )
+            : new $class;
+
+        $builder = new FormBuilder( $model );
         $fieldSet = new FieldSet( $this->getResource(), $this );
 
         if( method_exists( $this, 'formFields' ) )
@@ -169,11 +175,9 @@ abstract class AdminController
             $this->formFields( $fieldSet );
         }
 
-        $builder->setFieldSet( $fieldSet )
-            ->setResource( $this->getResource() )
-            ->setController( $this )
-            ->setIdentifier( $resourceId )
-            ->setContext( $resourceId === null ? FormBuilder::CONTEXT_CREATE : FormBuilder::CONTEXT_EDIT );
+        $builder
+            ->setFieldSet( $fieldSet )
+            ->setController( $this );
 
         return $builder;
     }

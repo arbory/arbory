@@ -14,8 +14,16 @@ return [
         'create_new' => 'Create new resource',
         'nothing_found' => 'Nothing Found',
     ],
+    'fields' => [
+        'has_many' => [
+            'add_item' => 'Add item',
+        ],
+        'relation' => [
+            'remove' => 'Remove item',
+        ],
+    ],
     'breadcrumbs' => [
         'home' => 'Home',
         'new_item' => 'New Record',
-    ]
+    ],
 ];

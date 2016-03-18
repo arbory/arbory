@@ -13,12 +13,6 @@ use CubeSystems\Leaf\FieldSet;
 interface FieldInterface
 {
     /**
-     * FieldInterface constructor.
-     * @param $name string
-     */
-    public function __construct( $name );
-
-    /**
      * @return string
      */
     public function getName();

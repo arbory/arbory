@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Fields;
 use Closure;
 use CubeSystems\Leaf\Results\Row;
 use CubeSystems\Leaf\FieldSet;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
 
 /**
@@ -288,6 +289,16 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
+     * @param Model $model
+     * @param array $input
+     * @return null
+     */
+    public function postUpdate( Model $model, array $input = [] )
+    {
+        return null;
+    }
+
+    /**
      * @return bool
      */
     public function isSearchable()
@@ -301,6 +312,38 @@ abstract class AbstractField implements FieldInterface
     public function isSortable()
     {
         return true;
+    }
+
+
+    /**
+     * TODO: Move to trait
+     */
+
+    protected $inputNamespace;
+
+    public function getInputName()
+    {
+        $nameParts = preg_split( '/\./', $this->inputNamespace, NULL, PREG_SPLIT_NO_EMPTY );
+        $nameParts[] = $this->getName();
+
+        return 'resource[' . implode( '][', $nameParts ) . ']';
+    }
+
+    public function getInputId()
+    {
+        return strtr( $this->getInputName(), [ '[' => '_', ']' => '' ] );
+    }
+
+    public function getInputNamespace()
+    {
+        return $this->inputNamespace;
+    }
+
+    public function setInputNamespace( $namespace )
+    {
+        $this->inputNamespace = $namespace;
+
+        return $this;
     }
 
     /**
