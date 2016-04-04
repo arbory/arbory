@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Fields;
 
 use Closure;
+use CubeSystems\Leaf\Http\Controllers\AdminController;
 use CubeSystems\Leaf\Results\Row;
 use CubeSystems\Leaf\FieldSet;
 use Illuminate\Database\Eloquent\Model;
@@ -61,6 +62,16 @@ abstract class AbstractField implements FieldInterface
      * @var Closure
      */
     protected $saveWith;
+
+    /**
+     * @var Model
+     */
+    protected $model;
+
+    /**
+     * @var AdminController
+     */
+    protected $controller;
 
     /**
      * AbstractField constructor.
@@ -289,6 +300,44 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
+     * @return Model
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param Model $model
+     * @return $this
+     */
+    public function setModel( $model )
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * @return AdminController
+     */
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    /**
+     * @param AdminController $controller
+     * @return $this
+     */
+    public function setController( $controller )
+    {
+        $this->controller = $controller;
+
+        return $this;
+    }
+
+    /**
      * @param Model $model
      * @param array $input
      * @return null
@@ -313,6 +362,9 @@ abstract class AbstractField implements FieldInterface
     {
         return true;
     }
+
+
+
 
 
     /**

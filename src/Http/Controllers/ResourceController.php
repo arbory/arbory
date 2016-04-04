@@ -119,16 +119,15 @@ class ResourceController extends Controller
 
     /**
      * @param $slug
-     * @param $resourceId
-     * @param $action
+     * @param $dialog
      * @return Response
      * @throws HttpException
      */
-    public function handleGetAction( $slug, $resourceId, $action )
+    public function dialog( $slug, $dialog )
     {
         $controller = $this->findControllerBySlug( $slug );
 
-        return $this->app->call( "{$controller}@handleGetAction", [ $resourceId, $action ] );
+        return $this->app->call( "{$controller}@dialog", [ $dialog ] );
     }
 
     /**

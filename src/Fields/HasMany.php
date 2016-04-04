@@ -6,16 +6,8 @@ use CubeSystems\Leaf\Builder\FormBuilder;
 use CubeSystems\Leaf\FieldSet;
 use Illuminate\Database\Eloquent\Model;
 
-class HasMany extends AbstractField
+class HasMany extends AbstractRelationField
 {
-    protected $fieldSetCallback;
-
-    public function __construct( $name, callable $fieldSetCallback ) // TODO: Setter
-    {
-        $this->setName( $name );
-        $this->fieldSetCallback = $fieldSetCallback;
-    }
-
     public function canRemoveRelationItems()
     {
         // TODO: Setter, getter, permissions, etc.
@@ -35,9 +27,7 @@ class HasMany extends AbstractField
 
         $relatedModel = $model->{$this->getName()}()->getRelated();
 
-        $fieldSet = new FieldSet( get_class( $relatedModel ), $this->getFieldSet()->getController() );
-        $fieldSetCallback = $this->fieldSetCallback;
-        $fieldSetCallback( $fieldSet );
+        $fieldSet = $this->getRelationFieldSet();
 
         $relationItems = [ ];
 
@@ -55,37 +45,6 @@ class HasMany extends AbstractField
             'relations' => $relationItems,
             'template' => $this->getRelationFromTemplate( $relatedModel, clone $fieldSet )
         ] );
-    }
-
-    /**
-     * @param Model $model
-     * @param FieldSet $fieldSet
-     * @param $inputNamespace
-     * @return FormBuilder
-     */
-    protected function buildRelationForm( $model, $fieldSet, $inputNamespace )
-    {
-        foreach( $fieldSet->getFields() as $field )
-        {
-            $field->setInputNamespace( $inputNamespace );
-        }
-
-        $fieldSet->add( new Hidden( 'id' ) ) // TODO: Use related model key name instead of 'ID'
-            ->setValue( $model->{$model->getKeyName()} )
-            ->setInputNamespace( $inputNamespace );
-
-        if( $this->canRemoveRelationItems() )
-        {
-            $fieldSet->add( new RemoveRelationItem( '_destroy' ) )
-                ->setValue( 'false' )
-                ->setInputNamespace( $inputNamespace );
-        }
-
-        $builder = new FormBuilder( $model );
-        $builder->setFieldSet( $fieldSet );
-        $builder->setController( $this->getFieldSet()->getController() );
-
-        return $builder;
     }
 
     /**

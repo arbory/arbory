@@ -3,8 +3,10 @@
 namespace CubeSystems\Leaf\Fields;
 
 use Closure;
+use CubeSystems\Leaf\Http\Controllers\AdminController;
 use CubeSystems\Leaf\Results\Row;
 use CubeSystems\Leaf\FieldSet;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Interface FieldInterface
@@ -134,6 +136,28 @@ interface FieldInterface
      * @return bool
      */
     public function hasSaveWith();
+
+    /**
+     * @return Model
+     */
+    public function getModel();
+
+    /**
+     * @param Model $model
+     * @return $this
+     */
+    public function setModel( $model );
+
+    /**
+     * @return AdminController
+     */
+    public function getController();
+
+    /**
+     * @param AdminController $controller
+     * @return $this
+     */
+    public function setController( $controller );
 
     /**
      * @return string

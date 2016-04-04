@@ -9,5 +9,7 @@
             "email": "roberts@cubesystems.lv"
         }
     ],
-    "require": {}
+    "require": {
+        "baum/baum": "^1.1"
+    }
 }

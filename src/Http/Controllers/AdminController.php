@@ -183,6 +183,14 @@ abstract class AdminController
     }
 
     /**
+     * @return IndexBuilder
+     */
+    protected function getIndexBuilder()
+    {
+        return new IndexBuilder;
+    }
+
+    /**
      * @return \Illuminate\View\View
      */
     public function index( Request $request )
@@ -194,7 +202,7 @@ abstract class AdminController
             $this->indexFields( $fieldSet );
         }
 
-        $builder = new IndexBuilder;
+        $builder = $this->getIndexBuilder();
         $builder->setFieldSet( $fieldSet );
         $builder->setResource( $this->getResource() );
         $builder->setParameters( $request->input() );
@@ -339,23 +347,6 @@ abstract class AdminController
 
     /**
      * @param $resourceId
-     * @return \Illuminate\View\View
-     */
-    public function confirmDestroy( $resourceId )
-    {
-        $slug = $this->getSlug();
-        $class = $this->getResource();
-        $model = $class::find( $resourceId );
-
-        return view( 'leaf::modals.confirm_delete', [
-            'form_target' => route( 'admin.model.destroy', [ $slug, $resourceId ] ),
-            'list_url' => route( 'admin.model.index', $slug ),
-            'object_name' => (string) $model,
-        ] );
-    }
-
-    /**
-     * @param $resourceId
      * @return FormBuilder|\Illuminate\Http\RedirectResponse|null
      * @throws HttpException
      */
@@ -388,11 +379,56 @@ abstract class AdminController
         return Redirect::route( 'admin.model.index', $name );
     }
 
-    public function handleGetAction( $resourceId, $action )
+    /**
+     * @param $name
+     * @return \Illuminate\View\View
+     */
+    public function dialog( $name )
     {
-        $url = route( 'admin.model.confirm_destroy', [ $this->getSlug(), $resourceId ] );
+        $handler = camel_case( $name ) . 'Dialog';
 
-        // TODO: Builder + view
-        return '<li><a class="button ajaxbox danger" title="Delete" href="' . e( $url ) . '" data-modal="true">' . Lang::get( 'Delete' ) . '</a></li>';
+        if( !$name || !method_exists( $this, $handler ) )
+        {
+            $this->app->abort(\Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND);
+
+            return null;
+        }
+
+        return $this->{$handler}();
     }
+
+    /**
+     * @return \Illuminate\View\View
+     */
+    protected function toolboxDialog()
+    {
+        $resourceId = $this->app['request']->get('id');
+
+        return view( 'leaf::dialogs.toolbox', [
+            'confirm_destroy_url' => route( 'admin.model.dialog', [
+                'model' => $this->getSlug(),
+                'dialog' => 'confirm_destroy',
+                'id' => $resourceId,
+            ] ),
+        ] );
+    }
+
+    /**
+     * @return \Illuminate\View\View
+     */
+    protected function confirmDestroyDialog( )
+    {
+        $resourceId = $this->app['request']->get('id');
+
+        $slug = $this->getSlug();
+        $class = $this->getResource();
+        $model = $class::find( $resourceId );
+
+        return view( 'leaf::dialogs.confirm_delete', [
+            'form_target' => route( 'admin.model.destroy', [ $slug, $resourceId ] ),
+            'list_url' => route( 'admin.model.index', $slug ),
+            'object_name' => (string) $model,
+        ] );
+    }
+
 }

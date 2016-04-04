@@ -13,7 +13,6 @@ class LeafServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom( base_path( 'packages/CubeSystems/Leaf/resources/views' ), 'leaf' );
-//        $this->loadViewsFrom( base_path( 'resources/views/vendor/leaf/admin' ), 'leaf' );
         $this->loadTranslationsFrom( __DIR__ . '/../resources/lang', 'leaf' );
 
         $this->publishResources();
@@ -65,8 +64,13 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function publishMigrations()
     {
-//        $this->publishes( [ __DIR__ . '/../database/migrations/' => base_path( 'database/migrations' ) ], 'migrations' );
-//        $this->publishes( [ __DIR__ . '/../database/seeds/' => base_path( 'database/seeds' ) ], 'seeds' );
+        $this->publishes( [
+            __DIR__ . '/../database/migrations/' => base_path( 'database/migrations' )
+        ], 'migrations' );
+
+        $this->publishes( [
+            __DIR__ . '/../database/seeds/' => base_path( 'database/seeds' )
+        ], 'seeds' );
     }
 
 }

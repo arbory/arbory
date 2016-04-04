@@ -61,7 +61,7 @@ class FieldSet
     public function add( FieldInterface $field )
     {
         $field->setFieldSet( $this );
-        $this->fields[] = $field;
+        $this->fields[$field->getName()] = $field;
 
         return $field;
     }
@@ -85,7 +85,7 @@ class FieldSet
             return null;
         }
 
-        return $this->fieds[$name];
+        return $this->fields[$name];
     }
 
     /**
@@ -94,7 +94,7 @@ class FieldSet
      */
     public function hasField( $name )
     {
-        return array_key_exists( $name, $this->fieds );
+        return array_key_exists( $name, $this->fields );
     }
 
     /**

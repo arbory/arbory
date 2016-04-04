@@ -1,4 +1,4 @@
-@extends('leaf::modals.dialog_confirmation', [
+@extends('leaf::dialogs.dialog_confirmation', [
     'form_target' => $form_target,
     'form_action' => 'delete'
 ])

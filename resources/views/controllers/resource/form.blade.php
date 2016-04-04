@@ -44,7 +44,7 @@
                 @if(!empty($id))
                 <div class="extras toolbox-wrap">
                     <div class="toolbox initialized"
-                         data-url="{{route('admin.model.action',[$slug,$id,'toolbox'])}}">
+                         data-url="{{route('admin.model.dialog',[$slug,'toolbox',$id])}}">
                         <button class="button trigger only-icon" type="button" title="Tools">
                             <i class="fa fa-ellipsis-v"></i>
                         </button>

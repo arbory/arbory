@@ -140,7 +140,7 @@ class FormBuilder extends AbstractBuilder
 
         if( method_exists( $controller, 'afterCreate' ) )
         {
-            return $controller->afterCreate( $input );
+            return $controller->afterCreate( $model, $input );
         }
 
         return null;
@@ -197,7 +197,7 @@ class FormBuilder extends AbstractBuilder
 
         if( method_exists( $controller, 'afterUpdate' ) )
         {
-            return $controller->afterUpdate( $input );
+            return $controller->afterUpdate( $model, $input );
         }
 
         return null;

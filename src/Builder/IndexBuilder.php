@@ -119,7 +119,7 @@ class IndexBuilder extends AbstractBuilder
 
     /**
      * @param Model $resource
-     * @return Builder
+     * @return Builder|\Illuminate\Database\Query\Builder
      */
     protected function getQueryBuilder( $resource )
     {
@@ -127,15 +127,10 @@ class IndexBuilder extends AbstractBuilder
     }
 
     /**
-     * @return IndexResult
+     * @return array|\Illuminate\Database\Eloquent\Collection|Model[]
      */
-    public function build()
+    protected function getItems()
     {
-        /**
-         * @var $item Model
-         * @var $queryBuilder Builder|\Illuminate\Database\Query\Builder
-         */
-
         $resource = $this->getResource();
         $fields = $this->getFieldSet()->getFields();
 
@@ -144,35 +139,70 @@ class IndexBuilder extends AbstractBuilder
         $this->handleSearchParams( $queryBuilder, $fields );
         $this->handlePagination( $queryBuilder );
 
-        foreach( $queryBuilder->get() as $item )
+        return $queryBuilder->get();
+    }
+
+    /**
+     * @return IndexResult
+     */
+    public function build()
+    {
+        $fields = $this->getFieldSet()->getFields();
+
+        foreach( $this->getItems() as $item )
         {
-            $row = new Row();
-            $row->setResource( $resource );
-            $row->setIdentifier( $item->{$item->getKeyName()} );
-
-            foreach( $fields as $field )
-            {
-                $field = clone $field;
-                $field->setListContext();
-
-                if( $field->hasBefore() )
-                {
-                    $before = $field->getBefore();
-                    $value = $before( $item );
-                }
-                else
-                {
-                    $value = $item->{$field->getName()};
-                }
-
-                $field->setValue( $value );
-
-                $row->add( $field );
-            }
+            $row = $this->buildRow( $item, $fields );
 
             $this->getResult()->addRow( $row );
         }
 
         return $this->getResult();
+    }
+
+    /**
+     * @param Model $item
+     * @param array|FieldInterface[] $fields
+     * @return Row
+     */
+    public function buildRow( Model $item, $fields )
+    {
+        $row = $this->createRow( $item );
+
+        foreach( $fields as $field )
+        {
+            $field = clone $field;
+            $field->setListContext();
+
+            if( $field->hasBefore() )
+            {
+                $before = $field->getBefore();
+                $value = $before( $item );
+            }
+            else
+            {
+                $value = $item->{$field->getName()};
+            }
+
+            $field->setValue( $value );
+            $field->setModel( $item );
+            $field->setController( $this->getController() );
+
+            $row->addField( $field );
+        }
+
+        return $row;
+    }
+
+    /**
+     * @param Model $item
+     * @return Row
+     */
+    public function createRow( Model $item )
+    {
+        $row = new Row();
+        $row->setResource( get_class( $item ) );
+        $row->setIdentifier( $item->{$item->getKeyName()} );
+
+        return $row;
     }
 }

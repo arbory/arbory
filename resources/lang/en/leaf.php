@@ -22,6 +22,16 @@ return [
             'remove' => 'Remove item',
         ],
     ],
+    'toolbox' => [
+        'delete' => 'Delete'
+    ],
+    'dialog' => [
+        'nodes_content_type' => [
+            'add_new_node' => 'Add new node',
+            'select_content_type' => 'Select content type of new node',
+            'cancel' => 'Cancel',
+        ]
+    ],
     'breadcrumbs' => [
         'home' => 'Home',
         'new_item' => 'New Record',
