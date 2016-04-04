@@ -15,7 +15,7 @@ class DashboardController extends Controller
      */
     public function index( )
     {
-        return view('leaf::admin.controllers.dashboard.index');
+        return view('leaf::controllers.dashboard.index');
     }
 
 }

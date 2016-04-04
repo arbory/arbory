@@ -2,7 +2,6 @@
 
 use \CubeSystems\Leaf\Http\Controllers\DashboardController;
 use CubeSystems\Leaf\Http\Controllers\LoginController;
-use CubeSystems\Leaf\Http\Controllers\NodesController;
 use \CubeSystems\Leaf\Http\Controllers\ResourceController;
 
 Route::group( [ 'prefix' => config( 'leaf.uri' ) ], function ()
