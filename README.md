@@ -2,7 +2,7 @@
 
 ### JS
 
-We use `airbnb` (https://github.com/airbnb/javascript) coding style for both JS and SASS (links below).
+We use `airbnb` coding style for both JS and SASS (links below).
 
 To install the built-in inspections for PHPStorm, follow these instructions:
 [https://www.themarketingtechnologist.co/how-to-get-airbnbs-javascript-code-style-working-in-webstorm/](https://www.themarketingtechnologist.co/how-to-get-airbnbs-javascript-code-style-working-in-webstorm/) 
