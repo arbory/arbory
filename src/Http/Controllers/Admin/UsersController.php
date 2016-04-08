@@ -1,4 +1,4 @@
-<?php namespace CubeSystems\Leaf\Http\Controllers;
+<?php namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
 use App\User;
 use CubeSystems\Leaf\Fields\Text;

@@ -5,11 +5,11 @@ return [
     'menu' => [
         [
             'title' => 'Nodes',
-            'controller' => \CubeSystems\Leaf\Http\Controllers\NodesController::class,
+            'controller' => \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
         ],
         [
             'title' => 'Users',
-            'controller' => \CubeSystems\Leaf\Http\Controllers\UsersController::class,
+            'controller' => \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class,
         ],
 
     ],

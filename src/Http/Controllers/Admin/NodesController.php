@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers;
+namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
 use CubeSystems\Leaf\Builder\FormBuilder;
 use CubeSystems\Leaf\Fields\HasOne;

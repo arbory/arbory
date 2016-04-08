@@ -4,7 +4,7 @@ namespace CubeSystems\Leaf;
 
 use CubeSystems\Leaf\Fields\FieldFactory;
 use CubeSystems\Leaf\Fields\FieldInterface;
-use CubeSystems\Leaf\Http\Controllers\AdminController;
+use CubeSystems\Leaf\Http\Controllers\Admin\AdminController;
 
 /**
  * Class FieldSet

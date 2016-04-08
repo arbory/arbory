@@ -3,7 +3,7 @@
 namespace CubeSystems\Leaf\Fields;
 
 use Closure;
-use CubeSystems\Leaf\Http\Controllers\AdminController;
+use CubeSystems\Leaf\Http\Controllers\Admin\AdminController;
 use CubeSystems\Leaf\FieldSet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;

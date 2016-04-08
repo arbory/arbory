@@ -1,8 +1,8 @@
 <?php
 
-use \CubeSystems\Leaf\Http\Controllers\DashboardController;
-use CubeSystems\Leaf\Http\Controllers\LoginController;
-use \CubeSystems\Leaf\Http\Controllers\ResourceController;
+use CubeSystems\Leaf\Http\Controllers\Admin\DashboardController;
+use CubeSystems\Leaf\Http\Controllers\Admin\LoginController;
+use CubeSystems\Leaf\Http\Controllers\Admin\ResourceController;
 
 Route::group( [ 'prefix' => config( 'leaf.uri' ) ], function ()
 {

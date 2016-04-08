@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers;
+namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
 use App\User;
 use Auth;

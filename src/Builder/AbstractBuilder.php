@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Builder;
 
-use CubeSystems\Leaf\Http\Controllers\AdminController;
+use CubeSystems\Leaf\Http\Controllers\Admin\AdminController;
 use CubeSystems\Leaf\Results\ResultInterface;
 use CubeSystems\Leaf\FieldSet;
 use Eloquent;
