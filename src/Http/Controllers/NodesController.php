@@ -71,11 +71,7 @@ class NodesController extends AdminController
      */
     public function getFormBuilder( $resourceId = null )
     {
-        $class = $this->getResource();
-
-        $model = $resourceId
-            ? $class::find( $resourceId )
-            : new $class;
+        $model = $this->repository->findOrNew( $resourceId );
 
         if( !$resourceId )
         {
@@ -172,16 +168,6 @@ class NodesController extends AdminController
 
 
     /**
-     * @return \Baum\Extensions\Eloquent\Collection|\Baum\Node[]
-     */
-    protected function getAllNodes()
-    {
-        $model = $this->getResource();
-
-        return $model::all();
-    }
-
-    /**
      * @return FieldSet
      */
     public function getIndexFieldSet()
@@ -202,7 +188,7 @@ class NodesController extends AdminController
         return view( $this->getIndexView(), [
             'controller' => $this,
             'rows' => $this->buildTree(
-                $this->getAllNodes()->toHierarchy(),
+                $this->repository->all()->toHierarchy(),
                 $this->getIndexFieldSet()
             ),
         ] );
@@ -240,6 +226,7 @@ class NodesController extends AdminController
                 }
 
                 $field->setValue( $value );
+                $field->setModel( $item );
 
                 $row->addField( $field );
             }
@@ -270,8 +257,7 @@ class NodesController extends AdminController
 
         if( $nodeId )
         {
-            $resource = $this->resource;
-            $node = $resource::find( $nodeId );
+            $node = $this->repository->find( $nodeId );
 
             if( $node && method_exists( $node, 'getAllowedChildContentTypes' ) )
             {

@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Builder;
 
 use CubeSystems\Leaf\Fields\FieldInterface;
+use CubeSystems\Leaf\Repositories\ResourcesRepository;
 use CubeSystems\Leaf\Results\IndexResult;
 use CubeSystems\Leaf\Results\Row;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -20,16 +21,39 @@ class IndexBuilder extends AbstractBuilder
     // TODO: Search / filter / order / pagination
 
     /**
+     * @var ResourcesRepository
+     */
+    protected $repository;
+
+    /**
      * @var IndexResult
      */
     protected $result;
 
     /**
      * IndexBuilder constructor.
+     * @param ResourcesRepository $repository
      */
-    public function __construct(  )
+    public function __construct( ResourcesRepository $repository )
     {
+        $this->setRepository( $repository );
         $this->setResult( new IndexResult );
+    }
+
+    /**
+     * @return ResourcesRepository
+     */
+    public function getRepository()
+    {
+        return $this->repository;
+    }
+
+    /**
+     * @param ResourcesRepository $repository
+     */
+    public function setRepository( $repository )
+    {
+        $this->repository = $repository;
     }
 
     /**
@@ -118,23 +142,12 @@ class IndexBuilder extends AbstractBuilder
     }
 
     /**
-     * @param Model $resource
-     * @return Builder|\Illuminate\Database\Query\Builder
-     */
-    protected function getQueryBuilder( $resource )
-    {
-        return ( new $resource )->newQuery();
-    }
-
-    /**
      * @return array|\Illuminate\Database\Eloquent\Collection|Model[]
      */
     protected function getItems()
     {
-        $resource = $this->getResource();
         $fields = $this->getFieldSet()->getFields();
-
-        $queryBuilder = $this->getQueryBuilder( $resource );
+        $queryBuilder = $this->getRepository()->newQuery();
 
         $this->handleSearchParams( $queryBuilder, $fields );
         $this->handlePagination( $queryBuilder );

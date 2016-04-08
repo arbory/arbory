@@ -37,17 +37,6 @@ interface FieldInterface
     public function setValue( $value );
 
     /**
-     * @return Row
-     */
-    public function getRow();
-
-    /**
-     * @param $row Row
-     * @return $this
-     */
-    public function setRow( Row $row );
-
-    /**
      * @return string
      */
     public function getContext();

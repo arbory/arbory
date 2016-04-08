@@ -73,12 +73,14 @@ class Toolbox extends AbstractField
      */
     public function render()
     {
+        $model = $this->getModel();
+
         return view( $this->getViewName(), [
             'toolbox_url' => route( 'admin.model.dialog', [
                 'model' => $this->getFieldSet()->getController()->getSlug(),
                 'dialog' => 'toolbox',
                 'name' => $this->getName(),
-                'id' => $this->getRow()->getIdentifier(),
+                'id' => $model->{$model->getKeyName()},
             ] ),
         ] );
     }

@@ -4,7 +4,6 @@ namespace CubeSystems\Leaf\Fields;
 
 use Closure;
 use CubeSystems\Leaf\Http\Controllers\AdminController;
-use CubeSystems\Leaf\Results\Row;
 use CubeSystems\Leaf\FieldSet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
@@ -27,11 +26,6 @@ abstract class AbstractField implements FieldInterface
      * @var mixed
      */
     protected $value;
-
-    /**
-     * @var Row
-     */
-    protected $row;
 
     /**
      * @var string
@@ -116,25 +110,6 @@ abstract class AbstractField implements FieldInterface
     public function setValue( $value )
     {
         $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return Row
-     */
-    public function getRow()
-    {
-        return $this->row;
-    }
-
-    /**
-     * @param Row $row
-     * @return $this
-     */
-    public function setRow( Row $row )
-    {
-        $this->row = $row;
 
         return $this;
     }

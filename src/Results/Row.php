@@ -42,7 +42,6 @@ class Row
      */
     public function addField( FieldInterface $field )
     {
-        $field->setRow( $this );
         $this->fields[$field->getName()] = $field;
     }
 

@@ -15,9 +15,14 @@ class Text extends AbstractField
     {
         if( $this->isForList() )
         {
+            $model = $this->getModel();
+
             return view( $this->getViewName(), [
                 'field' => $this,
-                'url' => route( 'admin.model.edit', [ class_basename( $this->getFieldSet()->getController()->getSlug() ), $this->getRow()->getIdentifier() ] ),
+                'url' => route( 'admin.model.edit', [
+                    $this->getFieldSet()->getController()->getSlug(),
+                    $model->{$model->getKeyName()}
+                ] ),
             ] );
         }
         elseif( $this->isForForm() )

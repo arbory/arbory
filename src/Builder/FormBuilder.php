@@ -78,7 +78,9 @@ class FormBuilder extends AbstractBuilder
 
             $item
                 ->setContext( AbstractField::CONTEXT_FORM )
-                ->setValue( $value );
+                ->setValue( $value )
+                ->setModel( $model )
+                ->setController( $this->getController() );
 
             $result->addField( $item );
         }

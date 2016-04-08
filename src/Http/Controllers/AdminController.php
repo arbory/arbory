@@ -7,6 +7,7 @@ use CubeSystems\Leaf\Builder\FormBuilder;
 use CubeSystems\Leaf\Builder\IndexBuilder;
 use CubeSystems\Leaf\Menu\Item;
 use CubeSystems\Leaf\FieldSet;
+use CubeSystems\Leaf\Repositories\ResourcesRepository;
 use Eloquent;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
@@ -23,6 +24,11 @@ abstract class AdminController
      * @var \Illuminate\Foundation\Application
      */
     protected $app;
+
+    /**
+     * @var ResourcesRepository
+     */
+    protected $repository;
 
     /**
      * @var string
@@ -47,6 +53,7 @@ abstract class AdminController
     public function __construct( Application $app )
     {
         $this->app = $app;
+        $this->repository = new ResourcesRepository( $this->resource );
     }
 
     /**
@@ -161,11 +168,7 @@ abstract class AdminController
      */
     protected function getFormBuilder( $resourceId = null )
     {
-        $class = $this->getResource();
-
-        $model = $resourceId
-            ? $class::find( $resourceId )
-            : new $class;
+        $model = $this->repository->findOrNew( $resourceId );
 
         $builder = new FormBuilder( $model );
         $fieldSet = new FieldSet( $this->getResource(), $this );
@@ -187,7 +190,7 @@ abstract class AdminController
      */
     protected function getIndexBuilder()
     {
-        return new IndexBuilder;
+        return new IndexBuilder( $this->repository );
     }
 
     /**
@@ -419,10 +422,8 @@ abstract class AdminController
     protected function confirmDestroyDialog( )
     {
         $resourceId = $this->app['request']->get('id');
-
+        $model = $this->repository->find( $resourceId );
         $slug = $this->getSlug();
-        $class = $this->getResource();
-        $model = $class::find( $resourceId );
 
         return view( 'leaf::dialogs.confirm_delete', [
             'form_target' => route( 'admin.model.destroy', [ $slug, $resourceId ] ),
