@@ -1,7 +1,7 @@
 <ul data-level="1">
     @foreach( $rows as $row )
         <li class="@if($row->hasChildRows()) has-children @endif"
-            data-level="{{$row->getModel()->getLevel()}}"
+            data-level="{{$row->getModel()->getDepth()}}"
             data-id="{{$row->getIdentifier()}}"
         >
             <div class="only-icon toolbox-cell">
