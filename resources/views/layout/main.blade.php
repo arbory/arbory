@@ -20,6 +20,7 @@
         <div class="notifications" data-close-text="Close"></div>
 
         <script src="/application.js"></script>
+        <script src="/nodes.js"></script>
         <script src="//cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
     </body>
 </html>
