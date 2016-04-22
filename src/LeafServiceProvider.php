@@ -1,4 +1,4 @@
-<?php namespace Cubesystems\Leaf;
+<?php namespace CubeSystems\Leaf;
 
 use CubeSystems\Leaf\Menu\Menu;
 use Illuminate\Support\ServiceProvider;
@@ -32,6 +32,7 @@ class LeafServiceProvider extends ServiceProvider
         {
             return new Menu( config( 'leaf.menu' ) );
         }, true );
+
     }
 
     /**

@@ -2,8 +2,17 @@
 
 namespace CubeSystems\Leaf;
 
-class Node extends \Baum\Node
+use CubeSystems\Leaf\Pages\PageInterface;
+
+/**
+ * Class Node
+ * @package CubeSystems\Leaf
+ */
+class Node extends \Baum\Node implements NodeInterface
 {
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name',
         'slug',
@@ -14,15 +23,86 @@ class Node extends \Baum\Node
         'locale',
     ];
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string) $this->name;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo|PageInterface
+     */
     public function content()
     {
         return $this->morphTo();
     }
 
+    /**
+     * @return static[]
+     */
+    public function parents()
+    {
+        return $this->newQuery()
+            ->where( $this->getLeftColumnName(), '<', $this->getLeft() )
+            ->where( $this->getRightColumnName(), '>', $this->getRight() )
+            ->orderBy( $this->getDepthColumnName(), 'asc' )
+            ->get();
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentType()
+    {
+        return $this->content_type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri()
+    {
+        $uri = [ ];
+
+        foreach( $this->parents() as $parent )
+        {
+            $uri[] = $parent->getSlug();
+        }
+
+        $uri[] = $this->getSlug();
+
+        return implode( '/', $uri );
+    }
+
+    /**
+     * @param $name
+     * @param array $parameters
+     * @param bool $absolute
+     * @return string
+     */
+    public function getUrl( $name, array $parameters = [ ], $absolute = true )
+    {
+        $parameters['slug'] = $this->getSlug();
+
+        return route( $this->getContentType() . '::' . $name, $parameters, $absolute );
+    }
 
 }

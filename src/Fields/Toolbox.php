@@ -75,6 +75,31 @@ class Toolbox extends AbstractField
     {
         $model = $this->getModel();
 
+        $toolboxUrl = route( 'admin.model.dialog', [
+            'model' => $this->getFieldSet()->getController()->getSlug(),
+            'dialog' => 'toolbox',
+            'name' => $this->getName(),
+            'id' => $model->{$model->getKeyName()},
+        ] );
+
+        ob_start();
+        ?>
+        <div class="toolbox" data-url="<?=$toolboxUrl;?>">
+            <button class="button trigger only-icon" type="button" title="Tools"><i class="fa fa-ellipsis-v"></i></button>
+            <menu class="toolbox-items" type="toolbar"><i class="fa fa-caret-up"></i>
+                <ul></ul>
+            </menu>
+        </div>
+        <?php
+
+        return ob_get_clean();
+
+        $model = $this->getModel();
+
+
+
+
+
         return view( $this->getViewName(), [
             'toolbox_url' => route( 'admin.model.dialog', [
                 'model' => $this->getFieldSet()->getController()->getSlug(),

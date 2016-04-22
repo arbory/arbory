@@ -11,17 +11,18 @@ use Illuminate\Database\Eloquent\Model;
 abstract class GenericRepository
 {
     /**
+     * @var string
+     */
+    protected $class;
+
+    /**
      * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
 
-    /**
-     * GenericRepository constructor.
-     * @param $resource
-     */
-    public function __construct( $resource )
+    public function __construct(  )
     {
-        $this->makeModel( $resource );
+        $this->makeModel( $this->class );
     }
 
     /**
