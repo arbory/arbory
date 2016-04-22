@@ -20,7 +20,10 @@ abstract class GenericRepository
      */
     protected $model;
 
-    public function __construct(  )
+    /**
+     * GenericRepository constructor.
+     */
+    public function __construct()
     {
         $this->makeModel( $this->class );
     }
@@ -134,6 +137,6 @@ abstract class GenericRepository
      */
     protected function makeModel( $class )
     {
-        $this->model = app()->make( $class );
+        $this->model = new $class;
     }
 }

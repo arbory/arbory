@@ -4,8 +4,15 @@ namespace CubeSystems\Leaf\Repositories;
 
 use CubeSystems\Leaf\Node;
 
+/**
+ * Class NodesRepository
+ * @package CubeSystems\Leaf\Repositories
+ */
 class NodesRepository extends GenericRepository
 {
+    /**
+     * @var string
+     */
     protected $class = Node::class;
 
     /***
@@ -24,8 +31,8 @@ class NodesRepository extends GenericRepository
 
             if( $node instanceof Node )
             {
-                $query->whereBetween('lft', array( $node->getLeft() + 1 , $node->getRight() - 1));
-                $query->whereBetween('rgt', array( $node->getLeft() + 1 , $node->getRight() - 1));
+                $query->whereBetween( 'lft', array( $node->getLeft() + 1, $node->getRight() - 1 ) );
+                $query->whereBetween( 'rgt', array( $node->getLeft() + 1, $node->getRight() - 1 ) );
             }
 
             $nodes = $query->get();
@@ -40,5 +47,4 @@ class NodesRepository extends GenericRepository
 
         return $node;
     }
-
 }
