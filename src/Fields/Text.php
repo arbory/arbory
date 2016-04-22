@@ -9,9 +9,10 @@ namespace CubeSystems\Leaf\Fields;
 class Text extends AbstractField
 {
     /**
+     * @param array $attributes
      * @return \Illuminate\View\View
      */
-    public function render()
+    public function render( array $attributes = [] )
     {
         if( $this->isForList() )
         {
@@ -19,6 +20,7 @@ class Text extends AbstractField
 
             return view( $this->getViewName(), [
                 'field' => $this,
+                'attributes' => $attributes,
                 'url' => route( 'admin.model.edit', [
                     $this->getFieldSet()->getController()->getSlug(),
                     $model->{$model->getKeyName()}
@@ -29,6 +31,7 @@ class Text extends AbstractField
         {
             return view( $this->getViewName(), [
                 'field' => $this,
+                'attributes' => $attributes,
             ] );
         }
     }
