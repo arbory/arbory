@@ -3,6 +3,10 @@
 use CubeSystems\Leaf\Menu\Menu;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class LeafServiceProvider
+ * @package CubeSystems\Leaf
+ */
 class LeafServiceProvider extends ServiceProvider
 {
     /**
