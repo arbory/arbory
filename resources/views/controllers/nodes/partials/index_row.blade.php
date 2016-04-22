@@ -1,7 +1,7 @@
-<ul data-level="1">
+<ul data-level="{{$level}}">
     @foreach( $rows as $row )
-        <li class="@if($row->hasChildRows()) has-children @endif"
-            data-level="{{$row->getModel()->getDepth()}}"
+        <li class="@if($row->hasChildRows()) has-children @endif collapsed"
+            data-level="{{$level}}"
             data-id="{{$row->getIdentifier()}}"
         >
             <div class="only-icon toolbox-cell">
@@ -19,11 +19,11 @@
             @endif
 
             <div class="node-cell active">
-                {!! $row->getFieldByName('name')->render() !!}
+                {!! $row->getFieldByName('name')->render(['class' => 'trigger']) !!}
             </div>
 
             @if( $row->hasChildRows() )
-                @include('leaf::controllers.nodes.partials.index_row',['rows' => $row->getChildRows()])
+                @include('leaf::controllers.nodes.partials.index_row',['rows' => $row->getChildRows(),'level' => $level + 1])
             @endif
 
         </li>

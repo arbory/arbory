@@ -9,7 +9,7 @@
 
         <div class="body">
             <div class="collection">
-                @include('leaf::controllers.nodes.partials.index_row',['rows' => $rows])
+                @include('leaf::controllers.nodes.partials.index_row',['rows' => $rows, 'level' => 1])
             </div>
         </div>
 
