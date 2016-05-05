@@ -40,7 +40,7 @@
             <input type="hidden" name="index_url" id="index_url" value="{{route( 'admin.model.index', [ $slug ] )}}">
 
             <header>
-                <h1>Big Changes – Big Opportunities (English summary)</h1>
+                <h1>{{$title}}</h1>
                 @if(!empty($id))
                 <div class="extras toolbox-wrap">
                     <div class="toolbox initialized"

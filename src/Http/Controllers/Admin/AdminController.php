@@ -240,6 +240,7 @@ abstract class AdminController
 
         return view( $this->getFormView(), [
             'slug' => $this->getSlug(),
+            'title' => Lang::get( 'leaf.resources.create_new' ),
             'result' => $result,
             'breadcrumbs' => $breadcrumbs->get(),
         ] );
@@ -294,6 +295,7 @@ abstract class AdminController
         return view( $this->getFormView(), [
             'id' => $resourceId,
             'slug' => $slug,
+            'title' => (string) $builder->getModel(),
             'result' => $result,
             'breadcrumbs' => $breadcrumbs->get()
         ] );
