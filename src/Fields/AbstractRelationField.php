@@ -57,11 +57,7 @@ abstract class AbstractRelationField extends AbstractField
 
     public function getRelationFieldSet()
     {
-        $resource = $this->getFieldSet()->getResource();
-        $model = new $resource;
-
-        $relatedModel = $model->{$this->getName()}()->getRelated();
-
+        $relatedModel = $this->getModel()->{$this->getName()}()->getRelated();
         $fieldSet = new FieldSet( get_class( $relatedModel ), $this->getFieldSet()->getController() );
         $fieldSetCallback = $this->fieldSetCallback;
         $fieldSetCallback( $fieldSet );
