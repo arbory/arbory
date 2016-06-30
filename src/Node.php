@@ -45,8 +45,8 @@ class Node extends \Baum\Node implements NodeInterface
     public function parents()
     {
         return $this->newQuery()
-            ->where( $this->getLeftColumnName(), '<', $this->getLeft() )
-            ->where( $this->getRightColumnName(), '>', $this->getRight() )
+            ->where( $this->getLeftColumnName(), '<', (int) $this->getLeft() )
+            ->where( $this->getRightColumnName(), '>', (int) $this->getRight() )
             ->orderBy( $this->getDepthColumnName(), 'asc' )
             ->get();
     }
