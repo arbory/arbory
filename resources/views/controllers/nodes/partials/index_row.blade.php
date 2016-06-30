@@ -14,7 +14,7 @@
                             class="button only-icon secondary collapser trigger"
                             title="Collapse"
                             type="button"
-                    ><i class="fa fa-chevron-down"></i></button>
+                    ><i class="fa fa-chevron-right"></i></button>
                 </div>
             @endif
 
