@@ -132,6 +132,19 @@ class ResourceController extends Controller
 
     /**
      * @param $slug
+     * @param $api
+     * @return mixed
+     * @throws HttpException
+     */
+    public function api( $slug, $api )
+    {
+        $controller = $this->findControllerBySlug( $slug );
+
+        return $this->app->call( "{$controller}@api", [ $api ] );
+    }
+
+    /**
+     * @param $slug
      * @return string
      * @throws HttpException
      */

@@ -61,4 +61,9 @@ Route::group( [ 'prefix' => config( 'leaf.uri' ) ], function ()
         'uses' => ResourceController::class . '@dialog'
     ] );
 
+    Route::get( 'model/{model}/api/{api}', [
+        'as' => 'admin.model.api',
+        'uses' => ResourceController::class . '@api'
+    ] );
+
 } );

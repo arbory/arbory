@@ -387,6 +387,7 @@ abstract class AdminController
     /**
      * @param $name
      * @return \Illuminate\View\View
+     * @throws HttpException
      */
     public function dialog( $name )
     {
