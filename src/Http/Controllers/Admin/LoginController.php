@@ -15,7 +15,9 @@ use Illuminate\Routing\Controller;
  */
 class LoginController extends Controller
 {
-    use AuthenticatesUsers, ThrottlesLogins;
+    use AuthenticatesUsers;
+
+    protected $redirectPath;
 
     /**
      * LoginController constructor.
@@ -43,12 +45,14 @@ class LoginController extends Controller
 
         if( $this->hasTooManyLoginAttempts( $request ) )
         {
+            $this->fireLockoutEvent($request);
+
             return $this->sendLockoutResponse( $request );
         }
 
-        if( Auth::attempt( $credentials, $request->has( 'remember' ) ) )
+        if( $this->guard()->attempt( $credentials, $request->has( 'remember' ) ) )
         {
-            return $this->handleUserWasAuthenticated( $request, $throttles = true );
+            return $this->sendLoginResponse($request);
         }
 
         $this->incrementLoginAttempts( $request );
@@ -56,7 +60,7 @@ class LoginController extends Controller
         return redirect( route( 'admin.login' ) )
             ->withInput( $request->only( 'user.email', 'remember' ) )
             ->withErrors( [
-                'user.email' => $this->getFailedLoginMessage(),
+                'user.email' => \Lang::get('auth.failed'),
             ] );
     }
 
@@ -72,7 +76,6 @@ class LoginController extends Controller
         return redirect( route( 'admin.dashboard' ) );
     }
 
-    /**
      *
      */
     public function logout()

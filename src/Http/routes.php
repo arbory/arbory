@@ -4,7 +4,7 @@ use CubeSystems\Leaf\Http\Controllers\Admin\DashboardController;
 use CubeSystems\Leaf\Http\Controllers\Admin\LoginController;
 use CubeSystems\Leaf\Http\Controllers\Admin\ResourceController;
 
-Route::group( [ 'prefix' => config( 'leaf.uri' ) ], function ()
+Route::group( [ 'prefix' => config( 'leaf.uri' ), 'middleware' => 'web' ], function ()
 {
     Route::get( '/', [
         'as' => 'admin.login',
