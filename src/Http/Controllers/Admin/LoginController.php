@@ -76,6 +76,7 @@ class LoginController extends Controller
         return redirect( route( 'admin.dashboard' ) );
     }
 
+    /**
      *
      */
     public function logout()
