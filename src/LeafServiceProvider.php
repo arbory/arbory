@@ -22,7 +22,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->publishResources();
         $this->publishMigrations();
 
-        include __DIR__ . '/Http/routes.php';
+        include __DIR__ . '/../routes/admin.php';
     }
 
     /**
