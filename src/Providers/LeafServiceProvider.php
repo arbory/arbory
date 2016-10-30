@@ -1,4 +1,4 @@
-<?php namespace CubeSystems\Leaf;
+<?php namespace CubeSystems\Leaf\Providers;
 
 use CubeSystems\Leaf\Menu\Menu;
 use Illuminate\Support\ServiceProvider;
