@@ -2,8 +2,6 @@
 
 namespace CubeSystems\Leaf\Repositories;
 
-use Illuminate\Database\Eloquent\Builder;
-
 /**
  * Class ResourcesRepository
  * @package CubeSystems\Leaf\Repositories
