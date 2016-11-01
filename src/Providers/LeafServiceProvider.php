@@ -17,12 +17,12 @@ class LeafServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom( base_path( 'packages/CubeSystems/Leaf/resources/views' ), 'leaf' );
-        $this->loadTranslationsFrom( __DIR__ . '/../resources/lang', 'leaf' );
+        $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
 
         $this->publishResources();
         $this->publishMigrations();
 
-        include __DIR__ . '/../routes/admin.php';
+        include __DIR__ . '/../../routes/admin.php';
     }
 
     /**
@@ -55,11 +55,11 @@ class LeafServiceProvider extends ServiceProvider
     private function publishResources()
     {
         $this->publishes( [
-            __DIR__ . '/../config/leaf.php' => config_path( 'leaf.php' )
+            __DIR__ . '/../../config/leaf.php' => config_path( 'leaf.php' )
         ], 'config' );
 
         $this->publishes( [
-            __DIR__ . '/../resources/views/' => base_path( 'resources/views/vendor/leaf/admin' ),
+            __DIR__ . '/../../resources/views/' => base_path( 'resources/views/vendor/leaf/admin' ),
         ], 'view' );
     }
 
@@ -70,11 +70,11 @@ class LeafServiceProvider extends ServiceProvider
     private function publishMigrations()
     {
         $this->publishes( [
-            __DIR__ . '/../database/migrations/' => base_path( 'database/migrations' )
+            __DIR__ . '/../../database/migrations/' => base_path( 'database/migrations' )
         ], 'migrations' );
 
         $this->publishes( [
-            __DIR__ . '/../database/seeds/' => base_path( 'database/seeds' )
+            __DIR__ . '/../../database/seeds/' => base_path( 'database/seeds' )
         ], 'seeds' );
     }
 
