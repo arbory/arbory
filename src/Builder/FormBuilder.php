@@ -60,7 +60,12 @@ class FormBuilder extends AbstractBuilder
             $item = clone $field;
             $name = $item->getName();
 
-            $value = $model->{$name};
+            $value = $field->getValue();
+
+            if( $value === null )
+            {
+                $value = $model->{$name};
+            }
 
             if( $item->hasBefore() )
             {
