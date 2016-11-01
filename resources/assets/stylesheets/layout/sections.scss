@@ -1,0 +1,138 @@
+section
+{
+    position: relative;
+
+    header h1
+    {
+        @include heading-text;
+    }
+
+    > form .body
+    {
+        padding-bottom: steps(3);
+    }
+
+}
+
+section.nested,
+section:not(.nested) > .body,
+section > form > .body
+{
+    @include clear-inside;
+}
+
+section:not(.nested),
+section > form
+{
+    > header
+    {
+        @include section-header;
+        @include clear-inside;
+
+        margin-top: steps(2);
+
+        h1
+        {
+            float: left;
+        }
+
+        .extras
+        {
+            float: right;
+
+            &:not(.only-text)
+            {
+                margin: steps(-0.5) steps(-2) steps(-0.5) 0;
+            }
+        }
+    }
+
+}
+
+section:not(.nested):not(.dialog),
+section:not(.dialog) > form
+{
+    > .body
+    {
+        border-width: 0 1px 1px 1px;
+        border-style: solid;
+        border-color: $color-border-normal;
+        margin-bottom: -1px;
+    }
+}
+
+section > form,
+section > form > footer
+{
+    max-width: steps(78);
+}
+
+
+section.nested
+{
+    clear: both;
+    padding: steps(2);
+
+    h1
+    {
+        margin-bottom: steps(1);
+    }
+
+    .body
+    {
+        padding-bottom: 0;
+    }
+
+    .list
+    {
+        .item:not(tr)
+        {
+            border: 1px solid $color-border-normal;
+            padding: steps(2) 0;
+            margin: 0 0 steps(2) 0;
+            position: relative;
+            background: $color-background-lightest;
+            @include clear-inside;
+        }
+
+        .item.template
+        {
+            display: none;
+        }
+
+        &[data-sortable] .item
+        {
+            padding-top: steps(3);
+
+            .handle
+            {
+                position: absolute;
+                background: $color-background-darker;
+                height: steps(3);
+                left: 0;
+                right: 0;
+                top: 0;
+                cursor: pointer;
+            }
+
+        }
+
+    }
+
+    .remove-item-box
+    {
+        position: absolute;
+        right: 0;
+        top:   0;
+        width: auto;
+    }
+
+    section.nested
+    {
+        padding-right: 0;
+    }
+
+}
+
+
+

@@ -1,0 +1,69 @@
+.toolbox
+{
+    .trigger
+    {
+        display: inline-block;
+        color: $color-highlight-normal;
+
+        &, &:hover
+        {
+            background-color: transparent;
+        }
+
+        .fa
+        {
+            @include icon-large;
+        }
+    }
+
+    &:not(.initialized)
+    {
+        .trigger
+        {
+            color: $color-text-lightest;
+        }
+    }
+}
+
+
+.toolbox-items
+{
+    @include pop-up-menu;
+
+    > .fa-caret-up
+    {
+        position: absolute;
+        top: steps(-1);
+    }
+
+    min-width: steps(15);
+
+    > ul
+    {
+        @include inverted;
+
+        margin-top: 3px;
+
+        .button
+        {
+            &:hover
+            {
+                background-color: $color-highlight-normal;
+            }
+        }
+    }
+
+    li:not(:last-child) .button
+    {
+        border-bottom: 1px solid $color-border-inverted-lighter;
+    }
+
+}
+
+
+.toolbox-overlay
+{
+    @include full-screen-overlay;
+}
+
+

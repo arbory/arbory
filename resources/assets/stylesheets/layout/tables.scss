@@ -1,0 +1,99 @@
+.table
+{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid $color-border-normal;
+    border-top: none;
+
+    th, td
+    {
+        border-left:  1px solid $color-border-normal;
+        border-right: 1px solid $color-border-normal;
+        padding: 0;
+        vertical-align: top;
+    }
+
+    tr th
+    {
+        text-align:  left;
+        font-weight: bold;
+    }
+
+    tr:nth-child(odd) td
+    {
+        background-color: $color-background-normal;
+    }
+
+    tr:hover td
+    {
+        background-color: $color-highlight-lightest;
+    }
+
+    td a:not(.button),
+    td > span
+    {
+        text-decoration: none;
+        color: $color-text-normal;
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+
+        &:empty
+        {
+            // attempt to stretch empty links to full cell height
+            // at least if the cell contents in the row do not wrap to multiple lines
+            min-height: steps(3);
+            margin-bottom: steps(-1);
+        }
+    }
+
+
+    th,
+    td:not(.only-icon) a:not(.button),
+    td > span
+    {
+        padding: steps(0.5) steps(1);
+    }
+
+    th:first-child,
+    td:first-child:not(.only-icon) a:not(.button),
+    td:first-child > span
+    {
+        padding-left: steps(2); // align first column with table heading
+    }
+
+
+    th span
+    {
+        display: block;
+    }
+
+    td.only-icon
+    {
+        text-align: center;
+        width: steps(3);
+    }
+
+
+    // remove outer table borders if the table is directly inside a section body
+    // because the body will have its own border
+    section .body > &
+    {
+        border: none;
+
+        th:first-child,
+        td:first-child
+        {
+            border-left: none;
+        }
+        th:last-child,
+        td:last-child
+        {
+            border-right: none;
+        }
+
+    }
+}
+
+
+

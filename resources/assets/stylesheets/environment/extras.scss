@@ -1,0 +1,11 @@
+// this file is intentionally left empty
+// it is included as the last environment import
+// and is intended to be overriden in actual applications
+// when something needs to be added or changed in the SASS environment
+// e.g., color scheme
+
+// the override file should be placed in
+// app/assets/stylesheets/leaf/environment/extras.scss
+// and then it will be used instead of this one
+
+// rails cache will have to be cleared for the framework to detect this file

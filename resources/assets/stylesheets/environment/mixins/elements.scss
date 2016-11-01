@@ -1,0 +1,64 @@
+@mixin clickable-element
+{
+    // resets native button/link styles
+    // and unifies outlines
+
+    cursor: pointer;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    color: inherit;
+    font-size: inherit;
+
+    &:focus
+    {
+        outline-width: 1px;
+        outline-style: dotted;
+        outline-color: $color-highlight-normal;
+    }
+
+    &:active
+    {
+        outline: none;
+    }
+
+    &::-moz-focus-inner
+    {
+        border: 0;
+        padding: 0;
+    }
+
+}
+
+
+@mixin icon-small
+{
+    display: inline;
+    font-size:      10px;
+    line-height:    steps(2);
+}
+
+@mixin icon
+{
+    display: inline;
+    font-size:      14px;
+    line-height:    steps(2);
+}
+
+@mixin icon-large
+{
+    display: inline;
+    font-size:      18px;
+    line-height:    steps(2);
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+// main page footer is the last footer element in the first section directly under main
+// it may be wrapped inside a form
+// so an extra class is needed
+
+footer.main
+{
+    position: fixed;
+    bottom: 0;
+    right:  0;
+    left:   0;
+    margin: 0 steps(3) 0px steps(20 + 3);
+    z-index: 10;
+    background: $color-background-lightest;
+
+    .side-compact &
+    {
+        margin-left: steps(4 + 3);
+    }
+
+    .tools
+    {
+        background: $color-background-normal;
+        color: $color-text-lighter;
+        border:       1px solid $color-border-dark;
+        border-width: 1px 1px 0 1px;
+        height:       steps(3) + 1px;
+
+        .button
+        {
+            margin-left:  steps(0.5);
+            margin-right: steps(0.5);
+        }
+
+        .button.secondary
+        {
+            border-left:  1px solid $color-border-dark;
+            border-right: 1px solid $color-border-dark;
+        }
+
+        > .primary,
+        > .secondary
+        {
+            position: relative;
+            z-index: 2;
+        }
+
+        > .primary
+        {
+            float: right;
+
+            .button:last-child
+            {
+                margin-right: 0;
+            }
+        }
+
+        > .secondary
+        {
+            float: left;
+
+            .button:first-child
+            {
+                margin-left: 0;
+                border-left: none;
+            }
+
+        }
+
+    }
+
+}
+
+
+
+
+
+
+
+
+

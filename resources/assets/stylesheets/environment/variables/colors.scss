@@ -1,0 +1,93 @@
+// basic text and background colors:
+$color-text-darkest:        #111111;
+$color-text-normal:         #1d1d1d;
+$color-text-light:          #3c3c3c;
+$color-text-lighter:        #636363;
+$color-text-lightest:       #a6a6a6;
+
+$color-background-darkest:  #c5c5c5;
+$color-background-darker:   #d4d4d4;
+$color-background-normal:   #e6e6e6;
+$color-background-lighter:  #f8f8f8;
+$color-background-lightest: #ffffff;
+
+
+// the actual color codes below for inverted blocks and borders
+// are mostly the same as the ones used above for backgrounds/texts
+// but they are not strictly dependent
+// therefore actual color codes are used here
+// instead of referencing the respective colors from above.
+// it also helps with readability a bit.
+
+
+// text and background colors for inverted blocks:
+$color-background-inverted-darkest:     #111111;
+$color-background-inverted-darker:      #1d1d1d;
+$color-background-inverted-normal:      #282828;
+$color-background-inverted-lightest:    #3c3c3c;
+
+$color-text-inverted-darkest:           #636363;
+$color-text-inverted-darker:            #a6a6a6;
+$color-text-inverted-normal:            #d4d4d4;
+$color-text-inverted-lightest:          #ffffff;
+
+
+
+// border colors:
+$color-border-darkest:          #636363;
+$color-border-darker:           #a6a6a6;
+$color-border-dark:             #c5c5c5;
+$color-border-normal:           #d4d4d4;
+$color-border-light:            #e6e6e6;
+
+$color-border-inverted-normal:  #282828;
+$color-border-inverted-lighter: #3c3c3c;
+
+
+$color-background-see-through:  create-rgba( #000, 0.6 );
+
+
+$color-shadow-normal:   $color-background-see-through;
+$color-shadow-lighter:  create-rgba( $color-shadow-normal,  0.3 );
+$color-shadow-lightest: create-rgba( $color-shadow-normal,  0.1 );
+
+
+// shades of the highlight color:
+$color-highlight-darkest:   #307872;
+$color-highlight-darker:    #269990;
+$color-highlight-normal:    #37b1a7;
+$color-highlight-lighter:   #40cfc3;
+$color-highlight-lightest:  #ccebe9;
+
+
+
+// error color:
+$color-alert: #ee462a;
+
+
+
+// notification colors:
+// special colors used for floating notifications. NOT to be used anywhere else
+
+$color-notification-error-background:       #eed3d7;
+$color-notification-error-text:             #b94a48;
+$color-notification-success-text:           #468847;
+$color-notification-success-background:     #ddf4d0;
+
+
+
+// dummy colors for debugging
+// 2 sets of lighter and darker red / orange / yellow / green / blue / purple
+
+$color-dummy-1:   #ff8080;
+$color-dummy-2:   #fcd47e;
+$color-dummy-3:   #ffffb2;
+$color-dummy-4:   #80ff80;
+$color-dummy-5:   #7eb7fc;
+$color-dummy-6:   #ff80df;
+$color-dummy-7:   #ff0000;
+$color-dummy-8:   #fead00;
+$color-dummy-9:   #ffff00;
+$color-dummy-10:  #00ff00;
+$color-dummy-11:  #0072fe;
+$color-dummy-12:  #ff00c0;

@@ -1,0 +1,16 @@
+// WOFF2 file is converted from WOFF file
+// and contains the full character set
+//
+// separate files for each character subset as provided by Google are not used
+// to avoid problems with extremely poor browser support of unicode-range
+
+@font-face
+{
+    font-family: Roboto;
+    src:    font-url('leaf/RobotoRegular_normal_400.woff2') format('woff2'),
+            font-url('leaf/RobotoRegular_normal_400.woff')  format('woff'),
+            font-url('leaf/RobotoRegular_normal_400.ttf')   format('truetype')
+    ;
+    font-weight: normal;
+    font-style:  normal;
+}

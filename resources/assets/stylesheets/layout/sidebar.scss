@@ -1,0 +1,306 @@
+body > aside
+{
+    @include inverted( $background-color: $color-background-inverted-darker );
+    @include font-size-larger;
+
+    position: absolute;
+    width: steps(20);
+    left: 0;
+    top: 0;
+    z-index: 5;
+
+    > *:first-child
+    {
+        padding-top: steps(5);
+    }
+
+    > nav
+    {
+        border-top: 1px solid $color-border-inverted-normal;
+        margin-top: -1px;
+
+        margin-bottom: steps(4);
+
+        ul
+        {
+            @include block-list;
+        }
+
+        // all menu items
+        li
+        {
+            &:not(:active)
+            {
+                border-bottom: 1px solid $color-border-inverted-normal;
+                margin-bottom: -1px;
+            }
+
+            position: relative;
+
+            .collapser
+            {
+                position: absolute;
+                right: 0;
+                top: 0;
+                color: $color-text-inverted-darkest;
+
+                button
+                {
+                    width:  steps(4);
+                    height: steps(4);
+                }
+            }
+
+            .trigger
+            {
+                color: $color-text-inverted-normal;
+                display: block;
+                text-decoration: none;
+                cursor: pointer;
+                padding: steps(1) steps(4) steps(1) steps(1);
+
+                &:hover,
+                &:focus,
+                &:active
+                {
+                    color: $color-text-inverted-lightest;
+                }
+
+                abbr
+                {
+                    display: none;
+                }
+
+            }
+
+            &.collapsed ul
+            {
+                display: none;
+            }
+
+        }
+
+        // only first level menu items
+        > ul > li
+        {
+            > .trigger
+            {
+                &:hover,
+                &:focus,
+                &:active
+                {
+                    background-color: $color-background-inverted-darkest;
+                    color: $color-text-inverted-lightest;
+
+                    .collapser
+                    {
+                        color: $color-text-inverted-darker;
+                    }
+                }
+
+                > .name
+                {
+                    padding: 0;
+                }
+            }
+
+            &.active > .trigger
+            {
+                background-color: $color-highlight-normal;
+                color: $color-text-darkest;
+
+                .collapser
+                {
+                    color: $color-text-darkest;
+                }
+
+            }
+
+        }
+
+
+        // nested menu items
+        li li
+        {
+            background: $color-background-inverted-normal;
+            border-bottom: none;
+
+            .trigger
+            {
+                color: $color-text-inverted-darker;
+                position: relative;
+                padding: steps(0.5) steps(4) steps(0.5) steps(2);
+            }
+
+            &:first-child .trigger
+            {
+                padding-top: steps(1);
+            }
+
+            &:last-child .trigger
+            {
+                padding-bottom: steps(1);
+            }
+
+            &.active > .trigger
+            {
+                color: $color-text-inverted-lightest;
+                background: $color-background-inverted-lightest;
+            }
+        }
+
+    }
+
+}
+
+
+
+// menu hiding and compacting stuff
+
+body > aside .compacter
+{
+    text-align: right;
+
+    .button
+    {
+        width:  steps(4);
+        height: steps(4);
+
+        .fa
+        {
+            @include icon-large;
+        }
+
+    }
+
+}
+
+
+
+// compact sidebar stuff
+body.side-compact > aside
+{
+    width: steps(4);
+
+    > nav
+    {
+        // all menu items
+        li
+        {
+            .name
+            {
+                display: none;
+            }
+
+            > .trigger
+            {
+                padding-right: steps(1);
+            }
+
+        }
+
+        li .collapser button,
+        li .trigger .collapser,
+        li .trigger:hover .collapser,
+        li .trigger:focus .collapser,
+        li .trigger:active .collapser,
+        > ul > li.active > .trigger .collapser
+        {
+            color: inherit;
+        }
+
+        // first level menu items
+        > ul > li
+        {
+
+            > .trigger
+            {
+                abbr
+                {
+                    display: inline-block;
+                    border: none;
+                    text-decoration: none;
+                }
+
+                > .collapser button
+                {
+                    position: relative;
+                    left: -2px;
+                    z-index: 1;
+                    width:  steps(1);
+
+                    .fa
+                    {
+                        @include icon-small;
+                    }
+                }
+            }
+
+            > ul
+            {
+                display: none;
+            }
+
+        }
+
+
+        // expanded second level
+        > ul > li.open
+        {
+            > .trigger
+            {
+                background-color: $color-background-inverted-darkest;
+                color: $color-text-inverted-lightest;
+
+                .name
+                {
+                    display: block;
+                    position: absolute;
+                    top:    0;
+                    left:   100%;
+                    width:  steps(20);
+                    padding: steps(1) steps(1.5);
+                    background: $color-background-inverted-darkest;
+                }
+            }
+
+            > ul
+            {
+                display: block;
+                position: absolute;
+                top:    100%;
+                left:   100%;
+                width:  steps(20);
+                background: $color-background-inverted-darkest;
+
+                .trigger
+                {
+                    padding-left: steps(3);
+                    padding-right: steps(2);
+                }
+                .name
+                {
+                    display: block;
+                }
+            }
+
+        }
+
+        > ul > li.active
+        {
+            > .trigger,
+            > .trigger .name
+            {
+                background-color: $color-highlight-normal;
+            }
+        }
+
+    }
+}
+
+
+body > .side-compact-overlay
+{
+    @include full-screen-overlay;
+    z-index: 3;
+}

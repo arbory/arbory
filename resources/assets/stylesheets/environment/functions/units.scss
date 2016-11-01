@@ -1,0 +1,12 @@
+@function steps($number)
+{
+    // grid step used everywhere for widths and heights
+
+    // this matches half of the default line-height of the page
+    @return (12px * $number);
+}
+
+@function create-rgba( $color, $opacity )
+{
+    @return rgba( red($color), green($color), blue($color), $opacity );
+}

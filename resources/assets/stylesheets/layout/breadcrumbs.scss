@@ -1,0 +1,47 @@
+.breadcrumbs
+{
+    @include block-list;
+    @include font-size-larger;
+    padding: steps(0.5) 0;
+
+    li
+    {
+        display: inline;
+
+        a
+        {
+            position: relative;
+            z-index: 100;
+            vertical-align: top;
+            padding: 0 steps(1);
+
+            color: inherit;
+            text-decoration: none;
+
+            &:hover,
+            &:focus
+            {
+                color: $color-highlight-darker;
+            }
+        }
+
+        &:first-child
+        {
+            a
+            {
+                padding-left: 0;
+            }
+        }
+
+        .fa
+        {
+            @include icon-small;
+            vertical-align: top;
+            position: relative;
+            top: 1px;
+        }
+
+    }
+
+}
+

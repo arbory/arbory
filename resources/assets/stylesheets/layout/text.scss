@@ -1,0 +1,31 @@
+*
+{
+    @include reset-font;
+}
+
+html
+{
+    @include body-font;
+    @include font-size-normal;
+
+    -webkit-text-size-adjust: 100%;
+       -moz-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+}
+
+h1, h2, h3, h4, h5, h6, p
+{
+    font-size:   inherit;
+    font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+    margin: 0;
+    padding: 0;
+}
+
+p
+{
+    margin-top: 0;
+}

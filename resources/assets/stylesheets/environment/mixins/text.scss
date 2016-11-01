@@ -1,0 +1,61 @@
+@mixin reset-font
+{
+    font-family: inherit;
+    font-weight: normal;
+    font-size:   100%;
+    line-height: inherit;
+}
+
+@mixin body-font
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+@mixin brand-font
+{
+    font-family: Roboto;
+    font-weight: normal;
+}
+
+
+
+
+// use pixels for font-sizes
+// there is no longer a real need for ems/rems
+
+// use px for line height, so that the line height remains fixed
+// when inherited by blocks with a different font-size
+
+@mixin font-size-smaller
+{
+    font-size:      11px;
+    line-height:    steps(2);
+}
+
+@mixin font-size-normal
+{
+    font-size:      13px;
+    line-height:    steps(2);
+}
+
+@mixin font-size-larger
+{
+    font-size:      14px;
+    line-height:    steps(2);
+}
+
+@mixin font-size-largest
+{
+    font-size:      20px;
+    line-height:    steps(2);
+}
+
+
+@mixin heading-text
+{
+    @include brand-font;
+    @include font-size-largest;
+}
+
+

@@ -1,0 +1,67 @@
+body > .notifications
+{
+    position: fixed;
+    z-index: 60;
+    top: 0;
+    left:  30%;
+    width: 40%;
+
+    .notification
+    {
+        position: relative;
+
+        background: $color-background-lighter;
+        color: $color-text-lighter;
+
+        border-radius: 0;
+
+        @include font-size-larger;
+        @include pop-up-shadow;
+
+        padding:    steps(0.5) steps(3) steps(0.5) steps(1);
+        margin-top: steps(1);
+        text-shadow: none;
+
+        &[data-type="success"]
+        {
+            background-color: $color-notification-success-background;
+            color: $color-notification-success-text;
+        }
+
+        &[data-type="error"]
+        {
+            background-color: $color-notification-error-background;
+            color: $color-notification-error-text;
+        }
+
+        > .icon
+        {
+            float: left;
+            margin-left: steps(0.5);
+            @include icon-large;
+        }
+
+        > .content
+        {
+            margin-left:  steps(3);
+            margin-right: steps(3);
+            text-align: center;
+        }
+
+        > .close
+        {
+            position: absolute;
+            right: 0;
+            top:   0;
+        }
+
+    }
+
+}
+
+.flash
+{
+    display: none;
+}
+
+

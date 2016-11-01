@@ -1,0 +1,234 @@
+@import '../environment';
+
+.controller-releaf-content-nodes
+{
+    main > section:not(.dialog) > .body:not(.empty)
+    {
+        border-bottom: none;
+    }
+
+    .collection
+    {
+        ul
+        {
+            @include block-list;
+        }
+
+        .collapsed ul
+        {
+            display: none;
+        }
+
+        li
+        {
+            @include clear-inside;
+        }
+
+        .collapser-cell
+        {
+            float: left;
+        }
+
+        .toolbox-cell
+        {
+            border-left: 1px solid $color-border-normal;
+            float: right;
+        }
+
+        .collapser-cell,
+        .toolbox-cell
+        {
+            .trigger
+            {
+                background: transparent;
+            }
+        }
+
+        .node-cell
+        {
+            border-bottom: 1px solid $color-border-normal;
+
+            .trigger
+            {
+                display: block;
+                color: $color-text-lightest;
+                text-decoration: none;
+                padding: steps(0.5) steps(3);
+                font-weight: bold;
+
+                &.selected,
+                &:hover
+                {
+                    background: $color-highlight-lightest;
+                }
+
+                span
+                {
+                    position: relative;
+                }
+            }
+
+            &.active .trigger
+            {
+                color: $color-text-normal;
+            }
+
+            span
+            {
+                margin-left: 0;
+                display: inline-block;
+            }
+
+            input[type="radio"]
+            {
+                display: none;
+            }
+
+        }
+
+        // nested item indentation
+        @for $i from 1 through 10
+        {
+            li[data-level="#{$i}"]
+            {
+                & > .collapser-cell
+                {
+                    $previous: $i - 1;
+                    position: absolute;
+                    left: $previous * steps(2);
+                }
+
+                & > .node-cell span
+                {
+                    margin-left: ($i - 1) * steps(2);
+                }
+            }
+        }
+
+        .nothing-found
+        {
+            padding: steps(0.5) steps(2);
+        }
+    }
+
+    main .collection li ul ul
+    {
+        background: $color-background-normal;
+    }
+
+    .dialog .collection > ul li
+    {
+        position: relative;
+    }
+
+
+    &.view-index > main > section
+    {
+        display: inline-block;
+        min-width: steps(40);
+    }
+
+
+    .dialog
+    {
+        width: steps(40);
+
+        &.content-type
+        {
+            &[data-columns="1"]
+            {
+                width: steps(24);
+            }
+
+            .body
+            {
+                padding: steps(2) steps(3);
+                text-align: center;
+
+                .description
+                {
+                    padding: 0 0 steps(2) 0;
+                }
+
+                ul
+                {
+                    width: steps(18);
+                    margin-left: steps(2);
+                    float: left;
+                }
+            }
+
+            .content-types
+            {
+                @include clear-inside;
+
+                ul
+                {
+                    @include block-list;
+
+                    li
+                    {
+                        margin-bottom: steps(1);
+                    }
+                }
+            }
+        }
+
+        &:not(.content-type)
+        {
+            .body
+            {
+                height: steps(24);
+                overflow-y: auto;
+            }
+        }
+    }
+
+    &.view-edit
+    {
+        .node-fields
+        {
+            @include clear-inside;
+
+            background: $color-background-lighter;
+
+            .field[data-name="slug"]
+            {
+                .button.generate
+                {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+
+                input[type="text"]
+                {
+                    padding-right: steps(4);
+                }
+
+                .link
+                {
+                    padding: steps(0.5) 0;
+                    span
+                    {
+                        color: $color-text-normal;
+                    }
+                }
+            }
+
+            .field[data-name="active"]
+            {
+                min-height: initial;
+                clear: both;
+
+                .value
+                {
+                    padding-top: initial;
+                }
+            }
+
+        }
+
+    }
+}
+

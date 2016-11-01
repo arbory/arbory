@@ -1,0 +1,56 @@
+body > header
+{
+    @include inverted( $background-color: $color-background-inverted-darkest );
+    @include font-size-larger;
+
+    text-align: right;
+
+    .home
+    {
+        display: block;
+        text-decoration: none;
+        text-align: left;
+        float: left;
+        margin: steps(1) 0 0 steps(1);
+    }
+
+
+    .profile,
+    form.sign-out
+    {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .profile.button,
+    form.sign-out .button
+    {
+        position: relative;
+        padding-top: steps(1.5);
+        padding-bottom: steps(1.5);
+        border-left: 1px solid $color-border-inverted-lighter;
+        margin-left: -1px;
+    }
+
+    .profile.button
+    {
+        padding-left:  steps(2);
+        padding-right: steps(2);
+    }
+
+    form.sign-out .button
+    {
+        position: relative;
+        width:  steps(5);
+        height: auto;
+
+        .fa
+        {
+            @include icon-large;
+            vertical-align: top;
+        }
+    }
+
+}
+
+

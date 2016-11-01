@@ -1,0 +1,43 @@
+// main layout
+body > header
+{
+    height:   steps(5);
+    position: relative;
+    z-index:  10;
+}
+
+body > aside,
+main
+{
+    position: relative;
+    min-height: 100%;
+}
+
+main
+{
+    display: block;  /* as of now, not all rendering engines recognize the main element as a block */
+    position: relative;
+    padding: 0 steps(3) steps(4) steps(20 + 3);
+    z-index: 1;
+
+    .side-compact &
+    {
+        padding-left: steps(4 + 3);
+    }
+
+    > header
+    {
+        border-bottom: 1px solid $color-border-light;
+        margin-bottom: -1px;
+
+        padding: steps(1) 0;
+
+        @include clear-inside;
+
+        > nav
+        {
+            float: left;
+        }
+    }
+}
+

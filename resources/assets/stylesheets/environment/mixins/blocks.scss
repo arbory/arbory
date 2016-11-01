@@ -1,0 +1,133 @@
+@mixin clear-inside
+{
+    &:after
+    {
+       content: " ";
+       display: table;
+       clear: both;
+    }
+}
+
+@mixin unclear-inside
+{
+    &:after
+    {
+       content: none;
+       display: none;
+       clear: none;
+    }
+}
+
+@mixin block-list
+{
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & > li
+    {
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
+    & > li:before
+    {
+        content: "";
+        display: none;
+    }
+
+}
+
+@mixin pop-up-menu
+{
+    // used for floating pop-up menus (toolboxes, localization menus etc)
+    @include block-list;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    text-align: left;
+
+    > ul
+    {
+        @include block-list;
+        position: relative;
+    }
+
+    button, a, .button
+    {
+        display: block;
+        white-space: nowrap;
+        width: 100%;
+        text-align: left;
+    }
+}
+
+
+@mixin full-screen-overlay
+{
+    // used for displaying a clickable closing layer over the whole page under a pop-up-menu
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    display: none;
+}
+
+
+
+@mixin inverted( $background-color: $color-background-inverted-normal, $text-color: $color-text-inverted-lightest )
+{
+    background: $background-color;
+    color: $text-color;
+
+    .button,
+    .button.secondary
+    {
+        background-color: inherit;
+        color: $color-highlight-normal;
+
+        &:hover,
+        &:focus,
+        &:active
+        {
+            background-color: inherit;
+            color: $text-color;
+        }
+
+        &.danger
+        {
+            &:not(:hover):not(:focus):not(:active)
+            {
+                background-color: $background-color;
+                color: $color-alert;
+            }
+
+            &:hover,
+            &:focus,
+            &:active
+            {
+                background-color: $color-alert;
+            }
+        }
+    }
+
+}
+
+@mixin section-header
+{
+    @include inverted;
+
+    padding: steps(0.5) steps(2);
+    position: relative;
+}
+
+@mixin pop-up-shadow
+{
+    box-shadow: 1px 3px 5px 0px $color-shadow-normal;
+}

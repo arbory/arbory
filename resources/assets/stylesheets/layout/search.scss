@@ -1,0 +1,85 @@
+form.search
+{
+    text-align: right;
+
+    &.has-extra-search:not(.has-text-search)
+    {
+        clear: left;
+    }
+
+    .search-field
+    {
+        display: inline-block;
+        margin-left: steps(2);
+
+        label,
+        input,
+        select
+        {
+            margin-left: steps(1);
+        }
+    }
+
+    .text-search
+    {
+
+        .search-field[data-name="search"]
+        {
+            position: relative;
+
+            input[type="search"]
+            {
+                width: steps(18);
+                border-color: $color-border-light;
+
+                &::-webkit-search-decoration,
+                &::-webkit-search-cancel-button,
+                &::-webkit-search-results-button,
+                &::-webkit-search-results-decoration
+                {
+                    display: none;
+                }
+
+            }
+
+            .button
+            {
+                position: absolute;
+                right: 0;
+                top: 0;
+                background: transparent;
+                color: $color-highlight-normal;
+
+                &:hover
+                {
+                    color: $color-text-light;
+                }
+            }
+        }
+
+
+    }
+
+    .extras
+    {
+        @include clear-inside;
+
+        background-color: $color-background-lighter;
+        border: 1px solid $color-border-light;
+        margin: -1px 0 (steps(-1) - 1px) 0;
+        padding: steps(2);
+
+        input:not([type="checkbox"]):not([type="radio"]),
+        select
+        {
+            width: steps(14);
+        }
+
+        .button
+        {
+            margin-left: steps(2);
+        }
+
+    }
+
+}

@@ -1,0 +1,138 @@
+@import 'vendor/magnific-popup/main';
+
+.dialog
+{
+    @include pop-up-shadow;
+
+    margin: 0 auto;
+    width: steps(33);
+    background-color: $color-background-lightest;
+    color: $color-text-normal;
+
+    main &
+    {
+        margin-top: steps(4);
+    }
+
+    &:not(.initialized)
+    {
+        visibility: hidden;
+    }
+
+    header
+    {
+        padding-right: steps(4);
+    }
+
+    section.body
+    {
+        position: relative;
+    }
+
+    footer
+    {
+        position: relative;
+        background-color: $color-background-darker;
+        border-top: $color-border-dark 1px solid;
+        text-align: right;
+
+        form
+        {
+            display: inline-block;
+        }
+
+        .button.secondary
+        {
+            border-left: $color-border-dark 1px solid;
+        }
+
+    }
+
+}
+
+
+.ajaxbox-inner
+{
+    .dialog header .close,
+    > .close
+    {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .dialog header
+    {
+        margin-top: 0;
+    }
+
+}
+
+
+
+@mixin dialog-with-icon
+{
+    .body
+    {
+        padding: steps(3) steps(2) 0;
+        text-align: center;
+
+        .fa
+        {
+            display: block;
+            margin: 0 auto;
+            border-radius: steps(4);
+            width: steps(6);
+            background-color: $color-background-darker;
+            color: $color-text-inverted-lightest;
+            font-size:   steps(4);
+            line-height: steps(4);
+            padding:     steps(1);
+            text-align: center;
+            margin-bottom: steps(2)
+        }
+
+        .question
+        {
+            @include heading-text;
+            margin-bottom: steps(3);
+        }
+
+        .description
+        {
+            color: $color-highlight-normal;
+            @include font-size-larger;
+        }
+
+    }
+
+}
+
+
+.dialog.confirm
+{
+    @include dialog-with-icon;
+}
+
+.dialog.refused-destroy
+{
+    @include dialog-with-icon;
+
+    .body .restricted-relations
+    {
+        @include block-list;
+        margin-top: steps(1);
+        overflow-y: auto;
+        color: $color-highlight-normal;
+        @include font-size-larger;
+    }
+
+    .body .relations
+    {
+        @include block-list;
+    }
+
+}
+
+
+

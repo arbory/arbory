@@ -1,0 +1,79 @@
+.localization:not(.active)
+{
+    display: none;
+}
+
+.localization-switch
+{
+    position: absolute;
+    right: 0;
+    top:   steps(1);
+
+    .trigger
+    {
+        display: inline-block;
+        padding: 0 steps(1);
+        border: 1px solid $color-border-normal;
+        background: $color-background-lighter;
+        color: $color-text-normal;
+        text-transform: uppercase;
+
+        &:hover
+        {
+            border-color: $color-border-darker;
+        }
+
+        &:focus,
+        &:active
+        {
+            background-color: $color-background-darkest;
+            border-color: $color-background-darkest;
+            color: $color-text-normal;
+        }
+
+        .fa
+        {
+            @include icon-small;
+            color: $color-highlight-darkest;
+            margin-left: steps(1);
+        }
+
+    }
+
+}
+
+
+
+
+
+.localization-menu-items
+{
+    @include pop-up-menu;
+
+    border: 1px solid $color-border-normal;
+    box-shadow: 0 0 2px 2px $color-shadow-lightest;
+
+    button
+    {
+        background: $color-background-lightest;
+
+        text-transform: uppercase;
+        padding: steps(0.5) steps(2);
+
+        &:hover,
+        &:focus
+        {
+            background: $color-background-normal;
+        }
+    }
+
+}
+
+.localization-menu-overlay
+{
+    @include full-screen-overlay;
+}
+
+
+
+
