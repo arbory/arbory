@@ -42,4 +42,15 @@ elixir(mix => {
         'packages/CubeSystems/Leaf/resources/assets/stylesheets/'
     );
 
+    mix.sass(
+        'controllers/sessions.scss',
+        'public/leaf/css/controllers/',
+        'packages/CubeSystems/Leaf/resources/assets/stylesheets/'
+    );
+
+    mix.copy(
+        'packages/CubeSystems/Leaf/resources/assets/images/',
+        'public/leaf/images/'
+    );
+
 });
