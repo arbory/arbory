@@ -48,7 +48,7 @@ class NodesController extends AdminController
     /**
      * @param FieldSet $fieldSet
      */
-    public function formFields( FieldSet $fieldSet )
+    public function nodeFields( FieldSet $fieldSet )
     {
         $fieldSet->add( new Hidden( 'parent_id' ) );
         $fieldSet->add( new Hidden( 'content_type' ) );
@@ -64,9 +64,12 @@ class NodesController extends AdminController
     {
         $fieldSet->add( new HasOne( 'content', function ( FieldSet $fieldSet ) use ( $node )
         {
-            $relatedClass = $node->content()->getRelated();
+            $content = $node->content;
 
-            ( new $relatedClass )->formFields( $fieldSet );
+            foreach( (array) $content->getFillable() as $fieldName )
+            {
+                $fieldSet->add( $content->getAttribute( $fieldName ) );
+            }
         } ) );
     }
 
@@ -92,11 +95,7 @@ class NodesController extends AdminController
         $builder = new FormBuilder( $model );
         $fieldSet = new FieldSet( $this->getResource(), $this );
 
-        if( method_exists( $this, 'formFields' ) )
-        {
-            $this->formFields( $fieldSet );
-        }
-
+        $this->nodeFields( $fieldSet );
         $this->contentFields( $fieldSet, $model );
 
         $builder

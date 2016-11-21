@@ -1,0 +1,68 @@
+@import '../environment';
+
+.controller-leaf-sessions
+{
+    @include inverted( $background-color: $color-background-inverted-darkest );
+
+    .container
+    {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width:  100%;
+        height: 100%;
+
+        > .box
+        {
+            width: steps(26);
+            margin: 0 auto;
+            position: relative;
+            top: 15%;
+
+            .logo
+            {
+                width:  steps(5);
+                height: steps(11);
+                background-repeat: no-repeat;
+                background-image: url("/leaf/images/logo-login.png");
+            }
+        }
+    }
+
+    .field
+    {
+        margin-left: steps(1);
+        width: steps(24);
+
+        label
+        {
+            display: block;
+        }
+
+        .button
+        {
+            width: 100%;
+        }
+
+        input
+        {
+            font-weight: normal;
+            border: none;
+
+        }
+
+        .button
+        {
+            margin-top: steps(2);
+            background-color: $color-highlight-normal;
+            color: $color-text-inverted-lightest;
+
+            &:hover
+            {
+                background-color: $color-highlight-darker;
+            }
+        }
+
+    }
+
+}

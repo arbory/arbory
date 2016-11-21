@@ -1,6 +1,6 @@
 <header>
     <a class="home" href="{{route('admin.dashboard')}}">
-        <img alt="Leaf" src="/assets/leaf/logo.png"/>
+        <img alt="Leaf" src="/leaf/images/logo.png"/>
     </a>
     <a class="button profile" href="/admin/profile">
         <span class="name">Admin User</span>
