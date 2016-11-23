@@ -14,10 +14,10 @@ class CreateNodesTable extends Migration
     {
         Schema::create( 'nodes', function ( Blueprint $table )
         {
-            $table->increments( 'id' );
+            $table->uuid( 'id' );
             $table->string( 'name' );
             $table->string( 'slug' );
-            $table->integer( 'parent_id' )->nullable();
+            $table->uuid( 'parent_id' )->nullable();
             $table->integer( 'lft' )->nullable();
             $table->integer( 'rgt' )->nullable();
             $table->integer( 'depth' )->nullable();

@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf;
 
+use Alsofronie\Uuid\UuidModelTrait;
 use CubeSystems\Leaf\Pages\PageInterface;
 
 /**
@@ -10,6 +11,8 @@ use CubeSystems\Leaf\Pages\PageInterface;
  */
 class Node extends \Baum\Node implements NodeInterface
 {
+    use UuidModelTrait;
+    
     /**
      * @var array
      */
