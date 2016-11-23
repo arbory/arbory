@@ -3,7 +3,6 @@
 namespace CubeSystems\Leaf\Pages;
 
 use CubeSystems\Leaf\Fields\Text;
-use CubeSystems\Leaf\FieldSet;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,20 +17,12 @@ class TextPage extends Model implements PageInterface
     protected $fillable = [ 'html' ];
 
     /**
-     * @param FieldSet $fieldSet
+     * @return Text
      */
-    public function formFields( FieldSet $fieldSet )
-    {
-        // TODO: Move this somewhere
-        $fieldSet->add( new Text( 'html' ) );
-    }
-
-    /**
-     * @return string
-     */
-    public function getHtml()
+    public function getHtmlAttribute()
     {
         // TODO: replace HTML placeholders - links, images, embed, etc.
-        return $this->html;
+
+        return ( new Text( 'html' ) )->setValue( $this->getAttributeFromArray( 'html' ) );
     }
 }
