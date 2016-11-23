@@ -163,9 +163,9 @@ class Item
         {
             return $this->title;
         }
-        elseif( $this->route )
+        elseif( $this->routeName )
         {
-            return title_case( $this->route );
+            return title_case( $this->routeName );
         }
 
         return 'Unknown menu item';
