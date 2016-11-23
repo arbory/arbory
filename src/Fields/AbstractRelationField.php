@@ -26,8 +26,8 @@ abstract class AbstractRelationField extends AbstractField
     {
         $fieldSet = $this->getNamespacedFieldSet( $fieldSet, $inputNamespace );
 
-        $fieldSet->add( new Hidden( 'id' ) ) // TODO: Use related model key name instead of 'ID'
-        ->setValue( $model->{$model->getKeyName()} )
+        $fieldSet->add( new Hidden( $model->getKeyName() ) )
+            ->setValue( $model->{$model->getKeyName()} )
             ->setInputNamespace( $inputNamespace );
 
         if( $this->canRemoveRelationItems() )
