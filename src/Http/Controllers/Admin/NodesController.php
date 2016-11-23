@@ -81,7 +81,7 @@ class NodesController extends AdminController
     {
         $model = $this->repository->findOrNew( $resourceId );
 
-        if( !$resourceId )
+        if( $resourceId === null )
         {
             $model->content_id = 0;
             $model->content_type = $this->app['request']->get( 'content_type' );
