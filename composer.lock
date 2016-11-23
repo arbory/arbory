@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "63f504732e99c9ed7e839d7dfdb051f8",
-    "content-hash": "ca656fb47b682286e4896d9276e29b41",
+    "hash": "3b05a9ea4815e720d2584a9f4047df82",
+    "content-hash": "43c8017e077c114c19ae1a4d2c906645",
     "packages": [
         {
             "name": "baum/baum",
@@ -273,6 +273,57 @@
             ],
             "description": "jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library. Whether you're building highly interactive web applications or you just need to add a date picker to a form control, jQuery UI is the perfect choice.",
             "time": "2016-09-16 05:47:55"
+        },
+        {
+            "name": "dimsav/laravel-translatable",
+            "version": "v6.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dimsav/laravel-translatable.git",
+                "reference": "95c56bd6475d2f64b8b01e1b225a32b1c79dc8e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dimsav/laravel-translatable/zipball/95c56bd6475d2f64b8b01e1b225a32b1c79dc8e4",
+                "reference": "95c56bd6475d2f64b8b01e1b225a32b1c79dc8e4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.1",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dimsav\\Translatable\\": "src/Translatable/"
+                },
+                "classmap": [
+                    "tests"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dimitrios Savvopoulos",
+                    "email": "ds@dimsav.com",
+                    "homepage": "http://dimsav.com"
+                }
+            ],
+            "description": "A Laravel package for multilingual models",
+            "keywords": [
+                "database",
+                "language",
+                "laravel",
+                "translation"
+            ],
+            "time": "2016-08-19 12:49:25"
         },
         {
             "name": "doctrine/inflector",

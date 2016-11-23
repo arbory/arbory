@@ -1,6 +1,7 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
 use CubeSystems\Leaf\Menu\Menu;
+use Dimsav\Translatable\TranslatableServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -22,6 +23,8 @@ class LeafServiceProvider extends ServiceProvider
         $this->publishResources();
         $this->publishMigrations();
 
+        $this->app->register( TranslatableServiceProvider::class );
+
         include __DIR__ . '/../../routes/admin.php';
     }
 
@@ -36,7 +39,6 @@ class LeafServiceProvider extends ServiceProvider
         {
             return new Menu( config( 'leaf.menu' ) );
         }, true );
-
     }
 
     /**
