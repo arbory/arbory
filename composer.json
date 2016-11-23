@@ -15,6 +15,7 @@
         "components/jqueryui": "1.12.*",
         "components/jquery-cookie": "1.4.*",
         "ckeditor/ckeditor": "4.5.*",
+        "alsofronie/eloquent-uuid": "dev-master",
         "dimsav/laravel-translatable": "^6.0"
     }
 }
