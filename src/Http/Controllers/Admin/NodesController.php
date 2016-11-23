@@ -64,7 +64,7 @@ class NodesController extends AdminController
     {
         $fieldSet->add( new HasOne( 'content', function ( FieldSet $fieldSet ) use ( $node )
         {
-            $content = $node->content;
+            $content = $node->content ?: $node->content()->getRelated();
 
             foreach( (array) $content->getFillable() as $fieldName )
             {
