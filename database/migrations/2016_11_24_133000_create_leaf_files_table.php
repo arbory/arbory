@@ -1,10 +1,7 @@
 <?php
 
-namespace Leaf\database\migrations;
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Schema;
 
 /**
  * Class CreateLeafFilesTable
