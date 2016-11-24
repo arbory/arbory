@@ -14,7 +14,7 @@ class CreateLeafFilesTable extends Migration
      */
     public function up()
     {
-        Schema::table( 'leaf_files', function ( Blueprint $table )
+        Schema::create('leaf_files', function ( Blueprint $table )
         {
             $table->uuid( 'id' );
             $table->string( 'owner_id' );
