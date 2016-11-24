@@ -60,7 +60,13 @@ class NodeServiceProvider extends ServiceProvider
         app( 'router' )->matched( function ( RouteMatched $event )
         {
             // TODO: rewrite when i18n functionality is done
-            $this->app->setLocale( $event->request->segment( 1 ) );
+
+            $firstSegment = $event->request->segment( 1 );
+
+            if( $firstSegment != config( 'leaf.uri' ) )
+            {
+                $this->app->setLocale( $firstSegment );
+            }
         } );
     }
 }
