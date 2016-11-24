@@ -10,9 +10,11 @@ jQuery(function()
         height: '400px',
         allowedContent: true,
         format_tags: 'p;h2;h3',
-        toolbar: [['Bold', 'Italic'], ['Format'], ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], ['Subscript', 'Superscript'], ['NumberedList', 'BulletedList'], ['Link', 'Unlink', 'Anchor', 'Image', 'MediaEmbed' ], ['Source', 'Maximize', 'ShowBlocks']],
-        extraPlugins: 'mediaembed'
+        toolbar: [['Bold', 'Italic'], ['Format'], ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], ['Subscript', 'Superscript'], ['NumberedList', 'BulletedList'], ['Link', 'Unlink', 'Anchor', 'Image', 'Embed' ], ['Source', 'Maximize', 'ShowBlocks']],
+        extraPlugins: 'embed'
     };
+
+    CKEDITOR.basePath = '/leaf/ckeditor/';
 
     CKEDITOR.on('instanceReady', function(e) {
       jQuery(e.editor.element.$).addClass("ckeditor-initialized");

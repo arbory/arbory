@@ -21,6 +21,5 @@
 
         <script src="/leaf/js/application.js"></script>
         <script src="/leaf/js/controllers/nodes.js"></script>
-        <script src="//cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
     </body>
 </html>

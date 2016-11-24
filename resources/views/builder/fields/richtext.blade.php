@@ -6,6 +6,7 @@
         <textarea rows="5" cols="50" class="richtext"
                   data-attachment-upload-url=""
                   name="{{$field->getInputName()}}"
-                  id="{{$field->getInputId()}}">{{$field->getValue()}}</textarea>
+                  id="{{$field->getInputId()}}"
+        >{{$field->getValue()}}</textarea>
     </div>
 </div>

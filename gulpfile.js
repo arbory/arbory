@@ -12,6 +12,8 @@ elixir(mix => {
             'jquery/jquery.min.js',
             'jqueryui/jquery-ui.min.js',
             'jquery-cookie/jquery.cookie.js',
+            '../ckeditor/ckeditor/ckeditor.js',
+            '../ckeditor/ckeditor/adapters/jquery.js',
         ],
         'public/leaf/js/vendor.min.js',
         'packages/CubeSystems/Leaf/vendor/components/'
@@ -46,6 +48,11 @@ elixir(mix => {
         'controllers/sessions.scss',
         'public/leaf/css/controllers/',
         'packages/CubeSystems/Leaf/resources/assets/stylesheets/'
+    );
+
+    mix.copy(
+        'packages/CubeSystems/Leaf/vendor/ckeditor/ckeditor/',
+        'public/leaf/ckeditor/'
     );
 
     mix.copy(
