@@ -14,17 +14,20 @@ class CreateLeafFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('leaf_files', function ( Blueprint $table )
+        Schema::create( 'leaf_files', function ( Blueprint $table )
         {
             $table->uuid( 'id' );
             $table->string( 'owner_id' );
+            $table->string( 'owner_class' );
             $table->string( 'original_name' );
+            $table->string( 'local_name' );
             $table->string( 'disk' );
             $table->string( 'sha1', 40 );
             $table->integer( 'size' );
             $table->timestamps();
 
             $table->index( 'owner_id' );
+            $table->index( 'owner_class' );
         } );
     }
 

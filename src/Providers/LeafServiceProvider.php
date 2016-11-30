@@ -24,6 +24,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->publishMigrations();
 
         $this->app->register( TranslatableServiceProvider::class );
+        $this->app->register( LeafFileServiceProvider::class );
 
         include __DIR__ . '/../../routes/admin.php';
     }

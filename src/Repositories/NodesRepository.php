@@ -8,12 +8,12 @@ use CubeSystems\Leaf\Node;
  * Class NodesRepository
  * @package CubeSystems\Leaf\Repositories
  */
-class NodesRepository extends GenericRepository
+class NodesRepository extends AbstractModelsRepository
 {
     /**
      * @var string
      */
-    protected $class = Node::class;
+    protected $modelClass = Node::class;
 
     /***
      * @param $uri

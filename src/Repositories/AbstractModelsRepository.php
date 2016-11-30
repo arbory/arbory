@@ -5,15 +5,15 @@ namespace CubeSystems\Leaf\Repositories;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class GenericRepository
+ * Class AbstractModelRepository
  * @package CubeSystems\Leaf\Repositories
  */
-abstract class GenericRepository
+abstract class AbstractModelsRepository
 {
     /**
      * @var string
      */
-    protected $class;
+    protected $modelClass;
 
     /**
      * @var \Illuminate\Database\Eloquent\Model
@@ -25,7 +25,7 @@ abstract class GenericRepository
      */
     public function __construct()
     {
-        $this->makeModel( $this->class );
+        $this->makeModel( $this->modelClass );
     }
 
     /**
@@ -37,20 +37,12 @@ abstract class GenericRepository
     }
 
     /**
-     * @param Model $model
-     */
-    public function setModel( $model )
-    {
-        $this->model = $model;
-    }
-
-    /**
      * @param array $columns
      * @return mixed
      */
     public function all( array $columns = [ '*' ] )
     {
-        return $this->model->newQuery()->get( $columns );
+        return $this->newQuery()->get( $columns );
     }
 
     /**
@@ -60,7 +52,7 @@ abstract class GenericRepository
      */
     public function paginate( $perPage = 15, array $columns = [ '*' ] )
     {
-        return $this->model->newQuery()->paginate( $perPage, $columns );
+        return $this->newQuery()->paginate( $perPage, $columns );
     }
 
     /**
@@ -69,7 +61,7 @@ abstract class GenericRepository
      */
     public function create( array $data )
     {
-        return $this->model->create( $data );
+        return $this->getModel()->create( $data );
     }
 
     /**
@@ -84,12 +76,12 @@ abstract class GenericRepository
     }
 
     /**
-     * @param $itemId
+     * @param $leafFileId
      * @return mixed
      */
-    public function delete( $itemId )
+    public function delete( $leafFileId )
     {
-        return $this->model->destroy( $itemId );
+        return $this->getModel()->destroy( $leafFileId );
     }
 
     /**
@@ -133,7 +125,6 @@ abstract class GenericRepository
 
     /**
      * @param $class
-     * @return Model
      */
     protected function makeModel( $class )
     {

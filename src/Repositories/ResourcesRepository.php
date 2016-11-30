@@ -6,7 +6,7 @@ namespace CubeSystems\Leaf\Repositories;
  * Class ResourcesRepository
  * @package CubeSystems\Leaf\Repositories
  */
-class ResourcesRepository extends GenericRepository
+class ResourcesRepository extends AbstractModelsRepository
 {
     /**
      * ResourcesRepository constructor.
@@ -14,7 +14,7 @@ class ResourcesRepository extends GenericRepository
      */
     public function __construct( $class )
     {
-        $this->class = $class;
+        $this->modelClass = $class;
 
         parent::__construct();
     }
