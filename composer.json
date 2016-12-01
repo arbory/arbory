@@ -1,7 +1,7 @@
 {
     "name": "cubesystems/leaf",
     "description": "Administration interface for Laravel",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "laravel/framework": "^5.3",
         "baum/baum": "^1.1",
         "components/jquery": "3.1.*",
         "components/jqueryui": "1.12.*",
@@ -17,5 +18,8 @@
         "ckeditor/ckeditor": "4.5.*",
         "alsofronie/eloquent-uuid": "^1.0.5",
         "dimsav/laravel-translatable": "^6.0"
+    },
+    "autoload": {
+        "psr-4": { "CubeSystems\\Leaf\\": "src" }
     }
 }
