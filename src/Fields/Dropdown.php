@@ -49,22 +49,23 @@ class Dropdown extends AbstractField
     {
         $model = $this->getModel();
 
+        $currentValue = $model->{$this->getName()};
+
         $currentOption = null;
 
-        foreach( $this->options as $option )
+        if( isset( $this->options[$currentValue] ) )
         {
-            $currentValue = $model->{$this->getName()};
-            if( $option->getValue() == $currentValue )
-            {
-                $currentOption = $option;
-                $option->setSelected( true );
-                break;
-            }
+            $currentOption = $this->options[$currentValue];
         }
 
-        if( !$currentOption == null && $this->defaultValue )
+        if( $currentOption == null && $this->defaultValue !== null )
         {
             $currentOption = $this->options[$this->defaultValue];
+        }
+
+        if( $currentOption != null )
+        {
+            $currentOption->setSelected( true );
         }
 
         if( $this->isForList() )
