@@ -27,7 +27,7 @@ abstract class AbstractRelationField extends AbstractField
         $fieldSet = $this->getNamespacedFieldSet( $fieldSet, $inputNamespace );
 
         $fieldSet->add( new Hidden( $model->getKeyName() ) )
-            ->setValue( $model->{$model->getKeyName()} )
+            ->setValue( $model->getKey() )
             ->setInputNamespace( $inputNamespace );
 
         if( $this->canRemoveRelationItems() )
@@ -39,7 +39,7 @@ abstract class AbstractRelationField extends AbstractField
 
         $builder = new FormBuilder( $model );
         $builder->setFieldSet( $fieldSet );
-        $builder->setController( $this->getFieldSet()->getController() );
+        $builder->setController( $this->getController() );
 
         return $builder;
     }
@@ -57,8 +57,7 @@ abstract class AbstractRelationField extends AbstractField
 
     public function getRelationFieldSet()
     {
-        $relatedModel = $this->getModel()->{$this->getName()}()->getRelated();
-        $fieldSet = new FieldSet( get_class( $relatedModel ), $this->getFieldSet()->getController() );
+        $fieldSet = new FieldSet;
         $fieldSetCallback = $this->fieldSetCallback;
         $fieldSetCallback( $fieldSet );
 

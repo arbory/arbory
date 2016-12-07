@@ -93,7 +93,7 @@ class NodesController extends AdminController
         }
 
         $builder = new FormBuilder( $model );
-        $fieldSet = new FieldSet( $this->getResource(), $this );
+        $fieldSet = new FieldSet;
 
         $this->nodeFields( $fieldSet );
         $this->contentFields( $fieldSet, $model );
@@ -176,7 +176,7 @@ class NodesController extends AdminController
      */
     public function getIndexFieldSet()
     {
-        $fieldSet = new FieldSet( $this->getResource(), $this );
+        $fieldSet = new FieldSet;
 
         $this->indexFields( $fieldSet );
 
@@ -211,7 +211,7 @@ class NodesController extends AdminController
         foreach( $items as $item )
         {
             $row = new Row();
-            $row->setIdentifier( $item->{$item->getKeyName()} );
+            $row->setIdentifier( $item->getKey() );
             $row->setModel( $item );
 
             foreach( $fields as $field )
@@ -231,6 +231,7 @@ class NodesController extends AdminController
 
                 $field->setValue( $value );
                 $field->setModel( $item );
+                $field->setController( $this );
 
                 $row->addField( $field );
             }
@@ -303,7 +304,7 @@ class NodesController extends AdminController
     {
         $name = $this->app['request']->get( 'name' );
 
-        $toolbox = $this->getIndexFieldSet()->getField( $name );
+        $toolbox = $this->getIndexFieldSet()->findFieldByName( $name );
 
         if( !$toolbox instanceof Toolbox )
         {

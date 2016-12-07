@@ -22,8 +22,7 @@ class HasMany extends AbstractRelationField
 
     public function render()
     {
-        $resource = $this->getFieldSet()->getResource();
-        $model = new $resource;
+        $model = $this->getModel();
 
         $relatedModel = $model->{$this->getName()}()->getRelated();
 

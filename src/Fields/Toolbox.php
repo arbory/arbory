@@ -76,10 +76,10 @@ class Toolbox extends AbstractField
         $model = $this->getModel();
 
         $toolboxUrl = route( 'admin.model.dialog', [
-            'model' => $this->getFieldSet()->getController()->getSlug(),
+            'model' => $this->getController()->getSlug(),
             'dialog' => 'toolbox',
             'name' => $this->getName(),
-            'id' => $model->{$model->getKeyName()},
+            'id' => $model->getKey(),
         ] );
 
         ob_start();
@@ -102,10 +102,10 @@ class Toolbox extends AbstractField
 
         return view( $this->getViewName(), [
             'toolbox_url' => route( 'admin.model.dialog', [
-                'model' => $this->getFieldSet()->getController()->getSlug(),
+                'model' => $this->getController()->getSlug(),
                 'dialog' => 'toolbox',
                 'name' => $this->getName(),
-                'id' => $model->{$model->getKeyName()},
+                'id' => $model->getKey(),
             ] ),
         ] );
     }

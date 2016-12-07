@@ -22,8 +22,8 @@ class Text extends AbstractField
                 'field' => $this,
                 'attributes' => $attributes,
                 'url' => route( 'admin.model.edit', [
-                    $this->getFieldSet()->getController()->getSlug(),
-                    $model->{$model->getKeyName()}
+                    $this->getController()->getSlug(),
+                    $model->getKey()
                 ] ),
             ] );
         }

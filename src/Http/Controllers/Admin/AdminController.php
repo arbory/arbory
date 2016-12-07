@@ -171,7 +171,7 @@ abstract class AdminController
         $model = $this->repository->findOrNew( $resourceId );
 
         $builder = new FormBuilder( $model );
-        $fieldSet = new FieldSet( $this->getResource(), $this );
+        $fieldSet = new FieldSet;
 
         if( method_exists( $this, 'formFields' ) )
         {
@@ -190,15 +190,19 @@ abstract class AdminController
      */
     protected function getIndexBuilder()
     {
-        return new IndexBuilder( $this->repository );
+        $builder = new IndexBuilder( $this->repository );
+        $builder->setController( $this );
+
+        return $builder;
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\View\View
      */
     public function index( Request $request )
     {
-        $fieldSet = new FieldSet( $this->getResource(), $this );
+        $fieldSet = new FieldSet;
 
         if( method_exists( $this, 'indexFields' ) )
         {

@@ -214,7 +214,7 @@ class IndexBuilder extends AbstractBuilder
     {
         $row = new Row();
         $row->setResource( get_class( $item ) );
-        $row->setIdentifier( $item->{$item->getKeyName()} );
+        $row->setIdentifier( $item->getKey() );
 
         return $row;
     }

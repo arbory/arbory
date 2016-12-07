@@ -25,8 +25,7 @@ class HasOne extends AbstractRelationField
 
         if( !$item )
         {
-            $resource = $this->getFieldSet()->getResource();
-            $item = ( new $resource )->{$this->getName()}()->getRelated();
+            $item = $this->getModel()->{$this->getName()}()->getRelated();
         }
 
         $relationForm = $this->buildRelationForm(
@@ -83,7 +82,7 @@ class HasOne extends AbstractRelationField
         }
         elseif( $relation instanceof \Illuminate\Database\Eloquent\Relations\HasOne )
         {
-            $variables[$relation->getPlainForeignKey()] = $model->{$model->getKeyName()};
+            $variables[$relation->getPlainForeignKey()] = $model->getKey();
 
             $relatedModel->fill( $variables );
             $relatedModel->save();

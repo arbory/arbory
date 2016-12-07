@@ -3,7 +3,6 @@
 namespace CubeSystems\Leaf\Builder;
 
 use CubeSystems\Leaf\Http\Controllers\Admin\AdminController;
-use CubeSystems\Leaf\Results\ResultInterface;
 use CubeSystems\Leaf\FieldSet;
 use Eloquent;
 
@@ -101,10 +100,13 @@ abstract class AbstractBuilder
 
     /**
      * @param array $parameters
+     * @return $this
      */
     public function setParameters( array $parameters = [] )
     {
         $this->parameters = $parameters;
+
+        return $this;
     }
 
     /**

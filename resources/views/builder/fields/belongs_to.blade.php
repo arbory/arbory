@@ -13,5 +13,9 @@
         </div>
     </div>
 @else
-    <strong><a href="{{$url}}">{{$field->getValue()}}</a></strong>
+    <strong>
+        <a href="{{$url}}">
+            {{$field->getValue()}}
+        </a>
+    </strong>
 @endif

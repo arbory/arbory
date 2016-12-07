@@ -13,8 +13,8 @@ class Richtext extends AbstractField
             return view( $this->getViewName(), [
                 'field' => $this,
                 'url' => route( 'admin.model.edit', [
-                    $this->getFieldSet()->getController()->getSlug(),
-                    $model->{$model->getKeyName()}
+                    $this->getController()->getSlug(),
+                    $model->getKey()
                 ] ),
             ] );
         }

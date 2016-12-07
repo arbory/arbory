@@ -2,56 +2,27 @@
 
 namespace CubeSystems\Leaf;
 
-use CubeSystems\Leaf\Fields\FieldFactory;
 use CubeSystems\Leaf\Fields\FieldInterface;
-use CubeSystems\Leaf\Http\Controllers\Admin\AdminController;
+use Illuminate\Support\Collection;
 
 /**
  * Class FieldSet
  * @package CubeSystems\Leaf
  */
-class FieldSet
+class FieldSet extends Collection
 {
     /**
-     * @var string
-     */
-    protected $resource;
-
-    /**
-     * @var AdminController
-     */
-    protected $controller;
-
-    /**
-     * @var FieldInterface[]|array
-     */
-    protected $fields = [ ];
-
-    /**
      * FieldSet constructor.
-     * @param $resource
-     * @param $controller
+     * @param array $items
      */
-    public function __construct( $resource, $controller )
+    public function __construct( $items = [] )
     {
-        $this->setResource( $resource );
-        $this->setController( $controller );
-    }
+        parent::__construct();
 
-    /**
-     * @param $method
-     * @param $arguments
-     * @return FieldInterface
-     */
-    public function __call( $method, $arguments )
-    {
-        $name = reset( $arguments );
-
-        $field = FieldFactory::getFieldByType( $method, $name );
-
-        $this->add( $field );
-
-        return $field;
+        foreach( $items as $item )
+        {
+            $this->add( $item );
+        }
     }
 
     /**
@@ -61,7 +32,8 @@ class FieldSet
     public function add( FieldInterface $field )
     {
         $field->setFieldSet( $this );
-        $this->fields[$field->getName()] = $field;
+
+        $this->put( $field->getName(), $field );
 
         return $field;
     }
@@ -71,64 +43,19 @@ class FieldSet
      */
     public function getFields()
     {
-        return $this->fields;
+        return $this->all();
     }
 
     /**
      * @param $name
      * @return FieldInterface
      */
-    public function getField( $name )
+    public function findFieldByName( $name )
     {
-        if( !$this->hasField( $name ) )
+        return $this->filter( function ( FieldInterface $field ) use ( $name )
         {
-            return null;
-        }
-
-        return $this->fields[$name];
+            return $field->getName() === $name;
+        } )->first();
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasField( $name )
-    {
-        return array_key_exists( $name, $this->fields );
-    }
-
-    /**
-     * @return string
-     */
-    public function getResource()
-    {
-        return $this->resource;
-    }
-
-    /**
-     * @param $resource
-     * @return $this
-     */
-    public function setResource( $resource )
-    {
-        $this->resource = $resource;
-
-        return $this;
-    }
-
-    /**
-     * @return AdminController
-     */
-    public function getController()
-    {
-        return $this->controller;
-    }
-
-    /**
-     * @param AdminController $controller
-     */
-    public function setController( $controller )
-    {
-        $this->controller = $controller;
-    }
 }

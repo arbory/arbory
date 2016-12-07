@@ -9,14 +9,6 @@ namespace CubeSystems\Leaf\Fields;
 class BelongsTo extends AbstractField
 {
     /**
-     * @return string
-     */
-    public function getDisplayField()
-    {
-        return 'name'; // TODO:
-    }
-
-    /**
      * @return \Illuminate\View\View|null
      */
     public function render()
@@ -43,8 +35,8 @@ class BelongsTo extends AbstractField
         return view( $this->getViewName(), [
             'field' => $this,
             'url' => route( 'admin.model.edit', [
-                $this->getFieldSet()->getController()->getSlug(),
-                $model->{$model->getKeyName()},
+                $this->getController()->getSlug(),
+                $model->getKey(),
             ] ),
         ] );
     }
@@ -58,7 +50,7 @@ class BelongsTo extends AbstractField
 
         if( $this->getValue() !== null )
         {
-            $this->setValue( $this->getValue()->{$relatedModel->getKeyName()} );
+            $this->setValue( $this->getValue()->getKey() );
         }
 
         return view( $this->getViewName(), [
@@ -72,10 +64,7 @@ class BelongsTo extends AbstractField
      */
     protected function getRelatedModel()
     {
-        $resource = $this->getFieldSet()->getResource();
-        $model = new $resource;
-
-        return $model->{$this->getName()}()->getRelated();
+        return $this->getModel()->{$this->getName()}()->getRelated();
     }
 
     /**
@@ -87,14 +76,11 @@ class BelongsTo extends AbstractField
         /**
          * @var $identifier string
          */
-        $items = [ ];
-
-        $keyName = $relatedModel->getKeyName();
+        $items = [];
 
         foreach( $relatedModel::all() as $item )
         {
-            $identifier = $item->{$keyName};
-            $items[$identifier] = $item->{$this->getDisplayField()};
+            $items[$item->getKey()] = (string) $item;
         }
 
         return $items;
