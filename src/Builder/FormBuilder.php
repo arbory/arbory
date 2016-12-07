@@ -53,7 +53,7 @@ class FormBuilder extends AbstractBuilder
     public function build()
     {
         $model = $this->getModel();
-        $result = new FormResult( $this );
+        $result = new FormResult;
 
         foreach( $this->getFieldSet()->getFields() as $field )
         {
@@ -87,7 +87,7 @@ class FormBuilder extends AbstractBuilder
                 ->setModel( $model )
                 ->setController( $this->getController() );
 
-            $result->addField( $item );
+            $result->push( $item );
         }
 
         return $result;

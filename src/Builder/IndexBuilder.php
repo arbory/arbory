@@ -166,7 +166,7 @@ class IndexBuilder extends AbstractBuilder
         {
             $row = $this->buildRow( $item, $fields );
 
-            $this->getResult()->addRow( $row );
+            $this->getResult()->push( $row );
         }
 
         return $this->getResult();

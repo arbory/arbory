@@ -3,12 +3,13 @@
 namespace CubeSystems\Leaf\Results;
 
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 /**
  * Class Results
  * @package CubeSystems\Leaf\Results
  */
-class IndexResult implements ResultInterface
+class IndexResult extends Collection implements ResultInterface
 {
     /**
      * @var Paginator
@@ -16,24 +17,11 @@ class IndexResult implements ResultInterface
     protected $paginator;
 
     /**
-     * @var Row[]|array
-     */
-    protected $rows = [ ];
-
-    /**
-     * @param Row $row
-     */
-    public function addRow( Row $row )
-    {
-        $this->rows[] = $row;
-    }
-
-    /**
      * @return Row[]|array
      */
     public function getRows()
     {
-        return $this->rows;
+        return $this->all();
     }
 
     /**
