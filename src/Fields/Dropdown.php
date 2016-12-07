@@ -75,8 +75,8 @@ class Dropdown extends AbstractField
                 'attributes' => $attributes,
                 'current_option' => $currentOption,
                 'url' => route( 'admin.model.edit', [
-                    $this->getFieldSet()->getController()->getSlug(),
-                    $model->{$model->getKeyName()}
+                    $this->getController()->getSlug(),
+                    $model->getKey()
                 ] ),
             ] );
         }

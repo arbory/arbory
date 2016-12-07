@@ -51,8 +51,8 @@ class Checkbox extends AbstractField
                 'checked_value' => $this->checkedValue,
                 'unchecked_value' => $this->uncheckedValue,
                 'url' => route( 'admin.model.edit', [
-                    $this->getFieldSet()->getController()->getSlug(),
-                    $model->{$model->getKeyName()}
+                    $this->getController()->getSlug(),
+                    $model->getKey()
                 ] ),
             ] );
         }
