@@ -3,7 +3,7 @@ module.exports = function(elixir){
     elixir(mix => {
 
         mix.scriptsIn(
-            'packages/CubeSystems/Leaf/resources/assets/javascripts/include/',
+            'vendor/cubesystems/leaf/resources/assets/javascripts/include/',
             'public/leaf/js/dependencies.min.js'
         );
 
@@ -16,7 +16,7 @@ module.exports = function(elixir){
                 '../ckeditor/ckeditor/adapters/jquery.js',
             ],
             'public/leaf/js/vendor.min.js',
-            'packages/CubeSystems/Leaf/vendor/components/'
+            'vendor/components/'
         );
 
         mix.scripts([
@@ -28,26 +28,26 @@ module.exports = function(elixir){
         );
 
         mix.copy(
-            'packages/CubeSystems/Leaf/resources/assets/javascripts/controllers/',
+            'vendor/cubesystems/leaf/resources/assets/javascripts/controllers/',
             'public/leaf/js/controllers/'
         );
 
         mix.sass(
             'application.scss',
             'public/leaf/css/application.css',
-            'packages/CubeSystems/Leaf/resources/assets/stylesheets/'
+            'vendor/cubesystems/leaf/resources/assets/stylesheets/'
         );
 
         mix.sass(
             'controllers/nodes.scss',
             'public/leaf/css/controllers/',
-            'packages/CubeSystems/Leaf/resources/assets/stylesheets/'
+            'vendor/cubesystems/leaf/resources/assets/stylesheets/'
         );
 
         mix.sass(
             'controllers/sessions.scss',
             'public/leaf/css/controllers/',
-            'packages/CubeSystems/Leaf/resources/assets/stylesheets/'
+            'vendor/cubesystems/leaf/resources/assets/stylesheets/'
         );
 
         mix.copy(
@@ -56,7 +56,7 @@ module.exports = function(elixir){
         );
 
         mix.copy(
-            'packages/CubeSystems/Leaf/resources/assets/images/',
+            'vendor/cubesystems/leaf/resources/assets/images/',
             'public/leaf/images/'
         );
 

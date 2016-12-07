@@ -17,7 +17,7 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom( base_path( 'packages/CubeSystems/Leaf/resources/views' ), 'leaf' );
+        $this->loadViewsFrom( base_path( 'vendor/CubeSystems/Leaf/resources/views' ), 'leaf' );
         $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
 
         $this->publishResources();
@@ -62,8 +62,8 @@ class LeafServiceProvider extends ServiceProvider
         ], 'config' );
 
         $this->publishes( [
-            __DIR__ . '/../../resources/views/' => base_path( 'resources/views/vendor/leaf/admin' ),
-        ], 'view' );
+            __DIR__ . '/../../gulpfile.js' => base_path( 'gulpfile.leaf.js' ),
+        ], 'assets' );
     }
 
     /**
