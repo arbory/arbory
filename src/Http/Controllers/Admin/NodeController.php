@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use ReflectionClass;
 
-class NodesController extends AdminController
+class NodeController extends AbstractCrudController
 {
     const TOOLBOX_TOOLS = 'tools';
 
@@ -127,7 +127,7 @@ class NodesController extends AdminController
      * @param Model $model
      * @param array $input
      */
-    public function afterCreate( Model $model, array $input = [ ] )
+    public function afterCreate( Model $model, array $input = [] )
     {
         $this->afterSave( $model, $input );
     }
@@ -136,7 +136,7 @@ class NodesController extends AdminController
      * @param Model $model
      * @param array $input
      */
-    public function afterUpdate( Model $model, array $input = [ ] )
+    public function afterUpdate( Model $model, array $input = [] )
     {
         $this->afterSave( $model, $input );
     }
@@ -145,7 +145,7 @@ class NodesController extends AdminController
      * @param Model $model
      * @param array $input
      */
-    public function afterSave( Model $model, array $input = [ ] )
+    public function afterSave( Model $model, array $input = [] )
     {
         /**
          * @var $model \Baum\Node
@@ -278,7 +278,7 @@ class NodesController extends AdminController
      */
     protected function contentTypesDialog()
     {
-        $types = [ ];
+        $types = [];
 
         $parentId = $this->app['request']->get( 'parent_id' );
 
@@ -346,7 +346,7 @@ class NodesController extends AdminController
         {
             case 'slug_generator':
                 return $this->generateSlug( $request );
-            break;
+                break;
         }
 
         $this->app->abort( \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST );
@@ -356,19 +356,19 @@ class NodesController extends AdminController
     {
         $reservedSlugs = [];
 
-        if( $request->get('parent_id') )
+        if( $request->get( 'parent_id' ) )
         {
             $reservedSlugs = Node::where( 'parent_id', $request->get( 'parent_id' ) )
-                ->pluck('slug')
+                ->pluck( 'slug' )
                 ->toArray();
         }
 
-        $name = $request->get('name');
+        $name = $request->get( 'name' );
         $slug = str_slug( $name );
 
-        if( in_array( $slug, $reservedSlugs, true ) && $request->has('id') )
+        if( in_array( $slug, $reservedSlugs, true ) && $request->has( 'id' ) )
         {
-            $slug = str_slug( $request->has('id') . '-' . $name );
+            $slug = str_slug( $request->has( 'id' ) . '-' . $name );
         }
 
         if( in_array( $slug, $reservedSlugs, true ) )

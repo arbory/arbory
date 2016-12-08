@@ -3,7 +3,7 @@
 namespace CubeSystems\Leaf\Fields;
 
 use Closure;
-use CubeSystems\Leaf\Http\Controllers\Admin\AdminController;
+use CubeSystems\Leaf\Http\Controllers\Admin\AbstractCrudController;
 use CubeSystems\Leaf\FieldSet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
@@ -63,7 +63,7 @@ abstract class AbstractField implements FieldInterface
     protected $model;
 
     /**
-     * @var AdminController
+     * @var AbstractCrudController
      */
     protected $controller;
 
@@ -294,7 +294,7 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
-     * @return AdminController
+     * @return AbstractCrudController
      */
     public function getController()
     {
@@ -302,7 +302,7 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
-     * @param AdminController $controller
+     * @param AbstractCrudController $controller
      * @return $this
      */
     public function setController( $controller )

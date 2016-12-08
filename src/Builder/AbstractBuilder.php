@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Builder;
 
-use CubeSystems\Leaf\Http\Controllers\Admin\AdminController;
+use CubeSystems\Leaf\Http\Controllers\Admin\AbstractCrudController;
 use CubeSystems\Leaf\FieldSet;
 use Eloquent;
 
@@ -23,7 +23,7 @@ abstract class AbstractBuilder
     protected $resource;
 
     /**
-     * @var AdminController
+     * @var AbstractCrudController
      */
     protected $controller;
 
@@ -71,7 +71,7 @@ abstract class AbstractBuilder
     }
 
     /**
-     * @return AdminController
+     * @return AbstractCrudController
      */
     public function getController()
     {
@@ -79,10 +79,10 @@ abstract class AbstractBuilder
     }
 
     /**
-     * @param AdminController $controller
+     * @param AbstractCrudController $controller
      * @return $this
      */
-    public function setController( AdminController $controller )
+    public function setController( AbstractCrudController $controller )
     {
         $this->controller = $controller;
 

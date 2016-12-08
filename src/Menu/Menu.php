@@ -2,6 +2,8 @@
 
 namespace CubeSystems\Leaf\Menu;
 
+use CubeSystems\Leaf\Support\AuthorizatorInterface;
+
 /**
  * Class Menu
  * @package CubeSystems\Leaf\Menu
@@ -14,9 +16,14 @@ class Menu
     protected $items;
 
     /**
+     * @var AuthorizatorInterface
+     */
+    protected $authorizator;
+
+    /**
      * @param array $items
      */
-    public function __construct( array $items = [ ] )
+    public function __construct( array $items = [] )
     {
         $this->addItems( $items );
     }
@@ -24,7 +31,7 @@ class Menu
     /**
      * @param array $items
      */
-    public function addItems( array $items = [ ] )
+    public function addItems( array $items = [] )
     {
         foreach( $items as $item )
         {
@@ -35,7 +42,7 @@ class Menu
     /**
      * @param array $values
      */
-    public function addItem( array $values = [ ] )
+    public function addItem( array $values = [] )
     {
         $this->items[] = new Item( $values );
     }

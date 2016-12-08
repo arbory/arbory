@@ -2,6 +2,8 @@
 
 namespace CubeSystems\Leaf\Menu;
 
+use Route;
+
 /**
  * Class Item
  * @package CubeSystems\Leaf\Menu
@@ -44,16 +46,27 @@ class Item
     protected $parent;
 
     /**
+     * @var boolean
+     */
+    protected $isVisible = true;
+
+    /**
+     * @var array
+     */
+    protected $allowedRoles = [];
+
+    /**
      * @param array $values
      */
-    public function __construct( array $values = [ ] )
+    public function __construct( array $values = [] )
     {
         $this->setTitle( array_get( $values, 'title' ) );
         $this->setRouteName( array_get( $values, 'route' ) );
         $this->setController( array_get( $values, 'controller' ) );
         $this->setSlug( array_get( $values, 'slug' ) );
         $this->setAbbreviation( array_get( $values, 'abbreviation' ) );
-        $this->setChildren( array_get( $values, 'items', [ ] ) );
+        $this->setChildren( array_get( $values, 'items', [] ) );
+        $this->setAllowedRoles( array_get( $values, 'roles', [] ) );
     }
 
     /**
@@ -126,7 +139,7 @@ class Item
      * @param array|null $children
      * @return $this
      */
-    public function setChildren( array $children = [ ] )
+    public function setChildren( array $children = [] )
     {
         foreach( $children as $child )
         {
@@ -215,6 +228,11 @@ class Item
      */
     public function getUrl()
     {
+        if( $this->routeName )
+        {
+            return route( $this->routeName );
+        }
+
         return route( $this->getRouteName(), [ 'model' => $this->getSlug() ] );
     }
 
@@ -223,6 +241,13 @@ class Item
      */
     public function getController()
     {
+        if( !$this->controller && $this->routeName )
+        {
+            $route = Route::getRoutes()->getByName( $this->routeName );
+
+            list( $this->controller ) = explode( '@', $route->getAction()['uses'] );
+        }
+
         return $this->controller;
     }
 
@@ -234,4 +259,55 @@ class Item
         return $this->children;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        if( method_exists( $this->controller, 'isVisibleInMenu' ) )
+        {
+            $controller = $this->controller;
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $result = $controller::isVisibleInMenu();
+        }
+        else
+        {
+            $result = $this->isVisible;
+        }
+
+        return $result;
+    }
+
+    /*
+     * 
+     */
+    public function accessibleChildren()
+    {
+        return app( 'authorizator' )->getAccessibleMenuItemChildrenRelation( $this );
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAccessible()
+    {
+        return app( 'authorizator' )->isMenuItemAccessible( $this );
+    }
+
+    /**
+     * @param array $roles
+     */
+    private function setAllowedRoles( $roles )
+    {
+        $this->allowedRoles = $roles;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllowedRoles()
+    {
+        return $this->allowedRoles;
+    }
 }

@@ -8,8 +8,9 @@ use CubeSystems\Leaf\Builder\IndexBuilder;
 use CubeSystems\Leaf\Menu\Item;
 use CubeSystems\Leaf\FieldSet;
 use CubeSystems\Leaf\Repositories\ResourcesRepository;
-use Eloquent;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 use Lang;
@@ -18,7 +19,7 @@ use Response;
 use Session;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-abstract class AdminController
+abstract class AbstractCrudController
 {
     /**
      * @var \Illuminate\Foundation\Application
@@ -29,6 +30,11 @@ abstract class AdminController
      * @var ResourcesRepository
      */
     protected $repository;
+
+    /**
+     * @var Model
+     */
+    protected $resource;
 
     /**
      * @var string
@@ -114,7 +120,7 @@ abstract class AdminController
     }
 
     /**
-     * @return Eloquent|string
+     * @return Model|string
      */
     public function getResource()
     {
@@ -252,7 +258,7 @@ abstract class AdminController
 
     /**
      * @param Request $request
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store( Request $request )
     {
@@ -308,7 +314,7 @@ abstract class AdminController
     /**
      * @param Request $request
      * @param $resourceId
-     * @return $this|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update( Request $request, $resourceId )
     {
@@ -328,7 +334,7 @@ abstract class AdminController
              * @var $result Validator
              */
 
-            $ajaxResponse = [ ];
+            $ajaxResponse = [];
 
             foreach( $result->errors()->getMessages() as $field => $errors )
             {
@@ -356,7 +362,7 @@ abstract class AdminController
 
     /**
      * @param $resourceId
-     * @return FormBuilder|\Illuminate\Http\RedirectResponse|null
+     * @return \Illuminate\Http\Response
      * @throws HttpException
      */
     public function destroy( $resourceId )
@@ -399,7 +405,7 @@ abstract class AdminController
 
         if( !$name || !method_exists( $this, $handler ) )
         {
-            $this->app->abort(\Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND);
+            $this->app->abort( \Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND );
 
             return null;
         }
@@ -412,7 +418,7 @@ abstract class AdminController
      */
     protected function toolboxDialog()
     {
-        $resourceId = $this->app['request']->get('id');
+        $resourceId = $this->app['request']->get( 'id' );
 
         return view( 'leaf::dialogs.toolbox', [
             'confirm_destroy_url' => route( 'admin.model.dialog', [
@@ -426,9 +432,9 @@ abstract class AdminController
     /**
      * @return \Illuminate\View\View
      */
-    protected function confirmDestroyDialog( )
+    protected function confirmDestroyDialog()
     {
-        $resourceId = $this->app['request']->get('id');
+        $resourceId = $this->app['request']->get( 'id' );
         $model = $this->repository->find( $resourceId );
         $slug = $this->getSlug();
 

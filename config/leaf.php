@@ -5,13 +5,8 @@ return [
     'menu' => [
         [
             'title' => 'Nodes',
-            'controller' => \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
+            'controller' => \CubeSystems\Leaf\Http\Controllers\Admin\NodeController::class,
         ],
-        [
-            'title' => 'Users',
-            'controller' => \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class,
-        ],
-
     ],
     'pagination' => [
         'items_per_page' => 15,
