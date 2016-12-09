@@ -6,10 +6,9 @@ use CubeSystems\Leaf\Fields\FieldInterface;
 use CubeSystems\Leaf\Repositories\ResourcesRepository;
 use CubeSystems\Leaf\Results\IndexResult;
 use CubeSystems\Leaf\Results\Row;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Class IndexBuilder
@@ -83,7 +82,7 @@ class IndexBuilder extends AbstractBuilder
     /**
      * @param Builder $queryBuilder
      * @param FieldInterface[]|array $fields
-     * @return array
+     * @return Builder
      */
     protected function handleSearchParams( Builder $queryBuilder, $fields )
     {
@@ -96,12 +95,15 @@ class IndexBuilder extends AbstractBuilder
 
         foreach( $keywords as $string )
         {
-            $queryBuilder->where( function( $query ) use ( $string, $fields )
+            $queryBuilder->where( function( Builder $query ) use ( $string, $fields )
             {
-                /** @var $query Builder */
                 foreach( $fields as $field )
                 {
-                    if( !$field->getName() )
+                    if(
+                        !$field->getName()
+                        ||
+                        !$field->isSearchable()
+                    )
                     {
                         continue;
                     }
@@ -120,7 +122,7 @@ class IndexBuilder extends AbstractBuilder
     protected function handlePagination( Builder $queryBuilder )
     {
         /**
-         * @var $paginator Paginator|AbstractPaginator
+         * @var $paginator LengthAwarePaginator
          */
 
         $paginator = $queryBuilder->paginate( $this->getItemsPerPage() );
