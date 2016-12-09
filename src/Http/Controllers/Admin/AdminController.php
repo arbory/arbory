@@ -26,6 +26,11 @@ abstract class AdminController
     protected $app;
 
     /**
+     * @var string
+     */
+    protected $resource;
+
+    /**
      * @var ResourcesRepository
      */
     protected $repository;
