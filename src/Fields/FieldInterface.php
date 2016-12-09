@@ -3,8 +3,7 @@
 namespace CubeSystems\Leaf\Fields;
 
 use Closure;
-use CubeSystems\Leaf\Http\Controllers\Admin\AdminController;
-use CubeSystems\Leaf\Results\Row;
+use CubeSystems\Leaf\Http\Controllers\Admin\AbstractCrudController;
 use CubeSystems\Leaf\FieldSet;
 use Illuminate\Database\Eloquent\Model;
 
@@ -106,12 +105,12 @@ interface FieldInterface
     public function setModel( $model );
 
     /**
-     * @return AdminController
+     * @return AbstractCrudController
      */
     public function getController();
 
     /**
-     * @param AdminController $controller
+     * @param AbstractCrudController $controller
      * @return $this
      */
     public function setController( $controller );
