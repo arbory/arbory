@@ -102,10 +102,6 @@ class LeafServiceProvider extends ServiceProvider
         $this->publishes( [
             __DIR__ . '/../../gulpfile.js' => base_path( 'gulpfile.leaf.js' ),
         ], 'assets' );
-
-        $this->publishes( [
-            __DIR__ . '/../../database/seeds/' => base_path( 'database/seeds' )
-        ], 'seeds' );
     }
 
     /**
@@ -117,7 +113,7 @@ class LeafServiceProvider extends ServiceProvider
         /**
          * @var $migrator Migrator
          */
-        $migrator = $this->app->make('migrator');
+        $migrator = $this->app->make( 'migrator' );
         $migrator->path( __DIR__ . '/../../database/migrations' );
     }
 
