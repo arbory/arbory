@@ -18,7 +18,7 @@ class CreateLeafFilesTable extends Migration
         {
             $table->uuid( 'id' );
             $table->string( 'owner_id' );
-            $table->string( 'owner_class' );
+            $table->string( 'owner_type' );
             $table->string( 'original_name' );
             $table->string( 'local_name' );
             $table->string( 'disk' );
@@ -27,7 +27,7 @@ class CreateLeafFilesTable extends Migration
             $table->timestamps();
 
             $table->index( 'owner_id' );
-            $table->index( 'owner_class' );
+            $table->index( 'owner_type' );
         } );
     }
 
