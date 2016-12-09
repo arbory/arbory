@@ -2,6 +2,7 @@
 
 use CubeSystems\Leaf\Menu\Menu;
 use Dimsav\Translatable\TranslatableServiceProvider;
+use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -21,7 +22,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
 
         $this->publishResources();
-        $this->publishMigrations();
+        $this->registerMigrations();
 
         $this->app->register( TranslatableServiceProvider::class );
         $this->app->register( LeafFileServiceProvider::class );
@@ -64,21 +65,23 @@ class LeafServiceProvider extends ServiceProvider
         $this->publishes( [
             __DIR__ . '/../../gulpfile.js' => base_path( 'gulpfile.leaf.js' ),
         ], 'assets' );
+
+        $this->publishes( [
+            __DIR__ . '/../../database/seeds/' => base_path( 'database/seeds' )
+        ], 'seeds' );
     }
 
     /**
      *
      * Publish migration file.
      */
-    private function publishMigrations()
+    private function registerMigrations()
     {
-        $this->publishes( [
-            __DIR__ . '/../../database/migrations/' => base_path( 'database/migrations' )
-        ], 'migrations' );
-
-        $this->publishes( [
-            __DIR__ . '/../../database/seeds/' => base_path( 'database/seeds' )
-        ], 'seeds' );
+        /**
+         * @var $migrator Migrator
+         */
+        $migrator = $this->app->make('migrator');
+        $migrator->path( __DIR__ . '/../../database/migrations' );
     }
 
 }
