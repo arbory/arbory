@@ -38,24 +38,9 @@ abstract class AbstractField implements FieldInterface
     protected $context;
 
     /**
-     * @var Closure
-     */
-    protected $before;
-
-    /**
-     * @var Closure
-     */
-    protected $after;
-
-    /**
      * @var FieldSet
      */
     protected $fieldSet;
-
-    /**
-     * @var Closure
-     */
-    protected $saveWith;
 
     /**
      * @var Model
@@ -100,6 +85,11 @@ abstract class AbstractField implements FieldInterface
      */
     public function getValue()
     {
+        if( $this->value === null )
+        {
+            $this->value = $this->getModel()->getAttribute( $this->getName() );
+        }
+
         return $this->value;
     }
 
@@ -202,33 +192,6 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
-     * @return Closure
-     */
-    public function getBefore()
-    {
-        return $this->before;
-    }
-
-    /**
-     * @param $before
-     * @return $this
-     */
-    public function setBefore( $before )
-    {
-        $this->before = $before;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasBefore()
-    {
-        return $this->before !== null;
-    }
-
-    /**
      * @return FieldSet
      */
     public function getFieldSet()
@@ -245,33 +208,6 @@ abstract class AbstractField implements FieldInterface
         $this->fieldSet = $fieldSet;
 
         return $this;
-    }
-
-    /**
-     * @return Closure
-     */
-    public function getSaveWith()
-    {
-        return $this->saveWith;
-    }
-
-    /**
-     * @param Closure $handler
-     * @return $this
-     */
-    public function setSaveWith( Closure $handler )
-    {
-        $this->saveWith = $handler;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasSaveWith()
-    {
-        return $this->saveWith !== null;
     }
 
     /**
@@ -315,11 +251,19 @@ abstract class AbstractField implements FieldInterface
     /**
      * @param Model $model
      * @param array $input
-     * @return null
      */
-    public function postUpdate( Model $model, array $input = [] )
+    public function beforeModelSave( Model $model, array $input = [] )
     {
-        return null;
+
+    }
+
+    /**
+     * @param Model $model
+     * @param array $input
+     */
+    public function afterModelSave( Model $model, array $input = [] )
+    {
+
     }
 
     /**

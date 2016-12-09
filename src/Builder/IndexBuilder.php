@@ -174,7 +174,7 @@ class IndexBuilder extends AbstractBuilder
 
     /**
      * @param Model $item
-     * @param array|FieldInterface[] $fields
+     * @param FieldInterface[] $fields
      * @return Row
      */
     public function buildRow( Model $item, $fields )
@@ -184,21 +184,10 @@ class IndexBuilder extends AbstractBuilder
         foreach( $fields as $field )
         {
             $field = clone $field;
-            $field->setListContext();
-
-            if( $field->hasBefore() )
-            {
-                $before = $field->getBefore();
-                $value = $before( $item );
-            }
-            else
-            {
-                $value = $item->{$field->getName()};
-            }
-
-            $field->setValue( $value );
-            $field->setModel( $item );
-            $field->setController( $this->getController() );
+            $field
+                ->setListContext()
+                ->setModel( $item )
+                ->setController( $this->getController() );
 
             $row->addField( $field );
         }

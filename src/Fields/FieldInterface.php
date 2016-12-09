@@ -84,22 +84,6 @@ interface FieldInterface
     public function isForList();
 
     /**
-     * @return \Closure|string
-     */
-    public function getBefore();
-
-    /**
-     * @param \Closure|string
-     * @return $this
-     */
-    public function setBefore( $before );
-
-    /**
-     * @return bool
-     */
-    public function hasBefore();
-
-    /**
      * @return FieldSet
      */
     public function getFieldSet();
@@ -109,22 +93,6 @@ interface FieldInterface
      * @return $this
      */
     public function setFieldSet( FieldSet $fieldSet );
-
-    /**
-     * @return Closure
-     */
-    public function getSaveWith();
-
-    /**
-     * @param Closure $handler
-     * @return $this
-     */
-    public function setSaveWith( Closure $handler );
-
-    /**
-     * @return bool
-     */
-    public function hasSaveWith();
 
     /**
      * @return Model
@@ -149,7 +117,19 @@ interface FieldInterface
     public function setController( $controller );
 
     /**
-     * @return string
+     * @param Model $model
+     * @param array $input
+     */
+    public function beforeModelSave( Model $model, array $input = [] );
+
+    /**
+     * @param $model
+     * @param $input
+     */
+    public function afterModelSave( Model $model, array $input = [] );
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function render();
 }

@@ -2,8 +2,8 @@
 
 namespace CubeSystems\Leaf\Builder;
 
-use Closure;
 use CubeSystems\Leaf\Fields\AbstractField;
+use CubeSystems\Leaf\Fields\FieldInterface;
 use CubeSystems\Leaf\Results\FormResult;
 use Illuminate\Database\Eloquent\Model;
 use Validator;
@@ -58,32 +58,8 @@ class FormBuilder extends AbstractBuilder
         foreach( $this->getFieldSet()->getFields() as $field )
         {
             $item = clone $field;
-            $name = $item->getName();
-
-            $value = $field->getValue();
-
-            if( $value === null )
-            {
-                $value = $model->{$name};
-            }
-
-            if( $item->hasBefore() )
-            {
-                $before = $item->getBefore();
-
-                if( $before instanceof Closure )
-                {
-                    $value = $before( $value );
-                }
-                else
-                {
-                    $value = $before;
-                }
-            }
-
             $item
                 ->setContext( AbstractField::CONTEXT_FORM )
-                ->setValue( $value )
                 ->setModel( $model )
                 ->setController( $this->getController() );
 
@@ -101,18 +77,13 @@ class FormBuilder extends AbstractBuilder
     {
         $input = array_get( $input, 'resource' );
 
+        $model = $this->getModel();
         $fieldSet = $this->getFieldSet();
         $controller = $this->getController();
-        $model = $this->getModel();
 
-        foreach( $fieldSet->getFields() as $field )
-        {
-            if( $field->hasSaveWith() )
-            {
-                $saveFunction = $field->getSaveWith();
-                $input[$field->getName()] = $saveFunction( $input[$field->getName()] );
-            }
-        }
+        $fieldSet->each( function ( FieldInterface $field ) use ( $model ) {
+            $field->setModel( $model );
+        } );
 
         if( method_exists( $controller, 'beforeCreate' ) )
         {
@@ -129,21 +100,20 @@ class FormBuilder extends AbstractBuilder
             }
         }
 
+        $fieldSet->triggerUpdate( $model, $input );
+
         if( method_exists( $controller, 'creating' ) )
         {
             $model = $controller->creating( $input );
         }
         else
         {
-            $model = $model::create( $input );
+            $model->fill( $input )->push();
         }
 
         $this->setModel( $model );
 
-        foreach( $fieldSet->getFields() as $field )
-        {
-            $field->postUpdate( $model, $input ); // TODO:
-        }
+        $fieldSet->triggerAfterSave( $model, $input );
 
         if( method_exists( $controller, 'afterCreate' ) )
         {
@@ -162,16 +132,12 @@ class FormBuilder extends AbstractBuilder
         $input = array_get( $input, 'resource' );
 
         $model = $this->getModel();
+        $fieldSet = $this->getFieldSet();
         $controller = $this->getController();
 
-        foreach( $this->getFieldSet()->getFields() as $field )
-        {
-            if( $field->hasSaveWith() )
-            {
-                $saveFunction = $field->getSaveWith();
-                $input[$field->getName()] = $saveFunction( $input[$field->getName()] );
-            }
-        }
+        $fieldSet->each( function ( FieldInterface $field ) use ( $model ) {
+            $field->setModel( $model );
+        } );
 
         if( method_exists( $controller, 'beforeUpdate' ) )
         {
@@ -188,19 +154,18 @@ class FormBuilder extends AbstractBuilder
             }
         }
 
+        $fieldSet->triggerUpdate( $model, $input );
+
         if( method_exists( $controller, 'updating' ) )
         {
             $controller->updating( $model, $input );
         }
         else
         {
-            $model->update( $input );
+            $model->fill( $input )->push();
         }
 
-        foreach( $this->getFieldSet()->getFields() as $field )
-        {
-            $field->postUpdate( $model, $input );
-        }
+        $fieldSet->triggerAfterSave( $model, $input );
 
         if( method_exists( $controller, 'afterUpdate' ) )
         {

@@ -33,7 +33,7 @@ class FieldSet extends Collection
     {
         $field->setFieldSet( $this );
 
-        $this->put( $field->getName(), $field );
+        $this->push( $field );
 
         return $field;
     }
@@ -58,4 +58,19 @@ class FieldSet extends Collection
         } )->first();
     }
 
+    public function triggerUpdate( $model, $input )
+    {
+        $this->each( function ( FieldInterface $field ) use ( $model, $input )
+        {
+            $field->beforeModelSave( $model, $input );
+        } );
+    }
+
+    public function triggerAfterSave( $model, $input )
+    {
+        $this->each( function ( FieldInterface $field ) use ( $model, $input )
+        {
+            $field->afterModelSave( $model, $input );
+        } );
+    }
 }
