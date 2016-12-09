@@ -2,146 +2,151 @@
 
 namespace CubeSystems\Leaf\Fields;
 
+use CubeSystems\Leaf\Builder\FormBuilder;
 use CubeSystems\Leaf\FieldSet;
+use Dimsav\Translatable\Translatable as TranslatableModel;
 use Illuminate\Database\Eloquent\Model;
 
-class Translatable extends AbstractRelationField
+class Translatable extends AbstractField
 {
-    private $fieldTitle = null;
-    private $locales = null;
+    /**
+     * @var FieldInterface
+     */
+    private $field;
 
-    public function __construct( callable $fieldSetCallback, $fieldTitle = null, $locales = null )
+    /**
+     * @var array
+     */
+    private $locales = [];
+
+    /**
+     * Translatable constructor.
+     * @param FieldInterface $field
+     */
+    public function __construct( FieldInterface $field )
     {
-        parent::__construct( 'translations', $fieldSetCallback );
-        $this->fieldTitle = $fieldTitle;
+        $this->field = $field;
+        $this->locales = (array) config( 'translatable.locales' );
 
-        $this->locales = $locales ?: config( 'translatable.locales' );
+        parent::__construct( 'translations' );
     }
 
-    public function canRemoveRelationItems()
+    /**
+     * @return TranslatableModel|Model
+     */
+    public function getModel()
     {
-        return false;
+        return $this->model;
     }
 
-    public function canAddRelationItem()
+    /**
+     * @param array $attributes
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function render( array $attributes = [] )
     {
-        return false;
-    }
-
-    public function render()
-    {
-        $fieldSet = $this->getRelationFieldSet();
-
-        $relations = [];
-
-        $translations = [];
-        $value = $this->getValue();
-        foreach( $value as $translation )
+        switch( $this->getContext() )
         {
-            $translations[$translation->locale] = $translation;
-        }
+            case static::CONTEXT_FORM:
+                return $this->getFormFieldOutput( $attributes );
+                break;
 
+            case static::CONTEXT_LIST:
+                return $this->getListFieldOutput( $attributes );
+                break;
+        }
+    }
+
+    /**
+     * @param array $attributes
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    protected function getFormFieldOutput( array $attributes = [] )
+    {
         $model = $this->getModel();
-        /* @var $model \Dimsav\Translatable\Translatable */
+
+        $fields = [];
 
         foreach( $this->locales as $locale )
         {
-            $translation = isset( $translations[$locale] )
-                ? $translations[$locale]
-                : $model->getNewTranslation( $locale );
+            $field = clone $this->field;
+            $field->setInputNamespace( $this->getName() . '_attributes.' . $locale );
 
-            $relations[$translation->locale] = $this->buildRelationForm(
-                $translation,
-                clone $fieldSet,
-                $this->getName() . '_attributes.' . $translation->locale
-            )->build();
+            $localizationModel = $model->translateOrNew( $locale );
+
+            $fieldSet = new FieldSet;
+            $fieldSet->add( $field );
+
+            $builder = new FormBuilder( $localizationModel );
+            $builder->setFieldSet( $fieldSet );
+
+            $fields[$locale] = $builder->build()->first();
         }
 
-        /** @noinspection PhpUndefinedFieldInspection */
-
         return view( $this->getViewName(), [
-            'field' => $this,
-            'field_title' => $this->fieldTitle,
-            'relations' => $relations,
-            'template' => $this->getRelationFromTemplate( $this->getTranslatableModel(), clone $fieldSet )
+            'name' => $this->field->getName(),
+            'locales' => $this->locales,
+            'locale' => app()->make('translator')->getLocale(),
+            'fields' => $fields,
+            'attributes' => $attributes,
         ] );
     }
 
     /**
-     * @param $relatedModel
-     * @param $fieldSet
-     * @return string
-     * @throws \Exception
-     * @throws \Throwable
+     * @param array $attributes
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
-    protected function getRelationFromTemplate( $relatedModel, $fieldSet )
+    protected function getListFieldOutput( array $attributes = [] )
     {
-        $formBuilder = $this->buildRelationForm(
-            $relatedModel,
-            clone $fieldSet,
-            $this->getName() . '_attributes' . '._template_'
-        );
+        // TODO: Move this functionality outside
 
-        return view( $this->getViewName() . '_fieldset', [
-            'name' => $this->getName(),
-            'index' => '_template_',
-            'fields' => $formBuilder->build()->getFields()
-        ] )->render();
-    }
+        $model = $this->getModel();
 
-    protected function getRelatedModel( $model )
-    {
-        return $model->{$this->getName()}();
+        $field = clone $this->field;
+        $field->setListContext();
+        $field->setModel( $model );
+        $field->setFieldSet( $this->getFieldSet() );
+        $field->setController( $this->getController() );
+
+        return $field->render( $attributes );
     }
 
     /**
-     * @param Model $model
+     * @param Model|TranslatableModel $model
      * @param array $input
-     * @return void
      */
-    public function postUpdate( Model $model, array $input = [] )
+    public function beforeModelSave( Model $model, array $input = [] )
     {
-        /**
-         * @var $translationsRelation \Illuminate\Database\Eloquent\Relations\HasMany
-         */
         $inputVariables = array_get( $input, $this->getName() . '_attributes' );
 
-        if( !$inputVariables )
+        foreach( $this->locales as $locale )
         {
-            return;
-        }
-        /* @var $model \Dimsav\Translatable\Translatable */
+            $value = array_get( $inputVariables, $locale . '.' . $this->field->getName(), [] );
 
-        $relation = $model->translations();
-        $relationForeignKey = $relation->getPlainForeignKey();
-        $relationForeignKeyValue = $model->getKey();
-
-        foreach( $inputVariables as $locale => $translationVariables )
-        {
             $translationModel = $model->translateOrNew( $locale );
+            $translationModel->setAttribute( $this->field->getName(), $value );
 
-            $translationVariables[$relationForeignKey] = $relationForeignKeyValue;
-            $translationModel->fill( $translationVariables );
-            $translationModel->save();
+            $this->field->beforeModelSave( $translationModel, [
+                $this->field->getName() => $value
+            ] );
         }
     }
 
-    public function getRelationFieldSet()
+    /**
+     * @param Model|TranslatableModel $model
+     * @param array $input
+     */
+    public function afterModelSave( Model $model, array $input = [] )
     {
-        $fieldSet = new FieldSet( get_class( $this->getTranslatableModel() ), $this->getFieldSet()->getController() );
-        $fieldSetCallback = $this->fieldSetCallback;
-        $fieldSetCallback( $fieldSet );
+        $inputVariables = array_get( $input, $this->getName() . '_attributes' );
 
-        return $fieldSet;
-    }
+        foreach( $this->locales as $locale )
+        {
+            $value = array_get( $inputVariables, $locale . '.' . $this->field->getName(), [] );
 
-    private function getTranslatableModel()
-    {
-        $modelClass = $this->getFieldSet()->getResource();
-        $model = new $modelClass;
-
-        $translatableModelClass = $model->translatableModel ?: $modelClass . 'Translation';
-
-        return new $translatableModelClass;
+            $this->field->afterModelSave( $model->translateOrNew( $locale ), [
+                $this->field->getName() => $value
+            ] );
+        }
     }
 }
