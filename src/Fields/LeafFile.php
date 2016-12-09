@@ -21,17 +21,21 @@ class LeafFile extends AbstractField
     {
         return view( $this->getViewName(), [
             'field' => $this,
-            'leaf_file' => $this->getModel()->getRelation( $this->getName() )
+            'leaf_file' => $this->getModel()->getAttribute( $this->getName() )
         ] );
     }
 
     /**
      * @param Model $model
      * @param array $input
-     * @return null
      */
-    public function postUpdate( Model $model, array $input = [] )
+    public function afterModelSave( Model $model, array $input = [] )
     {
+        /**
+         * @var $leafFilesRepository LeafFilesRepository
+         * @var $currentLeafFile \CubeSystems\Leaf\Files\LeafFile
+         */
+
         // TODO: Fix $input to have posted files somehow
         $allFiles = array_get( Input::allFiles(), 'resource' );
 
@@ -40,10 +44,7 @@ class LeafFile extends AbstractField
         if( $uploadedFile )
         {
             $leafFilesRepository = app( 'leaf_files' );
-            /* @var $leafFilesRepository LeafFilesRepository */
-
             $currentLeafFile = $model->{$this->getName()};
-            /* @var $currentLeafFile \CubeSystems\Leaf\Files\LeafFile */
 
             if( $currentLeafFile )
             {
@@ -51,12 +52,8 @@ class LeafFile extends AbstractField
             }
 
             $leafFile = app( 'leaf_files' )->createFromUploadedFile( $uploadedFile, $model );
-            /* @var $leafFile \CubeSystems\Leaf\Files\LeafFile */
 
-            $model->{$this->getName() . '_id'} = $leafFile->getId();
-            $model->save();
+            $model->{$this->getName()}()->associate( $leafFile );
         }
-
-        return null;
     }
 }
