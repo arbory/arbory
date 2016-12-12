@@ -21,11 +21,11 @@ class CreateNodesTable extends Migration
             $table->integer( 'lft' )->nullable();
             $table->integer( 'rgt' )->nullable();
             $table->integer( 'depth' )->nullable();
-            $table->string( 'content_type' );
-            $table->integer( 'content_id' );
-            $table->integer( 'item_position' );
-            $table->tinyInteger( 'active' );
-            $table->string( 'locale', 6 );
+            $table->string( 'content_type' )->nullable();
+            $table->integer( 'content_id' )->nullable();
+            $table->integer( 'item_position' )->nullable();
+            $table->tinyInteger( 'active' )->default( 0 );
+            $table->string( 'locale', 6 )->nullable();
             $table->timestamps();
         } );
     }
@@ -37,6 +37,6 @@ class CreateNodesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('nodes');
+        Schema::drop( 'nodes' );
     }
 }
