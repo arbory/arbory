@@ -42,7 +42,7 @@ class RoleController extends BaseController
     {
         $roles = $this->roleRepository->createModel()->all();
 
-        return view( 'Centaur::roles.index' )
+        return view( 'leaf::controllers.roles.index' )
             ->with( 'roles', $roles );
     }
 
@@ -51,7 +51,7 @@ class RoleController extends BaseController
      */
     public function create()
     {
-        return view( 'Centaur::roles.create' );
+        return view( 'leaf::controllers.roles.create' );
     }
 
     /**
@@ -107,7 +107,7 @@ class RoleController extends BaseController
 
         if( $role )
         {
-            return view( 'Centaur::roles.edit' )
+            return view( 'leaf::controllers.roles.edit' )
                 ->with( 'role', $role );
         }
 

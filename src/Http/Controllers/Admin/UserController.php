@@ -51,7 +51,7 @@ class UserController extends BaseController
     {
         $users = $this->userRepository->createModel()->with( 'roles' )->paginate( 15 );
 
-        return view( 'Centaur::users.index', [ 'users' => $users ] );
+        return view( 'leaf::controllers.users.index', [ 'users' => $users ] );
     }
 
     /**
@@ -61,7 +61,7 @@ class UserController extends BaseController
     {
         $roles = app()->make( 'sentinel.roles' )->createModel()->all();
 
-        return view( 'Centaur::users.create', [ 'roles' => $roles ] );
+        return view( 'leaf::controllers.users.create', [ 'roles' => $roles ] );
     }
 
     /**
@@ -118,7 +118,7 @@ class UserController extends BaseController
 
         $result->setMessage( "User {$request->get('email')} has been created." );
 
-        return $result->dispatch( route( 'users.index' ) );
+        return $result->dispatch( route( 'admin.users.index' ) );
     }
 
     /**
@@ -141,7 +141,7 @@ class UserController extends BaseController
 
         if( $user )
         {
-            return view( 'Centaur::users.edit', [
+            return view( 'leaf::controllers.users.edit', [
                 'user' => $user,
                 'roles' => $roles
             ] );
