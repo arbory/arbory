@@ -51,7 +51,7 @@ module.exports = function(elixir){
         );
 
         mix.copy(
-            'packages/CubeSystems/Leaf/vendor/ckeditor/ckeditor/',
+            'vendor/ckeditor/ckeditor/',
             'public/leaf/ckeditor/'
         );
 
