@@ -14,7 +14,7 @@ Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
 
     Route::resource( 'roles', 'Admin\RoleController', [ 'as' => 'admin' ] );
 
-    Route::get( '/dashboard', [
+    Route::get( 'dashboard', [
         'as' => 'admin.dashboard',
         'uses' => 'Admin\DashboardController@index'
     ] );
