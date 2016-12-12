@@ -218,18 +218,6 @@ class NodeController extends AbstractCrudController
             {
                 $field = clone $field;
                 $field->setListContext();
-
-                if( $field->hasBefore() )
-                {
-                    $before = $field->getBefore();
-                    $value = $before( $item );
-                }
-                else
-                {
-                    $value = $item->{$field->getName()};
-                }
-
-                $field->setValue( $value );
                 $field->setModel( $item );
                 $field->setController( $this );
 
