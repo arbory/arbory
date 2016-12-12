@@ -37,11 +37,6 @@ abstract class AbstractCrudController
     protected $repository;
 
     /**
-     * @var Model
-     */
-    protected $resource;
-
-    /**
      * @var string
      */
     protected $indexView = 'leaf::controllers.resource.index';
