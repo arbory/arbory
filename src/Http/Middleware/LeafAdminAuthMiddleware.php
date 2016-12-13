@@ -2,13 +2,13 @@
 
 namespace CubeSystems\Leaf\Http\Middleware;
 
+use Cartalyst\Sentinel\Sentinel;
 use Closure;
 use CubeSystems\Leaf\Menu\Item;
 use CubeSystems\Leaf\Menu\Menu;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Sentinel;
 
 /**
  * Class AdminMiddleware
@@ -16,6 +16,21 @@ use Sentinel;
  */
 class LeafAdminAuthMiddleware
 {
+    /**
+     * @var Sentinel
+     */
+    protected $sentinel;
+
+    /**
+     * LeafAdminAuthMiddleware constructor.
+     * @param Sentinel $sentinel
+     */
+    public function __construct( Sentinel $sentinel )
+    {
+        $this->sentinel = $sentinel;
+    }
+
+
     /**
      * Handle an incoming request.
      *
@@ -25,7 +40,7 @@ class LeafAdminAuthMiddleware
      */
     public function handle( $request, Closure $next )
     {
-        if( !Sentinel::check() )
+        if( !$this->sentinel->check() )
         {
             return $this->denied( $request );
         }

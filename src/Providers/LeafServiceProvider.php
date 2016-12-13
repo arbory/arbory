@@ -1,10 +1,15 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
-use Centaur\CentaurServiceProvider;
+use Cartalyst\Sentinel\Laravel\SentinelServiceProvider;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
+use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
+use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
+use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use Illuminate\Database\Migrations\Migrator;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Foundation\Application;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Route;
@@ -34,7 +39,19 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( TranslatableServiceProvider::class );
         $this->app->register( LeafFileServiceProvider::class );
 
-        $this->app->register( CentaurServiceProvider::class );
+        $this->app->register( SentinelServiceProvider::class );
+        $loader = AliasLoader::getInstance();
+        $loader->alias( 'Activation', 'Cartalyst\Sentinel\Laravel\Facades\Activation' );
+        $loader->alias( 'Reminder', 'Cartalyst\Sentinel\Laravel\Facades\Reminder' );
+        $loader->alias( 'Sentinel', 'Cartalyst\Sentinel\Laravel\Facades\Sentinel' );
+
+        $this->app->singleton(
+            \Cartalyst\Sentinel\Sentinel::class,
+            function ( Application $app )
+            {
+                return $app->make( 'sentinel' );
+            }
+        );
 
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {
@@ -51,6 +68,9 @@ class LeafServiceProvider extends ServiceProvider
         ];
 
         $router->middleware( 'leaf.admin_auth', LeafAdminAuthMiddleware::class );
+        $router->middleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
+        $router->middleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
+        $router->middleware( 'leaf.admin_has_access', LeafAdminHasAccessMiddleware::class );
 
         // TODO: change group name to 'default' or something like that
         $router->middlewareGroup( 'admin', $middleware );

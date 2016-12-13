@@ -2,7 +2,9 @@
 
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
-use Centaur\Replies\Reply;
+use Cartalyst\Sentinel\Roles\RoleInterface;
+use CubeSystems\Leaf\Services\AuthReply\Reply;
+use CubeSystems\Leaf\Services\AuthService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -10,7 +12,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Mail;
 use Sentinel;
-use Centaur\AuthManager;
 use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Users\IlluminateUserRepository;
 use Illuminate\Routing\Controller as BaseController;
@@ -29,17 +30,17 @@ class UserController extends BaseController
     protected $userRepository;
 
     /**
-     * @var AuthManager
+     * @var AuthService
      */
-    protected $authManager;
+    protected $authService;
 
     /**
-     * @param AuthManager $authManager
+     * @param AuthService $authService
      */
-    public function __construct( AuthManager $authManager )
+    public function __construct( AuthService $authService )
     {
         $this->userRepository = app()->make( 'sentinel.users' );
-        $this->authManager = $authManager;
+        $this->authService = $authService;
     }
 
     /**
@@ -84,7 +85,7 @@ class UserController extends BaseController
 
         $activate = (bool) $request->get( 'activate', false );
 
-        $result = $this->authManager->register( $credentials, $activate );
+        $result = $this->authService->register( $credentials, $activate );
         /* @var $result Reply */
 
         if( $result->isFailure() )
@@ -97,7 +98,7 @@ class UserController extends BaseController
             $code = $result->activation->getCode();
             $email = $result->user->email;
             Mail::queue(
-                'centaur.email.welcome',
+                'leaf.email.welcome',
                 [ 'code' => $code, 'email' => $email ],
                 function ( $message ) use ( $email )
                 {
@@ -109,9 +110,11 @@ class UserController extends BaseController
 
         foreach( $request->get( 'roles', [] ) as $slug => $id )
         {
+            /** @noinspection PhpUndefinedMethodInspection */
             $role = Sentinel::findRoleBySlug( $slug );
             if( $role )
             {
+                /* @var $role RoleInterface */
                 $role->users()->attach( $result->user );
             }
         }
