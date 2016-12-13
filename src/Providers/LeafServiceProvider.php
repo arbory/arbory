@@ -1,6 +1,8 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
-use Cartalyst\Sentinel\Laravel\SentinelServiceProvider;
+use Composer\Composer;
+use Composer\Factory;
+use Composer\IO\BufferIO;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
@@ -14,6 +16,8 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Route;
 use Sentinel;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Output\OutputInterface;
 use View;
 
 /**
@@ -39,11 +43,22 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( TranslatableServiceProvider::class );
         $this->app->register( LeafFileServiceProvider::class );
 
-        $this->app->register( SentinelServiceProvider::class );
+        $this->app->singleton(
+            \Composer\Composer::class,
+            function ()
+            {
+                return Factory::create(
+                    new BufferIO( '', OutputInterface::VERBOSITY_QUIET, new OutputFormatter( false ) )
+                );
+            }
+        );
+
+        $this->app->register( LeafSentinelServiceProvider::class );
+
         $loader = AliasLoader::getInstance();
-        $loader->alias( 'Activation', 'Cartalyst\Sentinel\Laravel\Facades\Activation' );
-        $loader->alias( 'Reminder', 'Cartalyst\Sentinel\Laravel\Facades\Reminder' );
-        $loader->alias( 'Sentinel', 'Cartalyst\Sentinel\Laravel\Facades\Sentinel' );
+        $loader->alias( 'Activation', \Cartalyst\Sentinel\Laravel\Facades\Activation::class );
+        $loader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
+        $loader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
 
         $this->app->singleton(
             \Cartalyst\Sentinel\Sentinel::class,
