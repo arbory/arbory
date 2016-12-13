@@ -111,34 +111,40 @@ class AuthService
     {
         try
         {
-            $exists = $this->sentinel->findUserByCredentials( $credentials );
-
-            if( $exists )
+            if( $this->sentinel->findUserByCredentials( $credentials ) )
             {
                 throw new InvalidArgumentException( 'Invalid credentials provided' );
             }
 
             $user = $this->sentinel->register( $credentials, $activation );
+
             if( !$activation )
             {
                 $activation = $this->activations->create( $user );
             }
+
+            if( $user )
+            {
+                $result = new SuccessReply(
+                    trans( 'registration_success', 'Registration complete' ),
+                    [ 'user' => $user, 'activation' => $activation ]
+                );
+            }
+            else
+            {
+                $result = new FailureReply(
+                    trans( 'registration_failed', 'Registration denied due to invalid credentials.' )
+                );
+            }
+
+            return $result;
         }
         catch( Exception $e )
         {
-            return $this->returnException( $e );
+            $result = $this->returnException( $e );
         }
 
-        if( $user )
-        {
-            $message = trans( 'registration_success', 'Registration complete' );
-
-            return new SuccessReply( $message, [ 'user' => $user, 'activation' => $activation ] );
-        }
-
-        $message = trans( 'registration_failed', 'Registration denied due to invalid credentials.' );
-
-        return new FailureReply( $message );
+        return $result;
     }
 
     /**
