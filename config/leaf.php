@@ -4,21 +4,25 @@ return [
     'uri' => 'admin',
     'menu' => [
         [
+            'controller' => \CubeSystems\Leaf\Http\Controllers\Admin\DashboardController::class,
+            'visible' => false,
+        ],
+        [
             'title' => 'Nodes',
             'controller' => \CubeSystems\Leaf\Http\Controllers\Admin\NodeController::class,
         ],
         [
             'title' => 'Users',
-            'items' =>[
+            'items' => [
                 [
                     'title' => 'Admin users',
                     'route' => 'admin.users.index',
-                    'roles' => [ 'users_admin' ]
+                    'roles' => [ 'administrator' ]
                 ],
                 [
                     'title' => 'Admin roles',
                     'route' => 'admin.roles.index',
-                    'roles' => [ 'roles_admin' ]
+                    'roles' => [ 'administrator' ]
                 ],
             ]
         ],
