@@ -2,8 +2,10 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-use CubeSystems\Leaf\Support\AuthorizatorInterface;
-
+/**
+ * Class Menu
+ * @package CubeSystems\Leaf\Menu
+ */
 /**
  * Class Menu
  * @package CubeSystems\Leaf\Menu
@@ -14,11 +16,6 @@ class Menu
      * @var Item[]
      */
     protected $items;
-
-    /**
-     * @var AuthorizatorInterface
-     */
-    protected $authorizator;
 
     /**
      * @param array $items
@@ -78,9 +75,13 @@ class Menu
      */
     public function findItemByController( $controller )
     {
+        $controller = ltrim( $controller, '\\' );
+
         return $this->findItemByCallback( $this->items(), function ( Item $item ) use ( $controller )
         {
-            if( $item->getController() === $controller )
+            $itemController = ltrim( $item->getController(), '\\' );
+
+            if( $itemController === $controller )
             {
                 return $item;
             }
@@ -116,4 +117,21 @@ class Menu
         return null;
     }
 
+    /**
+     *
+     */
+    public function visibleItems()
+    {
+        $result = [];
+
+        foreach( $this->items() as $item )
+        {
+            if( $item->isVisible() )
+            {
+                $result[] = $item;
+            }
+        }
+
+        return $result;
+    }
 }

@@ -6,7 +6,7 @@
     </div>
     <nav>
         <ul class="block">
-        @foreach( app('leaf.menu')->items() as $item )
+        @foreach( app('leaf.menu')->visibleItems() as $item )
             @if( !$item->hasChildren() )
                 <li data-name="">
                     <a class="trigger" href="{{$item->getUrl()}}">
