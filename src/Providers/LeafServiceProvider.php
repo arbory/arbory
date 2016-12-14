@@ -34,24 +34,18 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function boot( Router $router )
     {
-        $this->loadViewsFrom( base_path( 'vendor/CubeSystems/Leaf/resources/views' ), 'leaf' );
+        $this->registerComposerSingleton();
+
+        $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
         $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
 
-        $this->publishResources();
+        $this->registerResources();
         $this->registerMigrations();
 
         $this->app->register( TranslatableServiceProvider::class );
         $this->app->register( LeafFileServiceProvider::class );
 
-        $this->app->singleton(
-            \Composer\Composer::class,
-            function ()
-            {
-                return Factory::create(
-                    new BufferIO( '', OutputInterface::VERBOSITY_QUIET, new OutputFormatter( false ) )
-                );
-            }
-        );
+        $this->registerComposerSingleton();
 
         $this->app->register( LeafSentinelServiceProvider::class );
 
@@ -60,13 +54,7 @@ class LeafServiceProvider extends ServiceProvider
         $loader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
         $loader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
 
-        $this->app->singleton(
-            \Cartalyst\Sentinel\Sentinel::class,
-            function ( Application $app )
-            {
-                return $app->make( 'sentinel' );
-            }
-        );
+        $this->registerSentinelSingleton();
 
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {
@@ -128,10 +116,12 @@ class LeafServiceProvider extends ServiceProvider
     /**
      * Publish configuration file.
      */
-    private function publishResources()
+    private function registerResources()
     {
+        $configFilename = __DIR__ . '/../../config/leaf.php';
+
         $this->publishes( [
-            __DIR__ . '/../../config/leaf.php' => config_path( 'leaf.php' )
+            $configFilename => config_path( 'leaf.php' )
         ], 'config' );
 
         $this->publishes( [
@@ -152,4 +142,36 @@ class LeafServiceProvider extends ServiceProvider
         $migrator->path( __DIR__ . '/../../database/migrations' );
     }
 
+    /**
+     *
+     */
+    private function registerComposerSingleton()
+    {
+        $this->app->singleton(
+            \Composer\Composer::class,
+            function ( Application $app )
+            {
+                $factory = new Factory();
+                $io = new BufferIO( '', OutputInterface::VERBOSITY_QUIET, new OutputFormatter( false ) );
+                $composerJsonFilename = realpath( $app->basePath() . '/' . Factory::getComposerFile() );
+                $composer = $factory->createComposer( $io, $composerJsonFilename, false, $app->basePath(), true );
+
+                return $composer;
+            }
+        );
+    }
+
+    /**
+     *
+     */
+    private function registerSentinelSingleton()
+    {
+        $this->app->singleton(
+            \Cartalyst\Sentinel\Sentinel::class,
+            function ( Application $app )
+            {
+                return $app->make( 'sentinel' );
+            }
+        );
+    }
 }
