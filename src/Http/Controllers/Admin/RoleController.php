@@ -3,13 +3,13 @@
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
 use Cartalyst\Sentinel\Roles\IlluminateRoleRepository;
+use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
-use Sentinel;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -26,13 +26,19 @@ class RoleController extends BaseController
      */
     protected $roleRepository;
 
+    /**
+     * @var Sentinel
+     */
+    protected $sentinel;
 
     /**
      * RoleController constructor.
+     * @param Sentinel $sentinel
      */
-    public function __construct()
+    public function __construct( Sentinel $sentinel )
     {
         $this->roleRepository = app()->make( 'sentinel.roles' );
+        $this->sentinel = $sentinel;
     }
 
     /**
@@ -65,7 +71,7 @@ class RoleController extends BaseController
             'slug' => 'required|alpha_dash|unique:roles',
         ] );
 
-        $role = Sentinel::getRoleRepository()->createModel()->create( [
+        $role = $this->sentinel->getRoleRepository()->createModel()->create( [
             'name' => trim( $request->get( 'name' ) ),
             'slug' => trim( $request->get( 'slug' ) ),
         ] );

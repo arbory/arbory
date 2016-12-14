@@ -148,7 +148,7 @@ class ResourceController extends Controller
      * @return string
      * @throws HttpException
      */
-    protected function findControllerBySlug( $slug )
+    public function findControllerBySlug( $slug )
     {
         /**
          * @var $menuItem Item

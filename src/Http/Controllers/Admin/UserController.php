@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
 use Cartalyst\Sentinel\Roles\RoleInterface;
+use Cartalyst\Sentinel\Sentinel;
 use CubeSystems\Leaf\Services\AuthReply\Reply;
 use CubeSystems\Leaf\Services\AuthService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -11,7 +12,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Mail;
-use Sentinel;
 use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Users\IlluminateUserRepository;
 use Illuminate\Routing\Controller as BaseController;
@@ -35,12 +35,19 @@ class UserController extends BaseController
     protected $authService;
 
     /**
-     * @param AuthService $authService
+     * @var Sentinel
      */
-    public function __construct( AuthService $authService )
+    protected $sentinel;
+
+    /**
+     * @param AuthService $authService
+     * @param Sentinel $sentinel
+     */
+    public function __construct( AuthService $authService, Sentinel $sentinel )
     {
         $this->userRepository = app()->make( 'sentinel.users' );
         $this->authService = $authService;
+        $this->sentinel = $sentinel;
     }
 
     /**
@@ -111,7 +118,7 @@ class UserController extends BaseController
         foreach( $request->get( 'roles', [] ) as $slug => $id )
         {
             /** @noinspection PhpUndefinedMethodInspection */
-            $role = Sentinel::findRoleBySlug( $slug );
+            $role = $this->sentinel->findRoleBySlug( $slug );
             if( $role )
             {
                 /* @var $role RoleInterface */
@@ -217,7 +224,7 @@ class UserController extends BaseController
         $user = $this->userRepository->findById( $id );
 
         // Check to be sure user cannot delete himself
-        if( Sentinel::getUser()->id == $user->id )
+        if( $this->sentinel->getUser()->id == $user->id )
         {
             $message = 'You cannot remove yourself!';
 
