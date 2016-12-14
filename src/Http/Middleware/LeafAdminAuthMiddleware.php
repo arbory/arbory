@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Http\Middleware;
 
 use Cartalyst\Sentinel\Sentinel;
 use Closure;
+use CubeSystems\Leaf\Http\Controllers\Admin\ResourceController;
 use CubeSystems\Leaf\Menu\Item;
 use CubeSystems\Leaf\Menu\Menu;
 use Illuminate\Http\JsonResponse;
@@ -45,7 +46,18 @@ class LeafAdminAuthMiddleware
             return $this->denied( $request );
         }
 
-        $controllerClass = '\\' . get_class( $request->route()->getController() );
+        $controller = $request->route()->getController();
+
+        if( $controller instanceof ResourceController )
+        {
+            $slug = $request->route()->getParameter( 'model' );
+
+            $controllerClass = $controller->findControllerBySlug( $slug );
+        }
+        else
+        {
+            $controllerClass = '\\' . get_class( $controller );
+        }
 
         /* @var $menu Menu */
         $menu = app( 'leaf.menu' );
@@ -73,14 +85,21 @@ class LeafAdminAuthMiddleware
     {
         $authorized = false;
 
-        foreach( $menuItem->getAllowedRoles() as $role )
+        if( count( $menuItem->getAllowedRoles() ) )
         {
-            /** @noinspection PhpUndefinedMethodInspection */
-            if( Sentinel::inRole( $role ) )
+            foreach( $menuItem->getAllowedRoles() as $role )
             {
-                $authorized = true;
-                break;
+                /** @noinspection PhpUndefinedMethodInspection */
+                if( $this->sentinel->inRole( $role ) )
+                {
+                    $authorized = true;
+                    break;
+                }
             }
+        }
+        else
+        {
+            $authorized = true;
         }
 
         return $authorized;

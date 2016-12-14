@@ -22,6 +22,14 @@ class LeafSentinelServiceProvider extends SentinelServiceProvider
     }
 
     /**
+     * @return string
+     */
+    private function getSentinelPath()
+    {
+        return base_path( '/vendor/cartalyst/sentinel/' );
+    }
+
+    /**
      * @param string $packageName
      * @return string|null
      */
@@ -32,6 +40,7 @@ class LeafSentinelServiceProvider extends SentinelServiceProvider
 
         $repositoryManager = $composer->getRepositoryManager();
         $installationManager = $composer->getInstallationManager();
+
         $localRepository = $repositoryManager->getLocalRepository();
 
         $packages = $localRepository->getPackages();
@@ -56,15 +65,12 @@ class LeafSentinelServiceProvider extends SentinelServiceProvider
      */
     protected function prepareResources()
     {
-        $sentinelPath = $this->getComposerPackagePath( 'cartalyst/sentinel' );
+        $configFilename = $this->getSentinelPath() . '/src/config/config.php';
 
-        // Publish config
-        $config = realpath( $sentinelPath . '/src//config/config.php' );
-
-        $this->mergeConfigFrom( $config, 'cartalyst.sentinel' );
+        $this->mergeConfigFrom( $configFilename, 'cartalyst.sentinel' );
 
         $this->publishes( [
-            $config => config_path( 'cartalyst.sentinel.php' ),
+            $configFilename => config_path( 'cartalyst.sentinel.php' ),
         ], 'config' );
     }
 
@@ -73,8 +79,7 @@ class LeafSentinelServiceProvider extends SentinelServiceProvider
      */
     protected function registerMigrations()
     {
-        $sentinelPath = $this->getComposerPackagePath( 'cartalyst/sentinel' );
-        $path = realpath( $sentinelPath . '/src/migrations' );
+        $path = realpath( $this->getSentinelPath() . '/src/migrations' );
 
         /**
          * @var $migrator Migrator
