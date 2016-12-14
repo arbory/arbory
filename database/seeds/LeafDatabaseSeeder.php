@@ -26,7 +26,6 @@ class LeafDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Create Users
         DB::table( 'users' )->truncate();
 
         $admin = $this->sentinel->getUserRepository()->create( [
@@ -48,7 +47,10 @@ class LeafDatabaseSeeder extends Seeder
         $code = Activation::create( $user )->code;
         Activation::complete( $user, $code );
 
-        // Create Roles
+        DB::table( 'roles' )->truncate();
+
+        DB::table( 'role_users' )->truncate();
+
         $administratorRole = $this->sentinel->getRoleRepository()->create( [
             'name' => 'Administrator',
             'slug' => 'administrator',

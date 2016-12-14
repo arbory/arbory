@@ -3,6 +3,7 @@
 use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\BufferIO;
+use CubeSystems\Leaf\Console\Commands\SeedCommand;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
@@ -35,6 +36,7 @@ class LeafServiceProvider extends ServiceProvider
     public function boot( Router $router )
     {
         $this->registerComposerSingleton();
+        $this->registerSentinelSingleton();
 
         $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
         $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
@@ -44,9 +46,6 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->app->register( TranslatableServiceProvider::class );
         $this->app->register( LeafFileServiceProvider::class );
-
-        $this->registerComposerSingleton();
-
         $this->app->register( LeafSentinelServiceProvider::class );
 
         $loader = AliasLoader::getInstance();
@@ -54,38 +53,14 @@ class LeafServiceProvider extends ServiceProvider
         $loader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
         $loader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
 
-        $this->registerSentinelSingleton();
-
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {
             $view->with( 'user', Sentinel::getUser( true ) );
         } );
 
-        $middleware = [
-            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ];
+        $this->registerRoutesAndMiddlewares( $router );
 
-        $router->middleware( 'leaf.admin_auth', LeafAdminAuthMiddleware::class );
-        $router->middleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
-        $router->middleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
-        $router->middleware( 'leaf.admin_has_access', LeafAdminHasAccessMiddleware::class );
-
-        // TODO: change group name to 'default' or something like that
-        $router->middlewareGroup( 'admin', $middleware );
-
-        Route::group( [
-            'middleware' => 'admin',
-            'namespace' => '\CubeSystems\Leaf\Http\Controllers',
-            'prefix' => config( 'leaf.uri' )
-        ], function ()
-        {
-            include __DIR__ . '/../../routes/admin.php';
-        } );
+        $this->registerCommands();
     }
 
     /**
@@ -173,5 +148,47 @@ class LeafServiceProvider extends ServiceProvider
                 return $app->make( 'sentinel' );
             }
         );
+    }
+
+    /**
+     * @param Router $router
+     */
+    private function registerRoutesAndMiddlewares( Router $router )
+    {
+        $middleware = [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ];
+
+        $router->middleware( 'leaf.admin_auth', LeafAdminAuthMiddleware::class );
+        $router->middleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
+        $router->middleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
+        $router->middleware( 'leaf.admin_has_access', LeafAdminHasAccessMiddleware::class );
+
+        // TODO: change group name to 'default' or something like that
+        $router->middlewareGroup( 'admin', $middleware );
+
+        Route::group( [
+            'middleware' => 'admin',
+            'namespace' => '\CubeSystems\Leaf\Http\Controllers',
+            'prefix' => config( 'leaf.uri' )
+        ], function ()
+        {
+            include __DIR__ . '/../../routes/admin.php';
+        } );
+    }
+
+    private function registerCommands()
+    {
+        $this->app->singleton( 'leaf.seed', function ( $app )
+        {
+            return new SeedCommand( $app['db'] );
+        } );
+
+        $this->commands( 'leaf.seed' );
     }
 }
