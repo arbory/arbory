@@ -2,9 +2,9 @@
 
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
-use Centaur\AuthManager;
-use Centaur\Replies\Reply;
 use CubeSystems\Leaf\Http\Requests\LoginRequest;
+use CubeSystems\Leaf\Services\AuthReply\Reply;
+use CubeSystems\Leaf\Services\AuthService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,23 +15,27 @@ use Illuminate\Support\Facades\Redirect;
 use View;
 use Illuminate\Routing\Controller as BaseController;
 
+/**
+ * Class SessionController
+ * @package CubeSystems\Leaf\Http\Controllers\Admin
+ */
 class SessionController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * @var AuthManager
+     * @var AuthService
      */
-    protected $authManager;
+    protected $authService;
 
     /**
-     * @param AuthManager $authManager
+     * @param AuthService $authService
      */
-    public function __construct( AuthManager $authManager )
+    public function __construct( AuthService $authService )
     {
-        $this->middleware( 'sentinel.guest', [ 'except' => 'postLogout' ] );
+        $this->middleware( 'leaf.admin_quest', [ 'except' => 'postLogout' ] );
 
-        $this->authManager = $authManager;
+        $this->authService = $authService;
     }
 
     /**
@@ -56,7 +60,7 @@ class SessionController extends BaseController
         $remember = (bool) $request->get( 'remember', false );
 
         /* @var $result Reply */
-        $result = $this->authManager->authenticate( $credentials, $remember );
+        $result = $this->authService->authenticate( $credentials, $remember );
 
         if( $result->isFailure() )
         {
@@ -84,7 +88,7 @@ class SessionController extends BaseController
     public function postLogout()
     {
         /* @var $result Reply */
-        $this->authManager->logout( null, null );
+        $this->authService->logout( null, null );
 
         return redirect( route( 'admin.login.form' ) );
     }

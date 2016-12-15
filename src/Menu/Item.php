@@ -66,6 +66,7 @@ class Item
         $this->setSlug( array_get( $values, 'slug' ) );
         $this->setAbbreviation( array_get( $values, 'abbreviation' ) );
         $this->setChildren( array_get( $values, 'items', [] ) );
+        $this->setIsVisible( array_get( $values, 'visible', true ) );
         $this->setAllowedRoles( array_get( $values, 'roles', [] ) );
     }
 
@@ -309,5 +310,13 @@ class Item
     public function getAllowedRoles()
     {
         return $this->allowedRoles;
+    }
+
+    /**
+     * @param bool $isVisible
+     */
+    private function setIsVisible( $isVisible )
+    {
+        $this->isVisible = $isVisible;
     }
 }

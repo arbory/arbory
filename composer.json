@@ -19,7 +19,8 @@
         "ckeditor/ckeditor": "4.5.*",
         "alsofronie/eloquent-uuid": "^1.0.5",
         "dimsav/laravel-translatable": "^6.0",
-        "srlabs/centaur": "3.*"
+        "cartalyst/sentinel": "^2.0.13",
+        "composer/composer": "1.*@alpha"
     },
     "autoload": {
         "psr-4": { "CubeSystems\\Leaf\\": "src" },
