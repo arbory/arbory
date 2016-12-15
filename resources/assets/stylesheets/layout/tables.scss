@@ -35,7 +35,7 @@
         text-decoration: none;
         color: $color-text-normal;
         display: inline-block;
-        height: 100%;
+        min-height: 100%;
         width: 100%;
 
         &:empty

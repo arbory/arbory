@@ -2,15 +2,12 @@
 
 namespace CubeSystems\Leaf\Fields;
 
+use CubeSystems\Leaf\Html\Elements\Content;
 use CubeSystems\Leaf\Html\Elements\Div;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Elements\Inputs\Input;
 
-/**
- * Class Text
- * @package CubeSystems\Leaf\Fields
- */
-class Text extends AbstractField
+class Password extends AbstractField
 {
     public function __toString()
     {
@@ -19,7 +16,7 @@ class Text extends AbstractField
 
     /**
      * @param array $attributes
-     * @return Element
+     * @return Content
      */
     public function render( array $attributes = [] )
     {
@@ -29,15 +26,23 @@ class Text extends AbstractField
         }
         elseif( $this->isForForm() )
         {
-            $input = new Input;
-            $input->setName( $this->getNameSpacedName() );
-            $input->setValue( $this->getValue() );
+            $input = new Input( $this->getNameSpacedName(), '' );
+            $input->setType( 'password' );
             $input->addClass( 'text' );
 
-            return ( new Div )
-                ->append( ( new Div( $input->label( $this->getLabel() ) ) )->addClass( 'label-wrap' ) )
-                ->append( ( new Div( $input ) )->addClass( 'value' ) )
-                ->addClass( 'field type-text' );
+            $content = new Content;
+
+            $content->push( ( new Div )
+                ->append(( new Div( $input->label( $this->getLabel() ) ) )->addClass( 'label-wrap' ))
+                ->append(( new Div( $input ) )->addClass( 'value' ))
+                ->addClass( 'field type-password' ) );
+
+            $content->push( ( new Div )
+                ->append(( new Div( $input->label( $this->getLabel() ) ) )->addClass( 'label-wrap' ))
+                ->append(( new Div( $input->setName( $this->getNameSpacedName() . '_confirmation' ) ) )->addClass( 'value' ))
+                ->addClass( 'field type-password' ) );
+
+            return $content;
         }
     }
 

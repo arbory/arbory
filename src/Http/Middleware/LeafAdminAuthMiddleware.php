@@ -30,22 +30,22 @@ class LeafAdminAuthMiddleware
             return $this->denied( $request );
         }
 
-        $controllerClass = '\\' . get_class( $request->route()->getController() );
-
-        /* @var $menu Menu */
-        $menu = app( 'leaf.menu' );
-
-        $menuItem = $menu->findItemByController( $controllerClass );
-
-        if( !$menuItem )
-        {
-            throw new \RuntimeException( 'Could not find menu item for controller' );
-        }
-
-        if( !$this->userHasMatchingRole( $menuItem ) )
-        {
-            return $this->denied( $request );
-        }
+//        $controllerClass = '\\' . get_class( $request->route()->getController() );
+//
+//        /* @var $menu Menu */
+//        $menu = app( 'leaf.menu' );
+//
+//        $menuItem = $menu->findItemByController( $controllerClass );
+//
+//        if( !$menuItem )
+//        {
+//            throw new \RuntimeException( 'Could not find menu item for controller' );
+//        }
+//
+//        if( !$this->userHasMatchingRole( $menuItem ) )
+//        {
+//            return $this->denied( $request );
+//        }
 
         return $next( $request );
     }

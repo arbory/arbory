@@ -8,7 +8,5 @@
         </div>
     </div>
 @else
-    <a href="{{$url}}" class="@if(array_key_exists('class',$attributes)){{$attributes['class']}} @endif">
-        <span>{{$field->getValue()}}</span>
-    </a>
+    <a href="{{$url}}" class="@if(array_key_exists('class',$attributes)){{$attributes['class']}} @endif"><span>{{$field->getValue()}}</span></a>
 @endif

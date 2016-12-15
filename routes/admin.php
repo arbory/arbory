@@ -10,9 +10,9 @@ Route::post( 'logout', [ 'as' => 'admin.logout', 'uses' => 'Admin\SessionControl
 
 Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
 {
-    Route::resource( 'users', 'Admin\UserController', [ 'as' => 'admin' ] );
-
-    Route::resource( 'roles', 'Admin\RoleController', [ 'as' => 'admin' ] );
+//    Route::resource( 'users', 'Admin\UserController', [ 'as' => 'admin' ] );
+//
+//    Route::resource( 'roles', 'Admin\RoleController', [ 'as' => 'admin' ] );
 
     Route::get( 'dashboard', [
         'as' => 'admin.dashboard',

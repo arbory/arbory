@@ -42,7 +42,7 @@ class Row
      */
     public function addField( FieldInterface $field )
     {
-        $this->fields[$field->getName()] = $field;
+        $this->fields[] = $field;
     }
 
     /**
@@ -52,21 +52,6 @@ class Row
     {
         return $this->fields;
     }
-
-    /**
-     * @param $name
-     * @return FieldInterface|null
-     */
-    public function getFieldByName( $name )
-    {
-        if( array_key_exists( $name, $this->fields ) )
-        {
-            return $this->fields[$name];
-        }
-
-        return null;
-    }
-
 
     /**
      * @return mixed

@@ -292,6 +292,16 @@ abstract class AbstractField implements FieldInterface
 
     protected $inputNamespace;
 
+    public function getNameSpacedName()
+    {
+        $nameParts[] = 'resource';
+
+        $nameParts = array_merge( $nameParts, preg_split( '/\./', $this->inputNamespace, NULL, PREG_SPLIT_NO_EMPTY ) );
+        $nameParts[] = $this->getName();
+
+        return implode( '.', $nameParts );
+    }
+
     public function getInputName()
     {
         $nameParts = preg_split( '/\./', $this->inputNamespace, NULL, PREG_SPLIT_NO_EMPTY );

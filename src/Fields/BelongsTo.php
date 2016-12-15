@@ -2,6 +2,8 @@
 
 namespace CubeSystems\Leaf\Fields;
 
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * Class BelongsTo
  * @package CubeSystems\Leaf\Fields
@@ -60,7 +62,7 @@ class BelongsTo extends AbstractField
     }
 
     /**
-     * @return \Eloquent
+     * @return Model
      */
     protected function getRelatedModel()
     {
@@ -68,7 +70,7 @@ class BelongsTo extends AbstractField
     }
 
     /**
-     * @param \Eloquent $relatedModel
+     * @param Model $relatedModel
      * @return array
      */
     protected function getRelatedModelOptions( $relatedModel )

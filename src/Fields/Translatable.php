@@ -4,6 +4,11 @@ namespace CubeSystems\Leaf\Fields;
 
 use CubeSystems\Leaf\Builder\FormBuilder;
 use CubeSystems\Leaf\FieldSet;
+use CubeSystems\Leaf\Html\Elements\Attributes;
+use CubeSystems\Leaf\Html\Elements\Button;
+use CubeSystems\Leaf\Html\Elements\Div;
+use CubeSystems\Leaf\Html\Html;
+use CubeSystems\Leaf\Html\Tag;
 use Dimsav\Translatable\Translatable as TranslatableModel;
 use Illuminate\Database\Eloquent\Model;
 
@@ -59,13 +64,14 @@ class Translatable extends AbstractField
 
     /**
      * @param array $attributes
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     protected function getFormFieldOutput( array $attributes = [] )
     {
         $model = $this->getModel();
 
         $fields = [];
+
+        $localizedFields = [];
 
         foreach( $this->locales as $locale )
         {
@@ -81,7 +87,121 @@ class Translatable extends AbstractField
             $builder->setFieldSet( $fieldSet );
 
             $fields[$locale] = $builder->build()->first();
+
+
+
+//            $localizedFieldBlock = ( new Div( [] ) )->addClass( 'localization active' );
+//            $localizedFieldBlock->attributes()->put('data-locale',$locale);
+//
+//            $localizedFields[] = $localizedFieldBlock;
         }
+
+
+
+
+//        foreach( $this->locales as $locale )
+//        {
+//
+//
+//        }
+
+
+
+//        $switch = ( new Div() )->addClass('localization-switch');
+
+//        new Button();
+
+
+
+//        Html::ul([
+//            Html::li(
+//                Html::button()->setName('button')->setContent('lv')
+//            )
+//            Html::li(
+//                Html::button()->setName('button')->setContent('lv')
+//            )
+//        ]);
+
+
+
+
+
+        dd( (string) Html::div()
+            ->append( Html::div()
+                ->append(Html::div('Sūds 1'))
+            )
+            ->append( Html::div(
+                'Sūds 2'
+//                Html::button()->setName('button')->setContent('en')
+            )) );
+
+
+
+
+        $languages = [];
+
+        foreach( $this->locales as $locale )
+        {
+            $button = new Tag( 'button' );
+            $button->setAttributes( new Attributes( [
+                'name' => 'button',
+                'data-locale' => $locale,
+            ] ) );
+            $button->setContent( $locale );
+
+            $listElement = new Tag( 'li' );
+            $listElement->setContent( $button );
+
+            $languages[] = $listElement;
+        }
+
+        $list = new Tag( 'ul' );
+        $list->setContent( $languages );
+
+        $localizationMenu = new Tag( 'menu' );
+        $localizationMenu->setAttributes( new Attributes( [
+            'class' => 'localization-menu-items',
+            'type' => 'toolbar',
+        ] ) );
+        $localizationMenu->setContent( $list );
+
+        dd( (string) $localizationMenu );
+
+//        return ( new Div( [
+//            ( new Div( $input->label( $this->getLabel() ) ) )->addClass( 'label-wrap' ),
+//            ( new Div( $input ) )->addClass( 'value' ),
+//        ] ) )->addClass( 'field type-text i18n' );
+
+
+
+
+//<div class="field type-text i18n" data-name="{{$name}}"> {{-- TODO: Field type --}}
+//    @foreach($fields as $fieldLocale => $localizedField)
+//        <div class="localization @if($fieldLocale===$locale) active @endif " data-locale="{{$fieldLocale}}">
+//            {!! $localizedField->render() !!}
+//        </div>
+//    @endforeach
+//    <div class="localization-switch">
+//        <button name="button" type="button" title="Pārslēgt valodu" class="trigger">{{-- TODO: Translate title --}}
+//            <span class="label">{{$locale}}</span>
+//            <i class="fa fa-chevron-down"></i>
+//        </button>
+//        <menu class="localization-menu-items" type="toolbar">
+//            <ul>
+//    @foreach( $locales as $locale )
+//                    <li>
+//                        <button type="button" data-locale="{{$locale}}">{{$locale}}</button>
+//                    </li>
+//    @endforeach
+//            </ul>
+//        </menu>
+//    </div>
+//</div>
+
+
+
+
+
 
         return view( $this->getViewName(), [
             'name' => $this->field->getName(),
