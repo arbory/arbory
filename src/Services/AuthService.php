@@ -64,12 +64,12 @@ class AuthService
         if( $user )
         {
             $message = request()->ajax() ?
-                trans( 'leaf.session_initated', 'You have been authenticated.' ) : null;
+                trans( 'leaf.session_initated', [ 'You have been authenticated.' ] ) : null;
 
             return new SuccessReply( $message );
         }
 
-        $message = trans( 'failed_authorization', 'Access denied due to invalid credentials.' );
+        $message = trans( 'failed_authorization', [ 'Access denied due to invalid credentials.' ] );
 
         return new FailureReply( $message );
     }
@@ -92,12 +92,12 @@ class AuthService
 
         if( !$this->sentinel->check() )
         {
-            $message = trans( 'user_logout', 'You have been logged out' );
+            $message = trans( 'user_logout', [ 'You have been logged out' ] );
 
             return new SuccessReply( $message );
         }
 
-        $message = trans( 'generic_problem', 'There was a problem. Please contact a site administrator.' );
+        $message = trans( 'generic_problem', [ 'There was a problem. Please contact a site administrator.' ] );
 
         return new FailureReply( $message );
     }
@@ -126,14 +126,14 @@ class AuthService
             if( $user )
             {
                 $result = new SuccessReply(
-                    trans( 'registration_success', 'Registration complete' ),
+                    trans( 'registration_success', [ 'Registration complete' ] ),
                     [ 'user' => $user, 'activation' => $activation ]
                 );
             }
             else
             {
                 $result = new FailureReply(
-                    trans( 'registration_failed', 'Registration denied due to invalid credentials.' )
+                    trans( 'registration_failed', [ 'Registration denied due to invalid credentials.' ] )
                 );
             }
 
@@ -166,7 +166,7 @@ class AuthService
 
             if( !$activation )
             {
-                $message = trans( 'activation_problem', 'Invalid or expired activation code.' );
+                $message = trans( 'activation_problem', [ 'Invalid or expired activation code.' ] );
                 throw new InvalidArgumentException( $message );
             }
             $user = $this->sentinel->findUserById( $activation->user_id );
@@ -184,12 +184,12 @@ class AuthService
 
         if( $user )
         {
-            $message = trans( 'activation_success', 'Activation successful.' );
+            $message = trans( 'activation_success', [ 'Activation successful.' ] );
 
             return new SuccessReply( $message );
         }
 
-        $message = trans( 'activation_failed', 'There was a problem activating your account.' );
+        $message = trans( 'activation_failed', [ 'There was a problem activating your account.' ] );
 
         return new FailureReply( $message );
     }
@@ -214,7 +214,7 @@ class AuthService
 
             if( !$reminder )
             {
-                $message = trans( 'password_reset_problem', 'Invalid or expired password reset code; please request a new link.' );
+                $message = trans( 'password_reset_problem', [ 'Invalid or expired password reset code; please request a new link.' ] );
                 throw new InvalidArgumentException( $message );
             }
             $user = $this->sentinel->findUserById( $reminder->user_id );
@@ -229,12 +229,12 @@ class AuthService
 
         if( $user )
         {
-            $message = trans( 'password_reset_success', 'Password reset successful.' );
+            $message = trans( 'password_reset_success', [ 'Password reset successful.' ] );
 
             return new SuccessReply( $message );
         }
 
-        $message = trans( 'password_reset_failed', 'There was a problem resetting your password.' );
+        $message = trans( 'password_reset_failed', [ 'There was a problem resetting your password.' ] );
 
         return new FailureReply( $message );
     }
@@ -246,7 +246,7 @@ class AuthService
     protected function returnException( Exception $e )
     {
         $key = 'leaf.' . snake_case( class_basename( $e ) );
-        $message = trans( $key, $e->getMessage() );
+        $message = trans( $key, [ $e->getMessage() ] );
 
         return new ExceptionReply( $message, [], $e );
     }

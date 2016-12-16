@@ -4,9 +4,9 @@ namespace CubeSystems\Leaf\Http\Middleware;
 
 use Cartalyst\Sentinel\Sentinel;
 use Closure;
-use CubeSystems\Leaf\Http\Controllers\Admin\ResourceController;
-use CubeSystems\Leaf\Menu\Item;
-use CubeSystems\Leaf\Menu\Menu;
+use CubeSystems\Leaf\Http\Controllers\Admin\CrudFrontController;
+use CubeSystems\Leaf\Services\Module;
+use CubeSystems\Leaf\Services\ModuleRegistry;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,7 +31,6 @@ class LeafAdminAuthMiddleware
         $this->sentinel = $sentinel;
     }
 
-
     /**
      * Handle an incoming request.
      *
@@ -46,63 +45,19 @@ class LeafAdminAuthMiddleware
             return $this->denied( $request );
         }
 
-        $controller = $request->route()->getController();
+        $targetModule = $this->resolveTargetModule( $request );
 
-        if( $controller instanceof ResourceController )
+        if( !$targetModule )
         {
-            $slug = $request->route()->getParameter( 'model' );
-
-            $controllerClass = $controller->findControllerBySlug( $slug );
-        }
-        else
-        {
-            $controllerClass = '\\' . get_class( $controller );
+            throw new \RuntimeException( 'Could not find target module for route controller' );
         }
 
-        /* @var $menu Menu */
-        $menu = app( 'leaf.menu' );
-
-        $menuItem = $menu->findItemByController( $controllerClass );
-
-        if( !$menuItem )
-        {
-            throw new \RuntimeException( 'Could not find menu item for controller' );
-        }
-
-        if( !$this->userHasMatchingRole( $menuItem ) )
+        if( !$targetModule->isAuthorized( $this->sentinel ) )
         {
             return $this->denied( $request );
         }
 
         return $next( $request );
-    }
-
-    /**
-     * @param Item $menuItem
-     * @return bool
-     */
-    private function userHasMatchingRole( Item $menuItem )
-    {
-        $authorized = false;
-
-        if( count( $menuItem->getAllowedRoles() ) )
-        {
-            foreach( $menuItem->getAllowedRoles() as $role )
-            {
-                /** @noinspection PhpUndefinedMethodInspection */
-                if( $this->sentinel->inRole( $role ) )
-                {
-                    $authorized = true;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            $authorized = true;
-        }
-
-        return $authorized;
     }
 
     /**
@@ -125,5 +80,34 @@ class LeafAdminAuthMiddleware
         }
 
         return $result;
+    }
+
+    /**
+     * @param Request $request
+     * @return Module|null
+     */
+    private function resolveTargetModule( Request $request )
+    {
+        $routeController = $request->route()->getController();
+
+        /* @var $modules ModuleRegistry */
+        $modules = app( 'leaf.modules' );
+
+        if( $routeController instanceof CrudFrontController )
+        {
+            $moduleName = $request->route()->getParameter( 'model' );
+
+            $targetModule = $modules->findCrudModuleByName(
+                $moduleName
+            );
+        }
+        else
+        {
+            $targetModule = $modules->findModuleByControllerClass(
+                '\\' . get_class( $routeController )
+            );
+        }
+
+        return $targetModule;
     }
 }

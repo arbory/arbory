@@ -1,6 +1,5 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
-use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\BufferIO;
 use CubeSystems\Leaf\Console\Commands\SeedCommand;
@@ -9,6 +8,7 @@ use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
+use CubeSystems\Leaf\Services\ModuleRegistry;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Foundation\AliasLoader;
@@ -37,6 +37,7 @@ class LeafServiceProvider extends ServiceProvider
     {
         $this->registerComposerSingleton();
         $this->registerSentinelSingleton();
+        $this->registerModuleRegistry();
 
         $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
         $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
@@ -94,6 +95,8 @@ class LeafServiceProvider extends ServiceProvider
     private function registerResources()
     {
         $configFilename = __DIR__ . '/../../config/leaf.php';
+
+        $this->mergeConfigFrom( $configFilename, 'leaf' );
 
         $this->publishes( [
             $configFilename => config_path( 'leaf.php' )
@@ -182,6 +185,9 @@ class LeafServiceProvider extends ServiceProvider
         } );
     }
 
+    /**
+     *
+     */
     private function registerCommands()
     {
         $this->app->singleton( 'leaf.seed', function ( $app )
@@ -190,5 +196,15 @@ class LeafServiceProvider extends ServiceProvider
         } );
 
         $this->commands( 'leaf.seed' );
+    }
+
+    private function registerModuleRegistry()
+    {
+        $this->app->singleton( 'leaf.modules', function ( Application $app )
+        {
+            return new ModuleRegistry(
+                $app->config['leaf.modules']
+            );
+        } );
     }
 }

@@ -17,7 +17,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use ReflectionClass;
 
-class NodeController extends AbstractCrudController
+/**
+ * Class NodeCrudController
+ * @package CubeSystems\Leaf\Http\Controllers\Admin
+ */
+class NodeCrudController extends AbstractCrudController
 {
     const TOOLBOX_TOOLS = 'tools';
 

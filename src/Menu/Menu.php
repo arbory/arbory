@@ -2,10 +2,9 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-/**
- * Class Menu
- * @package CubeSystems\Leaf\Menu
- */
+use CubeSystems\Leaf\Html\Elements;
+use CubeSystems\Leaf\Services\ModuleRegistry;
+
 /**
  * Class Menu
  * @package CubeSystems\Leaf\Menu
@@ -13,87 +12,78 @@ namespace CubeSystems\Leaf\Menu;
 class Menu
 {
     /**
-     * @var Item[]
+     * @var AbstractItem[]
      */
     protected $items;
 
     /**
-     * @param array $items
+     * @param array $itemsConfigurationArray
      */
-    public function __construct( array $items = [] )
+    public function __construct( array $itemsConfigurationArray = [] )
     {
-        $this->addItems( $items );
+        $this->addItems( $itemsConfigurationArray );
     }
 
     /**
-     * @param array $items
+     * @param array $itemsConfigurationArray
      */
-    public function addItems( array $items = [] )
+    public function addItems( array $itemsConfigurationArray = [] )
     {
-        foreach( $items as $item )
+        foreach( $itemsConfigurationArray as $itemConfigurationArray )
         {
-            $this->addItem( $item );
+            $this->addItem( $itemConfigurationArray );
         }
     }
 
     /**
-     * @param array $values
+     * @param array $itemConfigurationArray
      */
-    public function addItem( array $values = [] )
+    public function addItem( array $itemConfigurationArray = [] )
     {
-        $this->items[] = new Item( $values );
+        $this->items[] = AbstractItem::make( $itemConfigurationArray );
     }
 
     /**
-     * @return Item[]
+     * @return AbstractItem[]
      */
-    public function items()
+    public function getItems()
     {
         return $this->items;
     }
 
     /**
-     * @param $slug
-     * @return Item|null
+     * @param $controllerClass
+     * @return AbstractItem|null
      */
-    public function findItemBySlug( $slug )
+    public function findItemByController( $controllerClass )
     {
-        return $this->findItemByCallback( $this->items(), function ( Item $item ) use ( $slug )
+        $result = null;
+        foreach( $this->getItems() as $item )
         {
-            if( $item->getSlug() === $slug )
+            if( $item instanceof ModuleItem )
             {
-                return $item;
-            }
+                $moduleName = $item->getModuleName();
 
-            return null;
-        } );
+                $modulesRegistry = app( 'leaf.modules' );
+                /* @var $modulesRegistry ModuleRegistry */
+
+                $module = $modulesRegistry->findModuleByName( $moduleName );
+
+                if( $module && $module->getControllerClass() == $controllerClass )
+                {
+                    $result = $item;
+                    break;
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
-     * @param $controller
-     * @return Item|null
-     */
-    public function findItemByController( $controller )
-    {
-        $controller = ltrim( $controller, '\\' );
-
-        return $this->findItemByCallback( $this->items(), function ( Item $item ) use ( $controller )
-        {
-            $itemController = ltrim( $item->getController(), '\\' );
-
-            if( $itemController === $controller )
-            {
-                return $item;
-            }
-
-            return null;
-        } );
-    }
-
-    /**
-     * @param Item[] $children
+     * @param AbstractItem[] $children
      * @param callable $callback
-     * @return Item|null
+     * @return AbstractItem|null
      */
     protected function findItemByCallback( array $children, callable $callback )
     {
@@ -118,20 +108,24 @@ class Menu
     }
 
     /**
-     *
+     * @return Elements\Element
      */
-    public function visibleItems()
+    public function render()
     {
-        $result = [];
+        $ul = new Elements\Ul();
+        $ul->addClass( 'block' );
 
-        foreach( $this->items() as $item )
+        foreach( $this->getItems() as $item )
         {
-            if( $item->isVisible() )
+            $li = ( new Elements\Li() )
+                ->setAttributeValue( 'data-name', '' );
+
+            if( $item->render( $li ) )
             {
-                $result[] = $item;
+                $ul->append( $li );
             }
         }
 
-        return $result;
+        return $ul;
     }
 }

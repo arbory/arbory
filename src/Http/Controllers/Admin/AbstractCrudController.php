@@ -5,24 +5,24 @@ namespace CubeSystems\Leaf\Http\Controllers\Admin;
 use CubeSystems\Leaf\Breadcrumbs;
 use CubeSystems\Leaf\Builder\FormBuilder;
 use CubeSystems\Leaf\Builder\IndexBuilder;
-use CubeSystems\Leaf\Menu\Item;
 use CubeSystems\Leaf\FieldSet;
 use CubeSystems\Leaf\Repositories\ResourcesRepository;
-use Illuminate\Contracts\Foundation\Application;
+use CubeSystems\Leaf\Services\ModuleRegistry;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 use Lang;
-use Redirect;
-use Response;
 use Session;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 abstract class AbstractCrudController
 {
     /**
-     * @var \Illuminate\Foundation\Application
+     * @var Application
      */
     protected $app;
 
@@ -53,7 +53,7 @@ abstract class AbstractCrudController
 
 
     /**
-     * ResourceController constructor.
+     * AbstractCrudController constructor.
      * @param Application $app
      */
     public function __construct( Application $app )
@@ -132,17 +132,17 @@ abstract class AbstractCrudController
      */
     public function getSlug()
     {
-        /**
-         * @var $menuItem Item
-         */
-        $menuItem = $this->app['leaf.menu']->findItemByController( static::class );
+        /* @var $modules ModuleRegistry */
+        $modules = app( 'leaf.modules' );
 
-        if( !$menuItem )
+        $module = $modules->findModuleByControllerClass( static::class );
+
+        if( !$module )
         {
             return null;
         }
 
-        return $menuItem->getSlug();
+        return $module->getName();
     }
 
     public function getBreadcrumbs()
@@ -271,7 +271,7 @@ abstract class AbstractCrudController
         {
             Session::flash( 'message.error', Lang::get( 'leaf.messages.error.validation-errors' ) );
 
-            return Redirect::route( 'admin.model.create', [ $name ] )
+            return redirect( route( 'admin.model.create', [ $name ] ) )
                 ->withInput()
                 ->withErrors( $result );
         }
@@ -282,7 +282,7 @@ abstract class AbstractCrudController
             'model' => $name
         ] ) );
 
-        return Redirect::route( 'admin.model.index', $name );
+        return redirect( route( 'admin.model.index', $name ) );
     }
 
     /**
@@ -313,8 +313,8 @@ abstract class AbstractCrudController
 
     /**
      * @param Request $request
-     * @param $resourceId
-     * @return \Illuminate\Http\JsonResponse
+     * @param mixed $resourceId
+     * @return JsonResponse|RedirectResponse
      */
     public function update( Request $request, $resourceId )
     {
@@ -348,7 +348,7 @@ abstract class AbstractCrudController
                 }
             }
 
-            return Response::json( [
+            return \Response::json( [
                 'errors' => $ajaxResponse,
             ], 422 );
         }
@@ -357,12 +357,12 @@ abstract class AbstractCrudController
             'model' => $name
         ] ) );
 
-        return Redirect::route( 'admin.model.index', $this->getSlug() );
+        return redirect( route( 'admin.model.index', $this->getSlug() ) );
     }
 
     /**
      * @param $resourceId
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse|\Illuminate\Http\Response
      * @throws HttpException
      */
     public function destroy( $resourceId )
@@ -377,7 +377,7 @@ abstract class AbstractCrudController
         }
         catch( \Exception $e )
         {
-            $this->app->abort( \Symfony\Component\HttpFoundation\Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage() );
+            $this->app->abort( Response::HTTP_UNPROCESSABLE_ENTITY, $e->getMessage() );
 
             return null;
         }
@@ -391,7 +391,7 @@ abstract class AbstractCrudController
             'model' => $name
         ] ) );
 
-        return Redirect::route( 'admin.model.index', $name );
+        return redirect( route( 'admin.model.index', $name ) );
     }
 
     /**
@@ -405,7 +405,7 @@ abstract class AbstractCrudController
 
         if( !$name || !method_exists( $this, $handler ) )
         {
-            $this->app->abort( \Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND );
+            $this->app->abort( Response::HTTP_NOT_FOUND );
 
             return null;
         }
@@ -444,5 +444,4 @@ abstract class AbstractCrudController
             'object_name' => (string) $model,
         ] );
     }
-
 }
