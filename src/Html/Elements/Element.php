@@ -42,6 +42,18 @@ class Element
     }
 
     /**
+     * @param string $name
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAttributeValue( $name, $value )
+    {
+        $this->attributes()[$name] = $value;
+
+        return $this;
+    }
+
+    /**
      * @return Content
      */
     public function content()
@@ -73,7 +85,7 @@ class Element
     public function addClass( $class )
     {
         $this->attributes()->put( 'class', implode( ' ', [
-            $this->attributes()->get('class'),
+            $this->attributes()->get( 'class' ),
             $class
         ] ) );
 

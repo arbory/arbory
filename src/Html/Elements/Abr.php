@@ -3,16 +3,16 @@
 namespace CubeSystems\Leaf\Html\Elements;
 
 /**
- * Class Button
+ * Class Abr
  * @package CubeSystems\Leaf\Html\Elements
  */
-class Button extends Element
+class Abr extends Element
 {
     /**
      * @return string
      */
     public function __toString()
     {
-        return (string) $this->tag( 'button', $this->content );
+        return (string) $this->tag( 'abr', $this->content );
     }
 }

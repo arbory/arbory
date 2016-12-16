@@ -2,13 +2,13 @@
 
 namespace CubeSystems\Leaf\Html\Elements;
 
-class Span extends Element
+class Li extends Element
 {
     /**
      * @return string
      */
     public function __toString()
     {
-        return (string) $this->tag( 'span', $this->content );
+        return (string) $this->tag( 'li', $this->content );
     }
 }
