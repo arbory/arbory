@@ -22,6 +22,9 @@
         "dimsav/laravel-translatable": "^6.0",
         "srlabs/centaur": "3.*"
     },
+    "require-dev" : {
+        "phpunit/phpunit" : "^5.7",
+    },
     "autoload": {
         "psr-4": { "CubeSystems\\Leaf\\": "src" },
         "classmap": ["database/seeds/"]
