@@ -81,6 +81,10 @@ class FormBuilder extends AbstractBuilder
         $fieldSet = $this->getFieldSet();
         $controller = $this->getController();
 
+        $fieldSet->each( function ( FieldInterface $field ) use ( $model ) {
+            $field->setModel( $model );
+        } );
+
         if( method_exists( $controller, 'beforeCreate' ) )
         {
             $controller->beforeCreate( $input );
@@ -100,7 +104,7 @@ class FormBuilder extends AbstractBuilder
 
         if( method_exists( $controller, 'creating' ) )
         {
-            $model = $controller->creating( $input );
+            $model = $controller->creating( $model, $input );
         }
         else
         {

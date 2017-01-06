@@ -42,7 +42,7 @@ class NodeController extends AbstractCrudController
     public function indexFields( FieldSet $fieldSet )
     {
         $fieldSet->add( new Text( 'name' ) );
-        $fieldSet->add( new Toolbox( self::TOOLBOX_TOOLS ) );
+//        $fieldSet->add( new Toolbox( self::TOOLBOX_TOOLS ) );
     }
 
     /**

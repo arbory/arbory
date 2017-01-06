@@ -21,6 +21,9 @@ return [
         'relation' => [
             'remove' => 'Remove item',
         ],
+        'slug' => [
+            'suggest_slug' => 'Suggest Slug',
+        ],
     ],
     'toolbox' => [
         'delete' => 'Delete'

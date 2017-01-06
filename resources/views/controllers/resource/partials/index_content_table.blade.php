@@ -37,7 +37,10 @@
         @foreach ($results->getRows() as $item)
             <tr class="row" data-id="{{$item->getIdentifier()}}">
                 @foreach ($item->getFields() as $field)
-                    <td>{!! $field->render() !!}</td>
+                    <td><a href="{{route( 'admin.model.edit', [
+                        $controller->getSlug(),
+                        $item->getIdentifier()
+                    ])}}"><span>{!! $field->render() !!}</span></a></td>
                 @endforeach
             </tr>
         @endforeach

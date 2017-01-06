@@ -2,7 +2,8 @@
 
 namespace CubeSystems\Leaf\Pages;
 
-use CubeSystems\Leaf\Fields\Text;
+use CubeSystems\Leaf\Fields\Richtext;
+use CubeSystems\Leaf\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,12 +18,12 @@ class TextPage extends Model implements PageInterface
     protected $fillable = [ 'html' ];
 
     /**
-     * @return Text
+     * @return Element
      */
     public function getHtmlAttribute()
     {
         // TODO: replace HTML placeholders - links, images, embed, etc.
 
-        return ( new Text( 'html' ) )->setValue( $this->getAttributeFromArray( 'html' ) );
+        return ( new Richtext( 'html' ) )->setValue( $this->getAttributeFromArray( 'html' ) );
     }
 }
