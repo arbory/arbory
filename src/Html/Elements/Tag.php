@@ -1,8 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Html;
-
-use CubeSystems\Leaf\Html\Elements\Attributes;
+namespace CubeSystems\Leaf\Html\Elements;
 
 /**
  * Class Tag
@@ -39,34 +37,42 @@ class Tag
      */
     public function __toString()
     {
-        $attributes = $this->getAttributes();
-
-        if( $this->isSelfClosing( $this->name ) )
-        {
-            return '<' . $this->name . ' ' . $attributes . '>';
-        }
+        $attributes = $this->getFilteredAttributes();
 
         $content = is_array( $this->content )
             ? implode( PHP_EOL, array_map( 'strval', $this->content ) )
             : $this->content;
 
+        if( $this->isSelfClosing( $this->name ) )
+        {
+            return '<' . $this->name . ' ' . $attributes . '>' . $content;
+        }
+
         return '<' . $this->name . ' ' . $attributes . '>' . $content . '</' . $this->name . '>';
     }
 
     /**
-     * @return Attributes|null
+     * @return Attributes
      */
     public function getAttributes()
     {
-        if( $this->attributes !== null )
+        if( $this->attributes == null )
         {
-            return $this->attributes->reject( function ( $name )
-            {
-                return empty( $name );
-            } );
+            $this->attributes = new Attributes;
         }
 
         return $this->attributes;
+    }
+
+    /**
+     * @return Attributes
+     */
+    protected function getFilteredAttributes()
+    {
+        return $this->getAttributes()->reject( function ( $name )
+        {
+            return empty( $name );
+        } );
     }
 
     /**

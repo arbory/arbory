@@ -2,8 +2,6 @@
 
 namespace CubeSystems\Leaf\Html\Elements;
 
-use CubeSystems\Leaf\Html\Tag;
-
 /**
  * Class Element
  * @package CubeSystems\Leaf\Html\Elements
@@ -11,17 +9,24 @@ use CubeSystems\Leaf\Html\Tag;
 class Element
 {
     /**
-     * @var Attributes
+     * @var Tag
      */
-    protected $attributes;
+    protected $tag;
 
     /**
      * @var Content
      */
     protected $content;
 
-    public function __construct( $content = null )
+    /**
+     * Element constructor.
+     * @param $tag
+     * @param null $content
+     */
+    public function __construct( $tag, $content = null )
     {
+        $this->tag = new Tag( $tag );
+
         if( $content !== null )
         {
             $this->append( $content );
@@ -29,16 +34,33 @@ class Element
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->tag->setContent( $this->content )->__toString();
+    }
+
+    /**
      * @return Attributes
      */
     public function attributes()
     {
-        if( $this->attributes === null )
+        return $this->tag->getAttributes();
+    }
+
+    /**
+     * @param array $attributes
+     * @return $this
+     */
+    public function addAttributes( array $attributes )
+    {
+        foreach( $attributes as $name => $value )
         {
-            $this->attributes = new Attributes;
+            $this->attributes()->put( $name, $value );
         }
 
-        return $this->attributes;
+        return $this;
     }
 
     /**
@@ -73,7 +95,7 @@ class Element
     public function addClass( $class )
     {
         $this->attributes()->put( 'class', implode( ' ', [
-            $this->attributes()->get('class'),
+            $this->attributes()->get( 'class' ),
             $class
         ] ) );
 
@@ -81,12 +103,22 @@ class Element
     }
 
     /**
-     * @param Element $item
+     * @param Element|string $content
      * @return $this
      */
-    public function append( $item )
+    public function append( $content )
     {
-        $this->content()->push( $item );
+        if( is_array( $content ) )
+        {
+            foreach( $content as $item )
+            {
+                $this->append( $item );
+            }
+
+            return $this;
+        }
+
+        $this->content()->push( $content );
 
         return $this;
     }

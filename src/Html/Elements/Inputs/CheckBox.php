@@ -11,11 +11,6 @@ class CheckBox extends Input
         $this->setType( 'checkbox' );
     }
 
-    public function __toString()
-    {
-        return parent::__toString() . ( $this->label !== null ? ' ' . (string) $this->label : null );
-    }
-
     public function select()
     {
         $this->attributes()->put( 'checked', 'checked' );
