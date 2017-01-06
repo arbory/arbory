@@ -2,10 +2,10 @@
 
 namespace CubeSystems\Leaf\Fields;
 
+use CubeSystems\Leaf\Html\Elements\Element;
+use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Repositories\LeafFilesRepository;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\View\View;
 use Input;
 
 /**
@@ -15,14 +15,32 @@ use Input;
 class LeafFile extends AbstractField
 {
     /**
-     * @return View
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getValue();
+    }
+
+    /**
+     * @return Element
      */
     public function render()
     {
-        return view( $this->getViewName(), [
-            'field' => $this,
-            'leaf_file' => $this->getModel()->getAttribute( $this->getName() )
-        ] );
+        $leafFile = $this->getModel()->getAttribute( $this->getName() );
+        $fileDescription = null;
+
+        if( $leafFile )
+        {
+            $fileDescription = Html::div( $leafFile->getOriginalName() . ' / ' . $leafFile->getSize() );
+        }
+
+        $fileInput = Html::input()->setType( 'file' )->setName( $this->getNameSpacedName() );
+
+        return Html::div( [
+            Html::div( $fileInput->getLabel( $this->getLabel() ) )->addClass( 'label-wrap' ),
+            Html::div( [ $fileDescription, $fileInput ] )->addClass( 'value' )
+        ] )->addClass( 'field type-item' );
     }
 
     /**

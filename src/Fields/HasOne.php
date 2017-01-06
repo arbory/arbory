@@ -31,7 +31,7 @@ class HasOne extends AbstractRelationField
         $relationForm = $this->buildRelationForm(
             $item,
             clone $fieldSet,
-            $this->getName() . '_attributes'
+            $this->getName()
         )->build();
 
         return view( $this->getViewName(), [
@@ -53,14 +53,14 @@ class HasOne extends AbstractRelationField
      * @param array $input
      * @return void
      */
-    public function postUpdate( Model $model, array $input = [ ] )
+    public function afterModelSave( Model $model, array $input = [ ] )
     {
         /**
          * @var $relation \Illuminate\Database\Eloquent\Relations\HasMany|MorphOneOrMany
          * @var $relatedModel Model
          */
 
-        $variables = array_get( $input, $this->getName() . '_attributes' );
+        $variables = array_get( $input, $this->getName() );
 
         if( !$variables )
         {

@@ -2,23 +2,20 @@
 
 namespace CubeSystems\Leaf\Fields;
 
+use CubeSystems\Leaf\Html\Elements\Element;
+use CubeSystems\Leaf\Html\Html;
+
 class Gravatar extends AbstractField
 {
     /**
-     * @param array $attributes
-     * @return \Illuminate\View\View
+     * @return Element
      */
-    public function render( array $attributes = [] )
+    public function render()
     {
-        $model = $this->getModel();
-
-        return view( $this->getViewName(), [
-            'email' => $this->getValue(),
-            'attributes' => $attributes,
-            'url' => route( 'admin.model.edit', [
-                $this->getController()->getSlug(),
-                $model->getKey()
-            ] ),
+        return Html::image()->addAttributes( [
+            'src' => '//www.gravatar.com/avatar/' . md5( $this->getValue() ) . '?d=retro',
+            'width' => 32,
+            'alt' => $this->getValue(),
         ] );
     }
 }

@@ -35,7 +35,7 @@ class HasMany extends AbstractRelationField
             $relationItems[] = $this->buildRelationForm(
                 $item,
                 clone $fieldSet,
-                $this->getName() . '_attributes.' . $index
+                $this->getName() . '.' . $index
             )->build();
         }
 
@@ -58,7 +58,7 @@ class HasMany extends AbstractRelationField
         $formBuilder = $this->buildRelationForm(
             $relatedModel,
             clone $fieldSet,
-            $this->getName() . '_attributes' . '._template_'
+            $this->getName() . '._template_'
         );
 
         return view( $this->getViewName() . '_fieldset', [
@@ -78,12 +78,12 @@ class HasMany extends AbstractRelationField
      * @param array $input
      * @return void
      */
-    public function postUpdate( Model $model, array $input = [ ] )
+    public function afterModelSave( Model $model, array $input = [ ] )
     {
         /**
          * @var $relation \Illuminate\Database\Eloquent\Relations\HasMany
          */
-        $inputVariables = array_get( $input, $this->getName() . '_attributes' );
+        $inputVariables = array_get( $input, $this->getName() );
 
         if( !$inputVariables )
         {

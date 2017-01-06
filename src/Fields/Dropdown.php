@@ -100,7 +100,7 @@ class Dropdown extends AbstractField
      * @param array $input
      * @return null
      */
-    public function postUpdate( Model $model, array $input = [] )
+    public function afterModelSave( Model $model, array $input = [] )
     {
         $selectedValue = $input[$this->getName()];
 

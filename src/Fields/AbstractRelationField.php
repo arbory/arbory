@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Fields;
 
 use CubeSystems\Leaf\Builder\FormBuilder;
 use CubeSystems\Leaf\FieldSet;
+use CubeSystems\Leaf\Html\Html;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractRelationField extends AbstractField
@@ -35,6 +36,21 @@ abstract class AbstractRelationField extends AbstractField
             $fieldSet->add( new RemoveRelationItem( '_destroy' ) )
                 ->setValue( 'false' )
                 ->setInputNamespace( $inputNamespace );
+
+
+//            $button = Html::button( Html::i()->addClass('fa fa-trash-o') )
+//                ->addClass('button only-icon danger remove-nested-item')
+//                ->addAttributes(['title' => trans('leaf.fields.relation.remove')]);
+//
+//            $input = Html::input()
+//                ->setType( 'hidden' )
+//                ->setName( $this->getInputNamespace() + [ '_destroy' ] )
+//                ->setValue( 'false' )
+//                ->addClass( 'destroy' );
+//
+//            Html::div([ $button, $input ])->addClass('remove-item-box');
+
+
         }
 
         $builder = new FormBuilder( $model );

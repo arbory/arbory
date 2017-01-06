@@ -76,7 +76,7 @@ class Checkbox extends AbstractField
      * @param array $input
      * @return null
      */
-    public function postUpdate( Model $model, array $input = [] )
+    public function afterModelSave( Model $model, array $input = [] )
     {
         if( !isset( $input[$this->getName()] ) && $input[$this->getName()] != $this->checkedValue )
         {

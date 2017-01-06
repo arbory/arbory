@@ -3,9 +3,9 @@
 namespace CubeSystems\Leaf\Fields;
 
 use CubeSystems\Leaf\Html\Elements\Content;
-use CubeSystems\Leaf\Html\Elements\Div;
-use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Elements\Inputs\Input;
+use CubeSystems\Leaf\Html\Html;
+use Illuminate\Database\Eloquent\Model;
 
 class Password extends AbstractField
 {
@@ -26,20 +26,27 @@ class Password extends AbstractField
         }
         elseif( $this->isForForm() )
         {
-            $input = new Input( $this->getNameSpacedName(), '' );
+            $input = new Input;
+            $input->setName( $this->getNameSpacedName() );
             $input->setType( 'password' );
             $input->addClass( 'text' );
 
             $content = new Content;
 
-            $content->push( ( new Div )
-                ->append(( new Div( $input->label( $this->getLabel() ) ) )->addClass( 'label-wrap' ))
-                ->append(( new Div( $input ) )->addClass( 'value' ))
+            $content->push( Html::div()
+                ->append( Html::div( $input->getLabel( $this->getLabel() ) )->addClass( 'label-wrap' ) )
+                ->append( Html::div( $input )->addClass( 'value' ) )
                 ->addClass( 'field type-password' ) );
 
-            $content->push( ( new Div )
-                ->append(( new Div( $input->label( $this->getLabel() ) ) )->addClass( 'label-wrap' ))
-                ->append(( new Div( $input->setName( $this->getNameSpacedName() . '_confirmation' ) ) )->addClass( 'value' ))
+
+            $confirmationInput = new Input;
+            $confirmationInput->setName( $this->getNameSpacedName() . '_confirmation' );
+            $confirmationInput->setType( 'password' );
+            $confirmationInput->addClass( 'text' );
+
+            $content->push( Html::div()
+                ->append( Html::div( $confirmationInput->getLabel( $this->getLabel() ) )->addClass( 'label-wrap' ) )
+                ->append( Html::div( $confirmationInput )->addClass( 'value' ) )
                 ->addClass( 'field type-password' ) );
 
             return $content;
@@ -48,15 +55,15 @@ class Password extends AbstractField
 
     protected function renderListView( array $attributes = [] )
     {
-        $model = $this->getModel();
+        return '********';
+    }
 
-        return view( $this->getViewName(), [
-            'field' => $this,
-            'attributes' => $attributes,
-            'url' => route( 'admin.model.edit', [
-                $this->getController()->getSlug(),
-                $model->getKey()
-            ] ),
-        ] );
+    public function afterModelSave( Model $model, array $input = [] )
+    {
+        $password = array_get( $input, $this->getName() );
+        $hasher = \Sentinel::getUserRepository()->getHasher();
+
+        $model->setAttribute( $this->getName(), $hasher->hash($password) );
     }
 }
+

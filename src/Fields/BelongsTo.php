@@ -2,6 +2,8 @@
 
 namespace CubeSystems\Leaf\Fields;
 
+use CubeSystems\Leaf\Html\Elements\Element;
+use CubeSystems\Leaf\Html\Html;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,55 +12,23 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BelongsTo extends AbstractField
 {
+    public function __toString()
+    {
+        return (string) $this->getValue();
+    }
+
     /**
-     * @return \Illuminate\View\View|null
+     * @return Element
      */
     public function render()
     {
-        if( $this->isForList() )
-        {
-            return $this->renderListField();
-        }
-        elseif( $this->isForForm() )
-        {
-            return $this->renderFormField();
-        }
+        $label = Html::label( $this->getLabel() )->addAttributes( [ 'for' => $this->getName() ] );
+        $select = Html::select( $this->getOptions() )->setName( $this->getNameSpacedName() );
 
-        return null;
-    }
-
-    /**
-     * @return \Illuminate\View\View
-     */
-    protected function renderListField()
-    {
-        $model = $this->getModel();
-
-        return view( $this->getViewName(), [
-            'field' => $this,
-            'url' => route( 'admin.model.edit', [
-                $this->getController()->getSlug(),
-                $model->getKey(),
-            ] ),
-        ] );
-    }
-
-    /**
-     * @return \Illuminate\View\View
-     */
-    protected function renderFormField()
-    {
-        $relatedModel = $this->getRelatedModel();
-
-        if( $this->getValue() !== null )
-        {
-            $this->setValue( $this->getValue()->getKey() );
-        }
-
-        return view( $this->getViewName(), [
-            'field' => $this,
-            'items' => $this->getRelatedModelOptions( $relatedModel ),
-        ] );
+        return Html::div( [
+            Html::div( $label )->addClass( 'label-wrap' ),
+            Html::div( $select )->addClass( 'value' )
+        ] )->addClass( 'field type-item' );
     }
 
     /**
@@ -70,21 +40,28 @@ class BelongsTo extends AbstractField
     }
 
     /**
-     * @param Model $relatedModel
      * @return array
      */
-    protected function getRelatedModelOptions( $relatedModel )
+    protected function getOptions()
     {
-        /**
-         * @var $identifier string
-         */
-        $items = [];
+        $options = [];
 
-        foreach( $relatedModel::all() as $item )
+        $selected = $this->getValue()
+            ? $this->getValue()->getKey()
+            : null;
+
+        foreach( $this->getRelatedModel()->all() as $item )
         {
-            $items[$item->getKey()] = (string) $item;
+            $option = Html::option( (string) $item )->setValue( $item->getKey() );
+
+            if( $selected === $item->getKey() )
+            {
+                $option->select();
+            }
+
+            $options[] = $option;
         }
 
-        return $items;
+        return $options;
     }
 }

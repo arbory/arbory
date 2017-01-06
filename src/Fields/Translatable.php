@@ -4,11 +4,9 @@ namespace CubeSystems\Leaf\Fields;
 
 use CubeSystems\Leaf\Builder\FormBuilder;
 use CubeSystems\Leaf\FieldSet;
-use CubeSystems\Leaf\Html\Elements\Attributes;
-use CubeSystems\Leaf\Html\Elements\Button;
-use CubeSystems\Leaf\Html\Elements\Div;
+use CubeSystems\Leaf\Html\Elements\Content;
+use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
-use CubeSystems\Leaf\Html\Tag;
 use Dimsav\Translatable\Translatable as TranslatableModel;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,6 +30,7 @@ class Translatable extends AbstractField
     {
         $this->field = $field;
         $this->locales = (array) config( 'translatable.locales' );
+        $this->currentLocale = app()->make( 'translator' )->getLocale();
 
         parent::__construct( 'translations' );
     }
@@ -46,7 +45,7 @@ class Translatable extends AbstractField
 
     /**
      * @param array $attributes
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Element|string
      */
     public function render( array $attributes = [] )
     {
@@ -64,157 +63,101 @@ class Translatable extends AbstractField
 
     /**
      * @param array $attributes
+     * @return Element|string
      */
     protected function getFormFieldOutput( array $attributes = [] )
     {
+        $fields = new Content;
+
+        foreach( $this->locales as $locale )
+        {
+            $fields->push( $this->getLocalizedFieldContent( $locale, $attributes ) );
+        }
+
+        return Html::div()
+            ->addClass( 'field type-text i18n' )// TODO: Get field type
+            ->append( $fields )
+            ->append( $this->getLocalizationSwitch() );
+    }
+
+    /**
+     * @param $locale
+     * @param $attributes
+     * @return Element
+     */
+    private function getLocalizedFieldContent( $locale, $attributes )
+    {
         $model = $this->getModel();
 
-        $fields = [];
+        $builder = new FormBuilder( $model->translateOrNew( $locale ) );
+        $builder->setFieldSet( new FieldSet( [ $this->field ] ) );
 
-        $localizedFields = [];
+        $field = $builder->build()->first();
+        $field->setInputNamespace( $this->getName() . '.' . $locale );
+
+        $fieldContent = $field->render( $attributes );
+        $fieldContent->attributes()->put( 'class', 'localization' );
+        $fieldContent->attributes()->put( 'data-locale', $locale );
+
+        if( $this->currentLocale === $locale )
+        {
+            $fieldContent->addClass( 'active' );
+        }
+
+        return $fieldContent;
+    }
+
+    /**
+     * @return Element
+     */
+    private function getLocalizationMenu()
+    {
+        $list = Html::ul();
 
         foreach( $this->locales as $locale )
         {
-            $field = clone $this->field;
-            $field->setInputNamespace( $this->getName() . '_attributes.' . $locale );
+            $button = Html::button( $locale );
+            $button->attributes()->put( 'name', 'button' );
+            $button->attributes()->put( 'type', 'button' );
+            $button->attributes()->put( 'data-locale', $locale );
 
-            $localizationModel = $model->translateOrNew( $locale );
-
-            $fieldSet = new FieldSet;
-            $fieldSet->add( $field );
-
-            $builder = new FormBuilder( $localizationModel );
-            $builder->setFieldSet( $fieldSet );
-
-            $fields[$locale] = $builder->build()->first();
-
-
-
-//            $localizedFieldBlock = ( new Div( [] ) )->addClass( 'localization active' );
-//            $localizedFieldBlock->attributes()->put('data-locale',$locale);
-//
-//            $localizedFields[] = $localizedFieldBlock;
+            $list->append( Html::li( $button ) );
         }
 
+        $localizationMenu = Html::menu( $list );
+        $localizationMenu->attributes()->put( 'class', 'localization-menu-items' );
+        $localizationMenu->attributes()->put( 'type', 'toolbar' );
 
+        return $localizationMenu;
+    }
 
+    /**
+     * @return Element
+     */
+    private function getLocalizationSwitch()
+    {
+        $button = Html::button();
+        $button->addClass( 'trigger' );
+        $button->attributes()->put( 'type', 'button' );
 
-//        foreach( $this->locales as $locale )
-//        {
-//
-//
-//        }
+        $trigger = $button->append(
+            Html::span($this->currentLocale)->addClass( 'label' )
+        );
+        $trigger->append(
+            Html::i()->addClass( 'fa fa-chevron-down' )
+        );
 
+        $localizationSwitch = Html::div()
+            ->addClass( 'localization-switch' )
+            ->append( $trigger )
+            ->append( $this->getLocalizationMenu() );
 
-
-//        $switch = ( new Div() )->addClass('localization-switch');
-
-//        new Button();
-
-
-
-//        Html::ul([
-//            Html::li(
-//                Html::button()->setName('button')->setContent('lv')
-//            )
-//            Html::li(
-//                Html::button()->setName('button')->setContent('lv')
-//            )
-//        ]);
-
-
-
-
-
-        dd( (string) Html::div()
-            ->append( Html::div()
-                ->append(Html::div('Sūds 1'))
-            )
-            ->append( Html::div(
-                'Sūds 2'
-//                Html::button()->setName('button')->setContent('en')
-            )) );
-
-
-
-
-        $languages = [];
-
-        foreach( $this->locales as $locale )
-        {
-            $button = new Tag( 'button' );
-            $button->setAttributes( new Attributes( [
-                'name' => 'button',
-                'data-locale' => $locale,
-            ] ) );
-            $button->setContent( $locale );
-
-            $listElement = new Tag( 'li' );
-            $listElement->setContent( $button );
-
-            $languages[] = $listElement;
-        }
-
-        $list = new Tag( 'ul' );
-        $list->setContent( $languages );
-
-        $localizationMenu = new Tag( 'menu' );
-        $localizationMenu->setAttributes( new Attributes( [
-            'class' => 'localization-menu-items',
-            'type' => 'toolbar',
-        ] ) );
-        $localizationMenu->setContent( $list );
-
-        dd( (string) $localizationMenu );
-
-//        return ( new Div( [
-//            ( new Div( $input->label( $this->getLabel() ) ) )->addClass( 'label-wrap' ),
-//            ( new Div( $input ) )->addClass( 'value' ),
-//        ] ) )->addClass( 'field type-text i18n' );
-
-
-
-
-//<div class="field type-text i18n" data-name="{{$name}}"> {{-- TODO: Field type --}}
-//    @foreach($fields as $fieldLocale => $localizedField)
-//        <div class="localization @if($fieldLocale===$locale) active @endif " data-locale="{{$fieldLocale}}">
-//            {!! $localizedField->render() !!}
-//        </div>
-//    @endforeach
-//    <div class="localization-switch">
-//        <button name="button" type="button" title="Pārslēgt valodu" class="trigger">{{-- TODO: Translate title --}}
-//            <span class="label">{{$locale}}</span>
-//            <i class="fa fa-chevron-down"></i>
-//        </button>
-//        <menu class="localization-menu-items" type="toolbar">
-//            <ul>
-//    @foreach( $locales as $locale )
-//                    <li>
-//                        <button type="button" data-locale="{{$locale}}">{{$locale}}</button>
-//                    </li>
-//    @endforeach
-//            </ul>
-//        </menu>
-//    </div>
-//</div>
-
-
-
-
-
-
-        return view( $this->getViewName(), [
-            'name' => $this->field->getName(),
-            'locales' => $this->locales,
-            'locale' => app()->make('translator')->getLocale(),
-            'fields' => $fields,
-            'attributes' => $attributes,
-        ] );
+        return $localizationSwitch;
     }
 
     /**
      * @param array $attributes
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     * @return Element|string
      */
     protected function getListFieldOutput( array $attributes = [] )
     {
@@ -237,7 +180,7 @@ class Translatable extends AbstractField
      */
     public function beforeModelSave( Model $model, array $input = [] )
     {
-        $inputVariables = array_get( $input, $this->getName() . '_attributes' );
+        $inputVariables = array_get( $input, $this->getName() );
 
         foreach( $this->locales as $locale )
         {
@@ -258,7 +201,7 @@ class Translatable extends AbstractField
      */
     public function afterModelSave( Model $model, array $input = [] )
     {
-        $inputVariables = array_get( $input, $this->getName() . '_attributes' );
+        $inputVariables = array_get( $input, $this->getName() );
 
         foreach( $this->locales as $locale )
         {

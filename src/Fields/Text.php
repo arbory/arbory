@@ -2,9 +2,9 @@
 
 namespace CubeSystems\Leaf\Fields;
 
-use CubeSystems\Leaf\Html\Elements\Div;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Elements\Inputs\Input;
+use CubeSystems\Leaf\Html\Html;
 
 /**
  * Class Text
@@ -12,46 +12,27 @@ use CubeSystems\Leaf\Html\Elements\Inputs\Input;
  */
 class Text extends AbstractField
 {
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return (string) $this->renderListView();
+        return (string) $this->getValue();
     }
 
     /**
-     * @param array $attributes
-     * @return Element
+     * @return Element|string
      */
-    public function render( array $attributes = [] )
+    public function render()
     {
-        if( $this->isForList() )
-        {
-            return $this->renderListView( $attributes );
-        }
-        elseif( $this->isForForm() )
-        {
-            $input = new Input;
-            $input->setName( $this->getNameSpacedName() );
-            $input->setValue( $this->getValue() );
-            $input->addClass( 'text' );
+        $input = Html::input()
+            ->setName( $this->getNameSpacedName() )
+            ->setValue( $this->getValue() )
+            ->addClass( 'text' );
 
-            return ( new Div )
-                ->append( ( new Div( $input->label( $this->getLabel() ) ) )->addClass( 'label-wrap' ) )
-                ->append( ( new Div( $input ) )->addClass( 'value' ) )
-                ->addClass( 'field type-text' );
-        }
-    }
-
-    protected function renderListView( array $attributes = [] )
-    {
-        $model = $this->getModel();
-
-        return view( $this->getViewName(), [
-            'field' => $this,
-            'attributes' => $attributes,
-            'url' => route( 'admin.model.edit', [
-                $this->getController()->getSlug(),
-                $model->getKey()
-            ] ),
-        ] );
+        return Html::div()
+            ->append( Html::div( $input->getLabel( $this->getLabel() ) )->addClass( 'label-wrap' ) )
+            ->append( Html::div( $input )->addClass( 'value' ) )
+            ->addClass( 'field type-text' );
     }
 }
