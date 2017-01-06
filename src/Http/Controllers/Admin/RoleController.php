@@ -3,6 +3,10 @@
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
 use Cartalyst\Sentinel\Roles\IlluminateRoleRepository;
+use CubeSystems\Leaf\Fields\Text;
+use CubeSystems\Leaf\Fields\Toolbox;
+use CubeSystems\Leaf\FieldSet;
+use CubeSystems\Leaf\Roles\Role;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -17,170 +21,123 @@ use Illuminate\Routing\Controller as BaseController;
  * Class RoleController
  * @package App\Http\Controllers
  */
-class RoleController extends BaseController
+class RoleController extends AbstractCrudController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    protected $resource = Role::class;
 
     /**
-     * @var IlluminateRoleRepository
+     * @param FieldSet $fieldSet
      */
-    protected $roleRepository;
-
-
-    /**
-     * RoleController constructor.
-     */
-    public function __construct()
+    public function indexFields( FieldSet $fieldSet )
     {
-        $this->roleRepository = app()->make( 'sentinel.roles' );
+        $fieldSet->add( new Text( 'name' ) );
+        $fieldSet->add( new Text( 'created_at' ) );
+        $fieldSet->add( new Text( 'updated_at' ) );
+        $fieldSet->add( new Toolbox( 'toolbox' ) );
     }
 
     /**
-     * @return View
+     * @param FieldSet $fieldSet
      */
-    public function index()
+    public function formFields( FieldSet $fieldSet )
     {
-        $roles = $this->roleRepository->createModel()->all();
+        $permissions = [
+            'users.create',
+            'users.update',
+            'users.view',
+            'users.destroy',
+            'roles.create',
+            'roles.update',
+            'roles.view',
+            'roles.delete',
+        ];
 
-        return view( 'leaf::controllers.roles.index' )
-            ->with( 'roles', $roles );
+        $fieldSet->add( new Text( 'name' ) );
+
     }
 
-    /**
-     * @return View
-     */
-    public function create()
-    {
-        return view( 'leaf::controllers.roles.create' );
-    }
+//
+//    /**
+//     * @param  Request $request
+//     * @return Response
+//     */
+//    public function store( Request $request )
+//    {
+//        $this->validate( $request, [
+//            'name' => 'required',
+//            'slug' => 'required|alpha_dash|unique:roles',
+//        ] );
+//
+//        $role = Sentinel::getRoleRepository()->createModel()->create( [
+//            'name' => trim( $request->get( 'name' ) ),
+//            'slug' => trim( $request->get( 'slug' ) ),
+//        ] );
+//
+//        $permissions = [];
+//        foreach( $request->get( 'permissions', [] ) as $permission => $value )
+//        {
+//            $permissions[$permission] = (bool) $value;
+//        }
+//
+//        $role->permissions = $permissions;
+//        $role->save();
+//
+//        if( $request->ajax() )
+//        {
+//            return response()->json( [ 'role' => $role ], 200 );
+//        }
+//
+//        session()->flash( 'success', "Role '{$role->name}' has been created." );
+//
+//        return redirect( route( 'admin.roles.index' ) );
+//    }
+//
+//
+//
+//    /**
+//     * @param Request $request
+//     * @param $id
+//     * @return RedirectResponse
+//     */
+//    public function update( Request $request, $id )
+//    {
+//        $this->validate( $request, [
+//            'name' => 'required',
+//            'slug' => 'required|alpha_dash|unique:roles,slug,' . $id,
+//        ] );
+//
+//        $role = $this->roleRepository->findById( $id );
+//        if( !$role )
+//        {
+//            if( $request->ajax() )
+//            {
+//                return response()->json( 'Invalid role.', 422 );
+//            }
+//            session()->flash( 'error', 'Invalid role.' );
+//
+//            return redirect()->back()->withInput();
+//        }
+//
+//        $role->name = $request->get( 'name' );
+//        $role->slug = $request->get( 'slug' );
+//
+//        $permissions = [];
+//        foreach( $request->get( 'permissions', [] ) as $permission => $value )
+//        {
+//            $permissions[$permission] = (bool) $value;
+//        }
+//
+//        $role->permissions = $permissions;
+//        $role->save();
+//
+//        if( $request->ajax() )
+//        {
+//            return response()->json( [ 'role' => $role ], 200 );
+//        }
+//
+//        session()->flash( 'success', "Role '{$role->name}' has been updated." );
+//
+//        return redirect( route( 'admin.roles.index' ) );
+//    }
 
-    /**
-     * @param  Request $request
-     * @return Response
-     */
-    public function store( Request $request )
-    {
-        $this->validate( $request, [
-            'name' => 'required',
-            'slug' => 'required|alpha_dash|unique:roles',
-        ] );
-
-        $role = Sentinel::getRoleRepository()->createModel()->create( [
-            'name' => trim( $request->get( 'name' ) ),
-            'slug' => trim( $request->get( 'slug' ) ),
-        ] );
-
-        $permissions = [];
-        foreach( $request->get( 'permissions', [] ) as $permission => $value )
-        {
-            $permissions[$permission] = (bool) $value;
-        }
-
-        $role->permissions = $permissions;
-        $role->save();
-
-        if( $request->ajax() )
-        {
-            return response()->json( [ 'role' => $role ], 200 );
-        }
-
-        session()->flash( 'success', "Role '{$role->name}' has been created." );
-
-        return redirect( route( 'admin.roles.index' ) );
-    }
-
-    /**
-     * @return Response
-     */
-    public function show()
-    {
-        return redirect( route( 'admin.roles.index' ) );
-    }
-
-    /**
-     * @param $id
-     * @return Response|View
-     */
-    public function edit( $id )
-    {
-        $role = $this->roleRepository->findById( $id );
-
-        if( $role )
-        {
-            return view( 'leaf::controllers.roles.edit' )
-                ->with( 'role', $role );
-        }
-
-        session()->flash( 'error', 'Invalid role.' );
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param Request $request
-     * @param $id
-     * @return RedirectResponse
-     */
-    public function update( Request $request, $id )
-    {
-        $this->validate( $request, [
-            'name' => 'required',
-            'slug' => 'required|alpha_dash|unique:roles,slug,' . $id,
-        ] );
-
-        $role = $this->roleRepository->findById( $id );
-        if( !$role )
-        {
-            if( $request->ajax() )
-            {
-                return response()->json( 'Invalid role.', 422 );
-            }
-            session()->flash( 'error', 'Invalid role.' );
-
-            return redirect()->back()->withInput();
-        }
-
-        $role->name = $request->get( 'name' );
-        $role->slug = $request->get( 'slug' );
-
-        $permissions = [];
-        foreach( $request->get( 'permissions', [] ) as $permission => $value )
-        {
-            $permissions[$permission] = (bool) $value;
-        }
-
-        $role->permissions = $permissions;
-        $role->save();
-
-        if( $request->ajax() )
-        {
-            return response()->json( [ 'role' => $role ], 200 );
-        }
-
-        session()->flash( 'success', "Role '{$role->name}' has been updated." );
-
-        return redirect( route( 'admin.roles.index' ) );
-    }
-
-    /**
-     * @param Request $request
-     * @param $id
-     * @return Response
-     */
-    public function destroy( Request $request, $id )
-    {
-        $role = $this->roleRepository->findById( $id );
-
-        $role->delete();
-
-        $message = "Role '{$role->name}' has been removed.";
-        if( $request->ajax() )
-        {
-            return response()->json( [ $message ], 200 );
-        }
-
-        session()->flash( 'success', $message );
-
-        return redirect( route( 'admin.roles.index' ) );
-    }
 }
