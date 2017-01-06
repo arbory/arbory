@@ -54,6 +54,7 @@ class UserController extends AbstractCrudController
     public function deleting( Model $user )
     {
         if( Sentinel::getUser()->id == $user->id )
+
         {
             session()->flash( 'error', 'You cannot remove yourself!' );
         }

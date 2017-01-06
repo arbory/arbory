@@ -64,6 +64,18 @@ class Element
     }
 
     /**
+     * @param string $name
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAttributeValue( $name, $value )
+    {
+        $this->attributes()[$name] = $value;
+
+        return $this;
+    }
+
+    /**
      * @return Content
      */
     public function content()

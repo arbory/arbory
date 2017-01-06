@@ -2,18 +2,17 @@
 
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Menu\Item;
+use CubeSystems\Leaf\Services\ModuleRegistry;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-
 /**
- * Class ResourceController
+ * Class CrudFrontController
  * @package CubeSystems\Leaf\Http\Controllers
  */
-class ResourceController extends Controller
+class CrudFrontController extends Controller
 {
     /**
      * @var \Illuminate\Foundation\Application
@@ -106,7 +105,7 @@ class ResourceController extends Controller
 
     /**
      * @param $slug
-     * @param $resourceId
+     * @param string $resourceId
      * @return Response
      * @throws HttpException
      */
@@ -118,8 +117,8 @@ class ResourceController extends Controller
     }
 
     /**
-     * @param $slug
-     * @param $dialog
+     * @param string $slug
+     * @param mixed $dialog
      * @return Response
      * @throws HttpException
      */
@@ -131,8 +130,8 @@ class ResourceController extends Controller
     }
 
     /**
-     * @param $slug
-     * @param $api
+     * @param string $slug
+     * @param mixed $api
      * @return mixed
      * @throws HttpException
      */
@@ -144,23 +143,22 @@ class ResourceController extends Controller
     }
 
     /**
-     * @param $slug
+     * @param string $slug
      * @return string
      * @throws HttpException
      */
-    protected function findControllerBySlug( $slug )
+    public function findControllerBySlug( $slug )
     {
-        /**
-         * @var $menuItem Item
-         */
+        /* @var $modules ModuleRegistry */
+        $modules = app( 'leaf.modules' );
 
-        $menuItem = $this->app['leaf.menu']->findItemBySlug( $slug );
+        $module = $modules->findCrudModuleByName( $slug );
 
-        if( !$menuItem )
+        if( !$module )
         {
             $this->app->abort( Response::HTTP_NOT_FOUND );
         }
 
-        return $menuItem->getController();
+        return $module->getControllerClass();
     }
 }
