@@ -9,26 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class BelongsToMany extends AbstractField
 {
     /**
-     * @return Element
+     * @return string
      */
-    public function render()
-    {
-        if( $this->isForList() )
-        {
-            return $this->renderListField();
-        }
-        elseif( $this->isForForm() )
-        {
-            return $this->renderFormField();
-        }
-
-        return null;
-    }
-
-    /**
-     * @return Element
-     */
-    protected function renderListField()
+    public function __toString()
     {
         $list = Html::ul();
 
@@ -37,13 +20,13 @@ class BelongsToMany extends AbstractField
             $list->append( Html::li( $item ) );
         }
 
-        return $list;
+        return (string) $list;;
     }
 
     /**
      * @return Element
      */
-    protected function renderFormField()
+    public function render()
     {
         $relatedModel = $this->getRelatedModel();
         $checkboxes = $this->getRelatedModelOptions( $relatedModel );
@@ -92,7 +75,7 @@ class BelongsToMany extends AbstractField
 
             $checkbox = Html::checkbox()
                 ->setName( implode( '.', $name ) )
-                ->setValue(1);
+                ->setValue( 1 );
 
             $checkbox->append( $checkbox->getLabel( (string) $modelOption ) );
 

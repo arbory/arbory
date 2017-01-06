@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Menu;
 
 use CubeSystems\Leaf\Html\Elements;
+use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 
 /**
@@ -112,20 +113,19 @@ class Menu
      */
     public function render()
     {
-        $ul = new Elements\Ul();
-        $ul->addClass( 'block' );
+        $list = Html::ul()->addClass( 'block' );
 
         foreach( $this->getItems() as $item )
         {
-            $li = ( new Elements\Li() )
-                ->setAttributeValue( 'data-name', '' );
+            $li = Html::li( )
+                ->addAttributes( [ 'data-name' => '' ] );
 
             if( $item->render( $li ) )
             {
-                $ul->append( $li );
+                $list->append( $li );
             }
         }
 
-        return $ul;
+        return $list;
     }
 }

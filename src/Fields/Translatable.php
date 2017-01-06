@@ -22,6 +22,11 @@ class Translatable extends AbstractField
      */
     private $locales = [];
 
+    public function __toString()
+    {
+        return (string) $this->getListFieldOutput();
+    }
+
     /**
      * Translatable constructor.
      * @param FieldInterface $field
@@ -48,24 +53,6 @@ class Translatable extends AbstractField
      * @return Element|string
      */
     public function render( array $attributes = [] )
-    {
-        switch( $this->getContext() )
-        {
-            case static::CONTEXT_FORM:
-                return $this->getFormFieldOutput( $attributes );
-                break;
-
-            case static::CONTEXT_LIST:
-                return $this->getListFieldOutput( $attributes );
-                break;
-        }
-    }
-
-    /**
-     * @param array $attributes
-     * @return Element|string
-     */
-    protected function getFormFieldOutput( array $attributes = [] )
     {
         $fields = new Content;
 
@@ -156,22 +143,16 @@ class Translatable extends AbstractField
     }
 
     /**
-     * @param array $attributes
      * @return Element|string
      */
-    protected function getListFieldOutput( array $attributes = [] )
+    protected function getListFieldOutput()
     {
-        // TODO: Move this functionality outside
-
-        $model = $this->getModel();
-
         $field = clone $this->field;
-        $field->setListContext();
-        $field->setModel( $model );
+        $field->setModel( $this->getModel() );
         $field->setFieldSet( $this->getFieldSet() );
         $field->setController( $this->getController() );
 
-        return $field->render( $attributes );
+        return (string) $field;
     }
 
     /**

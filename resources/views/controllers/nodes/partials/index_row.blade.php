@@ -4,10 +4,10 @@
             data-level="{{$level}}"
             data-id="{{$row->getIdentifier()}}"
         >
-            <div class="only-icon toolbox-cell">
+            {{--<div class="only-icon toolbox-cell">--}}
 {{--                {{$row->getToolBox()}}--}}
                 {{--{!! $row->getFieldByName('tools')->render() !!}--}}
-            </div>
+            {{--</div>--}}
 
             @if($row->hasChildRows())
                 <div class="collapser-cell">
@@ -26,14 +26,14 @@
                         $row->getIdentifier()
                     ])}}" class="trigger">
                         <span>
-                            {!! $field->render() !!}
+                            {{(string)$field}}
                         </span>
                     </a>
                 @endforeach
             </div>
 
             @if( $row->hasChildRows() )
-                {{--@include('leaf::controllers.nodes.partials.index_row',['rows' => $row->getChildRows(),'level' => $level + 1])--}}
+                @include('leaf::controllers.nodes.partials.index_row',['rows' => $row->getChildRows(),'level' => $level + 1])
             @endif
 
         </li>

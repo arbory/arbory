@@ -11,6 +11,11 @@ class Toolbox extends AbstractField
 {
     protected $items;
 
+    public function __toString()
+    {
+        return '';
+    }
+
     /**
      * @return bool
      */

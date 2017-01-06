@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Menu;
 
 use CubeSystems\Leaf\Html\Elements;
+use CubeSystems\Leaf\Html\Html;
 
 /**
  * Class ItemGroupItem
@@ -61,14 +62,13 @@ class ItemGroupItem extends AbstractItem
      */
     public function render( Elements\Element $parentElement )
     {
-        $ul = ( new Elements\Ul() )
-            ->addClass( 'block' );
+        $ul = Html::ul()->addClass( 'block' );
 
         $anyChildrenRendered = false;
+
         foreach( $this->getChildren() as $child )
         {
-            $li = ( new Elements\Li() )
-                ->setAttributeValue( 'data-name', '' );
+            $li = Html::li()->addAttributes( [ 'data-name' => '' ] );
 
             if( $child->render( $li ) )
             {
@@ -82,30 +82,11 @@ class ItemGroupItem extends AbstractItem
         {
             $parentElement
                 ->append(
-                    ( new Elements\Span() )
-                        ->addClass( 'trigger' )
-                        ->append(
-                            ( new Elements\Abr( $this->getAbbreviation() ) )
-                                ->setAttributeValue( 'title', $this->getTitle() )
-                        )
-                        ->append(
-                            ( new Elements\Span( $this->getTitle() ) )
-                                ->addClass( 'name' )
-                        )
-                        ->append(
-                            ( new Elements\Span() )
-                                ->addClass( 'collapser' )
-                                ->append(
-                                    ( new Elements\Button() )
-                                        ->setAttributeValue( 'type', 'button' )
-                                        ->append(
-                                            ( new Elements\I() )
-                                                ->addClass( 'fa' )
-                                                ->addClass( 'fa-chevron-up' )
-                                        )
-
-                                )
-                        )
+                    Html::span( [
+                        Html::abbr( $this->getAbbreviation() )->addAttributes( [ 'title' => $this->getTitle() ] ),
+                        Html::span( $this->getTitle() )->addClass( 'name' ),
+                        Html::span( Html::button( Html::i()->addClass( 'fa fa-chevron-up' ) )->addAttributes( [ 'type' => 'button' ] ) )->addClass( 'collapser' ),
+                    ] )->addClass( 'trigger' )
                 )
                 ->append( $ul );
 

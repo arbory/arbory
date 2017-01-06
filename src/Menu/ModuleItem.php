@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Menu;
 
 use Cartalyst\Sentinel\Sentinel;
 use CubeSystems\Leaf\Html\Elements;
+use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Services\Module;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 
@@ -111,22 +112,6 @@ class ModuleItem extends AbstractItem
     }
 
     /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAbbreviation()
-    {
-        return $this->abbreviation;
-    }
-
-    /**
      * @param Elements\Element $parentElement
      * @return bool
      */
@@ -140,14 +125,12 @@ class ModuleItem extends AbstractItem
         if( $module && $module->isAuthorized( $this->sentinel ) )
         {
             $parentElement->append(
-                ( new Elements\A() )
+                Html::link([
+                    Html::abbr( $this->getAbbreviation() )->addAttributes( [ 'title' => $this->getTitle() ] ),
+                    Html::span( $this->getTitle() )->addClass( 'name' )
+                ])
                     ->addClass( 'trigger' )
-                    ->setAttributeValue( 'href', $this->getUrl() )
-                    ->append( ( new Elements\Abr( $this->getAbbreviation() ) )
-                        ->setAttributeValue( 'title', $this->getTitle() ) )
-                    ->append(
-                        ( new Elements\Span( $this->getTitle() ) )
-                            ->addClass( 'name' ) )
+                    ->addAttributes( [ 'href' => $this->getUrl() ] )
             );
 
             $result = true;
@@ -163,8 +146,7 @@ class ModuleItem extends AbstractItem
     /**
      * @return string
      */
-    protected
-    function getUrl()
+    protected function getUrl()
     {
         return route( $this->getRouteName(), $this->getRouteParams() );
     }

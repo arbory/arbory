@@ -54,8 +54,7 @@ abstract class AbstractItem
     /**
      * @param array $values
      */
-    public
-    function __construct( array $values = [] )
+    public function __construct( array $values = [] )
     {
         $this->setTitle( array_get( $values, 'title' ) );
         $this->setAbbreviation( array_get( $values, 'abbreviation' ) );
@@ -65,8 +64,7 @@ abstract class AbstractItem
      * @param string $title
      * @return $this
      */
-    public
-    function setTitle( $title )
+    public function setTitle( $title )
     {
         $this->title = $title;
 
@@ -77,8 +75,7 @@ abstract class AbstractItem
      * @param string $abbreviation
      * @return $this
      */
-    public
-    function setAbbreviation( $abbreviation )
+    public function setAbbreviation( $abbreviation )
     {
         $this->abbreviation = $abbreviation;
 
@@ -89,8 +86,7 @@ abstract class AbstractItem
      * @param AbstractItem $parent
      * @return $this
      */
-    public
-    function setParent( AbstractItem $parent )
+    public function setParent( AbstractItem $parent )
     {
         $this->parent = $parent;
 

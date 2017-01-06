@@ -152,10 +152,10 @@ abstract class AbstractCrudController
             Lang::get( 'leaf.breadcrumbs.home' ),
             route( 'admin.dashboard' )
         );
-        $breadcrumbs->add(
-            $this->app['leaf.menu']->findItemByController( static::class )->getTitle(),
-            route( 'admin.model.index', $this->getSlug() )
-        );
+//        $breadcrumbs->add(
+//            $this->app['leaf.menu']->findItemByController( static::class )->getTitle(),
+//            route( 'admin.model.index', $this->getSlug() )
+//        );
 
         return $breadcrumbs;
     }

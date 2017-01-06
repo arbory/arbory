@@ -91,4 +91,8 @@ class Html
         return new Element( 'a', $content );
     }
 
+    public static function abbr( $content = null )
+    {
+        return new Element( 'abbr', $content );
+    }
 }

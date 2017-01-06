@@ -40,7 +40,7 @@
                     <td><a href="{{route( 'admin.model.edit', [
                         $controller->getSlug(),
                         $item->getIdentifier()
-                    ])}}"><span>{!! $field->render() !!}</span></a></td>
+                    ])}}"><span>{!! $field !!}</span></a></td>
                 @endforeach
             </tr>
         @endforeach
