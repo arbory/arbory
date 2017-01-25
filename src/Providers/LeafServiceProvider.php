@@ -35,6 +35,11 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function boot( Router $router )
     {
+        $aliasLoader = AliasLoader::getInstance();
+
+        $this->app->register( LeafTranslationServiceProvider::class );
+        $aliasLoader->alias( 'TranslationCache', \Waavi\Translation\Facades\TranslationCache::class );
+
         $this->registerComposerSingleton();
         $this->registerSentinelSingleton();
         $this->registerModuleRegistry();
@@ -49,10 +54,9 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( LeafFileServiceProvider::class );
         $this->app->register( LeafSentinelServiceProvider::class );
 
-        $loader = AliasLoader::getInstance();
-        $loader->alias( 'Activation', \Cartalyst\Sentinel\Laravel\Facades\Activation::class );
-        $loader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
-        $loader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
+        $aliasLoader->alias( 'Activation', \Cartalyst\Sentinel\Laravel\Facades\Activation::class );
+        $aliasLoader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
+        $aliasLoader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
 
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {

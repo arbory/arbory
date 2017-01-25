@@ -6,9 +6,9 @@ Route::post( 'logout', [ 'as' => 'admin.logout', 'uses' => 'Admin\SessionControl
 
 Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
 {
-    Route::resource( 'users', 'Admin\UserController', [ 'as' => 'admin' ] );
+    Route::resource( 'users', 'Admin\UserController' );
 
-    Route::resource( 'roles', 'Admin\RoleController', [ 'as' => 'admin' ] );
+    Route::resource( 'roles', 'Admin\RoleController' );
 
     Route::get( 'dashboard', [
         'as' => 'admin.dashboard',
@@ -53,5 +53,20 @@ Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
     Route::get( 'model/{model}/api/{api}', [
         'as' => 'admin.model.api',
         'uses' => 'Admin\CrudFrontController@api'
+    ] );
+
+    Route::get( 'translations/list', [
+        'as' => 'admin.translations.index',
+        'uses' => 'Admin\TranslationsController@index'
+    ] );
+
+    Route::get( 'translations/edit/{namespace}/{group}/{item}/{page?}', [
+        'as' => 'admin.translations.edit',
+        'uses' => 'Admin\TranslationsController@edit'
+    ] );
+
+    Route::post( 'translations/update', [
+        'as' => 'admin.translations.update',
+        'uses' => 'Admin\TranslationsController@store'
     ] );
 } );
