@@ -15,6 +15,14 @@
 
         <div class="body">
 
+            <form>
+
+                <input type="text" name="search" value="{{ $search }}"/>
+
+                <button class="button" type="submit">Search!</button>
+
+            </form>
+
             <table class="table">
 
                 <thead>
@@ -33,13 +41,13 @@
                 @foreach($translations as $translation)
                     <tr>
                         <td>
-                            <a href="{{$translation->edit_url}}">{{$translation->namespace}} {{$translation->group}}</a>
+                            <a href="{{$translation->edit_url}}">{!! $hhh($translation->namespace) !!} {!! $hhh($translation->group) !!}</a>
                         </td>
-                        <td><a href="{{$translation->edit_url}}">{{$translation->item}}</a></td>
+                        <td><a href="{{$translation->edit_url}}">{!! $hhh($translation->item) !!}</a></td>
 
                         @foreach($languages as $language)
                             <td>
-                                <a href="{{$translation->edit_url}}">{{ $translation->{$language->locale . '_text'} }}</a>
+                                <a href="{{$translation->edit_url}}">{!! $hhh($translation->{$language->locale . '_text'}) !!}</a>
                             </td>
                             {{--<td>{{ $translation->{$language->locale . '_locked'} }}</td>--}}
                             {{--<td>{{ $translation->{$language->locale . '_unstable'} }}</td>--}}

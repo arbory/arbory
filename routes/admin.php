@@ -60,7 +60,7 @@ Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
         'uses' => 'Admin\TranslationsController@index'
     ] );
 
-    Route::get( 'translations/edit/{namespace}/{group}/{item}/{page?}', [
+    Route::get( 'translations/edit/{namespace}-{group}-{item}', [
         'as' => 'admin.translations.edit',
         'uses' => 'Admin\TranslationsController@edit'
     ] );

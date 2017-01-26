@@ -9,12 +9,11 @@
 @section('content')
     <section>
 
-        <form method="post" action="{{route('admin.translations.update')}}">
+        <form method="post" action="{{$update_url}}">
 
             <input type="hidden" name="namespace" value="{{$namespace}}"/>
             <input type="hidden" name="group" value="{{$group}}"/>
             <input type="hidden" name="item" value="{{$item}}"/>
-            <input type="hidden" name="page" value="{{$page}}"/>
 
             {{ csrf_field() }}
 
@@ -56,7 +55,7 @@
                     <div class="secondary">
                         <a class="button with-icon secondary"
                            title="Atpakaļ uz sarakstu"
-                           href="{{route('admin.translations.index')}}?page={{$page}}"><i class="fa fa-caret-left"></i>{{trans('leaf.translations.back_to_index')}}
+                           href="{{$back_to_index_url}}"><i class="fa fa-caret-left"></i>{{trans('leaf.translations.back_to_index')}}
                         </a></div>
                 </div>
             </footer>

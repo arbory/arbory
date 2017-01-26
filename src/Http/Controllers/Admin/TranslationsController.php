@@ -8,8 +8,10 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Waavi\Translation\Models\Language;
 use Waavi\Translation\Models\Translation;
@@ -32,6 +34,11 @@ class TranslationsController extends Controller
      */
     protected $languagesRepository;
 
+    /**
+     * @var Request
+     */
+    protected $request;
+
     /** @noinspection PhpMissingParentConstructorInspection */
     /**
      * @param TranslationRepository $translationRepository
@@ -44,10 +51,13 @@ class TranslationsController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return Factory|View
      */
-    public function index()
+    public function index( Request $request )
     {
+        $this->request = $request;
+
         $languages = $this->languagesRepository->all();
 
         /** @noinspection PhpUndefinedMethodInspection */
@@ -82,17 +92,34 @@ class TranslationsController extends Controller
             );
         }
 
-        $breadcrumbs = $this->getBreadcrumbs();
+        $searchString = $request->get( 'search' );
+
+        if( $searchString )
+        {
+            $translationsQuery->where( 'd1.group', 'LIKE', '%' . $searchString . '%' );
+            $translationsQuery->orWhere( 'd1.namespace', 'LIKE', '%' . $searchString . '%' );
+            $translationsQuery->orWhere( 'd1.item', 'LIKE', '%' . $searchString . '%' );
+
+            foreach( $languages as $language )
+            {
+                $translationsQuery->orWhere( 'l_' . $language->locale . '.text', 'LIKE', '%' . $searchString . '%' );
+            }
+        }
 
         $paginatedItems = $this->getPaginatedItems( $translationsQuery );
 
         return view(
             'leaf::controllers.translations.index',
             [
-                'breadcrumbs' => $breadcrumbs->get(),
+                'breadcrumbs' => $this->getBreadcrumbs()->get(),
                 'languages' => $languages,
                 'translations' => $paginatedItems,
-                'paginator' => $paginatedItems
+                'paginator' => $paginatedItems,
+                'search' => $request->get( 'search' ),
+                'hhh' => function ( $kek1 ) use ( $searchString )
+                {
+                    return str_replace( $searchString, '<span style="background-color: lime; font-weight:bold">' . htmlentities( $searchString ) . '</span>', htmlentities( $kek1 ) );
+                }
             ]
         );
     }
@@ -102,11 +129,12 @@ class TranslationsController extends Controller
      * @param string $namespace
      * @param string $group
      * @param string $item
-     * @param string $page
      * @return View
      */
-    public function edit( Request $request, $namespace, $group, $item, $page )
+    public function edit( Request $request, $namespace, $group, $item )
     {
+        $this->request = $request;
+
         $breadcrumbs = $this->getBreadcrumbs();
 
         /* @var $languages Language[] */
@@ -149,14 +177,21 @@ class TranslationsController extends Controller
                 'namespace' => $namespace,
                 'group' => $group,
                 'item' => $item,
-                'page' => $page,
-                'translations' => $translations
+                'translations' => $translations,
+                'back_to_index_url' => route( 'admin.translations.index', $this->getContext() ),
+                'update_url' => route( 'admin.translations.update', $this->getContext() )
             ]
         );
     }
 
+    /**
+     * @param TranslationStoreRequest $request
+     * @return RedirectResponse|Redirector
+     */
     public function store( TranslationStoreRequest $request )
     {
+        $this->request = $request;
+
         /* @var $languages Language[] */
         $languages = $this->languagesRepository->all();
 
@@ -179,10 +214,8 @@ class TranslationsController extends Controller
             );
         }
 
-        return redirect( route( 'admin.translations.index' ) . '?page=' . $request->get( 'page' ) );
+        return redirect( route( 'admin.translations.index', $this->getContext() ) );
     }
-
-
 
     /**
      * @param \stdClass $item
@@ -197,7 +230,8 @@ class TranslationsController extends Controller
                 'namespace' => $item->namespace,
                 'group' => $item->group,
                 'item' => $item->item,
-                'page' => $paginator->currentPage()
+                'page' => $paginator->currentPage(),
+                'search' => $this->request->get( 'search' )
             ] );
     }
 
@@ -207,7 +241,7 @@ class TranslationsController extends Controller
      */
     private function getPaginatedItems( Builder $translationsQueryBuilder )
     {
-        $paginator = $translationsQueryBuilder->paginate( 10 );
+        $paginator = $translationsQueryBuilder->paginate( 15 );
 
         foreach( $paginator->items() as $item )
         {
@@ -233,5 +267,13 @@ class TranslationsController extends Controller
         );
 
         return $breadcrumbs;
+    }
+
+    /**
+     * @return array
+     */
+    private function getContext()
+    {
+        return [ 'page' => $this->request->get( 'page' ), 'search' => $this->request->get( 'search' ) ];
     }
 }
