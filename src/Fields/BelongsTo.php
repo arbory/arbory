@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Fields;
 
+use CubeSystems\Leaf\Fields\Renderer\OptionFieldRenderer;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BelongsTo extends AbstractField
 {
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string) $this->getValue();
@@ -22,13 +26,7 @@ class BelongsTo extends AbstractField
      */
     public function render()
     {
-        $label = Html::label( $this->getLabel() )->addAttributes( [ 'for' => $this->getName() ] );
-        $select = Html::select( $this->getOptions() )->setName( $this->getNameSpacedName() );
-
-        return Html::div( [
-            Html::div( $label )->addClass( 'label-wrap' ),
-            Html::div( $select )->addClass( 'value' )
-        ] )->addClass( 'field type-item' );
+        return ( new OptionFieldRenderer( $this ) )->render();
     }
 
     /**
@@ -42,7 +40,7 @@ class BelongsTo extends AbstractField
     /**
      * @return array
      */
-    protected function getOptions()
+    public function getOptions()
     {
         $options = [];
 

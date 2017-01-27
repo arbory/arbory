@@ -95,4 +95,29 @@ class Html
     {
         return new Element( 'abbr', $content );
     }
+
+    public static function section( $content = null )
+    {
+        return new Element( 'section', $content );
+    }
+
+    public static function header( $content = null )
+    {
+        return new Element( 'header', $content );
+    }
+
+    public static function h1( $content = null )
+    {
+        return new Element( 'h1', $content );
+    }
+
+    public static function footer( $content = null )
+    {
+        return new Element( 'footer', $content );
+    }
+
+    public static function fieldset( $content = null )
+    {
+        return new Element( 'fieldset', $content );
+    }
 }

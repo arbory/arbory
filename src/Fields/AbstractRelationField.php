@@ -11,9 +11,15 @@ abstract class AbstractRelationField extends AbstractField
 {
     protected $fieldSetCallback;
 
-    public function __construct( $name, callable $fieldSetCallback ) // TODO: Setter
+    /**
+     * AbstractRelationField constructor.
+     * @param string $name
+     * @param callable $fieldSetCallback
+     */
+    public function __construct( $name, callable $fieldSetCallback )
     {
-        $this->setName( $name );
+        parent::__construct( $name );
+
         $this->fieldSetCallback = $fieldSetCallback;
     }
 
@@ -31,28 +37,6 @@ abstract class AbstractRelationField extends AbstractField
             ->setValue( $model->getKey() )
             ->setInputNamespace( $inputNamespace );
 
-        if( $this->canRemoveRelationItems() )
-        {
-            $fieldSet->add( new RemoveRelationItem( '_destroy' ) )
-                ->setValue( 'false' )
-                ->setInputNamespace( $inputNamespace );
-
-
-//            $button = Html::button( Html::i()->addClass('fa fa-trash-o') )
-//                ->addClass('button only-icon danger remove-nested-item')
-//                ->addAttributes(['title' => trans('leaf.fields.relation.remove')]);
-//
-//            $input = Html::input()
-//                ->setType( 'hidden' )
-//                ->setName( $this->getInputNamespace() + [ '_destroy' ] )
-//                ->setValue( 'false' )
-//                ->addClass( 'destroy' );
-//
-//            Html::div([ $button, $input ])->addClass('remove-item-box');
-
-
-        }
-
         $builder = new FormBuilder( $model );
         $builder->setFieldSet( $fieldSet );
         $builder->setController( $this->getController() );
@@ -60,9 +44,14 @@ abstract class AbstractRelationField extends AbstractField
         return $builder;
     }
 
-    // TODO: Move namespace to FieldSet
+    /**
+     * @param FieldSet $fieldSet
+     * @param $namespace
+     * @return FieldSet
+     */
     protected function getNamespacedFieldSet( FieldSet $fieldSet, $namespace )
     {
+        // TODO: Move namespace to FieldSet
         foreach( $fieldSet->getFields() as $field )
         {
             $field->setInputNamespace( $namespace );
@@ -71,6 +60,9 @@ abstract class AbstractRelationField extends AbstractField
         return $fieldSet;
     }
 
+    /**
+     * @return FieldSet
+     */
     public function getRelationFieldSet()
     {
         $fieldSet = new FieldSet;

@@ -2,10 +2,16 @@
 
 namespace CubeSystems\Leaf\Fields;
 
-use CubeSystems\Leaf\Builder\FormBuilder;
-use CubeSystems\Leaf\FieldSet;
+use CubeSystems\Leaf\Html\Elements\Element;
+use CubeSystems\Leaf\Html\Html;
+use CubeSystems\Leaf\Results\FormResult;
 use Illuminate\Database\Eloquent\Model;
 
+
+/**
+ * Class HasMany
+ * @package CubeSystems\Leaf\Fields
+ */
 class HasMany extends AbstractRelationField
 {
     public function canRemoveRelationItems()
@@ -20,102 +26,197 @@ class HasMany extends AbstractRelationField
         return true;
     }
 
+    /**
+     * @return Element|string
+     */
     public function render()
     {
-        $model = $this->getModel();
-
-        $relatedModel = $model->{$this->getName()}()->getRelated();
-
-        $fieldSet = $this->getRelationFieldSet();
-
-        $relationItems = [ ];
-
-        foreach( $this->getValue() as $index => $item )
-        {
-            $relationItems[] = $this->buildRelationForm(
-                $item,
-                clone $fieldSet,
-                $this->getName() . '.' . $index
-            )->build();
-        }
-
-        return view( $this->getViewName(), [
-            'field' => $this,
-            'relations' => $relationItems,
-            'template' => $this->getRelationFromTemplate( $relatedModel, clone $fieldSet )
-        ] );
+        return Html::section( [
+            $this->getHeader(),
+            $this->getBody(),
+            $this->getFooter(),
+        ] )
+            ->addClass( 'nested' )
+            ->addAttributes( [
+                'data-name' => $this->getName(),
+                'data-releaf-template' => $this->getRelationFromTemplate(),
+            ] );
     }
 
     /**
-     * @param $relatedModel
-     * @param $fieldSet
-     * @return string
-     * @throws \Exception
-     * @throws \Throwable
+     * @return Element
      */
-    protected function getRelationFromTemplate( $relatedModel, $fieldSet )
+    protected function getHeader()
     {
-        $formBuilder = $this->buildRelationForm(
-            $relatedModel,
-            clone $fieldSet,
-            $this->getName() . '._template_'
+        return Html::header( Html::h1( $this->getLabel() ) );
+    }
+
+    /**
+     * @return Element
+     */
+    protected function getBody()
+    {
+        $relationItems = [];
+
+        foreach( $this->getValue() as $index => $item )
+        {
+            $relationItem = $this->buildRelationForm(
+                $item,
+                $this->getRelationFieldSet(),
+                $this->getName() . '.' . $index
+            )->build();
+
+            $relationItems[] = $this->getRelationItemHtml( $relationItem, $index );
+        }
+
+        return Html::div( $relationItems )->addClass( 'body list' );
+    }
+
+    /**
+     * @return Element|null
+     */
+    protected function getFooter()
+    {
+        if( !$this->canAddRelationItem() )
+        {
+            return null;
+        }
+
+        return Html::footer(
+            Html::button( [
+                Html::i()->addClass( 'fa fa-plus' ),
+                trans( 'leaf.fields.has_many.add_item' ),
+            ] )
+                ->addClass( 'button with-icon primary add-nested-item' )
+                ->addAttributes( [
+                    'type' => 'button',
+                    'title' => trans( 'leaf.fields.has_many.add_item' ),
+                ] )
         );
-
-        return view( $this->getViewName() . '_fieldset', [
-            'name' => $this->getName(),
-            'index' => '_template_',
-            'fields' => $formBuilder->build()->getFields()
-        ] )->render();
     }
 
-    protected function getRelatedModel( $model )
+    /**
+     * @param FormResult $formResult
+     * @param integer $index
+     * @return Element
+     */
+    protected function getRelationItemHtml( FormResult $formResult, $index )
     {
-        return $model->{$this->getName()}();
+        $fieldSetHtml = Html::fieldset()
+            ->addClass( 'item type-association' )
+            ->addAttributes( [
+                'data-name' => $this->getName(),
+                'data-index' => $index
+            ] );
+
+        foreach( $formResult->getFields() as $field )
+        {
+            $fieldSetHtml->append( $field->render() );
+            $fieldSetHtml->append(
+                $this->getFieldSetRemoveButton( 'resource.' . $this->getName() . '.' . $index . '._destroy' )
+            );
+        }
+
+        return $fieldSetHtml;
     }
+
+    /**
+     * @param string $name
+     * @return Element|null
+     */
+    protected function getFieldSetRemoveButton( $name )
+    {
+        if( !$this->canRemoveRelationItems() )
+        {
+            return null;
+        }
+
+        $button = Html::button( Html::i()->addClass( 'fa fa-trash-o' ) )
+            ->addClass( 'button only-icon danger remove-nested-item' )
+            ->addAttributes( [
+                'type' => 'button',
+                'title' => trans( 'leaf.fields.relation.remove' ),
+            ] );
+
+        $input = Html::input()
+            ->setType( 'hidden' )
+            ->setName( $name )
+            ->setValue( 'false' )
+            ->addClass( 'destroy' );
+
+        return Html::div( [ $button, $input ] )->addClass( 'remove-item-box' );
+    }
+
+    /**
+     * @return Element
+     */
+    protected function getRelationFromTemplate()
+    {
+        $formResults = $this->buildRelationForm(
+            $this->getModel()->{$this->getName()}()->getRelated(),
+            $this->getRelationFieldSet(),
+            $this->getName() . '._template_'
+        )->build();
+
+        return $this->getRelationItemHtml( $formResults, '_template_' );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    protected function getRelation()
+    {
+        return $this->getModel()->{$this->getName()}();
+    }
+
 
     /**
      * @param Model $model
      * @param array $input
      * @return void
      */
-    public function afterModelSave( Model $model, array $input = [ ] )
+    public function afterModelSave( Model $model, array $input = [] )
     {
-        /**
-         * @var $relation \Illuminate\Database\Eloquent\Relations\HasMany
-         */
-        $inputVariables = array_get( $input, $this->getName() );
+        $this->setModel( $model );
 
-        if( !$inputVariables )
+        $relationsInput = (array) array_get( $input, $this->getName(), [] );
+
+        foreach( $relationsInput as $relationVariables )
         {
+            $this->processRelationItemUpdate( $relationVariables );
+        }
+    }
+
+    /**
+     * @param array $variables
+     */
+    private function processRelationItemUpdate( array $variables )
+    {
+        $variables[$this->getRelation()->getPlainForeignKey()] = $this->getModel()->getKey();
+
+        $relatedModel = $this->findRelatedModel( $variables );
+
+        if( filter_var( array_get( $variables, '_destroy' ), FILTER_VALIDATE_BOOLEAN ) )
+        {
+            $relatedModel->delete();
+
             return;
         }
 
-        $relation = $model->{$this->getName()}();
-        $parentKeySegments = explode( '.', $relation->getQualifiedParentKeyName() );
-        $relationParentKey = $parentKeySegments[count( $parentKeySegments ) - 1];
-        $relationForeignKey = $relation->getPlainForeignKey();
+        $relatedModel->fill( $variables );
+        $relatedModel->save();
+    }
 
-        $relatedModel = $relation->getRelated();
+    /**
+     * @param $variables
+     * @return Model
+     */
+    private function findRelatedModel( $variables )
+    {
+        $relation = $this->getRelation();
 
-        $relatedModelKeyName = $relatedModel->getKeyName();
+        $relatedModelId = array_get( $variables, $relation->getRelated()->getKeyName() );
 
-        foreach( $inputVariables as $relationVariables )
-        {
-            $relationVariables[ $relationForeignKey ] = $model->{$relationParentKey};
-
-            $deleteRelation = filter_var( array_get( $relationVariables, '_destroy' ), FILTER_VALIDATE_BOOLEAN );
-            $relatedModelId = array_get( $relationVariables, $relatedModelKeyName );
-            $relatedModel1 = $relatedModel->findOrNew( $relatedModelId );
-
-            if( $deleteRelation === true )
-            {
-                $relatedModel1->delete();
-
-                continue;
-            }
-
-            $relatedModel1->fill( $relationVariables );
-            $relatedModel1->save();
-        }
+        return $relation->getRelated()->findOrNew( $relatedModelId );
     }
 }

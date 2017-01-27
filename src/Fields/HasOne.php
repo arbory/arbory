@@ -2,11 +2,11 @@
 
 namespace CubeSystems\Leaf\Fields;
 
+use CubeSystems\Leaf\Html\Elements\Element;
+use CubeSystems\Leaf\Html\Html;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
  * Class HasOne
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class HasOne extends AbstractRelationField
 {
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Element
      */
     public function render()
     {
@@ -28,16 +28,16 @@ class HasOne extends AbstractRelationField
             $item = $this->getModel()->{$this->getName()}()->getRelated();
         }
 
-        $relationForm = $this->buildRelationForm(
-            $item,
-            clone $fieldSet,
-            $this->getName()
-        )->build();
+        $relationForm = $this->buildRelationForm( $item, clone $fieldSet, $this->getName() )->build();
 
-        return view( $this->getViewName(), [
-            'field' => $this,
-            'relation_fields' => $relationForm->getFields(),
-        ] );
+        $block = Html::div()->addClass('section content-fields');
+
+        foreach($relationForm->getFields() as $field)
+        {
+            $block->append( $field->render() );
+        }
+
+        return $block;
     }
 
     /**
