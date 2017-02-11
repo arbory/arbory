@@ -31,6 +31,8 @@
                     @endif
                 </th>
             @endforeach
+            {{--Toolbox--}}
+            <th>&nbsp;</th>
         </tr>
         </thead>
         <tbody class="tbody">
@@ -42,6 +44,19 @@
                         $item->getIdentifier()
                     ])}}"><span>{!! $field !!}</span></a></td>
                 @endforeach
+                {{--Toolbox--}}
+                <td>
+                    <div class="toolbox" data-url="{{ route( 'admin.model.dialog', [
+                        'model' => $controller->getSlug(),
+                        'dialog' => 'toolbox',
+                        'id' => $item->getIdentifier(),
+                    ] )}}">
+                        <button class="button trigger only-icon" type="button" title="Tools"><i class="fa fa-ellipsis-v"></i></button>
+                        <menu class="toolbox-items" type="toolbar"><i class="fa fa-caret-up"></i>
+                            <ul></ul>
+                        </menu>
+                    </div>
+                </td>
             </tr>
         @endforeach
         </tbody>

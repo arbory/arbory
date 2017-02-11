@@ -2,10 +2,11 @@
 
 namespace CubeSystems\Leaf\Fields;
 
-use Closure;
-use CubeSystems\Leaf\Http\Controllers\Admin\AbstractCrudController;
+use CubeSystems\Leaf\CRUD\ResourceFieldSet;
 use CubeSystems\Leaf\FieldSet;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 /**
  * Interface FieldInterface
@@ -38,27 +39,6 @@ interface FieldInterface
     /**
      * @return string
      */
-    public function getContext();
-
-    /**
-     * @param $context string
-     * @return $this
-     */
-    public function setContext( $context );
-
-    /**
-     * @return $this
-     */
-    public function setListContext();
-
-    /**
-     * @return $this
-     */
-    public function setFormContext();
-
-    /**
-     * @return string
-     */
     public function getLabel();
 
     /**
@@ -68,30 +48,15 @@ interface FieldInterface
     public function setLabel( $label );
 
     /**
-     * @return string
-     */
-    public function getViewName();
-
-    /**
-     * @return bool
-     */
-    public function isForForm();
-
-    /**
-     * @return bool
-     */
-    public function isForList();
-
-    /**
      * @return FieldSet
      */
     public function getFieldSet();
 
     /**
-     * @param FieldSet $fieldSet
+     * @param ResourceFieldSet $fieldSet
      * @return $this
      */
-    public function setFieldSet( FieldSet $fieldSet );
+    public function setFieldSet( ResourceFieldSet $fieldSet );
 
     /**
      * @return Model
@@ -99,33 +64,31 @@ interface FieldInterface
     public function getModel();
 
     /**
-     * @param Model $model
+     * @return Resource
+     */
+    public function getResource();
+
+    /**
+     * @param Resource $resource
      * @return $this
      */
-    public function setModel( $model );
+    public function setResource( $resource );
 
     /**
-     * @return AbstractCrudController
+     * @param Builder $query
+     * @param $string
      */
-    public function getController();
+    public function searchConditions( Builder $query, $string );
 
     /**
-     * @param AbstractCrudController $controller
-     * @return $this
+     * @param Request $request
      */
-    public function setController( $controller );
+    public function beforeModelSave( Request $request);
 
     /**
-     * @param Model $model
-     * @param array $input
+     * @param Request $request
      */
-    public function beforeModelSave( Model $model, array $input = [] );
-
-    /**
-     * @param $model
-     * @param $input
-     */
-    public function afterModelSave( Model $model, array $input = [] );
+    public function afterModelSave( Request $request);
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

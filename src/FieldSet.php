@@ -31,8 +31,6 @@ class FieldSet extends Collection
      */
     public function add( FieldInterface $field )
     {
-        $field->setFieldSet( $this );
-
         $this->push( $field );
 
         return $field;

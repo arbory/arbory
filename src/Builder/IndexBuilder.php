@@ -187,9 +187,9 @@ class IndexBuilder extends AbstractBuilder
         {
             $field = clone $field;
             $field
-                ->setListContext()
-                ->setModel( $item )
-                ->setController( $this->getController() );
+//                ->setListContext()
+                ->setModel( $item );
+//                ->setController( $this->getController() );
 
             $row->addField( $field );
         }

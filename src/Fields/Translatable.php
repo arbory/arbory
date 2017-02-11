@@ -2,13 +2,14 @@
 
 namespace CubeSystems\Leaf\Fields;
 
-use CubeSystems\Leaf\Builder\FormBuilder;
+use CubeSystems\Leaf\CRUD\Resource;
 use CubeSystems\Leaf\FieldSet;
 use CubeSystems\Leaf\Html\Elements\Content;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
 use Dimsav\Translatable\Translatable as TranslatableModel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Translatable extends AbstractField
 {
@@ -21,11 +22,6 @@ class Translatable extends AbstractField
      * @var array
      */
     private $locales = [];
-
-    public function __toString()
-    {
-        return (string) $this->getListFieldOutput();
-    }
 
     /**
      * Translatable constructor.
@@ -41,24 +37,31 @@ class Translatable extends AbstractField
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getListFieldOutput();
+    }
+
+    /**
      * @return TranslatableModel|Model
      */
     public function getModel()
     {
-        return $this->model;
+        return parent::getModel();
     }
 
     /**
-     * @param array $attributes
      * @return Element|string
      */
-    public function render( array $attributes = [] )
+    public function render()
     {
         $fields = new Content;
 
         foreach( $this->locales as $locale )
         {
-            $fields->push( $this->getLocalizedFieldContent( $locale, $attributes ) );
+            $fields->push( $this->getLocalizedFieldContent( $locale ) );
         }
 
         return Html::div()
@@ -69,20 +72,15 @@ class Translatable extends AbstractField
 
     /**
      * @param $locale
-     * @param $attributes
      * @return Element
      */
-    private function getLocalizedFieldContent( $locale, $attributes )
+    private function getLocalizedFieldContent( $locale )
     {
-        $model = $this->getModel();
+        $resource = $this->getTranslatableResource( $locale );
 
-        $builder = new FormBuilder( $model->translateOrNew( $locale ) );
-        $builder->setFieldSet( new FieldSet( [ $this->field ] ) );
+        $field = $resource->getFields()->first();
+        $fieldContent = $field->render();
 
-        $field = $builder->build()->first();
-        $field->setInputNamespace( $this->getName() . '.' . $locale );
-
-        $fieldContent = $field->render( $attributes );
         $fieldContent->attributes()->put( 'class', 'localization' );
         $fieldContent->attributes()->put( 'data-locale', $locale );
 
@@ -92,6 +90,19 @@ class Translatable extends AbstractField
         }
 
         return $fieldContent;
+    }
+
+    /**
+     * @param $locale
+     * @return Resource
+     */
+    private function getTranslatableResource( $locale )
+    {
+        return new Resource(
+            $this->getModel()->translateOrNew( $locale ),
+            new FieldSet( [ $this->field ] ),
+            $this->getNameSpacedName()
+        );
     }
 
     /**
@@ -147,21 +158,19 @@ class Translatable extends AbstractField
      */
     protected function getListFieldOutput()
     {
-        $field = clone $this->field;
-        $field->setModel( $this->getModel() );
-        $field->setFieldSet( $this->getFieldSet() );
-        $field->setController( $this->getController() );
+        $resource = $this->getTranslatableResource( $this->currentLocale );
 
-        return (string) $field;
+        return (string) $resource->getFields()->first();
     }
 
     /**
      * @param Model|TranslatableModel $model
      * @param array $input
      */
-    public function beforeModelSave( Model $model, array $input = [] )
+    public function beforeModelSave( Request $request )
     {
         $inputVariables = array_get( $input, $this->getName() );
+        $model = $this->getModel();
 
         foreach( $this->locales as $locale )
         {
@@ -180,7 +189,7 @@ class Translatable extends AbstractField
      * @param Model|TranslatableModel $model
      * @param array $input
      */
-    public function afterModelSave( Model $model, array $input = [] )
+    public function afterModelSave( Request $request )
     {
         $inputVariables = array_get( $input, $this->getName() );
 

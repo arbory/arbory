@@ -3,7 +3,6 @@
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
 use CubeSystems\Leaf\Fields\Text;
-use CubeSystems\Leaf\Fields\Toolbox;
 use CubeSystems\Leaf\FieldSet;
 use CubeSystems\Leaf\Roles\Role;
 
@@ -23,7 +22,6 @@ class RoleController extends AbstractCrudController
         $fieldSet->add( new Text( 'name' ) );
         $fieldSet->add( new Text( 'created_at' ) );
         $fieldSet->add( new Text( 'updated_at' ) );
-        $fieldSet->add( new Toolbox( 'toolbox' ) );
     }
 
     /**

@@ -59,9 +59,9 @@ class FormBuilder extends AbstractBuilder
         {
             $item = clone $field;
             $item
-                ->setContext( AbstractField::CONTEXT_FORM )
-                ->setModel( $model )
-                ->setController( $this->getController() );
+//                ->setContext( AbstractField::CONTEXT_FORM )
+                ->setModel( $model );
+//                ->setController( $this->getController() );
 
             $result->push( $item );
         }

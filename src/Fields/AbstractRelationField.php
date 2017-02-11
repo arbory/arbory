@@ -39,7 +39,7 @@ abstract class AbstractRelationField extends AbstractField
 
         $builder = new FormBuilder( $model );
         $builder->setFieldSet( $fieldSet );
-        $builder->setController( $this->getController() );
+//        $builder->setController( $this->getController() );
 
         return $builder;
     }

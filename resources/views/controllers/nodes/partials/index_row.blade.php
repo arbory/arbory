@@ -4,10 +4,21 @@
             data-level="{{$level}}"
             data-id="{{$row->getIdentifier()}}"
         >
-            {{--<div class="only-icon toolbox-cell">--}}
+            <div class="only-icon toolbox-cell">
 {{--                {{$row->getToolBox()}}--}}
                 {{--{!! $row->getFieldByName('tools')->render() !!}--}}
-            {{--</div>--}}
+
+                <div class="toolbox" data-url="{{ route( 'admin.model.dialog', [
+                        'model' => $controller->getSlug(),
+                        'dialog' => 'toolbox',
+                        'id' => $row->getIdentifier(),
+                    ] )}}">
+                    <button class="button trigger only-icon" type="button" title="Tools"><i class="fa fa-ellipsis-v"></i></button>
+                    <menu class="toolbox-items" type="toolbar"><i class="fa fa-caret-up"></i>
+                        <ul></ul>
+                    </menu>
+                </div>
+            </div>
 
             @if($row->hasChildRows())
                 <div class="collapser-cell">

@@ -2,10 +2,12 @@
 
 namespace CubeSystems\Leaf\Fields;
 
-use Closure;
-use CubeSystems\Leaf\Http\Controllers\Admin\AbstractCrudController;
+use CubeSystems\Leaf\CRUD\Resource;
+use CubeSystems\Leaf\CRUD\ResourceFieldSet;
 use CubeSystems\Leaf\FieldSet;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /**
@@ -14,9 +16,6 @@ use Illuminate\View\View;
  */
 abstract class AbstractField implements FieldInterface
 {
-    const CONTEXT_LIST = 'list';
-    const CONTEXT_FORM = 'form';
-
     /**
      * @var string
      */
@@ -33,24 +32,14 @@ abstract class AbstractField implements FieldInterface
     protected $label;
 
     /**
-     * @var string
-     */
-    protected $context;
-
-    /**
-     * @var FieldSet
+     * @var ResourceFieldSet
      */
     protected $fieldSet;
 
     /**
-     * @var Model
+     * @var Resource
      */
-    protected $model;
-
-    /**
-     * @var AbstractCrudController
-     */
-    protected $controller;
+    protected $resource;
 
     /**
      * AbstractField constructor.
@@ -81,6 +70,14 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
+     * @return string
+     */
+    public function getNameSpacedName()
+    {
+        return $this->getResource()->getNamespace() . '.' . $this->getName();
+    }
+
+    /**
      * @return mixed
      */
     public function getValue()
@@ -100,45 +97,6 @@ abstract class AbstractField implements FieldInterface
     public function setValue( $value )
     {
         $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContext()
-    {
-        return $this->context;
-    }
-
-    /**
-     * @param string $context
-     * @return $this
-     */
-    public function setContext( $context )
-    {
-        $this->context = $context;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setListContext()
-    {
-        $this->context = self::CONTEXT_LIST;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setFormContext()
-    {
-        $this->context = self::CONTEXT_FORM;
 
         return $this;
     }
@@ -168,31 +126,7 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
-     * @return string
-     */
-    public function getViewName()
-    {
-        return 'leaf::builder.fields.' . snake_case( class_basename( static::class ) );
-    }
-
-    /**
-     * @return bool
-     */
-    public function isForForm()
-    {
-        return $this->getContext() === self::CONTEXT_FORM;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isForList()
-    {
-        return $this->getContext() === self::CONTEXT_LIST;
-    }
-
-    /**
-     * @return FieldSet
+     * @return ResourceFieldSet
      */
     public function getFieldSet()
     {
@@ -200,10 +134,10 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
-     * @param FieldSet $fieldSet
+     * @param ResourceFieldSet $fieldSet
      * @return $this
      */
-    public function setFieldSet( FieldSet $fieldSet )
+    public function setFieldSet( ResourceFieldSet $fieldSet )
     {
         $this->fieldSet = $fieldSet;
 
@@ -215,53 +149,54 @@ abstract class AbstractField implements FieldInterface
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->getResource()->getModel();
     }
 
     /**
-     * @param Model $model
+     * @return Resource
+     */
+    public function getResource()
+    {
+        return $this->resource;
+    }
+
+    /**
+     * @param Resource $resource
      * @return $this
      */
-    public function setModel( $model )
+    public function setResource( $resource )
     {
-        $this->model = $model;
+        $this->resource = $resource;
 
         return $this;
     }
 
     /**
-     * @return AbstractCrudController
+     * @param Builder $query
+     * @param $string
      */
-    public function getController()
+    public function searchConditions( Builder $query, $string )
     {
-        return $this->controller;
+        if( !$this->isSearchable() )
+        {
+            return;
+        }
+
+        $query->where( $this->getName(), 'LIKE', "$string%", 'OR' );
+    }
+    
+    /**
+     * @param Request $request
+     */
+    public function beforeModelSave( Request $request )
+    {
+        $this->getModel()->setAttribute( $this->getName(), $request->input( $this->getNameSpacedName() ) );
     }
 
     /**
-     * @param AbstractCrudController $controller
-     * @return $this
+     * @param Request $request
      */
-    public function setController( $controller )
-    {
-        $this->controller = $controller;
-
-        return $this;
-    }
-
-    /**
-     * @param Model $model
-     * @param array $input
-     */
-    public function beforeModelSave( Model $model, array $input = [] )
-    {
-
-    }
-
-    /**
-     * @param Model $model
-     * @param array $input
-     */
-    public function afterModelSave( Model $model, array $input = [] )
+    public function afterModelSave( Request $request )
     {
 
     }
@@ -280,51 +215,6 @@ abstract class AbstractField implements FieldInterface
     public function isSortable()
     {
         return true;
-    }
-
-
-
-
-
-    /**
-     * TODO: Move to trait
-     */
-
-    protected $inputNamespace;
-
-    public function getNameSpacedName()
-    {
-        $nameParts[] = 'resource';
-
-        $nameParts = array_merge( $nameParts, preg_split( '/\./', $this->inputNamespace, NULL, PREG_SPLIT_NO_EMPTY ) );
-        $nameParts[] = $this->getName();
-
-        return implode( '.', $nameParts );
-    }
-
-    public function getInputName()
-    {
-        $nameParts = preg_split( '/\./', $this->inputNamespace, NULL, PREG_SPLIT_NO_EMPTY );
-        $nameParts[] = $this->getName();
-
-        return 'resource[' . implode( '][', $nameParts ) . ']';
-    }
-
-    public function getInputId()
-    {
-        return strtr( $this->getInputName(), [ '[' => '_', ']' => '' ] );
-    }
-
-    public function getInputNamespace()
-    {
-        return $this->inputNamespace;
-    }
-
-    public function setInputNamespace( $namespace )
-    {
-        $this->inputNamespace = $namespace;
-
-        return $this;
     }
 
     /**

@@ -221,9 +221,9 @@ class NodeCrudController extends AbstractCrudController
             foreach( $fields as $field )
             {
                 $field = clone $field;
-                $field->setListContext();
+//                $field->setListContext();
                 $field->setModel( $item );
-                $field->setController( $this );
+//                $field->setController( $this );
 
                 $row->addField( $field );
             }
@@ -294,40 +294,41 @@ class NodeCrudController extends AbstractCrudController
      */
     protected function toolboxDialog()
     {
-        $name = $this->app['request']->get( 'name' );
+        $toolbox = new Toolbox( 'tools' );
 
-        $toolbox = $this->getIndexFieldSet()->findFieldByName( $name );
 
-        if( !$toolbox instanceof Toolbox )
-        {
-            return null;
-        }
+        $node = Node::find( $this->app['request']->get( 'id' ) );
 
-        switch( $name )
-        {
-            case self::TOOLBOX_TOOLS:
-
-                $node = Node::find( $this->app['request']->get( 'id' ) );
-
-                $toolbox->setModel( $node );
-                $toolbox->setController( $this );
-                $toolbox->addItem( 'add_child' )
-                    ->setUrl( route( 'admin.model.dialog', [
-                        'dialog' => 'content_types',
-                        'model' => $this->getSlug(),
-                        'parent_id' => $node->id,
-                    ] ) )
-                    ->setTitle( 'add_child' );
-                $toolbox->addItem( 'delete' )
-                    ->setUrl( route( 'admin.model.dialog', [
-                        'dialog' => 'confirm_delete',
-                        'model' => $this->getSlug(),
-                        'id' => $node->id,
-                    ] ) )
-                    ->setTitle( 'delete' );
-
-                break;
-        }
+        $toolbox->setModel( $node );
+        $toolbox->setController( $this );
+        $toolbox->addItem( 'add_child' )
+            ->setUrl( route( 'admin.model.dialog', [
+                'dialog' => 'content_types',
+                'model' => $this->getSlug(),
+                'parent_id' => $node->id,
+            ] ) )
+            ->setTitle( 'add_child' );
+        $toolbox->addItem( 'copy' )
+            ->setUrl( route( 'admin.model.dialog', [
+                'dialog' => 'copy',
+                'model' => $this->getSlug(),
+                'parent_id' => $node->id,
+            ] ) )
+            ->setTitle( 'copy' );
+        $toolbox->addItem( 'move' )
+            ->setUrl( route( 'admin.model.dialog', [
+                'dialog' => 'move',
+                'model' => $this->getSlug(),
+                'parent_id' => $node->id,
+            ] ) )
+            ->setTitle( 'move' );
+        $toolbox->addItem( 'delete' )
+            ->setUrl( route( 'admin.model.dialog', [
+                'dialog' => 'confirm_delete',
+                'model' => $this->getSlug(),
+                'id' => $node->id,
+            ] ) )
+            ->setTitle( 'delete' );
 
         return $toolbox->renderMenu();
     }

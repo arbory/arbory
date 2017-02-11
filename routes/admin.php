@@ -6,6 +6,11 @@ Route::post( 'logout', [ 'as' => 'admin.logout', 'uses' => 'Admin\SessionControl
 
 Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
 {
+    \CubeSystems\Leaf\CRUD\Routing\Route::register( \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class );
+    \CubeSystems\Leaf\CRUD\Routing\Route::register( \App\Http\Controllers\Admin\TreeCrudController::class );
+    \CubeSystems\Leaf\CRUD\Routing\Route::register( \App\Http\Controllers\Admin\FieldTypeSampleCrudController::class );
+
+
     Route::get( 'dashboard', [
         'as' => 'admin.dashboard',
         'uses' => 'Admin\DashboardController@index'

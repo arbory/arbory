@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Fields;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class BelongsToMany extends AbstractField
 {
@@ -20,7 +21,23 @@ class BelongsToMany extends AbstractField
             $list->append( Html::li( $item ) );
         }
 
-        return (string) $list;;
+        return (string) $list;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSortable(  )
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSearchable()
+    {
+        return false;
     }
 
     /**
@@ -91,15 +108,22 @@ class BelongsToMany extends AbstractField
     }
 
     /**
-     * @param Model $model
-     * @param array $input
+     * @param Request $request
      */
-    public function afterModelSave( Model $model, array $input = [] )
+    public function beforeModelSave( Request $request )
+    {
+
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function afterModelSave( Request $request )
     {
         $relation = $this->getRelation();
 
-        $submittedIds = array_get( $input, $this->getName(), [] );
-        $existingIds = $model->getAttribute( $this->getName() )
+        $submittedIds = $request->input( $this->getNameSpacedName(), [] );
+        $existingIds = $this->getModel()->getAttribute( $this->getName() )
             ->pluck( $this->getRelatedModel()->getKeyName() )
             ->toArray();
 

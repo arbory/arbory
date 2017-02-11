@@ -26,6 +26,11 @@ class Item
      */
     protected $url;
 
+    public function __construct( $title )
+    {
+        $this->setTitle( $title );
+    }
+
     /**
      * @return Toolbox
      */
@@ -54,12 +59,12 @@ class Item
     }
 
     /**
-     * @param $name
+     * @param $title
      * @return $this
      */
-    public function setTitle( $name )
+    public function setTitle( $title )
     {
-        $this->title = $name;
+        $this->title = $title;
 
         return $this;
     }

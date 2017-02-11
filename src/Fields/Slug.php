@@ -64,7 +64,7 @@ class Slug extends AbstractField
         $model = $this->getModel();
 
         $params = [
-            'model' => $this->getController()->getSlug(),
+//            'model' => $this->getController()->getSlug(), // TODO: REWRITE!!!
             'api' => 'slug_generator',
         ];
 
