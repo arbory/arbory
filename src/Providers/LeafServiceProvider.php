@@ -37,7 +37,7 @@ class LeafServiceProvider extends ServiceProvider
     {
         $aliasLoader = AliasLoader::getInstance();
 
-        $this->app->register( LeafTranslationServiceProvider::class );
+        $this->app->register( LeafTranslationServiceProvider::class )->boot();
         $aliasLoader->alias( 'TranslationCache', \Waavi\Translation\Facades\TranslationCache::class );
 
         $this->registerComposerSingleton();
@@ -50,7 +50,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->registerResources();
         $this->registerMigrations();
 
-        $this->app->register( TranslatableServiceProvider::class );
+        $this->app->register( TranslatableServiceProvider::class )->boot();
         $this->app->register( LeafFileServiceProvider::class );
         $this->app->register( LeafSentinelServiceProvider::class );
 
