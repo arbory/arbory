@@ -72,9 +72,12 @@ class NodeCrudController extends AbstractCrudController
 
             foreach( (array) $content->getFillable() as $fieldName )
             {
-                $fieldSet->add( $content->getAttribute( $fieldName ) );
+                $field = $content->getAttribute( $fieldName );
+                $field->setModel( $content );
+
+                $fieldSet->add( $field );
             }
-        } ) );
+        } ) )->setModel( $node );
     }
 
     /**

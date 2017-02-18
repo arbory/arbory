@@ -87,7 +87,9 @@ abstract class AbstractField implements FieldInterface
     {
         if( $this->value === null )
         {
-            $this->value = $this->getModel()->getAttribute( $this->getName() );
+            $this->value = $this->getModel()
+                ? $this->getModel()->getAttribute( $this->getName() )
+                : null;
         }
 
         return $this->value;

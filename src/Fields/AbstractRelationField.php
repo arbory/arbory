@@ -34,6 +34,7 @@ abstract class AbstractRelationField extends AbstractField
         $fieldSet = $this->getNamespacedFieldSet( $fieldSet, $inputNamespace );
 
         $fieldSet->add( new Hidden( $model->getKeyName() ) )
+            ->setModel( $model->getKey() )
             ->setValue( $model->getKey() )
             ->setInputNamespace( $inputNamespace );
 
