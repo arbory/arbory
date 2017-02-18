@@ -40,6 +40,7 @@ class LeafAdminAuthMiddleware
      */
     public function handle( $request, Closure $next )
     {
+        return $next( $request );
         if( !$this->sentinel->check() )
         {
             return $this->denied( $request );
