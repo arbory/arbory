@@ -21,7 +21,8 @@
         "alsofronie/eloquent-uuid": "^1.0.5",
         "dimsav/laravel-translatable": "^6.0",
         "cartalyst/sentinel": "^2.0.13",
-        "composer/composer": "1.*@alpha"
+        "composer/composer": "1.*@alpha",
+        "waavi/translation": "^2.1.5"
     },
     "require-dev" : {
         "phpunit/phpunit" : "^5.7"

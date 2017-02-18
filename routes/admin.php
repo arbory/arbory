@@ -50,4 +50,19 @@ Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
         'as' => 'admin.model.api',
         'uses' => 'Admin\CrudFrontController@api'
     ] );
+
+    Route::get( 'translations/list', [
+        'as' => 'admin.translations.index',
+        'uses' => 'Admin\TranslationsController@index'
+    ] );
+
+    Route::get( 'translations/edit/{namespace}-{group}-{item}', [
+        'as' => 'admin.translations.edit',
+        'uses' => 'Admin\TranslationsController@edit'
+    ] );
+
+    Route::post( 'translations/update', [
+        'as' => 'admin.translations.update',
+        'uses' => 'Admin\TranslationsController@store'
+    ] );
 } );
