@@ -171,15 +171,15 @@ class LeafServiceProvider extends ServiceProvider
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ];
 
-        $router->middleware( 'leaf.admin_auth', LeafAdminAuthMiddleware::class );
-        $router->middleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
-        $router->middleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
-        $router->middleware( 'leaf.admin_has_access', LeafAdminHasAccessMiddleware::class );
+        $router->aliasMiddleware( 'leaf.admin_auth', LeafAdminAuthMiddleware::class );
+        $router->aliasMiddleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
+        $router->aliasMiddleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
+        $router->aliasMiddleware( 'leaf.admin_has_access', LeafAdminHasAccessMiddleware::class );
 
         // TODO: change group name to 'default' or something like that
         $router->middlewareGroup( 'admin', $middleware );
 
-        Route::group( [
+        $router->group( [
             'middleware' => 'admin',
             'namespace' => '\CubeSystems\Leaf\Http\Controllers',
             'prefix' => config( 'leaf.uri' )
