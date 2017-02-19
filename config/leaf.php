@@ -17,15 +17,13 @@ return [
             'items' => [
                 [
                     'title' => 'Admin users',
-                    'type' => AbstractItem::TYPE_MODULE,
+                    'type' => AbstractItem::TYPE_CRUD_MODULE,
                     'module_name' => 'admin_users',
-                    'route_name' => 'admin.users.index',
                 ],
                 [
                     'title' => 'Admin roles',
-                    'type' => AbstractItem::TYPE_MODULE,
+                    'type' => AbstractItem::TYPE_CRUD_MODULE,
                     'module_name' => 'admin_roles',
-                    'route_name' => 'admin.roles.index',
                 ],
             ]
         ],
