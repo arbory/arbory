@@ -1,5 +1,6 @@
 <?php
 
+Route::get( '/', [ 'as' => 'admin.index', 'uses' => 'Admin\SessionController@getLogin' ] );
 Route::get( 'login', [ 'as' => 'admin.login.form', 'uses' => 'Admin\SessionController@getLogin' ] );
 Route::post( 'login', [ 'as' => 'admin.login.attempt', 'uses' => 'Admin\SessionController@postLogin' ] );
 Route::post( 'logout', [ 'as' => 'admin.logout', 'uses' => 'Admin\SessionController@postLogout' ] );
