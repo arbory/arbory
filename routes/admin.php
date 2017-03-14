@@ -7,56 +7,17 @@ Route::post( 'logout', [ 'as' => 'admin.logout', 'uses' => 'Admin\SessionControl
 Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
 {
     \CubeSystems\Leaf\Admin\Module\Route::register( \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class );
+    \CubeSystems\Leaf\Admin\Module\Route::register( \CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class );
     \CubeSystems\Leaf\Admin\Module\Route::register( \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class );
 
     \CubeSystems\Leaf\Admin\Module\Route::register( \App\Http\Controllers\Admin\BearsController::class );
-    \CubeSystems\Leaf\Admin\Module\Route::register( \App\Http\Controllers\Admin\TreeCrudController::class );
-    \CubeSystems\Leaf\Admin\Module\Route::register( \App\Http\Controllers\Admin\FieldTypeSampleCrudController::class );
+    \CubeSystems\Leaf\Admin\Module\Route::register( \App\Http\Controllers\Admin\FieldTypeSampleController::class );
     \CubeSystems\Leaf\Admin\Module\Route::register( \App\Http\Controllers\Admin\TreesController::class );
+    \CubeSystems\Leaf\Admin\Module\Route::register( \App\Http\Controllers\Admin\PicnicsController::class );
 
     Route::get( 'dashboard', [
         'as' => 'admin.dashboard',
         'uses' => 'Admin\DashboardController@index'
-    ] );
-
-    Route::get( 'model/{model}', [
-        'as' => 'admin.model.index',
-        'uses' => 'Admin\CrudFrontController@index'
-    ] );
-
-    Route::get( 'model/{model}/create', [
-        'as' => 'admin.model.create',
-        'uses' => 'Admin\CrudFrontController@create'
-    ] );
-
-    Route::post( 'model/{model}', [
-        'as' => 'admin.model.store',
-        'uses' => 'Admin\CrudFrontController@store'
-    ] );
-
-    Route::get( 'model/{model}/{id}', [
-        'as' => 'admin.model.edit',
-        'uses' => 'Admin\CrudFrontController@edit'
-    ] );
-
-    Route::put( 'model/{model}/{id}', [
-        'as' => 'admin.model.update',
-        'uses' => 'Admin\CrudFrontController@update'
-    ] );
-
-    Route::delete( 'model/{model}/{id}', [
-        'as' => 'admin.model.destroy',
-        'uses' => 'Admin\CrudFrontController@destroy'
-    ] );
-
-    Route::get( 'model/{model}/dialog/{dialog}', [
-        'as' => 'admin.model.dialog',
-        'uses' => 'Admin\CrudFrontController@dialog'
-    ] );
-
-    Route::get( 'model/{model}/api/{api}', [
-        'as' => 'admin.model.api',
-        'uses' => 'Admin\CrudFrontController@api'
     ] );
 
     Route::get( 'translations/list', [
