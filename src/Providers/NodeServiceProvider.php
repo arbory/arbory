@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Providers;
 
-use CubeSystems\Leaf\Node;
+use CubeSystems\Leaf\Nodes\Node;
 use CubeSystems\Leaf\Nodes\Routing\Router;
 use CubeSystems\Leaf\Repositories\NodesRepository;
 use Illuminate\Foundation\Application;

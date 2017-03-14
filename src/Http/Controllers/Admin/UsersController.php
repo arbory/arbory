@@ -2,66 +2,94 @@
 
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\CRUD\ResourceRoutes;
-use CubeSystems\Leaf\Fields\BelongsToMany;
-use CubeSystems\Leaf\Fields\Gravatar;
-use CubeSystems\Leaf\Fields\Password;
-use CubeSystems\Leaf\Fields\Text;
-use CubeSystems\Leaf\Fields\Toolbox;
-use CubeSystems\Leaf\FieldSet;
+use CubeSystems\Leaf\Admin\Form;
+use CubeSystems\Leaf\Admin\Grid;
+use CubeSystems\Leaf\Admin\Traits\Crudify;
+use CubeSystems\Leaf\Admin\Form\Fields\BelongsToMany;
+use CubeSystems\Leaf\Admin\Form\Fields\Password;
+use CubeSystems\Leaf\Admin\Form\Fields\Text;
+use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Users\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
+use Sentinel;
 
-class UsersController extends AdminController
+/**
+ * Class UsersController
+ * @package CubeSystems\Leaf\Http\Controllers\Admin
+ */
+class UsersController extends Controller
 {
-//    use Crudify;
+    use Crudify;
 
+    /**
+     * @var string
+     */
     protected $resource = User::class;
 
-    public function indexFields()
+    /**
+     * @param Model $model
+     * @return Form
+     */
+    protected function form( Model $model )
     {
-        $fieldSet = new FieldSet();
-        $fieldSet->add( new Gravatar( 'email' ) )->setLabel( '' );
-        $fieldSet->add( new Text( 'first_name' ) );
-        $fieldSet->add( new Text( 'last_name' ) );
-        $fieldSet->add( new Text( 'email' ) );
-        $fieldSet->add( new BelongsToMany( 'roles' ) );
-        $fieldSet->add( new Text( 'created_at' ) );
-        $fieldSet->add( new Text( 'updated_at' ) );
+        $form = $this->module()->form( $model, function ( Form $form )
+        {
+            $form->addField( new Text( 'first_name' ) );
+            $form->addField( new Text( 'last_name' ) );
+            $form->addField( new Text( 'email' ) );
+            $form->addField( new BelongsToMany( 'roles' ) );
+            $form->addField( new Password( 'password' ) );
+        } );
 
-        return $fieldSet;
+        $form->on( 'delete.before', function ( Form $form )
+        {
+            if( Sentinel::getUser()->getKey() === $form->getModel()->getKey() )
+            {
+                throw new \Exception( 'You cannot remove yourself!' );
+            }
+        } );
+
+        return $form;
     }
 
-    public function formFields()
+    /**
+     * @return Grid
+     */
+    public function grid()
     {
-        $fieldSet = new FieldSet();
-
-        $fieldSet->add( new Text( 'first_name' ) );
-        $fieldSet->add( new Text( 'last_name' ) );
-        $fieldSet->add( new Text( 'email' ) );
-        $fieldSet->add( new BelongsToMany( 'roles' ) );
-        $fieldSet->add( new Password( 'password' ) );
-
-        return $fieldSet;
+        return $this->module()->grid( $this->resource(), function ( Grid $grid )
+        {
+            $grid->column( 'email', 'avatar' )
+                ->display( function ( $value )
+                {
+                    return Html::span(
+                        Html::image()->addAttributes( [
+                            'src' => '//www.gravatar.com/avatar/' . md5( $value ) . '?d=retro',
+                            'width' => 32,
+                            'alt' => $value,
+                        ] )
+                    );
+                } );
+            $grid->column( 'email' )->sortable();
+            $grid->column( 'first_name' );
+            $grid->column( 'last_name' );
+            $grid->column( 'email' );
+            $grid->column( 'roles.name' )
+                ->display( function ( Collection $value )
+                {
+                    return Html::ul(
+                        $value->map( function ( $role )
+                        {
+                            return Html::li( (string) $role );
+                        } )->toArray()
+                    );
+                } );
+            $grid->column( 'created_at' );
+            $grid->column( 'updated_at' );
+        } );
     }
-
-    public function dialog( $name )
-    {
-        $resourceId = request()->get( 'id' );
-
-        $class = $this->resource;
-        $node = $class::find( $resourceId );
-
-        $routes = new ResourceRoutes( $this );
-
-        $toolbox = new Toolbox;
-        $toolbox->addItem( 'delete' )
-            ->setUrl( $routes->getUrl( 'dialog', [
-                'id' => $node->id,
-                'dialog' => 'confirm_delete'
-            ] ) );
-
-        return $toolbox->renderMenu();
-    }
-
 
 }
+

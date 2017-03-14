@@ -3,7 +3,7 @@
 namespace CubeSystems\Leaf\Nodes\Routing;
 
 use Closure;
-use CubeSystems\Leaf\Node;
+use CubeSystems\Leaf\Nodes\Node;
 use CubeSystems\Leaf\Repositories\NodesRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;

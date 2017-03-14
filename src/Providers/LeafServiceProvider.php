@@ -37,6 +37,8 @@ class LeafServiceProvider extends ServiceProvider
     {
         $aliasLoader = AliasLoader::getInstance();
 
+        app( 'config' )->set( 'translator.locales', config( 'translatable.locales' ) );
+
         $this->app->register( LeafTranslationServiceProvider::class );
         $aliasLoader->alias( 'TranslationCache', \Waavi\Translation\Facades\TranslationCache::class );
 

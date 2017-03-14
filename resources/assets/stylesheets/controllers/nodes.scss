@@ -1,6 +1,6 @@
 @import '../environment';
 
-.controller-releaf-content-nodes
+.controller-nodes
 {
     main > section:not(.dialog) > .body:not(.empty)
     {
@@ -124,7 +124,6 @@
 
     &.view-index > main > section
     {
-        display: inline-block;
         min-width: steps(40);
     }
 
@@ -186,49 +185,44 @@
 
     &.view-edit
     {
-        .node-fields
+        @include clear-inside;
+
+        background: $color-background-lighter;
+
+        .field[data-name="slug"]
         {
-            @include clear-inside;
-
-            background: $color-background-lighter;
-
-            .field[data-name="slug"]
+            .button.generate
             {
-                .button.generate
-                {
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                }
-
-                input[type="text"]
-                {
-                    padding-right: steps(4);
-                }
-
-                .link
-                {
-                    padding: steps(0.5) 0;
-                    span
-                    {
-                        color: $color-text-normal;
-                    }
-                }
+                position: absolute;
+                right: 0;
+                top: 0;
             }
 
-            .field[data-name="active"]
+            input[type="text"]
             {
-                min-height: initial;
-                clear: both;
-
-                .value
-                {
-                    padding-top: initial;
-                }
+                padding-right: steps(4);
             }
 
+            .link
+            {
+                padding: steps(0.5) 0;
+                span
+                {
+                    color: $color-text-normal;
+                }
+            }
         }
 
+        .field[data-name="active"]
+        {
+            min-height: initial;
+            clear: both;
+
+            .value
+            {
+                padding-top: initial;
+            }
+        }
     }
 }
 

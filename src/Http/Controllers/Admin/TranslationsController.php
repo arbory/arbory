@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
+use App\Bear;
 use CubeSystems\Leaf\Breadcrumbs;
 use CubeSystems\Leaf\Http\Requests\TranslationStoreRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -191,7 +192,7 @@ class TranslationsController extends Controller
     public function store( TranslationStoreRequest $request )
     {
         $this->request = $request;
-
+        
         /* @var $languages Language[] */
         $languages = $this->languagesRepository->all();
 

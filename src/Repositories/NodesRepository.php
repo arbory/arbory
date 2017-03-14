@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Repositories;
 
-use CubeSystems\Leaf\Node;
+use CubeSystems\Leaf\Nodes\Node;
 
 /**
  * Class NodesRepository

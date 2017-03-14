@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Fields\Text;
+use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\FieldSet;
 use CubeSystems\Leaf\Roles\Role;
 
