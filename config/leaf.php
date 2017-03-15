@@ -8,23 +8,19 @@ return [
     'menu' => [
         [
             'title' => 'Nodes',
-            'type' => AbstractItem::TYPE_MODULE,
             'module_name' => 'nodes',
             'route_name' => 'admin.nodes.index'
         ],
         [
             'title' => 'Users',
-            'type' => AbstractItem::TYPE_ITEM_GROUP,
             'items' => [
                 [
                     'title' => 'Admin users',
-                    'type' => AbstractItem::TYPE_MODULE,
                     'module_name' => 'admin_users',
                     'route_name' => 'admin.users.index'
                 ],
                 [
                     'title' => 'Admin roles',
-                    'type' => AbstractItem::TYPE_MODULE,
                     'module_name' => 'admin_roles',
                     'route_name' => 'admin.roles.index'
                 ],

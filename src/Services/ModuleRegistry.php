@@ -2,8 +2,6 @@
 
 namespace CubeSystems\Leaf\Services;
 
-use CubeSystems\Leaf\Http\Controllers\Admin\AbstractCrudController;
-
 /**
  * Class ModuleRegistryService
  * @package CubeSystems\Leaf\Services
@@ -62,23 +60,6 @@ class ModuleRegistry
         return isset( $this->modulesByName[$moduleName] )
             ? $this->modulesByName[$moduleName]
             : null;
-    }
-
-    /**
-     * @param string $moduleName
-     * @return Module|null
-     */
-    public function findCrudModuleByName( $moduleName )
-    {
-        $module = $this->findModuleByName( $moduleName );
-
-        $result = null;
-        if( $module && is_subclass_of( $module->getControllerClass(), AbstractCrudController::class ) )
-        {
-            $result = $module;
-        }
-
-        return $result;
     }
 
     /**

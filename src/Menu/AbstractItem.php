@@ -2,7 +2,6 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-use Symfony\Component\Console\Exception\LogicException;
 use CubeSystems\Leaf\Html\Elements;
 
 /**
@@ -11,10 +10,6 @@ use CubeSystems\Leaf\Html\Elements;
  */
 abstract class AbstractItem
 {
-    const TYPE_MODULE = 'module';
-    const TYPE_ITEM_GROUP = 'item_group';
-    const TYPE_CRUD_MODULE = 'crud_module';
-
     /**
      * @var string
      */
@@ -36,19 +31,12 @@ abstract class AbstractItem
      */
     public static function make( array $values )
     {
-        $type = array_get( $values, 'type', static::TYPE_MODULE );
-
-        switch( $type )
+        if( array_has( $values, 'items' ) )
         {
-            case static::TYPE_MODULE:
-                return new ModuleItem( $values, app( 'sentinel' ), app( 'leaf.modules' ) );
-            case static::TYPE_CRUD_MODULE:
-                return new CrudModuleItem( $values, app( 'sentinel' ), app( 'leaf.modules' ) );
-            case static::TYPE_ITEM_GROUP:
-                return new ItemGroupItem( $values );
-            default:
-                throw new LogicException( 'Menu item type "' . $type . '" is not recognized' );
+            return new ItemGroupItem( $values );
         }
+
+        return new ModuleItem( $values, app( 'sentinel' ), app( 'leaf.modules' ) );
     }
 
     /**
