@@ -135,7 +135,7 @@ class Router
         foreach( $routes as $route )
         {
             $clone = clone $route;
-            $clone->setUri( str_replace( '{slug}', $slug, $route->getUri() ) );
+            $clone->setUri( str_replace( '{slug}', $slug, $route->uri() ) );
             $clone->bind( $request );
 
             $routesCollection->add( $clone );

@@ -22,22 +22,20 @@ class Route
         $router = app( 'router' );
         $router->resource( $slug, '\\' . $class );
 
-        $name = $router->getLastGroupPrefix() . '.' . $slug;
-
         $router->get( $slug . '/dialog/{dialog}', [
-            'as' => $name . '.dialog',
+            'as' => $slug . '.dialog',
             'uses' => '\\' . $class . '@dialog'
         ] );
 
         $router->get( $slug . '/api/{api}', [
-            'as' => $name . '.api',
+            'as' => $slug . '.api',
             'uses' => '\\' . $class . '@api'
         ] );
 
         if( $callback !== null )
         {
             $attributes = [
-                'as' => $name,
+                'as' => $slug . '.',
                 'prefix' => $slug,
             ];
 
