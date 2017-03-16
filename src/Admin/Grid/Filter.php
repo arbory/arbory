@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Admin\Grid;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 /**
@@ -83,17 +84,24 @@ class Filter implements FilterInterface
      */
     protected function loadPage()
     {
+        /**
+         * @var $page LengthAwarePaginator
+         */
         $page = $this->query->paginate();
-
-        if( $this->request->has( '_order_by' ) && $this->request->has( '_order' ) )
-        {
-            $page->addQuery( '_order_by', $this->request->get( '_order_by' ) );
-            $page->addQuery( '_order', $this->request->get( '_order' ) );
-        }
 
         if( $this->request->has( 'search' ) )
         {
-            $page->addQuery( 'search', $this->request->get( 'search' ) );
+            $page->appends([
+                'search' => $this->request->get( 'search' ),
+            ]);
+        }
+
+        if( $this->request->has( '_order_by' ) && $this->request->has( '_order' ) )
+        {
+            $page->appends([
+                '_order_by' => $this->request->get( '_order_by' ),
+                '_order' => $this->request->get( '_order' ),
+            ]);
         }
 
         return $page;

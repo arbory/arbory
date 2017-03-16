@@ -108,10 +108,11 @@ class Builder
      */
     protected function getColumnOrderUrl( $column )
     {
-        return $this->grid->getModule()->url( 'index', [
+        return $this->grid->getModule()->url( 'index', array_filter( [
+            'search' => request( 'search' ),
             '_order_by' => $column,
             '_order' => request( '_order' ) === 'ASC' ? 'DESC' : 'ASC',
-        ] );
+        ] ) );
     }
 
     /**
