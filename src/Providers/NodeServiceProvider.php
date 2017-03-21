@@ -5,7 +5,6 @@ namespace CubeSystems\Leaf\Providers;
 use CubeSystems\Leaf\Nodes\ContentTypeRegister;
 use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
 use CubeSystems\Leaf\Nodes\Node;
-use CubeSystems\Leaf\Nodes\Routing\Router;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Routing\Router as LaravelRouter;
@@ -23,7 +22,7 @@ class NodeServiceProvider extends ServiceProvider
     protected $app;
 
     /**
-     * @var Router
+     * @var ContentTypeRoutesRegister
      */
     protected $routes;
 
@@ -34,7 +33,7 @@ class NodeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->routes = new ContentTypeRoutesRegister( $this->app );
+        $this->routes = new ContentTypeRoutesRegister();
 
         $this->app->singleton( ContentTypeRegister::class, function ()
         {
