@@ -79,6 +79,15 @@ class Node extends \Baum\Node
     }
 
     /**
+     * @param array $models
+     * @return Collection
+     */
+    public function newCollection( array $models = array() )
+    {
+        return new Collection( $models );
+    }
+
+    /**
      * @return string
      */
     public function getUri()
@@ -101,11 +110,8 @@ class Node extends \Baum\Node
      * @param bool $absolute
      * @return string
      */
-    public function getUrl( $name, array $parameters = [ ], $absolute = true )
+    public function getUrl( $name, array $parameters = [], $absolute = true )
     {
-        $parameters['slug'] = $this->getSlug();
-
-        return route( $this->getContentType() . '::' . $name, $parameters, $absolute );
+        return route( 'node.' . $this->getKey() . '.' . $name, $parameters, $absolute );
     }
-
 }

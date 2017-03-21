@@ -1,23 +1,21 @@
 <?php
 
-namespace CubeSystems\Leaf\Nodes\Routing;
+namespace CubeSystems\Leaf\Nodes;
 
 use Closure;
 use CubeSystems\Leaf\Exceptions\BadMethodCallException;
-use CubeSystems\Leaf\Nodes\ContentTypeRegister;
-use CubeSystems\Leaf\Nodes\Node;
 use Illuminate\Support\Collection;
 
 /**
  * Class Router
  * @package CubeSystems\Leaf\Nodes\Routing
  */
-class Router
+class ContentTypeRoutesRegister
 {
     /**
      * @var array|Closure[]
      */
-    protected $contentTypeHandlers = [ ];
+    protected $contentTypeHandlers = [];
 
     /**
      * @var ContentTypeRegister
@@ -27,7 +25,7 @@ class Router
     /**
      * Router constructor.
      */
-    public function __construct(  )
+    public function __construct()
     {
         $this->contentTypesRegister = app()->make( ContentTypeRegister::class );
     }
@@ -38,7 +36,7 @@ class Router
      * @return $this
      * @throws BadMethodCallException
      */
-    public function add( $contentType, Closure $handler )
+    public function register( $contentType, Closure $handler )
     {
         if( !$this->contentTypesRegister->isValidContentType( $contentType ) )
         {
@@ -69,7 +67,7 @@ class Router
      */
     public function getRouter()
     {
-        return app('router');
+        return app( 'router' );
     }
 
     /**

@@ -18,7 +18,7 @@ class TextPage extends Model implements PageInterface
      */
     protected $fillable = [ 'html' ];
 
-    public function getFieldSet( FieldSet $fieldSet )
+    public function prepareFieldSet( FieldSet $fieldSet )
     {
         $fieldSet->add( new Richtext( 'html' ) );
     }

@@ -2,13 +2,11 @@
 
 namespace CubeSystems\Leaf\Nodes;
 
-use CubeSystems\Leaf\Nodes\Node;
-
 /**
  * Class ContentTypesRepository
  * @package CubeSystems\Leaf\Nodes
  */
-class ContentTypesRepository
+class ContentTypeRegister
 {
     /**
      * @var \Illuminate\Support\Collection

@@ -15,7 +15,7 @@ use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
 use CubeSystems\Leaf\Nodes\Node;
 use CubeSystems\Leaf\Nodes\Admin\Grid\Filter;
 use CubeSystems\Leaf\Nodes\Admin\Grid\Renderer;
-use CubeSystems\Leaf\Nodes\ContentTypesRepository;
+use CubeSystems\Leaf\Nodes\ContentTypeRegister;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -41,7 +41,7 @@ class NodesController extends Controller
             $form->addField( new HasOne( 'content', function ( FieldSet $fieldSet ) use ( $node )
             {
                 $content = $node->content ?: $node->content()->getRelated();
-                $content->getFieldSet( $fieldSet );
+                $content->prepareFieldSet( $fieldSet );
             } ) );
         } );
 
@@ -90,7 +90,7 @@ class NodesController extends Controller
     {
         $contentType = $request->get( 'content_type' );
 
-        if( !( new ContentTypesRepository() )->isValidContentType( $contentType ) )
+        if( !( new ContentTypeRegister() )->isValidContentType( $contentType ) )
         {
             return redirect( $this->url( 'index' ) )->withErrors( 'Undefined content type "' . $contentType . '"' );
         }
@@ -153,7 +153,7 @@ class NodesController extends Controller
      */
     public function contentTypesDialog( Request $request )
     {
-        $contentTypes = ( new ContentTypesRepository )
+        $contentTypes = ( new ContentTypeRegister )
             ->getAllowedChildTypes(
                 $this->resource()->findOrNew( $request->get( 'parent_id' ) )
             );
