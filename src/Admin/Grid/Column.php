@@ -6,9 +6,8 @@ use Closure;
 use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
@@ -145,15 +144,15 @@ class Column
     }
 
     /**
-     * @param Builder $query
+     * @param QueryBuilder $query
      * @param $string
-     * @return Builder
+     * @return QueryBuilder
      */
-    public function searchConditions( Builder $query, $string )
+    public function searchConditions( QueryBuilder $query, $string )
     {
         if( $this->relationName )
         {
-            return $query->orWhereHas( $this->relationName, function ( Builder $query ) use ( $string )
+            return $query->orWhereHas( $this->relationName, function ( QueryBuilder $query ) use ( $string )
             {
                 $query->where( $this->relationColumn, 'like', "$string%" );
             } );

@@ -4,8 +4,8 @@ namespace CubeSystems\Leaf\Admin\Widgets;
 
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Contracts\Support\Renderable;
 
 /**

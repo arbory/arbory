@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
 
+use CubeSystems\Leaf\Files\LeafFile;
 use CubeSystems\Leaf\Html\Elements\Content;
 use CubeSystems\Leaf\Html\Html;
 
@@ -17,13 +18,21 @@ class FileFieldRenderer extends BaseRenderer
     protected $type = 'item';
 
     /**
+     * @return LeafFile
+     */
+    protected function getFile()
+    {
+        return $this->field->getValue();
+    }
+
+    /**
      * @return Content
      */
     protected function getInput()
     {
         $content = new Content();
 
-        $leafFile = $this->field->getValue();
+        $leafFile = $this->getFile();
 
         if( $leafFile )
         {

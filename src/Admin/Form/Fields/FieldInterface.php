@@ -30,7 +30,7 @@ interface FieldInterface
     public function getNameSpacedName();
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getValue();
 

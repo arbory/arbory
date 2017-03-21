@@ -17,6 +17,11 @@ class Module
     protected $controller;
 
     /**
+     * @var ResourceRoutes
+     */
+    protected $routes;
+
+    /**
      * @var Breadcrumbs
      */
     protected $breadcrumbs;

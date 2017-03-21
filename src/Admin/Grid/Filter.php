@@ -20,6 +20,11 @@ class Filter implements FilterInterface
     protected $model;
 
     /**
+     * @var QueryBuilder
+     */
+    protected $query;
+
+    /**
      * @var Request
      */
     protected $request;

@@ -13,6 +13,11 @@ use Illuminate\Contracts\Support\Renderable;
 class Button implements Renderable
 {
     /**
+     * @var Element
+     */
+    protected $element;
+
+    /**
      * @var boolean
      */
     protected $iconOnly;

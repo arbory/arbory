@@ -23,6 +23,16 @@ class Form implements Renderable
     use EventDispatcher;
 
     /**
+     * @var Model
+     */
+    protected $model;
+
+    /**
+     * @var FieldSet
+     */
+    protected $fields;
+
+    /**
      * @var string
      */
     protected $title;

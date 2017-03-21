@@ -13,7 +13,7 @@ use Illuminate\Contracts\Support\Renderable;
 class Link implements Renderable
 {
     /**
-     * @var $this
+     * @var Element
      */
     protected $element;
 
