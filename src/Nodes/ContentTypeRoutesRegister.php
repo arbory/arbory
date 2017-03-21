@@ -50,13 +50,16 @@ class ContentTypeRoutesRegister
 
     /**
      * @param $contentType
-     * @return Closure|null
+     * @return Closure
      */
     public function getContentTypeHandler( $contentType )
     {
         if( !array_key_exists( $contentType, $this->contentTypeHandlers ) )
         {
-            return null;
+            return function ()
+            {
+
+            };
         }
 
         return $this->contentTypeHandlers[$contentType];
