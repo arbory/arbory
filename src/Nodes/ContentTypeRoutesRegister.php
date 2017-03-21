@@ -94,7 +94,7 @@ class ContentTypeRoutesRegister
     }
 
     /**
-     * @param Collection|Node[] $items
+     * @param NodeCollection|Node[] $items
      * @param string $base
      */
     protected function registerRoutesForNodeCollection( Collection $items, $base = '' )

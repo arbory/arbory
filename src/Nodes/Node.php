@@ -80,11 +80,11 @@ class Node extends \Baum\Node
 
     /**
      * @param array $models
-     * @return Collection
+     * @return NodeCollection
      */
     public function newCollection( array $models = array() )
     {
-        return new Collection( $models );
+        return new NodeCollection( $models );
     }
 
     /**

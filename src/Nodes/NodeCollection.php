@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Nodes;
 
-class Collection extends \Baum\Extensions\Eloquent\Collection
+class NodeCollection extends \Baum\Extensions\Eloquent\Collection
 {
     public function unorderedHierarchicalList()
     {
