@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
 
 use CubeSystems\Leaf\Files\LeafFile;
 use CubeSystems\Leaf\Html\Elements\Content;
+use CubeSystems\Leaf\Html\Elements\Inputs\Input;
 use CubeSystems\Leaf\Html\Html;
 
 /**
@@ -26,21 +27,32 @@ class FileFieldRenderer extends InputFieldRenderer
     }
 
     /**
-     * @return Content
+     * @return Input
      */
     protected function getInput()
     {
-        $content = new Content();
+        return Html::input()->setType( 'file' )->setName( $this->field->getNameSpacedName() );
+    }
+
+    /**
+     * @return \CubeSystems\Leaf\Html\Elements\Element
+     */
+    public function render()
+    {
+        $input = $this->getInput();
+        $label = $input->getLabel( $this->field->getLabel() );
+
+        $value = Html::div();
 
         $leafFile = $this->getFile();
 
         if( $leafFile )
         {
-            $content->push( Html::div( $leafFile->getOriginalName() . ' / ' . $leafFile->getSize() ) );
+            $value->append( Html::div( $leafFile->getOriginalName() . ' / ' . $leafFile->getSize() ) );
         }
 
-        $content->push( Html::input()->setType( 'file' )->setName( $this->field->getNameSpacedName() ) );
+        $value->append( $input );
 
-        return $content;
+        return $this->buildField( $label, $value );
     }
 }
