@@ -2,8 +2,8 @@
 
 namespace CubeSystems\Leaf\Admin\Form\Fields;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\View\View;
+use CubeSystems\Leaf\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
+use CubeSystems\Leaf\Html\Elements\Element;
 
 /**
  * Class Checkbox
@@ -11,82 +11,18 @@ use Illuminate\View\View;
  */
 class Checkbox extends AbstractField
 {
-    /**
-     * @var int|string
-     */
-    protected $checkedValue;
+    protected $inputValue;
 
-    /**
-     * @var int|string
-     */
-    protected $uncheckedValue;
-
-    /**
-     * Checkbox constructor.
-     * @param string $name
-     * @param int|string $checkedValue
-     * @param int|string $uncheckedValue
-     */
-    public function __construct( $name, $checkedValue = 1, $uncheckedValue = 0 )
+    public function getInputValue()
     {
-        $this->checkedValue = $checkedValue;
-        $this->uncheckedValue = $uncheckedValue;
-
-        parent::__construct( $name );
+        return $this->inputValue;
     }
 
     /**
-     * @param array $attributes
-     * @return View
+     * @return Element
      */
-    public function render( array $attributes = [] )
+    public function render()
     {
-        if( $this->isForList() )
-        {
-            $model = $this->getModel();
-
-            return view( $this->getViewName(), [
-                'field' => $this,
-                'attributes' => $attributes,
-                'checked_value' => $this->checkedValue,
-                'unchecked_value' => $this->uncheckedValue,
-                'url' => route( 'admin.model.edit', [
-//                    $this->getController()->getSlug(), // TODO: REWRITE!!!
-                    $model->getKey()
-                ] ),
-            ] );
-        }
-        elseif( $this->isForForm() )
-        {
-            return view( $this->getViewName(), [
-                'field' => $this,
-                'attributes' => $attributes,
-                'checked_value' => $this->checkedValue,
-                'unchecked_value' => $this->uncheckedValue,
-            ] );
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * @param Model $model
-     * @param array $input
-     * @return null
-     */
-    public function afterModelSave( Model $model, array $input = [] )
-    {
-        if( !isset( $input[$this->getName()] ) && $input[$this->getName()] != $this->checkedValue )
-        {
-            $input[$this->getName()] = $this->uncheckedValue;
-        }
-        else
-        {
-            $input[$this->getName()] = $this->checkedValue;
-        }
-
-        return parent::postUpdate( $model, $input );
+        return ( new CheckBoxFieldRenderer( $this ) )->render();
     }
 }
