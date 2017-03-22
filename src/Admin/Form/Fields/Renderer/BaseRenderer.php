@@ -44,7 +44,7 @@ abstract class BaseRenderer
      */
     protected function getLabel()
     {
-        return Html::label( $this->field->getLabel() )->addAttributes( [ 'for' => $this->field->getNameSpacedName() ] );
+        return Html::label( $this->field->getLabel() );
     }
 
     /**
@@ -53,18 +53,36 @@ abstract class BaseRenderer
     abstract protected function getInput();
 
     /**
+     * @param Element|null $label
+     * @param Element|null $value
      * @return Element
      */
-    public function render()
+    protected function buildField( Element $label = null, Element $value = null )
     {
-        return Html::div( [
-            Html::div( $this->getLabel() )->addClass( 'label-wrap' ),
-            Html::div( $this->getInput() )->addClass( 'value' )
-        ] )
+        $template = Html::div()
             ->addClass( 'field type-' . $this->getFieldType() )
             ->addAttributes( [
                 'data-name' => $this->field->getName()
             ] );
+
+        if( $label )
+        {
+            $template->append( Html::div( $label )->addClass( 'label-wrap' ) );
+        }
+
+        if( $value )
+        {
+            $template->append( Html::div( $value )->addClass( 'value' ) );
+        }
+
+        return $template;
     }
 
+    /**
+     * @return Element
+     */
+    public function render()
+    {
+        return $this->buildField( $this->getLabel(), $this->getInput() );
+    }
 }

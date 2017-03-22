@@ -9,7 +9,7 @@ use CubeSystems\Leaf\Html\Html;
  * Class TextareaFieldRenderer
  * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
  */
-class TextareaFieldRenderer extends BaseRenderer
+class TextareaFieldRenderer extends InputFieldRenderer
 {
     /**
      * @var string

@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
 
 use CubeSystems\Leaf\Html\Elements\Element;
+use CubeSystems\Leaf\Html\Elements\Inputs\AbstractInputField;
 use CubeSystems\Leaf\Html\Html;
 
 /**
@@ -12,7 +13,7 @@ use CubeSystems\Leaf\Html\Html;
 class InputFieldRenderer extends BaseRenderer
 {
     /**
-     * @return Element
+     * @return AbstractInputField
      */
     protected function getInput()
     {
@@ -20,5 +21,16 @@ class InputFieldRenderer extends BaseRenderer
             ->setName( $this->field->getNameSpacedName() )
             ->setValue( $this->field->getValue() )
             ->addClass( 'text' );
+    }
+
+    /**
+     * @return Element
+     */
+    public function render()
+    {
+        $input = $this->getInput();
+        $label = $input->getLabel( $this->field->getLabel() );
+
+        return $this->buildField( $label, $input );
     }
 }

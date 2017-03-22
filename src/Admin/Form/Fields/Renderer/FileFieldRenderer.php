@@ -10,7 +10,7 @@ use CubeSystems\Leaf\Html\Html;
  * Class FileFieldRenderer
  * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
  */
-class FileFieldRenderer extends BaseRenderer
+class FileFieldRenderer extends InputFieldRenderer
 {
     /**
      * @var string

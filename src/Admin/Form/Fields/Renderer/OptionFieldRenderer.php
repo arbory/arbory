@@ -11,22 +11,8 @@ use CubeSystems\Leaf\Html\Html;
  * Class OptionFieldRenderer
  * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
  */
-class OptionFieldRenderer
+class OptionFieldRenderer extends InputFieldRenderer
 {
-    /**
-     * @var FieldInterface
-     */
-    protected $field;
-
-    /**
-     * InputFieldRenderer constructor.
-     * @param FieldInterface $field
-     */
-    public function __construct( FieldInterface $field )
-    {
-        $this->field = $field;
-    }
-
     /**
      * @return Element
      */
