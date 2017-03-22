@@ -38,6 +38,7 @@ class NodesController extends Controller
             $form->addField( new Hidden( 'content_type' ) );
             $form->addField( new Text( 'name' ) );
             $form->addField( new Slug( 'slug', $this->url( 'api', 'slug_generator' ) ) );
+            $form->addField( new Form\Fields\Boolean( 'active' ) );
             $form->addField( new HasOne( 'content', function ( FieldSet $fieldSet ) use ( $node )
             {
                 $content = $node->content ?: $node->content()->getRelated();
