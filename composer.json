@@ -22,7 +22,8 @@
         "dimsav/laravel-translatable": "^6.0",
         "cartalyst/sentinel": "^2.0.13",
         "composer/composer": "1.*@alpha",
-        "waavi/translation": "^2.1.5"
+        "waavi/translation": "^2.1.5",
+        "league/glide": "^1.0"
     },
     "require-dev" : {
         "phpunit/phpunit" : "^5.7"
