@@ -15,6 +15,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Roboc\Glide\GlideImageServiceProvider;
 use Route;
 use Sentinel;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -55,10 +56,12 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( TranslatableServiceProvider::class );
         $this->app->register( LeafFileServiceProvider::class );
         $this->app->register( LeafSentinelServiceProvider::class );
+        $this->app->register( GlideImageServiceProvider::class );
 
         $aliasLoader->alias( 'Activation', \Cartalyst\Sentinel\Laravel\Facades\Activation::class );
         $aliasLoader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
         $aliasLoader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
+        $aliasLoader->alias( 'GlideImage', \Roboc\Glide\Support\Facades\GlideImage::class );
 
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {
