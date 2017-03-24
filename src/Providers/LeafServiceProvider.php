@@ -1,7 +1,5 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
-use Composer\Factory;
-use Composer\IO\BufferIO;
 use CubeSystems\Leaf\Console\Commands\SeedCommand;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
@@ -10,16 +8,12 @@ use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 use Dimsav\Translatable\TranslatableServiceProvider;
-use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
-use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Roboc\Glide\GlideImageServiceProvider;
 use Route;
 use Sentinel;
-use Symfony\Component\Console\Formatter\OutputFormatter;
-use Symfony\Component\Console\Output\OutputInterface;
 use View;
 
 /**
@@ -31,55 +25,24 @@ class LeafServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      *
-     * @param Router $router
      * @return void
      */
-    public function boot( Router $router )
+    public function boot()
     {
-        $aliasLoader = AliasLoader::getInstance();
-
-        app( 'config' )->set( 'translator.locales', config( 'translatable.locales' ) );
-
-        $this->app->register( LeafTranslationServiceProvider::class );
-        $aliasLoader->alias( 'TranslationCache', \Waavi\Translation\Facades\TranslationCache::class );
-
-        $this->registerComposerSingleton();
-        $this->registerSentinelSingleton();
-        $this->registerModuleRegistry();
-
-        $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
-        $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
+        config()->set( 'translator.locales', config( 'translatable.locales' ) );
 
         $this->registerResources();
-        $this->registerMigrations();
-
-        $this->app->register( TranslatableServiceProvider::class );
-        $this->app->register( LeafFileServiceProvider::class );
-        $this->app->register( LeafSentinelServiceProvider::class );
-        $this->app->register( GlideImageServiceProvider::class );
-
-        $aliasLoader->alias( 'Activation', \Cartalyst\Sentinel\Laravel\Facades\Activation::class );
-        $aliasLoader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
-        $aliasLoader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
-        $aliasLoader->alias( 'GlideImage', \Roboc\Glide\Support\Facades\GlideImage::class );
-
+        $this->registerServiceProviders();
+        $this->registerAliases();
+        $this->registerModuleRegistry();
+        $this->registerCommands();
+        $this->registerRoutesAndMiddlewares();
+        
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {
             $view->with( 'user', Sentinel::getUser( true ) );
         } );
 
-        $this->registerRoutesAndMiddlewares( $router );
-
-        $this->registerCommands();
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
         $this->app->bind( 'leaf.menu', function ()
         {
             return new Menu(
@@ -89,13 +52,28 @@ class LeafServiceProvider extends ServiceProvider
     }
 
     /**
-     * Get the services provided by the provider.
-     *
-     * @return array
+     * Register related service providers
      */
-    public function provides()
+    private function registerServiceProviders()
     {
-        return array( 'Leaf' );
+        $this->app->register( LeafTranslationServiceProvider::class );
+        $this->app->register( TranslatableServiceProvider::class );
+        $this->app->register( LeafFileServiceProvider::class );
+        $this->app->register( LeafSentinelServiceProvider::class );
+        $this->app->register( GlideImageServiceProvider::class );
+    }
+
+    /**
+     * Register related aliases
+     */
+    private function registerAliases()
+    {
+        $aliasLoader = AliasLoader::getInstance();
+        $aliasLoader->alias( 'TranslationCache', \Waavi\Translation\Facades\TranslationCache::class );
+        $aliasLoader->alias( 'Activation', \Cartalyst\Sentinel\Laravel\Facades\Activation::class );
+        $aliasLoader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
+        $aliasLoader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
+        $aliasLoader->alias( 'GlideImage', \Roboc\Glide\Support\Facades\GlideImage::class );
     }
 
     /**
@@ -114,75 +92,32 @@ class LeafServiceProvider extends ServiceProvider
         $this->publishes( [
             __DIR__ . '/../../gulpfile.js' => base_path( 'gulpfile.leaf.js' ),
         ], 'assets' );
+
+        $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
+        $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
+        $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
     }
 
     /**
-     *
-     * Publish migration file.
+     * Load admin routes and register middleware
      */
-    private function registerMigrations()
+    private function registerRoutesAndMiddlewares()
     {
-        /**
-         * @var $migrator Migrator
-         */
-        $migrator = $this->app->make( 'migrator' );
-        $migrator->path( __DIR__ . '/../../database/migrations' );
-    }
+        $router = app( 'router' );
 
-    /**
-     *
-     */
-    private function registerComposerSingleton()
-    {
-        $this->app->singleton(
-            \Composer\Composer::class,
-            function ( Application $app )
-            {
-                $factory = new Factory();
-                $io = new BufferIO( '', OutputInterface::VERBOSITY_QUIET, new OutputFormatter( false ) );
-                $composerJsonFilename = realpath( $app->basePath() . '/' . Factory::getComposerFile() );
-                $composer = $factory->createComposer( $io, $composerJsonFilename, false, $app->basePath(), true );
-
-                return $composer;
-            }
-        );
-    }
-
-    /**
-     *
-     */
-    private function registerSentinelSingleton()
-    {
-        $this->app->singleton(
-            \Cartalyst\Sentinel\Sentinel::class,
-            function ( Application $app )
-            {
-                return $app->make( 'sentinel' );
-            }
-        );
-    }
-
-    /**
-     * @param Router $router
-     */
-    private function registerRoutesAndMiddlewares( Router $router )
-    {
-        $middleware = [
+        $router->middlewareGroup( 'admin', [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ];
+        ] );
 
         $router->aliasMiddleware( 'leaf.admin_auth', LeafAdminAuthMiddleware::class );
         $router->aliasMiddleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
         $router->aliasMiddleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
         $router->aliasMiddleware( 'leaf.admin_has_access', LeafAdminHasAccessMiddleware::class );
-
-        // TODO: change group name to 'default' or something like that
-        $router->middlewareGroup( 'admin', $middleware );
 
         Route::group( [
             'as' => 'admin.',
@@ -196,7 +131,7 @@ class LeafServiceProvider extends ServiceProvider
     }
 
     /**
-     *
+     * Register Leaf commands
      */
     private function registerCommands()
     {
@@ -208,6 +143,9 @@ class LeafServiceProvider extends ServiceProvider
         $this->commands( 'leaf.seed' );
     }
 
+    /**
+     * Register Leaf module registry
+     */
     private function registerModuleRegistry()
     {
         $this->app->singleton( 'leaf.modules', function ( Application $app )
@@ -216,5 +154,15 @@ class LeafServiceProvider extends ServiceProvider
                 $app->config['leaf.modules']
             );
         } );
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [ 'leaf.seed', 'leaf.modules', 'leaf.menu' ];
     }
 }
