@@ -90,17 +90,17 @@ class ModuleItem extends AbstractItem
     /**
      * @return string
      */
-    public function getRouteName()
+    public function getModuleName()
     {
-        return $this->routeName;
+        return $this->module->getName();
     }
 
     /**
      * @return string
      */
-    public function getModuleName()
+    public function getRouteName()
     {
-        return $this->module->getName();
+        return $this->routeName;
     }
 
     /**

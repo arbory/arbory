@@ -4,7 +4,6 @@ namespace CubeSystems\Leaf\Http\Middleware;
 
 use Cartalyst\Sentinel\Sentinel;
 use Closure;
-use CubeSystems\Leaf\Http\Controllers\Admin\CrudFrontController;
 use CubeSystems\Leaf\Services\Module;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 use Illuminate\Http\JsonResponse;
@@ -94,20 +93,9 @@ class LeafAdminAuthMiddleware
         /* @var $modules ModuleRegistry */
         $modules = app( 'leaf.modules' );
 
-        if( $routeController instanceof CrudFrontController )
-        {
-            $moduleName = $request->route()->getParameter( 'model' );
-
-            $targetModule = $modules->findCrudModuleByName(
-                $moduleName
-            );
-        }
-        else
-        {
-            $targetModule = $modules->findModuleByControllerClass(
-                '\\' . get_class( $routeController )
-            );
-        }
+        $targetModule = $modules->findModuleByControllerClass(
+            '\\' . get_class( $routeController )
+        );
 
         return $targetModule;
     }

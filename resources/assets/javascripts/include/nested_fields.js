@@ -200,12 +200,12 @@ jQuery( document ).ready(function()
 
                     // this matches both of these syntaxes in attribute values:
                     //
-                    //  resource[foo_attributes][0][bar]  /  resource[foo_attributes][_template_][bar]
-                    //  resource_foo_attributes_0_bar     /  resource_foo_attributes__template__bar
+                    //  resource[foo_attributes][0][bar]  /  resource[foo][_template_][bar]
+                    //  resource_foo_attributes_0_bar     /  resource_foo__template__bar
                     //
 
-                    var matchPattern   = new RegExp('(\\[|_)' + block_name + '_attributes(\\]\\[|_)(\\d*|_template_)?(\\]|_)');
-                    var searchPattern  = new RegExp('((\\[|_)' + block_name + '_attributes(\\]\\[|_))(\\d*|_template_)?(\\]|_)', 'g');
+                    var matchPattern   = new RegExp('(\\[|_)' + block_name + '(\\]\\[|_)(\\d*|_template_)?(\\]|_)');
+                    var searchPattern  = new RegExp('((\\[|_)' + block_name + '(\\]\\[|_))(\\d*|_template_)?(\\]|_)', 'g');
                     var replacePattern = '$1' + index + '$5';
                     var attrs = ['name', 'id', 'for'];
 

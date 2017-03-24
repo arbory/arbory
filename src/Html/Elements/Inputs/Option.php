@@ -12,5 +12,7 @@ class Option extends AbstractInputField
     public function select()
     {
         $this->attributes()->put( 'selected', 'selected' );
+
+        return $this;
     }
 }

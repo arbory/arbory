@@ -2,13 +2,13 @@
 
 namespace CubeSystems\Leaf\Providers;
 
-use CubeSystems\Leaf\Node;
-use CubeSystems\Leaf\Nodes\Routing\Router;
-use CubeSystems\Leaf\Repositories\NodesRepository;
+use CubeSystems\Leaf\Nodes\ContentTypeRegister;
+use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
+use CubeSystems\Leaf\Nodes\Node;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Events\RouteMatched;
+use Illuminate\Routing\Router as LaravelRouter;
 use Illuminate\Support\ServiceProvider;
-use LeafRouter;
 
 /**
  * Class NodeServiceProvider
@@ -17,55 +17,73 @@ use LeafRouter;
 class NodeServiceProvider extends ServiceProvider
 {
     /**
+     * @var Application
+     */
+    protected $app;
+
+    /**
+     * @var ContentTypeRoutesRegister
+     */
+    protected $routes;
+
+    /**
      * Register the service provider.
      *
      * @return void
      */
     public function register()
     {
-        $this->app->singleton( Router::class, function ( Application $app )
+        $this->routes = new ContentTypeRoutesRegister();
+
+        $this->app->singleton( ContentTypeRegister::class, function ()
         {
-            return new Router( $app, $app->make( NodesRepository::class ) );
+            return new ContentTypeRegister();
         } );
 
-        $this->app->singleton( NodesRepository::class, function ()
+        $this->app->singleton( 'leaf_router', function ()
         {
-            return new NodesRepository( Node::class );
-        } );
-
-        $this->app->singleton( 'leaf_router', function ( Application $app )
-        {
-            return new Router( $app );
+            return $this->routes;
         } );
     }
 
     /**
-     *
+     * @return void
      */
     public function boot()
     {
         if( !app()->runningInConsole() )
         {
-            $this->app->booted( function ( Application $app )
+            $this->app->booted( function ()
             {
-                LeafRouter::register( $app['request'] );
-
                 $this->app->singleton( Node::class, function ()
                 {
-                    return LeafRouter::getCurrentNode();
+                    return $this->routes->getCurrentNode();
                 } );
             } );
         }
 
-        app( 'router' )->matched( function ( RouteMatched $event )
+        if( !$this->app->routesAreCached() )
         {
-            // TODO: rewrite when i18n functionality is done
+            $this->routes->registerNodes();
+        }
 
+        $this->detectCurrentLocaleFromRoute( $this->app['router'] );
+    }
+
+    /**
+     * @param LaravelRouter $router
+     */
+    protected function detectCurrentLocaleFromRoute( LaravelRouter $router )
+    {
+        $router->matched( function ( RouteMatched $event )
+        {
+            $locales = config( 'translatable.locales' );
             $firstSegment = $event->request->segment( 1 );
 
-            if( $firstSegment != config( 'leaf.uri' ) )
+            if( in_array( $firstSegment, $locales, true ) )
             {
                 $this->app->setLocale( $firstSegment );
+                $this->app['request']->setLocale( $firstSegment );
             }
         } );
     }

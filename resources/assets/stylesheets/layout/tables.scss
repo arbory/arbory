@@ -13,7 +13,9 @@
         vertical-align: top;
     }
 
-    tr th
+    tr th,
+    tr th span,
+    tr th a
     {
         text-align:  left;
         font-weight: bold;

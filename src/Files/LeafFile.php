@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Files;
 
 use Alsofronie\Uuid\UuidModelTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @property string id
@@ -77,6 +78,9 @@ class LeafFile extends Model
         return $this->sha1;
     }
 
+    /**
+     * @return MorphTo
+     */
     public function owner()
     {
         return $this->morphTo();

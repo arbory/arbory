@@ -2,7 +2,8 @@
 
 namespace CubeSystems\Leaf\Pages;
 
-use CubeSystems\Leaf\Fields\Richtext;
+use CubeSystems\Leaf\Admin\Form\FieldSet;
+use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +18,11 @@ class TextPage extends Model implements PageInterface
      */
     protected $fillable = [ 'html' ];
 
+    public function prepareFieldSet( FieldSet $fieldSet )
+    {
+        $fieldSet->add( new Richtext( 'html' ) );
+    }
+
     /**
      * @return Element
      */
@@ -24,6 +30,8 @@ class TextPage extends Model implements PageInterface
     {
         // TODO: replace HTML placeholders - links, images, embed, etc.
 
-        return ( new Richtext( 'html' ) )->setValue( $this->getAttributeFromArray( 'html' ) );
+        return $this->getAttributeFromArray( 'html' ) ;
+
+//        return ( new Richtext( 'html' ) )->setValue( $this->getAttributeFromArray( 'html' ) );
     }
 }

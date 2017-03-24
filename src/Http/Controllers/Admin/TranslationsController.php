@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Breadcrumbs;
+use App\Bear;
 use CubeSystems\Leaf\Http\Requests\TranslationStoreRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
@@ -111,7 +111,6 @@ class TranslationsController extends Controller
         return view(
             'leaf::controllers.translations.index',
             [
-                'breadcrumbs' => $this->getBreadcrumbs()->get(),
                 'languages' => $languages,
                 'translations' => $paginatedItems,
                 'paginator' => $paginatedItems,

@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Repositories;
 
-use CubeSystems\Leaf\Node;
+use CubeSystems\Leaf\Nodes\Node;
 
 /**
  * Class NodesRepository
@@ -31,8 +31,8 @@ class NodesRepository extends AbstractModelsRepository
 
             if( $node instanceof Node )
             {
-                $query->whereBetween( 'lft', array( $node->getLeft() + 1, $node->getRight() - 1 ) );
-                $query->whereBetween( 'rgt', array( $node->getLeft() + 1, $node->getRight() - 1 ) );
+                $query->whereBetween( $node->getLeftColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
+                $query->whereBetween( $node->getRightColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
             }
 
             $nodes = $query->get();

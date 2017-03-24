@@ -1,6 +1,6 @@
 jQuery(function()
 {
-    var body = jQuery('body.controller-releaf-content-nodes');
+    var body = jQuery('body.controller-nodes');
 
     body.on('contentloaded', function(e)
     {
@@ -39,11 +39,9 @@ jQuery(function()
 
         });
 
-
-
         // slug generation
-        var name_input  = block.find('.node-fields .field[data-name="name"] input');
-        var slug_field  = block.find('.node-fields .field[data-name="slug"]');
+        var name_input  = block.find('.field[data-name="name"] input');
+        var slug_field  = block.find('.field[data-name="slug"]');
 
         if (name_input.length && slug_field.length)
         {

@@ -9,115 +9,119 @@ use CubeSystems\Leaf\Html\Elements\Inputs\Option;
 use CubeSystems\Leaf\Html\Elements\Inputs\Select;
 use CubeSystems\Leaf\Html\Elements\Inputs\Textarea;
 
+/**
+ * Class Html
+ * @package CubeSystems\Leaf\Html
+ *
+ * @method static Element   header( $content = null )
+ * @method static Element   footer( $content = null )
+ * @method static Element   section( $content = null )
+ * @method static Element   fieldset( $content = null )
+ * @method static Element   menu( $content = null )
+ * @method static Element   nav( $content = null )
+ *
+ * @method static Element   h1( $content = null )
+ * @method static Element   h2( $content = null )
+ * @method static Element   h3( $content = null )
+ * @method static Element   h4( $content = null )
+ * @method static Element   h5( $content = null )
+ * @method static Element   h6( $content = null )
+ *
+ * @method static Element   div( $content = null )
+ * @method static Element   span( $content = null )
+ * @method static Element   ol( $content = null )
+ * @method static Element   ul( $content = null )
+ * @method static Element   li( $content = null )
+ * @method static Element   i( $content = null )
+ * @method static Element   abbr( $content = null )
+ *
+ * @method static Element   table( $content = null )
+ * @method static Element   thead( $content = null )
+ * @method static Element   tbody( $content = null )
+ * @method static Element   tfoot( $content = null )
+ * @method static Element   tr( $content = null )
+ * @method static Element   th( $content = null )
+ * @method static Element   td( $content = null )
+ *
+ * @method static Element   form( $content = null )
+ * @method static Element   button( $content = null )
+ * @method static Element   label( $content = null )
+ */
 class Html
 {
-    public static function div( $content = null )
-    {
-        return new Element( 'div', $content );
-    }
-
-    public static function span( $content = null )
-    {
-        return new Element( 'span', $content );
-    }
-
-    public static function ol( $content = null )
-    {
-        return new Element( 'ol', $content );
-    }
-
-    public static function ul( $content = null )
-    {
-        return new Element( 'ul', $content );
-    }
-
-    public static function li( $content = null )
-    {
-        return new Element( 'li', $content );
-    }
-
-    public static function button( $content = null )
-    {
-        return new Element( 'button', $content );
-    }
-
-    public static function menu( $content = null )
-    {
-        return new Element( 'menu', $content );
-    }
-
-    public static function i( $content = null )
-    {
-        return new Element( 'i', $content );
-    }
-
-    public static function label( $content = null )
-    {
-        return new Element( 'label', $content );
-    }
-
+    /**
+     * @param null $content
+     * @return Input
+     */
     public static function input( $content = null )
     {
         return new Input( $content );
     }
 
+    /**
+     * @param null $content
+     * @return CheckBox
+     */
     public static function checkbox( $content = null )
     {
         return new CheckBox( $content );
     }
 
+    /**
+     * @param null $content
+     * @return Select
+     */
     public static function select( $content = null )
     {
         return new Select( $content );
     }
 
+    /**
+     * @param null $content
+     * @return Option
+     */
     public static function option( $content = null )
     {
         return new Option( $content );
     }
 
+    /**
+     * @param null $content
+     * @return Textarea
+     */
     public static function textarea( $content = null )
     {
         return new Textarea( $content );
     }
 
+    /**
+     * @param null $content
+     * @return Element
+     */
     public static function image( $content = null )
     {
         return new Element( 'img', $content );
     }
 
+    /**
+     * @param null $content
+     * @return Element
+     */
     public static function link( $content = null )
     {
         return new Element( 'a', $content );
     }
 
-    public static function abbr( $content = null )
+    /**
+     * @param $name
+     * @param array $arguments
+     *
+     * @return Element
+     */
+    public static function __callStatic( $name, $arguments )
     {
-        return new Element( 'abbr', $content );
-    }
+        $content = array_first( $arguments );
 
-    public static function section( $content = null )
-    {
-        return new Element( 'section', $content );
-    }
-
-    public static function header( $content = null )
-    {
-        return new Element( 'header', $content );
-    }
-
-    public static function h1( $content = null )
-    {
-        return new Element( 'h1', $content );
-    }
-
-    public static function footer( $content = null )
-    {
-        return new Element( 'footer', $content );
-    }
-
-    public static function fieldset( $content = null )
-    {
-        return new Element( 'fieldset', $content );
+        return new Element( $name, $content );
     }
 }

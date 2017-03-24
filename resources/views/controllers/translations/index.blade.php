@@ -2,7 +2,7 @@
 
 @section('content.header')
     <header>
-        @include('leaf::partials.breadcrumbs')
+        {{--@include('leaf::partials.breadcrumbs')--}}
     </header>
 @stop
 
@@ -61,7 +61,7 @@
 
         <footer class="main">
             <div class="tools">
-                @include('leaf::partials.pagination')
+                {{--@include('leaf::partials.pagination')--}}
             </div>
         </footer>
 

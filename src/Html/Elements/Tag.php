@@ -37,7 +37,7 @@ class Tag
      */
     public function __toString()
     {
-        $attributes = $this->getFilteredAttributes();
+        $attributes = $this->getAttributesString();
 
         $content = is_array( $this->content )
             ? implode( PHP_EOL, array_map( 'strval', $this->content ) )
@@ -45,10 +45,10 @@ class Tag
 
         if( $this->isSelfClosing( $this->name ) )
         {
-            return '<' . $this->name . ' ' . $attributes . '>' . $content;
+            return '<' . $this->name . '' . $attributes . '>' . $content;
         }
 
-        return '<' . $this->name . ' ' . $attributes . '>' . $content . '</' . $this->name . '>';
+        return '<' . $this->name . '' . $attributes . '>' . $content . '</' . $this->name . '>';
     }
 
     /**
@@ -73,6 +73,16 @@ class Tag
         {
             return empty( $name );
         } );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getAttributesString()
+    {
+        $attributes = $this->getFilteredAttributes();
+
+        return $attributes->isNotEmpty() ? ' ' . $attributes : '';
     }
 
     /**
