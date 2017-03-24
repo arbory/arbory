@@ -118,7 +118,7 @@ class HasMany extends AbstractField
      */
     private function processRelationItemUpdate( array $variables )
     {
-        $variables[$this->getRelation()->getPlainForeignKey()] = $this->getModel()->getKey();
+        $variables[$this->getRelation()->getForeignKeyName()] = $this->getModel()->getKey();
 
         $relatedModel = $this->findRelatedModel( $variables );
 
