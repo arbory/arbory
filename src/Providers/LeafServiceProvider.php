@@ -90,7 +90,7 @@ class LeafServiceProvider extends ServiceProvider
         ], 'config' );
 
         $this->publishes( [
-            __DIR__ . '/../../gulpfile.js' => base_path( 'gulpfile.leaf.js' ),
+            __DIR__ . '/../../webpack.mix.js' => base_path( 'webpack.leaf.js' ),
         ], 'assets' );
 
         $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
