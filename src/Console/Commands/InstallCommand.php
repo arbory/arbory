@@ -65,9 +65,11 @@ class InstallCommand extends Command
 
         $this->publishConfig();
         $this->publishAssets();
+        $this->addWebpackTask();
         $this->runMigrations();
         $this->runSeeds();
         $this->createAdminUser();
+        $this->npmDependencies();
 
         $this->info( 'Installation completed!' );
 
@@ -95,6 +97,19 @@ class InstallCommand extends Command
             '--provider' => LeafServiceProvider::class,
             '--tag' => 'config',
         ] );
+    }
+
+    /**
+     *
+     */
+    protected function addWebpackTask()
+    {
+        $webpackConfig = base_path( 'webpack.mix.js' );
+
+        if( \File::exists( $webpackConfig ) )
+        {
+            \File::append( $webpackConfig, "\nrequire('./webpack.leaf')(mix);" );
+        }
     }
 
     /**
@@ -169,5 +184,14 @@ class InstallCommand extends Command
         ] );
 
         $administratorRole->users()->attach( $user );
+    }
+
+    protected function npmDependencies()
+    {
+        if( `which npm` )
+        {
+            shell_exec('npm install --silent');
+            shell_exec('npm run dev');
+        }
     }
 }
