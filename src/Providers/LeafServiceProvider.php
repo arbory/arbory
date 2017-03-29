@@ -1,5 +1,6 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
+use CubeSystems\Leaf\Console\Commands\InstallCommand;
 use CubeSystems\Leaf\Console\Commands\SeedCommand;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
@@ -140,7 +141,13 @@ class LeafServiceProvider extends ServiceProvider
             return new SeedCommand( $app['db'] );
         } );
 
+        $this->app->singleton( 'leaf.install', function ( $app )
+        {
+            return new InstallCommand( $app['sentinel'] );
+        } );
+
         $this->commands( 'leaf.seed' );
+        $this->commands( 'leaf.install' );
     }
 
     /**
