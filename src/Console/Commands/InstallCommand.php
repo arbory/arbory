@@ -9,7 +9,6 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use InvalidArgumentException;
-use LeafDatabaseSeeder;
 
 
 /**
@@ -67,7 +66,6 @@ class InstallCommand extends Command
         $this->publishAssets();
         $this->addWebpackTask();
         $this->runMigrations();
-        $this->runSeeds();
         $this->createAdminUser();
         $this->npmDependencies();
 
@@ -124,17 +122,6 @@ class InstallCommand extends Command
     /**
      *
      */
-    protected function runSeeds()
-    {
-        $this->info( 'Seeding the database' );
-        $this->call( 'db:seed', [
-            '--class' => LeafDatabaseSeeder::class,
-        ] );
-    }
-
-    /**
-     *
-     */
     protected function createAdminUser()
     {
         $this->info( 'Let\'s create admin user' );
@@ -186,12 +173,22 @@ class InstallCommand extends Command
         $administratorRole->users()->attach( $user );
     }
 
+    /**
+     *
+     */
     protected function npmDependencies()
     {
-        if( `which npm` )
+        if( !`which npm` )
         {
-            shell_exec('npm install --silent');
-            shell_exec('npm run dev');
+            $this->comment( 'NPM not found. To complete the installation, run "npm install" and "npm run dev" manually.' );
+
+            return;
         }
+
+        $this->info( 'Installing NPM packages' );
+        shell_exec( 'npm install --silent' );
+
+        $this->info( 'Compiling assets' );
+        shell_exec( 'npm run dev' );
     }
 }
