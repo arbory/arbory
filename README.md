@@ -1,34 +1,38 @@
 ## Installation
 #### Create new Laravel project
-```php
+```bash
 laravel new my-project
 ```
 or
-```
+```bash
 composer create-project --prefer-dist laravel/laravel my-project
 ```
 #### Go to project root
-```
+```bash
 cd my-project
 ```
 
 #### Require Leaf package
-```
+```bash
 composer require cubesystems/leaf dev-master
+```
+#### Fill in database info
+```bash
+vi .env
 ```
 
 #### Add Leaf service provider in your application configuration
 
-app/config.php
-```
+config/app.php
+```php
 'providers' => [
     ...
     CubeSystems\Leaf\Providers\LeafServiceProvider::class,
 ]
 ```
 
-#### Run installer and follow instruction
-```
+#### Run installer and follow instructions
+```bash
 php artisan leaf:install
 ```
 
