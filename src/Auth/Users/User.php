@@ -76,4 +76,13 @@ class User extends EloquentUser
     {
         return $this->getFirstName() . ' ' . $this->getLastName();
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany( static::$rolesModel, 'admin_role_users', 'user_id', 'role_id' )->withTimestamps();
+    }
+
 }
