@@ -63,27 +63,14 @@ class InstallCommand extends Command
         }
 
         $this->publishConfig();
-        $this->publishAssets();
         $this->addWebpackTask();
         $this->runMigrations();
         $this->createAdminUser();
         $this->npmDependencies();
 
         $this->info( 'Installation completed!' );
-
     }
 
-    /**
-     *
-     */
-    protected function publishAssets()
-    {
-        $this->info( 'Publishing Leaf assets' );
-        $this->call( 'vendor:publish', [
-            '--provider' => LeafServiceProvider::class,
-            '--tag' => 'assets',
-        ] );
-    }
 
     /**
      *
@@ -104,9 +91,18 @@ class InstallCommand extends Command
     {
         $webpackConfig = base_path( 'webpack.mix.js' );
 
-        if( \File::exists( $webpackConfig ) )
+        $leafRequire = "require('./vendor/cubesystems/leaf/webpack.mix')(mix);";
+
+        if( !\File::exists( $webpackConfig ) )
         {
-            \File::append( $webpackConfig, "\nrequire('./vendor/cubesystems/leaf/webpack.mix')(mix);" );
+            $this->error( "Webpack config not found" );
+
+            return;
+        }
+
+        if( strpos( \File::get( $webpackConfig ), $leafRequire ) === false )
+        {
+            \File::append( $webpackConfig, "\n" . $leafRequire );
         }
     }
 
