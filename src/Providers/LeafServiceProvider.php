@@ -90,10 +90,6 @@ class LeafServiceProvider extends ServiceProvider
             $configFilename => config_path( 'leaf.php' )
         ], 'config' );
 
-        $this->publishes( [
-            __DIR__ . '/../../webpack.mix.js' => base_path( 'webpack.leaf.js' ),
-        ], 'assets' );
-
         $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
         $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
         $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );

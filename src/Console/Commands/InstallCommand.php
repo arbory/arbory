@@ -106,7 +106,7 @@ class InstallCommand extends Command
 
         if( \File::exists( $webpackConfig ) )
         {
-            \File::append( $webpackConfig, "\nrequire('./webpack.leaf')(mix);" );
+            \File::append( $webpackConfig, "\nrequire('./vendor/cubesystems/leaf/webpack.mix')(mix);" );
         }
     }
 
