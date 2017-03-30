@@ -116,6 +116,12 @@ class LeafServiceProvider extends ServiceProvider
         $router->aliasMiddleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
         $router->aliasMiddleware( 'leaf.admin_has_access', LeafAdminHasAccessMiddleware::class );
 
+        $this->registerLeafRoutes();
+        $this->registerAppRoutes();
+    }
+
+    private function registerLeafRoutes()
+    {
         Route::group( [
             'as' => 'admin.',
             'middleware' => 'admin',
@@ -124,6 +130,26 @@ class LeafServiceProvider extends ServiceProvider
         ], function ()
         {
             include __DIR__ . '/../../routes/admin.php';
+        } );
+    }
+
+    private function registerAppRoutes()
+    {
+        $appRoutes = base_path( 'routes/admin.php' );
+
+        if( !\File::exists( $appRoutes ) )
+        {
+            return;
+        }
+
+        Route::group( [
+            'as' => 'admin.',
+            'middleware' => 'admin',
+            'namespace' => '',
+            'prefix' => config( 'leaf.uri' )
+        ], function () use ( $appRoutes )
+        {
+            include $appRoutes;
         } );
     }
 
