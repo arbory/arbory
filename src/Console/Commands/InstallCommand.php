@@ -120,11 +120,18 @@ class InstallCommand extends Command
      */
     protected function createAdminUser()
     {
-        $this->info( 'Let\'s create admin user' );
-
         $users = $this->sentinel->getUserRepository();
         $activations = $this->sentinel->getActivationRepository();
         $roles = $this->sentinel->getRoleRepository();
+
+        if( $users->all()->count() > 0 )
+        {
+            $this->info( 'Admin user already exists' );
+
+            return;
+        }
+
+        $this->info( 'Let\'s create admin user' );
 
         $user = null;
 
