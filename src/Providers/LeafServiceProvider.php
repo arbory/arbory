@@ -90,6 +90,10 @@ class LeafServiceProvider extends ServiceProvider
             $configFilename => config_path( 'leaf.php' )
         ], 'config' );
 
+        $this->publishes( [
+            __DIR__ . '/../../stubs/admin_routes.stub' => base_path( '/routes/admin.php' )
+        ], 'config' );
+
         $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
         $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
         $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
@@ -100,7 +104,7 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerRoutesAndMiddlewares()
     {
-        $router = app( 'router' );
+        $router = $this->app['router'];
 
         $router->middlewareGroup( 'admin', [
             \App\Http\Middleware\EncryptCookies::class,
@@ -122,7 +126,7 @@ class LeafServiceProvider extends ServiceProvider
 
     private function registerLeafRoutes()
     {
-        Route::group( [
+        $this->app['router']->group( [
             'as' => 'admin.',
             'middleware' => 'admin',
             'namespace' => '\CubeSystems\Leaf\Http\Controllers',
@@ -135,21 +139,14 @@ class LeafServiceProvider extends ServiceProvider
 
     private function registerAppRoutes()
     {
-        $appRoutes = base_path( 'routes/admin.php' );
-
-        if( !\File::exists( $appRoutes ) )
-        {
-            return;
-        }
-
-        Route::group( [
+        $this->app['router']->group( [
             'as' => 'admin.',
-            'middleware' => 'admin',
+            'middleware' => [ 'admin', 'leaf.admin_auth' ],
             'namespace' => '',
             'prefix' => config( 'leaf.uri' )
-        ], function () use ( $appRoutes )
+        ], function ()
         {
-            include $appRoutes;
+            include base_path( 'routes/admin.php' );
         } );
     }
 

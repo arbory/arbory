@@ -1,0 +1,9 @@
+<?php
+
+use CubeSystems\Leaf\Admin\Module\Route as AdminRoute;
+
+
+// Admin routes goes here
+
+// For example:
+// AdminRoute::register( \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class );
