@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Http\Requests;
 
-use CubeSystems\Leaf\Users\User;
+use CubeSystems\Leaf\Auth\Users\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Sentinel;

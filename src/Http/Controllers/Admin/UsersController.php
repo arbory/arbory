@@ -9,7 +9,7 @@ use CubeSystems\Leaf\Admin\Form\Fields\BelongsToMany;
 use CubeSystems\Leaf\Admin\Form\Fields\Password;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Html\Html;
-use CubeSystems\Leaf\Users\User;
+use CubeSystems\Leaf\Auth\Users\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;

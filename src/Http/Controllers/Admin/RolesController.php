@@ -6,7 +6,7 @@ use CubeSystems\Leaf\Admin\Form;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Admin\Traits\Crudify;
-use CubeSystems\Leaf\Roles\Role;
+use CubeSystems\Leaf\Auth\Roles\Role;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 

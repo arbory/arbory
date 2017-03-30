@@ -60,7 +60,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( LeafTranslationServiceProvider::class );
         $this->app->register( TranslatableServiceProvider::class );
         $this->app->register( LeafFileServiceProvider::class );
-        $this->app->register( LeafSentinelServiceProvider::class );
+        $this->app->register( LeafAuthServiceProvider::class );
         $this->app->register( GlideImageServiceProvider::class );
     }
 
