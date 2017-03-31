@@ -39,7 +39,6 @@ class LeafAdminAuthMiddleware
      */
     public function handle( $request, Closure $next )
     {
-        return $next( $request );
         if( !$this->sentinel->check() )
         {
             return $this->denied( $request );
@@ -70,16 +69,12 @@ class LeafAdminAuthMiddleware
 
         if( $request->ajax() )
         {
-            $result = response()->json( [ 'error' => $message ], 401 );
-        }
-        else
-        {
-            session()->flash( 'error', $message );
-
-            $result = redirect()->guest( route( 'admin.login.form' ) );
+            return response()->json( [ 'error' => $message ], 401 );
         }
 
-        return $result;
+        return redirect()
+            ->guest( route( 'admin.login.form' ) )
+            ->with( 'error', $message );
     }
 
     /**
@@ -88,15 +83,11 @@ class LeafAdminAuthMiddleware
      */
     private function resolveTargetModule( Request $request )
     {
-        $routeController = $request->route()->getController();
+        $controller = $request->route()->getController();
 
         /* @var $modules ModuleRegistry */
         $modules = app( 'leaf.modules' );
 
-        $targetModule = $modules->findModuleByControllerClass(
-            '\\' . get_class( $routeController )
-        );
-
-        return $targetModule;
+        return $modules->findModuleByController( $controller );
     }
 }
