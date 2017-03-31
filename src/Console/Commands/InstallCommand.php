@@ -4,12 +4,13 @@ namespace CubeSystems\Leaf\Console\Commands;
 
 use Cartalyst\Sentinel\Sentinel;
 use CubeSystems\Leaf\Providers\LeafServiceProvider;
-use DB;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Database\DatabaseManager;
+use Illuminate\Filesystem\Filesystem;
 use InvalidArgumentException;
-
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
  * Class SeedCommand
@@ -35,12 +36,29 @@ class InstallCommand extends Command
     protected $sentinel;
 
     /**
-     * InstallCommand constructor.
-     * @param Sentinel $sentinel
+     * @var Filesystem
      */
-    public function __construct( Sentinel $sentinel )
+    private $filesystem;
+
+    /**
+     * @var DatabaseManager
+     */
+    private $databaseManager;
+
+    /**
+     * @param Sentinel $sentinel
+     * @param Filesystem $filesystem
+     * @param DatabaseManager $databaseManager
+     */
+    public function __construct(
+        Sentinel $sentinel,
+        Filesystem $filesystem,
+        DatabaseManager $databaseManager
+    )
     {
         $this->sentinel = $sentinel;
+        $this->filesystem = $filesystem;
+        $this->databaseManager = $databaseManager;
 
         parent::__construct();
     }
@@ -52,7 +70,7 @@ class InstallCommand extends Command
     {
         try
         {
-            DB::connection();
+            $this->databaseManager->connection();
         }
         catch( Exception $e )
         {
@@ -71,7 +89,6 @@ class InstallCommand extends Command
         $this->info( 'Installation completed!' );
     }
 
-
     /**
      *
      */
@@ -89,20 +106,21 @@ class InstallCommand extends Command
      */
     protected function addWebpackTask()
     {
-        $webpackConfig = base_path( 'webpack.mix.js' );
-
+        $webpackConfig = 'webpack.mix.js';
         $leafRequire = "require('./vendor/cubesystems/leaf/webpack.mix')(mix);";
 
-        if( !\File::exists( $webpackConfig ) )
+        try
         {
-            $this->error( "Webpack config not found" );
+            $contents = $this->filesystem->get( $webpackConfig );
 
-            return;
+            if( strpos( $contents, $leafRequire ) === false )
+            {
+                $this->filesystem->append( $webpackConfig, PHP_EOL . $leafRequire );
+            }
         }
-
-        if( strpos( \File::get( $webpackConfig ), $leafRequire ) === false )
+        catch( FileNotFoundException $e )
         {
-            \File::append( $webpackConfig, "\n" . $leafRequire );
+            $this->error( 'Webpack config not found' );
         }
     }
 

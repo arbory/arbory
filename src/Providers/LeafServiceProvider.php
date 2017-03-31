@@ -9,6 +9,7 @@ use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 use Dimsav\Translatable\TranslatableServiceProvider;
+use File;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -139,14 +140,21 @@ class LeafServiceProvider extends ServiceProvider
 
     private function registerAppRoutes()
     {
+        $adminRoutes = base_path( 'routes/admin.php' );
+
+        if( !File::exists( $adminRoutes ) )
+        {
+            return;
+        }
+
         $this->app['router']->group( [
             'as' => 'admin.',
             'middleware' => [ 'admin', 'leaf.admin_auth' ],
             'namespace' => '',
             'prefix' => config( 'leaf.uri' )
-        ], function ()
+        ], function () use ($adminRoutes)
         {
-            include base_path( 'routes/admin.php' );
+            include $adminRoutes;
         } );
     }
 
@@ -162,7 +170,7 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->app->singleton( 'leaf.install', function ( $app )
         {
-            return new InstallCommand( $app['sentinel'] );
+            return $this->app->make( InstallCommand::class );
         } );
 
         $this->commands( 'leaf.seed' );
