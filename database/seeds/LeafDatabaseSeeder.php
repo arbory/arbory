@@ -1,19 +1,20 @@
 <?php
 
-use Cartalyst\Sentinel\Sentinel;
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Seeder;
+use Waavi\Translation\Repositories\LanguageRepository;
 
 class LeafDatabaseSeeder extends Seeder
 {
     /**
-     * @var DatabaseManager
+     * @var LanguageRepository
      */
-    protected $databaseManager;
+    protected $languageRepository;
 
-    public function __construct( DatabaseManager $databaseManager )
+    public function __construct(
+        LanguageRepository $languageRepository
+    )
     {
-        $this->databaseManager = $databaseManager;
+        $this->languageRepository = $languageRepository;
     }
 
     /**
@@ -28,14 +29,11 @@ class LeafDatabaseSeeder extends Seeder
 
     protected function seedLocales()
     {
-        $connection = $this->databaseManager->connection();
-        $table = $connection->table( 'translator_languages' );
-
-        if ( !$table->first() )
+        if( empty( $this->languageRepository->availableLocales() ) )
         {
-            $table->insert( [
+            $this->languageRepository->create( [
                 'locale' => 'en',
-                'name' => 'English',
+                'name' => 'English'
             ] );
         }
     }
