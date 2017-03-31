@@ -170,7 +170,7 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->app->singleton( 'leaf.install', function ( $app )
         {
-            return $this->app->make( InstallCommand::class );
+            return $app->make( InstallCommand::class );
         } );
 
         $this->commands( 'leaf.seed' );
