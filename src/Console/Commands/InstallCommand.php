@@ -86,7 +86,6 @@ class InstallCommand extends Command
         $this->runMigrations();
         $this->runSeeder();
         $this->createAdminUser();
-        return;
         $this->npmDependencies();
 
         $this->info( 'Installation completed!' );
