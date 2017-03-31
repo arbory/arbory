@@ -1,7 +1,7 @@
 module.exports = function (mix) {
 
     mix.combine(
-        './vendor/cubesystems/leaf/resources/assets/javascripts/include/*.js',
+        './vendor/cubesystems/leaf/resources/assets/javascripts/include/**/*.js',
         './public/leaf/js/dependencies.min.js'
     );
 
