@@ -23,7 +23,7 @@ module.exports = function (mix) {
         './public/leaf/js/application.js'
     );
 
-    mix.copy(
+    mix.copyDirectory(
         './vendor/cubesystems/leaf/resources/assets/javascripts/controllers/',
         './public/leaf/js/controllers/'
     );
@@ -43,12 +43,12 @@ module.exports = function (mix) {
         './public/leaf/css/controllers/'
     );
 
-    mix.copy(
+    mix.copyDirectory(
         './vendor/ckeditor/ckeditor/',
         './public/leaf/ckeditor/'
     );
 
-    mix.copy(
+    mix.copyDirectory(
         './vendor/cubesystems/leaf/resources/assets/images/',
         './public/leaf/images/'
     );
