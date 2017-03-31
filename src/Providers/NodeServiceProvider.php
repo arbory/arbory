@@ -62,7 +62,7 @@ class NodeServiceProvider extends ServiceProvider
             } );
         }
 
-        if( !$this->app->routesAreCached() )
+        if( !$this->app->routesAreCached() && \Schema::hasTable('nodes') )
         {
             $this->routes->registerNodes();
         }
