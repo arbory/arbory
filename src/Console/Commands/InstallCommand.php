@@ -85,6 +85,7 @@ class InstallCommand extends Command
         $this->addWebpackTask();
         $this->runMigrations();
         $this->runSeeder();
+        $this->publishLanguages();
         $this->createAdminUser();
         $this->npmDependencies();
 
@@ -101,6 +102,23 @@ class InstallCommand extends Command
             '--provider' => LeafServiceProvider::class,
             '--tag' => 'config',
         ] );
+    }
+
+    /**
+     *
+     */
+    protected function publishLanguages()
+    {
+        $this->info( 'Publishing language resources' );
+
+        $this->call( 'vendor:publish', [
+            '--provider' => LeafServiceProvider::class,
+            '--tag' => 'lang',
+            '--force' => null,
+        ] );
+
+        $this->call( 'translator:load' );
+        $this->call( 'translator:flush' );
     }
 
     /**

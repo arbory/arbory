@@ -29,7 +29,7 @@ class LeafDatabaseSeeder extends Seeder
 
     protected function seedLocales()
     {
-        if( empty( $this->languageRepository->availableLocales() ) )
+        if( $this->languageRepository->getModel()->all()->isEmpty() )
         {
             $this->languageRepository->create( [
                 'locale' => 'en',
