@@ -85,12 +85,12 @@ class HasMany extends AbstractRelationField
         return Html::footer(
             Html::button( [
                 Html::i()->addClass( 'fa fa-plus' ),
-                trans( 'leaf.fields.has_many.add_item' ),
+                trans( 'leaf::fields.has_many.add_item' ),
             ] )
                 ->addClass( 'button with-icon primary add-nested-item' )
                 ->addAttributes( [
                     'type' => 'button',
-                    'title' => trans( 'leaf.fields.has_many.add_item' ),
+                    'title' => trans( 'leaf::fields.has_many.add_item' ),
                 ] )
         );
     }
@@ -135,7 +135,7 @@ class HasMany extends AbstractRelationField
             ->addClass( 'button only-icon danger remove-nested-item' )
             ->addAttributes( [
                 'type' => 'button',
-                'title' => trans( 'leaf.fields.relation.remove' ),
+                'title' => trans( 'leaf::fields.relation.remove' ),
             ] );
 
         $input = Html::input()

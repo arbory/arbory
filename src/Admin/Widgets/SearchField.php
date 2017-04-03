@@ -78,7 +78,7 @@ class SearchField implements Renderable
             ->addClass( 'button only-icon' )
             ->addAttributes( [
                 'type' => 'submit',
-                'title' => trans( 'leaf.filter.search' ),
+                'title' => trans( 'leaf::filter.search' ),
                 'autocomplete' => 'off',
             ] );
 

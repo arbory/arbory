@@ -10,7 +10,7 @@
     <section>
 
         <header>
-            <h1>@lang('leaf.translations.all_translations')</h1>
+            <h1>@lang('leaf::translations.all_translations')</h1>
         </header>
 
         <div class="body">

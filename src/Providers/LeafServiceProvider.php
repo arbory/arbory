@@ -31,15 +31,16 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        config()->set( 'translator.locales', config( 'translatable.locales' ) );
-
         $this->registerResources();
         $this->registerServiceProviders();
         $this->registerAliases();
         $this->registerModuleRegistry();
         $this->registerCommands();
         $this->registerRoutesAndMiddlewares();
-        
+        $this->registerLocales();
+
+        $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'leaf' );
+
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {
             $view->with( 'user', Sentinel::getUser( true ) );
@@ -94,6 +95,10 @@ class LeafServiceProvider extends ServiceProvider
         $this->publishes( [
             __DIR__ . '/../../stubs/admin_routes.stub' => base_path( '/routes/admin.php' )
         ], 'config' );
+
+        $this->publishes([
+            __DIR__ . '/../../resources/lang/' => base_path('resources/lang/vendor/leaf')
+        ], 'lang');
 
         $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
         $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
@@ -188,6 +193,15 @@ class LeafServiceProvider extends ServiceProvider
                 $app->config['leaf.modules']
             );
         } );
+    }
+
+    /**
+     * Register leaf locales
+     */
+    private function registerLocales()
+    {
+        config()->set( 'translator.locales', config( 'leaf.locales' ) );
+        config()->set( 'translatable.locales', config( 'leaf.locales' ) );
     }
 
     /**

@@ -257,7 +257,7 @@ class TranslationsController extends Controller
     {
         $breadcrumbs = new Breadcrumbs();
         $breadcrumbs->add(
-            trans( 'leaf.breadcrumbs.home' ),
+            trans( 'leaf::breadcrumbs.home' ),
             route( 'admin.dashboard' )
         );
         $breadcrumbs->add(
