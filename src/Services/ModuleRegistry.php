@@ -68,15 +68,17 @@ class ModuleRegistry
      */
     public function findModuleByControllerClass( $controllerClass )
     {
-        $result = null;
+        return isset( $this->modulesByControllerClass[$controllerClass] )
+            ? $this->modulesByControllerClass[$controllerClass]
+            : null;
+    }
 
-        $controllerClass = ltrim( $controllerClass, '\\' );
-
-        if( isset( $this->modulesByControllerClass[$controllerClass] ) )
-        {
-            $result = $this->modulesByControllerClass[$controllerClass];
-        }
-
-        return $result;
+    /**
+     * @param $instance
+     * @return Module
+     */
+    public function findModuleByController( $instance )
+    {
+        return $this->findModuleByControllerClass( get_class( $instance ) );
     }
 }
