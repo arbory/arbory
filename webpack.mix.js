@@ -17,6 +17,7 @@ module.exports = function (mix) {
     );
 
     mix.scripts([
+            './vendor/cubesystems/leaf/resources/assets/javascripts/environment.js',
             './public/leaf/js/vendor.min.js',
             './public/leaf/js/dependencies.min.js',
         ],
