@@ -65,6 +65,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( LeafAuthServiceProvider::class );
         $this->app->register( GlideImageServiceProvider::class );
         $this->app->register( AssetServiceProvider::class );
+        $this->app->register( NodeServiceProvider::class );
     }
 
     /**
