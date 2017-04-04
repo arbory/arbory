@@ -8,6 +8,7 @@ use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
 use CubeSystems\Leaf\Services\ModuleRegistry;
+use CubeSystems\Leaf\Support\Facades\LeafRouter;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use File;
 use Illuminate\Foundation\AliasLoader;
@@ -65,7 +66,6 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( LeafAuthServiceProvider::class );
         $this->app->register( GlideImageServiceProvider::class );
         $this->app->register( AssetServiceProvider::class );
-        $this->app->register( NodeServiceProvider::class );
     }
 
     /**
