@@ -1,5 +1,6 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
+use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
 use CubeSystems\Leaf\Console\Commands\SeedCommand;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
@@ -8,8 +9,11 @@ use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
 use CubeSystems\Leaf\Services\ModuleRegistry;
+use CubeSystems\Leaf\Services\Stub;
+use CubeSystems\Leaf\Services\StubRegistry;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use File;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -43,6 +47,20 @@ class LeafServiceProvider extends ServiceProvider
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {
             $view->with( 'user', Sentinel::getUser( true ) );
+        } );
+
+        // todo: make less bad
+        $this->app->singleton( Stub::class, function ( Application $app )
+        {
+            // TODO: make gooder
+            $stubRegistry = new StubRegistry();
+
+            $stubRegistry->register(
+                $this->app->make( Filesystem::class ),
+                base_path( 'vendor/cubesystems/leaf/stubs' )
+            );
+
+            return $stubRegistry;
         } );
 
         $this->app->bind( 'leaf.menu', function ()
@@ -173,8 +191,14 @@ class LeafServiceProvider extends ServiceProvider
             return $this->app->make( InstallCommand::class );
         } );
 
+        $this->app->singleton( 'leaf.generate', function ()
+        {
+            return $this->app->make( GeneratorCommand::class );
+        } );
+
         $this->commands( 'leaf.seed' );
         $this->commands( 'leaf.install' );
+        $this->commands( 'leaf.generate' );
     }
 
     /**
