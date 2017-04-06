@@ -1,6 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Generators;
+namespace CubeSystems\Leaf\Generator;
+
+use CubeSystems\Leaf\Generator\Generateable\Model;
 
 class ModelGenerator
 {

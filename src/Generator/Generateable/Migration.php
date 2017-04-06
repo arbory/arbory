@@ -1,7 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Generators;
+namespace CubeSystems\Leaf\Generator\Generateable;
 
+use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
 use CubeSystems\Leaf\Services\Stub;
 use CubeSystems\Leaf\Services\StubRegistry;
 use DateTimeImmutable;
@@ -26,7 +27,7 @@ class Migration implements Generateable
      */
     public function __construct( StubRegistry $stubRegistry, Model $model )
     {
-        $this->stub = $stubRegistry->findByName( 'admin_controller' );
+        $this->stub = $stubRegistry->findByName( 'migration' );
         $this->model = $model;
     }
 
@@ -68,7 +69,7 @@ class Migration implements Generateable
         return str_replace(
             array_keys( $replace ),
             array_values( $replace ),
-            $this->stub // todo : but  y
+            $this->stub->getContents()
         );
     }
 

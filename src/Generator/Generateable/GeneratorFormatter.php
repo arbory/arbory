@@ -1,7 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Generators;
+namespace CubeSystems\Leaf\Generator\Generateable;
 
+use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
 use Illuminate\Support\Collection;
 
 trait GeneratorFormatter

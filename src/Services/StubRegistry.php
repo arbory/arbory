@@ -22,7 +22,7 @@ class StubRegistry
      * @param string $stubDirectory
      * @return void
      */
-    public function register( Filesystem $filesystem, string $stubDirectory )
+    public function registerStubs( Filesystem $filesystem, string $stubDirectory )
     {
         $this->stubs = new Collection();
 

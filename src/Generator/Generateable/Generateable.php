@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Generators;
+namespace CubeSystems\Leaf\Generator\Generateable;
 
 interface Generateable
 {

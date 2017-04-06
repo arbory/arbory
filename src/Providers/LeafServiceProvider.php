@@ -50,12 +50,12 @@ class LeafServiceProvider extends ServiceProvider
         } );
 
         // todo: make less bad
-        $this->app->singleton( Stub::class, function ( Application $app )
+        $this->app->singleton( StubRegistry::class, function ( Application $app )
         {
             // TODO: make gooder
             $stubRegistry = new StubRegistry();
 
-            $stubRegistry->register(
+            $stubRegistry->registerStubs( // TODO: $app['ff'
                 $this->app->make( Filesystem::class ),
                 base_path( 'vendor/cubesystems/leaf/stubs' )
             );

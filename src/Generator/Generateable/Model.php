@@ -1,8 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Generators;
+namespace CubeSystems\Leaf\Generator\Generateable;
 
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
+use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
+use CubeSystems\Leaf\Generator\Generateable\Extras\Structure;
 use CubeSystems\Leaf\Services\Stub;
 use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Support\Collection;
@@ -33,7 +35,7 @@ class Model implements Generateable
 
     public function __construct( StubRegistry $stubRegistry )
     {
-        $this->stub = $stubRegistry->findByName( 'admin_controller' );
+        $this->stub = $stubRegistry->findByName( 'model' );
         $this->fields = new Collection();
     }
 
@@ -79,7 +81,7 @@ class Model implements Generateable
         return str_replace(
             array_keys( $replace ),
             array_values( $replace ),
-            $this->stub // todo : but  y
+            $this->stub->getContents()
         );
     }
 
