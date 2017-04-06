@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Generateable;
+namespace CubeSystems\Leaf\Generator;
 
 use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
 use Illuminate\Support\Collection;
@@ -31,7 +31,8 @@ trait GeneratorFormatter
      */
     public function useFields( Collection $fields )
     {
-        return $fields->transform( function( $field ) {
+        return $fields->transform( function( $field )
+        {
             /**
              * @var Field $field
              */

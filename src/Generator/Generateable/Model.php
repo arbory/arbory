@@ -5,18 +5,17 @@ namespace CubeSystems\Leaf\Generator\Generateable;
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
 use CubeSystems\Leaf\Generator\Generateable\Extras\Structure;
-use CubeSystems\Leaf\Services\Stub;
+use CubeSystems\Leaf\Generator\GeneratorFormatter;
+use CubeSystems\Leaf\Generator\Stubable;
+use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Services\StubRegistry;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\Console\DetectsApplicationNamespace;
 
-class Model implements Generateable
+class Model extends StubGenerator implements Stubable
 {
-    use GeneratorFormatter;
-
-    /**
-     * @var Stub
-     */
-    protected $stub;
+    use GeneratorFormatter, DetectsApplicationNamespace;
 
     /**
      * @var string
@@ -33,21 +32,18 @@ class Model implements Generateable
      */
     protected $fields;
 
-    public function __construct( StubRegistry $stubRegistry )
+    /**
+     * @param StubRegistry $stubRegistry
+     * @param Filesystem $filesystem
+     */
+    public function __construct(
+        StubRegistry $stubRegistry,
+        Filesystem $filesystem
+    )
     {
         $this->stub = $stubRegistry->findByName( 'model' );
+        $this->filesystem = $filesystem;
         $this->fields = new Collection();
-    }
-
-    /**
-     * @return bool
-     */
-    public function generate()
-    {
-        return (bool) file_put_contents(
-            app_path( $this->getFilename() ),
-            $this->getCompiledControllerStub()
-        );
     }
 
     /**
@@ -138,7 +134,7 @@ class Model implements Generateable
      */
     public function getNamespace(): string
     {
-        return 'App\\';
+        return $this->getAppNamespace();
     }
 
     /**
@@ -194,5 +190,13 @@ class Model implements Generateable
     public function addField( Field $field )
     {
         $this->fields->push( $field );
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return app_path( $this->getFilename() );
     }
 }

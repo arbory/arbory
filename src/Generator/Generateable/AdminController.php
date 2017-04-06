@@ -2,17 +2,18 @@
 
 namespace CubeSystems\Leaf\Generator\Generateable;
 
+use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
+use CubeSystems\Leaf\Generator\StubGenerator;
+use CubeSystems\Leaf\Generator\GeneratorFormatter;
+use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Services\Stub;
 use CubeSystems\Leaf\Services\StubRegistry;
+use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Filesystem\Filesystem;
 
-class AdminController implements Generateable
+class AdminController extends StubGenerator implements Stubable
 {
-    use GeneratorFormatter;
-
-    /**
-     * @var Stub
-     */
-    protected $stub;
+    use GeneratorFormatter, DetectsApplicationNamespace;
 
     /**
      * @var Model
@@ -21,23 +22,18 @@ class AdminController implements Generateable
 
     /**
      * @param StubRegistry $stubRegistry
+     * @param Filesystem $filesystem
      * @param Model $model
      */
-    public function __construct( StubRegistry $stubRegistry, Model $model )
+    public function __construct(
+        StubRegistry $stubRegistry,
+        Filesystem $filesystem,
+        Model $model
+    )
     {
-        $this->stub = $stubRegistry->findByName( 'admin_controller' );
+        $this->stub = $stubRegistry->findByName( 'view' );
+        $this->filesystem = $filesystem;
         $this->model = $model;
-    }
-
-    /**
-     * @return bool
-     */
-    public function generate(): bool
-    {
-        return (bool) file_put_contents(
-            app_path( 'Http/Controllers/Admin/' . $this->getFilename() ),
-            $this->getCompiledControllerStub()
-        );
     }
 
     /**
@@ -95,8 +91,19 @@ class AdminController implements Generateable
         return $this->getClassName() .'.php';
     }
 
+    /**
+     * @return string
+     */
     public function getNamespace(): string
     {
-        return 'App\Http\Controllers\Admin\\';
+        return $this->getAppNamespace() . '\Http\Controllers\Admin\\';
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return app_path( 'Http/Controllers/Admin/' . $this->getFilename() );
     }
 }

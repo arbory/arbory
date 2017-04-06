@@ -9,9 +9,12 @@ use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
 use CubeSystems\Leaf\Generator\Generateable\AdminController;
+use CubeSystems\Leaf\Generator\Generateable\Controller;
 use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
 use CubeSystems\Leaf\Generator\Generateable\Extras\Structure;
+use CubeSystems\Leaf\Generator\Generateable\Stubable;
 use CubeSystems\Leaf\Generator\Generateable\Migration;
+use CubeSystems\Leaf\Generator\Generateable\View;
 use CubeSystems\Leaf\Generator\ModelGenerator;
 use CubeSystems\Leaf\Generator\Generateable\Model;
 use CubeSystems\Leaf\Generator\Generateable\Page;
@@ -19,6 +22,7 @@ use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Filesystem\Filesystem;
 
 class GeneratorCommand extends Command
 {
@@ -101,25 +105,50 @@ class GeneratorCommand extends Command
          */
         $page = new Page(
             $this->app->make( StubRegistry::class ),
+            $this->app->make( Filesystem::class ),
             $model
         );
 
         $migration = new Migration(
             $this->app->make( StubRegistry::class ),
+            $this->app->make( Filesystem::class ),
             $model
         );
 
         $adminController = new AdminController(
             $this->app->make( StubRegistry::class ),
+            $this->app->make( Filesystem::class ),
             $model
         );
 
-        $generator = new ModelGenerator( $model );
+        $controller = new Controller(
+            $this->app->make( StubRegistry::class ),
+            $this->app->make( Filesystem::class ),
+            $model
+        );
 
-        $model->generate();
-        $page->generate();
-        $migration->generate();
-        $adminController->generate();
+        $view = new View(
+            $this->app->make( StubRegistry::class ),
+            $this->app->make( Filesystem::class ),
+            $model
+        );
+
+        $generateables = [
+            $model,
+            $migration,
+            $page,
+            $controller,
+            $view,
+            $adminController
+        ];
+
+        foreach($generateables as $generateable)
+        {
+            /** @var Stubable $generateable */
+            $this->line( 'Generating ' . $generateable->getPath() . '...' );
+
+            $generateable->generate();
+        }
 
         // LeafRoute
     }

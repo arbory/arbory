@@ -7,13 +7,17 @@ use CubeSystems\Leaf\Generator\GeneratorFormatter;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Services\StubRegistry;
-use DateTimeImmutable;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
 
-class Migration extends StubGenerator implements Stubable
+class Controller extends StubGenerator implements Stubable
 {
     use GeneratorFormatter, DetectsApplicationNamespace;
+
+    /**
+     * @var Model
+     */
+    protected $model;
 
     /**
      * @param StubRegistry $stubRegistry
@@ -36,23 +40,21 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $schemaFields = ( clone $this->model->getFields() )->transform( function( $field )
-        {
+        $viewFields = (clone $this->model->getFields())->transform( function( $field ) {
             /**
              * @var Field $field
              */
             return sprintf(
-                '$table->%s(\'%s\');',
-                $field->getStructure()->getType(),
-                $field->getDatabaseName()
+                '\'%1$s\' => $node->%1$s,',
+                snake_case( $field->getName() )
             );
         } );
 
         $replace = [
+            '{{namespace}}' => $this->getNamespace(),
             '{{className}}' => $this->getClassName(),
-            '{{schemaName}}' => $this->model->getDatabaseName(),
-            '{{schemaFields}}' => $this->prependSpacing( $schemaFields,3 )->implode( PHP_EOL ),
-            '{{downAction}}' => 'Schema::dropIfExists( \'' . $this->model->getDatabaseName() . '\' );'
+            '{{viewPath}}' => 'controllers.' . snake_case( $this->model->getName() ) . '.index',
+            '{{viewFields}}' => $this->prependSpacing( $viewFields, 3 )->implode( PHP_EOL ),
         ];
 
         return str_replace(
@@ -67,7 +69,7 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return 'Create' . $this->model->getClassName() . 'Table';
+        return $this->model->getClassName() . 'PageController';
     }
 
     /**
@@ -75,13 +77,7 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getFilename(): string
     {
-        $time = new DateTimeImmutable();
-
-        return sprintf(
-            '%s_create_%s_table.php',
-            $time->format( 'Y_m_d_His' ),
-            snake_case( $this->model->getName() )
-        );
+        return $this->getClassName() .'.php';
     }
 
     /**
@@ -89,7 +85,7 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getNamespace(): string
     {
-        return (string) null;
+        return $this->getAppNamespace() . 'Http\Controllers';
     }
 
     /**
@@ -97,6 +93,6 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getPath(): string
     {
-        return base_path( 'database/migrations/' . $this->getFilename() );
+        return app_path( 'Http/Controllers/' . $this->getFilename() );
     }
 }

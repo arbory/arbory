@@ -2,7 +2,6 @@
 
 namespace {{namespace}};
 
-use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\FieldSet;
 use CubeSystems\Leaf\Pages\PageInterface;
 use Illuminate\Database\Eloquent\Model;

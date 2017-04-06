@@ -1,11 +1,9 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Generateable;
+namespace CubeSystems\Leaf\Generator;
 
-interface Generateable
+interface Stubable
 {
-    public function generate();
-
     public function getCompiledControllerStub(): string;
 
     public function getClassName(): string;
@@ -13,4 +11,6 @@ interface Generateable
     public function getFilename(): string;
 
     public function getNamespace(): string;
+
+    public function getPath(): string;
 }

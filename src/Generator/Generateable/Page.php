@@ -3,17 +3,16 @@
 namespace CubeSystems\Leaf\Generator\Generateable;
 
 use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
-use CubeSystems\Leaf\Services\Stub;
+use CubeSystems\Leaf\Generator\GeneratorFormatter;
+use CubeSystems\Leaf\Generator\Stubable;
+use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Services\StubRegistry;
+use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Filesystem\Filesystem;
 
-class Page implements Generateable
+class Page extends StubGenerator implements Stubable
 {
-    use GeneratorFormatter;
-
-    /**
-     * @var Stub
-     */
-    protected $stub;
+    use GeneratorFormatter, DetectsApplicationNamespace;
 
     /**
      * @var Model
@@ -22,23 +21,18 @@ class Page implements Generateable
 
     /**
      * @param StubRegistry $stubRegistry
+     * @param Filesystem $filesystem
      * @param Model $model
      */
-    public function __construct( StubRegistry $stubRegistry, Model $model )
+    public function __construct(
+        StubRegistry $stubRegistry,
+        Filesystem $filesystem,
+        Model $model
+    )
     {
         $this->stub = $stubRegistry->findByName( 'page' );
+        $this->filesystem = $filesystem;
         $this->model = $model;
-    }
-
-    /**
-     * @return bool
-     */
-    public function generate(): bool
-    {
-        return (bool) file_put_contents(
-            app_path( 'Pages/' . $this->getFilename() ),
-            $this->getCompiledControllerStub()
-        );
     }
 
     /**
@@ -90,6 +84,14 @@ class Page implements Generateable
      */
     public function getNamespace(): string
     {
-        return 'App\Pages';
+        return $this->getAppNamespace() . 'Pages';
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return app_path( 'Pages/' . $this->getFilename() );
     }
 }
