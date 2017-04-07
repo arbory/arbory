@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Generator\Generateable;
 
 use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
+use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
 use CubeSystems\Leaf\Generator\Stubable;
@@ -16,24 +17,48 @@ class AdminController extends StubGenerator implements Stubable
     use GeneratorFormatter, DetectsApplicationNamespace;
 
     /**
-     * @var Model
+     * @var Schema
      */
-    protected $model;
+    protected $schema;
 
     /**
      * @param StubRegistry $stubRegistry
      * @param Filesystem $filesystem
-     * @param Model $model
+     * @param Schema $schema
      */
     public function __construct(
         StubRegistry $stubRegistry,
         Filesystem $filesystem,
-        Model $model
+        Schema $schema
     )
     {
-        $this->stub = $stubRegistry->findByName( 'view' );
+        $this->stub = $stubRegistry->findByName( 'admin_controller' );
         $this->filesystem = $filesystem;
-        $this->model = $model;
+        $this->schema = $schema;
+    }
+
+    public function generate()
+    {
+        parent::generate();
+
+        $this->registerAdminRoute();
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerAdminRoute()
+    {
+        $path = base_path( 'routes/admin.php' );
+        $route = 'AdminRoute::register( ' . $this->getNamespace() . $this->getClassName() . '::class );';
+
+        if( !str_contains( $this->filesystem->get( $path ), $route ) )
+        {
+            $this->filesystem->append(
+                $path,
+                PHP_EOL . $route
+            );
+        }
     }
 
     /**
@@ -41,18 +66,19 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $useFields = $this->useFields( clone $this->model->getFields() );
+        $useFields = $this->useFields( clone $this->schema->getFields() );
+        $useFields->push(
+            $this->use( $this->getAppNamespace() . $this->className( $this->schema->getName() ) )
+        );
 
-        $useFields->push( $this->use( $this->model->use() ) );
-
-        $formFields = (clone $this->model->getFields())->transform( function( $field ) {
+        $formFields = (clone $this->schema->getFields())->transform( function( $field ) {
             /**
              * @var Field $field
              */
             return '$form->addField( new ' .  $field->getClassName() . '(\'' . $field->getName() . '\') );';
         } );
 
-        $gridFields = (clone $this->model->getFields())->transform( function( $field ) {
+        $gridFields = (clone $this->schema->getFields())->transform( function( $field ) {
             /**
              * @var Field $field
              */
@@ -62,7 +88,7 @@ class AdminController extends StubGenerator implements Stubable
         $replace = [
             '{{namespace}}' => $this->getNamespace(),
             '{{className}}' => $this->getClassName(),
-            '{{resourceName}}' => $this->model->getClassName() . '::class',
+            '{{resourceName}}' => $this->className( $this->schema->getName() ). '::class',
             '{{use}}' => $useFields->implode( PHP_EOL ),
             '{{formFields}}' => $this->prependSpacing( $formFields, 3 )->implode( PHP_EOL ),
             '{{gridFields}}' => $this->prependSpacing( $gridFields, 3 )->implode( PHP_EOL ),
@@ -80,7 +106,7 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->model->getClassName() . 'Controller';
+        return $this->className( $this->schema->getName() ) . 'Controller';
     }
 
     /**
@@ -96,7 +122,7 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getNamespace(): string
     {
-        return $this->getAppNamespace() . '\Http\Controllers\Admin\\';
+        return $this->getAppNamespace() . 'Http\Controllers\Admin\\';
     }
 
     /**

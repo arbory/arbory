@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Generator\Generateable;
 
 use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
+use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Services\StubRegistry;
@@ -15,24 +16,41 @@ class Controller extends StubGenerator implements Stubable
     use GeneratorFormatter, DetectsApplicationNamespace;
 
     /**
-     * @var Model
+     * @var Schema
      */
-    protected $model;
+    protected $schema;
 
     /**
      * @param StubRegistry $stubRegistry
      * @param Filesystem $filesystem
-     * @param Model $model
+     * @param Schema $schema
      */
     public function __construct(
         StubRegistry $stubRegistry,
         Filesystem $filesystem,
-        Model $model
+        Schema $schema
     )
     {
         $this->stub = $stubRegistry->findByName( 'controller' );
         $this->filesystem = $filesystem;
-        $this->model = $model;
+        $this->schema = $schema;
+    }
+
+    /**
+     * @return void
+     */
+    public function generate()
+    {
+        parent::generate();
+
+        $this->registerConfigModule();
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerConfigModule()
+    {
     }
 
     /**
@@ -40,7 +58,7 @@ class Controller extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $viewFields = (clone $this->model->getFields())->transform( function( $field ) {
+        $viewFields = (clone $this->schema->getFields())->transform( function( $field ) {
             /**
              * @var Field $field
              */
@@ -53,7 +71,7 @@ class Controller extends StubGenerator implements Stubable
         $replace = [
             '{{namespace}}' => $this->getNamespace(),
             '{{className}}' => $this->getClassName(),
-            '{{viewPath}}' => 'controllers.' . snake_case( $this->model->getName() ) . '.index',
+            '{{viewPath}}' => 'controllers.' . snake_case( $this->schema->getName() ) . '.index',
             '{{viewFields}}' => $this->prependSpacing( $viewFields, 3 )->implode( PHP_EOL ),
         ];
 
@@ -69,7 +87,7 @@ class Controller extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->model->getClassName() . 'PageController';
+        return $this->className( $this->schema->getName() ) . 'PageController';
     }
 
     /**

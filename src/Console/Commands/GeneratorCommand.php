@@ -12,12 +12,13 @@ use CubeSystems\Leaf\Generator\Generateable\AdminController;
 use CubeSystems\Leaf\Generator\Generateable\Controller;
 use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
 use CubeSystems\Leaf\Generator\Generateable\Extras\Structure;
-use CubeSystems\Leaf\Generator\Generateable\Stubable;
 use CubeSystems\Leaf\Generator\Generateable\Migration;
-use CubeSystems\Leaf\Generator\Generateable\View;
-use CubeSystems\Leaf\Generator\ModelGenerator;
 use CubeSystems\Leaf\Generator\Generateable\Model;
+use CubeSystems\Leaf\Generator\Generateable\View;
 use CubeSystems\Leaf\Generator\Generateable\Page;
+use CubeSystems\Leaf\Generator\GeneratorFormatter;
+use CubeSystems\Leaf\Generator\Schema;
+use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
@@ -26,12 +27,17 @@ use Illuminate\Filesystem\Filesystem;
 
 class GeneratorCommand extends Command
 {
-    use ConfirmableTrait;
+    use ConfirmableTrait, GeneratorFormatter;
 
     /**
      * @var string
      */
     protected $name = 'leaf:generator';
+
+    /**
+     * @var string
+     */
+    protected $signature = 'leaf:generator';
 
     /**
      * @var string
@@ -56,14 +62,14 @@ class GeneratorCommand extends Command
     /**
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         /**
-         * @var Model $model
+         * @var Schema $schema
          */
-        $model = $this->app->make( Model::class );
+        $schema = $this->app->make( Schema::class );
 
-        $model->setName( $this->ask( 'Please enter the name of the model' ) );
+        $schema->setName( $this->ask( 'Please enter the name of the model' ) );
 
         if( $this->confirm( 'Would you like to define the fields?', true ) )
         {
@@ -74,89 +80,53 @@ class GeneratorCommand extends Command
 
                 $field->setName( 'id' );
                 $field->setType( Hidden::class );
+                $structure->setType( 'increments' );
                 $structure->setAutoIncrement( true );
 
-                $model->addField( $field );
+                $schema->addField( $field );
             }
 
-            $model->setTimestamps( $this->confirm( 'Would you like to add the default laravel timestamp fields?', true ) );
+            $schema->setTimestamps( $this->confirm( 'Would you like to add the default laravel timestamp fields?', true ) );
 
-            $this->setupFields( $model );
+            $this->setupFields( $schema );
         }
 
-        $this->line( 'We are going to generate a model named ' . $model->getName() );
+        $this->line( 'We are going to generate a model named ' . $schema->getName() );
         $this->line( 'With the following fields' );
 
-        $header = array_merge(
-            [ 'name' ],
-            array_keys( $model->getFields()->first()->getStructure()->values() )
-        );
+        list( $header, $body ) = $this->getSchemaTable( $schema );
 
-        $this->table(
-            $header,
-            (clone $model->getFields())->transform(function($item) {
-                /** @var Field $item */
-                return array_merge( [ $item->getName() ], $item->getStructure()->values() );
-            })
-        );
-
-        /**
-         * @var Page $page
-         */
-        $page = new Page(
-            $this->app->make( StubRegistry::class ),
-            $this->app->make( Filesystem::class ),
-            $model
-        );
-
-        $migration = new Migration(
-            $this->app->make( StubRegistry::class ),
-            $this->app->make( Filesystem::class ),
-            $model
-        );
-
-        $adminController = new AdminController(
-            $this->app->make( StubRegistry::class ),
-            $this->app->make( Filesystem::class ),
-            $model
-        );
-
-        $controller = new Controller(
-            $this->app->make( StubRegistry::class ),
-            $this->app->make( Filesystem::class ),
-            $model
-        );
-
-        $view = new View(
-            $this->app->make( StubRegistry::class ),
-            $this->app->make( Filesystem::class ),
-            $model
-        );
+        $this->table( $header, $body );
 
         $generateables = [
-            $model,
-            $migration,
-            $page,
-            $controller,
-            $view,
-            $adminController
+            Migration::class,
+            Model::class,
+            Page::class,
+            Controller::class,
+            View::class,
+            AdminController::class
         ];
 
-        foreach($generateables as $generateable)
+        foreach($generateables as $generateableType)
         {
-            /** @var Stubable $generateable */
+            /** @var StubGenerator $generateable */
+            $generateable = new $generateableType(
+                $this->app->make( StubRegistry::class ),
+                $this->app->make( Filesystem::class ),
+                $schema
+            );
+
             $this->line( 'Generating ' . $generateable->getPath() . '...' );
 
             $generateable->generate();
         }
-
         // LeafRoute
     }
 
     /**
-     * @param Model $model
+     * @param Schema $schema
      */
-    protected function setupFields( $model )
+    protected function setupFields( $schema )
     {
         do
         {
@@ -187,7 +157,7 @@ class GeneratorCommand extends Command
                 $structure->setLength( $this->ask( 'Set the maximum length', 0 ) );
             }
 
-            $model->addField( $field );
+            $schema->addField( $field );
         } while( $this->confirm( 'Add another field?' ) );
     }
 }

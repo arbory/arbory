@@ -1,8 +1,10 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
+use CubeSystems\Leaf\Console\Commands\GenerateCommand;
 use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
 use CubeSystems\Leaf\Console\Commands\SeedCommand;
+use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
@@ -191,13 +193,19 @@ class LeafServiceProvider extends ServiceProvider
             return $this->app->make( InstallCommand::class );
         } );
 
-        $this->app->singleton( 'leaf.generate', function ()
+        $this->app->singleton( 'leaf.generator', function ()
         {
             return $this->app->make( GeneratorCommand::class );
         } );
 
+        $this->app->singleton( 'leaf.generate', function ()
+        {
+            return $this->app->make( GenerateCommand::class );
+        } );
+
         $this->commands( 'leaf.seed' );
         $this->commands( 'leaf.install' );
+        $this->commands( 'leaf.generator' );
         $this->commands( 'leaf.generate' );
     }
 

@@ -8,6 +8,26 @@ use Illuminate\Support\Collection;
 trait GeneratorFormatter
 {
     /**
+     * @param Schema $schema
+     * @return mixed[]
+     */
+    public function getSchemaTable( Schema $schema )
+    {
+        $header = array_merge(
+            [ 'name' ],
+            array_keys( $schema->getFields()->first()->getStructure()->values() )
+        );
+
+        $body = ( clone $schema->getFields() )->transform( function( $item )
+        {
+            /** @var Field $item */
+            return array_merge( [ $item->getName() ], $item->getStructure()->values() );
+        } );
+
+        return [ $header, $body ];
+    }
+
+    /**
      * @param Collection $collection
      * @param int $times
      * @return Collection
@@ -44,7 +64,16 @@ trait GeneratorFormatter
      * @param string $value
      * @return string
      */
-    public function use ( $value )
+    public function className( string $value )
+    {
+        return ucfirst( camel_case( $value ) );
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     */
+    public function use( $value )
     {
         return 'use ' . $value . ';';
     }

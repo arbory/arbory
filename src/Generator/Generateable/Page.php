@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Generator\Generateable;
 
 use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
+use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Services\StubRegistry;
@@ -15,24 +16,24 @@ class Page extends StubGenerator implements Stubable
     use GeneratorFormatter, DetectsApplicationNamespace;
 
     /**
-     * @var Model
+     * @var Schema
      */
-    protected $model;
+    protected $schema;
 
     /**
      * @param StubRegistry $stubRegistry
      * @param Filesystem $filesystem
-     * @param Model $model
+     * @param Schema $schema
      */
     public function __construct(
         StubRegistry $stubRegistry,
         Filesystem $filesystem,
-        Model $model
+        Schema $schema
     )
     {
         $this->stub = $stubRegistry->findByName( 'page' );
         $this->filesystem = $filesystem;
-        $this->model = $model;
+        $this->schema = $schema;
     }
 
     /**
@@ -40,7 +41,7 @@ class Page extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $fieldSet = ( clone $this->model->getFields() )->transform( function( $field )
+        $fieldSet = ( clone $this->schema->getFields() )->transform( function( $field )
         {
             /**
              * @var Field $field
@@ -51,7 +52,7 @@ class Page extends StubGenerator implements Stubable
 
         $replace = [
             '{{namespace}}' => $this->getNamespace(),
-            '{{use}}' => $this->useFields( clone $this->model->getFields() )->implode( PHP_EOL ),
+            '{{use}}' => $this->useFields( clone $this->schema->getFields() )->implode( PHP_EOL ),
             '{{className}}' => $this->getClassName(),
             '{{fieldSet}}' => $this->prependSpacing( $fieldSet, 2 )->implode( PHP_EOL ),
         ];
@@ -68,7 +69,7 @@ class Page extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->model->getClassName() . 'Page';
+        return $this->className( $this->schema->getName() ) . 'Page';
     }
 
     /**

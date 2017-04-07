@@ -3,32 +3,38 @@
 namespace CubeSystems\Leaf\Generator\Generateable;
 
 use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
+use CubeSystems\Leaf\Generator\Generateable\Extras\Structure;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
+use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Services\StubRegistry;
 use DateTimeImmutable;
-use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
 
 class Migration extends StubGenerator implements Stubable
 {
-    use GeneratorFormatter, DetectsApplicationNamespace;
+    use GeneratorFormatter;
+
+    /**
+     * @var Schema
+     */
+    protected $schema;
 
     /**
      * @param StubRegistry $stubRegistry
      * @param Filesystem $filesystem
-     * @param Model $model
+     * @param Schema $schema
      */
     public function __construct(
         StubRegistry $stubRegistry,
         Filesystem $filesystem,
-        Model $model
+        Schema $schema
     )
     {
-        $this->stub = $stubRegistry->findByName( 'controller' );
+        $this->stub = $stubRegistry->findByName( 'migration' );
         $this->filesystem = $filesystem;
-        $this->model = $model;
+        $this->schema = $schema;
     }
 
     /**
@@ -36,23 +42,26 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $schemaFields = ( clone $this->model->getFields() )->transform( function( $field )
+        $schemaFields = ( clone $this->schema->getFields() )->transform( function( $field )
         {
             /**
              * @var Field $field
              */
+            $structure = $field->getStructure();
+
             return sprintf(
-                '$table->%s(\'%s\');',
-                $field->getStructure()->getType(),
-                $field->getDatabaseName()
+                '$table->%s(\'%s\')%s;',
+                $structure->getType(),
+                $field->getDatabaseName(),
+                $this->buildColumn( $structure )
             );
         } );
 
         $replace = [
             '{{className}}' => $this->getClassName(),
-            '{{schemaName}}' => $this->model->getDatabaseName(),
+            '{{schemaName}}' => snake_case( $this->schema->getName() ),
             '{{schemaFields}}' => $this->prependSpacing( $schemaFields,3 )->implode( PHP_EOL ),
-            '{{downAction}}' => 'Schema::dropIfExists( \'' . $this->model->getDatabaseName() . '\' );'
+            '{{downAction}}' => 'Schema::dropIfExists( \'' . $this->schema->getName() . '\' );'
         ];
 
         return str_replace(
@@ -67,7 +76,7 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return 'Create' . $this->model->getClassName() . 'Table';
+        return 'Create' . $this->className(  $this->schema->getName() ) . 'Table';
     }
 
     /**
@@ -80,7 +89,7 @@ class Migration extends StubGenerator implements Stubable
         return sprintf(
             '%s_create_%s_table.php',
             $time->format( 'Y_m_d_His' ),
-            snake_case( $this->model->getName() )
+            strtolower( $this->schema->getName() )
         );
     }
 
@@ -98,5 +107,27 @@ class Migration extends StubGenerator implements Stubable
     public function getPath(): string
     {
         return base_path( 'database/migrations/' . $this->getFilename() );
+    }
+
+    /**
+     * @param Structure $structure
+     * @return string
+     */
+    protected function buildColumn( Structure $structure )
+    {
+        $builder = '';
+        $defaultValue = $structure->getDefaultValue();
+
+        if( $structure->isNullable() )
+        {
+            $builder .= '->nullable()';
+        }
+
+        if( $defaultValue )
+        {
+            $builder .= '->default( \'' . $defaultValue . '\' )';
+        }
+
+        return $builder;
     }
 }
