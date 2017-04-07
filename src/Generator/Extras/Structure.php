@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Generateable\Extras;
+namespace CubeSystems\Leaf\Generator\Extras;
 
 class Structure
 {

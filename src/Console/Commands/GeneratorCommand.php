@@ -10,8 +10,8 @@ use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
 use CubeSystems\Leaf\Generator\Generateable\AdminController;
 use CubeSystems\Leaf\Generator\Generateable\Controller;
-use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
-use CubeSystems\Leaf\Generator\Generateable\Extras\Structure;
+use CubeSystems\Leaf\Generator\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Structure;
 use CubeSystems\Leaf\Generator\Generateable\Migration;
 use CubeSystems\Leaf\Generator\Generateable\Model;
 use CubeSystems\Leaf\Generator\Generateable\View;
@@ -69,7 +69,7 @@ class GeneratorCommand extends Command
          */
         $schema = $this->app->make( Schema::class );
 
-        $schema->setName( $this->ask( 'Please enter the name of the model' ) );
+        $schema->setName( $this->ask( 'Enter the name of the model' ) );
 
         if( $this->confirm( 'Would you like to define the fields?', true ) )
         {
@@ -120,7 +120,6 @@ class GeneratorCommand extends Command
 
             $generateable->generate();
         }
-        // LeafRoute
     }
 
     /**
@@ -133,7 +132,7 @@ class GeneratorCommand extends Command
             $structure = new Structure();
             $field = new Field( $structure );
 
-            $field->setName( $this->ask( 'Please enter the name of the field' ) );
+            $field->setName( $this->ask( 'Enter the name' ) );
 
             $choices = [
                 'string' => Text::class,
@@ -149,7 +148,7 @@ class GeneratorCommand extends Command
 
             $field->setType( $choices[ $dataType ] );
 
-            if( $this->confirm( 'Would you like to define the fields database structure', true ) )
+            if( $this->confirm( 'Define the database structure?', true ) )
             {
                 $structure->setPrimary( $this->confirm( 'Is the field primary?', false ) );
                 $structure->setNullable( $this->confirm( 'Can the field be null?', false ) );
@@ -158,6 +157,6 @@ class GeneratorCommand extends Command
             }
 
             $schema->addField( $field );
-        } while( $this->confirm( 'Add another field?' ) );
+        } while( $this->confirm( 'Add another field?', true ) );
     }
 }

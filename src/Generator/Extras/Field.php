@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Generateable\Extras;
+namespace CubeSystems\Leaf\Generator\Extras;
 
 class Field
 {
@@ -22,7 +22,7 @@ class Field
     /**
      * @param Structure $structure
      */
-    public function __construct(Structure $structure)
+    public function __construct( Structure $structure )
     {
         $this->structure = $structure;
     }

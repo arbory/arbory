@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Generator\Generateable;
 
-use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
 use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\Stubable;

@@ -3,8 +3,8 @@
 namespace CubeSystems\Leaf\Generator;
 
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
-use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
-use CubeSystems\Leaf\Generator\Generateable\Extras\Structure;
+use CubeSystems\Leaf\Generator\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Structure;
 use Illuminate\Support\Collection;
 
 class Schema
@@ -81,7 +81,7 @@ class Schema
         {
             // todo: make this not terrible
             $structure = new Structure();
-            $field = new Field( $structure);
+            $field = new Field( $structure );
 
             $field->setName( 'created_at' );
             $field->setType( Hidden::class );
@@ -91,7 +91,7 @@ class Schema
             $this->addField( $field );
 
             $structure = new Structure();
-            $field = new Field( $structure);
+            $field = new Field( $structure );
 
             $field->setName( 'updated_at' );
             $field->setType( Hidden::class );

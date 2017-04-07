@@ -5,8 +5,8 @@ namespace CubeSystems\Leaf\Console\Commands;
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Generator\Generateable\AdminController;
 use CubeSystems\Leaf\Generator\Generateable\Controller;
-use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
-use CubeSystems\Leaf\Generator\Generateable\Extras\Structure;
+use CubeSystems\Leaf\Generator\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Structure;
 use CubeSystems\Leaf\Generator\Generateable\Model;
 use CubeSystems\Leaf\Generator\Generateable\Page;
 use CubeSystems\Leaf\Generator\Generateable\View;
@@ -130,7 +130,10 @@ class GenerateCommand extends Command
         {
             $typeArgument = $this->argument( 'type' );
 
-            if( $typeArgument && !Str::contains( $generateableType, $typeArgument ) )
+            if(
+                $typeArgument &&
+                !Str::contains( Str::lower( $generateableType ), Str::lower( $typeArgument ) )
+            )
             {
                 continue;
             }
