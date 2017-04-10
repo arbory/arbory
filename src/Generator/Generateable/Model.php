@@ -52,19 +52,13 @@ class Model extends StubGenerator implements Stubable
         $propertiesFirst = $properties->first();
         $properties->put( 0, preg_replace( '/    /', '', $propertiesFirst, 1 ) );
 
-        $replace = [
-            '{{namespace}}' => $this->getNamespace(),
-            '{{className}}' => $this->getClassName(),
-            '{{$tableName}}' => snake_case( $this->schema->getName() ),
-            '{{fillable}}' => $this->formatter->prependSpacing( $fillable, 2 )->implode( PHP_EOL ),
-            '{{properties}}' => $properties->implode( PHP_EOL ),
-        ];
-
-        return str_replace(
-            array_keys( $replace ),
-            array_values( $replace ),
-            $this->stubRegistry->findByName( 'model' )->getContents()
-        );
+        return $this->stubRegistry->make( 'model', [
+            'namespace' => $this->getNamespace(),
+            'className' => $this->getClassName(),
+            '$tableName' => snake_case( $this->schema->getName() ),
+            'fillable' => $this->formatter->prependSpacing( $fillable, 2 )->implode( PHP_EOL ),
+            'properties' => $properties->implode( PHP_EOL ),
+        ] );
     }
 
     /**

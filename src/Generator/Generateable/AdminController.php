@@ -66,20 +66,14 @@ class AdminController extends StubGenerator implements Stubable
             return '$grid->column( \'' .  snake_case( $field->getName() ) . '\' );';
         } );
 
-        $replace = [
-            '{{namespace}}' => $this->getNamespace(),
-            '{{className}}' => $this->getClassName(),
-            '{{resourceName}}' => $this->formatter->className( $this->schema->getName() ). '::class',
-            '{{use}}' => $useFields->implode( PHP_EOL ),
-            '{{formFields}}' => $this->formatter->prependSpacing( $formFields, 3 )->implode( PHP_EOL ),
-            '{{gridFields}}' => $this->formatter->prependSpacing( $gridFields, 3 )->implode( PHP_EOL ),
-        ];
-
-        return str_replace(
-            array_keys( $replace ),
-            array_values( $replace ),
-            $this->stubRegistry->findByName( 'admin_controller' )->getContents()
-        );
+        return $this->stubRegistry->make( 'admin_controller', [
+            'namespace' => $this->getNamespace(),
+            'className' => $this->getClassName(),
+            'resourceName' => $this->formatter->className( $this->schema->getName() ). '::class',
+            'use' => $useFields->implode( PHP_EOL ),
+            'formFields' => $this->formatter->prependSpacing( $formFields, 3 )->implode( PHP_EOL ),
+            'gridFields' => $this->formatter->prependSpacing( $gridFields, 3 )->implode( PHP_EOL ),
+        ] );
     }
 
     /**

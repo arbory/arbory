@@ -25,18 +25,12 @@ class Page extends StubGenerator implements Stubable
             return '$fieldSet->add( new ' . $field->getClassName() . '( \'' . $field->getName() . '\' ) );';
         } );
 
-        $replace = [
-            '{{namespace}}' => $this->getNamespace(),
-            '{{use}}' => $this->formatter->useFields( clone $this->schema->getFields() )->implode( PHP_EOL ),
-            '{{className}}' => $this->getClassName(),
-            '{{fieldSet}}' => $this->formatter->prependSpacing( $fieldSet, 2 )->implode( PHP_EOL ),
-        ];
-
-        return str_replace(
-            array_keys( $replace ),
-            array_values( $replace ),
-            $this->stubRegistry->findByName( 'page' )->getContents()
-        );
+        return $this->stubRegistry->make( 'page', [
+            'namespace' => $this->getNamespace(),
+            'use' => $this->formatter->useFields( clone $this->schema->getFields() )->implode( PHP_EOL ),
+            'className' => $this->getClassName(),
+            'fieldSet' => $this->formatter->prependSpacing( $fieldSet, 2 )->implode( PHP_EOL ),
+        ] );
     }
 
     /**

@@ -35,18 +35,12 @@ class Controller extends StubGenerator implements Stubable
             );
         } );
 
-        $replace = [
-            '{{namespace}}' => $this->getNamespace(),
-            '{{className}}' => $this->getClassName(),
-            '{{viewPath}}' => 'controllers.' . snake_case( $this->schema->getName() ) . '.index',
-            '{{viewFields}}' => $this->formatter->prependSpacing( $viewFields, 3 )->implode( PHP_EOL ),
-        ];
-
-        return str_replace(
-            array_keys( $replace ),
-            array_values( $replace ),
-            $this->stubRegistry->findByName( 'controller' )->getContents()
-        );
+        return $this->stubRegistry->make( 'controller', [
+            'namespace' => $this->getNamespace(),
+            'className' => $this->getClassName(),
+            'viewPath' => 'controllers.' . snake_case( $this->schema->getName() ) . '.index',
+            'viewFields' => $this->formatter->prependSpacing( $viewFields, 3 )->implode( PHP_EOL ),
+        ] );
     }
 
     /**

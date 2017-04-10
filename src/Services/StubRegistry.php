@@ -35,6 +35,33 @@ class StubRegistry
     }
 
     /**
+     * @param string $stubName
+     * @param mixed[] $values
+     * @return string|null
+     */
+    public function make( $stubName, $values )
+    {
+        $stub = $this->findByName( $stubName );
+        $keys = array_keys( $values );
+
+        if( !$stub )
+        {
+            return null;
+        }
+
+        foreach( $keys as &$key )
+        {
+            $key = sprintf( '{{%s}}', $key );
+        }
+
+        return str_replace(
+            $keys,
+            array_values( $values ),
+            $stub->getContents()
+        );
+    }
+
+    /**
      * @param string $name
      * @return Stub|null
      */

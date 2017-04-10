@@ -31,18 +31,12 @@ class Migration extends StubGenerator implements Stubable
             );
         } );
 
-        $replace = [
-            '{{className}}' => $this->getClassName(),
-            '{{schemaName}}' => snake_case( $this->schema->getName() ),
-            '{{schemaFields}}' => $this->formatter->prependSpacing( $schemaFields,3 )->implode( PHP_EOL ),
-            '{{downAction}}' => 'Schema::dropIfExists( \'' . $this->schema->getName() . '\' );'
-        ];
-
-        return str_replace(
-            array_keys( $replace ),
-            array_values( $replace ),
-            $this->stubRegistry->findByName( 'migration' )->getContents()
-        );
+        return $this->stubRegistry->make( 'migration', [
+            'className' => $this->getClassName(),
+            'schemaName' => snake_case( $this->schema->getName() ),
+            'schemaFields' => $this->formatter->prependSpacing( $schemaFields,3 )->implode( PHP_EOL ),
+            'downAction' => 'Schema::dropIfExists( \'' . $this->schema->getName() . '\' );'
+        ] );
     }
 
     /**
