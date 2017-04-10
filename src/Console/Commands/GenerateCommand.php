@@ -117,10 +117,6 @@ class GenerateCommand extends Command
             $schema->addField( $field );
         }
 
-        list( $header, $body ) = $this->formatter->getSchemaTable( $schema );
-
-        $this->table( $header, $body );
-
         $generateables = [
             Model::class,
             Page::class,
@@ -149,7 +145,7 @@ class GenerateCommand extends Command
                 $schema
             );
 
-            $this->line( 'Generating ' . $generateable->getPath() . '...' );
+            $this->info( 'Generating ' . $generateable->getPath() . '...' );
 
             $generateable->generate();
         }

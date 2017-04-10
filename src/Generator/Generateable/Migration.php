@@ -23,9 +23,10 @@ class Migration extends StubGenerator implements Stubable
             $structure = $field->getStructure();
 
             return sprintf(
-                '$table->%s( \'%s\' )%s;',
+                '$table->%s( \'%s\'%s )%s;',
                 $structure->getType(),
                 $field->getDatabaseName(),
+                $this->buildSecondArgument( $structure ),
                 $this->buildColumn( $structure )
             );
         } );
@@ -80,6 +81,26 @@ class Migration extends StubGenerator implements Stubable
     public function getPath(): string
     {
         return base_path( 'database/migrations/' . $this->getFilename() );
+    }
+
+    /**
+     * @param Structure $structure
+     * @return string
+     */
+    protected function buildSecondArgument( Structure $structure )
+    {
+        $argument = null;
+
+        if ( $structure->getType() === 'integer' )
+        {
+            $argument = $structure->isAutoIncrement();
+        }
+        elseif( $structure->getType() === 'string' )
+        {
+            $argument = $structure->getLength();
+        }
+
+        return $argument ? ', ' . $argument : '';
     }
 
     /**

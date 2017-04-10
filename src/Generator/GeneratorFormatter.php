@@ -33,11 +33,7 @@ Class GeneratorFormatter
      */
     public function property( $name )
     {
-        $name = str_replace(
-            [ '.' ],
-            [ '_' ],
-            $name
-        );
+        $name = str_replace( '.', '_', $name );
 
         return camel_case( $name );
     }
@@ -52,13 +48,18 @@ Class GeneratorFormatter
     }
 
     /**
-     * @param Collection $collection
+     * @param Collection|string $to
      * @param int $times
      * @return Collection
      */
-    public function prependSpacing( Collection $collection, $times = 1 )
+    public function prependSpacing( $to, $times = 1 )
     {
-        return $collection->transform( function( $item, $key ) use ( $times )
+        if( !$to instanceof Collection )
+        {
+            $to = new Collection( $to );
+        }
+
+        return $to->transform( function( $item, $key ) use ( $times )
         {
             if( $key === 0 )
             {
@@ -100,5 +101,20 @@ Class GeneratorFormatter
     public function use( $value )
     {
         return 'use ' . $value . ';';
+    }
+
+    /**
+     * @param string $var
+     * @return Collection
+     */
+    public function docBlock( $var )
+    {
+        $doc = new Collection();
+
+        $doc->push( '/**' );
+        $doc->push( ' * @var ' . $var );
+        $doc->push( ' */' );
+
+        return $doc;
     }
 }

@@ -17,10 +17,16 @@ class FieldTypeRegistry
      */
     protected $fieldsByRelation;
 
+    /**
+     * @var Collection
+     */
+    protected $fieldTypeHints;
+
     public function __construct()
     {
         $this->fieldsByType = new Collection();
         $this->fieldsByRelation = new Collection();
+        $this->fieldTypeHints = new Collection();
     }
 
     /**
@@ -28,9 +34,14 @@ class FieldTypeRegistry
      * @param string $fieldClass
      * @return void
      */
-    public function registerByType( string $databaseType, string $fieldClass )
+    public function registerByType( string $databaseType, string $fieldClass, string $typeHint = null )
     {
         $this->fieldsByType->put( $databaseType, $fieldClass );
+
+        if( $typeHint )
+        {
+            $this->fieldTypeHints->put( $fieldClass, $typeHint );
+        }
     }
 
     /**
@@ -76,6 +87,17 @@ class FieldTypeRegistry
     public function findByTypeName( string $name )
     {
         return $this->fieldsByType->get( $name );
+    }
+
+    /**
+     * @param string $fieldType
+     * @return string
+     */
+    public function getFieldTypeHint( string $fieldType )
+    {
+        $typeHint = $this->fieldTypeHints->get( $fieldType );
+
+        return $typeHint ?: 'int';
     }
 
     /**

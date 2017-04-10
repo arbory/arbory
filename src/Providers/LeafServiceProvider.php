@@ -225,12 +225,12 @@ class LeafServiceProvider extends ServiceProvider
         {
             $fieldTypeRegistry = new FieldTypeRegistry();
 
-            $fieldTypeRegistry->registerByType( 'integer', Hidden::class );
-            $fieldTypeRegistry->registerByType( 'string', Text::class );
-            $fieldTypeRegistry->registerByType( 'text', Textarea::class );
-            $fieldTypeRegistry->registerByType( 'longtext', Richtext::class );
-            $fieldTypeRegistry->registerByType( 'datetime', DateTime::class );
-            $fieldTypeRegistry->registerByType( 'boolean', Checkbox::class );
+            $fieldTypeRegistry->registerByType( 'integer', Hidden::class, 'int' );
+            $fieldTypeRegistry->registerByType( 'string', Text::class, 'string' );
+            $fieldTypeRegistry->registerByType( 'text', Textarea::class, 'string' );
+            $fieldTypeRegistry->registerByType( 'longtext', Richtext::class, 'string' );
+            $fieldTypeRegistry->registerByType( 'datetime', DateTime::class, 'string' );
+            $fieldTypeRegistry->registerByType( 'boolean', Checkbox::class, 'bool' );
 
             $fieldTypeRegistry->registerByRelation( 'leaf_files', LeafFile::class );
             $fieldTypeRegistry->registerByRelation( 'file', LeafFile::class );

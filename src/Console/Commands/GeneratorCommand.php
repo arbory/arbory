@@ -2,12 +2,7 @@
 
 namespace CubeSystems\Leaf\Console\Commands;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Checkbox;
-use CubeSystems\Leaf\Admin\Form\Fields\DateTime;
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
-use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
 use CubeSystems\Leaf\Generator\Generateable\AdminController;
 use CubeSystems\Leaf\Generator\Generateable\Controller;
 use CubeSystems\Leaf\Generator\Extras\Field;
@@ -77,9 +72,9 @@ class GeneratorCommand extends Command
 
         $schema->setName( $this->ask( 'Enter the name of the model' ) );
 
-        if( $this->confirm( 'Would you like to define the fields?', true ) )
+        if( $this->confirm( 'Define the fields?', true ) )
         {
-            if( $this->confirm( 'Would you like an auto increment index field?', true ) )
+            if( $this->confirm( 'Add an id field?', true ) )
             {
                 $structure = new Structure();
                 $field = new Field( $structure );
@@ -92,7 +87,7 @@ class GeneratorCommand extends Command
                 $schema->addField( $field );
             }
 
-            $schema->setTimestamps( $this->confirm( 'Would you like to add the default laravel timestamp fields?', true ) );
+            $schema->setTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
 
             $this->setupFields( $schema );
         }
@@ -113,7 +108,7 @@ class GeneratorCommand extends Command
             AdminController::class
         ];
 
-        foreach($generateables as $generateableType)
+        foreach( $generateables as $generateableType )
         {
             /** @var StubGenerator $generateable */
             $generateable = new $generateableType(
@@ -123,7 +118,7 @@ class GeneratorCommand extends Command
                 $schema
             );
 
-            $this->line( 'Generating ' . $generateable->getPath() . '...' );
+            $this->info( 'Generating ' . $generateable->getPath() . '...' );
 
             $generateable->generate();
         }
@@ -152,12 +147,20 @@ class GeneratorCommand extends Command
 
             $field->setType( $choices[ $dataType ] );
 
-            if( $this->confirm( 'Define the database structure?', true ) )
+            if( $this->confirm( 'Define the structure?', true ) )
             {
-                $structure->setPrimary( $this->confirm( 'Is the field primary?', false ) );
-                $structure->setNullable( $this->confirm( 'Can the field be null?', false ) );
-                $structure->setDefaultValue( $this->ask( 'Set the default value', 'none' ) );
-                $structure->setLength( $this->ask( 'Set the maximum length', 0 ) );
+                if( $structure->getType() === 'integer' )
+                {
+                    $structure->setLength( $this->confirm( 'Is it auto increment?', false ) );
+                }
+
+                $structure->setNullable( $this->confirm( 'Can it be null?', false ) );
+                $structure->setDefaultValue( $this->ask( 'Set the default value', false ) );
+
+                if( $structure->getType() === 'string' )
+                {
+                    $structure->setLength( $this->ask( 'Set the maximum length', 0 ) );
+                }
             }
 
             $schema->addField( $field );
