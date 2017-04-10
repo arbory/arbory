@@ -81,6 +81,7 @@ class InstallCommand extends Command
             return;
         }
 
+        $this->createDirectories();
         $this->publishConfig();
         $this->addWebpackTask();
         $this->runMigrations();
@@ -90,6 +91,28 @@ class InstallCommand extends Command
         $this->npmDependencies();
 
         $this->info( 'Installation completed!' );
+    }
+
+    /**
+     * @return void
+     */
+    protected function createDirectories()
+    {
+        $this->info( 'Creating directories' );
+
+        $directories = [
+            app_path( 'Http/Controllers/Admin' ),
+            app_path( 'Pages' ),
+            base_path( 'resources/views/admin' )
+        ];
+
+        foreach( $directories as $directory )
+        {
+            if( !$this->filesystem->isDirectory( $directory ) )
+            {
+                $this->filesystem->makeDirectory( $directory );
+            }
+        }
     }
 
     /**
