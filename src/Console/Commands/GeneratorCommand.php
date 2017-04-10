@@ -69,6 +69,8 @@ class GeneratorCommand extends Command
          * @var Schema $schema
          */
         $schema = $this->app->make( Schema::class );
+        
+        $this->line( 'Generator' );
 
         $schema->setName( $this->ask( 'Enter the name of the model' ) );
 
@@ -92,12 +94,20 @@ class GeneratorCommand extends Command
             $this->setupFields( $schema );
         }
 
-        $this->line( 'We are going to generate a model named ' . $schema->getName() );
-        $this->line( 'With the following fields' );
+        $this->line( 'Generating a model named ' . $schema->getName() );
 
-        list( $header, $body ) = $this->formatter->getSchemaTable( $schema );
+        $tableParts = $this->formatter->getSchemaTable( $schema );
 
-        $this->table( $header, $body );
+        if( $tableParts )
+        {
+            $this->line( 'With the following schema' );
+            $this->line( '' );
+
+            list( $header, $body ) = $tableParts;
+            $this->table( $header, $body );
+
+            $this->line( '' );
+        }
 
         $generateables = [
             Migration::class,
@@ -131,9 +141,14 @@ class GeneratorCommand extends Command
     {
         /** @var FieldTypeRegistry $fieldTypeRegistry */
         $fieldTypeRegistry = $this->app->make( FieldTypeRegistry::class );
+        $nthField = 0;
 
         do
         {
+            $nthField++;
+
+            $this->line( 'Define field #' . $nthField );
+
             $structure = new Structure();
             $field = new Field( $structure );
 
@@ -164,6 +179,6 @@ class GeneratorCommand extends Command
             }
 
             $schema->addField( $field );
-        } while( $this->confirm( 'Add another field?', true ) );
+        } while( $this->confirm( '... add another field?', true ) );
     }
 }

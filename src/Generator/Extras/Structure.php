@@ -41,7 +41,6 @@ class Structure
     {
         return [
             'type' => $this->getType(),
-            'primary' => $this->isPrimary(),
             'auto_increment' => $this->isAutoIncrement(),
             'nullable' => $this->isNullable(),
             'length' => $this->getLength(),

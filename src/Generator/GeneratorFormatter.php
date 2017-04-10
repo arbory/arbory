@@ -9,10 +9,15 @@ Class GeneratorFormatter
 {
     /**
      * @param Schema $schema
-     * @return mixed[]
+     * @return mixed[]|null
      */
     public function getSchemaTable( Schema $schema )
     {
+        if( $schema->getFields()->isEmpty() )
+        {
+            return null;
+        }
+
         $header = array_merge(
             [ 'name' ],
             array_keys( $schema->getFields()->first()->getStructure()->values() )
