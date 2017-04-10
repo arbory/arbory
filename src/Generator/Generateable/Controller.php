@@ -3,38 +3,13 @@
 namespace CubeSystems\Leaf\Generator\Generateable;
 
 use CubeSystems\Leaf\Generator\Extras\Field;
-use CubeSystems\Leaf\Generator\GeneratorFormatter;
-use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
-use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Console\DetectsApplicationNamespace;
-use Illuminate\Filesystem\Filesystem;
 
 class Controller extends StubGenerator implements Stubable
 {
-    use GeneratorFormatter, DetectsApplicationNamespace;
-
-    /**
-     * @var Schema
-     */
-    protected $schema;
-
-    /**
-     * @param StubRegistry $stubRegistry
-     * @param Filesystem $filesystem
-     * @param Schema $schema
-     */
-    public function __construct(
-        StubRegistry $stubRegistry,
-        Filesystem $filesystem,
-        Schema $schema
-    )
-    {
-        $this->stub = $stubRegistry->findByName( 'controller' );
-        $this->filesystem = $filesystem;
-        $this->schema = $schema;
-    }
+    use DetectsApplicationNamespace;
 
     /**
      * @return void
@@ -42,15 +17,6 @@ class Controller extends StubGenerator implements Stubable
     public function generate()
     {
         parent::generate();
-
-        $this->registerConfigModule();
-    }
-
-    /**
-     * @return void
-     */
-    protected function registerConfigModule()
-    {
     }
 
     /**
@@ -63,8 +29,9 @@ class Controller extends StubGenerator implements Stubable
              * @var Field $field
              */
             return sprintf(
-                '\'%1$s\' => $node->%1$s,',
-                snake_case( $field->getName() )
+                '\'%s\' => $node->%s,',
+                snake_case( $field->getName() ),
+                $this->formatter->property( $field->getName() )
             );
         } );
 
@@ -72,13 +39,13 @@ class Controller extends StubGenerator implements Stubable
             '{{namespace}}' => $this->getNamespace(),
             '{{className}}' => $this->getClassName(),
             '{{viewPath}}' => 'controllers.' . snake_case( $this->schema->getName() ) . '.index',
-            '{{viewFields}}' => $this->prependSpacing( $viewFields, 3 )->implode( PHP_EOL ),
+            '{{viewFields}}' => $this->formatter->prependSpacing( $viewFields, 3 )->implode( PHP_EOL ),
         ];
 
         return str_replace(
             array_keys( $replace ),
             array_values( $replace ),
-            $this->stub->getContents()
+            $this->stubRegistry->findByName( 'controller' )->getContents()
         );
     }
 
@@ -87,7 +54,7 @@ class Controller extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->className( $this->schema->getName() ) . 'PageController';
+        return $this->formatter->className( $this->schema->getName() ) . 'PageController';
     }
 
     /**

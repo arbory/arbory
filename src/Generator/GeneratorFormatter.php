@@ -2,10 +2,10 @@
 
 namespace CubeSystems\Leaf\Generator;
 
-use CubeSystems\Leaf\Generator\Generateable\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Field;
 use Illuminate\Support\Collection;
 
-trait GeneratorFormatter
+Class GeneratorFormatter
 {
     /**
      * @param Schema $schema
@@ -25,6 +25,30 @@ trait GeneratorFormatter
         } );
 
         return [ $header, $body ];
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function property( $name )
+    {
+        $name = str_replace(
+            [ '.' ],
+            [ '_' ],
+            $name
+        );
+
+        return camel_case( $name );
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function field( $name )
+    {
+        return snake_case( $name );
     }
 
     /**

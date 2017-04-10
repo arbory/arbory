@@ -19,6 +19,7 @@ use CubeSystems\Leaf\Generator\Generateable\Page;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
 use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\StubGenerator;
+use CubeSystems\Leaf\Services\FieldTypeRegistry;
 use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
@@ -27,12 +28,7 @@ use Illuminate\Filesystem\Filesystem;
 
 class GeneratorCommand extends Command
 {
-    use ConfirmableTrait, GeneratorFormatter;
-
-    /**
-     * @var string
-     */
-    protected $name = 'leaf:generator';
+    use ConfirmableTrait;
 
     /**
      * @var string
@@ -50,11 +46,21 @@ class GeneratorCommand extends Command
     protected $app;
 
     /**
-     * @param Application $app
+     * @var GeneratorFormatter
      */
-    public function __construct( Application $app )
+    protected $formatter;
+
+    /**
+     * @param Application $app
+     * @param GeneratorFormatter $generatorFormatter
+     */
+    public function __construct(
+        Application $app,
+        GeneratorFormatter $generatorFormatter
+    )
     {
         $this->app = $app;
+        $this->formatter = $generatorFormatter;
 
         parent::__construct();
     }
@@ -94,7 +100,7 @@ class GeneratorCommand extends Command
         $this->line( 'We are going to generate a model named ' . $schema->getName() );
         $this->line( 'With the following fields' );
 
-        list( $header, $body ) = $this->getSchemaTable( $schema );
+        list( $header, $body ) = $this->formatter->getSchemaTable( $schema );
 
         $this->table( $header, $body );
 
@@ -113,6 +119,7 @@ class GeneratorCommand extends Command
             $generateable = new $generateableType(
                 $this->app->make( StubRegistry::class ),
                 $this->app->make( Filesystem::class ),
+                $this->app->make( GeneratorFormatter::class ),
                 $schema
             );
 
@@ -127,6 +134,9 @@ class GeneratorCommand extends Command
      */
     protected function setupFields( $schema )
     {
+        /** @var FieldTypeRegistry $fieldTypeRegistry */
+        $fieldTypeRegistry = $this->app->make( FieldTypeRegistry::class );
+
         do
         {
             $structure = new Structure();
@@ -134,15 +144,9 @@ class GeneratorCommand extends Command
 
             $field->setName( $this->ask( 'Enter the name' ) );
 
-            $choices = [
-                'string' => Text::class,
-                'text' => Textarea::class,
-                'boolean' => Checkbox::class,
-                'datetime' => DateTime::class,
-                'longtext' => Richtext::class,
-            ];
+            $choices = $fieldTypeRegistry->getFieldsByType()->toArray();
 
-            $dataType = $this->choice( 'Select the data type', array_keys( $choices), 0 );
+            $dataType = $this->choice( 'Select the data type', array_keys( $choices ), 0 );
 
             $structure->setType( $dataType );
 

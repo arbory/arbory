@@ -2,49 +2,11 @@
 
 namespace CubeSystems\Leaf\Generator\Generateable;
 
-use CubeSystems\Leaf\Generator\GeneratorFormatter;
-use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
-use CubeSystems\Leaf\Services\Stub;
-use CubeSystems\Leaf\Services\StubRegistry;
-use Illuminate\Filesystem\Filesystem;
 
 class View extends StubGenerator implements Stubable
 {
-    use GeneratorFormatter;
-
-    /**
-     * @var Stub
-     */
-    protected $stub;
-
-    /**
-     * @var Schema
-     */
-    protected $schema;
-
-    /**
-     * @var Filesystem
-     */
-    protected $filesystem;
-
-    /**
-     * @param StubRegistry $stubRegistry
-     * @param Filesystem $filesystem
-     * @param Schema $schema
-     */
-    public function __construct(
-        StubRegistry $stubRegistry,
-        Filesystem $filesystem,
-        Schema $schema
-    )
-    {
-        $this->stub = $stubRegistry->findByName( 'view' );
-        $this->filesystem = $filesystem;
-        $this->schema = $schema;
-    }
-
     /**
      * @return void
      */
@@ -69,7 +31,7 @@ class View extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        return $this->stub->getContents();
+        return $this->stubRegistry->findByName( 'view' )->getContents();
     }
 
     /**

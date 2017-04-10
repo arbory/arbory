@@ -1,17 +1,23 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
+use CubeSystems\Leaf\Admin\Form\Fields\Checkbox;
+use CubeSystems\Leaf\Admin\Form\Fields\DateTime;
+use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
+use CubeSystems\Leaf\Admin\Form\Fields\LeafFile;
+use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
+use CubeSystems\Leaf\Admin\Form\Fields\Text;
+use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
 use CubeSystems\Leaf\Console\Commands\GenerateCommand;
 use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
 use CubeSystems\Leaf\Console\Commands\SeedCommand;
-use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
+use CubeSystems\Leaf\Services\FieldTypeRegistry;
 use CubeSystems\Leaf\Services\ModuleRegistry;
-use CubeSystems\Leaf\Services\Stub;
 use CubeSystems\Leaf\Services\StubRegistry;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use File;
@@ -45,24 +51,12 @@ class LeafServiceProvider extends ServiceProvider
         $this->registerModuleRegistry();
         $this->registerCommands();
         $this->registerRoutesAndMiddlewares();
-        
+        $this->registerFields();
+        $this->registerGeneratorStubs();
+
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {
             $view->with( 'user', Sentinel::getUser( true ) );
-        } );
-
-        // todo: make less bad
-        $this->app->singleton( StubRegistry::class, function ( Application $app )
-        {
-            // TODO: make gooder
-            $stubRegistry = new StubRegistry();
-
-            $stubRegistry->registerStubs( // TODO: $app['ff'
-                $this->app->make( Filesystem::class ),
-                base_path( 'vendor/cubesystems/leaf/stubs' )
-            );
-
-            return $stubRegistry;
         } );
 
         $this->app->bind( 'leaf.menu', function ()
@@ -219,6 +213,47 @@ class LeafServiceProvider extends ServiceProvider
             return new ModuleRegistry(
                 $app->config['leaf.modules']
             );
+        } );
+    }
+
+    /**
+     * Register leaf fields
+     */
+    private function registerFields()
+    {
+        $this->app->singleton( FieldTypeRegistry::class, function ( Application $app )
+        {
+            $fieldTypeRegistry = new FieldTypeRegistry();
+
+            $fieldTypeRegistry->registerByType( 'integer', Hidden::class );
+            $fieldTypeRegistry->registerByType( 'string', Text::class );
+            $fieldTypeRegistry->registerByType( 'text', Textarea::class );
+            $fieldTypeRegistry->registerByType( 'longtext', Richtext::class );
+            $fieldTypeRegistry->registerByType( 'datetime', DateTime::class );
+            $fieldTypeRegistry->registerByType( 'boolean', Checkbox::class );
+
+            $fieldTypeRegistry->registerByRelation( 'leaf_files', LeafFile::class );
+            $fieldTypeRegistry->registerByRelation( 'file', LeafFile::class );
+
+            return $fieldTypeRegistry;
+        } );
+    }
+
+    /**
+     * Register stubs used by generators
+     */
+    private function registerGeneratorStubs()
+    {
+        $this->app->singleton( StubRegistry::class, function ( Application $app )
+        {
+            $stubRegistry = new StubRegistry();
+
+            $stubRegistry->registerStubs(
+                $app[ Filesystem::class ],
+                base_path( 'vendor/cubesystems/leaf/stubs' )
+            );
+
+            return $stubRegistry;
         } );
     }
 

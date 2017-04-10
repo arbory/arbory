@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Generator;
 
 use CubeSystems\Leaf\Services\Stub;
+use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Filesystem\Filesystem;
 
 abstract class StubGenerator
@@ -13,9 +14,43 @@ abstract class StubGenerator
     protected $stub;
 
     /**
+     * @var StubRegistry
+     */
+    protected $stubRegistry;
+
+    /**
      * @var Filesystem
      */
     protected $filesystem;
+
+    /**
+     * @var GeneratorFormatter
+     */
+    protected $formatter;
+
+    /**
+     * @var Schema
+     */
+    protected $schema;
+
+    /**
+     * @param StubRegistry $stubRegistry
+     * @param Filesystem $filesystem
+     * @param GeneratorFormatter $generatorFormatter
+     * @param Schema $schema
+     */
+    public function __construct(
+        StubRegistry $stubRegistry,
+        Filesystem $filesystem,
+        GeneratorFormatter $generatorFormatter,
+        Schema $schema
+    )
+    {
+        $this->stubRegistry = $stubRegistry;
+        $this->filesystem = $filesystem;
+        $this->formatter = $generatorFormatter;
+        $this->schema = $schema;
+    }
 
     /**
      * @return void

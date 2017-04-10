@@ -4,39 +4,12 @@ namespace CubeSystems\Leaf\Generator\Generateable;
 
 use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Structure;
-use CubeSystems\Leaf\Generator\GeneratorFormatter;
-use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
-use CubeSystems\Leaf\Services\StubRegistry;
 use DateTimeImmutable;
-use Illuminate\Filesystem\Filesystem;
 
 class Migration extends StubGenerator implements Stubable
 {
-    use GeneratorFormatter;
-
-    /**
-     * @var Schema
-     */
-    protected $schema;
-
-    /**
-     * @param StubRegistry $stubRegistry
-     * @param Filesystem $filesystem
-     * @param Schema $schema
-     */
-    public function __construct(
-        StubRegistry $stubRegistry,
-        Filesystem $filesystem,
-        Schema $schema
-    )
-    {
-        $this->stub = $stubRegistry->findByName( 'migration' );
-        $this->filesystem = $filesystem;
-        $this->schema = $schema;
-    }
-
     /**
      * @return string
      */
@@ -50,7 +23,7 @@ class Migration extends StubGenerator implements Stubable
             $structure = $field->getStructure();
 
             return sprintf(
-                '$table->%s(\'%s\')%s;',
+                '$table->%s( \'%s\' )%s;',
                 $structure->getType(),
                 $field->getDatabaseName(),
                 $this->buildColumn( $structure )
@@ -60,14 +33,14 @@ class Migration extends StubGenerator implements Stubable
         $replace = [
             '{{className}}' => $this->getClassName(),
             '{{schemaName}}' => snake_case( $this->schema->getName() ),
-            '{{schemaFields}}' => $this->prependSpacing( $schemaFields,3 )->implode( PHP_EOL ),
+            '{{schemaFields}}' => $this->formatter->prependSpacing( $schemaFields,3 )->implode( PHP_EOL ),
             '{{downAction}}' => 'Schema::dropIfExists( \'' . $this->schema->getName() . '\' );'
         ];
 
         return str_replace(
             array_keys( $replace ),
             array_values( $replace ),
-            $this->stub->getContents()
+            $this->stubRegistry->findByName( 'migration' )->getContents()
         );
     }
 
@@ -76,7 +49,7 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return 'Create' . $this->className(  $this->schema->getName() ) . 'Table';
+        return 'Create' . $this->formatter->className(  $this->schema->getName() ) . 'Table';
     }
 
     /**

@@ -3,38 +3,13 @@
 namespace CubeSystems\Leaf\Generator\Generateable;
 
 use CubeSystems\Leaf\Generator\Extras\Field;
-use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\StubGenerator;
-use CubeSystems\Leaf\Generator\GeneratorFormatter;
 use CubeSystems\Leaf\Generator\Stubable;
-use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Console\DetectsApplicationNamespace;
-use Illuminate\Filesystem\Filesystem;
 
 class AdminController extends StubGenerator implements Stubable
 {
-    use GeneratorFormatter, DetectsApplicationNamespace;
-
-    /**
-     * @var Schema
-     */
-    protected $schema;
-
-    /**
-     * @param StubRegistry $stubRegistry
-     * @param Filesystem $filesystem
-     * @param Schema $schema
-     */
-    public function __construct(
-        StubRegistry $stubRegistry,
-        Filesystem $filesystem,
-        Schema $schema
-    )
-    {
-        $this->stub = $stubRegistry->findByName( 'admin_controller' );
-        $this->filesystem = $filesystem;
-        $this->schema = $schema;
-    }
+    use DetectsApplicationNamespace;
 
     public function generate()
     {
@@ -65,38 +40,45 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $useFields = $this->useFields( clone $this->schema->getFields() );
+        $useFields = $this->formatter->useFields( clone $this->schema->getFields() );
         $useFields->push(
-            $this->use( $this->getAppNamespace() . $this->className( $this->schema->getName() ) )
+            $this->formatter->use(
+                $this->getAppNamespace() .
+                $this->formatter->className( $this->schema->getName() )
+            )
         );
 
         $formFields = (clone $this->schema->getFields())->transform( function( $field ) {
             /**
              * @var Field $field
              */
-            return '$form->addField( new ' .  $field->getClassName() . '(\'' . $field->getName() . '\') );';
+            return sprintf(
+                '$form->addField( new %s(\'%s\') );',
+                $field->getClassName(),
+                snake_case( $field->getName() )
+            );
         } );
 
         $gridFields = (clone $this->schema->getFields())->transform( function( $field ) {
             /**
              * @var Field $field
              */
-            return '$grid->column(\'' .  $field->getName() . '\');';
+            return '$grid->column( \'' .  snake_case( $field->getName() ) . '\' );';
         } );
 
         $replace = [
             '{{namespace}}' => $this->getNamespace(),
             '{{className}}' => $this->getClassName(),
-            '{{resourceName}}' => $this->className( $this->schema->getName() ). '::class',
+            '{{resourceName}}' => $this->formatter->className( $this->schema->getName() ). '::class',
             '{{use}}' => $useFields->implode( PHP_EOL ),
-            '{{formFields}}' => $this->prependSpacing( $formFields, 3 )->implode( PHP_EOL ),
-            '{{gridFields}}' => $this->prependSpacing( $gridFields, 3 )->implode( PHP_EOL ),
+            '{{formFields}}' => $this->formatter->prependSpacing( $formFields, 3 )->implode( PHP_EOL ),
+            '{{gridFields}}' => $this->formatter->prependSpacing( $gridFields, 3 )->implode( PHP_EOL ),
         ];
 
         return str_replace(
             array_keys( $replace ),
             array_values( $replace ),
-            $this->stub->getContents()
+            $this->stubRegistry->findByName( 'admin_controller' )->getContents()
         );
     }
 
@@ -105,7 +87,7 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->className( $this->schema->getName() ) . 'Controller';
+        return $this->formatter->className( $this->schema->getName() ) . 'Controller';
     }
 
     /**

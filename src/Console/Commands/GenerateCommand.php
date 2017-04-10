@@ -2,7 +2,6 @@
 
 namespace CubeSystems\Leaf\Console\Commands;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Generator\Generateable\AdminController;
 use CubeSystems\Leaf\Generator\Generateable\Controller;
 use CubeSystems\Leaf\Generator\Extras\Field;
@@ -13,6 +12,7 @@ use CubeSystems\Leaf\Generator\Generateable\View;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
 use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\StubGenerator;
+use CubeSystems\Leaf\Services\FieldTypeRegistry;
 use CubeSystems\Leaf\Services\StubRegistry;
 use Doctrine\DBAL\Schema\Column;
 use Illuminate\Console\Command;
@@ -23,13 +23,6 @@ use Illuminate\Support\Str;
 
 class GenerateCommand extends Command
 {
-    use GeneratorFormatter;
-
-    /**
-     * @var string
-     */
-    protected $name = 'leaf:generate';
-
     /**
      * @var string
      */
@@ -51,16 +44,24 @@ class GenerateCommand extends Command
     protected $databaseManager;
 
     /**
+     * @var GeneratorFormatter
+     */
+    protected $formatter;
+
+    /**
      * @param Application $app
      * @param DatabaseManager $databaseManager
+     * @param GeneratorFormatter $generatorFormatter
      */
     public function __construct(
         Application $app,
-        DatabaseManager $databaseManager
+        DatabaseManager $databaseManager,
+        GeneratorFormatter $generatorFormatter
     )
     {
         $this->app = $app;
         $this->databaseManager = $databaseManager;
+        $this->formatter = $generatorFormatter;
 
         parent::__construct();
     }
@@ -84,6 +85,8 @@ class GenerateCommand extends Command
      */
     public function generateFromTable( string $tableName )
     {
+        /** @var FieldTypeRegistry $fieldTypeRegistry */
+        $fieldTypeRegistry = $this->app->make( FieldTypeRegistry::class );
         $connection = $this->databaseManager->connection();
 
         if( !$connection->getDoctrineSchemaManager()->tablesExist( [ $tableName ] ) )
@@ -105,7 +108,7 @@ class GenerateCommand extends Command
             $field = new Field( $structure );
 
             $field->setName( $column->getName() );
-            $field->setType( Hidden::class );//todo: resolve type
+            $field->setType( $fieldTypeRegistry->resolve( $column->getName(), $column->getType()->getName() ) );
             $structure->setAutoIncrement( $column->getAutoincrement() );
             $structure->setNullable( !$column->getNotnull() );
             $structure->setDefaultValue( $column->getDefault() );
@@ -114,7 +117,7 @@ class GenerateCommand extends Command
             $schema->addField( $field );
         }
 
-        list( $header, $body ) = $this->getSchemaTable( $schema );
+        list( $header, $body ) = $this->formatter->getSchemaTable( $schema );
 
         $this->table( $header, $body );
 
@@ -142,6 +145,7 @@ class GenerateCommand extends Command
             $generateable = new $generateableType(
                 $this->app->make( StubRegistry::class ),
                 $this->app->make( Filesystem::class ),
+                $this->app->make( GeneratorFormatter::class ),
                 $schema
             );
 
