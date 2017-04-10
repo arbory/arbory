@@ -43,8 +43,6 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        config()->set( 'translator.locales', config( 'translatable.locales' ) );
-
         $this->registerResources();
         $this->registerServiceProviders();
         $this->registerAliases();
@@ -53,6 +51,9 @@ class LeafServiceProvider extends ServiceProvider
         $this->registerRoutesAndMiddlewares();
         $this->registerFields();
         $this->registerGeneratorStubs();
+        $this->registerLocales();
+
+        $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'leaf' );
 
         View::composer( '*layout*', function ( \Illuminate\View\View $view )
         {
@@ -77,6 +78,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( LeafFileServiceProvider::class );
         $this->app->register( LeafAuthServiceProvider::class );
         $this->app->register( GlideImageServiceProvider::class );
+        $this->app->register( AssetServiceProvider::class );
     }
 
     /**
@@ -108,6 +110,10 @@ class LeafServiceProvider extends ServiceProvider
         $this->publishes( [
             __DIR__ . '/../../stubs/admin_routes.stub' => base_path( '/routes/admin.php' )
         ], 'config' );
+
+        $this->publishes([
+            __DIR__ . '/../../resources/lang/' => base_path('resources/lang/vendor/leaf')
+        ], 'lang');
 
         $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
         $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
@@ -184,7 +190,7 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->app->singleton( 'leaf.install', function ( $app )
         {
-            return $this->app->make( InstallCommand::class );
+            return $app->make( InstallCommand::class );
         } );
 
         $this->app->singleton( 'leaf.generator', function ()
@@ -244,7 +250,7 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerGeneratorStubs()
     {
-        $this->app->singleton( StubRegistry::class, function ( Application $app )
+        $this->app->singleton( StubRegistry::class, function( Application $app )
         {
             $stubRegistry = new StubRegistry();
 
@@ -255,6 +261,15 @@ class LeafServiceProvider extends ServiceProvider
 
             return $stubRegistry;
         } );
+    }
+
+    /**
+     * @return void
+     */
+    private function registerLocales()
+    {
+        config()->set( 'translator.locales', config( 'leaf.locales' ) );
+        config()->set( 'translatable.locales', config( 'leaf.locales' ) );
     }
 
     /**

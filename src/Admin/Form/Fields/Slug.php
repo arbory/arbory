@@ -47,7 +47,7 @@ class Slug extends AbstractField
 
         $button = Button::create()
             ->type( 'button', 'secondary generate' )
-            ->title( trans( 'leaf.fields.slug.suggest_slug' ) )
+            ->title( trans( 'leaf::fields.slug.suggest_slug' ) )
             ->withIcon( 'keyboard-o' )
             ->iconOnly()
             ->render();

@@ -1,7 +1,7 @@
 module.exports = function (mix) {
 
     mix.combine(
-        './vendor/cubesystems/leaf/resources/assets/javascripts/include/*.js',
+        './vendor/cubesystems/leaf/resources/assets/javascripts/include/**/*.js',
         './public/leaf/js/dependencies.min.js'
     );
 
@@ -17,13 +17,14 @@ module.exports = function (mix) {
     );
 
     mix.scripts([
+            './vendor/cubesystems/leaf/resources/assets/javascripts/environment.js',
             './public/leaf/js/vendor.min.js',
             './public/leaf/js/dependencies.min.js',
         ],
         './public/leaf/js/application.js'
     );
 
-    mix.copy(
+    mix.copyDirectory(
         './vendor/cubesystems/leaf/resources/assets/javascripts/controllers/',
         './public/leaf/js/controllers/'
     );
@@ -43,12 +44,12 @@ module.exports = function (mix) {
         './public/leaf/css/controllers/'
     );
 
-    mix.copy(
+    mix.copyDirectory(
         './vendor/ckeditor/ckeditor/',
         './public/leaf/ckeditor/'
     );
 
-    mix.copy(
+    mix.copyDirectory(
         './vendor/cubesystems/leaf/resources/assets/images/',
         './public/leaf/images/'
     );

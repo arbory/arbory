@@ -61,7 +61,7 @@ class Pagination implements Renderable
 
         $previousPage->append( Html::i()->addClass( 'fa fa-chevron-left' ) );
         $previousPage->addClass( 'button only-icon secondary previous' );
-        $previousPage->addAttributes( [ 'title' => trans( 'leaf.pagination.previous_page' ) ] );
+        $previousPage->addAttributes( [ 'title' => trans( 'leaf::pagination.previous_page' ) ] );
 
         return $previousPage;
     }
@@ -104,7 +104,7 @@ class Pagination implements Renderable
 
         $nextPage->append( Html::i()->addClass( 'fa fa-chevron-right' ) );
         $nextPage->addClass( 'button only-icon secondary next' );
-        $nextPage->addAttributes( [ 'title' => trans( 'leaf.pagination.next_page' ) ] );
+        $nextPage->addAttributes( [ 'title' => trans( 'leaf::pagination.next_page' ) ] );
 
         return $nextPage;
     }

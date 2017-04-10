@@ -11,6 +11,7 @@ use Illuminate\Database\DatabaseManager;
 use Illuminate\Filesystem\Filesystem;
 use InvalidArgumentException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use LeafDatabaseSeeder;
 
 /**
  * Class SeedCommand
@@ -83,6 +84,8 @@ class InstallCommand extends Command
         $this->publishConfig();
         $this->addWebpackTask();
         $this->runMigrations();
+        $this->runSeeder();
+        $this->publishLanguages();
         $this->createAdminUser();
         $this->npmDependencies();
 
@@ -99,6 +102,23 @@ class InstallCommand extends Command
             '--provider' => LeafServiceProvider::class,
             '--tag' => 'config',
         ] );
+    }
+
+    /**
+     *
+     */
+    protected function publishLanguages()
+    {
+        $this->info( 'Publishing language resources' );
+
+        $this->call( 'vendor:publish', [
+            '--provider' => LeafServiceProvider::class,
+            '--tag' => 'lang',
+            '--force' => null,
+        ] );
+
+        $this->call( 'translator:load' );
+        $this->call( 'translator:flush' );
     }
 
     /**
@@ -122,6 +142,17 @@ class InstallCommand extends Command
         {
             $this->error( 'Webpack config not found' );
         }
+    }
+
+    /*
+     *
+     */
+    protected function runSeeder()
+    {
+        $this->info( 'Running leaf database seeder' );
+        $this->call( 'db:seed', [
+            '--class' => LeafDatabaseSeeder::class
+        ] );
     }
 
     /**

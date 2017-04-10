@@ -102,14 +102,14 @@ class Builder
                 ->type( 'submit', 'primary' )
                 ->withIcon( 'check' )
                 ->disableOnSubmit()
-                ->title( trans( 'leaf.resources.save' ) )
+                ->title( trans( 'leaf::resources.save' ) )
         );
 
         $secondary->append(
             Link::create( $this->url( 'index' ) )
                 ->asButton( 'secondary' )
                 ->withIcon( 'caret-left' )
-                ->title( trans( 'leaf.resources.back_to_list' ) )
+                ->title( trans( 'leaf::resources.back_to_list' ) )
         );
 
         $footerTools = Html::div( [

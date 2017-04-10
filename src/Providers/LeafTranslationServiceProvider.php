@@ -16,6 +16,9 @@ class LeafTranslationServiceProvider extends TranslationServiceProvider
     public function register()
     {
         $this->registerCacheRepository();
+
+        \Illuminate\Translation\TranslationServiceProvider::register();
+
         $this->registerFileLoader();
         $this->registerCacheFlusher();
     }

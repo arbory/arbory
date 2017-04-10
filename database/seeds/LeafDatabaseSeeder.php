@@ -1,22 +1,20 @@
 <?php
 
-use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Database\Seeder;
+use Waavi\Translation\Repositories\LanguageRepository;
 
 class LeafDatabaseSeeder extends Seeder
 {
     /**
-     * @var Sentinel
+     * @var LanguageRepository
      */
-    protected $sentinel;
+    protected $languageRepository;
 
-    /**
-     * LeafDatabaseSeeder constructor.
-     * @param Sentinel $sentinel
-     */
-    public function __construct( Sentinel $sentinel )
+    public function __construct(
+        LanguageRepository $languageRepository
+    )
     {
-        $this->sentinel = $sentinel;
+        $this->languageRepository = $languageRepository;
     }
 
     /**
@@ -26,61 +24,17 @@ class LeafDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table( 'users' )->truncate();
+        $this->seedLocales();
+    }
 
-        $admin = $this->sentinel->getUserRepository()->create( [
-            'email' => 'admin@cubesystems.lv',
-            'password' => 'password'
-        ] );
-
-        $user = $this->sentinel->getUserRepository()->create( [
-            'email' => 'user@cubesystems.lv',
-            'password' => 'password'
-        ] );
-
-        // Create Activations
-        DB::table( 'activations' )->truncate();
-
-        $code = Activation::create( $admin )->code;
-        Activation::complete( $admin, $code );
-
-        $code = Activation::create( $user )->code;
-        Activation::complete( $user, $code );
-
-        DB::table( 'roles' )->truncate();
-
-        DB::table( 'role_users' )->truncate();
-
-        $administratorRole = $this->sentinel->getRoleRepository()->create( [
-            'name' => 'Administrator',
-            'slug' => 'administrator',
-            'permissions' => [
-                'users.create' => true,
-                'users.update' => true,
-                'users.view' => true,
-                'users.destroy' => true,
-                'roles.create' => true,
-                'roles.update' => true,
-                'roles.view' => true,
-                'roles.delete' => true
-            ]
-        ] );
-        $moderatorRole = $this->sentinel->getRoleRepository()->create( [
-            'name' => 'Moderator',
-            'slug' => 'moderator',
-            'permissions' => [
-                'users.update' => true,
-                'users.view' => true,
-            ]
-        ] );
-        $subscriberRole = $this->sentinel->getRoleRepository()->create( array(
-            'name' => 'Subscriber',
-            'slug' => 'subscriber',
-            'permissions' => []
-        ) );
-
-        // Assign Roles to Users
-        $administratorRole->users()->attach( $admin );
-        $subscriberRole->users()->attach( $user );
+    protected function seedLocales()
+    {
+        if( $this->languageRepository->getModel()->all()->isEmpty() )
+        {
+            $this->languageRepository->create( [
+                'locale' => 'en',
+                'name' => 'English'
+            ] );
+        }
     }
 }

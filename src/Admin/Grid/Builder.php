@@ -136,8 +136,8 @@ class Builder
     {
         return new Content( [
             Html::header( [
-                Html::h1( trans( 'leaf.resources.all_resources' ) ),
-                Html::span( trans( 'leaf.pagination.items_found', [ 'total' => $this->page->total() ] ) )
+                Html::h1( trans( 'leaf::resources.all_resources' ) ),
+                Html::span( trans( 'leaf::pagination.items_found', [ 'total' => $this->page->total() ] ) )
                     ->addClass( 'extras totals only-text' )
             ] ),
             Html::div(
@@ -164,7 +164,7 @@ class Builder
         $createButton = Link::create( $this->url( 'create' ) )
             ->asButton( 'primary' )
             ->withIcon( 'plus' )
-            ->title( trans( 'leaf.resources.create_new' ) );
+            ->title( trans( 'leaf::resources.create_new' ) );
 
         $pagination = ( new Pagination( $this->page ) )->render();
 
