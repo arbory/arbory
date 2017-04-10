@@ -36,6 +36,28 @@ config/app.php
 php artisan leaf:install
 ```
 
+## Generators
+
+### Quick generator
+
+```bash
+php artisan leaf:generate {type?} {--T|table=}
+```
+
+Generators available for
+
+* Model
+* Page
+* Controller
+* View
+* AdminController - appends a new route to `routes/admin.php`
+
+### Verbose Generator
+
+```bash
+php artisan leaf:generator
+```
+
 ## Coding style
 
 ### JS
