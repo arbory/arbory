@@ -5,6 +5,8 @@ namespace CubeSystems\Leaf\Providers;
 use CubeSystems\Leaf\Nodes\ContentTypeRegister;
 use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
 use CubeSystems\Leaf\Nodes\Node;
+use CubeSystems\Leaf\Services\ModuleBuilder;
+use CubeSystems\Leaf\Services\ModuleRegistry;
 use CubeSystems\Leaf\Support\Facades\LeafRouter;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
@@ -42,6 +44,11 @@ class NodeServiceProvider extends ServiceProvider
         $this->app->singleton( ContentTypeRegister::class, function ()
         {
             return new ContentTypeRegister();
+        } );
+
+        $this->app->singleton( 'leaf_module_builder', function( $app )
+        {
+            return new ModuleBuilder( $app['leaf.modules'] );
         } );
 
         $this->app->singleton( 'leaf_router', function ()
