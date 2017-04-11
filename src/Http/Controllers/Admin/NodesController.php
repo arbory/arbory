@@ -27,6 +27,16 @@ class NodesController extends Controller
     protected $resource = Node::class;
 
     /**
+     * @var ContentTypeRegister
+     */
+    protected $contentTypeRegister;
+
+    public function __construct( ContentTypeRegister $contentTypeRegister )
+    {
+        $this->contentTypeRegister = $contentTypeRegister;
+    }
+
+    /**
      * @param \CubeSystems\Leaf\Nodes\Node $node
      * @return Form
      */
@@ -91,7 +101,7 @@ class NodesController extends Controller
     {
         $contentType = $request->get( 'content_type' );
 
-        if( !( new ContentTypeRegister() )->isValidContentType( $contentType ) )
+        if( !$this->contentTypeRegister->isValidContentType( $contentType ) )
         {
             return redirect( $this->url( 'index' ) )->withErrors( 'Undefined content type "' . $contentType . '"' );
         }
@@ -154,10 +164,9 @@ class NodesController extends Controller
      */
     public function contentTypesDialog( Request $request )
     {
-        $contentTypes = ( new ContentTypeRegister )
-            ->getAllowedChildTypes(
-                $this->resource()->findOrNew( $request->get( 'parent_id' ) )
-            );
+        $contentTypes = $this->contentTypeRegister->getAllowedChildTypes(
+            $this->resource()->findOrNew( $request->get( 'parent_id' ) )
+        );
 
         $types = $contentTypes->map( function ( $title, $type ) use ( $request )
         {

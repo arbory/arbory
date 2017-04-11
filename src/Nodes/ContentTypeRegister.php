@@ -28,6 +28,15 @@ class ContentTypeRegister
     }
 
     /**
+     * @param string $page
+     * @return void
+     */
+    public function register( string $page )
+    {
+        $this->contentTypes->put( $page, $this->makeNameFromType( $page ) );
+    }
+
+    /**
      * @param Node $parent
      * @return \Illuminate\Support\Collection|\string[]
      */
