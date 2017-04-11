@@ -60,5 +60,4 @@ class PageBuilder
 
         return $this;
     }
-
 }

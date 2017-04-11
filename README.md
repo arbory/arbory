@@ -36,6 +36,24 @@ config/app.php
 php artisan leaf:install
 ```
 
+## Usage
+
+### Registering new pages
+
+```php
+Page::register( TestPage::class )->routes( function () {
+    Route::get( '/', TestPageController::class . '@index' )->name( 'index' );
+} );
+```
+
+### Registering new admin modules
+
+```php
+AdminModule::register( TestController::class )->routes( function() {
+    // ...
+} );
+```
+
 ## Generators
 
 ### Quick generator
