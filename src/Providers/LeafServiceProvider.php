@@ -16,6 +16,7 @@ use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
+use CubeSystems\Leaf\Nodes\MenuItem;
 use CubeSystems\Leaf\Services\FieldTypeRegistry;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 use CubeSystems\Leaf\Services\StubRegistry;
@@ -62,8 +63,21 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->app->bind( 'leaf.menu', function ()
         {
+            $items = MenuItem::all()->transform( function( MenuItem $item )
+            {
+                if( $item->hasParent() )
+                {
+                    return null;
+                }
+
+                return $item->getConfiguration();
+            } )->reject( function( $item )
+            {
+                return $item === null;
+            } );
+
             return new Menu(
-                config( 'leaf.menu' )
+                $items->toArray()
             );
         }, true );
     }
@@ -219,6 +233,11 @@ class LeafServiceProvider extends ServiceProvider
             return new ModuleRegistry(
                 $app->config['leaf.modules']
             );
+        } );
+
+        $this->app->singleton( ModuleRegistry::class, function ( Application $app )
+        {
+            return $app[ 'leaf.modules' ];
         } );
     }
 

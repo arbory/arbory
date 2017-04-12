@@ -19,29 +19,40 @@ class DropdownOption
     protected $label;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $attributes;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $selected;
 
-
     /**
-     * DropdownOption constructor.
-     * @param string|int $value
+     * @param $value
      * @param string $label
      * @param array $attributes
-     * @param boolean $selected
+     * @param bool $selected
      */
-    public function __construct( $value, $label, $attributes = [], $selected = false )
+    public function __construct(
+        $value,
+        string $label,
+        array $attributes = null,
+        bool $selected = false
+    )
     {
         $this->value = $value;
         $this->label = $label;
         $this->attributes = $attributes;
         $this->selected = $selected;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLabel();
     }
 
     /**
@@ -53,15 +64,15 @@ class DropdownOption
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
     /**
-     * @return mixed
+     * @return array|null
      */
     public function getAttributes()
     {
@@ -69,7 +80,7 @@ class DropdownOption
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isSelected()
     {
@@ -77,7 +88,7 @@ class DropdownOption
     }
 
     /**
-     * @param boolean $selected
+     * @param bool $selected
      */
     public function setSelected( $selected )
     {

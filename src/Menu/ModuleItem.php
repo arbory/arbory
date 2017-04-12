@@ -55,7 +55,7 @@ class ModuleItem extends AbstractItem
         $this->sentinel = $sentinel;
 
         $moduleName = array_get( $values, 'module_name' );
-        $module = $modules->findModuleByName( $moduleName );
+        $module = $modules->findModuleByControllerClass( $moduleName );
 
         if( !$module )
         {

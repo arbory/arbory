@@ -2,20 +2,15 @@
 
 namespace CubeSystems\Leaf\Admin\Form\Fields;
 
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\View\View;
+use CubeSystems\Leaf\Admin\Form\Fields\Renderer\OptionFieldRenderer;
+use Illuminate\Support\Collection;
 
-/**
- * Class Dropdown
- * @package CubeSysetms\Leaf\Fields
- */
 class Dropdown extends AbstractField
 {
     /**
-     * @var DropdownOption[]
+     * @var Collection
      */
-    protected $options = [];
+    protected $options;
 
     /**
      * @var string|int
@@ -23,29 +18,27 @@ class Dropdown extends AbstractField
     protected $defaultValue = null;
 
     /**
-     * Dropdown constructor.
      * @param string $name
-     * @param DropdownOption[] $options
-     * @param null $defaultValue
+     * @param DropdownOption[]|mixed[] $options
+     * @param int|null $defaultValue
      */
-    public function __construct( $name, $options, $defaultValue = null )
+    public function __construct( string $name, $options, int $defaultValue = null )
     {
-        $this->options = [];
+        $this->options = new Collection();
+        $this->defaultValue = $defaultValue;
+
         foreach( $options as $option )
         {
-            $this->options[$option->getValue()] = $option;
+            $this->options->put( $option->getValue(), $option );
         }
-
-        $this->defaultValue = $defaultValue;
 
         parent::__construct( $name );
     }
 
     /**
-     * @param array $attributes
-     * @return Factory|View|null
+     * @return \CubeSystems\Leaf\Html\Elements\Element
      */
-    public function render( array $attributes = [] )
+    public function render()
     {
         $model = $this->getModel();
 
@@ -53,65 +46,29 @@ class Dropdown extends AbstractField
 
         $currentOption = null;
 
-        if( isset( $this->options[$currentValue] ) )
+        if( $this->options->has( $currentValue ) )
         {
-            $currentOption = $this->options[$currentValue];
+            $currentOption = $this->options->get( $currentValue );
         }
 
-        if( $currentOption == null && $this->defaultValue !== null )
+        if( $currentOption === null && $this->defaultValue !== null )
         {
-            $currentOption = $this->options[$this->defaultValue];
+            $currentOption = $this->options->get( $this->defaultValue );
         }
 
-        if( $currentOption != null )
+        if( $currentOption !== null )
         {
             $currentOption->setSelected( true );
         }
 
-        if( $this->isForList() )
-        {
-            return view( $this->getViewName(), [
-                'field' => $this,
-                'attributes' => $attributes,
-                'current_option' => $currentOption,
-                'url' => route( 'admin.model.edit', [
-//                    $this->getController()->getSlug(), // TODO: REWRITE!!!
-                    $model->getKey()
-                ] ),
-            ] );
-        }
-        elseif( $this->isForForm() )
-        {
-            return view( $this->getViewName(), [
-                'field' => $this,
-                'attributes' => $attributes,
-                'options' => $this->options,
-                'current_option' => $currentOption
-            ] );
-        }
-        else
-        {
-            return null;
-        }
+        return ( new OptionFieldRenderer( $this ) )->render();
     }
 
     /**
-     * @param Model $model
-     * @param array $input
-     * @return null
+     * @return mixed[]
      */
-    public function afterModelSave( Model $model, array $input = [] )
+    public function getOptions()
     {
-        $selectedValue = $input[$this->getName()];
-
-        if( !isset( $this->options[$selectedValue] ) )
-        {
-            throw new \RuntimeException( 'Bad select field value for "' . $this->getInputName() . '"' );
-        }
-
-        $selectedOption = $this->options[$selectedValue];
-        $selectedOption->setSelected( true );
-
-        return parent::postUpdate( $model, $input );
+        return $this->options->toArray();
     }
 }
