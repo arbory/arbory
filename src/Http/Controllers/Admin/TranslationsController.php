@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
-use App\Bear;
+use CubeSystems\Leaf\Admin\Widgets\Breadcrumbs;
 use CubeSystems\Leaf\Http\Requests\TranslationStoreRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
@@ -171,7 +171,7 @@ class TranslationsController extends Controller
             'leaf::controllers.translations.edit',
             [
                 'input' => $request,
-                'breadcrumbs' => $breadcrumbs->get(),
+                'breadcrumbs' => $breadcrumbs,
                 'languages' => $languages,
                 'namespace' => $namespace,
                 'group' => $group,
@@ -256,11 +256,11 @@ class TranslationsController extends Controller
     private function getBreadcrumbs()
     {
         $breadcrumbs = new Breadcrumbs();
-        $breadcrumbs->add(
+        $breadcrumbs->addItem(
             trans( 'leaf::breadcrumbs.home' ),
             route( 'admin.dashboard' )
         );
-        $breadcrumbs->add(
+        $breadcrumbs->addItem(
             trans( 'leaf.translations.index' ),
             route( 'admin.translations.index' )
         );
