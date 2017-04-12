@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cubesystems/leaf/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cubesystems/leaf/?branch=master)
+
 ## Installation
 #### Create new Laravel project
 ```bash
