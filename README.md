@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cubesystems/leaf/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cubesystems/leaf/?branch=master)
+
 ## Installation
 #### Create new Laravel project
 ```bash
@@ -99,3 +101,7 @@ or project's `package.json` file (`jscsConfig` section).
 
 * JS - [https://github.com/airbnb/javascript](https://github.com/airbnb/javascript)
 * CSS / SASS - [https://github.com/airbnb/css](https://github.com/airbnb/css)
+
+## Development
+
+See [TODO.md](TODO.md) for more information.
