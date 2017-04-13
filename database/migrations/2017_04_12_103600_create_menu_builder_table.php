@@ -16,7 +16,7 @@ class CreateMenuBuilderTable extends Migration
             $table->string( 'title' );
             $table->string( 'parent' )->nullable();
             $table->text( 'module' )->nullable();
-            $table->integer( 'order' )->nullable();
+            $table->integer( 'after' )->nullable();
             $table->timestamps();
 
             $table->engine = 'InnoDB';

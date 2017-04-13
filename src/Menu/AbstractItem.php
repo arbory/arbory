@@ -2,7 +2,9 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-use CubeSystems\Leaf\Html\Elements;
+use Cartalyst\Sentinel\Sentinel;
+use CubeSystems\Leaf\Nodes\MenuItem;
+use Illuminate\Support\Collection;
 
 /**
  * Class AbstractItem
@@ -26,27 +28,19 @@ abstract class AbstractItem
     protected $parent;
 
     /**
-     * @param array $values
-     * @return ItemGroupItem|ModuleItem
+     * @var Collection
      */
-    public static function make( array $values )
-    {
-        if( array_has( $values, 'items' ) )
-        {
-            return new ItemGroupItem( $values );
-        }
-
-        return new ModuleItem( $values, app( 'sentinel' ), app( 'leaf.modules' ) );
-    }
+    protected $children;
 
     /**
-     * @param array $values
+     * @var Sentinel
      */
-    public function __construct( array $values = [] )
-    {
-        $this->setTitle( array_get( $values, 'title' ) );
-        $this->setAbbreviation( array_get( $values, 'abbreviation' ) );
-    }
+    protected $sentinel;
+
+    /**
+     * @var MenuItem|null
+     */
+    protected $model;
 
     /**
      * @param string $title
@@ -119,8 +113,43 @@ abstract class AbstractItem
     }
 
     /**
-     * @param Elements\Element $element
+     * @return Collection
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    /**
+     * @return MenuItem|null
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param MenuItem $model
+     */
+    public function setModel( MenuItem $model = null )
+    {
+        $this->model = $model;
+    }
+
+    /**
      * @return bool
      */
-    abstract public function render( Elements\Element $element );
+    public function hasModel()
+    {
+        return (bool) $this->getModel();
+    }
+
+    /**
+     * @param AbstractItem $item
+     * @return void
+     */
+    public function addChild( AbstractItem $item )
+    {
+        $this->children->push( $item );
+    }
 }

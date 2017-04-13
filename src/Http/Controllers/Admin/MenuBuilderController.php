@@ -12,6 +12,7 @@ use CubeSystems\Leaf\Services\Module;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
+use ReflectionClass;
 
 class MenuBuilderController extends Controller
 {
@@ -44,8 +45,9 @@ class MenuBuilderController extends Controller
         $form = $this->module()->form( $model, function( Form $form ) use ( $menuItems, $modules )
         {
             $form->addField( new Text( 'title' ) );
+            $form->addField( new Form\Fields\Dropdown( 'after', $menuItems ) );
             $form->addField( new Form\Fields\Dropdown( 'parent', $menuItems ) );
-            $form->addField( new Form\Fields\Dropdown( 'controller', $modules ) );
+            $form->addField( new Form\Fields\Dropdown( 'module', $modules ) );
             $form->addField( new BelongsToMany( 'roles' ) );
         } );
 
@@ -60,7 +62,7 @@ class MenuBuilderController extends Controller
         return $this->module()->grid( $this->resource(), function( Grid $grid )
         {
             $grid->column( 'title' );
-            $grid->column( 'controller' );
+            $grid->column( 'module' );
         } );
     }
 
@@ -69,10 +71,12 @@ class MenuBuilderController extends Controller
      */
     protected function getModuleOptions()
     {
-        $modules = array_map( function( $module )
+        $modules = array_map( function( Module $module )
         {
-            /** @var Module $module */
-            return new Form\Fields\DropdownOption( $module->getControllerClass(), $module->getName() );
+            $class = $module->getControllerClass();
+            $name = new ReflectionClass( $class );
+
+            return new Form\Fields\DropdownOption( $class, $name->getShortName() );
         }, $this->moduleRegistry->getModulesByControllerClass() );
 
         array_unshift( $modules, new Form\Fields\DropdownOption( null, '' ) );

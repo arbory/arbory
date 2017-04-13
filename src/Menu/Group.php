@@ -4,61 +4,22 @@ namespace CubeSystems\Leaf\Menu;
 
 use CubeSystems\Leaf\Html\Elements;
 use CubeSystems\Leaf\Html\Html;
+use Illuminate\Support\Collection;
 
 /**
  * Class ItemGroupItem
  * @package CubeSystems\Leaf\Menu
  */
-class ItemGroupItem extends AbstractItem
+class Group extends AbstractItem
 {
-    /**
-     * @var AbstractItem[]
-     */
-    protected $children;
-
-    /**
-     * ItemGroupItem constructor.
-     * @param array $values
-     */
-    public function __construct( array $values = [] )
+    public function __construct()
     {
-        parent::__construct( $values );
-
-        $this->setChildren( array_get( $values, 'items', [] ) );
-    }
-
-    /**
-     * @param array|null $children
-     * @return $this
-     */
-    public function setChildren( array $children = [] )
-    {
-        foreach( $children as $child )
-        {
-            $this->children[] = AbstractItem::make( $child );
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasChildren()
-    {
-        return count( $this->children ) !== 0;
-    }
-
-    /**
-     * @return AbstractItem[]
-     */
-    public function getChildren()
-    {
-        return $this->children;
+        $this->children = new Collection();
     }
 
     /**
      * @param Elements\Element $parentElement
+     * @return bool
      */
     public function render( Elements\Element $parentElement )
     {

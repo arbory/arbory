@@ -115,4 +115,12 @@ class MenuItem extends Model
     {
         return $this->order;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasModule(): bool
+    {
+        return (bool) $this->module;
+    }
 }

@@ -68,18 +68,15 @@ class LeafDatabaseSeeder extends Seeder
             $table->insert( [
                 'title' => 'Nodes',
                 'module' => NodesController::class,
-                'order' => 1
             ] );
 
             $table->insert( [
                 'title' => 'Menu',
                 'module' => MenuBuilderController::class,
-                'order' => 2
             ] );
 
             $table->insert( [
                 'title' => 'Users',
-                'order' => 3
             ] );
 
             $usersMenuItemId = $connection->getPdo()->lastInsertId();
@@ -88,20 +85,17 @@ class LeafDatabaseSeeder extends Seeder
                 'title' => 'Admin users',
                 'parent' => $usersMenuItemId,
                 'module' => UsersController::class,
-                'order' => 0
             ] );
 
             $table->insert( [
                 'title' => 'Admin roles',
                 'parent' => $usersMenuItemId,
                 'module' => RolesController::class,
-                'order' => 1
             ] );
 
             $table->insert( [
                 'title' => 'Translations',
                 'module' => TranslationsController::class,
-                'order' => 4
             ] );
         }
     }
