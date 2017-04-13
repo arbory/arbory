@@ -34,20 +34,38 @@ class MenuBuilderController extends Controller
     }
 
     /**
-     * @param Model $model
+     * @param MenuItem $model
      * @return Form
      */
-    protected function form( Model $model )
+    protected function form( MenuItem $model )
     {
         $modules = $this->getModuleOptions();
         $menuItems = $this->getMenuItemOptions();
 
-        $form = $this->module()->form( $model, function( Form $form ) use ( $menuItems, $modules )
+        $form = $this->module()->form( $model, function( Form $form ) use ( $model, $menuItems, $modules )
         {
+            $moduleName = $model->getModule();
+
+            if( $moduleName )
+            {
+                $moduleName = new ReflectionClass( $moduleName );
+                $moduleName = $moduleName->getShortName();
+            }
+
             $form->addField( new Text( 'title' ) );
-            $form->addField( new Form\Fields\Dropdown( 'after', $menuItems ) );
-            $form->addField( new Form\Fields\Dropdown( 'parent', $menuItems ) );
-            $form->addField( new Form\Fields\Dropdown( 'module', $modules ) );
+
+            $form->addField(
+                new Form\Fields\Dropdown( 'after', $menuItems, $model->getAfter() ?: 0 )
+            );
+
+            $form->addField(
+                new Form\Fields\Dropdown( 'parent', $menuItems, $model->getParent() ?: 0 )
+            );
+
+            $form->addField(
+                new Form\Fields\Dropdown( 'module', $modules, array_search( $moduleName, $modules ) )
+            );
+
             $form->addField( new BelongsToMany( 'roles' ) );
         } );
 

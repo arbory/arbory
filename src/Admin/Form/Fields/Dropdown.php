@@ -13,16 +13,16 @@ class Dropdown extends AbstractField
     protected $options;
 
     /**
-     * @var string|int
+     * @var int|string|null
      */
     protected $defaultValue = null;
 
     /**
      * @param string $name
      * @param DropdownOption[]|mixed[] $options
-     * @param int|null $defaultValue
+     * @param int|string|null $defaultValue
      */
-    public function __construct( string $name, $options, int $defaultValue = null )
+    public function __construct( string $name, $options, $defaultValue = null )
     {
         $this->options = new Collection();
         $this->defaultValue = $defaultValue;
@@ -40,28 +40,11 @@ class Dropdown extends AbstractField
      */
     public function render()
     {
-        $model = $this->getModel();
+        $optionalFieldRenderer = new OptionFieldRenderer( $this );
 
-        $currentValue = $model->{$this->getName()};
+        $optionalFieldRenderer->setSelected( $this->defaultValue );
 
-        $currentOption = null;
-
-        if( $this->options->has( $currentValue ) )
-        {
-            $currentOption = $this->options->get( $currentValue );
-        }
-
-        if( $currentOption === null && $this->defaultValue !== null )
-        {
-            $currentOption = $this->options->get( $this->defaultValue );
-        }
-
-        if( $currentOption !== null )
-        {
-            $currentOption->setSelected( true );
-        }
-
-        return ( new OptionFieldRenderer( $this ) )->render();
+        return $optionalFieldRenderer->render();
     }
 
     /**
