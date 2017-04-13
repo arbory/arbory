@@ -20,7 +20,7 @@ class MenuItem extends Model
         'title',
         'parent',
         'module',
-        'order'
+        'after'
     ];
 
     /**
@@ -111,9 +111,17 @@ class MenuItem extends Model
     /**
      * @return int
      */
-    public function getOrder()
+    public function getAfter()
     {
-        return $this->order;
+        return $this->after;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAfter(): bool
+    {
+        return (bool) $this->after;
     }
 
     /**

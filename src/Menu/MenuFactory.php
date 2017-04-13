@@ -33,19 +33,21 @@ class MenuFactory
 
         $menu = new Menu( $items );
 
-        $this->distributeMenuChildren( $menu, $menu->getItems() );
+        $this->distributeMenuChildren( $menu );
+        $this->distributeMenuPositions( $menu );
 
         return $menu;
     }
 
     /**
      * @param Menu $menu
-     * @param Collection $menuItems
      * @return void
      */
-    protected function distributeMenuChildren( Menu $menu, Collection $menuItems )
+    protected function distributeMenuChildren( Menu $menu )
     {
         /** @var AbstractItem $menuItem */
+        $menuItems = $menu->getItems();
+
         foreach( $menuItems as $menuItem )
         {
             if( $menuItem->hasModel() && $menuItem->getModel()->hasParent() )
@@ -54,9 +56,49 @@ class MenuFactory
 
                 $parent = $menu->findItemByModelId( $model->getParent() );
 
+                $menuItem->setParent( $parent );
+
                 $parent->addChild( $menuItem );
 
                 $menu->removeItemByModelId( $model->getId() );
+            }
+        }
+    }
+
+    /**
+     * @param Menu $menu
+     * @return void
+     */
+    protected function distributeMenuPositions( Menu $menu )
+    {
+        /** @var AbstractItem $menuItem */
+        $menuItems = $menu->flatten();
+
+        foreach( $menuItems as $menuItem )
+        {
+            $model = $menuItem->getModel();
+
+            if( $model && $model->isAfter() )
+            {
+                $children = $menu->getItems();
+
+                if( $model->hasParent() )
+                {
+                    $parent = $menu->findItemByModelId( $model->getParent() );
+                    $children = $parent->getChildren();
+                }
+
+                $afterItem = $children->filter( function( AbstractItem $item ) use ( $model )
+                {
+                    return !$item->hasModel() ?: $item->getModel()->getId() === $model->getAfter();
+                } )->first();
+
+                $currentPosition = $children->search( $menuItem );
+                $afterKey = $children->search( $afterItem );
+
+                $children->forget( $currentPosition );
+
+                $children->splice( ++$afterKey, 0, [ $menuItem ] );
             }
         }
     }

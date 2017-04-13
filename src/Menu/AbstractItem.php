@@ -152,4 +152,12 @@ abstract class AbstractItem
     {
         $this->children->push( $item );
     }
+
+    /**
+     * @param Collection $children
+     */
+    public function setChildren( Collection $children )
+    {
+        $this->children = $children;
+    }
 }

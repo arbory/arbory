@@ -87,7 +87,7 @@ class Menu
      */
     public function findItemByModelId( int $id )
     {
-        return $this->getItems()->filter( function( AbstractItem $item ) use ( $id )
+        return $this->flatten()->filter( function( AbstractItem $item ) use ( $id )
         {
             if( !$item->hasModel() )
             {
@@ -96,5 +96,32 @@ class Menu
 
             return $item->getModel()->getId() === $id;
         } )->first();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function flatten(): Collection
+    {
+        return $this->flattenItems( $this->getItems() );
+    }
+
+    /**
+     * @param Collection $items
+     * @return Collection
+     */
+    protected function flattenItems( Collection $items )
+    {
+        $result = new Collection();
+
+        $result = $result->merge( $items );
+
+        foreach( $items as $item )
+        {
+            /** @var AbstractItem $item */
+            $result = $result->merge( $this->flattenItems( $item->getChildren() ) );
+        }
+
+        return $result;
     }
 }
