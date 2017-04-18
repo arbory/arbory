@@ -10,8 +10,8 @@
                     padding: 0;
                     margin: 0;
 
-                    &[data-level='1'] {
-                        margin-left: steps(-1);
+                    &:not([data-level='1']) {
+                        margin-left: steps(2);
                     }
 
                     li {
@@ -24,14 +24,6 @@
 
                             a {
                                 text-decoration: none;
-                            }
-                        }
-
-                        @for $i from 1 through 10
-                        {
-                            &[data-level="#{$i}"]
-                            {
-                                margin-left: steps($i);
                             }
                         }
                     }
