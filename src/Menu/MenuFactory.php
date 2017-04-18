@@ -54,7 +54,7 @@ class MenuFactory
             {
                 $model = $menuItem->getModel();
 
-                $parent = $menu->findItemByModelId( $model->getParent() );
+                $parent = $menu->findItemByModelId( $model->getParentId() );
 
                 $menuItem->setParent( $parent );
 
@@ -84,13 +84,13 @@ class MenuFactory
 
                 if( $model->hasParent() )
                 {
-                    $parent = $menu->findItemByModelId( $model->getParent() );
+                    $parent = $menu->findItemByModelId( $model->getParentId() );
                     $children = $parent->getChildren();
                 }
 
                 $afterItem = $children->filter( function( AbstractItem $item ) use ( $model )
                 {
-                    return !$item->hasModel() ?: $item->getModel()->getId() === $model->getAfter();
+                    return !$item->hasModel() ?: $item->getModel()->getId() === $model->getAfterId();
                 } )->first();
 
                 $currentPosition = $children->search( $menuItem );

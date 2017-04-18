@@ -6,13 +6,18 @@ use CubeSystems\Leaf\Admin\Form;
 use CubeSystems\Leaf\Admin\Form\Fields\BelongsToMany;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Grid;
+use CubeSystems\Leaf\Admin\Layout;
 use CubeSystems\Leaf\Admin\Traits\Crudify;
+use CubeSystems\Leaf\Menu\Admin\Grid\Renderer;
+use CubeSystems\Leaf\Menu\MenuFactory;
 use CubeSystems\Leaf\Nodes\MenuItem;
 use CubeSystems\Leaf\Services\Module;
 use CubeSystems\Leaf\Services\ModuleRegistry;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use ReflectionClass;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 class MenuBuilderController extends Controller
 {
@@ -28,9 +33,30 @@ class MenuBuilderController extends Controller
      */
     protected $moduleRegistry;
 
-    public function __construct( ModuleRegistry $moduleRegistry )
+    /**
+     * @var ViewFactory
+     */
+    protected $viewFactory;
+
+    /**
+     * @var MenuFactory
+     */
+    protected $menuFactory;
+
+    /**
+     * @param ModuleRegistry $moduleRegistry
+     * @param ViewFactory $viewFactory
+     * @param MenuFactory $menuFactory
+     */
+    public function __construct(
+        ModuleRegistry $moduleRegistry,
+        ViewFactory $viewFactory,
+        MenuFactory $menuFactory
+    )
     {
         $this->moduleRegistry = $moduleRegistry;
+        $this->viewFactory = $viewFactory;
+        $this->menuFactory = $menuFactory;
     }
 
     /**
@@ -55,11 +81,11 @@ class MenuBuilderController extends Controller
             $form->addField( new Text( 'title' ) );
 
             $form->addField(
-                new Form\Fields\Dropdown( 'after', $menuItems, $model->getAfter() ?: 0 )
+                new Form\Fields\Dropdown( 'after_id', $menuItems, $model->getAfterId() ?: 0 )
             );
 
             $form->addField(
-                new Form\Fields\Dropdown( 'parent', $menuItems, $model->getParent() ?: 0 )
+                new Form\Fields\Dropdown( 'parent_id', $menuItems, $model->getParentId() ?: 0 )
             );
 
             $form->addField(
@@ -77,11 +103,14 @@ class MenuBuilderController extends Controller
      */
     public function grid()
     {
-        return $this->module()->grid( $this->resource(), function( Grid $grid )
+        $grid = $this->module()->grid( $this->resource(), function( Grid $grid )
         {
             $grid->column( 'title' );
-            $grid->column( 'module' );
         } );
+
+        $grid->setRenderer( new Renderer( $grid ) );
+
+        return $grid;
     }
 
     /**

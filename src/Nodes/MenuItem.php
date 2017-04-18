@@ -18,9 +18,9 @@ class MenuItem extends Model
      */
     protected $fillable = [
         'title',
-        'parent',
+        'parent_id',
         'module',
-        'after'
+        'after_id'
     ];
 
     /**
@@ -43,13 +43,23 @@ class MenuItem extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function children()
+    {
+        return $this->hasMany(
+            self::class, 'parent_id', 'id'
+        );
+    }
+
+    /**
      * @return array
      */
     public function getConfiguration()
     {
         if ( !$this->getModule() )
         {
-            $items = self::query()->where( 'parent', $this->getId() )->get();
+            $items = self::query()->where( 'parent_id', $this->getId() )->get();
 
             $items->transform( function( MenuItem $item ) {
                 return $item->getConfiguration();
@@ -87,9 +97,9 @@ class MenuItem extends Model
     /**
      * @return int
      */
-    public function getParent()
+    public function getParentId()
     {
-        return $this->parent;
+        return (int) $this->parent_id;
     }
 
     /**
@@ -97,7 +107,7 @@ class MenuItem extends Model
      */
     public function hasParent()
     {
-        return (bool) $this->getParent();
+        return (bool) $this->getParentId();
     }
 
     /**
@@ -111,9 +121,9 @@ class MenuItem extends Model
     /**
      * @return int
      */
-    public function getAfter()
+    public function getAfterId()
     {
-        return $this->after;
+        return $this->after_id;
     }
 
     /**
@@ -121,7 +131,7 @@ class MenuItem extends Model
      */
     public function isAfter(): bool
     {
-        return (bool) $this->after;
+        return (bool) $this->getAfterId();
     }
 
     /**
