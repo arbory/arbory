@@ -20,6 +20,7 @@ use CubeSystems\Leaf\Nodes\MenuItem;
 use CubeSystems\Leaf\Services\FieldTypeRegistry;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 use CubeSystems\Leaf\Services\StubRegistry;
+use CubeSystems\Leaf\Views\LayoutViewComposer;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use File;
 use Illuminate\Filesystem\Filesystem;
@@ -28,8 +29,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Roboc\Glide\GlideImageServiceProvider;
 use Route;
-use Sentinel;
-use View;
 
 /**
  * Class LeafServiceProvider
@@ -53,13 +52,9 @@ class LeafServiceProvider extends ServiceProvider
         $this->registerFields();
         $this->registerGeneratorStubs();
         $this->registerLocales();
+        $this->registerViewComposers();
 
         $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'leaf' );
-
-        View::composer( '*layout*', function ( \Illuminate\View\View $view )
-        {
-            $view->with( 'user', Sentinel::getUser( true ) );
-        } );
 
         $this->app->bind( 'leaf.menu', function ()
         {
@@ -72,6 +67,7 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerServiceProviders()
     {
+        $this->app->register( NodeServiceProvider::class );
         $this->app->register( LeafTranslationServiceProvider::class );
         $this->app->register( TranslatableServiceProvider::class );
         $this->app->register( LeafFileServiceProvider::class );
@@ -274,6 +270,14 @@ class LeafServiceProvider extends ServiceProvider
     {
         config()->set( 'translator.locales', config( 'leaf.locales' ) );
         config()->set( 'translatable.locales', config( 'leaf.locales' ) );
+    }
+
+    /**
+     * @return void
+     */
+    private function registerViewComposers()
+    {
+        $this->app->make( 'view' )->composer( '*layout*', LayoutViewComposer::class );
     }
 
     /**
