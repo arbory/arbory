@@ -57,14 +57,6 @@ class Item extends AbstractItem
     /**
      * @return string
      */
-    public function getAbbreviation(): string
-    {
-        return $this->abbreviation;
-    }
-
-    /**
-     * @return string
-     */
     public function getRouteName(): string
     {
         return $this->routeName;

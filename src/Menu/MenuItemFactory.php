@@ -58,7 +58,6 @@ class MenuItemFactory
 
         /** @var AbstractItem $item */
         $item->setTitle( $model->getTitle() );
-        $item->setAbbreviation( $model->getTitle() );
         $item->setModel( $model );
 
         return $item;
