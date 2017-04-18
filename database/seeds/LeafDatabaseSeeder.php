@@ -83,13 +83,13 @@ class LeafDatabaseSeeder extends Seeder
 
             $table->insert( [
                 'title' => 'Admin users',
-                'parent' => $usersMenuItemId,
+                'parent_id' => $usersMenuItemId,
                 'module' => UsersController::class,
             ] );
 
             $table->insert( [
                 'title' => 'Admin roles',
-                'parent' => $usersMenuItemId,
+                'parent_id' => $usersMenuItemId,
                 'module' => RolesController::class,
             ] );
 
