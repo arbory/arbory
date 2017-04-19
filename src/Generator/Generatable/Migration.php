@@ -61,7 +61,7 @@ class Migration extends StubGenerator implements Stubable
         return sprintf(
             '%s_create_%s_table.php',
             $time->format( 'Y_m_d_His' ),
-            strtolower( $this->schema->getName() )
+            snake_case( $this->schema->getName() )
         );
     }
 
