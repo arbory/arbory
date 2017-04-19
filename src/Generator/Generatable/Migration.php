@@ -31,6 +31,11 @@ class Migration extends StubGenerator implements Stubable
             );
         } );
 
+        if( $this->schema->usesTimestamps() )
+        {
+            $schemaFields->push( '$table->timestamps();' );
+        }
+
         return $this->stubRegistry->make( 'migration', [
             'className' => $this->getClassName(),
             'schemaName' => snake_case( $this->schema->getName() ),

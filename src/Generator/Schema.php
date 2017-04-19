@@ -24,6 +24,7 @@ class Schema
      */
     protected $timestamps;
 
+
     public function __construct()
     {
         $this->fields = new Collection();
@@ -65,7 +66,7 @@ class Schema
     /**
      * @return bool
      */
-    public function isTimestamps(): bool
+    public function usesTimestamps(): bool
     {
         return $this->timestamps;
     }
@@ -76,29 +77,5 @@ class Schema
     public function setTimestamps( bool $timestamps )
     {
         $this->timestamps = $timestamps;
-
-        if ($timestamps)
-        {
-            // todo: make this not terrible
-            $structure = new Structure();
-            $field = new Field( $structure );
-
-            $field->setName( 'created_at' );
-            $field->setType( Hidden::class );
-            $structure->setType( 'timestamp' );
-            $structure->setNullable( true );
-
-            $this->addField( $field );
-
-            $structure = new Structure();
-            $field = new Field( $structure );
-
-            $field->setName( 'updated_at' );
-            $field->setType( Hidden::class );
-            $structure->setType( 'timestamp' );
-            $structure->setNullable( true );
-
-            $this->addField( $field );
-        }
     }
 }
