@@ -7,6 +7,7 @@ use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
 use CubeSystems\Leaf\Nodes\Node;
 use CubeSystems\Leaf\Services\Content\PageBuilder;
 use CubeSystems\Leaf\Services\ModuleBuilder;
+use CubeSystems\Leaf\Support\Facades\AdminModule;
 use CubeSystems\Leaf\Support\Facades\LeafRouter;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
@@ -37,6 +38,8 @@ class NodeServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        AliasLoader::getInstance()->alias( 'LeafRouter', LeafRouter::class );
+        AliasLoader::getInstance()->alias( 'AdminModule', AdminModule::class );
         AliasLoader::getInstance()->alias( 'LeafRouter', LeafRouter::class );
 
         $this->app->singleton( ContentTypeRegister::class, function ()
