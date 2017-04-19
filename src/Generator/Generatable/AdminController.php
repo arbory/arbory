@@ -6,31 +6,41 @@ use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Generator\Stubable;
 use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Support\Str;
 
 class AdminController extends StubGenerator implements Stubable
 {
     use DetectsApplicationNamespace;
 
+    /**
+     * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
     public function generate()
     {
         parent::generate();
 
-        $this->registerAdminRoute();
+        $this->registerAdminModel();
     }
 
     /**
      * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function registerAdminRoute()
-    {
-        $path = base_path( 'routes/admin.php' );
-        $route = 'AdminRoute::register( ' . $this->getNamespace() . $this->getClassName() . '::class );';
+    protected function registerAdminModel() {
+        $className = $this->getNamespace() . $this->getClassName();
 
-        if( !str_contains( $this->filesystem->get( $path ), $route ) )
+        $stub = $this->stubRegistry->make( 'register_admin_module', [
+            'className' => $className
+        ] );
+
+        $path = base_path( 'routes/admin.php' );
+
+        if( !Str::contains( $this->filesystem->get( $path ), $className ) )
         {
             $this->filesystem->append(
                 $path,
-                PHP_EOL . $route
+                PHP_EOL . $stub
             );
         }
     }

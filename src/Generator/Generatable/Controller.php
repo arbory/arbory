@@ -12,14 +12,6 @@ class Controller extends StubGenerator implements Stubable
     use DetectsApplicationNamespace;
 
     /**
-     * @return void
-     */
-    public function generate()
-    {
-        parent::generate();
-    }
-
-    /**
      * @return string
      */
     public function getCompiledControllerStub(): string

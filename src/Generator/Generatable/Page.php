@@ -6,10 +6,50 @@ use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Support\Str;
 
 class Page extends StubGenerator implements Stubable
 {
     use DetectsApplicationNamespace;
+
+    /**
+     * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function generate()
+    {
+        parent::generate();
+
+        $this->registerPage();
+    }
+
+    /**
+     * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function registerPage() {
+        $className = $this->getClassName();
+        $pageClassName = $this->getNamespace() . '\\' . $className;
+
+        $stub = $this->stubRegistry->make( 'register_page', [
+            'pageClassName' => $pageClassName,
+            'controllerClassName' => sprintf(
+                '%sHttp\Controllers\%s',
+                $this->getAppNamespace(),
+                $className . 'Controller'
+            ),
+        ] );
+
+        $path = base_path( 'routes/web.php' );
+
+        if( !Str::contains( $this->filesystem->get( $path ), $pageClassName ) )
+        {
+            $this->filesystem->append(
+                $path,
+                PHP_EOL . $stub
+            );
+        }
+    }
 
     /**
      * @return string
