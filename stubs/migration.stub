@@ -16,6 +16,10 @@ class {{className}} extends Migration
         Schema::create('{{schemaName}}', function (Blueprint $table) {
             {{schemaFields}}
         });
+
+        Schema::create('{{schemaName}}_pages', function (Blueprint $table) {
+            {{schemaFields}}
+        });
     }
 
     /**
@@ -25,6 +29,7 @@ class {{className}} extends Migration
      */
     public function down()
     {
-        {{downAction}}
+        Schema::dropIfExists( '{{schemaName}}' );
+        Schema::dropIfExists( '{{schemaName}}_pages' );
     }
 }

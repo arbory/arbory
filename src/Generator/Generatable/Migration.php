@@ -39,8 +39,7 @@ class Migration extends StubGenerator implements Stubable
         return $this->stubRegistry->make( 'migration', [
             'className' => $this->getClassName(),
             'schemaName' => snake_case( $this->schema->getName() ),
-            'schemaFields' => $this->formatter->prependSpacing( $schemaFields,3 )->implode( PHP_EOL ),
-            'downAction' => 'Schema::dropIfExists( \'' . $this->schema->getName() . '\' );'
+            'schemaFields' => $this->formatter->prependSpacing( $schemaFields,3 )->implode( PHP_EOL )
         ] );
     }
 
