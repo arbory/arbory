@@ -3,12 +3,12 @@
 namespace CubeSystems\Leaf\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Database\Seeder;
+use LeafDatabaseSeeder;
 use Symfony\Component\Console\Input\InputOption;
-use Illuminate\Database\ConnectionResolverInterface as Resolver;
 
 /**
  * Class SeedCommand
@@ -29,14 +29,14 @@ class SeedCommand extends Command
     protected $description = 'Seed the the database with with initial records for Leaf framework';
 
     /**
-     * @var ConnectionResolverInterface
+     * @var DatabaseManager
      */
     protected $resolver;
 
     /**
-     * @param  ConnectionResolverInterface $resolver
+     * @param DatabaseManager $resolver
      */
-    public function __construct( Resolver $resolver )
+    public function __construct( DatabaseManager $resolver )
     {
         parent::__construct();
 
@@ -44,7 +44,8 @@ class SeedCommand extends Command
     }
 
     /**
-     *
+     * @return void
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
     public function fire()
     {
@@ -63,6 +64,7 @@ class SeedCommand extends Command
 
     /**
      * @return Seeder
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
     protected function getSeeder()
     {
@@ -73,6 +75,7 @@ class SeedCommand extends Command
 
     /**
      * @return string
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
     protected function getDatabase()
     {
@@ -87,7 +90,7 @@ class SeedCommand extends Command
     protected function getOptions()
     {
         return [
-            [ 'class', null, InputOption::VALUE_OPTIONAL, 'The class name of the root seeder', 'LeafDatabaseSeeder' ],
+            [ 'class', null, InputOption::VALUE_OPTIONAL, 'The class name of the root seeder', LeafDatabaseSeeder::class ],
 
             [ 'database', null, InputOption::VALUE_OPTIONAL, 'The database connection to seed' ],
 

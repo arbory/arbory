@@ -178,30 +178,32 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerCommands()
     {
-        $this->app->singleton( 'leaf.seed', function ( $app )
+        $commands = [
+            'leaf.seed' => SeedCommand::class,
+            'leaf.install' => InstallCommand::class,
+            'leaf.generator' => GeneratorCommand::class,
+            'leaf.generate' => GenerateCommand::class
+        ];
+
+        foreach( $commands as $containerKey => $commandClass )
         {
-            return new SeedCommand( $app['db'] );
+            $this->registerCommand( $containerKey, $commandClass );
+        }
+    }
+
+    /**
+     * @param string $containerKey
+     * @param string $commandClass
+     * @return void
+     */
+    private function registerCommand( string $containerKey, string $commandClass )
+    {
+        $this->app->singleton( $containerKey, function () use ( $commandClass )
+        {
+            return $this->app->make( $commandClass );
         } );
 
-        $this->app->singleton( 'leaf.install', function ( $app )
-        {
-            return $app->make( InstallCommand::class );
-        } );
-
-        $this->app->singleton( 'leaf.generator', function ()
-        {
-            return $this->app->make( GeneratorCommand::class );
-        } );
-
-        $this->app->singleton( 'leaf.generate', function ()
-        {
-            return $this->app->make( GenerateCommand::class );
-        } );
-
-        $this->commands( 'leaf.seed' );
-        $this->commands( 'leaf.install' );
-        $this->commands( 'leaf.generator' );
-        $this->commands( 'leaf.generate' );
+        $this->commands( $containerKey );
     }
 
     /**
