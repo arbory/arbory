@@ -114,7 +114,8 @@ class InstallCommand extends Command
         $directories = [
             app_path( 'Http/Controllers/Admin' ),
             app_path( 'Pages' ),
-            base_path( 'resources/views/admin' )
+            base_path( 'resources/views/admin' ),
+            base_path( 'resources/views/controllers' )
         ];
 
         foreach( $directories as $directory )
