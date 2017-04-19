@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Repositories;
 use CubeSystems\Leaf\Files\LeafFile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use RuntimeException;
 use Storage;
 
 /**
@@ -58,19 +59,28 @@ class LeafFilesRepository extends AbstractModelsRepository
      * @param UploadedFile $file
      * @param Model $owner
      * @return LeafFile|null
+     * @throws RuntimeException
      */
     public function createFromUploadedFile( UploadedFile $file, Model $owner )
     {
         if( !$file->getRealPath() )
         {
-            throw new \RuntimeException( 'Uploaded file does not have real path' );
+            throw new RuntimeException( 'Uploaded file does not have real path' );
+        }
+
+        if( !$file->getSize() )
+        {
+            throw new RuntimeException( sprintf(
+                'The uploaded file size must be between 1 and %d (see "upload_max_filesize" in "php.ini") bytes',
+                UploadedFile::getMaxFilesize() )
+            );
         }
 
         $localFileName = $this->getLocalFilenameForUploadedFile( $file );
 
         if( !$this->getDisk()->put( $localFileName, file_get_contents( $file->getRealPath() ) ) )
         {
-            throw new \RuntimeException( 'Could not store local file "' . $localFileName . '"' );
+            throw new RuntimeException( 'Could not store local file "' . $localFileName . '"' );
         }
 
         $modelClass = $this->modelClass;
@@ -82,18 +92,18 @@ class LeafFilesRepository extends AbstractModelsRepository
         /* @var $leafFile LeafFile */
         if( !$leafFile->save() )
         {
-            throw new \RuntimeException( 'Could not save "' . $modelClass . '" to database' );
+            throw new RuntimeException( 'Could not save "' . $modelClass . '" to database' );
         }
 
         return $leafFile;
     }
-
 
     /**
      * @param $fileName
      * @param $fileContents
      * @param Model $owner
      * @return LeafFile|null
+     * @throws RuntimeException
      */
     public function createFromBlob( $fileName, $fileContents, Model $owner )
     {
@@ -101,7 +111,7 @@ class LeafFilesRepository extends AbstractModelsRepository
 
         if( !$this->getDisk()->put( $localFileName, $fileContents ) )
         {
-            throw new \RuntimeException( 'Could not store local file "' . $localFileName . '"' );
+            throw new RuntimeException( 'Could not store local file "' . $localFileName . '"' );
         }
 
         $modelClass = $this->modelClass;
@@ -112,7 +122,7 @@ class LeafFilesRepository extends AbstractModelsRepository
         /* @var $leafFile LeafFile */
         if( !$leafFile->save() )
         {
-            throw new \RuntimeException( 'Could not save "' . $modelClass . '" to database' );
+            throw new RuntimeException( 'Could not save "' . $modelClass . '" to database' );
         }
 
         return $leafFile;
