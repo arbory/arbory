@@ -1,9 +1,7 @@
 @extends('leaf::layout.main')
 
 @section('content.header')
-    <header>
-        @include('leaf::partials.breadcrumbs')
-    </header>
+    {!! $header !!}
 @stop
 
 @section('content')

@@ -3,7 +3,10 @@
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
 use CubeSystems\Leaf\Admin\Widgets\Breadcrumbs;
+use CubeSystems\Leaf\Admin\Widgets\SearchField;
+use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Http\Requests\TranslationStoreRequest;
+use CubeSystems\Leaf\Menu\Menu;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Query\Builder;
@@ -44,7 +47,10 @@ class TranslationsController extends Controller
      * @param TranslationRepository $translationRepository
      * @param LanguageRepository $languagesRepository
      */
-    public function __construct( TranslationRepository $translationRepository, LanguageRepository $languagesRepository )
+    public function __construct(
+        TranslationRepository $translationRepository,
+        LanguageRepository $languagesRepository
+    )
     {
         $this->translationsRepository = $translationRepository;
         $this->languagesRepository = $languagesRepository;
@@ -111,6 +117,7 @@ class TranslationsController extends Controller
         return view(
             'leaf::controllers.translations.index',
             [
+                'header' => Html::header( [ $this->getIndexBreadcrumbs(), ( new SearchField( '' ) )->render() ] ),
                 'languages' => $languages,
                 'translations' => $paginatedItems,
                 'paginator' => $paginatedItems,
@@ -132,6 +139,7 @@ class TranslationsController extends Controller
      */
     public function edit( Request $request, $namespace, $group, $item )
     {
+        $translationKey = $namespace . '::' . $group . '.' . $item;
         $this->request = $request;
 
         $breadcrumbs = $this->getBreadcrumbs();
@@ -159,7 +167,7 @@ class TranslationsController extends Controller
                     'namespace' => $namespace,
                     'group' => $group,
                     'item' => $item,
-                    'text' => $namespace . '::' . $group . '.' . $item
+                    'text' => $translationKey
                 ] );
                 $translation->save();
             }
@@ -170,6 +178,7 @@ class TranslationsController extends Controller
         return view(
             'leaf::controllers.translations.edit',
             [
+                'header' => Html::header( [ $this->getEditBreadcrumbs( $translationKey ) ] ),
                 'input' => $request,
                 'breadcrumbs' => $breadcrumbs,
                 'languages' => $languages,
@@ -214,6 +223,34 @@ class TranslationsController extends Controller
         }
 
         return redirect( route( 'admin.translations.index', $this->getContext() ) );
+    }
+
+    /**
+     * @return Breadcrumbs
+     */
+    protected function getIndexBreadcrumbs(): Breadcrumbs
+    {
+        // TODO: DI
+        /** @var Menu $menu */
+        $menu = app( 'leaf.menu' );
+        $menuItem = $menu->findItemByModule( self::class );
+
+        $breadcrumbs = new Breadcrumbs();
+        $breadcrumbs->addItem( $menuItem->getTitle(), route( 'admin.translations.index', $this->getContext() ) );
+
+        return $breadcrumbs;
+    }
+
+    /**
+     * @param string $editTitle
+     * @return Breadcrumbs
+     */
+    protected function getEditBreadcrumbs( string $editTitle ): Breadcrumbs
+    {
+        $breadcrumbs = $this->getIndexBreadcrumbs();
+        $breadcrumbs->addItem( $editTitle, '' );
+
+        return $breadcrumbs;
     }
 
     /**

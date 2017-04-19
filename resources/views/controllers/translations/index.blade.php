@@ -1,9 +1,7 @@
 @extends('leaf::layout.main')
 
 @section('content.header')
-    <header>
-        {{--@include('leaf::partials.breadcrumbs')--}}
-    </header>
+    {!! $header !!}
 @stop
 
 @section('content')
@@ -14,15 +12,6 @@
         </header>
 
         <div class="body">
-
-            <form>
-
-                <input type="text" name="search" value="{{ $search }}"/>
-
-                <button class="button" type="submit">Search!</button>
-
-            </form>
-
             <table class="table">
 
                 <thead>

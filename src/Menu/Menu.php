@@ -99,6 +99,23 @@ class Menu
     }
 
     /**
+     * @param string $module
+     * @return AbstractItem|null
+     */
+    public function findItemByModule( string $module )
+    {
+        return $this->flatten()->filter( function( AbstractItem $item ) use ( $module )
+        {
+            if( !$item->hasModel() )
+            {
+                return false;
+            }
+
+            return $item->getModel()->getModule() === $module;
+        } )->first();
+    }
+
+    /**
      * @return Collection
      */
     public function flatten(): Collection
