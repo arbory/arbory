@@ -18,6 +18,14 @@
 
 ## Needs refactoring
 
+#### Views
+
+* Use proper view composers instead of facades
+
+#### Controllers
+
+* CRUD controller either as an interface + trait or a parent class
+
 #### Generators
 
 * Fix the namespace typo
