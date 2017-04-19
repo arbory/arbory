@@ -23,13 +23,14 @@ composer require cubesystems/leaf dev-master
 vi .env
 ```
 
-#### Add Leaf service provider in your application configuration
+#### Add Leaf service providers in your application configuration
 
 config/app.php
 ```php
 'providers' => [
     ...
     CubeSystems\Leaf\Providers\LeafServiceProvider::class,
+    CubeSystems\Leaf\Providers\NodeServiceProvider::class,
 ]
 ```
 

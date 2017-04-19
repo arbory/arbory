@@ -67,7 +67,6 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerServiceProviders()
     {
-        $this->app->register( NodeServiceProvider::class );
         $this->app->register( LeafTranslationServiceProvider::class );
         $this->app->register( TranslatableServiceProvider::class );
         $this->app->register( LeafFileServiceProvider::class );
