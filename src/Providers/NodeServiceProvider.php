@@ -9,6 +9,7 @@ use CubeSystems\Leaf\Services\Content\PageBuilder;
 use CubeSystems\Leaf\Services\ModuleBuilder;
 use CubeSystems\Leaf\Support\Facades\AdminModule;
 use CubeSystems\Leaf\Support\Facades\LeafRouter;
+use CubeSystems\Leaf\Support\Facades\Page;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Events\RouteMatched;
@@ -40,7 +41,7 @@ class NodeServiceProvider extends ServiceProvider
     {
         AliasLoader::getInstance()->alias( 'LeafRouter', LeafRouter::class );
         AliasLoader::getInstance()->alias( 'AdminModule', AdminModule::class );
-        AliasLoader::getInstance()->alias( 'LeafRouter', LeafRouter::class );
+        AliasLoader::getInstance()->alias( 'Page', Page::class );
 
         $this->app->singleton( ContentTypeRegister::class, function ()
         {
@@ -57,9 +58,12 @@ class NodeServiceProvider extends ServiceProvider
             return $this->app->make( ContentTypeRoutesRegister::class );
         } );
 
-        $this->app->singleton( 'leaf_page_builder', function( $app )
+        $this->app->singleton( 'leaf_page_builder', function()
         {
-            return new PageBuilder( $app->make( ContentTypeRegister::class ), $app[ 'leaf_router' ] );
+            return new PageBuilder(
+                $this->app->make( ContentTypeRegister::class ),
+                $this->app->make( 'leaf_router' )
+            );
         } );
 
         $this->routes = $this->app->make( 'leaf_router' );

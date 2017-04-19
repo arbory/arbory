@@ -4,6 +4,9 @@ namespace CubeSystems\Leaf\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @see \CubeSystems\Leaf\Services\Content\PageBuilder
+ */
 class Page extends Facade
 {
     /**
