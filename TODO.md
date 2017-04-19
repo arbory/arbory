@@ -26,10 +26,6 @@
 
 * CRUD controller either as an interface + trait or a parent class
 
-#### Generators
-
-* Fix the namespace typo
-
 ## Nice to Have
 
 * Better documentation (GitHub Wiki?)

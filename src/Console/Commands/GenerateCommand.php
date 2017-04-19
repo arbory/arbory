@@ -2,13 +2,13 @@
 
 namespace CubeSystems\Leaf\Console\Commands;
 
-use CubeSystems\Leaf\Generator\Generateable\AdminController;
-use CubeSystems\Leaf\Generator\Generateable\Controller;
+use CubeSystems\Leaf\Generator\Generatable\AdminController;
+use CubeSystems\Leaf\Generator\Generatable\Controller;
 use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Structure;
-use CubeSystems\Leaf\Generator\Generateable\Model;
-use CubeSystems\Leaf\Generator\Generateable\Page;
-use CubeSystems\Leaf\Generator\Generateable\View;
+use CubeSystems\Leaf\Generator\Generatable\Model;
+use CubeSystems\Leaf\Generator\Generatable\Page;
+use CubeSystems\Leaf\Generator\Generatable\View;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
 use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\StubGenerator;
@@ -117,7 +117,7 @@ class GenerateCommand extends Command
             $schema->addField( $field );
         }
 
-        $generateables = [
+        $generatables = [
             Model::class,
             Page::class,
             Controller::class,
@@ -125,29 +125,29 @@ class GenerateCommand extends Command
             AdminController::class
         ];
 
-        foreach($generateables as $generateableType)
+        foreach($generatables as $generatableType)
         {
             $typeArgument = $this->argument( 'type' );
 
             if(
                 $typeArgument &&
-                !Str::contains( Str::lower( $generateableType ), Str::lower( $typeArgument ) )
+                !Str::contains( Str::lower( $generatableType ), Str::lower( $typeArgument ) )
             )
             {
                 continue;
             }
 
-            /** @var StubGenerator $generateable */
-            $generateable = new $generateableType(
+            /** @var StubGenerator $generatable */
+            $generatable = new $generatableType(
                 $this->app->make( StubRegistry::class ),
                 $this->app->make( Filesystem::class ),
                 $this->app->make( GeneratorFormatter::class ),
                 $schema
             );
 
-            $this->info( 'Generating ' . $generateable->getPath() . '...' );
+            $this->info( 'Generating ' . $generatable->getPath() . '...' );
 
-            $generateable->generate();
+            $generatable->generate();
         }
     }
 }

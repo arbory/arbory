@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Generateable;
+namespace CubeSystems\Leaf\Generator\Generatable;
 
 use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Structure;
