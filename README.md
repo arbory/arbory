@@ -1,6 +1,7 @@
 [![Packagist](https://img.shields.io/packagist/v/cubesystems/leaf.svg)](https://packagist.org/packages/cubesystems/leaf)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cubesystems/leaf/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cubesystems/leaf/?branch=master)
 [![Build Status](https://travis-ci.org/cubesystems/leaf.svg?branch=master)](https://travis-ci.org/cubesystems/leaf)
+[![Coverage Status](https://coveralls.io/repos/github/cubesystems/leaf/badge.svg?branch=master)](https://coveralls.io/github/cubesystems/leaf?branch=master)
 
 ## Installation
 #### Create new Laravel project
