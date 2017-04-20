@@ -14,20 +14,20 @@
         "laravelcollective/html": "^5.4.0",
         "doctrine/dbal": "^2.5",
         "baum/baum": "^1.1",
-        "components/jquery": "3.1.*",
+        "components/jquery": "^3.2",
         "components/jqueryui": "1.12.*",
         "components/jquery-cookie": "1.4.*",
-        "ckeditor/ckeditor": "4.5.*",
+        "ckeditor/ckeditor": "^4.5",
         "alsofronie/eloquent-uuid": "^1.0.5",
-        "dimsav/laravel-translatable": "^6.0",
+        "dimsav/laravel-translatable": "^7.0",
         "cartalyst/sentinel": "^2.0.13",
         "composer/composer": "1.*@alpha",
         "waavi/translation": "^2.1.5",
         "roboc/laravel-glide": "1.0.*",
-        "roave/security-advisories": "dev-master",
-        "satooshi/php-coveralls": "^1.0"
+        "roave/security-advisories": "dev-master"
     },
     "require-dev" : {
+        "satooshi/php-coveralls": "^1.0",
         "phpunit/phpunit" : "^6.1",
         "mockery/mockery": "dev-master",
         "diablomedia/phpunit-pretty-printer": "dev-master"
