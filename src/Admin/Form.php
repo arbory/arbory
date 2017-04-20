@@ -249,13 +249,6 @@ class Form implements Renderable
      */
     public function render()
     {
-        try
-        {
-            return $this->builder->render();
-        }
-        catch( Exception $e )
-        {
-            return ExceptionMessage::create( $e )->render();
-        }
+        return $this->builder->render();
     }
 }
