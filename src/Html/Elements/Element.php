@@ -94,16 +94,15 @@ class Element
      */
     public function addClass( $class )
     {
-        $this->attributes()->put( 'class', implode( ' ', [
-            $this->attributes()->get( 'class' ),
-            $class
-        ] ) );
+        $currentClass = $this->attributes()->get( 'class' );
+
+        $this->attributes()->put( 'class', $currentClass ? implode( ' ', [ $currentClass, $class ] ) : $class );
 
         return $this;
     }
 
     /**
-     * @param Element|string $content
+     * @param Element|array|string $content
      * @return $this
      */
     public function append( $content )
