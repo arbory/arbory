@@ -20,6 +20,17 @@ class Route
          * @var $router Router
          */
         $router = app( 'router' );
+
+        if( $callback !== null )
+        {
+            $attributes = [
+                'as' => $slug . '.',
+                'prefix' => $slug,
+            ];
+
+            $router->group( $attributes, $callback );
+        }
+
         $router->resource( $slug, '\\' . $class );
 
         $router->get( $slug . '/dialog/{dialog}', [
@@ -32,15 +43,7 @@ class Route
             'uses' => '\\' . $class . '@api'
         ] );
 
-        if( $callback !== null )
-        {
-            $attributes = [
-                'as' => $slug . '.',
-                'prefix' => $slug,
-            ];
 
-            $router->group( $attributes, $callback );
-        }
 
         static::$controllerSlugs[$class] = $slug;
     }
