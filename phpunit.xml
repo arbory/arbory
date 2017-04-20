@@ -6,6 +6,14 @@
     printerClass="DiabloMedia\PHPUnit\Printer\PrettyPrinter"
     mapTestClassNameToCoveredClassName="true"
 >
+    <logging>
+        <log type="coverage-html" target="tests/coverage" charset="UTF-8" />
+    </logging>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
     <testsuites>
         <testsuite name="Admin test suite">
             <directory>tests/Admin</directory>

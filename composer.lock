@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f981b4c872c71ab5017ba07d6be7651",
+    "content-hash": "2b9e1461bdbd4294139485ed11556127",
     "packages": [
         {
             "name": "alsofronie/eloquent-uuid",
@@ -3699,7 +3699,7 @@
                 "test",
                 "unit"
             ],
-            "time": "2017-04-18T14:57:43+00:00"
+            "time": "2017-04-18 14:57:43"
         },
         {
             "name": "doctrine/instantiator",

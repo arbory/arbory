@@ -10,7 +10,7 @@
 
 #### Tests
 
-* Add testing support
+* Add acceptance and integration test support
 
 #### Modules
 
@@ -30,7 +30,6 @@
 
 * Better documentation (GitHub Wiki?)
 * Detailed usage examples
-* CI for tests (Travis?)
 
 ## Misc
 
