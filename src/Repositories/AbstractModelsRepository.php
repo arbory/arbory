@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -102,7 +103,18 @@ abstract class AbstractModelsRepository
      */
     public function findBy( $attribute, $value, array $columns = [ '*' ] )
     {
-        return $this->newQuery()->where( $attribute, '=', $value )->first( $columns );
+        return $this->newQuery()->where( $attribute, '=', $value )->get();
+    }
+
+    /**
+     * @param $attribute
+     * @param $value
+     * @param array $columns
+     * @return mixed
+     */
+    public function findOneBy( $attribute, $value, array $columns = [ '*' ] )
+    {
+        return $this->findBy( $attribute, $value, $columns )->first();
     }
 
     /**
