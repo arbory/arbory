@@ -114,7 +114,7 @@ abstract class AbstractModelsRepository
      */
     public function findOneBy( $attribute, $value, array $columns = [ '*' ] )
     {
-        return $this->findBy( $attribute, $value, $columns )->first();
+        return $this->newQuery()->where( $attribute, '=', $value )->first();
     }
 
     /**
