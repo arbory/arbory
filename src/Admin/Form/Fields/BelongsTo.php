@@ -2,10 +2,10 @@
 
 namespace CubeSystems\Leaf\Admin\Form\Fields;
 
+use CubeSystems\Leaf\Admin\Form\Fields\Concerns\HasRelationships;
 use CubeSystems\Leaf\Admin\Form\Fields\Renderer\OptionFieldRenderer;
 use CubeSystems\Leaf\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 
 /**
@@ -14,36 +14,14 @@ use Illuminate\Http\Request;
  */
 class BelongsTo extends AbstractField
 {
+    use HasRelationships;
+
     /**
      * @return Element
      */
     public function render()
     {
         return ( new OptionFieldRenderer( $this ) )->render();
-    }
-
-    /**
-     * @return Relation
-     */
-    protected function getRelation()
-    {
-        return $this->getModel()->{$this->getName()}();
-    }
-
-    /**
-     * @return Model
-     */
-    protected function getRelatedModel()
-    {
-        return $this->getRelation()->getRelated();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Collection|Model[]
-     */
-    protected function getRelatedItems()
-    {
-        return $this->getRelatedModel()->all()->keyBy( $this->getRelatedModel()->getKeyName() );
     }
 
     /**

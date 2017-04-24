@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Admin\Form\Fields;
 
+use CubeSystems\Leaf\Admin\Form\Fields\Concerns\HasRelationships;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,8 @@ use Illuminate\Http\Request;
  */
 class BelongsToMany extends AbstractField
 {
+    use HasRelationships;
+
     /**
      * @return string
      */
@@ -58,22 +61,6 @@ class BelongsToMany extends AbstractField
             Html::div( $label )->addClass( 'label-wrap' ),
             Html::div( $checkboxes )->addClass( 'value' )
         ] )->addClass( 'field type-associated-set' );
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    private function getRelation()
-    {
-        return $this->getModel()->{$this->getName()}();
-    }
-
-    /**
-     * @return Model
-     */
-    private function getRelatedModel()
-    {
-        return $this->getRelation()->getRelated();
     }
 
     /**

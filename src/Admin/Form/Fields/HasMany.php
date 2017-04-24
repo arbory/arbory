@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Admin\Form\Fields;
 
 use Closure;
+use CubeSystems\Leaf\Admin\Form\Fields\Concerns\HasRelationships;
 use CubeSystems\Leaf\Admin\Form\FieldSet;
 use CubeSystems\Leaf\Admin\Form\Fields\Renderer\NestedFieldRenderer;
 use CubeSystems\Leaf\Html\Elements\Element;
@@ -15,6 +16,8 @@ use Illuminate\Http\Request;
  */
 class HasMany extends AbstractField
 {
+    use HasRelationships;
+
     /**
      * @var Closure
      */
@@ -74,23 +77,6 @@ class HasMany extends AbstractField
 
         return $fieldSet;
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function getRelation()
-    {
-        return $this->getModel()->{$this->getName()}();
-    }
-
-    /**
-     * @return Model
-     */
-    public function getRelatedModel()
-    {
-        return $this->getRelation()->getRelated();
-    }
-
 
     /**
      * @param Request $request

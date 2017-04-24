@@ -28,6 +28,11 @@ class Module
         $this->configuration = $configuration;
     }
 
+    public function __toString()
+    {
+        return class_basename( $this->getControllerClass() );
+    }
+
     /**
      * @return string
      */

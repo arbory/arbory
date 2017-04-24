@@ -85,7 +85,7 @@ class Select implements Renderable
         {
             $option = Html::option( (string) $title )->setValue( $key );
 
-            if( $this->selected === $key )
+            if( (string) $this->selected === (string) $key )
             {
                 $option->select();
             }

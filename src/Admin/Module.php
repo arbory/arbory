@@ -32,6 +32,11 @@ class Module
         $this->routes = new ResourceRoutes( $controller );
     }
 
+    public function __toString()
+    {
+        return class_basename( $this->controller );
+    }
+
     /**
      * @return Breadcrumbs
      */
