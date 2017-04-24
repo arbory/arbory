@@ -89,7 +89,15 @@ class LeafFile extends AbstractField
 
             $leafFile = $repository->createFromUploadedFile( $uploadedFile, $this->getModel() );
 
-            $this->getModel()->{$this->getName()}()->associate( $leafFile );
+            /**
+             * @var $relation HasOne
+             */
+            $relation = $this->getModel()->{$this->getName()}();
+            $localKey = explode( '.', $relation->getQualifiedParentKeyName() )[1];
+
+            $this->getModel()->setAttribute( $localKey, $leafFile->getKey() );
+            $this->getModel()->setRelation( $this->getName(), $leafFile );
+            $this->getModel()->save();
         }
     }
 }
