@@ -22,7 +22,7 @@ trait HasRelationships
     /**
      * @return Relation|BelongsTo|BelongsToMany|HasOne|HasMany|MorphOne|MorphMany|MorphTo
      */
-    protected function getRelation()
+    public function getRelation()
     {
         return $this->getModel()->{$this->getName()}();
     }
@@ -30,7 +30,7 @@ trait HasRelationships
     /**
      * @return Model
      */
-    protected function getRelatedModel()
+    public function getRelatedModel()
     {
         return $this->getRelation()->getRelated();
     }
@@ -38,7 +38,7 @@ trait HasRelationships
     /**
      * @return Collection|Model[]
      */
-    protected function getRelatedItems()
+    public function getRelatedItems()
     {
         return $this->getRelatedModel()->all()->keyBy( $this->getRelatedModel()->getKeyName() );
     }
