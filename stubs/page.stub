@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class {{className}} extends Model implements PageInterface
 {
+    protected $fillable = [
+        {{fillable}}
+    ];
+
     /**
      * @param FieldSet $fieldSet
      * @return void
@@ -17,4 +21,6 @@ class {{className}} extends Model implements PageInterface
     {
         {{fieldSet}}
     }
+
+    {{relations}}
 }

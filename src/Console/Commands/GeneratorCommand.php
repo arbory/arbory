@@ -2,7 +2,10 @@
 
 namespace CubeSystems\Leaf\Console\Commands;
 
+use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
+use CubeSystems\Leaf\Admin\Form\Fields\HasOne;
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
+use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Generatable\AdminController;
 use CubeSystems\Leaf\Generator\Generatable\Controller;
 use CubeSystems\Leaf\Generator\Extras\Field;
@@ -12,14 +15,17 @@ use CubeSystems\Leaf\Generator\Generatable\Model;
 use CubeSystems\Leaf\Generator\Generatable\View;
 use CubeSystems\Leaf\Generator\Generatable\Page;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
+use CubeSystems\Leaf\Generator\MiscGenerators;
 use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Services\FieldTypeRegistry;
 use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class GeneratorCommand extends Command
 {
@@ -36,9 +42,9 @@ class GeneratorCommand extends Command
     protected $description = '';
 
     /**
-     * @var Application
+     * @var Container
      */
-    protected $app;
+    protected $container;
 
     /**
      * @var GeneratorFormatter
@@ -46,16 +52,24 @@ class GeneratorCommand extends Command
     protected $formatter;
 
     /**
-     * @param Application $app
+     * @var Filesystem
+     */
+    protected $fileSystem;
+
+    /**
+     * @param Container $container
      * @param GeneratorFormatter $generatorFormatter
+     * @param Filesystem $fileSystem
      */
     public function __construct(
-        Application $app,
-        GeneratorFormatter $generatorFormatter
+        Container $container,
+        GeneratorFormatter $generatorFormatter,
+        Filesystem $fileSystem
     )
     {
-        $this->app = $app;
+        $this->container = $container;
         $this->formatter = $generatorFormatter;
+        $this->fileSystem = $fileSystem;
 
         parent::__construct();
     }
@@ -68,29 +82,34 @@ class GeneratorCommand extends Command
         /**
          * @var Schema $schema
          */
-        $schema = $this->app->make( Schema::class );
+        $schema = $this->container->make( Schema::class );
         
         $this->line( 'Generator' );
 
         $schema->setName( $this->ask( 'Enter the name of the model' ) );
 
-        if( $this->confirm( 'Define the fields?', true ) )
+        if( $this->confirm( 'Add an id field?', true ) )
         {
-            if( $this->confirm( 'Add an id field?', true ) )
-            {
-                $structure = new Structure();
-                $field = new Field( $structure );
+            $structure = new Structure();
+            $field = new Field( $structure );
 
-                $field->setName( 'id' );
-                $field->setType( Hidden::class );
-                $structure->setType( 'increments' );
-                $structure->setAutoIncrement( true );
+            $field->setName( 'id' );
+            $field->setType( Hidden::class );
+            $structure->setType( 'increments' );
+            $structure->setAutoIncrement( true );
 
-                $schema->addField( $field );
-            }
+            $schema->addField( $field );
+        }
 
-            $schema->setTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
+        $schema->setTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
 
+        if( $this->confirm( 'Define relations?', true ) )
+        {
+            $this->setupRelations( $schema );
+        }
+
+        if( $this->confirm( 'Define fields?', true ) )
+        {
             $this->setupFields( $schema );
         }
 
@@ -109,22 +128,14 @@ class GeneratorCommand extends Command
             $this->line( '' );
         }
 
-        $generatables = [
-            Migration::class,
-            Model::class,
-            Page::class,
-            Controller::class,
-            View::class,
-            AdminController::class
-        ];
-
-        foreach( $generatables as $generatableType )
+        foreach( $this->selectGeneratables() as $generatableType )
         {
             /** @var StubGenerator $generatable */
             $generatable = new $generatableType(
-                $this->app->make( StubRegistry::class ),
-                $this->app->make( Filesystem::class ),
-                $this->app->make( GeneratorFormatter::class ),
+                $this->container->make( StubRegistry::class ),
+                $this->container->make( Filesystem::class ),
+                $this->container->make( GeneratorFormatter::class ),
+                $this->container->make( MiscGenerators::class ),
                 $schema
             );
 
@@ -136,11 +147,28 @@ class GeneratorCommand extends Command
 
     /**
      * @param Schema $schema
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function setupFields( $schema )
+    protected function setupRelations( Schema $schema )
+    {
+        do
+        {
+            $relation = new Relation();
+
+            $relation->setModel( $this->choice( 'Select model', $this->getModels(), 0 ) );
+            $relation->setFieldType( $this->choice( 'Select relation', $this->getRelationFieldTypes(), 0 ) );
+
+            $schema->addRelation( $relation );
+        } while( $this->confirm( '... add another?', true ) );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function setupFields( Schema $schema )
     {
         /** @var FieldTypeRegistry $fieldTypeRegistry */
-        $fieldTypeRegistry = $this->app->make( FieldTypeRegistry::class );
+        $fieldTypeRegistry = $this->container->make( FieldTypeRegistry::class );
         $nthField = 0;
 
         do
@@ -180,5 +208,97 @@ class GeneratorCommand extends Command
 
             $schema->addField( $field );
         } while( $this->confirm( '... add another field?', true ) );
+    }
+
+    /**
+     * @return array
+     */
+    protected function selectGeneratables(): array
+    {
+        $chosenGeneratables = [];
+        $generatables = new Collection( [
+            Migration::class,
+            Model::class,
+            Page::class,
+            Controller::class,
+            View::class,
+            AdminController::class
+        ] );
+
+        $this->info( 'Choose what you would like to generate' );
+        $this->line( 'Enter a comma separated list of items, either by key or class name' );
+        $this->line( '' );
+
+        foreach( $generatables as $index => $generatable )
+        {
+            $reflection = new \ReflectionClass( $generatable );
+
+            $this->output->writeln( sprintf(
+                '  [<fg=yellow>%d</>] %s',
+                $index, $reflection->getShortName()
+            ) );
+        }
+
+        $choices = $this->ask( 'Items', '*' );
+
+        if ( $choices === '*' )
+        {
+            return $generatables->toArray();
+        }
+
+        $choices = explode( ',', str_replace( ' ', '', $choices ) );
+
+        foreach( $choices as $choice )
+        {
+            $chosenGeneratable = $generatables->get( $choice );
+
+            if( !$chosenGeneratable )
+            {
+                $chosenGeneratable = $generatables->first( function( string $generatable ) use ( $choice )
+                {
+                    return Str::contains(
+                        Str::snake( $generatable ),
+                        Str::snake( $choice )
+                    );
+                } );
+            }
+
+            $chosenGeneratables[] = $chosenGeneratable;
+        }
+
+        return array_filter( $chosenGeneratables );
+    }
+
+    /**
+     * @return string[]
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function getModels()
+    {
+        $models = [];
+        $files = $this->fileSystem->files( app_path() );
+
+        foreach( $files as $file )
+        {
+            if( Str::contains( $this->fileSystem->get( $file ), \Illuminate\Database\Eloquent\Model::class ) )
+            {
+                $class = str_replace( [ base_path() . '/', '.php', '/' ], [ '', '', '\\' ], $file );
+
+                $models[] = ucfirst( $class );
+            }
+        }
+
+        return $models;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getRelationFieldTypes()
+    {
+        return [
+            HasOne::class,
+            HasMany::class,
+        ];
     }
 }

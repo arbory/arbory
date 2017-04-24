@@ -3,10 +3,12 @@
 namespace CubeSystems\Leaf\Generator\Generatable;
 
 use CubeSystems\Leaf\Generator\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 class Page extends StubGenerator implements Stubable
 {
@@ -27,7 +29,8 @@ class Page extends StubGenerator implements Stubable
      * @return void
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function registerPage() {
+    protected function registerPage()
+    {
         $className = $this->getClassName();
         $pageClassName = $this->getNamespace() . '\\' . $className;
 
@@ -56,20 +59,28 @@ class Page extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $fieldSet = ( clone $this->schema->getFields() )->transform( function( $field )
-        {
-            /**
-             * @var Field $field
-             */
-            // todo: sprintf
-            return '$fieldSet->add( new ' . $field->getClassName() . '( \'' . $field->getName() . '\' ) );';
-        } );
+        $fields = $this->schema->getFields();
+        $relations = $this->schema->getRelations();
+
+        $useFields = $this->generators->getUseFields( clone $fields );
+        $useRelations = $this->generators->getUseRelations( clone $relations );
+        $useRelationsFields = $this->generators->getUseRelationFields( clone $relations );
+
+        $fillable = $this->generators->getFillable( clone $fields );
+        $fieldSet = $this->generators->getFieldSet( clone $fields );
+        $relationMethods = $this->generators->getRelationMethods( clone $relations );
+        $relationFieldSet = $this->generators->getRelationFieldSet( clone $relations );
+
+        $use = $useFields->merge( $useRelations )->merge( $useRelationsFields );
+        $fieldSet = $fieldSet->merge( $relationFieldSet );
 
         return $this->stubRegistry->make( 'page', [
             'namespace' => $this->getNamespace(),
-            'use' => $this->formatter->useFields( clone $this->schema->getFields() )->implode( PHP_EOL ),
+            'use' => $use->implode( PHP_EOL ),
             'className' => $this->getClassName(),
-            'fieldSet' => $this->formatter->prependSpacing( $fieldSet, 2 )->implode( PHP_EOL ),
+            'fillable' => $this->formatter->indent( $fillable, 2 )->implode( PHP_EOL ),
+            'fieldSet' => $this->formatter->indent( $fieldSet, 2 )->implode( PHP_EOL ),
+            'relations' => $this->formatter->indent( $relationMethods )->implode( PHP_EOL )
         ] );
     }
 

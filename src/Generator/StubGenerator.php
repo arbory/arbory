@@ -29,6 +29,11 @@ abstract class StubGenerator
     protected $formatter;
 
     /**
+     * @var MiscGenerators
+     */
+    protected $generators;
+
+    /**
      * @var Schema
      */
     protected $schema;
@@ -37,18 +42,21 @@ abstract class StubGenerator
      * @param StubRegistry $stubRegistry
      * @param Filesystem $filesystem
      * @param GeneratorFormatter $generatorFormatter
+     * @param MiscGenerators $generators
      * @param Schema $schema
      */
     public function __construct(
         StubRegistry $stubRegistry,
         Filesystem $filesystem,
         GeneratorFormatter $generatorFormatter,
+        MiscGenerators $generators,
         Schema $schema
     )
     {
         $this->stubRegistry = $stubRegistry;
         $this->filesystem = $filesystem;
         $this->formatter = $generatorFormatter;
+        $this->generators = $generators;
         $this->schema = $schema;
     }
 

@@ -56,7 +56,7 @@ class Model extends StubGenerator implements Stubable
             'namespace' => $this->getNamespace(),
             'className' => $this->getClassName(),
             '$tableName' => snake_case( $this->schema->getName() ),
-            'fillable' => $this->formatter->prependSpacing( $fillable, 2 )->implode( PHP_EOL ),
+            'fillable' => $this->formatter->indent( $fillable, 2 )->implode( PHP_EOL ),
             'properties' => $properties->implode( PHP_EOL ),
         ] );
     }

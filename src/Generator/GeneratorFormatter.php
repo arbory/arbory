@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Generator;
 
 use CubeSystems\Leaf\Generator\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Relation;
 use Illuminate\Support\Collection;
 
 Class GeneratorFormatter
@@ -53,25 +54,29 @@ Class GeneratorFormatter
     }
 
     /**
-     * @param Collection|string $to
+     * @param Collection|string $items
      * @param int $times
      * @return Collection
      */
-    public function prependSpacing( $to, $times = 1 )
+    public function indent( $items, $times = 1 )
     {
-        if( !$to instanceof Collection )
+        if( !$items instanceof Collection )
         {
-            $to = new Collection( $to );
+            $items = new Collection( $items );
         }
 
-        return $to->transform( function( $item, $key ) use ( $times )
+        return $items->transform( function( $item ) use ( $times )
         {
-            if( $key === 0 )
+            $lines = explode( PHP_EOL, $item );
+
+            next($lines);
+
+            foreach( $lines as  &$line )
             {
-                return $item;
+                $line = str_repeat( "\t", $times ) . $line;
             }
 
-            return str_repeat( "\t", $times ) . $item;
+            return count( $lines ) === 1 ? $item : implode( PHP_EOL, $lines );
         } );
     }
 
@@ -87,6 +92,21 @@ Class GeneratorFormatter
              * @var Field $field
              */
             return $this->use( $field->getType() );
+        } )->unique();
+    }
+
+    /**
+     * @param Collection $relations
+     * @return Collection
+     */
+    public function useRelations( Collection $relations )
+    {
+        return $relations->transform( function( $relation )
+        {
+            /**
+             * @var Relation $relation
+             */
+            return $this->use( $relation->getModel() );
         } )->unique();
     }
 

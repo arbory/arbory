@@ -31,7 +31,7 @@ class Controller extends StubGenerator implements Stubable
             'namespace' => $this->getNamespace(),
             'className' => $this->getClassName(),
             'viewPath' => 'controllers.' . snake_case( $this->schema->getName() ) . '.index',
-            'viewFields' => $this->formatter->prependSpacing( $viewFields, 3 )->implode( PHP_EOL ),
+            'viewFields' => $this->formatter->indent( $viewFields, 3 )->implode( PHP_EOL ),
         ] );
     }
 

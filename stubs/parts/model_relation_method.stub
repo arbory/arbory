@@ -1,0 +1,7 @@
+/**
+ *
+ */
+public function {{methodName}}()
+{
+    return $this->{{relationMethod}}( {{modelClass}}::class, '{{relationName}}' );
+}

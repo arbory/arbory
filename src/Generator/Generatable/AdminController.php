@@ -81,8 +81,8 @@ class AdminController extends StubGenerator implements Stubable
             'className' => $this->getClassName(),
             'resourceName' => $this->formatter->className( $this->schema->getName() ). '::class',
             'use' => $useFields->implode( PHP_EOL ),
-            'formFields' => $this->formatter->prependSpacing( $formFields, 3 )->implode( PHP_EOL ),
-            'gridFields' => $this->formatter->prependSpacing( $gridFields, 3 )->implode( PHP_EOL ),
+            'formFields' => $this->formatter->indent( $formFields, 3 )->implode( PHP_EOL ),
+            'gridFields' => $this->formatter->indent( $gridFields, 3 )->implode( PHP_EOL ),
         ] );
     }
 

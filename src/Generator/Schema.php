@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Generator;
 
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Generator\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Extras\Structure;
 use Illuminate\Support\Collection;
 
@@ -20,6 +21,11 @@ class Schema
     protected $fields;
 
     /**
+     * @var Collection|Field
+     */
+    protected $relations;
+
+    /**
      * @var bool
      */
     protected $timestamps;
@@ -28,6 +34,7 @@ class Schema
     public function __construct()
     {
         $this->fields = new Collection();
+        $this->relations = new Collection();
     }
 
     /**
@@ -45,6 +52,23 @@ class Schema
     public function addField( Field $field )
     {
         $this->fields->push( $field );
+    }
+
+    /**
+     * @return Field|Collection
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
+    /**
+     * @param Relation $relation
+     * @return void
+     */
+    public function addRelation( Relation $relation )
+    {
+        $this->relations->push( $relation );
     }
 
     /**
