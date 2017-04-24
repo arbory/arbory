@@ -91,7 +91,7 @@ class Form implements Renderable
         {
             $this->title = ( $this->model->getKey() )
                 ? (string) $this->model
-                : trans( 'leaf.resources.create_new' );
+                : trans( 'leaf::resources.create_new' );
         }
 
         return $this->title;
@@ -249,13 +249,6 @@ class Form implements Renderable
      */
     public function render()
     {
-        try
-        {
-            return $this->builder->render();
-        }
-        catch( Exception $e )
-        {
-            return ExceptionMessage::create( $e )->render();
-        }
+        return $this->builder->render();
     }
 }

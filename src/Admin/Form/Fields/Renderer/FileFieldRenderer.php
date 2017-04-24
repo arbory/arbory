@@ -48,11 +48,22 @@ class FileFieldRenderer extends InputFieldRenderer
 
         if( $leafFile )
         {
-            $value->append( Html::div( $leafFile->getOriginalName() . ' / ' . $leafFile->getSize() ) );
+            $fileDetails = Html::div( $leafFile->getOriginalName() . ' / ' . $this->getReadableFileSize( $leafFile ) );
+            $fileDetails->append( Html::button()->addClass( 'remove fa fa-times' ) );
+            $value->append( $fileDetails );
         }
 
         $value->append( $input );
 
         return $this->buildField( $label, $value );
+    }
+
+    /**
+     * @param LeafFile $file
+     * @return string
+     */
+    private function getReadableFileSize( LeafFile $file ): string
+    {
+        return ( new FileSize( $file ) )->getReadableSize();
     }
 }

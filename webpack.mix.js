@@ -17,6 +17,7 @@ module.exports = function (mix) {
     );
 
     mix.scripts([
+            './vendor/cubesystems/leaf/resources/assets/javascripts/environment.js',
             './public/leaf/js/vendor.min.js',
             './public/leaf/js/dependencies.min.js',
         ],
@@ -40,6 +41,11 @@ module.exports = function (mix) {
 
     mix.sass(
         './vendor/cubesystems/leaf/resources/assets/stylesheets/controllers/sessions.scss',
+        './public/leaf/css/controllers/'
+    );
+
+    mix.sass(
+        './vendor/cubesystems/leaf/resources/assets/stylesheets/controllers/menu_builder.scss',
         './public/leaf/css/controllers/'
     );
 

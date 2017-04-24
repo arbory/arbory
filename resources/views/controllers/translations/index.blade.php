@@ -1,28 +1,17 @@
 @extends('leaf::layout.main')
 
 @section('content.header')
-    <header>
-        {{--@include('leaf::partials.breadcrumbs')--}}
-    </header>
+    {!! $header !!}
 @stop
 
 @section('content')
     <section>
 
         <header>
-            <h1>@lang('leaf.translations.all_translations')</h1>
+            <h1>@lang('leaf::translations.all_translations')</h1>
         </header>
 
         <div class="body">
-
-            <form>
-
-                <input type="text" name="search" value="{{ $search }}"/>
-
-                <button class="button" type="submit">Search!</button>
-
-            </form>
-
             <table class="table">
 
                 <thead>

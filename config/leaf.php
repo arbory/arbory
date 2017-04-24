@@ -59,7 +59,10 @@ return [
             'authorization_type' => Module::AUTHORIZATION_TYPE_ROLES,
             'authorized_roles' => [ 'administrator' ],
         ],
-
+        [
+            'name' => 'menu',
+            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\MenuBuilderController::class,
+        ],
     ],
     'pagination' => [
         'items_per_page' => 15,
@@ -98,4 +101,7 @@ return [
             ],
         ],
     ],
+    'locales' => [
+        'en'
+    ]
 ];

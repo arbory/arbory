@@ -4,47 +4,34 @@ namespace CubeSystems\Leaf\Menu;
 
 use CubeSystems\Leaf\Html\Elements;
 use CubeSystems\Leaf\Html\Html;
+use Illuminate\Support\Collection;
 
-/**
- * Class Menu
- * @package CubeSystems\Leaf\Menu
- */
 class Menu
 {
     /**
-     * @var AbstractItem[]
+     * @var Collection
      */
     protected $items;
 
     /**
-     * @param array $itemsConfigurationArray
+     * @param Collection|null $items
      */
-    public function __construct( array $itemsConfigurationArray = [] )
+    public function __construct( Collection $items = null )
     {
-        $this->addItems( $itemsConfigurationArray );
+        $this->items = $items ?: new Collection();
     }
 
     /**
-     * @param array $itemsConfigurationArray
+     * @param AbstractItem $item
+     * @return void
      */
-    public function addItems( array $itemsConfigurationArray = [] )
+    public function addItem( AbstractItem $item )
     {
-        foreach( $itemsConfigurationArray as $itemConfigurationArray )
-        {
-            $this->addItem( $itemConfigurationArray );
-        }
+        $this->items->push( $item );
     }
 
     /**
-     * @param array $itemConfigurationArray
-     */
-    public function addItem( array $itemConfigurationArray = [] )
-    {
-        $this->items[] = AbstractItem::make( $itemConfigurationArray );
-    }
-
-    /**
-     * @return AbstractItem[]
+     * @return Collection
      */
     public function getItems()
     {
@@ -60,7 +47,12 @@ class Menu
 
         foreach( $this->getItems() as $item )
         {
-            $li = Html::li( )
+            if( !$item )
+            {
+                continue;
+            }
+
+            $li = Html::li()
                 ->addAttributes( [ 'data-name' => '' ] );
 
             if( $item->render( $li ) )
@@ -70,5 +62,83 @@ class Menu
         }
 
         return $list;
+    }
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function removeItemByModelId( int $id )
+    {
+        $this->items = $this->items->reject( function( AbstractItem $item ) use ( $id )
+        {
+            if( !$item->hasModel() )
+            {
+                return false;
+            }
+
+            return $item->getModel()->getId() === $id;
+        } );
+    }
+
+    /**
+     * @param int $id
+     * @return AbstractItem|null
+     */
+    public function findItemByModelId( int $id )
+    {
+        return $this->flatten()->filter( function( AbstractItem $item ) use ( $id )
+        {
+            if( !$item->hasModel() )
+            {
+                return false;
+            }
+
+            return $item->getModel()->getId() === $id;
+        } )->first();
+    }
+
+    /**
+     * @param string $module
+     * @return AbstractItem|null
+     */
+    public function findItemByModule( string $module )
+    {
+        return $this->flatten()->filter( function( AbstractItem $item ) use ( $module )
+        {
+            if( !$item->hasModel() )
+            {
+                return false;
+            }
+
+            return $item->getModel()->getModule() === $module;
+        } )->first();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function flatten(): Collection
+    {
+        return $this->flattenItems( $this->getItems() );
+    }
+
+    /**
+     * @param Collection $items
+     * @return Collection
+     */
+    protected function flattenItems( Collection $items )
+    {
+        $result = new Collection();
+
+        $result = $result->merge( $items );
+
+        foreach( $items as $item )
+        {
+            /** @var AbstractItem $item */
+            $result = $result->merge( $this->flattenItems( $item->getChildren() ) );
+        }
+
+        return $result;
     }
 }

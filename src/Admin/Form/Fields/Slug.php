@@ -47,7 +47,7 @@ class Slug extends AbstractField
 
         $button = Button::create()
             ->type( 'button', 'secondary generate' )
-            ->title( trans( 'leaf.fields.slug.suggest_slug' ) )
+            ->title( trans( 'leaf::fields.slug.suggest_slug' ) )
             ->withIcon( 'keyboard-o' )
             ->iconOnly()
             ->render();
@@ -55,7 +55,7 @@ class Slug extends AbstractField
         return Html::div( [
             Html::div( $label )->addClass( 'label-wrap' ),
             Html::div( [ $input, $button ] )->addClass( 'value' ),
-            Html::div( Html::link( [ $baseUrl . '/', Html::span( $uri ) ] ) )->addClass( 'link' ),
+            Html::div( Html::link( [ $baseUrl . '/' . Html::span( $uri ) ] ) )->addClass( 'link' ),
         ] )->addClass( 'field type-text' )->addAttributes( [ 'data-name' => 'slug' ] );
     }
 

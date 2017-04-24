@@ -1,0 +1,3 @@
+Page::register( {{pageClassName}}::class )->routes( function () {
+    Route::get( '/', {{controllerClassName}}::class . '@index' )->name( 'index' );
+} );

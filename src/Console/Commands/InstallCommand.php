@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Console\Commands;
 
 use Cartalyst\Sentinel\Sentinel;
 use CubeSystems\Leaf\Providers\LeafServiceProvider;
+use CubeSystems\Leaf\Services\StubRegistry;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
@@ -12,6 +13,7 @@ use Illuminate\Filesystem\Filesystem;
 use InvalidArgumentException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use LeafDatabaseSeeder;
+use Illuminate\Console\DetectsApplicationNamespace;
 
 /**
  * Class SeedCommand
@@ -19,7 +21,7 @@ use LeafDatabaseSeeder;
  */
 class InstallCommand extends Command
 {
-    use ConfirmableTrait;
+    use ConfirmableTrait, DetectsApplicationNamespace;
 
     /**
      * @var string
@@ -39,27 +41,35 @@ class InstallCommand extends Command
     /**
      * @var Filesystem
      */
-    private $filesystem;
+    protected $filesystem;
 
     /**
      * @var DatabaseManager
      */
-    private $databaseManager;
+    protected $databaseManager;
+
+    /**
+     * @var StubRegistry
+     */
+    protected $stubRegistry;
 
     /**
      * @param Sentinel $sentinel
      * @param Filesystem $filesystem
      * @param DatabaseManager $databaseManager
+     * @param StubRegistry $stubRegistry
      */
     public function __construct(
         Sentinel $sentinel,
         Filesystem $filesystem,
-        DatabaseManager $databaseManager
+        DatabaseManager $databaseManager,
+        StubRegistry $stubRegistry
     )
     {
         $this->sentinel = $sentinel;
         $this->filesystem = $filesystem;
         $this->databaseManager = $databaseManager;
+        $this->stubRegistry = $stubRegistry;
 
         parent::__construct();
     }
@@ -81,14 +91,69 @@ class InstallCommand extends Command
             return;
         }
 
+        $this->createDirectories();
+        $this->seedAdminControllers();
         $this->publishConfig();
         $this->addWebpackTask();
         $this->runMigrations();
         $this->runSeeder();
+        $this->publishLanguages();
         $this->createAdminUser();
         $this->npmDependencies();
 
         $this->info( 'Installation completed!' );
+    }
+
+    /**
+     * @return void
+     */
+    protected function createDirectories()
+    {
+        $this->info( 'Creating directories' );
+
+        $directories = [
+            app_path( 'Http/Controllers/Admin' ),
+            app_path( 'Pages' ),
+            base_path( 'resources/views/admin' ),
+            base_path( 'resources/views/controllers' )
+        ];
+
+        foreach( $directories as $directory )
+        {
+            if( !$this->filesystem->isDirectory( $directory ) )
+            {
+                $this->filesystem->makeDirectory( $directory );
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function seedAdminControllers()
+    {
+        $directory = app_path( 'Http/Controllers/Admin/' );
+        $controllers = [
+            'UsersController',
+            'RolesController',
+            'NodesController'
+        ];
+
+        foreach( $controllers as $className )
+        {
+            $path = $directory . $className . '.php';
+
+            if( !$this->filesystem->isFile( $path ) )
+            {
+                $content = $this->stubRegistry->make( 'extended_leaf_admin_controller', [
+                    'namespaceRoot' => $this->getAppNamespace(),
+                    'className' => $className,
+                    'extendsClassName' => $className,
+                ] );
+
+                $this->filesystem->put( $path, $content );
+            }
+        }
     }
 
     /**
@@ -101,6 +166,23 @@ class InstallCommand extends Command
             '--provider' => LeafServiceProvider::class,
             '--tag' => 'config',
         ] );
+    }
+
+    /**
+     *
+     */
+    protected function publishLanguages()
+    {
+        $this->info( 'Publishing language resources' );
+
+        $this->call( 'vendor:publish', [
+            '--provider' => LeafServiceProvider::class,
+            '--tag' => 'lang',
+            '--force' => null,
+        ] );
+
+        $this->call( 'translator:load' );
+        $this->call( 'translator:flush' );
     }
 
     /**

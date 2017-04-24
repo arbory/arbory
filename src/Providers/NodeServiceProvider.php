@@ -5,6 +5,12 @@ namespace CubeSystems\Leaf\Providers;
 use CubeSystems\Leaf\Nodes\ContentTypeRegister;
 use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
 use CubeSystems\Leaf\Nodes\Node;
+use CubeSystems\Leaf\Services\Content\PageBuilder;
+use CubeSystems\Leaf\Services\ModuleBuilder;
+use CubeSystems\Leaf\Support\Facades\AdminModule;
+use CubeSystems\Leaf\Support\Facades\LeafRouter;
+use CubeSystems\Leaf\Support\Facades\Page;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Routing\Router as LaravelRouter;
@@ -33,17 +39,34 @@ class NodeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->routes = new ContentTypeRoutesRegister();
+        AliasLoader::getInstance()->alias( 'LeafRouter', LeafRouter::class );
+        AliasLoader::getInstance()->alias( 'AdminModule', AdminModule::class );
+        AliasLoader::getInstance()->alias( 'Page', Page::class );
 
         $this->app->singleton( ContentTypeRegister::class, function ()
         {
             return new ContentTypeRegister();
         } );
 
+        $this->app->singleton( 'leaf_module_builder', function( $app )
+        {
+            return new ModuleBuilder( $app['leaf.modules'] );
+        } );
+
         $this->app->singleton( 'leaf_router', function ()
         {
-            return $this->routes;
+            return $this->app->make( ContentTypeRoutesRegister::class );
         } );
+
+        $this->app->singleton( 'leaf_page_builder', function()
+        {
+            return new PageBuilder(
+                $this->app->make( ContentTypeRegister::class ),
+                $this->app->make( 'leaf_router' )
+            );
+        } );
+
+        $this->routes = $this->app->make( 'leaf_router' );
     }
 
     /**

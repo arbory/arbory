@@ -9,6 +9,7 @@ Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
     \CubeSystems\Leaf\Admin\Module\Route::register( \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class );
     \CubeSystems\Leaf\Admin\Module\Route::register( \CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class );
     \CubeSystems\Leaf\Admin\Module\Route::register( \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class );
+    \CubeSystems\Leaf\Admin\Module\Route::register( \CubeSystems\Leaf\Http\Controllers\Admin\MenuBuilderController::class );
 
     Route::get( 'dashboard', [
         'as' => 'dashboard',

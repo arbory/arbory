@@ -67,15 +67,15 @@ class LeafFile extends AbstractField
 
     /**
      * @param Request $request
-     * @return bool|void
+     * @return void
      */
     public function beforeModelSave( Request $request )
     {
-        return true;
     }
 
     /**
      * @param Request $request
+     * @return void
      */
     public function afterModelSave( Request $request )
     {

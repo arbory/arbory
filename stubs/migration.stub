@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class {{className}} extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('{{schemaName}}', function (Blueprint $table) {
+            {{schemaFields}}
+        });
+
+        Schema::create('{{schemaName}}_pages', function (Blueprint $table) {
+            {{schemaFields}}
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists( '{{schemaName}}' );
+        Schema::dropIfExists( '{{schemaName}}_pages' );
+    }
+}

@@ -20,25 +20,6 @@ jQuery(function()
       jQuery(e.editor.element.$).addClass("ckeditor-initialized");
     });
 
-    var remove_array_value = function(arr, value) {
-        var b = '';
-        for (b in arr)
-        {
-            if (arr[b] === value)
-            {
-                arr.splice(b, 1);
-                break;
-            }
-        }
-    };
-
-    var remove_toolbar_item = function(toolbar_config, removable_item) {
-        for(var i = 0; i < toolbar_config.length; i++)
-        {
-            remove_array_value(toolbar_config[i], removable_item);
-        }
-    };
-
     body.on( 'richtextinit', 'textarea.richtext', function( event, extra_config )
     {
         var textarea = jQuery(this);
@@ -67,10 +48,6 @@ jQuery(function()
         if (textarea.data('attachment-upload-url'))
         {
             config.filebrowserUploadUrl = textarea.data('attachment-upload-url');
-        }
-        else
-        {
-            remove_toolbar_item(config.toolbar, 'Image');
         }
 
         if (textarea.data('external-stylesheet'))

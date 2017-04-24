@@ -24,6 +24,9 @@ class ModuleRegistry
      */
     public function __construct( array $modulesConfigArray = [] )
     {
+        $this->modulesByName = [];
+        $this->modulesByControllerClass = [];
+
         foreach( $modulesConfigArray as $moduleConfigArray )
         {
             $moduleConfig = new ModuleConfiguration( $moduleConfigArray );
@@ -80,5 +83,21 @@ class ModuleRegistry
     public function findModuleByController( $instance )
     {
         return $this->findModuleByControllerClass( get_class( $instance ) );
+    }
+
+    /**
+     * @return Module[]
+     */
+    public function getModulesByName(): array
+    {
+        return $this->modulesByName;
+    }
+
+    /**
+     * @return Module[]
+     */
+    public function getModulesByControllerClass(): array
+    {
+        return $this->modulesByControllerClass;
     }
 }

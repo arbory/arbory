@@ -52,7 +52,7 @@ class Route
      * @param $class
      * @return string
      */
-    protected static function generateSlugFromClassName( $class )
+    public static function generateSlugFromClassName( $class )
     {
         if( !preg_match( '#Controllers(\\\Admin)?\\\(?P<name>.*)Controller#ui', $class, $matches ) )
         {

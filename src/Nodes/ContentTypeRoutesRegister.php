@@ -23,11 +23,11 @@ class ContentTypeRoutesRegister
     protected $contentTypesRegister;
 
     /**
-     * Router constructor.
+     * @param ContentTypeRegister $contentTypeRegister
      */
-    public function __construct()
+    public function __construct( ContentTypeRegister $contentTypeRegister )
     {
-        $this->contentTypesRegister = app()->make( ContentTypeRegister::class );
+        $this->contentTypesRegister = $contentTypeRegister;
     }
 
     /**

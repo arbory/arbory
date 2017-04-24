@@ -32,7 +32,7 @@ class Select extends AbstractField
             ? $request->input( $this->getNameSpacedName() )
             : null;
 
-        if( $this->options->has( $value ) )
+        if( !$this->options->has( $value ) )
         {
             throw new \RuntimeException( 'Bad select field value for "' . $this->getName() . '  "' );
         }

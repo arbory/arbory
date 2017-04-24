@@ -1,22 +1,34 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
+use CubeSystems\Leaf\Admin\Form\Fields\Checkbox;
+use CubeSystems\Leaf\Admin\Form\Fields\DateTime;
+use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
+use CubeSystems\Leaf\Admin\Form\Fields\LeafFile;
+use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
+use CubeSystems\Leaf\Admin\Form\Fields\Text;
+use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
+use CubeSystems\Leaf\Console\Commands\GenerateCommand;
+use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
 use CubeSystems\Leaf\Console\Commands\SeedCommand;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
-use CubeSystems\Leaf\Menu\Menu;
+use CubeSystems\Leaf\Menu\MenuFactory;
+use CubeSystems\Leaf\Nodes\MenuItem;
+use CubeSystems\Leaf\Services\FieldTypeRegistry;
 use CubeSystems\Leaf\Services\ModuleRegistry;
+use CubeSystems\Leaf\Services\StubRegistry;
+use CubeSystems\Leaf\Views\LayoutViewComposer;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use File;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Roboc\Glide\GlideImageServiceProvider;
 use Route;
-use Sentinel;
-use View;
 
 /**
  * Class LeafServiceProvider
@@ -31,25 +43,22 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        config()->set( 'translator.locales', config( 'translatable.locales' ) );
-
         $this->registerResources();
         $this->registerServiceProviders();
         $this->registerAliases();
         $this->registerModuleRegistry();
         $this->registerCommands();
         $this->registerRoutesAndMiddlewares();
-        
-        View::composer( '*layout*', function ( \Illuminate\View\View $view )
-        {
-            $view->with( 'user', Sentinel::getUser( true ) );
-        } );
+        $this->registerFields();
+        $this->registerGeneratorStubs();
+        $this->registerLocales();
+        $this->registerViewComposers();
+
+        $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'leaf' );
 
         $this->app->bind( 'leaf.menu', function ()
         {
-            return new Menu(
-                config( 'leaf.menu' )
-            );
+            return $this->app->make( MenuFactory::class )->build( MenuItem::all() );
         }, true );
     }
 
@@ -63,6 +72,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( LeafFileServiceProvider::class );
         $this->app->register( LeafAuthServiceProvider::class );
         $this->app->register( GlideImageServiceProvider::class );
+        $this->app->register( AssetServiceProvider::class );
     }
 
     /**
@@ -94,6 +104,10 @@ class LeafServiceProvider extends ServiceProvider
         $this->publishes( [
             __DIR__ . '/../../stubs/admin_routes.stub' => base_path( '/routes/admin.php' )
         ], 'config' );
+
+        $this->publishes([
+            __DIR__ . '/../../resources/lang/' => base_path('resources/lang/vendor/leaf')
+        ], 'lang');
 
         $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
         $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
@@ -163,18 +177,32 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerCommands()
     {
-        $this->app->singleton( 'leaf.seed', function ( $app )
+        $commands = [
+            'leaf.seed' => SeedCommand::class,
+            'leaf.install' => InstallCommand::class,
+            'leaf.generator' => GeneratorCommand::class,
+            'leaf.generate' => GenerateCommand::class
+        ];
+
+        foreach( $commands as $containerKey => $commandClass )
         {
-            return new SeedCommand( $app['db'] );
+            $this->registerCommand( $containerKey, $commandClass );
+        }
+    }
+
+    /**
+     * @param string $containerKey
+     * @param string $commandClass
+     * @return void
+     */
+    private function registerCommand( string $containerKey, string $commandClass )
+    {
+        $this->app->singleton( $containerKey, function () use ( $commandClass )
+        {
+            return $this->app->make( $commandClass );
         } );
 
-        $this->app->singleton( 'leaf.install', function ( $app )
-        {
-            return $app->make( InstallCommand::class );
-        } );
-
-        $this->commands( 'leaf.seed' );
-        $this->commands( 'leaf.install' );
+        $this->commands( $containerKey );
     }
 
     /**
@@ -188,6 +216,69 @@ class LeafServiceProvider extends ServiceProvider
                 $app->config['leaf.modules']
             );
         } );
+
+        $this->app->singleton( ModuleRegistry::class, function ( Application $app )
+        {
+            return $app[ 'leaf.modules' ];
+        } );
+    }
+
+    /**
+     * Register leaf fields
+     */
+    private function registerFields()
+    {
+        $this->app->singleton( FieldTypeRegistry::class, function ( Application $app )
+        {
+            $fieldTypeRegistry = new FieldTypeRegistry();
+
+            $fieldTypeRegistry->registerByType( 'integer', Hidden::class, 'int' );
+            $fieldTypeRegistry->registerByType( 'string', Text::class, 'string' );
+            $fieldTypeRegistry->registerByType( 'text', Textarea::class, 'string' );
+            $fieldTypeRegistry->registerByType( 'longtext', Richtext::class, 'string' );
+            $fieldTypeRegistry->registerByType( 'datetime', DateTime::class, 'string' );
+            $fieldTypeRegistry->registerByType( 'boolean', Checkbox::class, 'bool' );
+
+            $fieldTypeRegistry->registerByRelation( 'leaf_files', LeafFile::class );
+            $fieldTypeRegistry->registerByRelation( 'file', LeafFile::class );
+
+            return $fieldTypeRegistry;
+        } );
+    }
+
+    /**
+     * Register stubs used by generators
+     */
+    private function registerGeneratorStubs()
+    {
+        $this->app->singleton( StubRegistry::class, function( Application $app )
+        {
+            $stubRegistry = new StubRegistry();
+
+            $stubRegistry->registerStubs(
+                $app[ Filesystem::class ],
+                base_path( 'vendor/cubesystems/leaf/stubs' )
+            );
+
+            return $stubRegistry;
+        } );
+    }
+
+    /**
+     * @return void
+     */
+    private function registerLocales()
+    {
+        config()->set( 'translator.locales', config( 'leaf.locales' ) );
+        config()->set( 'translatable.locales', config( 'leaf.locales' ) );
+    }
+
+    /**
+     * @return void
+     */
+    private function registerViewComposers()
+    {
+        $this->app->make( 'view' )->composer( '*layout*', LayoutViewComposer::class );
     }
 
     /**
