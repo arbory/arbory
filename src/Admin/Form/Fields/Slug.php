@@ -55,7 +55,11 @@ class Slug extends AbstractField
         return Html::div( [
             Html::div( $label )->addClass( 'label-wrap' ),
             Html::div( [ $input, $button ] )->addClass( 'value' ),
-            Html::div( Html::link( [ $baseUrl . '/' . Html::span( $uri ) ] ) )->addClass( 'link' ),
+            Html::div(
+                Html::link(
+                    [ $baseUrl . '/' . Html::span( $uri ) ]
+                )->addAttributes( [ 'href' => $baseUrl . '/' . $uri ] )
+            )->addClass( 'link' ),
         ] )->addClass( 'field type-text' )->addAttributes( [ 'data-name' => 'slug' ] );
     }
 

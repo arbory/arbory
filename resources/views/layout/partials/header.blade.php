@@ -3,7 +3,13 @@
         <img alt="Leaf" src="/leaf/images/logo.png"/>
     </a>
     <a class="button profile" href="#">
-        <span class="name">{{ $user->first_name }} {{ $user->last_name }}</span>
+        <span class="name">
+            @if($user->first_name)
+                {{ $user->first_name }} {{ $user->last_name }}
+            @else
+                {{ $user->email }}
+            @endif
+        </span>
     </a>
     <form class="sign-out" action="{{route('admin.logout')}}" accept-charset="UTF-8" method="post">
         {{csrf_field()}}
