@@ -7,6 +7,8 @@ use CubeSystems\Leaf\Generator\Extras\Structure;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use DateTimeImmutable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Migration extends StubGenerator implements Stubable
 {
@@ -15,31 +17,10 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $schemaFields = ( clone $this->schema->getFields() )->transform( function( $field )
-        {
-            /**
-             * @var Field $field
-             */
-            $structure = $field->getStructure();
-
-            return sprintf(
-                '$table->%s( \'%s\'%s )%s;',
-                $structure->getType(),
-                $field->getDatabaseName(),
-                $this->buildSecondArgument( $structure ),
-                $this->buildColumn( $structure )
-            );
-        } );
-
-        if( $this->schema->usesTimestamps() )
-        {
-            $schemaFields->push( '$table->timestamps();' );
-        }
-
         return $this->stubRegistry->make( 'migration', [
             'className' => $this->getClassName(),
-            'schemaName' => snake_case( $this->schema->getName() ),
-            'schemaFields' => $this->formatter->indent( $schemaFields,3 )->implode( PHP_EOL )
+            'schemaName' => Str::snake( $this->schema->getName() ),
+            'schemaFields' => $this->getCompiledSchemaFields()
         ] );
     }
 
@@ -48,7 +29,7 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return 'Create' . $this->formatter->className(  $this->schema->getName() ) . 'Table';
+        return 'Create' . $this->formatter->className( $this->schema->getName() ) . 'Table';
     }
 
     /**
@@ -89,7 +70,7 @@ class Migration extends StubGenerator implements Stubable
     {
         $argument = null;
 
-        if ( $structure->getType() === 'integer' )
+        if( $structure->getType() === 'integer' )
         {
             $argument = $structure->isAutoIncrement();
         }
@@ -121,5 +102,31 @@ class Migration extends StubGenerator implements Stubable
         }
 
         return $builder;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledSchemaFields(): string
+    {
+        $fields = $this->schema->getFields()->map( function( Field $field )
+        {
+            $structure = $field->getStructure();
+
+            return sprintf(
+                '$table->%s( \'%s\'%s )%s;',
+                $structure->getType(),
+                $field->getDatabaseName(),
+                $this->buildSecondArgument( $structure ),
+                $this->buildColumn( $structure )
+            );
+        } );
+
+        if( $this->schema->usesTimestamps() )
+        {
+            $fields->push( '$table->timestamps();' );
+        }
+
+        return $this->formatter->indent( $fields->implode( PHP_EOL ), 3 );
     }
 }

@@ -15,7 +15,6 @@ use CubeSystems\Leaf\Generator\Generatable\Model;
 use CubeSystems\Leaf\Generator\Generatable\View;
 use CubeSystems\Leaf\Generator\Generatable\Page;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
-use CubeSystems\Leaf\Generator\MiscGenerators;
 use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Services\FieldTypeRegistry;
@@ -135,7 +134,6 @@ class GeneratorCommand extends Command
                 $this->container->make( StubRegistry::class ),
                 $this->container->make( Filesystem::class ),
                 $this->container->make( GeneratorFormatter::class ),
-                $this->container->make( MiscGenerators::class ),
                 $schema
             );
 
