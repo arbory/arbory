@@ -25,6 +25,7 @@ use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class GeneratorCommand extends Command
 {
@@ -82,7 +83,7 @@ class GeneratorCommand extends Command
          * @var Schema $schema
          */
         $schema = $this->container->make( Schema::class );
-        
+
         $this->line( 'Generator' );
 
         $schema->setName( $this->ask( 'Enter the name of the model' ) );
@@ -102,12 +103,12 @@ class GeneratorCommand extends Command
 
         $schema->setTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
 
-        if( $this->confirm( 'Define relations?', true ) )
+        if( $this->askEnterSection( 'Define relations?', true ) )
         {
             $this->setupRelations( $schema );
         }
 
-        if( $this->confirm( 'Define fields?', true ) )
+        if( $this->askEnterSection( 'Define fields?', true ) )
         {
             $this->setupFields( $schema );
         }
@@ -239,7 +240,7 @@ class GeneratorCommand extends Command
 
         $choices = $this->ask( 'Items', '*' );
 
-        if ( $choices === '*' )
+        if( $choices === '*' )
         {
             return $generatables->toArray();
         }
@@ -298,5 +299,27 @@ class GeneratorCommand extends Command
             HasOne::class,
             HasMany::class,
         ];
+    }
+
+    /**
+     * @param string $message
+     * @param bool $default
+     * @return bool
+     * @throws \Symfony\Component\Console\Exception\LogicException
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     */
+    protected function askEnterSection( string $message, bool $default )
+    {
+        $helper = $this->getHelper( 'question' );
+        $question = new ConfirmationQuestion(
+            sprintf( ' <fg=blue>%s</> [<fg=yellow>%s</>]: ' . PHP_EOL . ' > ', $message, $default  ? 'yes' : 'no' ),
+            $default
+        );
+
+        $result = $helper->ask( $this->input, $this->output, $question );
+
+        $this->line('');
+
+        return $result;
     }
 }
