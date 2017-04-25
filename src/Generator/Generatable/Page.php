@@ -7,6 +7,7 @@ use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ReflectionClass;
 
@@ -59,28 +60,13 @@ class Page extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $fields = $this->schema->getFields();
-        $relations = $this->schema->getRelations();
-
-        $useFields = $this->generators->getUseFields( clone $fields );
-        $useRelations = $this->generators->getUseRelations( clone $relations );
-        $useRelationsFields = $this->generators->getUseRelationFields( clone $relations );
-
-        $fillable = $this->generators->getFillable( clone $fields );
-        $fieldSet = $this->generators->getFieldSet( clone $fields );
-        $relationMethods = $this->generators->getRelationMethods( clone $relations );
-        $relationFieldSet = $this->generators->getRelationFieldSet( clone $relations );
-
-        $use = $useFields->merge( $useRelations )->merge( $useRelationsFields );
-        $fieldSet = $fieldSet->merge( $relationFieldSet );
-
         return $this->stubRegistry->make( 'page', [
             'namespace' => $this->getNamespace(),
-            'use' => $use->implode( PHP_EOL ),
+            'use' => $this->getCompiledUseClasses(),
             'className' => $this->getClassName(),
-            'fillable' => $this->formatter->indent( $fillable, 2 )->implode( PHP_EOL ),
-            'fieldSet' => $this->formatter->indent( $fieldSet, 2 )->implode( PHP_EOL ),
-            'relations' => $this->formatter->indent( $relationMethods )->implode( PHP_EOL )
+            'fillable' => $this->getCompiledFillableFields(),
+            'fieldSet' => $this->getCompiledFieldSet(),
+            'relations' => $this->getCompiledRelationMethods()
         ] );
     }
 
@@ -114,5 +100,125 @@ class Page extends StubGenerator implements Stubable
     public function getPath(): string
     {
         return app_path( 'Pages/' . $this->getFilename() );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledUseClasses(): string
+    {
+        return
+            $this->getUseFields()
+                ->merge( $this->getUseRelations() )
+                ->merge( $this->getUseRelationFields() )
+                ->implode( PHP_EOL );
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getUseFields(): Collection
+    {
+        return $this->schema->getFields()->map( function( Field $field )
+        {
+            return $this->formatter->use( $field->getType() );
+        } )->unique();
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getUseRelations(): Collection
+    {
+        return $this->schema->getRelations()->map( function( Relation $relation )
+        {
+            return $this->formatter->use( $relation->getModel() );
+        } )->unique();
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getUseRelationFields(): Collection
+    {
+        return $this->schema->getRelations()->map( function( Relation $relation )
+        {
+            return $this->formatter->use( $relation->getFieldType() );
+        } )->unique();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledFillableFields(): string
+    {
+        $fields = $this->schema->getFields()->map( function( Field $field )
+        {
+            return '\'' . $this->formatter->field( $field->getName() ) . '\',';
+        } );
+
+        return $this->formatter->indent( $fields->implode( PHP_EOL ), 2 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledRelationMethods(): string
+    {
+        $fields = $this->schema->getRelations()->map( function( Relation $relation )
+        {
+            $modelReflection = new ReflectionClass( $relation->getModel() );
+
+            return $this->stubRegistry->make( 'model_relation_method', [
+                'methodName' => Str::camel( $modelReflection->getShortName() ),
+                'relationMethod' => 'morphMany',
+                'modelClass' => $modelReflection->getShortName(),
+                'relationName' => 'owner'
+            ] );
+        } );
+
+        return $this->formatter->indent( $fields->implode( PHP_EOL ) );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledFieldSet(): string
+    {
+        $fields = $this->getFieldFieldSet()->merge( $this->getRelationFieldSet() );
+
+        return $this->formatter->indent( $fields->implode( PHP_EOL ), 2 );
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getFieldFieldSet(): Collection
+    {
+        return $this->schema->getFields()->map( function( Field $field )
+        {
+            return $this->stubRegistry->make( 'field', [
+                'fieldClass' => $field->getClassName(),
+                'fieldName' => $field->getName()
+            ] );
+        } );
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getRelationFieldSet(): Collection
+    {
+        return $this->schema->getRelations()->map( function( Relation $relation )
+        {
+            $fieldReflection = new ReflectionClass( $relation->getFieldType() );
+            $modelReflection = new ReflectionClass( $relation->getModel() );
+
+            return $this->stubRegistry->make( 'field_relation', [
+                'relationFieldClass' => $fieldReflection->getShortName(),
+                'relationName' => Str::camel( $modelReflection->getShortName() ),
+                'fields' => ''
+            ] );
+        } );
     }
 }

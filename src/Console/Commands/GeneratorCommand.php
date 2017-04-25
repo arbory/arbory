@@ -86,7 +86,7 @@ class GeneratorCommand extends Command
         
         $this->line( 'Generator' );
 
-        $schema->setName( $this->ask( 'Enter the name of the model' ) );
+        $schema->setName( $this->ask( 'Enter the name of the model', 'test' ) );
 
         if( $this->confirm( 'Add an id field?', true ) )
         {
@@ -135,7 +135,6 @@ class GeneratorCommand extends Command
                 $this->container->make( StubRegistry::class ),
                 $this->container->make( Filesystem::class ),
                 $this->container->make( GeneratorFormatter::class ),
-                $this->container->make( MiscGenerators::class ),
                 $schema
             );
 
@@ -159,7 +158,7 @@ class GeneratorCommand extends Command
             $relation->setFieldType( $this->choice( 'Select relation', $this->getRelationFieldTypes(), 0 ) );
 
             $schema->addRelation( $relation );
-        } while( $this->confirm( '... add another?', true ) );
+        } while( $this->confirm( '... add another?', false ) );
     }
 
     /**
@@ -180,7 +179,7 @@ class GeneratorCommand extends Command
             $structure = new Structure();
             $field = new Field( $structure );
 
-            $field->setName( $this->ask( 'Enter the name' ) );
+            $field->setName( $this->ask( 'Enter the name', 'testing' ) );
 
             $choices = $fieldTypeRegistry->getFieldsByType()->toArray();
 
@@ -190,7 +189,7 @@ class GeneratorCommand extends Command
 
             $field->setType( $choices[ $dataType ] );
 
-            if( $this->confirm( 'Define the structure?', true ) )
+            if( $this->confirm( 'Define the structure?', false ) )
             {
                 if( $structure->getType() === 'integer' )
                 {
@@ -207,7 +206,7 @@ class GeneratorCommand extends Command
             }
 
             $schema->addField( $field );
-        } while( $this->confirm( '... add another field?', true ) );
+        } while( $this->confirm( '... add another field?', false ) );
     }
 
     /**

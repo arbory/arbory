@@ -54,60 +54,25 @@ Class GeneratorFormatter
     }
 
     /**
-     * @param Collection|string $items
+     * @param string
      * @param int $times
      * @return Collection
      */
-    public function indent( $items, $times = 1 )
+    public function indent( $item, $times = 1 )
     {
-        if( !$items instanceof Collection )
+        $lines = explode( PHP_EOL, $item );
+
+        foreach( $lines as $key => &$line )
         {
-            $items = new Collection( $items );
-        }
-
-        return $items->transform( function( $item ) use ( $times )
-        {
-            $lines = explode( PHP_EOL, $item );
-
-            next($lines);
-
-            foreach( $lines as  &$line )
+            if( $key === 0 )
             {
-                $line = str_repeat( "\t", $times ) . $line;
+                continue;
             }
 
-            return count( $lines ) === 1 ? $item : implode( PHP_EOL, $lines );
-        } );
-    }
+            $line = str_repeat( "\t", $times ) . $line;
+        }
 
-    /**
-     * @param Collection $fields
-     * @return Collection
-     */
-    public function useFields( Collection $fields )
-    {
-        return $fields->transform( function( $field )
-        {
-            /**
-             * @var Field $field
-             */
-            return $this->use( $field->getType() );
-        } )->unique();
-    }
-
-    /**
-     * @param Collection $relations
-     * @return Collection
-     */
-    public function useRelations( Collection $relations )
-    {
-        return $relations->transform( function( $relation )
-        {
-            /**
-             * @var Relation $relation
-             */
-            return $this->use( $relation->getModel() );
-        } )->unique();
+        return count( $lines ) === 1 ? $item : implode( PHP_EOL, $lines );
     }
 
     /**
@@ -123,7 +88,7 @@ Class GeneratorFormatter
      * @param string $value
      * @return string
      */
-    public function use( $value )
+    public function use ( $value )
     {
         return 'use ' . $value . ';';
     }

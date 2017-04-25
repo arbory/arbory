@@ -64,7 +64,7 @@ class View extends StubGenerator implements Stubable
     public function getPath(): string
     {
         return base_path( sprintf(
-            'resources/views/controllers/%s/%s',
+            'resources/views/public/controllers/%s/%s',
             snake_case( $this->schema->getName() ),
             $this->getFilename()
         ) );
