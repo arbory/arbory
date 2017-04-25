@@ -91,7 +91,7 @@ class Model extends StubGenerator implements Stubable
      */
     protected function getCompiledProperties(): string
     {
-        $stub = $this->stubRegistry->findByName( 'property' )->getContents();
+        $stub = $this->stubRegistry->findByName( 'parts.property' )->getContents();
 
         return $this->schema->getFields()->map( function( Field $field ) use ( $stub )
         {

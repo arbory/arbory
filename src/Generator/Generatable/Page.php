@@ -35,7 +35,7 @@ class Page extends StubGenerator implements Stubable
         $className = $this->getClassName();
         $pageClassName = $this->getNamespace() . '\\' . $className;
 
-        $stub = $this->stubRegistry->make( 'register_page', [
+        $stub = $this->stubRegistry->make( 'parts.register_page', [
             'pageClassName' => $pageClassName,
             'controllerClassName' => sprintf(
                 '%sHttp\Controllers\%s',
@@ -169,7 +169,7 @@ class Page extends StubGenerator implements Stubable
         {
             $modelReflection = new ReflectionClass( $relation->getModel() );
 
-            return $this->stubRegistry->make( 'model_relation_method', [
+            return $this->stubRegistry->make( 'parts.model_relation_method', [
                 'methodName' => Str::camel( $modelReflection->getShortName() ),
                 'relationMethod' => 'morphMany',
                 'modelClass' => $modelReflection->getShortName(),
@@ -197,7 +197,7 @@ class Page extends StubGenerator implements Stubable
     {
         return $this->schema->getFields()->map( function( Field $field )
         {
-            return $this->stubRegistry->make( 'field', [
+            return $this->stubRegistry->make( 'parts.field', [
                 'fieldClass' => $field->getClassName(),
                 'fieldName' => $field->getName()
             ] );
@@ -214,7 +214,7 @@ class Page extends StubGenerator implements Stubable
             $fieldReflection = new ReflectionClass( $relation->getFieldType() );
             $modelReflection = new ReflectionClass( $relation->getModel() );
 
-            return $this->stubRegistry->make( 'field_relation', [
+            return $this->stubRegistry->make( 'parts.field_relation', [
                 'relationFieldClass' => $fieldReflection->getShortName(),
                 'relationName' => Str::camel( $modelReflection->getShortName() ),
                 'fields' => ''

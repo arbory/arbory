@@ -24,7 +24,14 @@ class Stub
      */
     public function getName()
     {
-        return basename( $this->getPath(), '.stub' );
+        $path = $this->getPath();
+        $relative = substr( $path, strpos( $path, 'stubs' ) + 6 );
+
+        return str_replace(
+            [ DIRECTORY_SEPARATOR, '.stub' ],
+            [ '.', '' ],
+            $relative
+        );
     }
 
     /**
