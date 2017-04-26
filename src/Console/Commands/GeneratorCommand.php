@@ -118,7 +118,9 @@ class GeneratorCommand extends Command
             $this->line( '' );
         }
 
-        foreach( $this->selectGeneratables() as $generatableType )
+        $selectedGeneratables = $this->selectGeneratables();
+
+        foreach( $selectedGeneratables as $generatableType )
         {
             /** @var StubGenerator $generatable */
             $generatable = new $generatableType(
@@ -130,6 +132,7 @@ class GeneratorCommand extends Command
 
             $this->info( 'Generating ' . $generatable->getPath() . '...' );
 
+            $generatable->setSelectGeneratables( new Collection($selectedGeneratables) );
             $generatable->generate();
         }
     }

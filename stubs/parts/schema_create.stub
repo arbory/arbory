@@ -1,0 +1,4 @@
+Schema::create( '{{tableName}}', function( Blueprint $table )
+{
+    {{schemaField}}
+} );

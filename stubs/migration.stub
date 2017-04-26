@@ -13,13 +13,7 @@ class {{className}} extends Migration
      */
     public function up()
     {
-        Schema::create('{{modelTableName}}', function (Blueprint $table) {
-            {{schemaFields}}
-        });
-
-        Schema::create('{{pageTableName}}_pages', function (Blueprint $table) {
-            {{schemaFields}}
-        });
+        {{modelSchemaCreate}}{{pageSchemaCreate}}{{insertMenuItem}}
     }
 
     /**
@@ -29,7 +23,6 @@ class {{className}} extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists( '{{modelTableName}}' );
-        Schema::dropIfExists( '{{pageTableName}}_pages' );
+        {{schemaDown}}{{menuItemDown}}
     }
 }
