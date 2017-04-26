@@ -75,7 +75,7 @@ class Page extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->formatter->className( $this->schema->getName() ) . 'Page';
+        return $this->formatter->className( $this->schema->getNameSingular() ) . 'Page';
     }
 
     /**

@@ -19,7 +19,8 @@ class Migration extends StubGenerator implements Stubable
     {
         return $this->stubRegistry->make( 'migration', [
             'className' => $this->getClassName(),
-            'schemaName' => Str::snake( $this->schema->getName() ),
+            'modelTableName' => Str::snake( $this->schema->getNamePlural() ),
+            'pageTableName' => Str::snake( $this->schema->getNameSingular() ),
             'schemaFields' => $this->getCompiledSchemaFields()
         ] );
     }
@@ -29,7 +30,7 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return 'Create' . $this->formatter->className( $this->schema->getName() ) . 'Table';
+        return 'Create' . $this->formatter->className( $this->schema->getNamePlural() ) . 'Table';
     }
 
     /**
@@ -42,7 +43,7 @@ class Migration extends StubGenerator implements Stubable
         return sprintf(
             '%s_create_%s_table.php',
             $time->format( 'Y_m_d_His' ),
-            snake_case( $this->schema->getName() )
+            snake_case( $this->schema->getNamePlural() )
         );
     }
 
@@ -109,7 +110,19 @@ class Migration extends StubGenerator implements Stubable
      */
     protected function getCompiledSchemaFields(): string
     {
-        $fields = $this->schema->getFields()->map( function( Field $field )
+        $fields = new Collection();
+
+        if( $this->schema->usesId() )
+        {
+            $fields->push( '$table->increments( \'id\' );' );
+        }
+
+        if( $this->schema->usesTimestamps() )
+        {
+            $fields->push( '$table->timestamps();' );
+        }
+
+        $fields->merge( $this->schema->getFields()->map( function( Field $field )
         {
             $structure = $field->getStructure();
 
@@ -120,12 +133,7 @@ class Migration extends StubGenerator implements Stubable
                 $this->buildSecondArgument( $structure ),
                 $this->buildColumn( $structure )
             );
-        } );
-
-        if( $this->schema->usesTimestamps() )
-        {
-            $fields->push( '$table->timestamps();' );
-        }
+        } ) );
 
         return $this->formatter->indent( $fields->implode( PHP_EOL ), 3 );
     }

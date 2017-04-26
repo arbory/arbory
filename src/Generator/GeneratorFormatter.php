@@ -107,4 +107,63 @@ Class GeneratorFormatter
 
         return $doc;
     }
+
+    /**
+     * @param string $message
+     * @param mixed $default
+     * @param mixed $hint
+     * @return string
+     */
+    public function line( string $message, $default = null, $hint = null ): string
+    {
+        return sprintf(
+            ' <fg=blue>%s</>%s%s:' . PHP_EOL . ' > ',
+            $message,
+            $this->lineHint( $hint ),
+            $this->lineDefault( $default )
+        );
+    }
+
+    /**
+     * @param mixed $default
+     * @return string
+     */
+    public function lineDefault( $default = null ): string
+    {
+        if( !$default )
+        {
+            return (string) null;
+        }
+
+        return sprintf(
+            ' [<fg=yellow>%s</>]',
+            is_bool( $default ) ? $this->boolToString( $default ) : $default
+        );
+    }
+
+    /**
+     * @param mixed $hint
+     * @return string
+     */
+    public function lineHint( $hint = null ): string
+    {
+        if( !$hint )
+        {
+            return (string) null;
+        }
+
+        return sprintf(
+            ' (<fg=yellow>%s</>)',
+            $hint
+        );
+    }
+
+    /**
+     * @param bool $value
+     * @return string
+     */
+    public function boolToString( bool $value )
+    {
+        return $value ? 'yes' : 'no';
+    }
 }

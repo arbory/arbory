@@ -20,7 +20,7 @@ class Controller extends StubGenerator implements Stubable
         return $this->stubRegistry->make( 'controller', [
             'namespace' => $this->getNamespace(),
             'className' => $this->getClassName(),
-            'viewPath' => 'controllers.' . snake_case( $this->schema->getName() ) . '.index',
+            'viewPath' => 'controllers.' . snake_case( $this->schema->getNameSingular() ) . '.index',
             'viewFields' => $this->getCompiledViewFields(),
         ] );
     }
@@ -30,7 +30,7 @@ class Controller extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->formatter->className( $this->schema->getName() ) . 'PageController';
+        return $this->formatter->className( $this->schema->getNameSingular() ) . 'PageController';
     }
 
     /**

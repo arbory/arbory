@@ -13,11 +13,11 @@ class {{className}} extends Migration
      */
     public function up()
     {
-        Schema::create('{{schemaName}}', function (Blueprint $table) {
+        Schema::create('{{modelTableName}}', function (Blueprint $table) {
             {{schemaFields}}
         });
 
-        Schema::create('{{schemaName}}_pages', function (Blueprint $table) {
+        Schema::create('{{pageTableName}}_pages', function (Blueprint $table) {
             {{schemaFields}}
         });
     }
@@ -29,7 +29,7 @@ class {{className}} extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists( '{{schemaName}}' );
-        Schema::dropIfExists( '{{schemaName}}_pages' );
+        Schema::dropIfExists( '{{modelTableName}}' );
+        Schema::dropIfExists( '{{pageTableName}}_pages' );
     }
 }

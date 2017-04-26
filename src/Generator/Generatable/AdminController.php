@@ -55,7 +55,7 @@ class AdminController extends StubGenerator implements Stubable
         return $this->stubRegistry->make( 'admin_controller', [
             'namespace' => $this->getNamespace(),
             'className' => $this->getClassName(),
-            'resourceName' => $this->formatter->className( $this->schema->getName() ) . '::class',
+            'resourceName' => $this->formatter->className( $this->schema->getNameSingular() ) . '::class',
             'use' => $this->getCompiledUseFields(),
             'formFields' => $this->getCompiledFormFields(),
             'gridFields' => $this->getCompiledGridFields(),
@@ -67,7 +67,7 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->formatter->className( $this->schema->getName() ) . 'Controller';
+        return $this->formatter->className( $this->schema->getNameSingular() ) . 'Controller';
     }
 
     /**
@@ -137,7 +137,7 @@ class AdminController extends StubGenerator implements Stubable
         $fields->push(
             $this->formatter->use(
                 $this->getAppNamespace() .
-                $this->formatter->className( $this->schema->getName() )
+                $this->formatter->className( $this->schema->getNameSingular() )
             )
         );
 

@@ -65,7 +65,7 @@ class View extends StubGenerator implements Stubable
     {
         return base_path( sprintf(
             'resources/views/public/controllers/%s/%s',
-            snake_case( $this->schema->getName() ),
+            snake_case( $this->schema->getNameSingular() ),
             $this->getFilename()
         ) );
     }

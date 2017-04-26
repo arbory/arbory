@@ -13,7 +13,12 @@ class Schema
     /**
      * @var string
      */
-    protected $name;
+    protected $nameSingular;
+
+    /**
+     * @var string
+     */
+    protected $namePlural;
 
     /**
      * @var Collection|Field
@@ -28,8 +33,12 @@ class Schema
     /**
      * @var bool
      */
-    protected $timestamps;
+    protected $useTimestamps;
 
+    /**
+     * @var bool
+     */
+    protected $useId;
 
     public function __construct()
     {
@@ -74,17 +83,33 @@ class Schema
     /**
      * @return string
      */
-    public function getName(): string
+    public function getNameSingular(): string
     {
-        return $this->name;
+        return $this->nameSingular;
     }
 
     /**
-     * @param string $name
+     * @param string $nameSingular
      */
-    public function setName( string $name )
+    public function setNameSingular( string $nameSingular )
     {
-        $this->name = $name;
+        $this->nameSingular = $nameSingular;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamePlural(): string
+    {
+        return $this->namePlural;
+    }
+
+    /**
+     * @param string $namePlural
+     */
+    public function setNamePlural( string $namePlural )
+    {
+        $this->namePlural = $namePlural;
     }
 
     /**
@@ -92,14 +117,30 @@ class Schema
      */
     public function usesTimestamps(): bool
     {
-        return $this->timestamps;
+        return $this->useTimestamps;
     }
 
     /**
-     * @param bool $timestamps
+     * @param bool $useTimestamps
      */
-    public function setTimestamps( bool $timestamps )
+    public function useTimestamps( bool $useTimestamps = true )
     {
-        $this->timestamps = $timestamps;
+        $this->useTimestamps = $useTimestamps;
+    }
+
+    /**
+     * @return bool
+     */
+    public function usesId(): bool
+    {
+        return $this->useId;
+    }
+
+    /**
+     * @param bool $useId
+     */
+    public function useId( bool $useId = true )
+    {
+        $this->useId = $useId;
     }
 }

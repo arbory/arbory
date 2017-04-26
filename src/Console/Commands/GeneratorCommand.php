@@ -26,6 +26,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 
 class GeneratorCommand extends Command
 {
@@ -90,29 +91,7 @@ class GeneratorCommand extends Command
      */
     public function handle()
     {
-        /**
-         * @var Schema $schema
-         */
-        $schema = $this->container->make( Schema::class );
-
-        $this->line( 'Generator' );
-
-        $schema->setName( $this->ask( 'Enter the name of the model' ) );
-
-        if( $this->confirm( 'Add an id field?', true ) )
-        {
-            $structure = new Structure();
-            $field = new Field( $structure );
-
-            $field->setName( 'id' );
-            $field->setType( Hidden::class );
-            $structure->setType( 'increments' );
-            $structure->setAutoIncrement( true );
-
-            $schema->addField( $field );
-        }
-
-        $schema->setTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
+       $schema = $this->setupSchema();
 
         if( $this->askEnterSection( 'Define fields?', true ) )
         {
@@ -124,7 +103,7 @@ class GeneratorCommand extends Command
             $this->setupRelations( $schema );
         }
 
-        $this->line( 'Generating a model named ' . $schema->getName() );
+        $this->line( 'Generating a model named ' . $schema->getNameSingular() );
 
         $tableParts = $this->formatter->getSchemaTable( $schema );
 
@@ -156,6 +135,24 @@ class GeneratorCommand extends Command
     }
 
     /**
+     * @return Schema
+     */
+    protected function setupSchema(): Schema
+    {
+        $schema = $this->container->make( Schema::class );
+
+        list( $singular, $plural ) = explode( ',', $this->askImportant( 'Model name', null, 'singular, plural' ) );
+
+        $schema->setNameSingular( trim( $singular ) );
+        $schema->setNamePlural( trim( $plural ) );
+
+        $schema->useId( $this->confirm( 'Add an id field?', true ) );
+        $schema->useTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
+
+        return $schema;
+    }
+
+    /**
      * @param Schema $schema
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
@@ -183,7 +180,7 @@ class GeneratorCommand extends Command
         {
             $nthField++;
 
-            $this->line( 'Define field #' . $nthField );
+            $this->line( ' <fg=red>[...]</>'  );
 
             $structure = new Structure();
             $field = new Field( $structure );
@@ -198,7 +195,7 @@ class GeneratorCommand extends Command
 
             $field->setType( $choices[ $dataType ] );
 
-            if( $this->confirm( 'Define the structure?', true ) )
+            if( $this->confirm( 'Define the structure?', false ) )
             {
                 if( $structure->getType() === 'integer' )
                 {
@@ -215,7 +212,7 @@ class GeneratorCommand extends Command
             }
 
             $schema->addField( $field );
-        } while( $this->confirm( '... add another field?', true ) );
+        } while( $this->confirm( '<fg=red>[... add another field?]</>', true ) );
     }
 
     /**
@@ -310,6 +307,20 @@ class GeneratorCommand extends Command
         ];
     }
 
+    protected function askImportant( string $question, $default = null, $hint = null )
+    {
+        $helper = $this->getHelper( 'question' );
+        $compiled = new Question(
+            $this->formatter->line( $question, $default, $hint ),
+            $default
+        );
+
+        $result = $helper->ask( $this->input, $this->output, $compiled );
+        $this->line('');
+
+        return $result;
+    }
+
     /**
      * @param string $message
      * @param bool $default
@@ -326,9 +337,25 @@ class GeneratorCommand extends Command
         );
 
         $result = $helper->ask( $this->input, $this->output, $question );
-
         $this->line('');
 
         return $result;
+    }
+
+    /**
+     * @return Field
+     */
+    protected function getIdField(): Field
+    {
+        $structure = new Structure();
+        $field = new Field( $structure );
+
+        $field->setName( 'id' );
+        $field->setType( Hidden::class );
+
+        $structure->setType( 'increments' );
+        $structure->setAutoIncrement( true );
+
+        return $field;
     }
 }

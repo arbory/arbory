@@ -48,7 +48,7 @@ class Model extends StubGenerator implements Stubable
         return $this->stubRegistry->make( 'model', [
             'namespace' => $this->getNamespace(),
             'className' => $this->getClassName(),
-            '$tableName' => snake_case( $this->schema->getName() ),
+            '$tableName' => snake_case( $this->schema->getNamePlural() ),
             'fillable' => $this->getCompiledFillableFields(),
             'properties' => $this->getCompiledProperties(),
         ] );
@@ -59,7 +59,7 @@ class Model extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->formatter->className( $this->schema->getName() );
+        return $this->formatter->className( $this->schema->getNameSingular() );
     }
 
     /**
