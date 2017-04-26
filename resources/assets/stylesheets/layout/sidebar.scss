@@ -81,9 +81,9 @@ body > aside
         }
 
         // only first level menu items
-        > ul > li
+        & > ul > li
         {
-            > .trigger
+            & > .trigger
             {
                 &:hover,
                 &:focus,
@@ -98,26 +98,23 @@ body > aside
                     }
                 }
 
-                > .name
+                &.active
+                {
+                    background-color: $color-highlight-normal;
+                    color: $color-text-darkest;
+
+                    .collapser
+                    {
+                        color: $color-text-darkest;
+                    }
+                }
+
+                & > .name
                 {
                     padding: 0;
                 }
             }
-
-            &.active > .trigger
-            {
-                background-color: $color-highlight-normal;
-                color: $color-text-darkest;
-
-                .collapser
-                {
-                    color: $color-text-darkest;
-                }
-
-            }
-
         }
-
 
         // nested menu items
         li li
@@ -129,7 +126,7 @@ body > aside
             {
                 color: $color-text-inverted-darker;
                 position: relative;
-                padding: steps(0.5) steps(4) steps(0.5) steps(2);
+                padding: steps(1) steps(4) steps(1) steps(2);
             }
 
             &:first-child .trigger

@@ -7,6 +7,7 @@ use CubeSystems\Leaf\Html\Elements;
 use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Services\Module;
 use CubeSystems\Leaf\Services\ModuleRegistry;
+use Illuminate\Routing\Route;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Collection;
 
@@ -38,19 +39,27 @@ class Item extends AbstractItem
     protected $module;
 
     /**
+     * @var Route
+     */
+    protected $route;
+
+    /**
      * @param Sentinel $sentinel
      * @param ModuleRegistry $moduleRegistry
      * @param UrlGenerator $urlGenerator
+     * @param Route $route
      */
     public function __construct(
         Sentinel $sentinel,
         ModuleRegistry $moduleRegistry,
-        UrlGenerator $urlGenerator
+        UrlGenerator $urlGenerator,
+        Route $route
     )
     {
         $this->sentinel = $sentinel;
         $this->moduleRegistry = $moduleRegistry;
         $this->urlGenerator = $urlGenerator;
+        $this->route = $route;
         $this->children = new Collection();
     }
 
@@ -118,7 +127,7 @@ class Item extends AbstractItem
                     Html::abbr( $this->getAbbreviation() )->addAttributes( [ 'title' => $this->getTitle() ] ),
                     Html::span( $this->getTitle() )->addClass( 'name' )
                 ])
-                    ->addClass( 'trigger' )
+                    ->addClass( 'trigger ' . ( $this->isActive() ? 'active' : '' ) )
                     ->addAttributes( [ 'href' => $this->getUrl() ] )
             );
 
@@ -135,5 +144,13 @@ class Item extends AbstractItem
     protected function getUrl()
     {
         return $this->urlGenerator->route( $this->getRouteName(), $this->getRouteParams() );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->getRouteName() === $this->route->getName();
     }
 }
