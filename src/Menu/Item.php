@@ -151,6 +151,8 @@ class Item extends AbstractItem
      */
     public function isActive(): bool
     {
-        return $this->getRouteName() === $this->route->getName();
+        $activeController = ( new \ReflectionClass( $this->route->getController() ) )->getName();
+
+        return $activeController === $this->module->getControllerClass();
     }
 }
