@@ -57,25 +57,36 @@ class GeneratorCommand extends Command
     protected $fileSystem;
 
     /**
+     * @var FieldTypeRegistry
+     */
+    protected $fieldTypeRegistry;
+
+    /**
      * @param Container $container
      * @param GeneratorFormatter $generatorFormatter
      * @param Filesystem $fileSystem
+     * @param FieldTypeRegistry $fieldTypeRegistry
      */
     public function __construct(
         Container $container,
         GeneratorFormatter $generatorFormatter,
-        Filesystem $fileSystem
+        Filesystem $fileSystem,
+        FieldTypeRegistry $fieldTypeRegistry
     )
     {
         $this->container = $container;
         $this->formatter = $generatorFormatter;
         $this->fileSystem = $fileSystem;
+        $this->fieldTypeRegistry = $fieldTypeRegistry;
 
         parent::__construct();
     }
 
     /**
      * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws \Symfony\Component\Console\Exception\LogicException
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
     public function handle()
     {
@@ -103,14 +114,14 @@ class GeneratorCommand extends Command
 
         $schema->setTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
 
-        if( $this->askEnterSection( 'Define relations?', true ) )
-        {
-            $this->setupRelations( $schema );
-        }
-
         if( $this->askEnterSection( 'Define fields?', true ) )
         {
             $this->setupFields( $schema );
+        }
+
+        if( $this->askEnterSection( 'Define relations?', true ) )
+        {
+            $this->setupRelations( $schema );
         }
 
         $this->line( 'Generating a model named ' . $schema->getName() );
@@ -154,8 +165,8 @@ class GeneratorCommand extends Command
         {
             $relation = new Relation();
 
-            $relation->setModel( $this->choice( 'Select model', $this->getModels(), 0 ) );
             $relation->setFieldType( $this->choice( 'Select relation', $this->getRelationFieldTypes(), 0 ) );
+            $relation->setModel( $this->choice( 'Select model', $this->getModels(), 0 ) );
 
             $schema->addRelation( $relation );
         } while( $this->confirm( '... add another?', true ) );
@@ -166,8 +177,6 @@ class GeneratorCommand extends Command
      */
     protected function setupFields( Schema $schema )
     {
-        /** @var FieldTypeRegistry $fieldTypeRegistry */
-        $fieldTypeRegistry = $this->container->make( FieldTypeRegistry::class );
         $nthField = 0;
 
         do
@@ -181,7 +190,7 @@ class GeneratorCommand extends Command
 
             $field->setName( $this->ask( 'Enter the name' ) );
 
-            $choices = $fieldTypeRegistry->getFieldsByType()->toArray();
+            $choices = $this->fieldTypeRegistry->getFieldsByType()->toArray();
 
             $dataType = $this->choice( 'Select the data type', array_keys( $choices ), 0 );
 
@@ -287,7 +296,7 @@ class GeneratorCommand extends Command
             }
         }
 
-        return $models;
+        return array_merge( $models, $this->fieldTypeRegistry->getFieldsByRelation()->toArray() );
     }
 
     /**
