@@ -21,19 +21,28 @@ class ContentTypeRegister
         $contentTypes = collect( config( 'leaf.content_types', [] ) );
         $contentTypeNames = $contentTypes->map( function ( $item )
         {
-            return $this->makeNameFromType( $item );
+            return new ContentTypeDefinition( $item );
         } );
 
         $this->contentTypes = $contentTypes->combine( $contentTypeNames );
     }
 
     /**
-     * @param string $page
+     * @param ContentTypeDefinition $definition
      * @return void
      */
-    public function register( string $page )
+    public function register( ContentTypeDefinition $definition )
     {
-        $this->contentTypes->put( $page, $this->makeNameFromType( $page ) );
+        $this->contentTypes->put( $definition->getModel(), $definition );
+    }
+
+    /**
+     * @param string $class
+     * @return ContentTypeDefinition|null
+     */
+    public function findByModelClass( string $class )
+    {
+        return $this->contentTypes->get( $class );
     }
 
     /**
@@ -66,14 +75,4 @@ class ContentTypeRegister
     {
         return $this->contentTypes->has( $type );
     }
-
-    /**
-     * @param string $type
-     * @return string
-     */
-    protected function makeNameFromType( $type )
-    {
-        return preg_replace( '/(?!^)[A-Z]{2,}(?=[A-Z][a-z])|[A-Z][a-z]/', '$0', class_basename( $type ) );
-    }
-
 }

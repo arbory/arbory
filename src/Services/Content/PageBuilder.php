@@ -3,15 +3,16 @@
 namespace CubeSystems\Leaf\Services\Content;
 
 use Closure;
+use CubeSystems\Leaf\Nodes\ContentTypeDefinition;
 use CubeSystems\Leaf\Nodes\ContentTypeRegister;
 use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
 
 class PageBuilder
 {
     /**
-     * @var string
+     * @var ContentTypeDefinition
      */
-    protected $page;
+    protected $definition;
 
     /**
      * @var ContentTypeRegister
@@ -37,14 +38,26 @@ class PageBuilder
     }
 
     /**
-     * @param string $page
+     * @param string $model
+     * @return $this
+     * @throws \CubeSystems\Leaf\Exceptions\BadMethodCallException
+     */
+    public function register( string $model )
+    {
+        $this->definition = new ContentTypeDefinition( $model );
+
+        $this->contentTypeRegister->register( $this->definition );
+
+        return $this->fields( function() {} );
+    }
+
+    /**
+     * @param string $model
      * @return $this
      */
-    public function register( string $page )
+    public function get( string $model )
     {
-        $this->page = $page;
-
-        $this->contentTypeRegister->register( $this->page );
+        $this->definition = $this->contentTypeRegister->findByModelClass( $model );
 
         return $this;
     }
@@ -56,7 +69,19 @@ class PageBuilder
      */
     public function routes( Closure $routes )
     {
-        $this->contentTypeRoutesRegister->register( $this->page, $routes );
+        $this->contentTypeRoutesRegister->register( $this->definition->getModel(), $routes );
+
+        return $this;
+    }
+
+    /**
+     * @param Closure $fieldSet
+     * @return $this
+     * @throws \CubeSystems\Leaf\Exceptions\BadMethodCallException
+     */
+    public function fields( Closure $fieldSet )
+    {
+        $this->definition->setFieldSetHandler( $fieldSet );
 
         return $this;
     }

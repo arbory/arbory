@@ -48,15 +48,21 @@ php artisan leaf:install
 ### Registering new pages
 
 ```php
-Page::register( TestPage::class )->routes( function () {
-    Route::get( '/', TestPageController::class . '@index' )->name( 'index' );
-} );
+Page::register( App\Pages\TextPage::class )
+    ->fields( function( FieldSet $fieldSet )
+    {
+        $fieldSet->add( new CubeSystems\Leaf\Admin\Form\Fields\Richtext( 'text' ) );
+    } )
+    ->routes( function()
+    {
+        Route::get( '/', App\Http\Controllers\TextPageController::class . '@index' )->name( 'index' );
+    } );
 ```
 
 ### Registering new admin modules
 
 ```php
-AdminModule::register( TestController::class )->routes( function() {
+AdminModule::register( App\Http\Controllers\Admin\TextController::class )->routes( function() {
     // ...
 } );
 ```
