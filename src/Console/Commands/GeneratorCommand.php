@@ -169,7 +169,7 @@ class GeneratorCommand extends Command
             $relation->setModel( $this->choice( 'Select model', $this->getModels(), 0 ) );
 
             $schema->addRelation( $relation );
-        } while( $this->confirm( '... add another?', true ) );
+        } while( $this->confirm( '... add another?', false ) );
     }
 
     /**
@@ -188,7 +188,7 @@ class GeneratorCommand extends Command
             $structure = new Structure();
             $field = new Field( $structure );
 
-            $field->setName( $this->ask( 'Enter the name' ) );
+            $field->setName( $this->ask( 'Enter the name', 'testing' ) );
 
             $choices = $this->fieldTypeRegistry->getFieldsByType()->toArray();
 
