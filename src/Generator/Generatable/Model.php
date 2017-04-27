@@ -50,7 +50,6 @@ class Model extends StubGenerator implements Stubable
             'className' => $this->getClassName(),
             '$tableName' => snake_case( $this->schema->getNamePlural() ),
             'fillable' => $this->getCompiledFillableFields(),
-            'properties' => $this->getCompiledProperties(),
         ] );
     }
 
@@ -84,31 +83,6 @@ class Model extends StubGenerator implements Stubable
     public function getPath(): string
     {
         return app_path( $this->getFilename() );
-    }
-
-    /**
-     * @return string
-     */
-    protected function getCompiledProperties(): string
-    {
-        $stub = $this->stubRegistry->findByName( 'parts.property' )->getContents();
-
-        return $this->schema->getFields()->map( function( Field $field ) use ( $stub )
-        {
-            $replace = [
-                '{{docVar}}' => $this->fieldTypeRegistry->getFieldTypeHint( $field->getType() ),
-                '{{propertyScope}}' => 'protected',
-                '{{propertyName}}' => $this->formatter->property( $field->getName() ),
-            ];
-
-            $stub = str_replace(
-                array_keys( $replace ),
-                array_values( $replace ),
-                $stub
-            );
-
-            return $stub . PHP_EOL;
-        } )->implode( PHP_EOL );
     }
 
     /**

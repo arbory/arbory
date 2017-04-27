@@ -37,6 +37,7 @@ class Page extends StubGenerator implements Stubable
 
         $stub = $this->stubRegistry->make( 'parts.register_page', [
             'pageClassName' => $pageClassName,
+            'fieldSet' => $this->getCompiledFieldSet(),
             'controllerClassName' => sprintf(
                 '%sHttp\Controllers\%s',
                 $this->getAppNamespace(),
@@ -50,7 +51,7 @@ class Page extends StubGenerator implements Stubable
         {
             $this->filesystem->append(
                 $path,
-                PHP_EOL . $stub
+                str_repeat( PHP_EOL, 2 ) . $stub
             );
         }
     }
@@ -65,7 +66,6 @@ class Page extends StubGenerator implements Stubable
             'use' => $this->getCompiledUseClasses(),
             'className' => $this->getClassName(),
             'fillable' => $this->getCompiledFillableFields(),
-            'fieldSet' => $this->getCompiledFieldSet(),
             'relations' => $this->getCompiledRelationMethods()
         ] );
     }
@@ -198,7 +198,7 @@ class Page extends StubGenerator implements Stubable
         return $this->schema->getFields()->map( function( Field $field )
         {
             return $this->stubRegistry->make( 'parts.field', [
-                'fieldClass' => $field->getClassName(),
+                'fieldClass' => $field->getType(),
                 'fieldName' => $field->getName()
             ] );
         } );
