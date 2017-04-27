@@ -91,19 +91,124 @@ class GeneratorCommand extends Command
      */
     public function handle()
     {
-       $schema = $this->setupSchema();
+        $schema = $this->setupSchema();
 
-        if( $this->askEnterSection( 'Define fields?', true ) )
-        {
-            $this->setupFields( $schema );
-        }
+        $this->setupFields( $schema );
+        $this->setupRelations( $schema );
+        $this->generate( $schema );
+    }
 
+    /**
+     * @return Schema
+     */
+    protected function setupSchema(): Schema
+    {
+        $schema = $this->container->make( Schema::class );
+
+        list( $singular, $plural ) = explode( ',', $this->askImportant( 'Model name', null, 'singular, plural' ) );
+
+        $schema->setNameSingular( trim( $singular ) );
+        $schema->setNamePlural( trim( $plural ) );
+
+        $schema->useId( $this->confirm( 'Add an id field?', true ) );
+        $schema->useTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
+
+        return $schema;
+    }
+
+    /**
+     * @param Schema $schema
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Console\Exception\LogicException
+     */
+    protected function setupRelations( Schema $schema )
+    {
         if( $this->askEnterSection( 'Define relations?', true ) )
         {
-            $this->setupRelations( $schema );
+            do
+            {
+                $schema->addRelation( $this->setupRelation() );
+            } while( $this->confirm( '... add another?', true ) );
+        }
+    }
+
+    /**
+     * @return Relation
+     */
+    protected function setupRelation(): Relation
+    {
+        $relation = new Relation();
+        $models = $this->getModels();
+
+        $relation->setFieldType( $this->choice( 'Select relation', $this->getRelationFieldTypes(), 0 ) );
+
+        $key = $this->choice( 'Select model', $models, 0 );
+        $relation->setModel( $models[ $key ] );
+
+        return $relation;
+    }
+
+    /**
+     * @param Schema $schema
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Console\Exception\LogicException
+     */
+    protected function setupFields( Schema $schema )
+    {
+        if( $this->askEnterSection( 'Define fields?', true ) )
+        {
+            do
+            {
+                $schema->addField( $this->setupField() );
+            } while( $this->confirm( '... add another field?', true ) );
+        }
+    }
+
+    /**
+     * @return Field
+     */
+    protected function setupField(): Field
+    {
+        $structure = new Structure();
+        $field = new Field( $structure );
+
+        $field->setName( $this->ask( 'Enter the name' ) );
+
+        $choices = $this->fieldTypeRegistry->getFieldsByType()->toArray();
+
+        $dataType = $this->choice( 'Select the data type', array_keys( $choices ), 0 );
+
+        $structure->setType( $dataType );
+
+        $field->setType( $choices[ $dataType ] );
+
+        if( $this->confirm( 'Define the structure?', false ) )
+        {
+            if( $structure->getType() === 'integer' )
+            {
+                $structure->setLength( $this->confirm( 'Is it auto increment?', false ) );
+            }
+
+            $structure->setNullable( $this->confirm( 'Can it be null?', false ) );
+            $structure->setDefaultValue( $this->ask( 'Set the default value', false ) );
+
+            if( $structure->getType() === 'string' )
+            {
+                $structure->setLength( $this->ask( 'Set the maximum length', 0 ) );
+            }
         }
 
-        $this->line( 'Generating a model named ' . $schema->getNameSingular() );
+        return $field;
+    }
+
+    /**
+     * @param Schema $schema
+     * @return void
+     */
+    protected function generate( Schema $schema )
+    {
+        $this->line( 'We will be generating a schema named ' . $schema->getNameSingular() );
 
         $tableParts = $this->formatter->getSchemaTable( $schema );
 
@@ -132,87 +237,9 @@ class GeneratorCommand extends Command
 
             $this->info( 'Generating ' . $generatable->getPath() . '...' );
 
-            $generatable->setSelectGeneratables( new Collection($selectedGeneratables) );
+            $generatable->setSelectGeneratables( new Collection( $selectedGeneratables ) );
             $generatable->generate();
         }
-    }
-
-    /**
-     * @return Schema
-     */
-    protected function setupSchema(): Schema
-    {
-        $schema = $this->container->make( Schema::class );
-
-        list( $singular, $plural ) = explode( ',', $this->askImportant( 'Model name', 'Bear, Bears', 'singular, plural' ) );
-
-        $schema->setNameSingular( trim( $singular ) );
-        $schema->setNamePlural( trim( $plural ) );
-
-        $schema->useId( $this->confirm( 'Add an id field?', true ) );
-        $schema->useTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
-
-        return $schema;
-    }
-
-    /**
-     * @param Schema $schema
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function setupRelations( Schema $schema )
-    {
-        do
-        {
-            $relation = new Relation();
-            $models = $this->getModels();
-
-            $relation->setFieldType( $this->choice( 'Select relation', $this->getRelationFieldTypes(), 0 ) );
-
-            $key = $this->choice( 'Select model', $models, 0 );
-            $relation->setModel( $models[ $key ] );
-
-            $schema->addRelation( $relation );
-        } while( $this->confirm( '... add another?', true ) );
-    }
-
-    /**
-     * @param Schema $schema
-     */
-    protected function setupFields( Schema $schema )
-    {
-        do
-        {
-            $structure = new Structure();
-            $field = new Field( $structure );
-
-            $field->setName( $this->ask( 'Enter the name' ) );
-
-            $choices = $this->fieldTypeRegistry->getFieldsByType()->toArray();
-
-            $dataType = $this->choice( 'Select the data type', array_keys( $choices ), 0 );
-
-            $structure->setType( $dataType );
-
-            $field->setType( $choices[ $dataType ] );
-
-            if( $this->confirm( 'Define the structure?', false ) )
-            {
-                if( $structure->getType() === 'integer' )
-                {
-                    $structure->setLength( $this->confirm( 'Is it auto increment?', false ) );
-                }
-
-                $structure->setNullable( $this->confirm( 'Can it be null?', false ) );
-                $structure->setDefaultValue( $this->ask( 'Set the default value', false ) );
-
-                if( $structure->getType() === 'string' )
-                {
-                    $structure->setLength( $this->ask( 'Set the maximum length', 0 ) );
-                }
-            }
-
-            $schema->addField( $field );
-        } while( $this->confirm( '... add another field?', true ) );
     }
 
     /**
@@ -220,58 +247,28 @@ class GeneratorCommand extends Command
      */
     protected function selectGeneratables(): array
     {
-        $chosenGeneratables = [];
-        $generatables = new Collection( [
-            Migration::class,
-            Model::class,
-            Page::class,
-            Controller::class,
-            View::class,
-            AdminController::class
-        ] );
+        $items = $this->getGeneratables();
+        $groups = $this->getGeneratableGroups();
 
-        $this->info( 'Choose what you would like to generate' );
-        $this->line( 'Enter a comma separated list of items, either by key or class name' );
-        $this->line( '' );
+        /** @var array $choices */
+        $choices = $this->choice( 'Choose generatables (comma seperated)', $this->getGeneratableChoices(), 0, null, true );
 
-        foreach( $generatables as $index => $generatable )
+        foreach( $choices as $index => $choice )
         {
-            $reflection = new \ReflectionClass( $generatable );
-
-            $this->output->writeln( sprintf(
-                '  [<fg=yellow>%d</>] %s',
-                $index, $reflection->getShortName()
-            ) );
-        }
-
-        $choices = $this->ask( 'Items', '*' );
-
-        if( $choices === '*' )
-        {
-            return $generatables->toArray();
-        }
-
-        $choices = explode( ',', str_replace( ' ', '', $choices ) );
-
-        foreach( $choices as $choice )
-        {
-            $chosenGeneratable = $generatables->get( $choice );
-
-            if( !$chosenGeneratable )
+            if( isset( $groups[ $choice ] ) )
             {
-                $chosenGeneratable = $generatables->first( function( string $generatable ) use ( $choice )
-                {
-                    return Str::contains(
-                        Str::snake( $generatable ),
-                        Str::snake( $choice )
-                    );
-                } );
+                $choices = array_merge( $choices, $groups[ $choice ] );
             }
 
-            $chosenGeneratables[] = $chosenGeneratable;
+            if( isset( $items[ $choice ] ) )
+            {
+                $choices[] = $items[ $choice ];
+            }
+
+            unset( $choices[ array_search( $choice, $choices ) ] );
         }
 
-        return array_filter( $chosenGeneratables );
+        return array_filter( $choices );
     }
 
     /**
@@ -297,16 +294,11 @@ class GeneratorCommand extends Command
     }
 
     /**
-     * @return string[]
+     * @param string $question
+     * @param mixed|null $default
+     * @param mixed|null $hint
+     * @return mixed
      */
-    protected function getRelationFieldTypes()
-    {
-        return [
-            HasOne::class,
-            HasMany::class,
-        ];
-    }
-
     protected function askImportant( string $question, $default = null, $hint = null )
     {
         $helper = $this->getHelper( 'question' );
@@ -316,7 +308,7 @@ class GeneratorCommand extends Command
         );
 
         $result = $helper->ask( $this->input, $this->output, $compiled );
-        $this->line('');
+        $this->line( '' );
 
         return $result;
     }
@@ -332,13 +324,85 @@ class GeneratorCommand extends Command
     {
         $helper = $this->getHelper( 'question' );
         $question = new ConfirmationQuestion(
-            sprintf( ' <fg=blue>%s</> [<fg=yellow>%s</>]: ' . PHP_EOL . ' > ', $message, $default  ? 'yes' : 'no' ),
+            sprintf( ' <fg=blue>%s</> [<fg=yellow>%s</>]: ' . PHP_EOL . ' > ', $message, $default ? 'yes' : 'no' ),
             $default
         );
 
         $result = $helper->ask( $this->input, $this->output, $question );
-        $this->line('');
+        $this->line( '' );
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getGeneratableChoices() : array
+    {
+        $groups = $this->getGeneratableGroups();
+        $generatables = $this->getGeneratables();
+
+        foreach( $groups as &$group )
+        {
+            foreach( $group as &$item )
+            {
+                $item = class_basename( $item );
+            }
+
+            $group = implode( ', ', $group );
+        }
+
+        foreach( $generatables as &$generatable )
+        {
+            $generatable = class_basename( $generatable );
+        }
+
+        return array_merge( $groups, $generatables );
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getRelationFieldTypes()
+    {
+        return [
+            HasOne::class,
+            HasMany::class,
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getGeneratables(): array
+    {
+        return [
+            Migration::class,
+            Model::class,
+            Page::class,
+            Controller::class,
+            View::class,
+            AdminController::class
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getGeneratableGroups(): array
+    {
+        return [
+            'P' => [
+                Migration::class,
+                Controller::class,
+                Page::class,
+                View::class
+            ],
+            'M' => [
+                Migration::class,
+                AdminController::class,
+                Model::class
+            ],
+        ];
     }
 }
