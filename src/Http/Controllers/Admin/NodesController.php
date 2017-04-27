@@ -12,13 +12,16 @@ use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Admin\Form\Fields\Slug;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
+use CubeSystems\Leaf\Nodes\ContentTypeDefinition;
 use CubeSystems\Leaf\Nodes\Node;
 use CubeSystems\Leaf\Nodes\Admin\Grid\Filter;
 use CubeSystems\Leaf\Nodes\Admin\Grid\Renderer;
 use CubeSystems\Leaf\Nodes\ContentTypeRegister;
+use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Mockery\Matcher\Closure;
 
 class NodesController extends Controller
 {
@@ -27,12 +30,25 @@ class NodesController extends Controller
     protected $resource = Node::class;
 
     /**
+     * @var Container
+     */
+    protected $container;
+
+    /**
      * @var ContentTypeRegister
      */
     protected $contentTypeRegister;
 
-    public function __construct( ContentTypeRegister $contentTypeRegister )
+    /**
+     * @param Container $container
+     * @param ContentTypeRegister $contentTypeRegister
+     */
+    public function __construct(
+        Container $container,
+        ContentTypeRegister $contentTypeRegister
+    )
     {
+        $this->container = $container;
         $this->contentTypeRegister = $contentTypeRegister;
     }
 
@@ -49,10 +65,14 @@ class NodesController extends Controller
             $form->addField( new Text( 'name' ) );
             $form->addField( new Slug( 'slug', $this->url( 'api', 'slug_generator' ) ) );
             $form->addField( new Form\Fields\Boolean( 'active' ) );
-            $form->addField( new HasOne( 'content', function ( FieldSet $fieldSet ) use ( $node )
+            $form->addField( new HasOne( 'content', function( FieldSet $fieldSet ) use ( $node )
             {
                 $content = $node->content ?: $node->content()->getRelated();
-                $content->prepareFieldSet( $fieldSet );
+
+                $class = ( new \ReflectionClass( $content ) )->getName();
+                $definition = $this->contentTypeRegister->findByModelClass( $class );
+
+                $definition->getFieldSetHandler()->call( $content, $fieldSet );
             } ) );
         } );
 
@@ -168,10 +188,10 @@ class NodesController extends Controller
             $this->resource()->findOrNew( $request->get( 'parent_id' ) )
         );
 
-        $types = $contentTypes->map( function ( $title, $type ) use ( $request )
+        $types = $contentTypes->map( function ( ContentTypeDefinition $definition, string $type ) use ( $request )
         {
             return [
-                'title' => $title,
+                'title' => $definition->getName(),
                 'url' => $this->url( 'create', [
                     'content_type' => $type,
                     'parent_id' => $request->get( 'parent_id' )
