@@ -241,9 +241,8 @@ class LeafServiceProvider extends ServiceProvider
             $fieldTypeRegistry->registerByType( 'datetime', DateTime::class, 'string' );
             $fieldTypeRegistry->registerByType( 'boolean', Checkbox::class, 'bool' );
 
-            $fieldTypeRegistry->registerByRelation( 'LeafFile', LeafFile::class );
-            $fieldTypeRegistry->registerByRelation( 'LeafImage', LeafImage::class );
-            $fieldTypeRegistry->registerByRelation( 'Translatable', Translatable::class );
+            $fieldTypeRegistry->registerByRelation( 'file', LeafFile::class );
+            $fieldTypeRegistry->registerByRelation( 'image', LeafImage::class );
 
             return $fieldTypeRegistry;
         } );

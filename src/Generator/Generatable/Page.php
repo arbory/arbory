@@ -2,6 +2,8 @@
 
 namespace CubeSystems\Leaf\Generator\Generatable;
 
+use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
+use CubeSystems\Leaf\Admin\Form\Fields\HasOne;
 use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Stubable;
@@ -167,17 +169,17 @@ class Page extends StubGenerator implements Stubable
     {
         $fields = $this->schema->getRelations()->map( function( Relation $relation )
         {
-            $modelReflection = new ReflectionClass( $relation->getModel() );
+            $name = class_basename( $relation->getModel() );
 
             return $this->stubRegistry->make( 'parts.model_relation_method', [
-                'methodName' => Str::camel( $modelReflection->getShortName() ),
-                'relationMethod' => 'morphMany',
-                'modelClass' => $modelReflection->getShortName(),
+                'methodName' => Str::camel( $name ),
+                'relationMethod' => $this->getModelRelationMethod( $relation->getFieldType() ),
+                'modelClass' => ucfirst( $name ),
                 'relationName' => 'owner'
             ] );
         } );
 
-        return $this->formatter->indent( $fields->implode( PHP_EOL ) );
+        return $this->formatter->indent( $fields->implode( str_repeat( PHP_EOL, 2 ) ) );
     }
 
     /**
@@ -211,14 +213,27 @@ class Page extends StubGenerator implements Stubable
     {
         return $this->schema->getRelations()->map( function( Relation $relation )
         {
-            $fieldReflection = new ReflectionClass( $relation->getFieldType() );
-            $modelReflection = new ReflectionClass( $relation->getModel() );
+            $modelName = class_basename( $relation->getModel() );
 
             return $this->stubRegistry->make( 'parts.field_relation', [
-                'relationFieldClass' => $fieldReflection->getShortName(),
-                'relationName' => Str::camel( $modelReflection->getShortName() ),
+                'relationFieldClass' => $relation->getFieldType(),
+                'relationName' => Str::camel( $modelName ),
                 'fields' => ''
             ] );
         } );
+    }
+
+    /**
+     * @param string $fieldType
+     * @return string
+     */
+    protected function getModelRelationMethod( string $fieldType ): string
+    {
+        $map = [
+            HasOne::class => 'morphOne',
+            HasMany::class => 'morphMany',
+        ];
+
+        return $map[ $fieldType ];
     }
 }

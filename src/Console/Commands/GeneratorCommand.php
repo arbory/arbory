@@ -144,7 +144,7 @@ class GeneratorCommand extends Command
     {
         $schema = $this->container->make( Schema::class );
 
-        list( $singular, $plural ) = explode( ',', $this->askImportant( 'Model name', null, 'singular, plural' ) );
+        list( $singular, $plural ) = explode( ',', $this->askImportant( 'Model name', 'Bear, Bears', 'singular, plural' ) );
 
         $schema->setNameSingular( trim( $singular ) );
         $schema->setNamePlural( trim( $plural ) );
@@ -164,12 +164,15 @@ class GeneratorCommand extends Command
         do
         {
             $relation = new Relation();
+            $models = $this->getModels();
 
             $relation->setFieldType( $this->choice( 'Select relation', $this->getRelationFieldTypes(), 0 ) );
-            $relation->setModel( $this->choice( 'Select model', $this->getModels(), 0 ) );
+
+            $key = $this->choice( 'Select model', $models, 0 );
+            $relation->setModel( $models[ $key ] );
 
             $schema->addRelation( $relation );
-        } while( $this->confirm( '... add another?', false ) );
+        } while( $this->confirm( '... add another?', true ) );
     }
 
     /**
@@ -177,18 +180,12 @@ class GeneratorCommand extends Command
      */
     protected function setupFields( Schema $schema )
     {
-        $nthField = 0;
-
         do
         {
-            $nthField++;
-
-            $this->line( ' <fg=red>[...]</>'  );
-
             $structure = new Structure();
             $field = new Field( $structure );
 
-            $field->setName( $this->ask( 'Enter the name', 'testing' ) );
+            $field->setName( $this->ask( 'Enter the name' ) );
 
             $choices = $this->fieldTypeRegistry->getFieldsByType()->toArray();
 
@@ -215,7 +212,7 @@ class GeneratorCommand extends Command
             }
 
             $schema->addField( $field );
-        } while( $this->confirm( '<fg=red>[... add another field?]</>', true ) );
+        } while( $this->confirm( '... add another field?', true ) );
     }
 
     /**
@@ -343,22 +340,5 @@ class GeneratorCommand extends Command
         $this->line('');
 
         return $result;
-    }
-
-    /**
-     * @return Field
-     */
-    protected function getIdField(): Field
-    {
-        $structure = new Structure();
-        $field = new Field( $structure );
-
-        $field->setName( 'id' );
-        $field->setType( Hidden::class );
-
-        $structure->setType( 'increments' );
-        $structure->setAutoIncrement( true );
-
-        return $field;
     }
 }
