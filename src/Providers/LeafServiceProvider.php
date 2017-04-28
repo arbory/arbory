@@ -7,10 +7,12 @@ use CubeSystems\Leaf\Admin\Form\Fields\LeafFile;
 use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
+use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
 use CubeSystems\Leaf\Console\Commands\GenerateCommand;
 use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
 use CubeSystems\Leaf\Console\Commands\SeedCommand;
+use CubeSystems\Leaf\Files\LeafImage;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
@@ -239,8 +241,8 @@ class LeafServiceProvider extends ServiceProvider
             $fieldTypeRegistry->registerByType( 'datetime', DateTime::class, 'string' );
             $fieldTypeRegistry->registerByType( 'boolean', Checkbox::class, 'bool' );
 
-            $fieldTypeRegistry->registerByRelation( 'leaf_files', LeafFile::class );
             $fieldTypeRegistry->registerByRelation( 'file', LeafFile::class );
+            $fieldTypeRegistry->registerByRelation( 'image', LeafImage::class );
 
             return $fieldTypeRegistry;
         } );

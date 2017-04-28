@@ -7,39 +7,28 @@ use CubeSystems\Leaf\Generator\Extras\Structure;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use DateTimeImmutable;
+use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Migration extends StubGenerator implements Stubable
 {
+    use DetectsApplicationNamespace;
+
     /**
      * @return string
      */
     public function getCompiledControllerStub(): string
     {
-        $schemaFields = ( clone $this->schema->getFields() )->transform( function( $field )
-        {
-            /**
-             * @var Field $field
-             */
-            $structure = $field->getStructure();
-
-            return sprintf(
-                '$table->%s( \'%s\'%s )%s;',
-                $structure->getType(),
-                $field->getDatabaseName(),
-                $this->buildSecondArgument( $structure ),
-                $this->buildColumn( $structure )
-            );
-        } );
-
-        if( $this->schema->usesTimestamps() )
-        {
-            $schemaFields->push( '$table->timestamps();' );
-        }
-
         return $this->stubRegistry->make( 'migration', [
             'className' => $this->getClassName(),
-            'schemaName' => snake_case( $this->schema->getName() ),
-            'schemaFields' => $this->formatter->prependSpacing( $schemaFields,3 )->implode( PHP_EOL )
+            'modelTableName' => Str::snake( $this->schema->getNamePlural() ),
+            'pageTableName' => Str::snake( $this->schema->getNameSingular() ),
+            'modelSchemaCreate' => $this->getCompiledModelSchema(),
+            'pageSchemaCreate' => $this->getCompiledPageSchema(),
+            'insertMenuItem' => $this->getCompiledInsertMenuItem(),
+            'schemaDown' => $this->getCompiledDropSchemas(),
+            'menuItemDown' => $this->getCompiledDownMenuItem()
         ] );
     }
 
@@ -48,7 +37,7 @@ class Migration extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return 'Create' . $this->formatter->className(  $this->schema->getName() ) . 'Table';
+        return 'Create' . $this->formatter->className( $this->schema->getNamePlural() ) . 'Table';
     }
 
     /**
@@ -61,7 +50,7 @@ class Migration extends StubGenerator implements Stubable
         return sprintf(
             '%s_create_%s_table.php',
             $time->format( 'Y_m_d_His' ),
-            snake_case( $this->schema->getName() )
+            snake_case( $this->schema->getNamePlural() )
         );
     }
 
@@ -89,7 +78,7 @@ class Migration extends StubGenerator implements Stubable
     {
         $argument = null;
 
-        if ( $structure->getType() === 'integer' )
+        if( $structure->getType() === 'integer' )
         {
             $argument = $structure->isAutoIncrement();
         }
@@ -121,5 +110,179 @@ class Migration extends StubGenerator implements Stubable
         }
 
         return $builder;
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getCommonSchemaFields(): Collection
+    {
+        $fields = new Collection();
+
+        if( $this->schema->usesId() )
+        {
+            $fields->push( '$table->increments( \'id\' );' );
+        }
+
+        if( $this->schema->usesTimestamps() )
+        {
+            $fields->push( '$table->timestamps();' );
+        }
+
+        return $fields;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledModelSchema(): string
+    {
+        $fields = $this->getCommonSchemaFields();
+
+        if( !$this->selectGeneratables->contains( Model::class ) )
+        {
+            return (string) null;
+        }
+
+        $fields = $fields->merge( $this->schema->getFields()->map( function( Field $field )
+        {
+            $structure = $field->getStructure();
+
+            return sprintf(
+                '$table->%s( \'%s\'%s )%s;',
+                $structure->getType(),
+                $field->getDatabaseName(),
+                $this->buildSecondArgument( $structure ),
+                $this->buildColumn( $structure )
+            );
+        } ) );
+
+        $compiled = $this->stubRegistry->make( 'parts.schema_create', [
+            'tableName' => $this->getModelTableName(),
+            'schemaField' => $this->formatter->indent( $fields->implode( PHP_EOL ), 1 ),
+        ] );
+
+        return $this->formatter->indent( $compiled, 2 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledPageSchema(): string
+    {
+        $fields = $this->getCommonSchemaFields();
+
+        if( !$this->selectGeneratables->contains( Page::class ) )
+        {
+            return (string) null;
+        }
+
+        if( !$this->selectGeneratables->contains( Model::class ) )
+        {
+            $fields = $fields->merge( $this->schema->getFields()->map( function( Field $field )
+            {
+                $structure = $field->getStructure();
+
+                return sprintf(
+                    '$table->%s( \'%s\'%s )%s;',
+                    $structure->getType(),
+                    $field->getDatabaseName(),
+                    $this->buildSecondArgument( $structure ),
+                    $this->buildColumn( $structure )
+                );
+            } ) );
+        }
+
+        $compiled = $this->stubRegistry->make( 'parts.schema_create', [
+            'tableName' => $this->getPageTableName(),
+            'schemaField' => $this->formatter->indent( $fields->implode( PHP_EOL ), 1 ),
+        ] );
+
+        return
+            str_repeat( PHP_EOL, 2 ) .
+            str_repeat( "\t", 2 ) .
+            $this->formatter->indent( $compiled, 2 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledInsertMenuItem(): string
+    {
+        if( !$this->selectGeneratables->contains( AdminController::class ) )
+        {
+            return (string) null;
+        }
+
+        $compiled = $this->stubRegistry->make( 'parts.insert_admin_menu_item', [
+            'title' => ucfirst( $this->schema->getNamePlural() ),
+            'controllerClass' =>
+                $this->getAppNamespace() . 'Http\Controllers\Admin\\' .
+                $this->formatter->className( $this->schema->getNameSingular() ) . 'Controller',
+        ] );
+
+        return
+            str_repeat( PHP_EOL, 2 ) .
+            str_repeat( "\t", 2 ) .
+            $this->formatter->indent( $compiled, 2 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledDropSchemas(): string
+    {
+        $items = new Collection();
+
+        if( $this->selectGeneratables->contains( Model::class ) )
+        {
+            $items->push( 'Schema::dropIfExists( \'' . $this->getModelTableName() . '\' );' );
+        }
+
+        if( $this->selectGeneratables->contains( Page::class ) )
+        {
+            $items->push( 'Schema::dropIfExists( \'' . $this->getPageTableName() . '\' );' );
+        }
+
+        return $this->formatter->indent( $items->implode( PHP_EOL ), 2 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledDownMenuItem(): string
+    {
+        if( !$this->selectGeneratables->contains( AdminController::class ) )
+        {
+            return (string) null;
+        }
+
+        $compiled = $this->stubRegistry->make( 'parts.delete_admin_menu_item', [
+            'title' => ucfirst( $this->schema->getNamePlural() ),
+            'controllerClass' =>
+                $this->getAppNamespace() . 'Http\Controllers\Admin\\' .
+                $this->formatter->className( $this->schema->getNameSingular() ) . 'Controller',
+        ] );
+
+        return
+            str_repeat( PHP_EOL, 2 ) .
+            str_repeat( "\t", 2 ) .
+            $this->formatter->indent( $compiled, 2 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getModelTableName(): string
+    {
+        return Str::snake( $this->schema->getNamePlural() );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPageTableName(): string
+    {
+        return Str::snake( $this->schema->getNameSingular() ) . '_pages';
     }
 }
