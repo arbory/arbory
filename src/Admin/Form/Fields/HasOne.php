@@ -58,6 +58,7 @@ class HasOne extends AbstractRelationField
 
     /**
      * @param Request $request
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function afterModelSave( Request $request )
     {
@@ -80,8 +81,12 @@ class HasOne extends AbstractRelationField
         }
         elseif( $relation instanceof \Illuminate\Database\Eloquent\Relations\HasOne )
         {
-            $relatedModel->setAttribute( $relation->getPlainForeignKey(), $this->getModel()->getKey() );
             $relatedModel->save();
+
+            $localKey = explode( '.', $relation->getQualifiedParentKeyName() )[1];
+
+            $this->getModel()->setAttribute( $localKey, $relatedModel->getKey() );
+            $this->getModel()->save();
         }
 
         foreach( $this->getRelationFieldSet( $relatedModel )->getFields() as $field )
