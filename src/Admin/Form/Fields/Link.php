@@ -39,7 +39,7 @@ class Link extends HasOne
      */
     protected function getHeader()
     {
-        return Html::header( Html::h1( trans( 'leaf::fields.link.title' ) ) );
+        return Html::header( Html::h1( $this->getLabel() ) );
     }
 
     /**
