@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Generator\Generatable;
 
+use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 
@@ -31,7 +32,9 @@ class View extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        return $this->stubRegistry->findByName( 'view' )->getContents();
+        return $this->stubRegistry->make( 'view', [
+            'fields' => $this->getCompiledFields()
+        ] );
     }
 
     /**
@@ -68,5 +71,20 @@ class View extends StubGenerator implements Stubable
             snake_case( $this->schema->getNameSingular() ),
             $this->getFilename()
         ) );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledFields(): string
+    {
+        $fields = $this->schema->getFields()->map( function( Field $field ) {
+            return sprintf(
+                '<pre>{{ $%s }}</pre>',
+                $this->formatter->property( $field->getName() )
+            );
+        } );
+
+        return $fields->implode( PHP_EOL );
     }
 }

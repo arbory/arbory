@@ -65,7 +65,7 @@ class Controller extends StubGenerator implements Stubable
     {
         $fields = $this->schema->getFields()->map( function( Field $field ) {
             return sprintf(
-                '\'%s\' => $node->content->%s,',
+                '\'%s\' => $content->%s,',
                 $this->formatter->property( $field->getName() ),
                 Str::snake( $field->getName() )
             );
