@@ -7,6 +7,7 @@ use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Controller extends StubGenerator implements Stubable
 {
@@ -20,7 +21,7 @@ class Controller extends StubGenerator implements Stubable
         return $this->stubRegistry->make( 'controller', [
             'namespace' => $this->getNamespace(),
             'className' => $this->getClassName(),
-            'viewPath' => 'controllers.' . snake_case( $this->schema->getNameSingular() ) . '.index',
+            'viewPath' => 'public.controllers.' . snake_case( $this->schema->getNameSingular() ) . '.index',
             'viewFields' => $this->getCompiledViewFields(),
         ] );
     }
@@ -64,9 +65,9 @@ class Controller extends StubGenerator implements Stubable
     {
         $fields = $this->schema->getFields()->map( function( Field $field ) {
             return sprintf(
-                '\'%s\' => $node->%s,',
-                snake_case( $field->getName() ),
-                $this->formatter->property( $field->getName() )
+                '\'%s\' => $content->%s,',
+                $this->formatter->property( $field->getName() ),
+                Str::snake( $field->getName() )
             );
         } );
 

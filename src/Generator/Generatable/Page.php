@@ -11,7 +11,6 @@ use CubeSystems\Leaf\Generator\StubGenerator;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use ReflectionClass;
 
 class Page extends StubGenerator implements Stubable
 {
@@ -201,7 +200,7 @@ class Page extends StubGenerator implements Stubable
         {
             return $this->stubRegistry->make( 'parts.field', [
                 'fieldClass' => $field->getType(),
-                'fieldName' => $field->getName()
+                'fieldName' => Str::snake( $field->getName() )
             ] );
         } );
     }
