@@ -8,6 +8,7 @@ use CubeSystems\Leaf\Admin\Form\FieldSet;
 use CubeSystems\Leaf\Admin\Form\Fields\Renderer\NestedFieldRenderer;
 use CubeSystems\Leaf\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\Request;
 
 /**
@@ -114,8 +115,14 @@ class HasMany extends AbstractField
                 $field->beforeModelSave( $request );
             }
 
-            $relatedModel->setAttribute( $this->getRelation()->getMorphType(), get_class( $this->getModel() ) ); // TODO:
-            $relatedModel->setAttribute( $this->getRelation()->getForeignKeyName(), $this->getModel()->getKey() );
+            $relation = $this->getRelation();
+
+            if( $relation instanceof MorphMany )
+            {
+                $relatedModel->setAttribute( $relation->getMorphType(), get_class( $this->getModel() ) ); // TODO:
+            }
+
+            $relatedModel->setAttribute( $relation->getForeignKeyName(), $this->getModel()->getKey() );
 
             $relatedModel->save();
 
