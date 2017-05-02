@@ -200,7 +200,7 @@ class Page extends StubGenerator implements Stubable
         {
             return $this->stubRegistry->make( 'parts.field', [
                 'fieldClass' => $field->getType(),
-                'fieldName' => Str::lower( $field->getName() )
+                'fieldName' => Str::snake( $field->getName() )
             ] );
         } );
     }
