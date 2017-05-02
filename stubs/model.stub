@@ -3,6 +3,7 @@
 namespace {{namespace}};
 
 use Illuminate\Database\Eloquent\Model;
+{{use}}
 
 class {{className}} extends Model
 {
@@ -17,4 +18,6 @@ class {{className}} extends Model
     protected $fillable = [
         {{fillable}}
     ];
+
+    {{relations}}
 }

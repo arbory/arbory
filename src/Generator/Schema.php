@@ -121,11 +121,11 @@ class Schema
     }
 
     /**
-     * @param bool $useTimestamps
+     * @param bool $state
      */
-    public function useTimestamps( bool $useTimestamps = true )
+    public function useTimestamps( bool $state = true )
     {
-        $this->useTimestamps = $useTimestamps;
+        $this->useTimestamps = $state;
     }
 
     /**
@@ -137,10 +137,10 @@ class Schema
     }
 
     /**
-     * @param bool $useId
+     * @param bool $state
      */
-    public function useId( bool $useId = true )
+    public function useId( bool $state = true )
     {
-        $this->useId = $useId;
+        $this->useId = $state;
     }
 }

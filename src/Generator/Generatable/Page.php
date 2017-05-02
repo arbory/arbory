@@ -8,13 +8,14 @@ use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
+use CubeSystems\Leaf\Generator\Support\Traits\CompilesRelations;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Page extends StubGenerator implements Stubable
 {
-    use DetectsApplicationNamespace;
+    use DetectsApplicationNamespace, CompilesRelations;
 
     /**
      * @return void
@@ -127,28 +128,6 @@ class Page extends StubGenerator implements Stubable
     }
 
     /**
-     * @return Collection
-     */
-    protected function getUseRelations(): Collection
-    {
-        return $this->schema->getRelations()->map( function( Relation $relation )
-        {
-            return $this->formatter->use( $relation->getModel() );
-        } )->unique();
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function getUseRelationFields(): Collection
-    {
-        return $this->schema->getRelations()->map( function( Relation $relation )
-        {
-            return $this->formatter->use( $relation->getFieldType() );
-        } )->unique();
-    }
-
-    /**
      * @return string
      */
     protected function getCompiledFillableFields(): string
@@ -166,17 +145,12 @@ class Page extends StubGenerator implements Stubable
      */
     protected function getCompiledRelationMethods(): string
     {
-        $fields = $this->schema->getRelations()->map( function( Relation $relation )
+        if( !$this->selectGeneratables->contains( Page::class ) )
         {
-            $name = class_basename( $relation->getModel() );
+            return (string) null;
+        }
 
-            return $this->stubRegistry->make( 'parts.model_relation_method', [
-                'methodName' => Str::camel( $name ),
-                'relationMethod' => $this->getModelRelationMethod( $relation->getFieldType() ),
-                'modelClass' => ucfirst( $name ),
-                'relationName' => 'owner'
-            ] );
-        } );
+        $fields = $this->compileRelationsMethods( $this->schema->getRelations() );
 
         return $this->formatter->indent( $fields->implode( str_repeat( PHP_EOL, 2 ) ) );
     }
@@ -220,19 +194,5 @@ class Page extends StubGenerator implements Stubable
                 'fields' => ''
             ] );
         } );
-    }
-
-    /**
-     * @param string $fieldType
-     * @return string
-     */
-    protected function getModelRelationMethod( string $fieldType ): string
-    {
-        $map = [
-            HasOne::class => 'morphOne',
-            HasMany::class => 'morphMany',
-        ];
-
-        return $map[ $fieldType ];
     }
 }

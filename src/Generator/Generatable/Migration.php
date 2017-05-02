@@ -6,6 +6,7 @@ use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Structure;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
+use CubeSystems\Leaf\Generator\Support\Traits\CompilesRelations;
 use DateTimeImmutable;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Support\Collection;
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 
 class Migration extends StubGenerator implements Stubable
 {
-    use DetectsApplicationNamespace;
+    use DetectsApplicationNamespace, CompilesRelations;
 
     /**
      * @return string
@@ -139,7 +140,10 @@ class Migration extends StubGenerator implements Stubable
     {
         $fields = $this->getCommonSchemaFields();
 
-        if( !$this->selectGeneratables->contains( Model::class ) )
+        if( 
+            !$this->selectGeneratables->contains( Model::class ) &&
+            $this->selectGeneratables->contains( Page::class )
+        )
         {
             return (string) null;
         }
@@ -156,6 +160,8 @@ class Migration extends StubGenerator implements Stubable
                 $this->buildColumn( $structure )
             );
         } ) );
+
+        $fields = $fields->merge( $this->getSchemaRelationFields() );
 
         $compiled = $this->stubRegistry->make( 'parts.schema_create', [
             'tableName' => $this->getModelTableName(),
@@ -192,6 +198,8 @@ class Migration extends StubGenerator implements Stubable
                 );
             } ) );
         }
+
+        $fields = $fields->merge( $this->getSchemaRelationFields() );
 
         $compiled = $this->stubRegistry->make( 'parts.schema_create', [
             'tableName' => $this->getPageTableName(),
