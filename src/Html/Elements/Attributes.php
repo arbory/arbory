@@ -37,7 +37,7 @@ class Attributes extends Collection
 
         if( !is_null( $value ) )
         {
-            return $key . '="' . e( $value ) . '"';
+            return $key . '="' . htmlspecialchars( $value, ENT_QUOTES, 'UTF-8', true ) . '"';
         }
 
         return null;
