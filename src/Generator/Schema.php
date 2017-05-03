@@ -49,6 +49,36 @@ class Schema
     /**
      * @return Collection
      */
+    public function getTranslatableFields(): Collection
+    {
+        return $this->fields->filter( function( Field $field )
+        {
+            return $field->getStructure()->isTranslatable();
+        } );
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getNonTranslatableFields(): Collection
+    {
+        return $this->fields->filter( function( Field $field )
+        {
+            return !$field->getStructure()->isTranslatable();
+        } );
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTranslatables(): bool
+    {
+        return !$this->getTranslatableFields()->isEmpty();
+    }
+
+    /**
+     * @return Collection
+     */
     public function getFields()
     {
         return $this->fields;

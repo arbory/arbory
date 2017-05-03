@@ -4,7 +4,6 @@ namespace CubeSystems\Leaf\Console\Commands;
 
 use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
 use CubeSystems\Leaf\Admin\Form\Fields\HasOne;
-use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Generatable\AdminController;
 use CubeSystems\Leaf\Generator\Generatable\Controller;
@@ -12,6 +11,7 @@ use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Structure;
 use CubeSystems\Leaf\Generator\Generatable\Migration;
 use CubeSystems\Leaf\Generator\Generatable\Model;
+use CubeSystems\Leaf\Generator\Generatable\TranslationModel;
 use CubeSystems\Leaf\Generator\Generatable\View;
 use CubeSystems\Leaf\Generator\Generatable\Page;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
@@ -200,6 +200,8 @@ class GeneratorCommand extends Command
 
         $field->setType( $choices[ $dataType ] );
 
+        $structure->setTranslatable( $this->confirm( 'Is it translatable?', false ) );
+
         if( $this->confirm( 'Define the structure?', false ) )
         {
             if( $structure->getType() === 'integer' )
@@ -241,6 +243,11 @@ class GeneratorCommand extends Command
         }
 
         $selectedGeneratables = $this->selectGeneratables();
+
+        if( in_array( Model::class, $selectedGeneratables ) && $schema->hasTranslatables() )
+        {
+            $selectedGeneratables[] = TranslationModel::class;
+        }
 
         foreach( $selectedGeneratables as $generatableType )
         {
