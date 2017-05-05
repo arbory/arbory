@@ -15,6 +15,21 @@ class NodesRepository extends AbstractModelsRepository
      */
     protected $modelClass = Node::class;
 
+    /**
+     * @param Node $node
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
+     */
+    public function findUnder( Node $node, string $key, $value )
+    {
+        $query = $this->model->newQuery()->where( $key, $value )
+            ->whereBetween( $node->getLeftColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) )
+            ->whereBetween( $node->getRightColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
+
+        return $query->get()->first();
+    }
+
     /***
      * @param $uri
      * @return Node|null
