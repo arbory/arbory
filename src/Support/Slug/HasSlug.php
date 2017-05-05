@@ -11,6 +11,14 @@ trait HasSlug
     /**
      * @return string
      */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @return string
+     */
     public function getSluggableFieldName(): string
     {
         $fillable = $this->fillable;
