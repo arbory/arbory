@@ -41,11 +41,49 @@ class ModuleBuilder
 
     /**
      * @param callable $routeCallback
-     * @return $this
+     * @return self
      */
     public function routes( callable $routeCallback )
     {
         Route::register( $this->module->getControllerClass(), $routeCallback );
+
+        return $this;
+    }
+
+    /**
+     * @param array|string $roles
+     * @return self
+     */
+    public function roles( $roles )
+    {
+        $configuration = $this->module->getConfiguration();
+
+        if( is_string( $roles ) )
+        {
+            $roles = [ $roles ];
+        }
+
+        $configuration->setAuthorizationType( Module::AUTHORIZATION_TYPE_ROLES );
+        $configuration->setAuthorizedRoles( $roles );
+
+        return $this;
+    }
+
+    /**
+     * @param array|string $permissions
+     * @return self
+     */
+    public function permissions( $permissions )
+    {
+        $configuration = $this->module->getConfiguration();
+
+        if( is_string( $permissions ) )
+        {
+            $permissions = [ $permissions ];
+        }
+
+        $configuration->setAuthorizationType( Module::AUTHORIZATION_TYPE_PERMISSIONS );
+        $configuration->setRequiredPermissions( $permissions );
 
         return $this;
     }
