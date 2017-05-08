@@ -6,6 +6,7 @@ use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Structure;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
+use CubeSystems\Leaf\Generator\Support\Traits\CompilesRelations;
 use DateTimeImmutable;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Support\Collection;
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 
 class Migration extends StubGenerator implements Stubable
 {
-    use DetectsApplicationNamespace;
+    use DetectsApplicationNamespace, CompilesRelations;
 
     /**
      * @return string
@@ -26,6 +27,7 @@ class Migration extends StubGenerator implements Stubable
             'pageTableName' => Str::snake( $this->schema->getNameSingular() ),
             'modelSchemaCreate' => $this->getCompiledModelSchema(),
             'pageSchemaCreate' => $this->getCompiledPageSchema(),
+            'translationSchemaCreate' => $this->getCompiledTranslationSchema(),
             'insertMenuItem' => $this->getCompiledInsertMenuItem(),
             'schemaDown' => $this->getCompiledDropSchemas(),
             'menuItemDown' => $this->getCompiledDownMenuItem()
@@ -139,12 +141,15 @@ class Migration extends StubGenerator implements Stubable
     {
         $fields = $this->getCommonSchemaFields();
 
-        if( !$this->selectGeneratables->contains( Model::class ) )
+        if( 
+            !$this->selectGeneratables->contains( Model::class ) &&
+            $this->selectGeneratables->contains( Page::class )
+        )
         {
             return (string) null;
         }
 
-        $fields = $fields->merge( $this->schema->getFields()->map( function( Field $field )
+        $fields = $fields->merge( $this->schema->getNonTranslatableFields()->map( function( Field $field )
         {
             $structure = $field->getStructure();
 
@@ -156,6 +161,8 @@ class Migration extends StubGenerator implements Stubable
                 $this->buildColumn( $structure )
             );
         } ) );
+
+        $fields = $fields->merge( $this->getSchemaRelationFields() );
 
         $compiled = $this->stubRegistry->make( 'parts.schema_create', [
             'tableName' => $this->getModelTableName(),
@@ -179,7 +186,7 @@ class Migration extends StubGenerator implements Stubable
 
         if( !$this->selectGeneratables->contains( Model::class ) )
         {
-            $fields = $fields->merge( $this->schema->getFields()->map( function( Field $field )
+            $fields = $fields->merge( $this->schema->getNonTranslatableFields()->map( function( Field $field )
             {
                 $structure = $field->getStructure();
 
@@ -193,8 +200,64 @@ class Migration extends StubGenerator implements Stubable
             } ) );
         }
 
+        $fields = $fields->merge( $this->getSchemaRelationFields() );
+
         $compiled = $this->stubRegistry->make( 'parts.schema_create', [
             'tableName' => $this->getPageTableName(),
+            'schemaField' => $this->formatter->indent( $fields->implode( PHP_EOL ), 1 ),
+        ] );
+
+        return
+            str_repeat( PHP_EOL, 2 ) .
+            str_repeat( "\t", 2 ) .
+            $this->formatter->indent( $compiled, 2 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledTranslationSchema(): string
+    {
+        $fields = $this->getCommonSchemaFields();
+        $singularName = Str::snake( $this->schema->getNameSingular() );
+
+        if( !$this->schema->hasTranslatables() )
+        {
+            return (string) null;
+        }
+
+        $fields->push( sprintf(
+            '$table->%s( \'%s\' )->unsigned();',
+            'integer',
+            $singularName . '_id'
+        ) );
+
+        $fields = $fields->merge( $this->schema->getTranslatableFields()->map( function( Field $field )
+        {
+            $structure = $field->getStructure();
+
+            return sprintf(
+                '$table->%s( \'%s\' );',
+                $structure->getType(),
+                $field->getDatabaseName()
+            );
+        } ) );
+
+        $fields->push( '$table->string( \'locale\' )->index();' );
+
+        $fields->push( sprintf(
+            '$table->unique( [ \'%1$s_id\', \'locale\' ], \'%1$s_localized\' );',
+            $singularName
+        ) );
+
+        $fields->push( sprintf(
+            '$table->foreign( \'%s_id\' )->references( \'id\' )->on( \'%s\' )->onDelete( \'cascade\' );',
+            $singularName,
+            $this->getModelTableName()
+        ) );
+
+        $compiled = $this->stubRegistry->make( 'parts.schema_create', [
+            'tableName' => $this->getTranslationTableName(),
             'schemaField' => $this->formatter->indent( $fields->implode( PHP_EOL ), 1 ),
         ] );
 
@@ -244,6 +307,11 @@ class Migration extends StubGenerator implements Stubable
             $items->push( 'Schema::dropIfExists( \'' . $this->getPageTableName() . '\' );' );
         }
 
+        if( $this->schema->hasTranslatables() )
+        {
+            $items->push( 'Schema::dropIfExists( \'' . $this->getTranslationTableName() . '\' );' );
+        }
+
         return $this->formatter->indent( $items->implode( PHP_EOL ), 2 );
     }
 
@@ -284,5 +352,13 @@ class Migration extends StubGenerator implements Stubable
     protected function getPageTableName(): string
     {
         return Str::snake( $this->schema->getNameSingular() ) . '_pages';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getTranslationTableName(): string
+    {
+        return Str::snake( $this->schema->getNameSingular() ) . '_translations';
     }
 }

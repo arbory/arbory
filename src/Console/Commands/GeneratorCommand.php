@@ -4,7 +4,6 @@ namespace CubeSystems\Leaf\Console\Commands;
 
 use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
 use CubeSystems\Leaf\Admin\Form\Fields\HasOne;
-use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Generatable\AdminController;
 use CubeSystems\Leaf\Generator\Generatable\Controller;
@@ -12,6 +11,7 @@ use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Structure;
 use CubeSystems\Leaf\Generator\Generatable\Migration;
 use CubeSystems\Leaf\Generator\Generatable\Model;
+use CubeSystems\Leaf\Generator\Generatable\TranslationModel;
 use CubeSystems\Leaf\Generator\Generatable\View;
 use CubeSystems\Leaf\Generator\Generatable\Page;
 use CubeSystems\Leaf\Generator\GeneratorFormatter;
@@ -85,6 +85,7 @@ class GeneratorCommand extends Command
 
     /**
      * @return void
+     * @throws \InvalidArgumentException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \Symfony\Component\Console\Exception\LogicException
      * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
@@ -100,18 +101,34 @@ class GeneratorCommand extends Command
 
     /**
      * @return Schema
+     * @throws \InvalidArgumentException
      */
     protected function setupSchema(): Schema
     {
         $schema = $this->container->make( Schema::class );
 
-        list( $singular, $plural ) = explode( ',', $this->askImportant( 'Model name', null, 'singular, plural' ) );
+        $nameParts = explode( ',', $this->askImportant( 'Model name', null, 'singular, plural' ) );
 
-        $schema->setNameSingular( trim( $singular ) );
-        $schema->setNamePlural( trim( $plural ) );
+        if( empty( $nameParts[ 0 ] ) )
+        {
+            throw new \InvalidArgumentException( 'Name cannot be empty' );
+        }
+        
+        if( !isset( $nameParts[ 1 ] ) )
+        {
+            $nameParts[ 1 ] = $nameParts[ 0 ] . 's';
+        }
+
+        $schema->setNameSingular( trim( $nameParts[ 0 ] ) );
+        $schema->setNamePlural( trim( $nameParts[ 1 ] ) );
 
         $schema->useId( $this->confirm( 'Add an id field?', true ) );
         $schema->useTimestamps( $this->confirm( 'Add created and updated fields?', true ) );
+
+        if( $this->confirm( 'Add owner fields?', false ) )
+        {
+            $this->addOwnerFields( $schema );
+        }
 
         return $schema;
     }
@@ -183,6 +200,8 @@ class GeneratorCommand extends Command
 
         $field->setType( $choices[ $dataType ] );
 
+        $structure->setTranslatable( $this->confirm( 'Is it translatable?', false ) );
+
         if( $this->confirm( 'Define the structure?', false ) )
         {
             if( $structure->getType() === 'integer' )
@@ -224,6 +243,11 @@ class GeneratorCommand extends Command
         }
 
         $selectedGeneratables = $this->selectGeneratables();
+
+        if( in_array( Model::class, $selectedGeneratables ) && $schema->hasTranslatables() )
+        {
+            $selectedGeneratables[] = TranslationModel::class;
+        }
 
         foreach( $selectedGeneratables as $generatableType )
         {
@@ -278,7 +302,10 @@ class GeneratorCommand extends Command
     protected function getModels()
     {
         $models = [];
-        $files = $this->fileSystem->files( app_path() );
+        $files = array_merge(
+            $this->fileSystem->files( app_path() ),
+            $this->fileSystem->files( app_path( 'pages' ) )
+        );
 
         foreach( $files as $file )
         {
@@ -337,7 +364,7 @@ class GeneratorCommand extends Command
     /**
      * @return array
      */
-    protected function getGeneratableChoices() : array
+    protected function getGeneratableChoices(): array
     {
         $groups = $this->getGeneratableGroups();
         $generatables = $this->getGeneratables();
@@ -358,6 +385,28 @@ class GeneratorCommand extends Command
         }
 
         return array_merge( $groups, $generatables );
+    }
+
+    /**
+     * @param Schema $schema
+     * @return void
+     */
+    protected function addOwnerFields( Schema $schema )
+    {
+        $structure = new Structure();
+        $field = new Field( $structure );
+        $field->setName( 'owner_type' );
+        $field->setType( 'string' );
+
+        $schema->addField( $field );
+
+        $structure = new Structure();
+        $structure->setNullable( true );
+        $field = new Field( $structure );
+        $field->setName( 'owner_id' );
+        $field->setType( 'integer' );
+
+        $schema->addField( $field );
     }
 
     /**

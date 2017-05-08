@@ -1,0 +1,6 @@
+/**
+ * @var array
+ */
+protected $translatedAttributes = [
+    {{fillableTranslatables}}
+];

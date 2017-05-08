@@ -4,6 +4,7 @@ use CubeSystems\Leaf\Admin\Form\Fields\Checkbox;
 use CubeSystems\Leaf\Admin\Form\Fields\DateTime;
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Admin\Form\Fields\LeafFile;
+use CubeSystems\Leaf\Admin\Form\Fields\Link;
 use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
@@ -243,6 +244,7 @@ class LeafServiceProvider extends ServiceProvider
 
             $fieldTypeRegistry->registerByRelation( 'file', LeafFile::class );
             $fieldTypeRegistry->registerByRelation( 'image', LeafImage::class );
+            $fieldTypeRegistry->registerByRelation( 'link', Link::class );
 
             return $fieldTypeRegistry;
         } );

@@ -13,7 +13,7 @@ class {{className}} extends Migration
      */
     public function up()
     {
-        {{modelSchemaCreate}}{{pageSchemaCreate}}{{insertMenuItem}}
+        {{modelSchemaCreate}}{{pageSchemaCreate}}{{translationSchemaCreate}}{{insertMenuItem}}
     }
 
     /**

@@ -7,15 +7,17 @@ use CubeSystems\Leaf\Generator\GeneratorFormatter;
 use CubeSystems\Leaf\Generator\Schema;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
+use CubeSystems\Leaf\Generator\Support\Traits\CompilesRelations;
 use CubeSystems\Leaf\Services\FieldTypeRegistry;
 use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 
 class Model extends StubGenerator implements Stubable
 {
-    use DetectsApplicationNamespace;
+    use DetectsApplicationNamespace, CompilesRelations;
 
     /**
      * @var FieldTypeRegistry
@@ -47,9 +49,13 @@ class Model extends StubGenerator implements Stubable
     {
         return $this->stubRegistry->make( 'model', [
             'namespace' => $this->getNamespace(),
+            'use' => $this->getCompiledUseClasses(),
             'className' => $this->getClassName(),
-            '$tableName' => snake_case( $this->schema->getNamePlural() ),
+            'traits' => $this->getCompiledTraits(),
+            'tableName' => snake_case( $this->schema->getNamePlural() ),
             'fillable' => $this->getCompiledFillableFields(),
+            'translatedAttributes' => $this->getCompiledTranslatedAttributes(),
+            'relations' => $this->getCompiledRelationMethods()
         ] );
     }
 
@@ -88,13 +94,93 @@ class Model extends StubGenerator implements Stubable
     /**
      * @return string
      */
+    protected function getCompiledTraits(): string
+    {
+        $traits = new Collection();
+
+        if ( $this->schema->hasTranslatables() )
+        {
+            $traits->push( 'Translatable' );
+        }
+
+        if ( $traits->isEmpty() )
+        {
+            return (string) null;
+        }
+
+        return 'use ' . $traits->implode( ', ' ) . ';' . PHP_EOL;
+    }
+
+    /**
+     * @return string
+     */
     protected function getCompiledFillableFields(): string
     {
-        $fields = $this->schema->getFields()->map( function( Field $field )
+        $fields = $this->schema->getNonTranslatableFields()->map( function( Field $field )
         {
             return '\'' . $this->formatter->field( $field->getName() ) . '\',';
         } );
 
+        $fields = $fields->merge( $this->getFillableRelationFields() );
+
         return $this->formatter->indent( $fields->implode( PHP_EOL ), 2 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledFillableTranslatables(): string
+    {
+        $fields = $this->schema->getTranslatableFields()->map( function( Field $field )
+        {
+            return '\'' . $this->formatter->field( $field->getName() ) . '\',';
+        } );
+
+        return $this->formatter->indent( $fields->implode( PHP_EOL ) );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledTranslatedAttributes(): string
+    {
+        $stub = $this->stubRegistry->make( 'parts.translated_attributes', [
+            'fillableTranslatables' => $this->getCompiledFillableTranslatables()
+        ] );
+
+        return $this->formatter->indent( PHP_EOL . $stub );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledUseClasses(): string
+    {
+        $use = $this->getUseRelations();
+
+        if( $this->schema->hasTranslatables() )
+        {
+            $use->push( $this->formatter->use( 'Dimsav\Translatable\Translatable' ) );
+        }
+
+        return $use->implode( PHP_EOL );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledRelationMethods(): string
+    {
+        if(
+            !$this->selectGeneratables->contains( Model::class ) &&
+            $this->selectGeneratables->contains( Page::class )
+        )
+        {
+            return (string) null;
+        }
+
+        $fields = $this->compileRelationsMethods( $this->schema->getRelations() );
+
+        return $this->formatter->indent( str_repeat( PHP_EOL, 2 ) . $fields->implode( str_repeat( PHP_EOL, 2 ) ) );
     }
 }

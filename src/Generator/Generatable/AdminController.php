@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Generator\Generatable;
 
+use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
 use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Generator\Stubable;
@@ -101,11 +102,21 @@ class AdminController extends StubGenerator implements Stubable
     {
         $fields = $this->schema->getFields()->map( function( Field $field )
         {
-            return sprintf(
-                '$form->addField( new %s(\'%s\') );',
+            $compiled = sprintf(
+                'new %s(\'%s\')',
                 $field->getClassName(),
                 snake_case( $field->getName() )
             );
+
+            if( $field->getStructure()->isTranslatable() )
+            {
+                $compiled = sprintf(
+                    'new Translatable( %s )',
+                    $compiled
+                );
+            }
+
+            return '$form->addField( ' . $compiled . ' );';
         } );
 
         return $this->formatter->indent( $fields->implode( PHP_EOL ), 3 );
@@ -140,6 +151,11 @@ class AdminController extends StubGenerator implements Stubable
                 $this->formatter->className( $this->schema->getNameSingular() )
             )
         );
+
+        if( $this->schema->hasTranslatables() )
+        {
+            $fields->push( $this->formatter->use( Translatable::class ) );
+        }
 
         return $fields->implode( PHP_EOL );
     }
