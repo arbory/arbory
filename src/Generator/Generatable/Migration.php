@@ -16,6 +16,8 @@ class Migration extends StubGenerator implements Stubable
 {
     use DetectsApplicationNamespace, CompilesRelations;
 
+    const MAX_FOREIGN_KEY_LENGTH = 64;
+
     /**
      * @return string
      */
@@ -141,7 +143,7 @@ class Migration extends StubGenerator implements Stubable
     {
         $fields = $this->getCommonSchemaFields();
 
-        if( 
+        if(
             !$this->selectGeneratables->contains( Model::class ) &&
             $this->selectGeneratables->contains( Page::class )
         )
@@ -220,10 +222,16 @@ class Migration extends StubGenerator implements Stubable
     {
         $fields = $this->getCommonSchemaFields();
         $singularName = Str::snake( $this->schema->getNameSingular() );
+        $foreignKeyName = $singularName . '_id';
 
         if( !$this->schema->hasTranslatables() )
         {
             return (string) null;
+        }
+
+        if ( strlen( $foreignKeyName ) >= self::MAX_FOREIGN_KEY_LENGTH )
+        {
+            $foreignKeyName = $this->getForeignKeyAcronym( $foreignKeyName ) . '_id';
         }
 
         $fields->push( sprintf(
@@ -251,8 +259,9 @@ class Migration extends StubGenerator implements Stubable
         ) );
 
         $fields->push( sprintf(
-            '$table->foreign( \'%s_id\' )->references( \'id\' )->on( \'%s\' )->onDelete( \'cascade\' );',
+            '$table->foreign( \'%s_id\', \'%s\' )->references( \'id\' )->on( \'%s\' )->onDelete( \'cascade\' );',
             $singularName,
+            $foreignKeyName,
             $this->getModelTableName()
         ) );
 
@@ -360,5 +369,26 @@ class Migration extends StubGenerator implements Stubable
     protected function getTranslationTableName(): string
     {
         return Str::snake( $this->schema->getNameSingular() ) . '_translations';
+    }
+
+    /**
+     * @param string $foreignKeyName
+     * @return string
+     */
+    protected function getForeignKeyAcronym( string $foreignKeyName ): string
+    {
+        $acronym = '';
+
+        foreach( explode( '_', $foreignKeyName ) as $word )
+        {
+            if( $word === 'id' )
+            {
+                continue;
+            }
+
+            $acronym .= $word[ 0 ];
+        }
+
+        return $acronym;
     }
 }
