@@ -69,10 +69,7 @@ class Tag
      */
     protected function getFilteredAttributes()
     {
-        return $this->getAttributes()->reject( function ( $name )
-        {
-            return empty( $name );
-        } );
+        return $this->getAttributes();
     }
 
     /**

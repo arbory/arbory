@@ -6,6 +6,10 @@ use CubeSystems\Leaf\Admin\Module\Route;
 use CubeSystems\Leaf\Auth\Roles\Role;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class MenuItem
+ * @package CubeSystems\Leaf\Nodes
+ */
 class MenuItem extends Model
 {
     /**
@@ -28,6 +32,9 @@ class MenuItem extends Model
      */
     protected static $rolesModel = Role::class;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->getTitle();
@@ -36,7 +43,8 @@ class MenuItem extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany(
             static::$rolesModel, 'admin_role_menu_items', 'menu_item_id', 'role_id'
         )->withTimestamps();
@@ -57,7 +65,7 @@ class MenuItem extends Model
      */
     public function getConfiguration()
     {
-        if ( !$this->getModule() )
+        if( !$this->getModule() )
         {
             $items = self::query()->where( 'parent_id', $this->getId() )->get();
 

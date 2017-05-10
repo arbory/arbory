@@ -3,7 +3,7 @@
 namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
 
 use CubeSystems\Leaf\Files\LeafFile;
-use CubeSystems\Leaf\Html\Elements\Content;
+use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Elements\Inputs\Input;
 use CubeSystems\Leaf\Html\Html;
 
@@ -48,9 +48,7 @@ class FileFieldRenderer extends InputFieldRenderer
 
         if( $leafFile )
         {
-            $fileDetails = Html::div( $leafFile->getOriginalName() . ' / ' . $this->getReadableFileSize( $leafFile ) );
-            $fileDetails->append( Html::button()->addClass( 'remove fa fa-times' ) );
-            $value->append( $fileDetails );
+            $value->append( $this->createFileDetails( $leafFile ) );
         }
 
         $value->append( $input );
@@ -60,10 +58,14 @@ class FileFieldRenderer extends InputFieldRenderer
 
     /**
      * @param LeafFile $file
-     * @return string
+     * @return Element
      */
-    private function getReadableFileSize( LeafFile $file ): string
+    private function createFileDetails( LeafFile $file ): Element
     {
-        return ( new FileSize( $file ) )->getReadableSize();
+        $fileSize = ( new FileSize( $file ) )->getReadableSize();
+        $fileDetails = Html::div( $file->getOriginalName() . ' / ' . $fileSize );
+        $removeInput = Html::checkbox();
+
+        return $fileDetails->append( $removeInput );
     }
 }

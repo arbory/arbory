@@ -85,7 +85,7 @@ class Router
     {
         $path = $request->path() === '/' ? '/' : '/' . $request->path();
 
-        $this->currentNode = $this->getNodes()->findRouteBySlug( $path );
+        $this->currentNode = $this->getNodes()->findBySlug( $path );
 
         return $this->currentNode;
     }

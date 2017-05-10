@@ -43,7 +43,7 @@ class Node extends \Baum\Node
     }
 
     /**
-     * @return static[]
+     * @return NodeCollection|\Illuminate\Database\Eloquent\Collection|static[]
      */
     public function parents()
     {

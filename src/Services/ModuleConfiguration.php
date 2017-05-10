@@ -53,6 +53,14 @@ class ModuleConfiguration
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return class_basename( $this->controllerClass );
+    }
+
+    /**
      * @param string $name
      * @return $this
      */

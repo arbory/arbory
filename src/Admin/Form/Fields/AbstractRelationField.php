@@ -2,11 +2,12 @@
 
 namespace CubeSystems\Leaf\Admin\Form\Fields;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use CubeSystems\Leaf\Admin\Form\Fields\Concerns\HasRelationships;
 
 abstract class AbstractRelationField extends AbstractField
 {
+    use HasRelationships;
+
     protected $fieldSetCallback;
 
     /**
@@ -19,21 +20,5 @@ abstract class AbstractRelationField extends AbstractField
         parent::__construct( $name );
 
         $this->fieldSetCallback = $fieldSetCallback;
-    }
-
-    /**
-     * @return Relation
-     */
-    protected function getRelation()
-    {
-        return $this->getModel()->{$this->getName()}();
-    }
-
-    /**
-     * @return Model
-     */
-    protected function getRelatedModel()
-    {
-        return $this->getRelation()->getRelated();
     }
 }

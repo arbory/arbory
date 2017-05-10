@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Admin\Form\Fields;
 
 use Closure;
+use CubeSystems\Leaf\Admin\Form\Fields\Concerns\HasRelationships;
 use CubeSystems\Leaf\Admin\Form\FieldSet;
 use CubeSystems\Leaf\Admin\Form\Fields\Renderer\NestedFieldRenderer;
 use CubeSystems\Leaf\Html\Elements\Element;
@@ -15,6 +16,8 @@ use Illuminate\Http\Request;
  */
 class HasMany extends AbstractField
 {
+    use HasRelationships;
+
     /**
      * @var Closure
      */
@@ -76,23 +79,6 @@ class HasMany extends AbstractField
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function getRelation()
-    {
-        return $this->getModel()->{$this->getName()}();
-    }
-
-    /**
-     * @return Model
-     */
-    public function getRelatedModel()
-    {
-        return $this->getRelation()->getRelated();
-    }
-
-
-    /**
      * @param Request $request
      */
     public function beforeModelSave( Request $request )
@@ -105,33 +91,41 @@ class HasMany extends AbstractField
      */
     public function afterModelSave( Request $request )
     {
-        $relationsInput = $request->input( $this->getNameSpacedName() );
+        $items = (array) $request->input( $this->getNameSpacedName(), [] );
 
-        foreach( $relationsInput as $relationVariables )
+        foreach( $items as $index => $item )
         {
-            $this->processRelationItemUpdate( $relationVariables );
+            $relatedModel = $this->findRelatedModel( $item );
+
+            if( filter_var( array_get( $item, '_destroy' ), FILTER_VALIDATE_BOOLEAN ) )
+            {
+                $relatedModel->delete();
+
+                return;
+            }
+
+            $relatedFieldSet = $this->getRelationFieldSet(
+                $relatedModel,
+                $index
+            );
+
+            foreach( $relatedFieldSet->getFields() as $field )
+            {
+                $field->beforeModelSave( $request );
+            }
+
+            $relatedModel->setAttribute( $this->getRelation()->getMorphType(), get_class( $this->getModel() ) ); // TODO:
+            $relatedModel->setAttribute( $this->getRelation()->getForeignKeyName(), $this->getModel()->getKey() );
+
+            $relatedModel->save();
+
+            foreach( $relatedFieldSet->getFields() as $field )
+            {
+                $field->afterModelSave( $request );
+            }
         }
     }
 
-    /**
-     * @param array $variables
-     */
-    private function processRelationItemUpdate( array $variables )
-    {
-        $variables[$this->getRelation()->getForeignKeyName()] = $this->getModel()->getKey();
-
-        $relatedModel = $this->findRelatedModel( $variables );
-
-        if( filter_var( array_get( $variables, '_destroy' ), FILTER_VALIDATE_BOOLEAN ) )
-        {
-            $relatedModel->delete();
-
-            return;
-        }
-
-        $relatedModel->fill( $variables );
-        $relatedModel->save();
-    }
 
     /**
      * @param $variables

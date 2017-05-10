@@ -19,7 +19,7 @@ class NodesRepository extends AbstractModelsRepository
      * @param $uri
      * @return Node|null
      */
-    public function findRouteBySlug( $uri )
+    public function findBySlug( $uri )
     {
         $parts = explode( '/', trim( $uri, '/' ) );
 

@@ -166,7 +166,7 @@ class LeafServiceProvider extends ServiceProvider
             'middleware' => [ 'admin', 'leaf.admin_auth' ],
             'namespace' => '',
             'prefix' => config( 'leaf.uri' )
-        ], function () use ($adminRoutes)
+        ],function () use ($adminRoutes)
         {
             include $adminRoutes;
         } );

@@ -56,25 +56,21 @@ class HasOne extends AbstractRelationField
 
     }
 
-
     /**
      * @param Request $request
      */
     public function afterModelSave( Request $request )
     {
-        $variables = $request->input( $this->getNameSpacedName() );
-
-        if( !$variables )
-        {
-            return;
-        }
-
-        $relation = $this->getRelation();
         $relatedModel = $this->getValue() ?: $this->getRelatedModel();
+        $relation = $this->getRelation();
+
+        foreach( $this->getRelationFieldSet($relatedModel)->getFields() as $field )
+        {
+            $field->beforeModelSave( $request );
+        }
 
         if( $relation instanceof MorphTo )
         {
-            $relatedModel->fill( $variables );
             $relatedModel->save();
 
             $this->getModel()->fill( [
@@ -84,10 +80,13 @@ class HasOne extends AbstractRelationField
         }
         elseif( $relation instanceof \Illuminate\Database\Eloquent\Relations\HasOne )
         {
-            $variables[$relation->getPlainForeignKey()] = $this->getModel()->getKey();
-
-            $relatedModel->fill( $variables );
+            $relatedModel->setAttribute( $relation->getPlainForeignKey(), $this->getModel()->getKey() );
             $relatedModel->save();
+        }
+
+        foreach( $this->getRelationFieldSet( $relatedModel )->getFields() as $field )
+        {
+            $field->afterModelSave( $request );
         }
     }
 
