@@ -55,6 +55,7 @@ class Model extends StubGenerator implements Stubable
             'tableName' => snake_case( $this->schema->getNamePlural() ),
             'fillable' => $this->getCompiledFillableFields(),
             'translatedAttributes' => $this->getCompiledTranslatedAttributes(),
+            'toString' => $this->getCompiledToStringMethod(),
             'relations' => $this->getCompiledRelationMethods()
         ] );
     }
@@ -144,6 +145,11 @@ class Model extends StubGenerator implements Stubable
      */
     protected function getCompiledTranslatedAttributes(): string
     {
+        if( !$this->selectGeneratables->contains( TranslationModel::class ) )
+        {
+            return (string) null;
+        }
+
         $stub = $this->stubRegistry->make( 'parts.translated_attributes', [
             'fillableTranslatables' => $this->getCompiledFillableTranslatables()
         ] );
@@ -164,6 +170,21 @@ class Model extends StubGenerator implements Stubable
         }
 
         return $use->implode( PHP_EOL );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledToStringMethod(): string
+    {
+        $toStringField = $this->schema->getToStringField();
+        $toStringField = $toStringField ? $toStringField->getName() : 'key';
+
+        $stub = $this->stubRegistry->make( 'method.to_string', [
+            'fieldName' => $toStringField
+        ] );
+
+        return $this->formatter->indent( PHP_EOL . $stub . PHP_EOL );
     }
 
     /**
