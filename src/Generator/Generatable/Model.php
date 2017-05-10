@@ -14,6 +14,7 @@ use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 
 class Model extends StubGenerator implements Stubable
 {
@@ -181,7 +182,7 @@ class Model extends StubGenerator implements Stubable
         $toStringField = $toStringField ? $toStringField->getName() : 'key';
 
         $stub = $this->stubRegistry->make( 'method.to_string', [
-            'fieldName' => $toStringField
+            'fieldName' => Str::snake( $toStringField )
         ] );
 
         return $this->formatter->indent( PHP_EOL . $stub . PHP_EOL );
