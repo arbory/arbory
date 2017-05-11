@@ -4013,7 +4013,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2017-05-11T09:03:54+00:00"
+            "time": "2017-05-11 09:03:54"
         },
         {
             "name": "myclabs/deep-copy",

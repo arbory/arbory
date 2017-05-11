@@ -91,7 +91,7 @@ class LeafFile extends AbstractField
             $leafFile = $repository->createFromUploadedFile( $uploadedFile, $this->getModel() );
 
             /**
-             * @var $relation HasOne
+             * @var $relation \Illuminate\Database\Eloquent\Relations\HasOne
              */
             $relation = $this->getModel()->{$this->getName()}();
             $localKey = explode( '.', $relation->getQualifiedParentKeyName() )[1];
