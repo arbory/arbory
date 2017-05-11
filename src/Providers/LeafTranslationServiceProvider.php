@@ -15,7 +15,7 @@ class LeafTranslationServiceProvider extends TranslationServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom( __DIR__ . '/../../../../waavi/translation/config/translator.php', 'translator' );
+        $this->mergeConfigFrom( $this->getTranslatorConfigPath(), 'translator' );
         $this->registerCacheRepository();
 
         \Illuminate\Translation\TranslationServiceProvider::register();
@@ -24,5 +24,13 @@ class LeafTranslationServiceProvider extends TranslationServiceProvider
         $this->registerCacheFlusher();
 
         $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
+    }
+
+    /**
+     * @return string
+     */
+    private function getTranslatorConfigPath(): string
+    {
+        return $this->app->basePath( 'vendor/waavi/translation/config/translator.php' );
     }
 }
