@@ -1,0 +1,4 @@
+$fieldSet->add( new {{relationFieldClass}}( '{{relationName}}', function( FieldSet $fieldSet )
+{
+    {{fields}}
+} ) );

@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Admin\Form\Fields;
 
 use CubeSystems\Leaf\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
 use CubeSystems\Leaf\Html\Elements\Element;
+use Illuminate\Http\Request;
 
 /**
  * Class Checkbox
@@ -11,11 +12,14 @@ use CubeSystems\Leaf\Html\Elements\Element;
  */
 class Checkbox extends AbstractField
 {
-    protected $inputValue;
-
-    public function getInputValue()
+    /**
+     * @param Request $request
+     */
+    public function beforeModelSave( Request $request )
     {
-        return $this->inputValue;
+        $value = $request->has( $this->getNameSpacedName() ) ?: false;
+
+        $this->getModel()->setAttribute( $this->getName(), $value );
     }
 
     /**

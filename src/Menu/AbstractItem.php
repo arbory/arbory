@@ -152,6 +152,4 @@ abstract class AbstractItem
     {
         $this->children->push( $item );
     }
-
-
 }

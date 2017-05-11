@@ -2,10 +2,12 @@
 
 namespace CubeSystems\Leaf\Generator\Generatable;
 
+use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
 use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\StubGenerator;
 use CubeSystems\Leaf\Generator\Stubable;
 use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class AdminController extends StubGenerator implements Stubable
@@ -27,10 +29,11 @@ class AdminController extends StubGenerator implements Stubable
      * @return void
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function registerAdminModel() {
+    protected function registerAdminModel()
+    {
         $className = $this->getNamespace() . $this->getClassName();
 
-        $stub = $this->stubRegistry->make( 'register_admin_module', [
+        $stub = $this->stubRegistry->make( 'parts.register_admin_module', [
             'className' => $className
         ] );
 
@@ -50,39 +53,13 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $useFields = $this->formatter->useFields( clone $this->schema->getFields() );
-        $useFields->push(
-            $this->formatter->use(
-                $this->getAppNamespace() .
-                $this->formatter->className( $this->schema->getName() )
-            )
-        );
-
-        $formFields = (clone $this->schema->getFields())->transform( function( $field ) {
-            /**
-             * @var Field $field
-             */
-            return sprintf(
-                '$form->addField( new %s(\'%s\') );',
-                $field->getClassName(),
-                snake_case( $field->getName() )
-            );
-        } );
-
-        $gridFields = (clone $this->schema->getFields())->transform( function( $field ) {
-            /**
-             * @var Field $field
-             */
-            return '$grid->column( \'' .  snake_case( $field->getName() ) . '\' );';
-        } );
-
         return $this->stubRegistry->make( 'admin_controller', [
             'namespace' => $this->getNamespace(),
             'className' => $this->getClassName(),
-            'resourceName' => $this->formatter->className( $this->schema->getName() ). '::class',
-            'use' => $useFields->implode( PHP_EOL ),
-            'formFields' => $this->formatter->prependSpacing( $formFields, 3 )->implode( PHP_EOL ),
-            'gridFields' => $this->formatter->prependSpacing( $gridFields, 3 )->implode( PHP_EOL ),
+            'resourceName' => $this->formatter->className( $this->schema->getNameSingular() ) . '::class',
+            'use' => $this->getCompiledUseFields(),
+            'formFields' => $this->getCompiledFormFields(),
+            'gridFields' => $this->getCompiledGridFields(),
         ] );
     }
 
@@ -91,7 +68,7 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->formatter->className( $this->schema->getName() ) . 'Controller';
+        return $this->formatter->className( $this->schema->getNameSingular() ) . 'Controller';
     }
 
     /**
@@ -99,7 +76,7 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getFilename(): string
     {
-        return $this->getClassName() .'.php';
+        return $this->getClassName() . '.php';
     }
 
     /**
@@ -116,5 +93,70 @@ class AdminController extends StubGenerator implements Stubable
     public function getPath(): string
     {
         return app_path( 'Http/Controllers/Admin/' . $this->getFilename() );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledFormFields(): string
+    {
+        $fields = $this->schema->getFields()->map( function( Field $field )
+        {
+            $compiled = sprintf(
+                'new %s(\'%s\')',
+                $field->getClassName(),
+                snake_case( $field->getName() )
+            );
+
+            if( $field->getStructure()->isTranslatable() )
+            {
+                $compiled = sprintf(
+                    'new Translatable( %s )',
+                    $compiled
+                );
+            }
+
+            return '$form->addField( ' . $compiled . ' );';
+        } );
+
+        return $this->formatter->indent( $fields->implode( PHP_EOL ), 3 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledGridFields(): string
+    {
+        $fields = $this->schema->getFields()->map( function( Field $field )
+        {
+            return '$grid->column( \'' . snake_case( $field->getName() ) . '\' );';
+        } );
+
+        return $this->formatter->indent( $fields->implode( PHP_EOL ), 3 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledUseFields(): string
+    {
+        $fields = $this->schema->getFields()->map( function( Field $field )
+        {
+            return $this->formatter->use( $field->getType() );
+        } )->unique();
+
+        $fields->push(
+            $this->formatter->use(
+                $this->getAppNamespace() .
+                $this->formatter->className( $this->schema->getNameSingular() )
+            )
+        );
+
+        if( $this->schema->hasTranslatables() )
+        {
+            $fields->push( $this->formatter->use( Translatable::class ) );
+        }
+
+        return $fields->implode( PHP_EOL );
     }
 }

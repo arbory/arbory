@@ -277,7 +277,7 @@ class TranslationsController extends Controller
      */
     private function getPaginatedItems( Builder $translationsQueryBuilder )
     {
-        $paginator = $translationsQueryBuilder->paginate( 15 );
+        $paginator = $translationsQueryBuilder->paginate( 10000 );
 
         foreach( $paginator->items() as $item )
         {

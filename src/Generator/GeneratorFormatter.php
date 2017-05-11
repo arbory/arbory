@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Generator;
 
 use CubeSystems\Leaf\Generator\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Relation;
 use Illuminate\Support\Collection;
 
 Class GeneratorFormatter
@@ -53,41 +54,25 @@ Class GeneratorFormatter
     }
 
     /**
-     * @param Collection|string $to
+     * @param string
      * @param int $times
      * @return Collection
      */
-    public function prependSpacing( $to, $times = 1 )
+    public function indent( $item, $times = 1 )
     {
-        if( !$to instanceof Collection )
-        {
-            $to = new Collection( $to );
-        }
+        $lines = explode( PHP_EOL, $item );
 
-        return $to->transform( function( $item, $key ) use ( $times )
+        foreach( $lines as $key => &$line )
         {
             if( $key === 0 )
             {
-                return $item;
+                continue;
             }
 
-            return str_repeat( "\t", $times ) . $item;
-        } );
-    }
+            $line = str_repeat( "\t", $times ) . $line;
+        }
 
-    /**
-     * @param Collection $fields
-     * @return Collection
-     */
-    public function useFields( Collection $fields )
-    {
-        return $fields->transform( function( $field )
-        {
-            /**
-             * @var Field $field
-             */
-            return $this->use( $field->getType() );
-        } )->unique();
+        return count( $lines ) === 1 ? $item : implode( PHP_EOL, $lines );
     }
 
     /**
@@ -103,7 +88,7 @@ Class GeneratorFormatter
      * @param string $value
      * @return string
      */
-    public function use( $value )
+    public function use ( $value )
     {
         return 'use ' . $value . ';';
     }
@@ -121,5 +106,64 @@ Class GeneratorFormatter
         $doc->push( ' */' );
 
         return $doc;
+    }
+
+    /**
+     * @param string $message
+     * @param mixed $default
+     * @param mixed $hint
+     * @return string
+     */
+    public function line( string $message, $default = null, $hint = null ): string
+    {
+        return sprintf(
+            ' <fg=blue>%s</>%s%s:' . PHP_EOL . ' > ',
+            $message,
+            $this->lineHint( $hint ),
+            $this->lineDefault( $default )
+        );
+    }
+
+    /**
+     * @param mixed $default
+     * @return string
+     */
+    public function lineDefault( $default = null ): string
+    {
+        if( !$default )
+        {
+            return (string) null;
+        }
+
+        return sprintf(
+            ' [<fg=yellow>%s</>]',
+            is_bool( $default ) ? $this->boolToString( $default ) : $default
+        );
+    }
+
+    /**
+     * @param mixed $hint
+     * @return string
+     */
+    public function lineHint( $hint = null ): string
+    {
+        if( !$hint )
+        {
+            return (string) null;
+        }
+
+        return sprintf(
+            ' (<fg=yellow>%s</>)',
+            $hint
+        );
+    }
+
+    /**
+     * @param bool $value
+     * @return string
+     */
+    public function boolToString( bool $value )
+    {
+        return $value ? 'yes' : 'no';
     }
 }

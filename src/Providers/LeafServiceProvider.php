@@ -4,13 +4,16 @@ use CubeSystems\Leaf\Admin\Form\Fields\Checkbox;
 use CubeSystems\Leaf\Admin\Form\Fields\DateTime;
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Admin\Form\Fields\LeafFile;
+use CubeSystems\Leaf\Admin\Form\Fields\Link;
 use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
+use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
 use CubeSystems\Leaf\Console\Commands\GenerateCommand;
 use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
 use CubeSystems\Leaf\Console\Commands\SeedCommand;
+use CubeSystems\Leaf\Files\LeafImage;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
@@ -111,7 +114,6 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
         $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
-        $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
     }
 
     /**
@@ -239,8 +241,9 @@ class LeafServiceProvider extends ServiceProvider
             $fieldTypeRegistry->registerByType( 'datetime', DateTime::class, 'string' );
             $fieldTypeRegistry->registerByType( 'boolean', Checkbox::class, 'bool' );
 
-            $fieldTypeRegistry->registerByRelation( 'leaf_files', LeafFile::class );
             $fieldTypeRegistry->registerByRelation( 'file', LeafFile::class );
+            $fieldTypeRegistry->registerByRelation( 'image', LeafImage::class );
+            $fieldTypeRegistry->registerByRelation( 'link', Link::class );
 
             return $fieldTypeRegistry;
         } );

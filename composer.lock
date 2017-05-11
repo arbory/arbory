@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "578428aa5c00e5d9f16f37877aa4c2db",
+    "content-hash": "c1b97e25cbd738784a7edf07b2656135",
     "packages": [
         {
             "name": "alsofronie/eloquent-uuid",
@@ -2628,6 +2628,56 @@
             "time": "2015-10-13T18:44:15+00:00"
         },
         {
+            "name": "spatie/laravel-sluggable",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-sluggable.git",
+                "reference": "5f61739587510e3035e00cc34cb18314ee63e8e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/5f61739587510e3035e00cc34cb18314ee63e8e3",
+                "reference": "5f61739587510e3035e00cc34cb18314ee63e8e3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "~5.0.0|~5.1.0|~5.2.0|~5.3.0|~5.4.0",
+                "illuminate/support": "~5.0.0|~5.1.0|~5.2.0|~5.3.0|~5.4.0",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "orchestra/database": "~3.2.0|~3.3.0|~3.4.0@dev",
+                "orchestra/testbench": "~3.2.0|~3.3.0|~3.4.0@dev",
+                "phpunit/phpunit": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Sluggable\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Generate slugs when saving Eloquent models",
+            "homepage": "https://github.com/spatie/laravel-sluggable",
+            "keywords": [
+                "laravel-sluggable",
+                "spatie"
+            ],
+            "time": "2017-04-13T14:48:58+00:00"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.4.8",
             "source": {
@@ -3703,7 +3753,7 @@
                 "test",
                 "unit"
             ],
-            "time": "2017-05-05T21:50:57+00:00"
+            "time": "2017-05-05 21:50:57"
         },
         {
             "name": "doctrine/instantiator",
@@ -3906,12 +3956,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "230659a9a45dc90e8e67796696f02f0d0b3bcb4d"
+                "reference": "c1a3f2eddf6bee202691d68860d32f9d37c3e79f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/230659a9a45dc90e8e67796696f02f0d0b3bcb4d",
-                "reference": "230659a9a45dc90e8e67796696f02f0d0b3bcb4d",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/c1a3f2eddf6bee202691d68860d32f9d37c3e79f",
+                "reference": "c1a3f2eddf6bee202691d68860d32f9d37c3e79f",
                 "shasum": ""
             },
             "require": {
@@ -3963,7 +4013,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2017-05-09T21:21:52+00:00"
+            "time": "2017-05-11T09:03:54+00:00"
         },
         {
             "name": "myclabs/deep-copy",

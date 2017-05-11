@@ -15,11 +15,14 @@ class LeafTranslationServiceProvider extends TranslationServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom( __DIR__ . '/../../../../waavi/translation/config/translator.php', 'translator' );
         $this->registerCacheRepository();
 
         \Illuminate\Translation\TranslationServiceProvider::register();
 
         $this->registerFileLoader();
         $this->registerCacheFlusher();
+
+        $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
     }
 }

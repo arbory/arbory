@@ -1,0 +1,3 @@
+DB::table( 'admin_menu_items' )
+    ->where( 'module', '=', {{controllerClass}}::class )
+    ->delete();

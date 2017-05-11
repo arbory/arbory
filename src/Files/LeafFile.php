@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Files;
 use Alsofronie\Uuid\UuidModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Storage;
 
 /**
  * @property string id
@@ -49,6 +50,14 @@ class LeafFile extends Model
     /**
      * @return string
      */
+    public function getUrl()
+    {
+        return Storage::disk( $this->getDisk() )->url( $this->getLocalName() );
+    }
+
+    /**
+     * @return string
+     */
     public function getId()
     {
         return $this->id;
@@ -60,6 +69,14 @@ class LeafFile extends Model
     public function getOriginalName()
     {
         return $this->original_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisk()
+    {
+        return $this->disk;
     }
 
     /**

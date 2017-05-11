@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Menu;
 
 use CubeSystems\Leaf\Html\Elements;
 use CubeSystems\Leaf\Html\Html;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Collection;
 
 /**
@@ -12,8 +13,19 @@ use Illuminate\Support\Collection;
  */
 class Group extends AbstractItem
 {
-    public function __construct()
+    /**
+     * @var Route
+     */
+    protected $route;
+
+    /**
+     * @param Route $route
+     */
+    public function __construct(
+        Route $route
+    )
     {
+        $this->route = $route;
         $this->children = new Collection();
     }
 
@@ -35,6 +47,11 @@ class Group extends AbstractItem
             {
                 $anyChildrenRendered = true;
 
+                if( $child->isActive() )
+                {
+                    $li->addClass( 'active' );
+                }
+
                 $ul->append( $li );
             }
         }
@@ -47,7 +64,7 @@ class Group extends AbstractItem
                         Html::abbr( $this->getAbbreviation() )->addAttributes( [ 'title' => $this->getTitle() ] ),
                         Html::span( $this->getTitle() )->addClass( 'name' ),
                         Html::span( Html::button( Html::i()->addClass( 'fa fa-chevron-up' ) )->addAttributes( [ 'type' => 'button' ] ) )->addClass( 'collapser' ),
-                    ] )->addClass( 'trigger' )
+                    ] )->addClass( 'trigger ' . ( $this->isActive() ? 'active' : '' ) )
                 )
                 ->append( $ul );
 
@@ -59,5 +76,16 @@ class Group extends AbstractItem
         }
 
         return $result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return (bool) $this->getChildren()->first( function( Item $item )
+        {
+            return $item->isActive();
+        } );
     }
 }

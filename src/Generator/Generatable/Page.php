@@ -2,15 +2,20 @@
 
 namespace CubeSystems\Leaf\Generator\Generatable;
 
+use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
+use CubeSystems\Leaf\Admin\Form\Fields\HasOne;
 use CubeSystems\Leaf\Generator\Extras\Field;
+use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Stubable;
 use CubeSystems\Leaf\Generator\StubGenerator;
+use CubeSystems\Leaf\Generator\Support\Traits\CompilesRelations;
 use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Page extends StubGenerator implements Stubable
 {
-    use DetectsApplicationNamespace;
+    use DetectsApplicationNamespace, CompilesRelations;
 
     /**
      * @return void
@@ -27,12 +32,14 @@ class Page extends StubGenerator implements Stubable
      * @return void
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function registerPage() {
+    protected function registerPage()
+    {
         $className = $this->getClassName();
         $pageClassName = $this->getNamespace() . '\\' . $className;
 
-        $stub = $this->stubRegistry->make( 'register_page', [
+        $stub = $this->stubRegistry->make( 'parts.register_page', [
             'pageClassName' => $pageClassName,
+            'fieldSet' => $this->getCompiledFieldSet(),
             'controllerClassName' => sprintf(
                 '%sHttp\Controllers\%s',
                 $this->getAppNamespace(),
@@ -46,7 +53,7 @@ class Page extends StubGenerator implements Stubable
         {
             $this->filesystem->append(
                 $path,
-                PHP_EOL . $stub
+                str_repeat( PHP_EOL, 2 ) . $stub
             );
         }
     }
@@ -56,20 +63,12 @@ class Page extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        $fieldSet = ( clone $this->schema->getFields() )->transform( function( $field )
-        {
-            /**
-             * @var Field $field
-             */
-            // todo: sprintf
-            return '$fieldSet->add( new ' . $field->getClassName() . '( \'' . $field->getName() . '\' ) );';
-        } );
-
         return $this->stubRegistry->make( 'page', [
             'namespace' => $this->getNamespace(),
-            'use' => $this->formatter->useFields( clone $this->schema->getFields() )->implode( PHP_EOL ),
+            'use' => $this->getCompiledUseClasses(),
             'className' => $this->getClassName(),
-            'fieldSet' => $this->formatter->prependSpacing( $fieldSet, 2 )->implode( PHP_EOL ),
+            'fillable' => $this->getCompiledFillableFields(),
+            'relations' => $this->getCompiledRelationMethods()
         ] );
     }
 
@@ -78,7 +77,7 @@ class Page extends StubGenerator implements Stubable
      */
     public function getClassName(): string
     {
-        return $this->formatter->className( $this->schema->getName() ) . 'Page';
+        return $this->formatter->className( $this->schema->getNameSingular() ) . 'Page';
     }
 
     /**
@@ -103,5 +102,97 @@ class Page extends StubGenerator implements Stubable
     public function getPath(): string
     {
         return app_path( 'Pages/' . $this->getFilename() );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledUseClasses(): string
+    {
+        return
+            $this->getUseFields()
+                ->merge( $this->getUseRelations() )
+                ->merge( $this->getUseRelationFields() )
+                ->implode( PHP_EOL );
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getUseFields(): Collection
+    {
+        return $this->schema->getFields()->map( function( Field $field )
+        {
+            return $this->formatter->use( $field->getType() );
+        } )->unique();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledFillableFields(): string
+    {
+        $fields = $this->schema->getFields()->map( function( Field $field )
+        {
+            return '\'' . $this->formatter->field( $field->getName() ) . '\',';
+        } );
+
+        return $this->formatter->indent( $fields->implode( PHP_EOL ), 2 );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledRelationMethods(): string
+    {
+        if( !$this->selectGeneratables->contains( Page::class ) )
+        {
+            return (string) null;
+        }
+
+        $fields = $this->compileRelationsMethods( $this->schema->getRelations() );
+
+        return $this->formatter->indent( $fields->implode( str_repeat( PHP_EOL, 2 ) ) );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledFieldSet(): string
+    {
+        $fields = $this->getFieldFieldSet()->merge( $this->getRelationFieldSet() );
+
+        return $this->formatter->indent( $fields->implode( PHP_EOL ), 2 );
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getFieldFieldSet(): Collection
+    {
+        return $this->schema->getFields()->map( function( Field $field )
+        {
+            return $this->stubRegistry->make( 'parts.field', [
+                'fieldClass' => $field->getType(),
+                'fieldName' => Str::snake( $field->getName() )
+            ] );
+        } );
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getRelationFieldSet(): Collection
+    {
+        return $this->schema->getRelations()->map( function( Relation $relation )
+        {
+            $modelName = class_basename( $relation->getModel() );
+
+            return $this->stubRegistry->make( 'parts.field_relation', [
+                'relationFieldClass' => $relation->getFieldType(),
+                'relationName' => Str::camel( $modelName ),
+                'fields' => ''
+            ] );
+        } );
     }
 }

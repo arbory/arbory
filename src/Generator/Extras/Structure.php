@@ -35,6 +35,11 @@ class Structure
     protected $length = 0;
 
     /**
+     * @var bool
+     */
+    protected $translatable = false;
+
+    /**
      * @return mixed[]
      */
     public function values()
@@ -141,5 +146,21 @@ class Structure
     public function setLength( int $length )
     {
         $this->length = $length;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTranslatable(): bool
+    {
+        return $this->translatable;
+    }
+
+    /**
+     * @param bool $translatable
+     */
+    public function setTranslatable( bool $translatable )
+    {
+        $this->translatable = $translatable;
     }
 }

@@ -39,7 +39,7 @@ class HasMany extends AbstractRelationField
             ->addClass( 'nested' )
             ->addAttributes( [
                 'data-name' => $this->getName(),
-                'data-releaf-template' => $this->getRelationFromTemplate(),
+                'data-releaf-template' => (string) $this->getRelationFromTemplate(),
             ] );
     }
 

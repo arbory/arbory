@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Generator;
 use CubeSystems\Leaf\Services\Stub;
 use CubeSystems\Leaf\Services\StubRegistry;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 
 abstract class StubGenerator
 {
@@ -32,6 +33,11 @@ abstract class StubGenerator
      * @var Schema
      */
     protected $schema;
+
+    /**
+     * @var Collection
+     */
+    protected $selectGeneratables;
 
     /**
      * @param StubRegistry $stubRegistry
@@ -72,4 +78,12 @@ abstract class StubGenerator
      * @return string
      */
     abstract public function getPath(): string;
+
+    /**
+     * @param Collection $selectGeneratables
+     */
+    public function setSelectGeneratables( Collection $selectGeneratables )
+    {
+        $this->selectGeneratables = $selectGeneratables;
+    }
 }

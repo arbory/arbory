@@ -30,7 +30,7 @@
                 @foreach($translations as $translation)
                     <tr>
                         <td>
-                            <a href="{{$translation->edit_url}}">{!! $hhh($translation->namespace) !!} {!! $hhh($translation->group) !!}</a>
+                            <a href="{{$translation->edit_url}}">{!! $hhh($translation->namespace) !!}::{!! $hhh($translation->group) !!}</a>
                         </td>
                         <td><a href="{{$translation->edit_url}}">{!! $hhh($translation->item) !!}</a></td>
 

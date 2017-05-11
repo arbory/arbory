@@ -3,18 +3,14 @@
 namespace {{namespace}};
 
 use CubeSystems\Leaf\Admin\Form\FieldSet;
-use CubeSystems\Leaf\Pages\PageInterface;
 use Illuminate\Database\Eloquent\Model;
 {{use}}
 
-class {{className}} extends Model implements PageInterface
+class {{className}} extends Model
 {
-    /**
-     * @param FieldSet $fieldSet
-     * @return void
-     */
-    public function prepareFieldSet( FieldSet $fieldSet )
-    {
-        {{fieldSet}}
-    }
+    protected $fillable = [
+        {{fillable}}
+    ];
+
+    {{relations}}
 }

@@ -12,6 +12,9 @@ use CubeSystems\Leaf\Html\Html;
  */
 class CheckBoxFieldRenderer extends InputFieldRenderer
 {
+    /**
+     * @var string
+     */
     protected $type = 'boolean';
 
     /**
@@ -26,7 +29,7 @@ class CheckBoxFieldRenderer extends InputFieldRenderer
     {
         $checkBox = Html::checkbox()->setName( $this->field->getNameSpacedName() );
 
-        if( $this->field->getValue() == $this->field->getInputValue() )
+        if( $this->field->getValue() )
         {
             $checkBox->select();
         }
