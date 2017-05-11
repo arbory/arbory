@@ -24,7 +24,8 @@ class TranslationModel extends StubGenerator implements Stubable
             'tableName' => snake_case( $this->schema->getNameSingular() ) . '_translations',
             'fillable' => $this->getCompiledFillableFields(),
             'translatedAttributes' => '',
-            'relations' => ''
+            'relations' => '',
+            'toString' => ''
         ] );
     }
 
