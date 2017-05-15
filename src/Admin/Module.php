@@ -6,6 +6,7 @@ use Closure;
 use CubeSystems\Leaf\Admin\Widgets\Breadcrumbs;
 use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
 use CubeSystems\Leaf\Admin\Module\Route;
+use CubeSystems\Leaf\Services\AssetPipeline;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 
@@ -26,12 +27,25 @@ class Module
      */
     protected $breadcrumbs;
 
-    public function __construct( Controller $controller )
+    /**
+     * @var AssetPipeline
+     */
+    protected $pipeline;
+
+    /**
+     * @param Controller $controller
+     * @param AssetPipeline $pipeline
+     */
+    public function __construct( Controller $controller, AssetPipeline $pipeline )
     {
         $this->controller = $controller;
         $this->routes = new ResourceRoutes( $controller );
+        $this->pipeline = $pipeline;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return class_basename( $this->controller );
@@ -49,6 +63,14 @@ class Module
         }
 
         return $this->breadcrumbs;
+    }
+
+    /**
+     * @return AssetPipeline
+     */
+    public function assets()
+    {
+        return $this->pipeline;
     }
 
     /**

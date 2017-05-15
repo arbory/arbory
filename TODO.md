@@ -1,5 +1,9 @@
 ## TODO
 
+#### Facades
+
+* Remove unnecessary facades (`Schema`, `Route` etc.)
+
 #### Access control
 
 * User role editing
@@ -17,10 +21,6 @@
 * Fix return types (e.g. `CubeSystems\Leaf\Admin\Module::getUrl()`)
 
 ## Needs refactoring
-
-#### Views
-
-* Use proper view composers instead of facades
 
 #### Controllers
 

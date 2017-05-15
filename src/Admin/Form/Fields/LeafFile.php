@@ -76,6 +76,7 @@ class LeafFile extends AbstractField
     /**
      * @param Request $request
      * @return void
+     * @throws \RuntimeException
      */
     public function afterModelSave( Request $request )
     {
@@ -90,10 +91,16 @@ class LeafFile extends AbstractField
             $leafFile = $repository->createFromUploadedFile( $uploadedFile, $this->getModel() );
 
             /**
-             * @var $relation HasOne
+             * @var $relation \Illuminate\Database\Eloquent\Relations\BelongsTo
              */
             $relation = $this->getModel()->{$this->getName()}();
-            $localKey = explode( '.', $relation->getQualifiedParentKeyName() )[1];
+
+            if( !$relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo )
+            {
+                throw new \Exception( 'kek' );
+            }
+
+            $localKey = explode( '.', $relation->getQualifiedForeignKey() )[ 1 ];
 
             $this->getModel()->setAttribute( $localKey, $leafFile->getKey() );
             $this->getModel()->setRelation( $this->getName(), $leafFile );

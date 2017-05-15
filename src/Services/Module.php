@@ -50,6 +50,14 @@ class Module
     }
 
     /**
+     * @return ModuleConfiguration
+     */
+    public function getConfiguration(): ModuleConfiguration
+    {
+        return $this->configuration;
+    }
+
+    /**
      * @param Sentinel $sentinel
      * @return bool
      */

@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "php": "^7.0",
         "laravel/framework": "^5.4",
         "laravelcollective/html": "^5.4.0",
         "doctrine/dbal": "^2.5",
@@ -24,7 +25,8 @@
         "composer/composer": "1.*@alpha",
         "waavi/translation": "^2.1.5",
         "roboc/laravel-glide": "1.0.*",
-        "roave/security-advisories": "dev-master"
+        "roave/security-advisories": "dev-master",
+        "spatie/laravel-sluggable": "^1.5"
     },
     "require-dev" : {
         "satooshi/php-coveralls": "^1.0",
