@@ -7,10 +7,12 @@ use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Admin\Layout;
 use CubeSystems\Leaf\Admin\Module;
 use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
+use CubeSystems\Leaf\Services\AssetPipeline;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
 
 /**
  * Class Crudify
@@ -40,7 +42,11 @@ trait Crudify
     {
         if( $this->module === null )
         {
-            $this->module = new Module( $this );
+            \App::when( Module::class )->needs( Controller::class )->give( function() {
+                return $this;
+            } );
+
+            $this->module = \App::make( Module::class );
         }
 
         return $this->module;
