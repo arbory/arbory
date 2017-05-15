@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Generator;
 
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
+use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Generator\Extras\Field;
 use CubeSystems\Leaf\Generator\Extras\Relation;
 use CubeSystems\Leaf\Generator\Extras\Structure;
@@ -44,6 +45,18 @@ class Schema
     {
         $this->fields = new Collection();
         $this->relations = new Collection();
+    }
+
+    /**
+     * @return Field|null
+     */
+    public function getToStringField()
+    {
+        return $this->fields->first( function( Field $field )
+        {
+            // todo: database type registry or enum
+            return $field->getType() === Text::class;
+        } );
     }
 
     /**

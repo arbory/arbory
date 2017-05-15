@@ -65,7 +65,7 @@ abstract class StubGenerator
     {
         $this->filesystem->put(
             $this->getPath(),
-            $this->getCompiledControllerStub()
+            $this->formatCode( $this->getCompiledControllerStub() )
         );
     }
 
@@ -85,5 +85,14 @@ abstract class StubGenerator
     public function setSelectGeneratables( Collection $selectGeneratables )
     {
         $this->selectGeneratables = $selectGeneratables;
+    }
+
+    /**
+     * @param string $compiled
+     * @return string
+     */
+    protected function formatCode( string $compiled ): string
+    {
+        return preg_replace('/^\h*\v+/m', '', $compiled);
     }
 }

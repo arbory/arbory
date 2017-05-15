@@ -19,5 +19,5 @@ class {{className}} extends Model
     protected $fillable = [
         {{fillable}}
     ];
-    {{translatedAttributes}}{{relations}}
+    {{translatedAttributes}}{{toString}}{{relations}}
 }

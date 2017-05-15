@@ -16,12 +16,14 @@ class Migration extends StubGenerator implements Stubable
 {
     use DetectsApplicationNamespace, CompilesRelations;
 
+    const MAX_FOREIGN_KEY_LENGTH = 64;
+
     /**
      * @return string
      */
     public function getCompiledControllerStub(): string
     {
-        return $this->stubRegistry->make( 'migration', [
+        return $this->stubRegistry->make( 'generator.migration', [
             'className' => $this->getClassName(),
             'modelTableName' => Str::snake( $this->schema->getNamePlural() ),
             'pageTableName' => Str::snake( $this->schema->getNameSingular() ),
@@ -141,7 +143,7 @@ class Migration extends StubGenerator implements Stubable
     {
         $fields = $this->getCommonSchemaFields();
 
-        if( 
+        if(
             !$this->selectGeneratables->contains( Model::class ) &&
             $this->selectGeneratables->contains( Page::class )
         )
@@ -164,7 +166,7 @@ class Migration extends StubGenerator implements Stubable
 
         $fields = $fields->merge( $this->getSchemaRelationFields() );
 
-        $compiled = $this->stubRegistry->make( 'parts.schema_create', [
+        $compiled = $this->stubRegistry->make( 'generator.method.part.schema_create', [
             'tableName' => $this->getModelTableName(),
             'schemaField' => $this->formatter->indent( $fields->implode( PHP_EOL ), 1 ),
         ] );
@@ -202,7 +204,7 @@ class Migration extends StubGenerator implements Stubable
 
         $fields = $fields->merge( $this->getSchemaRelationFields() );
 
-        $compiled = $this->stubRegistry->make( 'parts.schema_create', [
+        $compiled = $this->stubRegistry->make( 'generator.method.part.schema_create', [
             'tableName' => $this->getPageTableName(),
             'schemaField' => $this->formatter->indent( $fields->implode( PHP_EOL ), 1 ),
         ] );
@@ -220,10 +222,16 @@ class Migration extends StubGenerator implements Stubable
     {
         $fields = $this->getCommonSchemaFields();
         $singularName = Str::snake( $this->schema->getNameSingular() );
+        $foreignKeyName = $singularName . '_id';
 
         if( !$this->schema->hasTranslatables() )
         {
             return (string) null;
+        }
+
+        if ( strlen( $foreignKeyName ) >= self::MAX_FOREIGN_KEY_LENGTH )
+        {
+            $foreignKeyName = $this->getForeignKeyAcronym( $foreignKeyName ) . '_id';
         }
 
         $fields->push( sprintf(
@@ -251,12 +259,13 @@ class Migration extends StubGenerator implements Stubable
         ) );
 
         $fields->push( sprintf(
-            '$table->foreign( \'%s_id\' )->references( \'id\' )->on( \'%s\' )->onDelete( \'cascade\' );',
+            '$table->foreign( \'%s_id\', \'%s\' )->references( \'id\' )->on( \'%s\' )->onDelete( \'cascade\' );',
             $singularName,
+            $foreignKeyName,
             $this->getModelTableName()
         ) );
 
-        $compiled = $this->stubRegistry->make( 'parts.schema_create', [
+        $compiled = $this->stubRegistry->make( 'generator.method.part.schema_create', [
             'tableName' => $this->getTranslationTableName(),
             'schemaField' => $this->formatter->indent( $fields->implode( PHP_EOL ), 1 ),
         ] );
@@ -277,7 +286,7 @@ class Migration extends StubGenerator implements Stubable
             return (string) null;
         }
 
-        $compiled = $this->stubRegistry->make( 'parts.insert_admin_menu_item', [
+        $compiled = $this->stubRegistry->make( 'generator.method.part.insert_admin_menu_item', [
             'title' => ucfirst( $this->schema->getNamePlural() ),
             'controllerClass' =>
                 $this->getAppNamespace() . 'Http\Controllers\Admin\\' .
@@ -325,7 +334,7 @@ class Migration extends StubGenerator implements Stubable
             return (string) null;
         }
 
-        $compiled = $this->stubRegistry->make( 'parts.delete_admin_menu_item', [
+        $compiled = $this->stubRegistry->make( 'generator.method.part.delete_admin_menu_item', [
             'title' => ucfirst( $this->schema->getNamePlural() ),
             'controllerClass' =>
                 $this->getAppNamespace() . 'Http\Controllers\Admin\\' .
@@ -360,5 +369,26 @@ class Migration extends StubGenerator implements Stubable
     protected function getTranslationTableName(): string
     {
         return Str::snake( $this->schema->getNameSingular() ) . '_translations';
+    }
+
+    /**
+     * @param string $foreignKeyName
+     * @return string
+     */
+    protected function getForeignKeyAcronym( string $foreignKeyName ): string
+    {
+        $acronym = '';
+
+        foreach( explode( '_', $foreignKeyName ) as $word )
+        {
+            if( $word === 'id' )
+            {
+                continue;
+            }
+
+            $acronym .= $word[ 0 ];
+        }
+
+        return $acronym;
     }
 }

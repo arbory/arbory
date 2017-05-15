@@ -38,7 +38,7 @@ trait CompilesRelations
         {
             $name = class_basename( $relation->getModel() );
 
-            return $this->stubRegistry->make( 'parts.model_relation_method', [
+            return $this->stubRegistry->make( 'generator.method.relation', [
                 'methodName' => Str::camel( $name ),
                 'relationMethod' => $this->getModelRelationMethod( $relation->getFieldType() ),
                 'modelClass' => ucfirst( $name ),

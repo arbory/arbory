@@ -18,7 +18,7 @@ class Controller extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        return $this->stubRegistry->make( 'controller', [
+        return $this->stubRegistry->make( 'generator.controller', [
             'namespace' => $this->getNamespace(),
             'className' => $this->getClassName(),
             'viewPath' => 'public.controllers.' . snake_case( $this->schema->getNameSingular() ) . '.index',

@@ -33,7 +33,7 @@ class AdminController extends StubGenerator implements Stubable
     {
         $className = $this->getNamespace() . $this->getClassName();
 
-        $stub = $this->stubRegistry->make( 'parts.register_admin_module', [
+        $stub = $this->stubRegistry->make( 'generator.support.register_admin_module', [
             'className' => $className
         ] );
 
@@ -53,7 +53,7 @@ class AdminController extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        return $this->stubRegistry->make( 'admin_controller', [
+        return $this->stubRegistry->make( 'generator.admin_controller', [
             'namespace' => $this->getNamespace(),
             'className' => $this->getClassName(),
             'resourceName' => $this->formatter->className( $this->schema->getNameSingular() ) . '::class',

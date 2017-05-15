@@ -37,7 +37,7 @@ class Page extends StubGenerator implements Stubable
         $className = $this->getClassName();
         $pageClassName = $this->getNamespace() . '\\' . $className;
 
-        $stub = $this->stubRegistry->make( 'parts.register_page', [
+        $stub = $this->stubRegistry->make( 'generator.support.register_page', [
             'pageClassName' => $pageClassName,
             'fieldSet' => $this->getCompiledFieldSet(),
             'controllerClassName' => sprintf(
@@ -63,7 +63,7 @@ class Page extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        return $this->stubRegistry->make( 'page', [
+        return $this->stubRegistry->make( 'generator.page', [
             'namespace' => $this->getNamespace(),
             'use' => $this->getCompiledUseClasses(),
             'className' => $this->getClassName(),
@@ -172,7 +172,7 @@ class Page extends StubGenerator implements Stubable
     {
         return $this->schema->getFields()->map( function( Field $field )
         {
-            return $this->stubRegistry->make( 'parts.field', [
+            return $this->stubRegistry->make( 'generator.method.part.field_set_add', [
                 'fieldClass' => $field->getType(),
                 'fieldName' => Str::snake( $field->getName() )
             ] );

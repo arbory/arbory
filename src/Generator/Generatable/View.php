@@ -32,7 +32,7 @@ class View extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        return $this->stubRegistry->make( 'view', [
+        return $this->stubRegistry->make( 'generator.view', [
             'fields' => $this->getCompiledFields()
         ] );
     }

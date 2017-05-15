@@ -1,0 +1,4 @@
+/**
+ * @var {{docVar}}
+ */
+{{propertyScope}} ${{propertyName}};

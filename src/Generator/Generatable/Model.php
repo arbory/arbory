@@ -14,6 +14,7 @@ use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 
 class Model extends StubGenerator implements Stubable
 {
@@ -47,7 +48,7 @@ class Model extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        return $this->stubRegistry->make( 'model', [
+        return $this->stubRegistry->make( 'generator.model', [
             'namespace' => $this->getNamespace(),
             'use' => $this->getCompiledUseClasses(),
             'className' => $this->getClassName(),
@@ -55,6 +56,7 @@ class Model extends StubGenerator implements Stubable
             'tableName' => snake_case( $this->schema->getNamePlural() ),
             'fillable' => $this->getCompiledFillableFields(),
             'translatedAttributes' => $this->getCompiledTranslatedAttributes(),
+            'toString' => $this->getCompiledToStringMethod(),
             'relations' => $this->getCompiledRelationMethods()
         ] );
     }
@@ -144,7 +146,12 @@ class Model extends StubGenerator implements Stubable
      */
     protected function getCompiledTranslatedAttributes(): string
     {
-        $stub = $this->stubRegistry->make( 'parts.translated_attributes', [
+        if( !$this->selectGeneratables->contains( TranslationModel::class ) )
+        {
+            return (string) null;
+        }
+
+        $stub = $this->stubRegistry->make( 'generator.translated_attributes', [
             'fillableTranslatables' => $this->getCompiledFillableTranslatables()
         ] );
 
@@ -164,6 +171,21 @@ class Model extends StubGenerator implements Stubable
         }
 
         return $use->implode( PHP_EOL );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCompiledToStringMethod(): string
+    {
+        $toStringField = $this->schema->getToStringField();
+        $toStringField = $toStringField ? $toStringField->getName() : 'key';
+
+        $stub = $this->stubRegistry->make( 'generator.method.to_string', [
+            'fieldName' => Str::snake( $toStringField )
+        ] );
+
+        return $this->formatter->indent( PHP_EOL . $stub . PHP_EOL );
     }
 
     /**

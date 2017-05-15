@@ -16,7 +16,7 @@ class TranslationModel extends StubGenerator implements Stubable
      */
     public function getCompiledControllerStub(): string
     {
-        return $this->stubRegistry->make( 'model', [
+        return $this->stubRegistry->make( 'generator.model', [
             'namespace' => $this->getNamespace(),
             'use' => '',
             'className' => $this->getClassName(),
@@ -24,7 +24,8 @@ class TranslationModel extends StubGenerator implements Stubable
             'tableName' => snake_case( $this->schema->getNameSingular() ) . '_translations',
             'fillable' => $this->getCompiledFillableFields(),
             'translatedAttributes' => '',
-            'relations' => ''
+            'relations' => '',
+            'toString' => ''
         ] );
     }
 
