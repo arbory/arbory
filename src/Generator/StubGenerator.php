@@ -65,7 +65,7 @@ abstract class StubGenerator
     {
         $this->filesystem->put(
             $this->getPath(),
-            $this->format( $this->formatCode( $this->getCompiledControllerStub() ) )
+            $this->format( $this->getCompiledControllerStub() )
         );
     }
 
@@ -88,20 +88,13 @@ abstract class StubGenerator
     }
 
     /**
-     * @param string $compiled
-     * @return string
-     */
-    protected function formatCode( string $compiled ): string
-    {
-        return preg_replace('/^\h*\v+/m', '', $compiled);
-    }
-
-    /**
      * @param string $contents
      * @return string
      */
     protected function format( string $contents ): string
     {
-        return preg_replace( "/(\r?\n){2,}/", "\n\n", $contents );
+        $contents = preg_replace( "/(\r?\n?\t){2,}/", "\n\n", $contents );
+
+        return $contents;
     }
 }
