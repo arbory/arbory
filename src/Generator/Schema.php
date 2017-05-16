@@ -22,12 +22,12 @@ class Schema
     protected $namePlural;
 
     /**
-     * @var Collection|Field
+     * @var Collection
      */
     protected $fields;
 
     /**
-     * @var Collection|Field
+     * @var Collection
      */
     protected $relations;
 

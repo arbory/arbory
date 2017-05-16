@@ -21,6 +21,7 @@ trait HasSlug
      */
     public function getSluggableFieldName(): string
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         $fillable = $this->fillable;
         $fields = [ 'title', 'name' ];
 
