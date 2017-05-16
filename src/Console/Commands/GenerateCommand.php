@@ -99,7 +99,9 @@ class GenerateCommand extends Command
 
         /** @var Schema $schema */
         $schema = $this->app->make( Schema::class );
-        $schema->setName( $tableName );
+        $schema->setNamePlural( $tableName );
+
+        // TODO: add argument to define the singular name or guess from plural
 
         foreach( $columns as $column )
         {

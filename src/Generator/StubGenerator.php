@@ -93,7 +93,7 @@ abstract class StubGenerator
      */
     protected function format( string $contents ): string
     {
-        $contents = preg_replace( "/(\r?\n?\t){2,}/", "\n\n", $contents );
+        $contents = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n\n", $contents );
 
         return $contents;
     }
