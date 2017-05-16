@@ -64,6 +64,12 @@ class NodesController extends Controller
             $form->addField( new Hidden( 'content_type' ) );
             $form->addField( new Text( 'name' ) );
             $form->addField( new Slug( 'slug', $this->url( 'api', 'slug_generator' ) ) );
+
+            $form->addField( new Text( 'title' ) );
+            $form->addField( new Text( 'meta_author' ) );
+            $form->addField( new Text( 'meta_keywords' ) );
+            $form->addField( new Text( 'meta_description' ) );
+
             $form->addField( new Form\Fields\Boolean( 'active' ) );
             $form->addField( new HasOne( 'content', function( FieldSet $fieldSet ) use ( $node )
             {

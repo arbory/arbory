@@ -24,6 +24,10 @@ class Node extends \Baum\Node
         'item_position',
         'active',
         'locale',
+        'meta_title',
+        'meta_author',
+        'meta_keywords',
+        'meta_description'
     ];
 
     /**
