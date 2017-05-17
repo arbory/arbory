@@ -79,6 +79,13 @@ class HasOne extends AbstractRelationField
                 $relation->getForeignKey() => $relatedModel->{$relatedModel->getKeyName()},
             ] )->save();
         }
+        elseif( $relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo )
+        {
+            $relatedModel->save();
+
+            $this->getModel()->setAttribute( $relation->getForeignKey(), $relatedModel->getKey() );
+            $this->getModel()->save();
+        }
         elseif( $relation instanceof \Illuminate\Database\Eloquent\Relations\HasOne )
         {
             $relatedModel->save();
