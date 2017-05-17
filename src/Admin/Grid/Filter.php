@@ -135,4 +135,12 @@ class Filter implements FilterInterface
     {
         $this->query->with( $relationName );
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function getQuery(): QueryBuilder
+    {
+        return $this->query;
+    }
 }
