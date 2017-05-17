@@ -65,7 +65,7 @@ class NodesController extends Controller
             $form->addField( new Text( 'name' ) );
             $form->addField( new Slug( 'slug', $this->url( 'api', 'slug_generator' ) ) );
 
-            $form->addField( new Text( 'title' ) );
+            $form->addField( new Text( 'meta_title' ) );
             $form->addField( new Text( 'meta_author' ) );
             $form->addField( new Text( 'meta_keywords' ) );
             $form->addField( new Text( 'meta_description' ) );
