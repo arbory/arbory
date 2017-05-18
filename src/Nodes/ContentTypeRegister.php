@@ -95,12 +95,22 @@ class ContentTypeRegister
         {
             return $mappable->mapWithKeys( function( $item )
             {
+                if( $item instanceof ContentTypeDefinition )
+                {
+                    return $item;
+                }
+
                 return [ $item => $this->findByModelClass( $item ) ];
             } );
         }
 
         foreach( $mappable as &$item )
         {
+            if( $item instanceof ContentTypeDefinition )
+            {
+                return $item;
+            }
+
             $item = $this->findByModelClass( $item );
         }
 
