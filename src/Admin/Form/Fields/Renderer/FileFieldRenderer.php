@@ -64,7 +64,12 @@ class FileFieldRenderer extends InputFieldRenderer
     {
         $fileSize = ( new FileSize( $file ) )->getReadableSize();
         $fileDetails = Html::div( $file->getOriginalName() . ' / ' . $fileSize );
-        $removeInput = Html::checkbox();
+        $removeInput =
+            Html::button()->addClass( 'remove fa fa-times' )->addAttributes([
+                'type' => 'submit',
+                'name' => Element::formatName( $this->field->getNameSpacedName() . '.remove' ),
+                'value' => 'kek'
+            ]);
 
         return $fileDetails->append( $removeInput );
     }
