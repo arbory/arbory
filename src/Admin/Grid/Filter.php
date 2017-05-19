@@ -30,6 +30,11 @@ class Filter implements FilterInterface
     protected $request;
 
     /**
+     * @var int
+     */
+    protected $perPage;
+
+    /**
      * Filter constructor.
      * @param Model $model
      */
@@ -92,7 +97,7 @@ class Filter implements FilterInterface
         /**
          * @var $page LengthAwarePaginator
          */
-        $page = $this->query->paginate();
+        $page = $this->query->paginate( $this->getPerPage() );
 
         if( $this->request->has( 'search' ) )
         {
@@ -142,5 +147,21 @@ class Filter implements FilterInterface
     public function getQuery(): QueryBuilder
     {
         return $this->query;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPerPage()
+    {
+        return $this->perPage;
+    }
+
+    /**
+     * @param int $perPage
+     */
+    public function setPerPage( int $perPage )
+    {
+        $this->perPage = $perPage;
     }
 }
