@@ -61,6 +61,11 @@ class Builder
      */
     protected function searchField()
     {
+        if( !$this->grid->hasTool( 'search' ) )
+        {
+            return null;
+        }
+
         return ( new SearchField( $this->url( 'index' ) ) )->render();
     }
 

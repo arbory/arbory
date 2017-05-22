@@ -46,7 +46,7 @@ class Grid implements Renderable
     /**
      * @var array
      */
-    protected $tools = [ 'create' ];
+    protected $tools = [ 'create', 'search' ];
 
     /**
      * @var Collection|null
