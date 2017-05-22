@@ -8,16 +8,37 @@ use CubeSystems\Leaf\Admin\Settings\Setting;
 class SettingFactory
 {
     /**
-     * @param string $name
-     * @param array $parameters
+     * @var SettingRegistry
+     */
+    protected $settingRegistry;
+
+    /**
+     * @param SettingRegistry $settingRegistry
+     */
+    public function __construct(
+        SettingRegistry $settingRegistry
+    )
+    {
+        $this->settingRegistry = $settingRegistry;
+    }
+
+    /**
+     * @param string $key
      * @return Setting
      */
-    public static function build( string $name, array $parameters ): Setting
+    public function build( string $key ): Setting
     {
+        $definition = $this->settingRegistry->find( $key );
+
+        if( !$definition )
+        {
+            return null;
+        }
+
         return new Setting( [
-            'name' => $name,
-            'value' => $parameters[ 'value' ] ?? null,
-            'type' => $parameters[ 'type' ] ?? Text::class
+            'name' => $key,
+            'value' => $definition->getValue(),
+            'type' => $definition->getType()
         ] );
     }
 }

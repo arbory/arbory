@@ -7,9 +7,11 @@ use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Admin\Settings\Setting;
+use CubeSystems\Leaf\Admin\Settings\SettingDefinition;
 use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
 use CubeSystems\Leaf\Admin\Traits\Crudify;
 use CubeSystems\Leaf\Services\SettingFactory;
+use CubeSystems\Leaf\Services\SettingRegistry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 
@@ -23,17 +25,33 @@ class SettingsController extends Controller
     protected $resource = Setting::class;
 
     /**
+     * @var SettingRegistry
+     */
+    protected $settingRegistry;
+
+    /**
+     * @param SettingRegistry $settingRegistry
+     */
+    public function __construct(
+        SettingRegistry $settingRegistry
+    )
+    {
+        $this->settingRegistry = $settingRegistry;
+    }
+
+    /**
      * @param Model $model
      * @return Form
      */
     protected function form( Model $model )
     {
-        $type = $this->getFieldType( $model );
-        $value = $this->getSettingProperty( $model, 'value' );
+        $definition = $this->settingRegistry->find( $model->getKey() );
 
-        $form = $this->module()->form( $model, function( Form $form ) use ( $type, $value )
+        $form = $this->module()->form( $model, function( Form $form ) use ( $definition )
         {
-            $form->addField( new $type( 'value' ) )->setValue( $value );
+            $type = $definition->getType();
+
+            $form->addField( new $type( 'value' ) )->setValue( $definition->getValue() );
             $form->addField( new Hidden( 'type' ) )->setValue( $type );
         } );
 
@@ -48,6 +66,7 @@ class SettingsController extends Controller
         $grid = $this->module()->grid( $this->resource(), function( Grid $grid )
         {
             $grid->column( 'name' );
+            $grid->column( 'value' );
         } );
 
         return $grid
@@ -57,44 +76,20 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param Model $model
-     * @param string $property
-     * @return mixed
-     */
-    protected function getSettingProperty( Model $model, string $property )
-    {
-        return config( 'settings.' . $model->getKey() . '.' . $property );
-    }
-
-    /**
-     * @param Model $model
-     * @return string
-     */
-    protected function getFieldType( Model $model )
-    {
-        $setting = $this->getSettingProperty( $model, 'type' );
-
-        if( $model->type )
-        {
-            return $model->type;
-        }
-
-        return $setting[ 'type' ] ?? Text::class;
-    }
-
-    /**
      * @return array
      */
     protected function getSettings()
     {
-        $settings = config( 'settings' );
+        /** @var SettingFactory $factory */
+        $factory = \App::make( SettingFactory::class );
+        $result = null;
 
-        foreach( $settings as $name => $parameters )
+        foreach( array_dot( config( 'settings' ) ) as $key => $value )
         {
-            $settings[ $name ] = SettingFactory::build( $name, $parameters );
+            $result[ $key ] = $factory->build( $key );
         }
 
-        return $settings;
+        return $result;
     }
 
     /**
