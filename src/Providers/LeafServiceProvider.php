@@ -76,6 +76,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( LeafAuthServiceProvider::class );
         $this->app->register( GlideImageServiceProvider::class );
         $this->app->register( AssetServiceProvider::class );
+        $this->app->register( SettingsServiceProvider::class );
     }
 
     /**
@@ -102,6 +103,10 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->publishes( [
             $configFilename => config_path( 'leaf.php' )
+        ], 'config' );
+
+        $this->publishes( [
+            $configFilename => config_path( 'settings.php' )
         ], 'config' );
 
         $this->publishes( [

@@ -30,6 +30,11 @@ class Filter implements FilterInterface
     protected $request;
 
     /**
+     * @var bool
+     */
+    protected $paginated = true;
+
+    /**
      * @var int
      */
     protected $perPage;
@@ -46,7 +51,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     *
+     * @return void
      */
     protected function order()
     {
@@ -90,36 +95,40 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return Collection|LengthAwarePaginator
      */
-    protected function loadPage()
+    protected function loadItems()
     {
-        /**
-         * @var $page LengthAwarePaginator
-         */
-        $page = $this->query->paginate( $this->getPerPage() );
+        $result = $this->query;
+
+        if (! $this->isPaginated()) {
+            return $result->get();
+        }
+
+        /** @var LengthAwarePaginator $result */
+        $result = $this->query->paginate( $this->getPerPage() );
 
         if( $this->request->has( 'search' ) )
         {
-            $page->appends([
+            $result->appends([
                 'search' => $this->request->get( 'search' ),
             ]);
         }
 
         if( $this->request->has( '_order_by' ) && $this->request->has( '_order' ) )
         {
-            $page->appends([
+            $result->appends([
                 '_order_by' => $this->request->get( '_order_by' ),
                 '_order' => $this->request->get( '_order' ),
             ]);
         }
 
-        return $page;
+        return $result;
     }
 
     /**
      * @param Collection|Column[] $columns
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return Collection|LengthAwarePaginator
      */
     public function execute( Collection $columns )
     {
@@ -130,7 +139,7 @@ class Filter implements FilterInterface
 
         $this->order();
 
-        return $this->loadPage();
+        return $this->loadItems();
     }
 
     /**
@@ -147,6 +156,22 @@ class Filter implements FilterInterface
     public function getQuery(): QueryBuilder
     {
         return $this->query;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaginated(): bool
+    {
+        return $this->paginated;
+    }
+
+    /**
+     * @param bool $paginated
+     */
+    public function setPaginated( bool $paginated )
+    {
+        $this->paginated = $paginated;
     }
 
     /**

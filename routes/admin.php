@@ -1,5 +1,7 @@
 <?php
 
+AdminModule::register( CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class );
+
 Route::get( '/', [ 'as' => 'login.form', 'uses' => 'Admin\SessionController@getLogin' ] );
 Route::post( 'login', [ 'as' => 'login.attempt', 'uses' => 'Admin\SessionController@postLogin' ] );
 Route::post( 'logout', [ 'as' => 'logout', 'uses' => 'Admin\SessionController@postLogout' ] );

@@ -152,7 +152,7 @@ class Column
     {
         if( $this->relationName )
         {
-            return $query->orWhereHas( $this->relationName, function ( QueryBuilder $query ) use ( $string )
+            return $query->orWhereHas( $this->relationName, function( QueryBuilder $query ) use ( $string )
             {
                 $query->where( $this->relationColumn, 'like', "$string%" );
             } );
