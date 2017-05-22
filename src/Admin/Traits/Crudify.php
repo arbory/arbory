@@ -184,24 +184,12 @@ trait Crudify
     }
 
     /**
-     * @param mixed $resourceId
-     * @return Model
-     */
-    protected function findOrNew( $resourceId ): Model
-    {
-        $resource = $this->resource()->findOrNew( $resourceId );
-        $resource->setAttribute( $resource->getKeyName(), $resourceId );
-
-        return $resource;
-    }
-
-    /**
      * @param Request $request
      * @return string
      */
     protected function toolboxDialog( Request $request )
     {
-        $node = $this->resource()->findOrFail( $request->get( 'id' ) );
+        $node = $this->findOrNew( $request->get( 'id' ) );
 
         $toolbox = new ToolboxMenu( $node );
 
@@ -264,5 +252,17 @@ trait Crudify
     public function url( $route, $parameters = [] )
     {
         return $this->module()->url( $route, $parameters );
+    }
+
+    /**
+     * @param mixed $resourceId
+     * @return Model
+     */
+    protected function findOrNew( $resourceId ): Model
+    {
+        $resource = $this->resource()->findOrNew( $resourceId );
+        $resource->setAttribute( $resource->getKeyName(), $resourceId );
+
+        return $resource;
     }
 }
