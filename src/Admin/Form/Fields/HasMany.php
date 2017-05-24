@@ -102,7 +102,7 @@ class HasMany extends AbstractField
             {
                 $relatedModel->delete();
 
-                return;
+                continue;
             }
 
             $relatedFieldSet = $this->getRelationFieldSet(
