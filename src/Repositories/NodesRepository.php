@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Repositories;
 
 use CubeSystems\Leaf\Nodes\Node;
+use Illuminate\Support\Collection;
 
 /**
  * Class NodesRepository
@@ -19,7 +20,7 @@ class NodesRepository extends AbstractModelsRepository
      * @param Node $node
      * @param string $key
      * @param mixed $value
-     * @return mixed
+     * @return Collection
      */
     public function findUnder( Node $node, string $key, $value )
     {
@@ -27,7 +28,7 @@ class NodesRepository extends AbstractModelsRepository
             ->whereBetween( $node->getLeftColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) )
             ->whereBetween( $node->getRightColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
 
-        return $query->get()->first();
+        return $query->get();
     }
 
     /***
