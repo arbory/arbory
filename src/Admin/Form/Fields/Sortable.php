@@ -21,6 +21,8 @@ class Sortable extends AbstractField
     {
         $this->field = $field;
 
+        $this->field->setOrderBy( $name );
+
         parent::__construct( $name );
     }
 
@@ -29,7 +31,6 @@ class Sortable extends AbstractField
      */
     public function render()
     {
-        $this->field->setOrderBy( $this->name );
         $this->field->setFieldSet( $this->getFieldSet() );
 
         return Html::div(
@@ -55,5 +56,13 @@ class Sortable extends AbstractField
     {
         $this->field->setFieldSet( $this->getFieldSet() );
         $this->field->afterModelSave( $request );
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function getSortableField()
+    {
+        return $this->field;
     }
 }

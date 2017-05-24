@@ -81,6 +81,14 @@ class HasMany extends AbstractField
                 ->setValue( $model->getKey() )
         );
 
+        if( $this->isSortable() && $this->getOrderBy() )
+        {
+            $fieldSet->prepend(
+                ( new Hidden( $this->getOrderBy() ) )
+                    ->setValue( $model->{$this->getOrderBy()} )
+            );
+        }
+
         return $fieldSet;
     }
 
@@ -153,18 +161,37 @@ class HasMany extends AbstractField
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getOrderBy(): string
+    protected function isSortable(): bool
+    {
+        foreach($this->fieldSet->getFields() as $field)
+        {
+            if( $field instanceof Sortable && $field->getSortableField() === $this )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderBy()
     {
         return $this->orderBy;
     }
 
     /**
      * @param string $orderBy
+     * @return $this
      */
     public function setOrderBy( string $orderBy )
     {
         $this->orderBy = $orderBy;
+
+        return $this;
     }
 }

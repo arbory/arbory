@@ -22,19 +22,12 @@ class NestedFieldRenderer
     protected $field;
 
     /**
-     * @var string
-     */
-    protected $orderBy;
-
-    /**
      * NestedFieldRenderer constructor.
      * @param HasMany $field
-     * @param string $orderBy
      */
-    public function __construct( HasMany $field, string $orderBy = null )
+    public function __construct( HasMany $field )
     {
         $this->field = $field;
-        $this->orderBy = $orderBy;
     }
 
     /**
@@ -50,13 +43,14 @@ class NestedFieldRenderer
      */
     protected function getBody()
     {
+        $orderBy = $this->field->getOrderBy();
         $relationItems = [];
 
-        if( $this->orderBy )
+        if( $orderBy )
         {
-            $this->field->setValue( $this->field->getValue()->sortBy( function( $item )
+            $this->field->setValue( $this->field->getValue()->sortBy( function( $item ) use ($orderBy)
             {
-                return $item->{$this->orderBy};
+                return $item->{$orderBy};
             } ) );
         }
 
