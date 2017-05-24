@@ -39,10 +39,13 @@ jQuery(document).ready($ => {
 
     fields.each(function () {
         let field = $(this);
-        let container = $(this).find('.body');
+        let container = $(this).find('.body:first');
         let sortable = new Sortable(field, container);
 
         container.on('DOMNodeInserted DOMNodeRemoved', () => sortable.update());
-        container.sortable({update: () => sortable.update()});
+        container.sortable({
+            items: '> .item',
+            update: () => sortable.update()
+        });
     });
 });
