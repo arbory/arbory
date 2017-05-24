@@ -29,6 +29,7 @@ class Sortable extends AbstractField
      */
     public function render()
     {
+        $this->field->setOrderBy( $this->name );
         $this->field->setFieldSet( $this->getFieldSet() );
 
         return Html::div(

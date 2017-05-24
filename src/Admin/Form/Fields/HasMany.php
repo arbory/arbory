@@ -25,6 +25,11 @@ class HasMany extends AbstractField
     protected $fieldSetCallback;
 
     /**
+     * @var string
+     */
+    protected $orderBy;
+
+    /**
      * AbstractRelationField constructor.
      * @param string $name
      * @param Closure $fieldSetCallback
@@ -57,7 +62,7 @@ class HasMany extends AbstractField
      */
     public function render()
     {
-        return ( new NestedFieldRenderer( $this ) )->render();
+        return ( new NestedFieldRenderer( $this, $this->orderBy ) )->render();
     }
 
     /**
@@ -145,5 +150,21 @@ class HasMany extends AbstractField
         $relatedModelId = array_get( $variables, $relation->getRelated()->getKeyName() );
 
         return $relation->getRelated()->findOrNew( $relatedModelId );
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderBy(): string
+    {
+        return $this->orderBy;
+    }
+
+    /**
+     * @param string $orderBy
+     */
+    public function setOrderBy( string $orderBy )
+    {
+        $this->orderBy = $orderBy;
     }
 }
