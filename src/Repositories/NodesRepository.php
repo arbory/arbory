@@ -20,7 +20,7 @@ class NodesRepository extends AbstractModelsRepository
      * @param Node $node
      * @param string $key
      * @param mixed $value
-     * @return Collection
+     * @return Collection|null
      */
     public function findUnder( Node $node, string $key, $value )
     {
