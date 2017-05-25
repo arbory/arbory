@@ -37,4 +37,12 @@ class SettingRegistry
     {
         return $this->settings->get( $key );
     }
+
+    /**
+     * @return Collection
+     */
+    public function getSettings(): Collection
+    {
+        return $this->settings;
+    }
 }

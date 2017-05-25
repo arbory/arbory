@@ -2,6 +2,8 @@
 
 namespace CubeSystems\Leaf\Admin\Settings;
 
+use CubeSystems\Leaf\Admin\Form\Fields\Text;
+
 class SettingDefinition
 {
     /**
@@ -28,7 +30,7 @@ class SettingDefinition
     {
         $this->key = $key;
         $this->value = $value;
-        $this->type = $type;
+        $this->type = $type ?? Text::class;
     }
 
     /**
