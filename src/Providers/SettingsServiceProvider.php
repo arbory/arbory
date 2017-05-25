@@ -31,12 +31,15 @@ class SettingsServiceProvider extends ServiceProvider
 
         $this->remap( include config_path( 'settings.php' ) );
 
-        Setting::all()->each( function( Setting $setting )
+        $this->app->booted( function()
         {
-            $definition = new SettingDefinition( $setting->name, $setting->value, $setting->type );
-            $this->settingRegistry->register( $definition );
+            Setting::all()->each( function( Setting $setting )
+            {
+                $definition = new SettingDefinition( $setting->name, $setting->value, $setting->type );
+                $this->settingRegistry->register( $definition );
 
-            $this->app[ 'config' ]->set( 'settings.' . $setting->name, $setting->value );
+                $this->app[ 'config' ]->set( 'settings.' . $setting->name, $setting->value );
+            } );
         } );
     }
 
