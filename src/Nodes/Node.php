@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Nodes;
 
 use Alsofronie\Uuid\UuidModelTrait;
 use CubeSystems\Leaf\Pages\PageInterface;
+use Illuminate\Database\Query\Builder;
 
 /**
  * Class Node
@@ -47,15 +48,22 @@ class Node extends \Baum\Node
     }
 
     /**
-     * @return NodeCollection|\Illuminate\Database\Eloquent\Collection|static[]
+     * @return NodeCollection|\Illuminate\Support\Collection|static[]
      */
     public function parents()
+    {
+        return $this->parentsQuery()->get();
+    }
+
+    /**
+     * @return Builder
+     */
+    public function parentsQuery()
     {
         return $this->newQuery()
             ->where( $this->getLeftColumnName(), '<', (int) $this->getLeft() )
             ->where( $this->getRightColumnName(), '>', (int) $this->getRight() )
-            ->orderBy( $this->getDepthColumnName(), 'asc' )
-            ->get();
+            ->orderBy( $this->getDepthColumnName(), 'asc' );
     }
 
     /**
