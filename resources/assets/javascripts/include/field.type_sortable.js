@@ -45,7 +45,13 @@ jQuery(document).ready($ => {
         container.on('DOMNodeInserted DOMNodeRemoved', () => sortable.update());
         container.sortable({
             items: '> .item',
-            update: () => sortable.update()
+            update: () => sortable.update(),
+            stop: (event, ui) => {
+                ui.item.find('textarea').trigger('richtextresume');
+            },
+            start: (event, ui) => {
+                ui.item.find('textarea').trigger('richtextsuspend');
+            }
         });
     });
 });
