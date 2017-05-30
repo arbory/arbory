@@ -31,6 +31,19 @@ class NodesRepository extends AbstractModelsRepository
         return $query->get();
     }
 
+    /**
+     * @param Node $node
+     * @param string $key
+     * @param mixed $value
+     * @return Collection|null
+     */
+    public function findAbove( Node $node, string $key, $value )
+    {
+        $query = $node->ancestorsAndSelf()->withoutSelf()->where( $key, $value );
+
+        return $query->get();
+    }
+
     /***
      * @param $uri
      * @return Node|null
