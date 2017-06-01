@@ -26,7 +26,8 @@
         "waavi/translation": "^2.1.5",
         "roboc/laravel-glide": "1.0.*",
         "roave/security-advisories": "dev-master",
-        "spatie/laravel-sluggable": "^1.5"
+        "spatie/laravel-sluggable": "^1.5",
+        "maatwebsite/excel": "~2.1.0"
     },
     "require-dev" : {
         "satooshi/php-coveralls": "^1.0",
