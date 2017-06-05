@@ -37,7 +37,7 @@ class Admin
     public function __construct( Menu $menu, AssetPipeline $assets )
     {
         $this->routes = new ModuleRoutesRegistry();
-        $this->modules = new ModuleRegistry( $this, $this->routes );
+        $this->modules = new ModuleRegistry( $this );
         $this->menu = $menu;
         $this->assets = $assets;
     }

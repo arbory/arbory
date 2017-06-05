@@ -9,12 +9,17 @@ use Illuminate\Support\Collection;
  * Class ModuleRegistryService
  * @package CubeSystems\Leaf\Services
  */
-class ModuleRegistry extends Collection
+class ModuleRegistry
 {
     /**
      * @var Admin
      */
     protected $admin;
+
+    /**
+     * @var Collection
+     */
+    protected $modules;
 
     /**
      * ModuleRegistry constructor.
@@ -23,8 +28,7 @@ class ModuleRegistry extends Collection
     public function __construct( Admin $admin )
     {
         $this->admin = $admin;
-
-        parent::__construct();
+        $this->modules = new Collection();
     }
 
     /**
@@ -34,7 +38,7 @@ class ModuleRegistry extends Collection
      */
     public function register( string $controllerClass, \Closure $routes = null )
     {
-        if( $this->has( $controllerClass ) )
+        if( $this->modules->has( $controllerClass ) )
         {
             throw new \LogicException( 'Module with controller class "' . $controllerClass . '" already registered' );
         }
@@ -44,7 +48,7 @@ class ModuleRegistry extends Collection
 
         $this->admin->routes()->register( $module, $routes );
 
-        $this[$controllerClass] = $module;
+        $this->modules->put( $controllerClass, $module );
 
         return $module;
     }
@@ -55,7 +59,7 @@ class ModuleRegistry extends Collection
      */
     public function findModuleByControllerClass( $controllerClass )
     {
-        return $this->get( $controllerClass );
+        return $this->modules->get( $controllerClass );
     }
 
     /**
@@ -65,5 +69,15 @@ class ModuleRegistry extends Collection
     public function findModuleByController( $instance )
     {
         return $this->findModuleByControllerClass( get_class( $instance ) );
+    }
+
+    /**
+     * @param $method
+     * @param $parameters
+     * @return Collection|Module[]|Module
+     */
+    public function __call( $method, $parameters )
+    {
+        return $this->modules->$method( ...$parameters );
     }
 }
