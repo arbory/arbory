@@ -76,6 +76,11 @@ class HasMany extends AbstractField
                 ->setValue( $model->getKey() )
         );
 
+        $fieldSet->prepend(
+            ( new Hidden( $model->getKeyName() ) )
+                ->setValue( $model->getKey() )
+        );
+
         return $fieldSet;
     }
 

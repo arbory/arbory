@@ -2,67 +2,49 @@
 
 namespace CubeSystems\Leaf\Services;
 
+use CubeSystems\Leaf\Admin\Admin;
+
 /**
  * Class ModuleRegistryService
  * @package CubeSystems\Leaf\Services
  */
 class ModuleRegistry
 {
-    /**
-     * @var Module[]
-     */
-    protected $modulesByName;
+    protected $admin;
 
     /**
      * @var Module[]
      */
-    protected $modulesByControllerClass;
+    protected $modulesByController = [];
 
     /**
      * ModuleRegistry constructor.
-     * @param array $modulesConfigArray
+     * @param Admin $admin
      */
-    public function __construct( array $modulesConfigArray = [] )
+    public function __construct( Admin $admin )
     {
-        $this->modulesByName = [];
-        $this->modulesByControllerClass = [];
-
-        foreach( $modulesConfigArray as $moduleConfigArray )
-        {
-            $moduleConfig = new ModuleConfiguration( $moduleConfigArray );
-
-            $this->register( new Module( $moduleConfig ) );
-        }
+        $this->admin = $admin;
     }
 
     /**
-     * @param Module $module
+     * @param string $controllerClass
+     * @return $this
      */
-    public function register( Module $module )
+    public function register( string $controllerClass, \Closure $routes = null )
     {
-        if( isset( $this->modulesByName[$module->getName()] ) )
+        if( array_key_exists( $controllerClass, $this->modulesByController ) )
         {
-            throw new \LogicException( 'Module named "' . $module->getName() . '" already registered' );
+            throw new \LogicException( 'Module with controller class "' . $controllerClass . '" already registered' );
         }
 
-        if( isset( $this->modulesByName[$module->getControllerClass()] ) )
-        {
-            throw new \LogicException( 'Module with controller class "' . $module->getControllerClass() . '" already registered' );
-        }
+        $config = new ModuleConfiguration( $controllerClass );
+        $module = new Module( $this->admin, $config );
 
-        $this->modulesByName[$module->getName()] = $module;
-        $this->modulesByControllerClass[ltrim( $module->getControllerClass(), '\\' )] = $module;
-    }
+        $this->admin->routes()->register( $module, $routes );
 
-    /**
-     * @param string $moduleName
-     * @return Module|null
-     */
-    public function findModuleByName( $moduleName )
-    {
-        return isset( $this->modulesByName[$moduleName] )
-            ? $this->modulesByName[$moduleName]
-            : null;
+        $this->modulesByController[$controllerClass] = $module;
+
+        return $module;
     }
 
     /**
@@ -71,9 +53,7 @@ class ModuleRegistry
      */
     public function findModuleByControllerClass( $controllerClass )
     {
-        return isset( $this->modulesByControllerClass[$controllerClass] )
-            ? $this->modulesByControllerClass[$controllerClass]
-            : null;
+        return array_get( $this->modulesByController, $controllerClass );
     }
 
     /**
@@ -88,16 +68,8 @@ class ModuleRegistry
     /**
      * @return Module[]
      */
-    public function getModulesByName(): array
-    {
-        return $this->modulesByName;
-    }
-
-    /**
-     * @return Module[]
-     */
     public function getModulesByControllerClass(): array
     {
-        return $this->modulesByControllerClass;
+        return $this->modulesByController;
     }
 }

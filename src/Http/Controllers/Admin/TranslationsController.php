@@ -232,7 +232,7 @@ class TranslationsController extends Controller
     {
         // TODO: DI
         /** @var Menu $menu */
-        $menu = app( 'leaf.menu' );
+        $menu = \Admin::menu();
         $menuItem = $menu->findItemByModule( self::class );
 
         $breadcrumbs = new Breadcrumbs();

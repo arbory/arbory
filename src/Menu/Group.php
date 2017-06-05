@@ -19,13 +19,10 @@ class Group extends AbstractItem
     protected $route;
 
     /**
-     * @param Route $route
+     * Group constructor.
      */
-    public function __construct(
-        Route $route
-    )
+    public function __construct()
     {
-        $this->route = $route;
         $this->children = new Collection();
     }
 

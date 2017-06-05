@@ -5,7 +5,7 @@ namespace CubeSystems\Leaf\Admin\Module;
 use Closure;
 use Illuminate\Routing\Router;
 
-class Route
+class OLDRoute
 {
     /**
      * @var array|string[]

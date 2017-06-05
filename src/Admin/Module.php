@@ -5,7 +5,7 @@ namespace CubeSystems\Leaf\Admin;
 use Closure;
 use CubeSystems\Leaf\Admin\Widgets\Breadcrumbs;
 use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
-use CubeSystems\Leaf\Admin\Module\Route;
+use CubeSystems\Leaf\Admin\Module\OLDRoute;
 use CubeSystems\Leaf\Services\AssetPipeline;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
@@ -27,20 +27,20 @@ class Module
      */
     protected $breadcrumbs;
 
-    /**
-     * @var AssetPipeline
-     */
-    protected $pipeline;
+//    /**
+//     * @var AssetPipeline
+//     */
+//    protected $assets;
 
     /**
      * @param Controller $controller
      * @param AssetPipeline $pipeline
      */
-    public function __construct( Controller $controller, AssetPipeline $pipeline )
+    public function __construct( Controller $controller )
     {
         $this->controller = $controller;
         $this->routes = new ResourceRoutes( $controller );
-        $this->pipeline = $pipeline;
+//        $this->assets = $assets;
     }
 
     /**
@@ -68,10 +68,10 @@ class Module
     /**
      * @return AssetPipeline
      */
-    public function assets()
-    {
-        return $this->pipeline;
-    }
+//    public function assets()
+//    {
+//        return $this->assets;
+//    }
 
     /**
      * @param Model $model
@@ -104,13 +104,13 @@ class Module
      */
     public function name()
     {
-        return title_case( Route::getControllerSlug( get_class( $this->controller ) ) );
+        return title_case( OLDRoute::getControllerSlug( get_class( $this->controller ) ) );
     }
 
     /**
      * @param $route
      * @param array $parameters
-     * @return Route
+     * @return OLDRoute
      */
     public function url( $route, $parameters = [] )
     {

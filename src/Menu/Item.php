@@ -52,14 +52,14 @@ class Item extends AbstractItem
     public function __construct(
         Sentinel $sentinel,
         ModuleRegistry $moduleRegistry,
-        UrlGenerator $urlGenerator,
-        Route $route
+        UrlGenerator $urlGenerator
+//        Route $route
     )
     {
         $this->sentinel = $sentinel;
         $this->moduleRegistry = $moduleRegistry;
         $this->urlGenerator = $urlGenerator;
-        $this->route = $route;
+//        $this->route = $route;
         $this->children = new Collection();
     }
 
@@ -118,10 +118,10 @@ class Item extends AbstractItem
      */
     public function render( Elements\Element $parentElement )
     {
-        $module = $this->moduleRegistry->findModuleByControllerClass( $this->module->getControllerClass() );
+//        $module = $this->moduleRegistry->findModuleByControllerClass( $this->module->getControllerClass() );
 
-        if( $module && $module->isAuthorized( $this->sentinel ) )
-        {
+//        if( $module && $module->isAuthorized( $this->sentinel ) )
+//        {
             $parentElement->append(
                 Html::link([
                     Html::abbr( $this->getAbbreviation() )->addAttributes( [ 'title' => $this->getTitle() ] ),
@@ -132,7 +132,7 @@ class Item extends AbstractItem
             );
 
             return true;
-        }
+//        }
 
         return false;
     }
@@ -151,6 +151,7 @@ class Item extends AbstractItem
      */
     public function isActive(): bool
     {
+        return false; // TODO:
         $activeController = ( new \ReflectionClass( $this->route->getController() ) )->getName();
 
         return $activeController === $this->module->getControllerClass();

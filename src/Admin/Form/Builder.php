@@ -47,7 +47,7 @@ class Builder
     }
 
     /**
-     * @return \CubeSystems\Leaf\Admin\Module\Route|string
+     * @return \CubeSystems\Leaf\Admin\Module\OLDRoute|string
      */
     public function getAction()
     {
@@ -67,7 +67,7 @@ class Builder
     /**
      * @param $route
      * @param array $parameters
-     * @return \CubeSystems\Leaf\Admin\Module\Route
+     * @return \CubeSystems\Leaf\Admin\Module\OLDRoute
      */
     public function url( $route, $parameters = [] )
     {

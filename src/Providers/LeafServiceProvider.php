@@ -1,5 +1,6 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
+use CubeSystems\Leaf\Admin\Admin;
 use CubeSystems\Leaf\Admin\Form\Fields\Checkbox;
 use CubeSystems\Leaf\Admin\Form\Fields\DateTime;
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
@@ -9,6 +10,7 @@ use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
 use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
+use CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry;
 use CubeSystems\Leaf\Console\Commands\GenerateCommand;
 use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
@@ -18,9 +20,13 @@ use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
+use CubeSystems\Leaf\Menu\Menu;
 use CubeSystems\Leaf\Menu\MenuFactory;
+use CubeSystems\Leaf\Menu\MenuItemFactory;
 use CubeSystems\Leaf\Nodes\MenuItem;
+use CubeSystems\Leaf\Services\AssetPipeline;
 use CubeSystems\Leaf\Services\FieldTypeRegistry;
+use CubeSystems\Leaf\Services\ModuleBuilder;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 use CubeSystems\Leaf\Services\StubRegistry;
 use CubeSystems\Leaf\Views\LayoutViewComposer;
@@ -59,10 +65,12 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'leaf' );
 
-        $this->app->bind( 'leaf.menu', function ()
-        {
-            return $this->app->make( MenuFactory::class )->build( MenuItem::all() );
-        }, true );
+//        $this->app->bind( 'leaf.menu', function ()
+//        {
+//            dd(123);
+//            return \Admin::menu();
+////            return $this->app->make( MenuFactory::class )->build( MenuItem::all() );
+//        }, true );
     }
 
     /**
@@ -84,7 +92,7 @@ class LeafServiceProvider extends ServiceProvider
     private function registerAliases()
     {
         $aliasLoader = AliasLoader::getInstance();
-        $aliasLoader->alias( 'TranslationCache', \Waavi\Translation\Facades\TranslationCache::class );
+//        $aliasLoader->alias( 'TranslationCache', \Waavi\Translation\Facades\TranslationCache::class );
         $aliasLoader->alias( 'Activation', \Cartalyst\Sentinel\Laravel\Facades\Activation::class );
         $aliasLoader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
         $aliasLoader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
@@ -212,17 +220,39 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerModuleRegistry()
     {
-        $this->app->singleton( 'leaf.modules', function ( Application $app )
+        dd( config('leaf.menu') );
+
+
+        $this->app->singleton( 'leaf', function ()
         {
-            return new ModuleRegistry(
-                $app->config['leaf.modules']
+            return new Admin(
+                new Menu(),
+                new AssetPipeline()
             );
         } );
 
-        $this->app->singleton( ModuleRegistry::class, function ( Application $app )
-        {
-            return $app[ 'leaf.modules' ];
-        } );
+//            $menu = $this->app->make( MenuFactory::class )->build( MenuItem::all() );
+//
+//            dd( $menu );
+
+
+
+//        dd( $this->app->make('leaf') );
+
+//        $this->app->singleton( 'leaf.modules', function ( Application $app )
+//        {
+//            return new ModuleRegistry();
+//        } );
+
+//        $this->app->singleton( 'leaf_module_builder', function ( $app )
+//        {
+//            return new ModuleBuilder( $app['leaf.modules'] );
+//        } );
+
+//        $this->app->singleton( ModuleRegistry::class, function ( Application $app )
+//        {
+//            return $app[ 'leaf.modules' ];
+//        } );
     }
 
     /**
@@ -291,6 +321,6 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [ 'leaf.seed', 'leaf.modules', 'leaf.menu' ];
+        return [ 'leaf', 'leaf.seed', 'leaf.modules', 'leaf.menu' ];
     }
 }

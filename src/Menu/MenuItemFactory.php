@@ -2,7 +2,8 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-use CubeSystems\Leaf\Admin\Module\Route;
+use CubeSystems\Leaf\Admin\Admin;
+use CubeSystems\Leaf\Admin\Module\OLDRoute;
 use CubeSystems\Leaf\Nodes\MenuItem;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 use Illuminate\Container\Container;
@@ -25,11 +26,12 @@ class MenuItemFactory
      */
     public function __construct(
         Container $container,
-        ModuleRegistry $moduleRegistry
+        Admin $admin
     )
     {
+        dd( $admin );
         $this->container = $container;
-        $this->moduleRegistry = $moduleRegistry;
+        $this->moduleRegistry = $admin;
     }
 
     /**
@@ -46,10 +48,13 @@ class MenuItemFactory
 
             $moduleName = $model->getModule();
             $module = $this->moduleRegistry->findModuleByControllerClass( $moduleName );
+            dd($this->moduleRegistry);
 
+            dd( $moduleName );
+dd( $module );
             // TODO: better method to get slug
-            $item->setRouteName( sprintf( 'admin.%s.index', Route::generateSlugFromClassName( $moduleName ) ) );
-            $item->setModule( $module );
+            $item->setRouteName( sprintf( 'admin.%s.index', $module->name() ) );
+//            $item->setModule( $module );
         }
         else
         {
