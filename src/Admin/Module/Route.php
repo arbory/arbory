@@ -43,7 +43,10 @@ class Route
             'uses' => '\\' . $class . '@api'
         ] );
 
-
+        $router->get( $slug . '/export/{as}', [
+            'as' => $slug . '.export',
+            'uses' => '\\' . $class . '@export'
+        ] );
 
         static::$controllerSlugs[$class] = $slug;
     }

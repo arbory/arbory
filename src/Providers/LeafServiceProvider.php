@@ -8,7 +8,6 @@ use CubeSystems\Leaf\Admin\Form\Fields\Link;
 use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
-use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
 use CubeSystems\Leaf\Console\Commands\GenerateCommand;
 use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
@@ -30,6 +29,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Maatwebsite\Excel\ExcelServiceProvider;
 use Roboc\Glide\GlideImageServiceProvider;
 use Route;
 
@@ -77,6 +77,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->register( GlideImageServiceProvider::class );
         $this->app->register( AssetServiceProvider::class );
         $this->app->register( SettingsServiceProvider::class );
+        $this->app->register( ExcelServiceProvider::class );
     }
 
     /**
@@ -90,6 +91,7 @@ class LeafServiceProvider extends ServiceProvider
         $aliasLoader->alias( 'Reminder', \Cartalyst\Sentinel\Laravel\Facades\Reminder::class );
         $aliasLoader->alias( 'Sentinel', \Cartalyst\Sentinel\Laravel\Facades\Sentinel::class );
         $aliasLoader->alias( 'GlideImage', \Roboc\Glide\Support\Facades\GlideImage::class );
+        $aliasLoader->alias( 'Excel', \Maatwebsite\Excel\Facades\Excel::class );
     }
 
     /**

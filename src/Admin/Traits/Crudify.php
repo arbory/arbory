@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
+use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
 /**
  * Class Crudify
@@ -181,6 +183,26 @@ trait Crudify
         }
 
         return $this->{$method}( $request );
+    }
+
+
+    /**
+     * @param Request $request
+     * @param string $as
+     * @return mixed
+     * @throws \PHPExcel_Exception
+     */
+    public function export( Request $request, $as )
+    {
+        $grid = $this->grid();
+
+        \Excel::create( snake_case( class_basename( $this ) ), function( LaravelExcelWriter $excel ) use ( $grid )
+        {
+            $excel->sheet( null, function( LaravelExcelWorksheet $sheet ) use ( $grid )
+            {
+                $sheet->fromArray( $grid->toArray() );
+            } );
+        } )->export( $as );
     }
 
     /**

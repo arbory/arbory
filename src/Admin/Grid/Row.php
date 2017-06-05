@@ -8,6 +8,7 @@ use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * Class Row
@@ -45,16 +46,24 @@ class Row implements Renderable
     }
 
     /**
-     * @return Element
+     * @return Collection
      */
-    public function render()
+    public function getCells(): Collection
     {
-        $cells = $this->grid->getColumns()->map( function ( Column $column )
+        return $this->grid->getColumns()->map( function ( Column $column )
         {
             $cell = new Cell( $column, $this, $this->model );
 
             return $cell->render();
         } );
+    }
+
+    /**
+     * @return Element
+     */
+    public function render()
+    {
+        $cells = $this->getCells();
 
         $cells->push(
             Html::td(
@@ -71,4 +80,13 @@ class Row implements Renderable
             ->addClass( 'row' );
     }
 
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->getCells()->map( function( Element $cell ) {
+            return strip_tags( $cell );
+        } )->toArray();
+    }
 }

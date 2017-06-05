@@ -194,12 +194,30 @@ class Builder
     }
 
     /**
+     * @return Element
+     */
+    protected function exportOptions()
+    {
+        return
+            Html::div( [
+                Html::span(
+                    trans( 'leaf::resources.export' )
+                )->addClass( 'title' ),
+                Html::div(
+                    Link::create( $this->url( 'export', [ 'as' => 'xls' ] ) )
+                        ->title( 'xls' )
+                )->addClass( 'options' )
+            ] )->addClass( 'export' );
+    }
+
+    /**
      * @return Tools
      */
     protected function footerTools()
     {
         $tools = new Tools();
 
+        $tools->getBlock( 'secondary' )->push( $this->exportOptions() );
         $tools->getBlock( 'primary' )->push( $this->createButton() );
 
         if ( $this->grid->isPaginated() )

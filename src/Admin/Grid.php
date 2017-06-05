@@ -9,6 +9,7 @@ use CubeSystems\Leaf\Admin\Grid\Filter;
 use CubeSystems\Leaf\Admin\Grid\FilterInterface;
 use CubeSystems\Leaf\Admin\Grid\Row;
 use CubeSystems\Leaf\Html\Elements\Content;
+use function foo\func;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -285,5 +286,25 @@ class Grid implements Renderable
     public function hasTool( string $tool ): bool
     {
         return in_array( $tool, $this->tools, false );
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $items = $this->fetchData();
+
+        $this->buildRows( $items );
+
+        $columns = $this->columns->map( function( Column $column )
+        {
+            return (string) $column;
+        } )->toArray();
+
+        return $this->rows->map( function( Row $row ) use ( $columns )
+        {
+            return array_combine( $columns, $row->toArray() );
+        } )->toArray();
     }
 }

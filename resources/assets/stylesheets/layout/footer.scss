@@ -64,6 +64,27 @@ footer.main
                 border-left: none;
             }
 
+            .export
+            {
+                margin-top: steps(0.5);
+                padding-left: steps(1);
+
+                .title:after
+                {
+                    content: ': ';
+                }
+
+                .options
+                {
+                    display: inline-block;
+
+                    & > *
+                    {
+                        text-transform: uppercase;
+                        text-decoration: none;
+                    }
+                }
+            }
         }
 
     }

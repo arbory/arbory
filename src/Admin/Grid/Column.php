@@ -68,6 +68,14 @@ class Column
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getName();
+    }
+
+    /**
      * @return null|string
      */
     public function getName()
