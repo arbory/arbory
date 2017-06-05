@@ -7,8 +7,10 @@ use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Admin\Traits\Crudify;
 use CubeSystems\Leaf\Auth\Roles\Role;
+use CubeSystems\Leaf\Services\Module;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
 
 /**
  * Class RoleController
@@ -31,18 +33,16 @@ class RolesController extends Controller
     {
         return $this->module()->form( $model, function ( Form $form )
         {
-            $permissions = [
-                'users.create',
-                'users.update',
-                'users.view',
-                'users.destroy',
-                'roles.create',
-                'roles.update',
-                'roles.view',
-                'roles.delete',
-            ];
+            /**
+             * @var $collection Collection
+             */
+            $options = \Admin::modules()->mapWithKeys( function ( Module $value )
+            {
+                return [ $value->getControllerClass() => (string) $value ];
+            } );
 
             $form->addField( new Text( 'name' ) );
+            $form->addField( ( new Form\Fields\MultipleSelect( 'permissions' ) )->options( $options ) );
         } );
     }
 
