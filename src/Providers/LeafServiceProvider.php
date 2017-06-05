@@ -222,6 +222,11 @@ class LeafServiceProvider extends ServiceProvider
             );
         } );
 
+        $this->app->singleton( Admin::class, function ()
+        {
+            return $this->app['leaf'];
+        } );
+
 //        dd( $this->app[ 'leaf' ] );
 
 //            $menu = $this->app->make( MenuFactory::class )->build( MenuItem::all() );

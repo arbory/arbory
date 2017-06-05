@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Menu;
 
 use Cartalyst\Sentinel\Sentinel;
 use CubeSystems\Leaf\Admin\Admin;
+use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
 use CubeSystems\Leaf\Html\Elements;
 use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Services\Module;
@@ -11,6 +12,7 @@ use CubeSystems\Leaf\Services\ModuleRegistry;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\URL;
 
 
 class Item extends AbstractItem
@@ -21,15 +23,17 @@ class Item extends AbstractItem
     protected $admin;
 
     /**
-     * @var string
+     * @var Module
      */
-    protected $controllerName;
+    protected $module;
 
     public function __construct(
-        Admin $admin
+        Admin $admin,
+        Module $module
     )
     {
         $this->admin = $admin;
+        $this->module = $module;
     }
 
     /**
@@ -59,43 +63,48 @@ class Item extends AbstractItem
     }
 
     /**
+     * @return ResourceRoutes
+     */
+    public function getRoute(): ResourceRoutes
+    {
+        return $this->admin->routes()->findByModule( $this->getModule() );
+    }
+
+    /**
      * @return string
      * @throws \InvalidArgumentException
      */
     protected function getUrl()
-    {return '';
-        //return $this->urlGenerator->route( $this->getRouteName(), $this->getRouteParams() );
+    {
+        return $this->getRoute()->getUrl( 'index' );
     }
-
-    //    public function getRouteName(): string
-    //    {
-    //        return $this->admin->routes()->findByModule( $this->getModule() );
-    //    }
 
     /**
      * @return bool
      */
     public function isActive(): bool
-    {return false;
+    {
+        return false;
+
         $activeController = ( new \ReflectionClass( $this->route->getController() ) )->getName();
 
         return $activeController === $this->module->getControllerClass();
     }
 
     /**
-     * @return string
+     * @return Module
      */
-    public function getControllerName(): string
+    public function getModule(): Module
     {
-        return $this->controllerName;
+        return $this->module;
     }
 
     /**
-     * @param string $controllerName
+     * @param Module $module
      */
-    public function setControllerName( string $controllerName )
+    public function setModule( Module $module )
     {
-        $this->controllerName = $controllerName;
+        $this->module = $module;
     }
 }
 

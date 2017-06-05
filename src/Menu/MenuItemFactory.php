@@ -32,7 +32,7 @@ class MenuItemFactory
      */
     public function build( $definition ): AbstractItem
     {
-        $menuItem = \App::make( Item::class );
+        $menuItem = null;
 
         if( is_array( $definition ) )
         {
@@ -42,6 +42,16 @@ class MenuItemFactory
             {
                 $menuItem->addChild( $this->build( $item ) );
             }
+        }
+        else
+        {
+            $module = $this->admin->modules()->findModuleByControllerClass( $definition );
+            if (! $module)
+            {
+                throw new \Exception('not found ' . $definition);
+            }
+
+            $menuItem = new Item( $this->admin, $module );
         }
 
         $menuItem->setTitle( $this->getMenuItemName( $definition ) );
