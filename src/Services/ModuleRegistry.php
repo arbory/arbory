@@ -3,19 +3,18 @@
 namespace CubeSystems\Leaf\Services;
 
 use CubeSystems\Leaf\Admin\Admin;
+use Illuminate\Support\Collection;
 
 /**
  * Class ModuleRegistryService
  * @package CubeSystems\Leaf\Services
  */
-class ModuleRegistry
+class ModuleRegistry extends Collection
 {
-    protected $admin;
-
     /**
-     * @var Module[]
+     * @var Admin
      */
-    protected $modulesByController = [];
+    protected $admin;
 
     /**
      * ModuleRegistry constructor.
@@ -24,6 +23,8 @@ class ModuleRegistry
     public function __construct( Admin $admin )
     {
         $this->admin = $admin;
+
+        parent::__construct();
     }
 
     /**
@@ -33,7 +34,7 @@ class ModuleRegistry
      */
     public function register( string $controllerClass, \Closure $routes = null )
     {
-        if( array_key_exists( $controllerClass, $this->modulesByController ) )
+        if( $this->has( $controllerClass ) )
         {
             throw new \LogicException( 'Module with controller class "' . $controllerClass . '" already registered' );
         }
@@ -43,7 +44,7 @@ class ModuleRegistry
 
         $this->admin->routes()->register( $module, $routes );
 
-        $this->modulesByController[$controllerClass] = $module;
+        $this[$controllerClass] = $module;
 
         return $module;
     }
@@ -54,7 +55,7 @@ class ModuleRegistry
      */
     public function findModuleByControllerClass( $controllerClass )
     {
-        return array_get( $this->modulesByController, $controllerClass );
+        return $this->get( $controllerClass );
     }
 
     /**
@@ -64,13 +65,5 @@ class ModuleRegistry
     public function findModuleByController( $instance )
     {
         return $this->findModuleByControllerClass( get_class( $instance ) );
-    }
-
-    /**
-     * @return Module[]
-     */
-    public function getModulesByControllerClass(): array
-    {
-        return $this->modulesByController;
     }
 }
