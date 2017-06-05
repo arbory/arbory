@@ -100,9 +100,14 @@ class Group extends AbstractItem
      */
     public function isAccessible(): bool
     {
-        return $this->getChildren()->reject( function( AbstractItem $item )
+        foreach( $this->getChildren() as $item )
         {
-            return $item->isAccessible();
-        } )->isEmpty();
+            if( $item->isAccessible() )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
