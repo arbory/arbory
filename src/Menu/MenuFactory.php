@@ -2,9 +2,6 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-use CubeSystems\Leaf\Nodes\MenuItem;
-use Illuminate\Support\Collection;
-
 class MenuFactory
 {
     /**
@@ -23,6 +20,7 @@ class MenuFactory
     /**
      * @param mixed[] $items
      * @return Menu
+     * @throws \DomainException
      */
     public function build( array $items )
     {

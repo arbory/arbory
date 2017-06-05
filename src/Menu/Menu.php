@@ -47,6 +47,7 @@ class Menu
 
         foreach( $this->getItems() as $item )
         {
+            /** @var AbstractItem $item */
             if( !$item )
             {
                 continue;
@@ -55,90 +56,12 @@ class Menu
             $li = Html::li()
                 ->addAttributes( [ 'data-name' => '' ] );
 
-            if( $item->render( $li ) )
+            if ( $item->isAccessible() )
             {
-                $list->append( $li );
+                $list->append( $item->render( $li ) );
             }
         }
 
         return $list;
-    }
-
-    /**
-     * @param int $id
-     * @return void
-     */
-    public function removeItemByModelId( int $id )
-    {
-        $this->items = $this->items->reject( function( AbstractItem $item ) use ( $id )
-        {
-            if( !$item->hasModel() )
-            {
-                return false;
-            }
-
-            return $item->getModel()->getId() === $id;
-        } );
-    }
-
-    /**
-     * @param int $id
-     * @return AbstractItem|null
-     */
-    public function findItemByModelId( int $id )
-    {
-        return $this->flatten()->filter( function( AbstractItem $item ) use ( $id )
-        {
-            if( !$item->hasModel() )
-            {
-                return false;
-            }
-
-            return $item->getModel()->getId() === $id;
-        } )->first();
-    }
-
-    /**
-     * @param string $module
-     * @return AbstractItem|null
-     */
-    public function findItemByModule( string $module )
-    {
-        return $this->flatten()->filter( function( AbstractItem $item ) use ( $module )
-        {
-            if( !$item->hasModel() )
-            {
-                return false;
-            }
-
-            return $item->getModel()->getModule() === $module;
-        } )->first();
-    }
-
-    /**
-     * @return Collection
-     */
-    public function flatten(): Collection
-    {
-        return $this->flattenItems( $this->getItems() );
-    }
-
-    /**
-     * @param Collection $items
-     * @return Collection
-     */
-    protected function flattenItems( Collection $items )
-    {
-        $result = new Collection();
-
-        $result = $result->merge( $items );
-
-        foreach( $items as $item )
-        {
-            /** @var AbstractItem $item */
-            $result = $result->merge( $this->flattenItems( $item->getChildren() ) );
-        }
-
-        return $result;
     }
 }
