@@ -6,6 +6,6 @@
         </button>
     </div>
     <nav>
-        {!! Admin::menu()->render() !!}
+        {!! $menu !!}
     </nav>
 </aside>

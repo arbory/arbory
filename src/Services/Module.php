@@ -78,7 +78,7 @@ class Module
     public function isAuthorized( Sentinel $sentinel )
     {
         $authorizationType = $this->configuration->getAuthorizationType();
-dd( $authorizationType );
+
         switch( $authorizationType )
         {
             case Module::AUTHORIZATION_TYPE_NONE:
@@ -108,24 +108,6 @@ dd( $authorizationType );
 
         return $result;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * @return Breadcrumbs

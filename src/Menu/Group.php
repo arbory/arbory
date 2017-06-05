@@ -14,9 +14,9 @@ use Illuminate\Support\Collection;
 class Group extends AbstractItem
 {
     /**
-     * @var Route
+     * @var Collection
      */
-    protected $route;
+    protected $children;
 
     /**
      * Group constructor.
@@ -84,5 +84,30 @@ class Group extends AbstractItem
         {
             return $item->isActive();
         } );
+    }
+
+    /**
+     * @param AbstractItem $child
+     * @return void
+     */
+    public function addChild( AbstractItem $child )
+    {
+        $this->children->push( $child );
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param Collection $children
+     */
+    public function setChildren( Collection $children )
+    {
+        $this->children = $children;
     }
 }

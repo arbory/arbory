@@ -9,8 +9,6 @@ use CubeSystems\Leaf\Admin\Form\Fields\Link;
 use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
-use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
-use CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry;
 use CubeSystems\Leaf\Console\Commands\GenerateCommand;
 use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
@@ -22,12 +20,8 @@ use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
 use CubeSystems\Leaf\Menu\MenuFactory;
-use CubeSystems\Leaf\Menu\MenuItemFactory;
-use CubeSystems\Leaf\Nodes\MenuItem;
 use CubeSystems\Leaf\Services\AssetPipeline;
 use CubeSystems\Leaf\Services\FieldTypeRegistry;
-use CubeSystems\Leaf\Services\ModuleBuilder;
-use CubeSystems\Leaf\Services\ModuleRegistry;
 use CubeSystems\Leaf\Services\StubRegistry;
 use CubeSystems\Leaf\Views\LayoutViewComposer;
 use Dimsav\Translatable\TranslatableServiceProvider;
@@ -220,9 +214,6 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerModuleRegistry()
     {
-        dd( config('leaf.menu') );
-
-
         $this->app->singleton( 'leaf', function ()
         {
             return new Admin(
@@ -231,11 +222,11 @@ class LeafServiceProvider extends ServiceProvider
             );
         } );
 
+//        dd( $this->app[ 'leaf' ] );
+
 //            $menu = $this->app->make( MenuFactory::class )->build( MenuItem::all() );
 //
 //            dd( $menu );
-
-
 
 //        dd( $this->app->make('leaf') );
 

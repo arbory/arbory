@@ -28,7 +28,8 @@ class ModuleRegistry
 
     /**
      * @param string $controllerClass
-     * @return $this
+     * @param \Closure|null $routes
+     * @return Module
      */
     public function register( string $controllerClass, \Closure $routes = null )
     {

@@ -1,37 +1,20 @@
 <?php
 
-use CubeSystems\Leaf\Menu\AbstractItem;
 use CubeSystems\Leaf\Services\Module;
 
 return [
+
     'uri' => 'admin',
+
     'menu' => [
+        CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
+        CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class,
         [
-            'title' => 'Nodes',
-            'module_name' => 'nodes',
-            'route_name' => 'admin.nodes.index'
-        ],
-        [
-            'title' => 'Users',
-            'items' => [
-                [
-                    'title' => 'Admin users',
-                    'module_name' => 'admin_users',
-                    'route_name' => 'admin.users.index'
-                ],
-                [
-                    'title' => 'Admin roles',
-                    'module_name' => 'admin_roles',
-                    'route_name' => 'admin.roles.index'
-                ],
-            ]
-        ],
-        [
-            'title' => 'Translations',
-            'module_name' => 'translations',
-            'route_name' => 'admin.translations.index',
+            CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class,
+            CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class
         ],
     ],
+
     'modules' => [
         [
             'name' => 'dashboard',
@@ -64,6 +47,7 @@ return [
             'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\MenuBuilderController::class,
         ],
     ],
+
     'pagination' => [
         'items_per_page' => 15,
     ],

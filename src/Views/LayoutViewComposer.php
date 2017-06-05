@@ -3,6 +3,8 @@
 namespace CubeSystems\Leaf\Views;
 
 use Cartalyst\Sentinel\Sentinel;
+use CubeSystems\Leaf\Menu\MenuFactory;
+use CubeSystems\Leaf\Menu\MenuItemFactory;
 use Illuminate\Contracts\View\View;
 
 /**
@@ -31,6 +33,14 @@ final class LayoutViewComposer implements ViewComposer
      */
     public function compose( View $view )
     {
+        $itemFactory = \App::make( MenuItemFactory::class );
+        $factory = new MenuFactory( $itemFactory );
+
+//        dd(
+//            $factory->build( config( 'leaf.menu' ) )->render()
+//        );
+
         $view->with( 'user', $this->sentinel->getUser() );
+        $view->with( 'menu', $factory->build( config( 'leaf.menu' ) )->render() );
     }
 }
