@@ -17,11 +17,6 @@ Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
         'uses' => 'Admin\DashboardController@index'
     ] );
 
-    Route::get( 'translations/list', [
-        'as' => 'translations.index',
-        'uses' => 'Admin\TranslationsController@index'
-    ] );
-
     Route::get( 'translations/edit/{namespace}-{group}-{item}', [
         'as' => 'translations.edit',
         'uses' => 'Admin\TranslationsController@edit'
