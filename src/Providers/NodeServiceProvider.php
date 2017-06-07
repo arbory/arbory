@@ -71,16 +71,17 @@ class NodeServiceProvider extends ServiceProvider
     {
         if( !app()->runningInConsole() )
         {
-            $this->app->booted( function ()
+            $this->app->booted( function()
             {
-                $this->app->singleton( Node::class, function ()
+                $this->app->singleton( Node::class, function()
                 {
                     return $this->routes->getCurrentNode();
                 } );
             } );
-        }
 
-        if( !$this->app->routesAreCached() && \Schema::hasTable('nodes') )
+            $this->routes->registerNodes();
+        }
+        elseif( !$this->app->routesAreCached() && \Schema::hasTable( 'nodes' ) )
         {
             $this->routes->registerNodes();
         }
