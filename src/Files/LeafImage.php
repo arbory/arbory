@@ -22,8 +22,17 @@ class LeafImage extends LeafFile
      */
     public function getUrl( $parameters = null )
     {
-        return \GlideImage::from( $this->getLocalName() )
-            ->setSourceDisk( $this->disk )
-            ->getImageUrl( $parameters );
+        try
+        {
+            return \GlideImage::from( $this->getLocalName() )
+                ->setSourceDisk( $this->disk )
+                ->getImageUrl( $parameters );
+        }
+        catch( \Exception $e )
+        {
+            \Log::warning( $e );
+        }
+
+        return null;
     }
 }
