@@ -6,7 +6,7 @@ use CubeSystems\Leaf\Admin\Admin;
 use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
 use CubeSystems\Leaf\Html\Elements;
 use CubeSystems\Leaf\Html\Html;
-use CubeSystems\Leaf\Services\Module;
+use CubeSystems\Leaf\Admin\Module;
 
 class Item extends AbstractItem
 {
@@ -16,7 +16,7 @@ class Item extends AbstractItem
     protected $admin;
 
     /**
-     * @var Module
+     * @var \CubeSystems\Leaf\Admin\Module
      */
     protected $module;
 
@@ -75,7 +75,7 @@ class Item extends AbstractItem
     }
 
     /**
-     * @return Module
+     * @return \CubeSystems\Leaf\Admin\Module
      */
     public function getModule(): Module
     {
@@ -83,7 +83,7 @@ class Item extends AbstractItem
     }
 
     /**
-     * @param Module $module
+     * @param \CubeSystems\Leaf\Admin\Module $module
      */
     public function setModule( Module $module )
     {

@@ -58,13 +58,6 @@ class LeafServiceProvider extends ServiceProvider
         $this->registerViewComposers();
 
         $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'leaf' );
-
-//        $this->app->bind( 'leaf.menu', function ()
-//        {
-//            dd(123);
-//            return \Admin::menu();
-////            return $this->app->make( MenuFactory::class )->build( MenuItem::all() );
-//        }, true );
     }
 
     /**
@@ -227,29 +220,6 @@ class LeafServiceProvider extends ServiceProvider
         {
             return $this->app['leaf'];
         } );
-
-//        dd( $this->app[ 'leaf' ] );
-
-//            $menu = $this->app->make( MenuFactory::class )->build( MenuItem::all() );
-//
-//            dd( $menu );
-
-//        dd( $this->app->make('leaf') );
-
-//        $this->app->singleton( 'leaf.modules', function ( Application $app )
-//        {
-//            return new ModuleRegistry();
-//        } );
-
-//        $this->app->singleton( 'leaf_module_builder', function ( $app )
-//        {
-//            return new ModuleBuilder( $app['leaf.modules'] );
-//        } );
-
-//        $this->app->singleton( ModuleRegistry::class, function ( Application $app )
-//        {
-//            return $app[ 'leaf.modules' ];
-//        } );
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Services;
 
 use CubeSystems\Leaf\Admin\Admin;
+use CubeSystems\Leaf\Admin\Module;
 use Illuminate\Support\Collection;
 
 /**

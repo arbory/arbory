@@ -2,53 +2,92 @@
 
 namespace CubeSystems\Leaf\Admin;
 
+use Cartalyst\Sentinel\Sentinel;
 use Closure;
+use CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry;
 use CubeSystems\Leaf\Admin\Widgets\Breadcrumbs;
-use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
-use CubeSystems\Leaf\Admin\Module\OLDRoute;
+use CubeSystems\Leaf\Auth\Roles\Role;
 use CubeSystems\Leaf\Services\AssetPipeline;
+use CubeSystems\Leaf\Services\ModuleConfiguration;
+use CubeSystems\Leaf\Services\Route;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
 
+/**
+ * Class Module
+ * @package CubeSystems\Leaf\Services
+ */
 class Module
 {
-    /**
-     * @var Controller
-     */
-    protected $controller;
+    const AUTHORIZATION_TYPE_ROLES = 'roles';
+    const AUTHORIZATION_TYPE_PERMISSIONS = 'permissions';
+    const AUTHORIZATION_TYPE_NONE = 'none';
 
     /**
-     * @var ResourceRoutes
+     * @var Admin
+     */
+    protected $admin;
+
+    /**
+     * @var ModuleConfiguration
+     */
+    private $configuration;
+
+    /**
+     * @var ModuleRoutesRegistry
      */
     protected $routes;
 
-    /**
-     * @var Breadcrumbs
-     */
+
     protected $breadcrumbs;
 
-//    /**
-//     * @var AssetPipeline
-//     */
-//    protected $assets;
 
     /**
-     * @param Controller $controller
-     * @param AssetPipeline $pipeline
+     * @param ModuleConfiguration $configuration
      */
-    public function __construct( Controller $controller )
+    public function __construct( Admin $admin, ModuleConfiguration $configuration )
     {
-        $this->controller = $controller;
-        $this->routes = new ResourceRoutes( $controller );
-//        $this->assets = $assets;
+        $this->admin = $admin;
+        $this->configuration = $configuration;
+    }
+
+    public function __toString()
+    {
+        return $this->name();
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function getControllerClass()
     {
-        return class_basename( $this->controller );
+        return $this->configuration->getControllerClass();
+    }
+
+    /**
+     * @return ModuleConfiguration
+     */
+    public function getConfiguration(): ModuleConfiguration
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * @param Sentinel $sentinel
+     * @return bool
+     */
+    public function isAuthorized( )
+    {
+        /**
+         * @var $roles Role[]|Collection
+         */
+        $roles = $this->admin->sentinel()->getUser()->roles;
+
+        $permissions = $roles->mapWithKeys(function( Role $role ){
+            return $role->getPermissions();
+        })->toArray();
+
+        return in_array( $this->getControllerClass(), $permissions, true );
     }
 
     /**
@@ -58,20 +97,12 @@ class Module
     {
         if( $this->breadcrumbs === null )
         {
-            $this->breadcrumbs = new Breadcrumbs();
+            $this->breadcrumbs = new Breadcrumbs();  // TODO: Move this to menu
             $this->breadcrumbs->addItem( $this->name(), $this->url( 'index' ) );
         }
 
         return $this->breadcrumbs;
     }
-
-    /**
-     * @return AssetPipeline
-     */
-//    public function assets()
-//    {
-//        return $this->assets;
-//    }
 
     /**
      * @param Model $model
@@ -104,16 +135,22 @@ class Module
      */
     public function name()
     {
-        return title_case( OLDRoute::getControllerSlug( get_class( $this->controller ) ) );
+        return $this->getConfiguration()->getName();
     }
 
     /**
      * @param $route
      * @param array $parameters
-     * @return OLDRoute
+     * @return string
      */
     public function url( $route, $parameters = [] )
     {
+        if( $this->routes === null)
+        {
+            $this->routes = $this->admin->routes()->findByModule( $this );
+        }
+
         return $this->routes->getUrl( $route, $parameters );
     }
+
 }

@@ -104,7 +104,7 @@ class Builder
 
     /**
      * @param $column
-     * @return \CubeSystems\Leaf\Admin\Module\OLDRoute
+     * @return string
      */
     protected function getColumnOrderUrl( $column )
     {
@@ -181,7 +181,7 @@ class Builder
     /**
      * @param $route
      * @param array $parameters
-     * @return \CubeSystems\Leaf\Admin\Module\OLDRoute
+     * @return string
      */
     public function url( $route, $parameters = [] )
     {

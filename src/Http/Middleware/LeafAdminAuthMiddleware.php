@@ -4,7 +4,7 @@ namespace CubeSystems\Leaf\Http\Middleware;
 
 use Cartalyst\Sentinel\Sentinel;
 use Closure;
-use CubeSystems\Leaf\Services\Module;
+use CubeSystems\Leaf\Admin\Module;
 use CubeSystems\Leaf\Services\ModuleRegistry;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -51,10 +51,10 @@ class LeafAdminAuthMiddleware
             throw new \RuntimeException( 'Could not find target module for route controller' );
         }
 
-//        if( !$targetModule->isAuthorized( $this->sentinel ) )
-//        {
-//            return $this->denied( $request );
-//        }
+        if( !$targetModule->isAuthorized() )
+        {
+            return $this->denied( $request );
+        }
 
         return $next( $request );
     }
@@ -79,7 +79,7 @@ class LeafAdminAuthMiddleware
 
     /**
      * @param Request $request
-     * @return Module|null
+     * @return \CubeSystems\Leaf\Admin\Module|null
      */
     private function resolveTargetModule( Request $request )
     {

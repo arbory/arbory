@@ -6,7 +6,6 @@ use CubeSystems\Leaf\Nodes\ContentTypeRegister;
 use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
 use CubeSystems\Leaf\Nodes\Node;
 use CubeSystems\Leaf\Services\Content\PageBuilder;
-use CubeSystems\Leaf\Services\ModuleBuilder;
 use CubeSystems\Leaf\Support\Facades\Admin;
 use CubeSystems\Leaf\Support\Facades\LeafRouter;
 use CubeSystems\Leaf\Support\Facades\Page;

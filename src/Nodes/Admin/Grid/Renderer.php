@@ -142,6 +142,7 @@ class Renderer
             ->title( trans( 'leaf::resources.create_new' ) );
 
         $tools = new Tools();
+
         $tools->getBlock( 'primary' )->push( $createButton );
 
         $footer = new Footer( 'main' );
@@ -153,7 +154,7 @@ class Renderer
     /**
      * @param $route
      * @param array $parameters
-     * @return \CubeSystems\Leaf\Admin\Module\OLDRoute
+     * @return string
      */
     public function url( $route, $parameters = [] )
     {

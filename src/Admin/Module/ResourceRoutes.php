@@ -2,8 +2,7 @@
 
 namespace CubeSystems\Leaf\Admin\Module;
 
-use CubeSystems\Leaf\Services\Module;
-use Illuminate\Routing\Controller;
+use CubeSystems\Leaf\Admin\Module;
 
 /**
  * Class ResourceRoutes

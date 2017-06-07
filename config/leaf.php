@@ -1,6 +1,6 @@
 <?php
 
-use CubeSystems\Leaf\Services\Module;
+use CubeSystems\Leaf\Admin\Module;
 
 return [
 

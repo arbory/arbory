@@ -3,7 +3,7 @@
 namespace CubeSystems\Leaf\Admin\Module;
 
 use Closure;
-use CubeSystems\Leaf\Services\Module;
+use CubeSystems\Leaf\Admin\Module;
 use Illuminate\Routing\Router;
 
 /**
@@ -18,7 +18,7 @@ class ModuleRoutesRegistry
     protected $routes = [];
 
     /**
-     * @param Module $module
+     * @param \CubeSystems\Leaf\Admin\Module $module
      * @param Closure|null $callback
      * @return ResourceRoutes
      */
@@ -59,6 +59,10 @@ class ModuleRoutesRegistry
         return $this->routes[$module->name()];
     }
 
+    /**
+     * @param Module $module
+     * @return ResourceRoutes
+     */
     public function findByModule( Module $module )
     {
         return array_get( $this->routes, $module->name() );

@@ -30,7 +30,7 @@ class FormTestController
 
 class AdminForm
 {
-    public function __construct( Model $resource, Module $module )
+    public function __construct( Model $resource, OLDModule $module )
     {
 
     }
