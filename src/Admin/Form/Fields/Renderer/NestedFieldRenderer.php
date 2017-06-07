@@ -7,6 +7,8 @@ use CubeSystems\Leaf\Admin\Widgets\Button;
 use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
+use function foo\func;
+use Illuminate\Support\Collection;
 
 /**
  * Class NestedFieldRenderer
@@ -41,7 +43,16 @@ class NestedFieldRenderer
      */
     protected function getBody()
     {
+        $orderBy = $this->field->getOrderBy();
         $relationItems = [];
+
+        if( $orderBy )
+        {
+            $this->field->setValue( $this->field->getValue()->sortBy( function( $item ) use ($orderBy)
+            {
+                return $item->{$orderBy};
+            } ) );
+        }
 
         foreach( $this->field->getValue() as $index => $item )
         {

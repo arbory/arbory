@@ -16,36 +16,6 @@ return [
     ],
 
     'modules' => [
-        [
-            'name' => 'dashboard',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\DashboardController::class,
-        ],
-        [
-            'name' => 'nodes',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
-        ],
-        [
-            'name' => 'admin_users',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class,
-            'authorization_type' => Module::AUTHORIZATION_TYPE_ROLES,
-            'authorized_roles' => [ 'administrator' ],
-        ],
-        [
-            'name' => 'admin_roles',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class,
-            'authorization_type' => Module::AUTHORIZATION_TYPE_ROLES,
-            'authorized_roles' => [ 'administrator' ],
-        ],
-        [
-            'name' => 'translations',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class,
-            'authorization_type' => Module::AUTHORIZATION_TYPE_ROLES,
-            'authorized_roles' => [ 'administrator' ],
-        ],
-        [
-            'name' => 'menu',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\MenuBuilderController::class,
-        ],
     ],
 
     'pagination' => [

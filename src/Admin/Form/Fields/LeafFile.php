@@ -76,11 +76,17 @@ class LeafFile extends AbstractField
     /**
      * @param Request $request
      * @return void
-     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     public function afterModelSave( Request $request )
     {
+        $input = $request->input( $this->getNameSpacedName() );
         $uploadedFile = $request->file( $this->getNameSpacedName() );
+
+        if( $input && array_key_exists( 'remove', $input ) )
+        {
+            $this->deleteCurrentFileIfExists();
+        }
 
         if( $uploadedFile )
         {
@@ -97,7 +103,7 @@ class LeafFile extends AbstractField
 
             if( !$relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo )
             {
-                throw new \Exception( 'kek' );
+                throw new \InvalidArgumentException( 'Unsupported relation' );
             }
 
             $localKey = explode( '.', $relation->getQualifiedForeignKey() )[ 1 ];

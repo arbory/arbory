@@ -16,7 +16,7 @@ abstract class AbstractInputField extends Element
 
     public function setName( $name )
     {
-        $this->attributes()->put( 'name', $this->formatInputName( $name ) );
+        $this->attributes()->put( 'name', Element::formatName( $name ) );
         $this->attributes()->put( 'id', $this->formatInputId() );
 
         return $this;
@@ -25,20 +25,6 @@ abstract class AbstractInputField extends Element
     public function getLabel( $text )
     {
         return Html::label( $text )->addAttributes( [ 'for' => $this->attributes()->get( 'id' ) ] );
-    }
-
-    protected function formatInputName( $name )
-    {
-        $nameParts = preg_split( '/\./', $name, NULL, PREG_SPLIT_NO_EMPTY );
-
-        $inputName = array_pull( $nameParts, 0 );
-
-        if( count( $nameParts ) > 0 )
-        {
-            $inputName .= '[' . implode( '][', $nameParts ) . ']';
-        }
-
-        return $inputName;
     }
 
     protected function formatInputId()

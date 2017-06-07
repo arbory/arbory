@@ -12,6 +12,8 @@ use CubeSystems\Leaf\Html\Elements\Content;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 /**
  * Class Builder
@@ -25,9 +27,9 @@ class Builder
     protected $grid;
 
     /**
-     * @var Paginator
+     * @var Collection|LengthAwarePaginator
      */
-    protected $page;
+    protected $items;
 
     /**
      * Builder constructor.
@@ -59,6 +61,11 @@ class Builder
      */
     protected function searchField()
     {
+        if( !$this->grid->hasTool( 'search' ) )
+        {
+            return null;
+        }
+
         return ( new SearchField( $this->url( 'index' ) ) )->render();
     }
 
@@ -67,13 +74,12 @@ class Builder
      */
     protected function getTableColumns()
     {
-        $tableColumns = $this->grid()->getColumns()->map( function ( Column $column )
+        $tableColumns = $this->grid()->getColumns()->map( function( Column $column )
         {
             return $this->getColumnHeader( $column );
         } );
 
         $tableColumns->push( Html::th( Html::span( '&nbsp;' ) ) );
-
 
         return $tableColumns;
     }
@@ -130,23 +136,37 @@ class Builder
     }
 
     /**
+     * @return Element
+     */
+    protected function tableHeader(): Element
+    {
+        $header = Html::header( [
+            Html::h1( trans( 'leaf::resources.all_resources' ) ),
+        ] );
+
+        if( $this->grid->isPaginated() )
+        {
+            $header->append( Html::span( trans( 'leaf::pagination.items_found', [ 'total' => $this->items->total() ] ) )
+                ->addClass( 'extras totals only-text' ) );
+        }
+
+        return $header;
+    }
+
+    /**
      * @return Content
      */
     protected function table()
     {
         return new Content( [
-            Html::header( [
-                Html::h1( trans( 'leaf::resources.all_resources' ) ),
-                Html::span( trans( 'leaf::pagination.items_found', [ 'total' => $this->page->total() ] ) )
-                    ->addClass( 'extras totals only-text' )
-            ] ),
+            $this->tableHeader(),
             Html::div(
                 Html::table( [
                     Html::thead(
                         Html::tr( $this->getTableColumns()->toArray() )
                     ),
                     Html::tbody(
-                        $this->grid()->getRows()->map( function ( Row $row )
+                        $this->grid()->getRows()->map( function( Row $row )
                         {
                             return $row->render();
                         } )->toArray()
@@ -157,23 +177,51 @@ class Builder
     }
 
     /**
+     * @return Link
+     */
+    protected function createButton()
+    {
+        if( !$this->grid->hasTool( 'create' ) )
+        {
+            return null;
+        }
+
+        return
+            Link::create( $this->url( 'create' ) )
+            ->asButton( 'primary' )
+            ->withIcon( 'plus' )
+            ->title( trans( 'leaf::resources.create_new' ) );
+    }
+
+    /**
+     * @return Tools
+     */
+    protected function footerTools()
+    {
+        $tools = new Tools();
+
+        $tools->getBlock( 'primary' )->push( $this->createButton() );
+
+        if ( $this->grid->isPaginated() )
+        {
+            $pagination = ( new Pagination( $this->items ) )->render();
+            $tools->getBlock( $pagination->attributes()->get( 'class' ) )->push( $pagination->content() );
+        }
+
+        return $tools;
+    }
+
+    /**
      * @return \CubeSystems\Leaf\Html\Elements\Element
      */
     protected function footer()
     {
-        $createButton = Link::create( $this->url( 'create' ) )
-            ->asButton( 'primary' )
-            ->withIcon( 'plus' )
-            ->title( trans( 'leaf::resources.create_new' ) );
-
-        $pagination = ( new Pagination( $this->page ) )->render();
-
-        $tools = new Tools();
-        $tools->getBlock( 'primary' )->push( $createButton );
-        $tools->getBlock( $pagination->attributes()->get( 'class' ) )->push( $pagination->content() );
-
         $footer = new Footer( 'main' );
-        $footer->getRows()->prepend( $tools );
+
+        if ( $this->grid->hasTools() )
+        {
+            $footer->getRows()->prepend( $this->footerTools() );
+        }
 
         return $footer->render();
     }
@@ -189,12 +237,12 @@ class Builder
     }
 
     /**
-     * @param Paginator $page
+     * @param Collection|Paginator $items
      * @return Content
      */
-    public function render( Paginator $page )
+    public function render( $items )
     {
-        $this->page = $page;
+        $this->items = $items;
 
         return new Content( [
             Html::header( [

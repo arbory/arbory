@@ -121,4 +121,22 @@ class Element
 
         return $this;
     }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public static function formatName( $name ): string
+    {
+        $nameParts = preg_split( '/\./', $name, NULL, PREG_SPLIT_NO_EMPTY );
+
+        $inputName = array_pull( $nameParts, 0 );
+
+        if( count( $nameParts ) > 0 )
+        {
+            $inputName .= '[' . implode( '][', $nameParts ) . ']';
+        }
+
+        return $inputName;
+    }
 }
