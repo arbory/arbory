@@ -29,13 +29,29 @@ class Settings
 
     /**
      * @param string $key
+     * @param mixed $default
      * @return mixed
      */
-    public function get( string $key )
+    public function get( string $key, $default = null )
     {
         $definition = $this->settingRegistry->find( $key );
 
-        return $definition ? $definition->getValue() : null;
+        return $definition ? $definition->getValue() : $default;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @param mixed $type
+     * @return void
+     */
+    public function set( string $key, $value, string $type = null )
+    {
+        $definition = new SettingDefinition( $key, $value, $type );
+
+        $this->settingRegistry->register( $definition );
+
+        $definition->save();
     }
 
     /**
