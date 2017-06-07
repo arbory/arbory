@@ -6,6 +6,7 @@ Route::post( 'logout', [ 'as' => 'logout', 'uses' => 'Admin\SessionController@po
 
 Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
 {
+    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\DashboardController::class );
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class );
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class );
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class );
