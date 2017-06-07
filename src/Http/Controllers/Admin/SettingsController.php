@@ -10,6 +10,7 @@ use CubeSystems\Leaf\Admin\Settings\Setting;
 use CubeSystems\Leaf\Admin\Settings\SettingDefinition;
 use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
 use CubeSystems\Leaf\Admin\Traits\Crudify;
+use CubeSystems\Leaf\Providers\SettingsServiceProvider;
 use CubeSystems\Leaf\Services\SettingFactory;
 use CubeSystems\Leaf\Services\SettingRegistry;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +38,10 @@ class SettingsController extends Controller
     )
     {
         $this->settingRegistry = $settingRegistry;
+
+        /** @var SettingsServiceProvider $settingsService */
+        $settingsService = \App::make( SettingsServiceProvider::class );
+        $settingsService->importFromDatabase();
     }
 
     /**

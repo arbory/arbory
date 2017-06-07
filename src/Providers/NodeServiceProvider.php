@@ -5,8 +5,8 @@ namespace CubeSystems\Leaf\Providers;
 use CubeSystems\Leaf\Nodes\ContentTypeRegister;
 use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
 use CubeSystems\Leaf\Nodes\Node;
+use CubeSystems\Leaf\Repositories\NodesRepository;
 use CubeSystems\Leaf\Services\Content\PageBuilder;
-use CubeSystems\Leaf\Services\ModuleBuilder;
 use CubeSystems\Leaf\Support\Facades\Admin;
 use CubeSystems\Leaf\Support\Facades\LeafRouter;
 use CubeSystems\Leaf\Support\Facades\Page;
@@ -88,7 +88,33 @@ class NodeServiceProvider extends ServiceProvider
             $this->routes->registerNodes();
         }
 
-        $this->detectCurrentLocaleFromRoute( $this->app['router'] );
+        $this->app[ 'router' ]->group( [
+            'middleware' => 'web',
+            'namespace' => 'App\Http\Controllers',
+        ], function()
+        {
+            include base_path( 'routes/pages.php' );
+        } );
+
+        $this->detectCurrentLocaleFromRoute( $this->app[ 'router' ] );
+        $this->purgeOutdatedRouteCache();
+    }
+
+    /**
+     * @return void
+     */
+    protected function purgeOutdatedRouteCache()
+    {
+        if ( $this->app->routesAreCached() )
+        {
+            $path = $this->app->getCachedRoutesPath();
+            $modified = \File::lastModified( $path );
+
+            if ( $modified < ( new NodesRepository )->getLastUpdateTimestamp() )
+            {
+                \File::delete( $path );
+            }
+        }
     }
 
     /**
