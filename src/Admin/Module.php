@@ -2,14 +2,11 @@
 
 namespace CubeSystems\Leaf\Admin;
 
-use Cartalyst\Sentinel\Sentinel;
 use Closure;
-use CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry;
+use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
 use CubeSystems\Leaf\Admin\Widgets\Breadcrumbs;
 use CubeSystems\Leaf\Auth\Roles\Role;
-use CubeSystems\Leaf\Services\AssetPipeline;
 use CubeSystems\Leaf\Services\ModuleConfiguration;
-use CubeSystems\Leaf\Services\Route;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -34,7 +31,7 @@ class Module
     private $configuration;
 
     /**
-     * @var ModuleRoutesRegistry
+     * @var ResourceRoutes
      */
     protected $routes;
 
@@ -43,6 +40,7 @@ class Module
 
 
     /**
+     * @param Admin $admin
      * @param ModuleConfiguration $configuration
      */
     public function __construct( Admin $admin, ModuleConfiguration $configuration )
@@ -73,7 +71,6 @@ class Module
     }
 
     /**
-     * @param Sentinel $sentinel
      * @return bool
      */
     public function isAuthorized( )

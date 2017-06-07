@@ -11,7 +11,7 @@ use CubeSystems\Leaf\Admin\Module;
 class ResourceRoutes
 {
     /**
-     * @var string
+     * @var Module
      */
     protected $module;
 

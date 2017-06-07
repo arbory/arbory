@@ -3,7 +3,6 @@
 namespace CubeSystems\Leaf\Services;
 
 use CubeSystems\Leaf\Admin\Module;
-use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Class ModuleConfig
@@ -145,7 +144,7 @@ class ModuleConfiguration
 
     /**
      * @param $class
-     * @return bool|string
+     * @return string
      */
     protected function createNameFromClass( string $class ) : string
     {

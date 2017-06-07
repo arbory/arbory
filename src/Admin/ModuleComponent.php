@@ -15,7 +15,7 @@ trait ModuleComponent
 
     /**
      * @param Module $module
-     * @return ModuleComponent
+     * @return $this
      */
     public function setModule( Module $module )
     {
