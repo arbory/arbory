@@ -2,97 +2,76 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-use Cartalyst\Sentinel\Sentinel;
+use CubeSystems\Leaf\Admin\Admin;
+use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
 use CubeSystems\Leaf\Html\Elements;
 use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Services\Module;
-use CubeSystems\Leaf\Services\ModuleRegistry;
-use Illuminate\Routing\Route;
-use Illuminate\Routing\UrlGenerator;
-use Illuminate\Support\Collection;
 
 class Item extends AbstractItem
 {
     /**
-     * @var string
+     * @var Admin
      */
-    protected $routeName;
-
-    /**
-     * @var array
-     */
-    protected $routeParams = [];
-
-    /**
-     * @var ModuleRegistry
-     */
-    protected $moduleRegistry;
-
-    /**
-     * @var UrlGenerator
-     */
-    protected $urlGenerator;
+    protected $admin;
 
     /**
      * @var Module
      */
     protected $module;
 
-    /**
-     * @var Route
-     */
-    protected $route;
-
-    /**
-     * @param Sentinel $sentinel
-     * @param ModuleRegistry $moduleRegistry
-     * @param UrlGenerator $urlGenerator
-     * @param Route $route
-     */
     public function __construct(
-        Sentinel $sentinel,
-        ModuleRegistry $moduleRegistry,
-        UrlGenerator $urlGenerator,
-        Route $route
+        Admin $admin,
+        Module $module
     )
     {
-        $this->sentinel = $sentinel;
-        $this->moduleRegistry = $moduleRegistry;
-        $this->urlGenerator = $urlGenerator;
-        $this->route = $route;
-        $this->children = new Collection();
+        $this->admin = $admin;
+        $this->module = $module;
+    }
+
+    /**
+     * @param Elements\Element $parentElement
+     * @return Elements\Element
+     * @throws \InvalidArgumentException
+     */
+    public function render( Elements\Element $parentElement ): Elements\Element
+    {
+        return
+            $parentElement->append(
+                Html::link([
+                    Html::abbr( $this->getAbbreviation() )->addAttributes( [ 'title' => $this->getTitle() ] ),
+                    Html::span( $this->getTitle() )->addClass( 'name' )
+                ])
+                    ->addClass( 'trigger ' . ( $this->isActive() ? 'active' : '' ) )
+                    ->addAttributes( [ 'href' => $this->getUrl() ] )
+            );
+    }
+
+    /**
+     * @return ResourceRoutes
+     */
+    public function getRoute(): ResourceRoutes
+    {
+        return $this->admin->routes()->findByModule( $this->getModule() );
     }
 
     /**
      * @return string
+     * @throws \InvalidArgumentException
      */
-    public function getRouteName(): string
+    protected function getUrl()
     {
-        return $this->routeName;
+        return $this->getRoute()->getUrl( 'index' );
     }
 
     /**
-     * @param string $routeName
+     * @return bool
      */
-    public function setRouteName( string $routeName )
+    public function isActive(): bool
     {
-        $this->routeName = $routeName;
-    }
+        $currentController = ( new \ReflectionClass( \Route::getCurrentRoute()->getController() ) )->getName();
 
-    /**
-     * @return array
-     */
-    public function getRouteParams(): array
-    {
-        return $this->routeParams;
-    }
-
-    /**
-     * @param array $routeParams
-     */
-    public function setRouteParams( array $routeParams )
-    {
-        $this->routeParams = $routeParams;
+        return $currentController === $this->module->getControllerClass();
     }
 
     /**
@@ -112,47 +91,10 @@ class Item extends AbstractItem
     }
 
     /**
-     * @param Elements\Element $parentElement
-     * @return bool
-     * @throws \InvalidArgumentException
-     */
-    public function render( Elements\Element $parentElement )
-    {
-        $module = $this->moduleRegistry->findModuleByControllerClass( $this->module->getControllerClass() );
-
-        if( $module && $module->isAuthorized( $this->sentinel ) )
-        {
-            $parentElement->append(
-                Html::link([
-                    Html::abbr( $this->getAbbreviation() )->addAttributes( [ 'title' => $this->getTitle() ] ),
-                    Html::span( $this->getTitle() )->addClass( 'name' )
-                ])
-                    ->addClass( 'trigger ' . ( $this->isActive() ? 'active' : '' ) )
-                    ->addAttributes( [ 'href' => $this->getUrl() ] )
-            );
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    protected function getUrl()
-    {
-        return $this->urlGenerator->route( $this->getRouteName(), $this->getRouteParams() );
-    }
-
-    /**
      * @return bool
      */
-    public function isActive(): bool
+    public function isAccessible(): bool
     {
-        $activeController = ( new \ReflectionClass( $this->route->getController() ) )->getName();
-
-        return $activeController === $this->module->getControllerClass();
+        return true;
     }
 }

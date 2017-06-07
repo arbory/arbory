@@ -2,64 +2,67 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-use CubeSystems\Leaf\Admin\Module\Route;
-use CubeSystems\Leaf\Nodes\MenuItem;
-use CubeSystems\Leaf\Services\ModuleRegistry;
-use Illuminate\Container\Container;
+use CubeSystems\Leaf\Admin\Admin;
 
 class MenuItemFactory
 {
     /**
-     * @var Container
+     * @var Admin
      */
-    protected $container;
+    protected $admin;
 
     /**
-     * @var ModuleRegistry
+     * @param Admin $admin
      */
-    protected $moduleRegistry;
-
-    /**
-     * @param Container $container
-     * @param ModuleRegistry $moduleRegistry
-     */
-    public function __construct(
-        Container $container,
-        ModuleRegistry $moduleRegistry
-    )
+    public function __construct( Admin $admin )
     {
-        $this->container = $container;
-        $this->moduleRegistry = $moduleRegistry;
+        $this->admin = $admin;
     }
 
     /**
-     * @param MenuItem $model
+     * @param array|string $definition
      * @return AbstractItem
+     * @throws \DomainException
      */
-    public function build( MenuItem $model ): AbstractItem
+    public function build( $definition ): AbstractItem
     {
-        $item = null;
+        $menuItem = null;
 
-        if( $model->hasModule() )
+        if( is_array( $definition ) )
         {
-            $item = $this->container->make( Item::class );
+            $menuItem = new Group();
 
-            $moduleName = $model->getModule();
-            $module = $this->moduleRegistry->findModuleByControllerClass( $moduleName );
-
-            // TODO: better method to get slug
-            $item->setRouteName( sprintf( 'admin.%s.index', Route::generateSlugFromClassName( $moduleName ) ) );
-            $item->setModule( $module );
+            foreach( $definition as $item )
+            {
+                $menuItem->addChild( $this->build( $item ) );
+            }
         }
         else
         {
-            $item = $this->container->make( Group::class );
+            $module = $this->admin->modules()->findModuleByControllerClass( $definition );
+
+            if( !$module )
+            {
+                throw new \DomainException( sprintf( 'No controller found for [%s] module ', $definition ) );
+            }
+
+            $menuItem = new Item( $this->admin, $module );
         }
 
-        /** @var AbstractItem $item */
-        $item->setTitle( $model->getTitle() );
-        $item->setModel( $model );
+        $menuItem->setTitle( $this->getMenuItemName( $definition ) );
 
-        return $item;
+        return $menuItem;
+    }
+
+    /**
+     * @param array|string $definition
+     * @return string
+     */
+    protected function getMenuItemName( $definition ): string
+    {
+        $name = is_array( $definition ) ? $definition[ 0 ] : $definition;
+        $name = str_replace( [ '_', 'controller' ], ' ', snake_case( class_basename( $name ) ) );
+
+        return title_case( $name );
     }
 }

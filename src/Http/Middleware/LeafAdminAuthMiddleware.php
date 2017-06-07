@@ -51,10 +51,10 @@ class LeafAdminAuthMiddleware
             throw new \RuntimeException( 'Could not find target module for route controller' );
         }
 
-        if( !$targetModule->isAuthorized( $this->sentinel ) )
-        {
-            return $this->denied( $request );
-        }
+//        if( !$targetModule->isAuthorized( $this->sentinel ) )
+//        {
+//            return $this->denied( $request );
+//        }
 
         return $next( $request );
     }
@@ -85,9 +85,6 @@ class LeafAdminAuthMiddleware
     {
         $controller = $request->route()->getController();
 
-        /* @var $modules ModuleRegistry */
-        $modules = app( 'leaf.modules' );
-
-        return $modules->findModuleByController( $controller );
+        return \Admin::modules()->findModuleByController( $controller );
     }
 }

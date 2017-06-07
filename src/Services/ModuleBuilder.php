@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Services;
 
-use CubeSystems\Leaf\Admin\Module\Route;
+use CubeSystems\Leaf\Admin\Module\OLDRoute;
 
 class ModuleBuilder
 {
@@ -30,11 +30,11 @@ class ModuleBuilder
      */
     public function register( string $controllerClass )
     {
-        $this->module = ModuleFactory::build( $controllerClass );
+        $this->module = OLDModuleFactory::build( $controllerClass );
 
         $this->moduleRegistry->register( $this->module );
 
-        Route::register( $this->module->getControllerClass() );
+        OLDRoute::register( $this->module->getControllerClass() );
 
         return $this;
     }
@@ -45,7 +45,7 @@ class ModuleBuilder
      */
     public function routes( callable $routeCallback )
     {
-        Route::register( $this->module->getControllerClass(), $routeCallback );
+        OLDRoute::register( $this->module->getControllerClass(), $routeCallback );
 
         return $this;
     }

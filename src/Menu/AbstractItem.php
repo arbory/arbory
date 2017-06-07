@@ -2,14 +2,8 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-use Cartalyst\Sentinel\Sentinel;
-use CubeSystems\Leaf\Nodes\MenuItem;
-use Illuminate\Support\Collection;
+use CubeSystems\Leaf\Html\Elements\Element;
 
-/**
- * Class AbstractItem
- * @package CubeSystems\Leaf\Menu
- */
 abstract class AbstractItem
 {
     /**
@@ -23,24 +17,25 @@ abstract class AbstractItem
     protected $abbreviation;
 
     /**
-     * @var AbstractItem|null
-     */
-    protected $parent;
-
-    /**
-     * @var Collection
-     */
-    protected $children;
-
-    /**
-     * @var Sentinel
-     */
-    protected $sentinel;
-
-    /**
-     * @var MenuItem|null
+     * @var string
      */
     protected $model;
+
+    /**
+     * @param Element $parentElement
+     * @return Element
+     */
+    abstract public function render( Element $parentElement ): Element;
+
+    /**
+     * @return boolean
+     */
+    abstract public function isAccessible(): bool;
+
+    /**
+     * @return bool
+     */
+    abstract public function isActive(): bool;
 
     /**
      * @param string $title
@@ -65,17 +60,6 @@ abstract class AbstractItem
     }
 
     /**
-     * @param AbstractItem $parent
-     * @return $this
-     */
-    public function setParent( AbstractItem $parent )
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getTitle()
@@ -94,62 +78,5 @@ abstract class AbstractItem
         }
 
         return $this->abbreviation;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isVisible()
-    {
-        return true;
-    }
-
-    /**
-     * @return AbstractItem|null
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getChildren(): Collection
-    {
-        return $this->children;
-    }
-
-    /**
-     * @return MenuItem|null
-     */
-    public function getModel()
-    {
-        return $this->model;
-    }
-
-    /**
-     * @param MenuItem $model
-     */
-    public function setModel( MenuItem $model = null )
-    {
-        $this->model = $model;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasModel()
-    {
-        return (bool) $this->getModel();
-    }
-
-    /**
-     * @param AbstractItem $item
-     * @return void
-     */
-    public function addChild( AbstractItem $item )
-    {
-        $this->children->push( $item );
     }
 }

@@ -6,6 +6,6 @@
         </button>
     </div>
     <nav>
-        {!! app('leaf.menu')->render() !!}
+        {!! $menu !!}
     </nav>
 </aside>

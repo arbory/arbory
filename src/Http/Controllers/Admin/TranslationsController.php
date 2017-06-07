@@ -7,6 +7,7 @@ use CubeSystems\Leaf\Admin\Widgets\SearchField;
 use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Http\Requests\TranslationStoreRequest;
 use CubeSystems\Leaf\Menu\Menu;
+use CubeSystems\Leaf\Services\ModuleRegistry;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Query\Builder;
@@ -130,6 +131,11 @@ class TranslationsController extends Controller
         );
     }
 
+    public function show(  )
+    {
+        dd('Nothing to show');
+    }
+
     /**
      * @param Request $request
      * @param string $namespace
@@ -141,9 +147,7 @@ class TranslationsController extends Controller
     {
         $translationKey = $namespace . '::' . $group . '.' . $item;
         $this->request = $request;
-
-        $breadcrumbs = $this->getBreadcrumbs();
-
+        
         /* @var $languages Language[] */
         $languages = $this->languagesRepository->all();
 
@@ -180,7 +184,6 @@ class TranslationsController extends Controller
             [
                 'header' => Html::header( [ $this->getEditBreadcrumbs( $translationKey ) ] ),
                 'input' => $request,
-                'breadcrumbs' => $breadcrumbs,
                 'languages' => $languages,
                 'namespace' => $namespace,
                 'group' => $group,
@@ -230,15 +233,12 @@ class TranslationsController extends Controller
      */
     protected function getIndexBreadcrumbs(): Breadcrumbs
     {
-        // TODO: DI
-        /** @var Menu $menu */
-        $menu = app( 'leaf.menu' );
-        $menuItem = $menu->findItemByModule( self::class );
+        $module = \Admin::modules()->findModuleByController( $this );
 
-        $breadcrumbs = new Breadcrumbs();
-        $breadcrumbs->addItem( $menuItem->getTitle(), route( 'admin.translations.index', $this->getContext() ) );
-
-        return $breadcrumbs;
+        return ( new Breadcrumbs )->addItem(
+            $module->getConfiguration()->getName(),
+            route( 'admin.translations.index', $this->getContext() )
+        );
     }
 
     /**
@@ -285,24 +285,6 @@ class TranslationsController extends Controller
         }
 
         return $paginator;
-    }
-
-    /**
-     * @return Breadcrumbs
-     */
-    private function getBreadcrumbs()
-    {
-        $breadcrumbs = new Breadcrumbs();
-        $breadcrumbs->addItem(
-            trans( 'leaf::breadcrumbs.home' ),
-            route( 'admin.dashboard' )
-        );
-        $breadcrumbs->addItem(
-            trans( 'leaf.translations.index' ),
-            route( 'admin.translations.index' )
-        );
-
-        return $breadcrumbs;
     }
 
     /**

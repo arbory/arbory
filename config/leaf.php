@@ -1,12 +1,23 @@
 <?php
 
-use CubeSystems\Leaf\Menu\AbstractItem;
 use CubeSystems\Leaf\Services\Module;
 
 return [
+
     'uri' => 'admin',
+
+    'menu' => [
+        CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
+        CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class,
+        [
+            CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class,
+            CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class
+        ],
+    ],
+
     'modules' => [
     ],
+
     'pagination' => [
         'items_per_page' => 15,
     ],

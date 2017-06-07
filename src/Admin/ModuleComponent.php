@@ -17,7 +17,7 @@ trait ModuleComponent
      * @param Module $module
      * @return ModuleComponent
      */
-    public function setModule( Module $module )
+    public function setModule( \CubeSystems\Leaf\Services\Module $module )
     {
         $this->module = $module;
 
