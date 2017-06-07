@@ -9,7 +9,9 @@ use CubeSystems\Leaf\Admin\Form;
 use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry;
 use CubeSystems\Leaf\Admin\Widgets\Breadcrumbs;
+use CubeSystems\Leaf\Auth\Roles\Role;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use \LogicException;
 
 /**
@@ -75,38 +77,18 @@ class Module
      * @param Sentinel $sentinel
      * @return bool
      */
-    public function isAuthorized( Sentinel $sentinel )
+    public function isAuthorized( )
     {
-        $authorizationType = $this->configuration->getAuthorizationType();
+        /**
+         * @var $roles Role[]|Collection
+         */
+        $roles = $this->admin->sentinel()->getUser()->roles;
 
-        switch( $authorizationType )
-        {
-            case Module::AUTHORIZATION_TYPE_NONE:
+        $permissions = $roles->mapWithKeys(function( Role $role ){
+            return $role->getPermissions();
+        })->toArray();
 
-                $result = true;
-                break;
-
-            case Module::AUTHORIZATION_TYPE_ROLES:
-
-                $result = false;
-
-                foreach( $this->configuration->getAuthorizedRoles() as $authorizedRole )
-                {
-                    /** @noinspection PhpUndefinedMethodInspection */
-                    if( $sentinel->inRole( $authorizedRole ) )
-                    {
-                        $result = true;
-                        break;
-                    }
-                }
-
-                break;
-
-            default:
-                throw new LogicException( 'Authorization type "' . $authorizationType . '" is not recognized' );
-        }
-
-        return $result;
+        return in_array( $this->getControllerClass(), $permissions, true );
     }
 
     /**

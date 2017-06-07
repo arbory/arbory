@@ -34,12 +34,12 @@ class RolesController extends Controller
         return $this->module()->form( $model, function ( Form $form )
         {
             /**
-             * @var $collection Collection
+             * @var $options Collection
              */
             $options = \Admin::modules()->mapWithKeys( function ( Module $value )
             {
                 return [ $value->getControllerClass() => (string) $value ];
-            } );
+            } )->sort();
 
             $form->addField( new Text( 'name' ) );
             $form->addField( ( new Form\Fields\MultipleSelect( 'permissions' ) )->options( $options ) );

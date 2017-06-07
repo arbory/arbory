@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Admin;
 
+use Cartalyst\Sentinel\Sentinel;
 use CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry;
 use CubeSystems\Leaf\Menu\Menu;
 use CubeSystems\Leaf\Services\AssetPipeline;
@@ -9,6 +10,11 @@ use CubeSystems\Leaf\Services\ModuleRegistry;
 
 class Admin
 {
+    /**
+     * @var Sentinel
+     */
+    protected $sentinel;
+
     /**
      * @var AssetPipeline
      */
@@ -31,15 +37,25 @@ class Admin
 
     /**
      * Admin constructor.
+     * @param Sentinel $sentinel
      * @param Menu $menu
      * @param AssetPipeline $assets
      */
-    public function __construct( Menu $menu, AssetPipeline $assets )
+    public function __construct( Sentinel $sentinel, Menu $menu, AssetPipeline $assets )
     {
+        $this->sentinel = $sentinel;
         $this->routes = new ModuleRoutesRegistry();
         $this->modules = new ModuleRegistry( $this );
         $this->menu = $menu;
         $this->assets = $assets;
+    }
+
+    /**
+     * @return Sentinel
+     */
+    public function sentinel()
+    {
+        return $this->sentinel;
     }
 
     /**

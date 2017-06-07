@@ -217,6 +217,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->app->singleton( 'leaf', function ()
         {
             return new Admin(
+                $this->app['sentinel'],
                 new Menu(),
                 new AssetPipeline()
             );

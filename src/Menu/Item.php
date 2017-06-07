@@ -95,6 +95,6 @@ class Item extends AbstractItem
      */
     public function isAccessible(): bool
     {
-        return true;
+        return $this->module->isAuthorized();
     }
 }
