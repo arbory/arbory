@@ -2,6 +2,8 @@
 
 namespace CubeSystems\Leaf\Nodes;
 
+use Illuminate\Support\Collection;
+
 /**
  * Class ContentTypesRepository
  * @package CubeSystems\Leaf\Nodes
@@ -19,7 +21,7 @@ class ContentTypeRegister
     public function __construct()
     {
         $contentTypes = collect( config( 'leaf.content_types', [] ) );
-        $contentTypeNames = $contentTypes->map( function ( $item )
+        $contentTypeNames = $contentTypes->map( function( $item )
         {
             return new ContentTypeDefinition( $item );
         } );
@@ -53,7 +55,14 @@ class ContentTypeRegister
     {
         if( method_exists( $parent->content, 'getAllowedChildTypes' ) )
         {
-            return $parent->content->getAllowedChildTypes( $this->getAllContentTypes() );
+            $allowed = $parent->content->getAllowedChildTypes( $parent, $this->getAllContentTypes() );
+
+            if( is_array( $allowed ) )
+            {
+                $allowed = new Collection( $allowed );
+            }
+
+            return $this->mapToDefinitions( $allowed );
         }
 
         return $this->getAllContentTypes();
@@ -74,5 +83,37 @@ class ContentTypeRegister
     public function isValidContentType( $type )
     {
         return $this->contentTypes->has( $type );
+    }
+
+    /**
+     * @param Collection|array $mappable
+     * @return Collection|array
+     */
+    protected function mapToDefinitions( $mappable )
+    {
+        if( $mappable instanceof Collection )
+        {
+            return $mappable->mapWithKeys( function( $item )
+            {
+                if( $item instanceof ContentTypeDefinition )
+                {
+                    return $item;
+                }
+
+                return [ $item => $this->findByModelClass( $item ) ];
+            } );
+        }
+
+        foreach( $mappable as &$item )
+        {
+            if( $item instanceof ContentTypeDefinition )
+            {
+                return $item;
+            }
+
+            $item = $this->findByModelClass( $item );
+        }
+
+        return $mappable;
     }
 }

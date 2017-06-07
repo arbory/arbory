@@ -75,6 +75,12 @@ class MenuBuilderController extends Controller
             $grid->column( 'title' );
         } );
 
+        $grid->filter( function( Grid\Filter $filter )
+        {
+            // todo: add a way to disable pagination
+            $filter->setPerPage( 1000 );
+        } );
+
         $grid->setRenderer( new Renderer( $grid ) );
 
         return $grid;

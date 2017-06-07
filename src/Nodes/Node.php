@@ -4,6 +4,8 @@ namespace CubeSystems\Leaf\Nodes;
 
 use Alsofronie\Uuid\UuidModelTrait;
 use CubeSystems\Leaf\Pages\PageInterface;
+use CubeSystems\Leaf\Repositories\NodesRepository;
+use Illuminate\Database\Query\Builder;
 
 /**
  * Class Node
@@ -24,6 +26,10 @@ class Node extends \Baum\Node
         'item_position',
         'active',
         'locale',
+        'meta_title',
+        'meta_author',
+        'meta_keywords',
+        'meta_description'
     ];
 
     /**
@@ -35,6 +41,16 @@ class Node extends \Baum\Node
     }
 
     /**
+     * {{@inheritdoc}}
+     */
+    public function save( array $options = [] )
+    {
+        ( new NodesRepository )->setLastUpdateTimestamp( time() );
+
+        return parent::save( $options );
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo|PageInterface
      */
     public function content()
@@ -43,15 +59,22 @@ class Node extends \Baum\Node
     }
 
     /**
-     * @return NodeCollection|\Illuminate\Database\Eloquent\Collection|static[]
+     * @return NodeCollection|\Illuminate\Support\Collection|static[]
      */
     public function parents()
+    {
+        return $this->parentsQuery()->get();
+    }
+
+    /**
+     * @return Builder
+     */
+    public function parentsQuery()
     {
         return $this->newQuery()
             ->where( $this->getLeftColumnName(), '<', (int) $this->getLeft() )
             ->where( $this->getRightColumnName(), '>', (int) $this->getRight() )
-            ->orderBy( $this->getDepthColumnName(), 'asc' )
-            ->get();
+            ->orderBy( $this->getDepthColumnName(), 'asc' );
     }
 
     /**

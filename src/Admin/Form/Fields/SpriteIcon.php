@@ -29,9 +29,10 @@ class SpriteIcon extends Select
      */
     public function getOptions(): Collection
     {
-        return $this->getIconIds();
-
-
+        return $this->getIconIds()->mapWithKeys( function( $iconId )
+        {
+            return [ $iconId => $iconId ];
+        } );
     }
 
     /**
@@ -41,6 +42,11 @@ class SpriteIcon extends Select
     protected function getIconIds(): Collection
     {
         $ids = new Collection();
+
+        if( !$this->spritePath )
+        {
+            $this->spritePath = base_path( 'resources/assets/svg/icons.svg' );
+        }
 
         if( !file_exists( $this->spritePath ) )
         {
@@ -58,7 +64,7 @@ class SpriteIcon extends Select
             {
                 if( $attributeName === 'id' )
                 {
-                    $id = (string)$attributeValue;
+                    $id = (string) $attributeValue;
                 }
             }
 

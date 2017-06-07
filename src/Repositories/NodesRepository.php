@@ -3,6 +3,8 @@
 namespace CubeSystems\Leaf\Repositories;
 
 use CubeSystems\Leaf\Nodes\Node;
+use Illuminate\Support\Collection;
+use Settings;
 
 /**
  * Class NodesRepository
@@ -19,7 +21,7 @@ class NodesRepository extends AbstractModelsRepository
      * @param Node $node
      * @param string $key
      * @param mixed $value
-     * @return mixed
+     * @return Collection|null
      */
     public function findUnder( Node $node, string $key, $value )
     {
@@ -27,7 +29,20 @@ class NodesRepository extends AbstractModelsRepository
             ->whereBetween( $node->getLeftColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) )
             ->whereBetween( $node->getRightColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
 
-        return $query->get()->first();
+        return $query->get();
+    }
+
+    /**
+     * @param Node $node
+     * @param string $key
+     * @param mixed $value
+     * @return Collection|null
+     */
+    public function findAbove( Node $node, string $key, $value )
+    {
+        $query = $node->ancestorsAndSelf()->withoutSelf()->where( $key, $value );
+
+        return $query->get();
     }
 
     /***
@@ -61,5 +76,22 @@ class NodesRepository extends AbstractModelsRepository
         }
 
         return $node;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastUpdateTimestamp()
+    {
+        return Settings::get( 'nodes.last_update' );
+    }
+
+    /**
+     * @param int $time
+     * @return void
+     */
+    public function setLastUpdateTimestamp( int $time )
+    {
+        Settings::set( 'nodes.last_update', $time );
     }
 }

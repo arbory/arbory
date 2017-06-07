@@ -1,13 +1,15 @@
 <?php
 
-use CubeSystems\Leaf\Admin\Module;
-
 return [
-
     'uri' => 'admin',
+
+    'locales' => [
+        'en'
+    ],
 
     'menu' => [
         CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
+        CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class,
         CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class,
         [
             CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class,
@@ -15,45 +17,14 @@ return [
         ],
     ],
 
-    'modules' => [
-        [
-            'name' => 'dashboard',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\DashboardController::class,
-        ],
-        [
-            'name' => 'nodes',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
-        ],
-        [
-            'name' => 'admin_users',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class,
-            'authorization_type' => Module::AUTHORIZATION_TYPE_ROLES,
-            'authorized_roles' => [ 'administrator' ],
-        ],
-        [
-            'name' => 'admin_roles',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class,
-            'authorization_type' => Module::AUTHORIZATION_TYPE_ROLES,
-            'authorized_roles' => [ 'administrator' ],
-        ],
-        [
-            'name' => 'translations',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class,
-            'authorization_type' => Module::AUTHORIZATION_TYPE_ROLES,
-            'authorized_roles' => [ 'administrator' ],
-        ],
-        [
-            'name' => 'menu',
-            'controller_class' => \CubeSystems\Leaf\Http\Controllers\Admin\MenuBuilderController::class,
-        ],
-    ],
-
     'pagination' => [
         'items_per_page' => 15,
     ],
+
     'content_types' => [
         \CubeSystems\Leaf\Pages\TextPage::class,
     ],
+
     'auth' => [
         'activations' => [
             'expires' => 259200,
@@ -85,7 +56,4 @@ return [
             ],
         ],
     ],
-    'locales' => [
-        'en'
-    ]
 ];

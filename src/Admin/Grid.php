@@ -11,6 +11,8 @@ use CubeSystems\Leaf\Admin\Grid\Row;
 use CubeSystems\Leaf\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 /**
@@ -40,6 +42,21 @@ class Grid implements Renderable
      * @var Collection
      */
     protected $rows;
+
+    /**
+     * @var array
+     */
+    protected $tools = [ 'create', 'search' ];
+
+    /**
+     * @var Collection|null
+     */
+    protected $items;
+
+    /**
+     * @var bool
+     */
+    protected $paginated = true;
 
     /**
      * @var Closure
@@ -82,7 +99,7 @@ class Grid implements Renderable
     }
 
     /**
-     *
+     * @return void
      */
     protected function setupFilter()
     {
@@ -96,6 +113,44 @@ class Grid implements Renderable
     public function setFilter( FilterInterface $filter )
     {
         $this->filter = $filter;
+
+        return $this;
+    }
+
+    /**
+     * @param string[] $tools
+     * @return Grid
+     */
+    public function tools( array $tools )
+    {
+        $this->tools = $tools;
+
+        return $this;
+    }
+
+    /**
+     * @param array|Collection $items
+     * @return Grid
+     */
+    public function items( $items )
+    {
+        if( is_array( $items ) )
+        {
+            $items = new Collection( $items );
+        }
+
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $paginate
+     * @return Grid
+     */
+    public function paginate( bool $paginate = true )
+    {
+        $this->paginated = $paginate;
 
         return $this;
     }
@@ -148,11 +203,16 @@ class Grid implements Renderable
     }
 
     /**
-     * @param Collection $items
+     * @param Collection|LengthAwarePaginator $items
      */
-    protected function buildRows( Collection $items )
+    protected function buildRows( $items )
     {
-        $this->rows = $items->map( function ( $model )
+        if( $items instanceof LengthAwarePaginator )
+        {
+            $items = new Collection( $items->items() );
+        }
+
+        $this->rows = $items->map( function( $model )
         {
             return new Row( $this, $model );
         } );
@@ -167,11 +227,16 @@ class Grid implements Renderable
     }
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator|Collection
      */
     protected function fetchData()
     {
         call_user_func( $this->builder, $this );
+
+        if( method_exists( $this->filter, 'setPaginated' ) )
+        {
+            $this->filter->setPaginated( $this->paginated );
+        }
 
         return $this->filter->execute( $this->getColumns() );
     }
@@ -181,10 +246,44 @@ class Grid implements Renderable
      */
     public function render()
     {
-        $page = $this->fetchData();
+        $result = $this->fetchData();
+        $items = $this->items ?? $result;
 
-        $this->buildRows( collect( $page->items() ) );
+        $this->buildRows( $items );
 
-        return $this->renderer->render( $page );
+        return $this->renderer->render( $items );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTools(): array
+    {
+        return $this->tools;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaginated(): bool
+    {
+        return $this->paginated;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTools(): bool
+    {
+        return !empty( $this->tools );
+    }
+
+    /**
+     * @param string $tool
+     * @return bool
+     */
+    public function hasTool( string $tool ): bool
+    {
+        return in_array( $tool, $this->tools, false );
     }
 }

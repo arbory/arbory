@@ -119,7 +119,7 @@ trait Crudify
      */
     public function edit( $resourceId )
     {
-        $resource = $this->resource()->findOrFail( $resourceId );
+        $resource = $this->findOrNew( $resourceId );
 
         $layout = new Layout( function ( Layout $layout ) use ( $resource )
         {
@@ -138,7 +138,7 @@ trait Crudify
      */
     public function update( Request $request, $resourceId )
     {
-        $resource = $this->resource()->findOrFail( $resourceId );
+        $resource = $this->findOrNew( $resourceId );
 
         $this->form( $resource )->update( $request );
 
@@ -183,7 +183,7 @@ trait Crudify
      */
     protected function toolboxDialog( Request $request )
     {
-        $node = $this->resource()->findOrFail( $request->get( 'id' ) );
+        $node = $this->findOrNew( $request->get( 'id' ) );
 
         $toolbox = new ToolboxMenu( $node );
 
@@ -246,5 +246,17 @@ trait Crudify
     public function url( $route, $parameters = [] )
     {
         return $this->module()->url( $route, $parameters );
+    }
+
+    /**
+     * @param mixed $resourceId
+     * @return Model
+     */
+    protected function findOrNew( $resourceId ): Model
+    {
+        $resource = $this->resource()->findOrNew( $resourceId );
+        $resource->setAttribute( $resource->getKeyName(), $resourceId );
+
+        return $resource;
     }
 }
