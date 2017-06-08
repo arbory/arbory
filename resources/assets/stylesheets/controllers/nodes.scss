@@ -12,6 +12,8 @@
         ul
         {
             @include block-list;
+
+            background-color: white;
         }
 
         .collapsed ul

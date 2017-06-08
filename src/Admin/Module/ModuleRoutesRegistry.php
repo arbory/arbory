@@ -49,7 +49,7 @@ class ModuleRoutesRegistry
             'uses' => '\\' . $class . '@dialog'
         ] );
 
-        $router->get( $slug . '/api/{api}', [
+        $router->any( $slug . '/api/{api}', [
             'as' => $slug . '.api',
             'uses' => '\\' . $class . '@api'
         ] );
