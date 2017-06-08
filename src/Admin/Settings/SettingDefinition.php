@@ -80,4 +80,42 @@ class SettingDefinition
     {
         $this->value = $value;
     }
+
+    /**
+     * @return void
+     */
+    public function save()
+    {
+        $setting = new Setting( $this->toArray() );
+
+        if( $this->isInDatabase() )
+        {
+            $setting->exists = true;
+            $setting->update();
+        }
+        else
+        {
+            $setting->save();
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInDatabase(): bool
+    {
+        return Setting::query()->where( 'name', $this->getKey() )->exists();
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'name' => $this->key,
+            'value' => $this->value,
+            'type' => $this->type
+        ];
+    }
 }

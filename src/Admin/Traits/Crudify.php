@@ -7,19 +7,13 @@ use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Admin\Layout;
 use CubeSystems\Leaf\Admin\Module;
 use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
-use CubeSystems\Leaf\Services\AssetPipeline;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
-/**
- * Class Crudify
- * @package CubeSystems\Leaf\Admin\Traits
- */
 trait Crudify
 {
     /**
@@ -44,11 +38,7 @@ trait Crudify
     {
         if( $this->module === null )
         {
-            \App::when( Module::class )->needs( Controller::class )->give( function() {
-                return $this;
-            } );
-
-            $this->module = \App::make( Module::class );
+            $this->module =\Admin::modules()->findModuleByControllerClass( get_class( $this ) );
         }
 
         return $this->module;
@@ -269,7 +259,7 @@ trait Crudify
     /**
      * @param $route
      * @param array $parameters
-     * @return \CubeSystems\Leaf\Admin\Module\Route
+     * @return string
      */
     public function url( $route, $parameters = [] )
     {

@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Repositories;
 
 use CubeSystems\Leaf\Nodes\Node;
 use Illuminate\Support\Collection;
+use Settings;
 
 /**
  * Class NodesRepository
@@ -75,5 +76,22 @@ class NodesRepository extends AbstractModelsRepository
         }
 
         return $node;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastUpdateTimestamp()
+    {
+        return Settings::get( 'nodes.last_update' );
+    }
+
+    /**
+     * @param int $time
+     * @return void
+     */
+    public function setLastUpdateTimestamp( int $time )
+    {
+        Settings::set( 'nodes.last_update', $time );
     }
 }

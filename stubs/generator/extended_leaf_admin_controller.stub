@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespaceRoot}}Http\Controllers\Admin;
+
+use CubeSystems\Leaf\Http\Controllers\Admin\{{extendsClassName}} as Leaf{{extendsClassName}};
+
+class {{className}} extends Leaf{{extendsClassName}}
+{
+
+}

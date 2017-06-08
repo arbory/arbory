@@ -3,7 +3,6 @@
 namespace CubeSystems\Leaf\Providers;
 
 use Cartalyst\Support\ServiceProvider;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Settings\Setting;
 use CubeSystems\Leaf\Admin\Settings\SettingDefinition;
 use CubeSystems\Leaf\Admin\Settings\Settings;

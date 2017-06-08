@@ -5,10 +5,9 @@ namespace CubeSystems\Leaf\Providers;
 use CubeSystems\Leaf\Nodes\ContentTypeRegister;
 use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
 use CubeSystems\Leaf\Nodes\Node;
+use CubeSystems\Leaf\Repositories\NodesRepository;
 use CubeSystems\Leaf\Services\Content\PageBuilder;
-use CubeSystems\Leaf\Services\ModuleBuilder;
-use CubeSystems\Leaf\Services\SettingRegistry;
-use CubeSystems\Leaf\Support\Facades\AdminModule;
+use CubeSystems\Leaf\Support\Facades\Admin;
 use CubeSystems\Leaf\Support\Facades\LeafRouter;
 use CubeSystems\Leaf\Support\Facades\Page;
 use CubeSystems\Leaf\Support\Facades\Settings;
@@ -42,18 +41,13 @@ class NodeServiceProvider extends ServiceProvider
     public function register()
     {
         AliasLoader::getInstance()->alias( 'LeafRouter', LeafRouter::class );
-        AliasLoader::getInstance()->alias( 'AdminModule', AdminModule::class );
+        AliasLoader::getInstance()->alias( 'Admin', Admin::class );
         AliasLoader::getInstance()->alias( 'Page', Page::class );
         AliasLoader::getInstance()->alias( 'Settings', Settings::class );
 
         $this->app->singleton( ContentTypeRegister::class, function ()
         {
             return new ContentTypeRegister();
-        } );
-
-        $this->app->singleton( 'leaf_module_builder', function( $app )
-        {
-            return new ModuleBuilder( $app['leaf.modules'] );
         } );
 
         $this->app->singleton( 'leaf_router', function ()
@@ -77,23 +71,71 @@ class NodeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerContentTypes();
+        $this->registerNodes();
+        $this->detectCurrentLocaleFromRoute( $this->app[ 'router' ] );
+        $this->purgeOutdatedRouteCache();
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerContentTypes()
+    {
+        $path = base_path( 'routes/pages.php' );
+
+        if( !\FIle::exists( $path ) )
+        {
+            return;
+        }
+
+        $this->app[ 'router' ]->group( [
+            'middleware' => 'web',
+            'namespace' => 'App\Http\Controllers',
+        ], function() use ( $path )
+        {
+            include $path;
+        } );
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerNodes()
+    {
         if( !app()->runningInConsole() )
         {
-            $this->app->booted( function ()
+            $this->app->booted( function()
             {
-                $this->app->singleton( Node::class, function ()
+                $this->app->singleton( Node::class, function()
                 {
                     return $this->routes->getCurrentNode();
                 } );
             } );
-        }
 
-        if( !$this->app->routesAreCached() && \Schema::hasTable('nodes') )
+            $this->routes->registerNodes();
+        }
+        elseif( !$this->app->routesAreCached() && \Schema::hasTable( 'nodes' ) )
         {
             $this->routes->registerNodes();
         }
+    }
 
-        $this->detectCurrentLocaleFromRoute( $this->app['router'] );
+    /**
+     * @return void
+     */
+    protected function purgeOutdatedRouteCache()
+    {
+        if ( $this->app->routesAreCached() )
+        {
+            $path = $this->app->getCachedRoutesPath();
+            $modified = \File::lastModified( $path );
+
+            if ( $modified < ( new NodesRepository )->getLastUpdateTimestamp() )
+            {
+                \File::delete( $path );
+            }
+        }
     }
 
     /**

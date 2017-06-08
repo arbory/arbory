@@ -4,48 +4,39 @@ namespace CubeSystems\Leaf\Menu;
 
 use CubeSystems\Leaf\Html\Elements;
 use CubeSystems\Leaf\Html\Html;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Collection;
 
-/**
- * Class ItemGroupItem
- * @package CubeSystems\Leaf\Menu
- */
 class Group extends AbstractItem
 {
     /**
-     * @var Route
+     * @var Collection
      */
-    protected $route;
+    protected $children;
 
     /**
-     * @param Route $route
+     * Group constructor.
      */
-    public function __construct(
-        Route $route
-    )
+    public function __construct()
     {
-        $this->route = $route;
         $this->children = new Collection();
     }
 
     /**
      * @param Elements\Element $parentElement
-     * @return bool
+     * @return Elements\Element
      */
-    public function render( Elements\Element $parentElement )
+    public function render( Elements\Element $parentElement ): Elements\Element
     {
         $ul = Html::ul()->addClass( 'block' );
 
-        $anyChildrenRendered = false;
-
         foreach( $this->getChildren() as $child )
         {
+            /** @var AbstractItem $child */
             $li = Html::li()->addAttributes( [ 'data-name' => '' ] );
 
-            if( $child->render( $li ) )
+            if( $child->isAccessible() )
             {
-                $anyChildrenRendered = true;
+                $child->render( $li );
 
                 if( $child->isActive() )
                 {
@@ -56,8 +47,7 @@ class Group extends AbstractItem
             }
         }
 
-        if( $anyChildrenRendered )
-        {
+        return
             $parentElement
                 ->append(
                     Html::span( [
@@ -67,15 +57,6 @@ class Group extends AbstractItem
                     ] )->addClass( 'trigger ' . ( $this->isActive() ? 'active' : '' ) )
                 )
                 ->append( $ul );
-
-            $result = true;
-        }
-        else
-        {
-            $result = false;
-        }
-
-        return $result;
     }
 
     /**
@@ -87,5 +68,46 @@ class Group extends AbstractItem
         {
             return $item->isActive();
         } );
+    }
+
+    /**
+     * @param AbstractItem $child
+     * @return void
+     */
+    public function addChild( AbstractItem $child )
+    {
+        $this->children->push( $child );
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param Collection $children
+     */
+    public function setChildren( Collection $children )
+    {
+        $this->children = $children;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccessible(): bool
+    {
+        foreach( $this->getChildren() as $item )
+        {
+            if( $item->isAccessible() )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -2,126 +2,41 @@
 
 namespace CubeSystems\Leaf\Menu;
 
-use Cartalyst\Sentinel\Sentinel;
+use CubeSystems\Leaf\Admin\Admin;
+use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
 use CubeSystems\Leaf\Html\Elements;
 use CubeSystems\Leaf\Html\Html;
-use CubeSystems\Leaf\Services\Module;
-use CubeSystems\Leaf\Services\ModuleRegistry;
-use Illuminate\Routing\Route;
-use Illuminate\Routing\UrlGenerator;
-use Illuminate\Support\Collection;
+use CubeSystems\Leaf\Admin\Module;
 
 class Item extends AbstractItem
 {
     /**
-     * @var string
+     * @var Admin
      */
-    protected $routeName;
+    protected $admin;
 
     /**
-     * @var array
-     */
-    protected $routeParams = [];
-
-    /**
-     * @var ModuleRegistry
-     */
-    protected $moduleRegistry;
-
-    /**
-     * @var UrlGenerator
-     */
-    protected $urlGenerator;
-
-    /**
-     * @var Module
+     * @var \CubeSystems\Leaf\Admin\Module
      */
     protected $module;
 
-    /**
-     * @var Route
-     */
-    protected $route;
-
-    /**
-     * @param Sentinel $sentinel
-     * @param ModuleRegistry $moduleRegistry
-     * @param UrlGenerator $urlGenerator
-     * @param Route $route
-     */
     public function __construct(
-        Sentinel $sentinel,
-        ModuleRegistry $moduleRegistry,
-        UrlGenerator $urlGenerator,
-        Route $route
+        Admin $admin,
+        Module $module
     )
     {
-        $this->sentinel = $sentinel;
-        $this->moduleRegistry = $moduleRegistry;
-        $this->urlGenerator = $urlGenerator;
-        $this->route = $route;
-        $this->children = new Collection();
-    }
-
-    /**
-     * @return string
-     */
-    public function getRouteName(): string
-    {
-        return $this->routeName;
-    }
-
-    /**
-     * @param string $routeName
-     */
-    public function setRouteName( string $routeName )
-    {
-        $this->routeName = $routeName;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRouteParams(): array
-    {
-        return $this->routeParams;
-    }
-
-    /**
-     * @param array $routeParams
-     */
-    public function setRouteParams( array $routeParams )
-    {
-        $this->routeParams = $routeParams;
-    }
-
-    /**
-     * @return Module
-     */
-    public function getModule(): Module
-    {
-        return $this->module;
-    }
-
-    /**
-     * @param Module $module
-     */
-    public function setModule( Module $module )
-    {
+        $this->admin = $admin;
         $this->module = $module;
     }
 
     /**
      * @param Elements\Element $parentElement
-     * @return bool
+     * @return Elements\Element
      * @throws \InvalidArgumentException
      */
-    public function render( Elements\Element $parentElement )
+    public function render( Elements\Element $parentElement ): Elements\Element
     {
-        $module = $this->moduleRegistry->findModuleByControllerClass( $this->module->getControllerClass() );
-
-        if( $module && $module->isAuthorized( $this->sentinel ) )
-        {
+        return
             $parentElement->append(
                 Html::link([
                     Html::abbr( $this->getAbbreviation() )->addAttributes( [ 'title' => $this->getTitle() ] ),
@@ -130,11 +45,14 @@ class Item extends AbstractItem
                     ->addClass( 'trigger ' . ( $this->isActive() ? 'active' : '' ) )
                     ->addAttributes( [ 'href' => $this->getUrl() ] )
             );
+    }
 
-            return true;
-        }
-
-        return false;
+    /**
+     * @return ResourceRoutes
+     */
+    public function getRoute(): ResourceRoutes
+    {
+        return $this->admin->routes()->findByModule( $this->getModule() );
     }
 
     /**
@@ -143,7 +61,7 @@ class Item extends AbstractItem
      */
     protected function getUrl()
     {
-        return $this->urlGenerator->route( $this->getRouteName(), $this->getRouteParams() );
+        return $this->getRoute()->getUrl( 'index' );
     }
 
     /**
@@ -151,8 +69,32 @@ class Item extends AbstractItem
      */
     public function isActive(): bool
     {
-        $activeController = ( new \ReflectionClass( $this->route->getController() ) )->getName();
+        $currentController = ( new \ReflectionClass( \Route::getCurrentRoute()->getController() ) )->getName();
 
-        return $activeController === $this->module->getControllerClass();
+        return $currentController === $this->module->getControllerClass();
+    }
+
+    /**
+     * @return \CubeSystems\Leaf\Admin\Module
+     */
+    public function getModule(): Module
+    {
+        return $this->module;
+    }
+
+    /**
+     * @param \CubeSystems\Leaf\Admin\Module $module
+     */
+    public function setModule( Module $module )
+    {
+        $this->module = $module;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccessible(): bool
+    {
+        return $this->module->isAuthorized();
     }
 }

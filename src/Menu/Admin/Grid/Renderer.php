@@ -167,7 +167,7 @@ class Renderer
     /**
      * @param $route
      * @param array $parameters
-     * @return \CubeSystems\Leaf\Admin\Module\Route
+     * @return string
      */
     public function url( $route, $parameters = [] )
     {

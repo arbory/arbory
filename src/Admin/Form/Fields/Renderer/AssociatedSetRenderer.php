@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
 use CubeSystems\Leaf\Admin\Form\Fields\FieldInterface;
 use CubeSystems\Leaf\Html\Elements\Content;
 use CubeSystems\Leaf\Html\Elements\Element;
+use CubeSystems\Leaf\Html\Elements\Inputs\Input;
 use CubeSystems\Leaf\Html\Html;
 use Illuminate\Support\Collection;
 
@@ -80,7 +81,7 @@ class AssociatedSetRenderer
      */
     protected function getAssociatedItem( $name, $value, $label )
     {
-        $checkbox = Html::checkbox( $label );
+        $checkbox = Html::checkbox( ( new Input )->setName( $name )->getLabel( $label ) );
         $checkbox->setName( $name );
         $checkbox->setValue( $value );
 

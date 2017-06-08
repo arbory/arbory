@@ -2,7 +2,6 @@
 
 namespace CubeSystems\Leaf\Nodes;
 
-use CubeSystems\Leaf\Admin\Module\Route;
 use CubeSystems\Leaf\Auth\Roles\Role;
 use Illuminate\Database\Eloquent\Model;
 
@@ -82,7 +81,6 @@ class MenuItem extends Model
         return [
             'title' => $this->getTitle(),
             'module_name' => $this->getModule(),
-            'route_name' => sprintf( 'admin.%s.index', Route::generateSlugFromClassName( $this->getModule() ) )
         ];
     }
 

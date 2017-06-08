@@ -4,6 +4,7 @@ namespace CubeSystems\Leaf\Nodes;
 
 use Alsofronie\Uuid\UuidModelTrait;
 use CubeSystems\Leaf\Pages\PageInterface;
+use CubeSystems\Leaf\Repositories\NodesRepository;
 use Illuminate\Database\Query\Builder;
 
 /**
@@ -37,6 +38,16 @@ class Node extends \Baum\Node
     public function __toString()
     {
         return (string) $this->name;
+    }
+
+    /**
+     * {{@inheritdoc}}
+     */
+    public function save( array $options = [] )
+    {
+        ( new NodesRepository )->setLastUpdateTimestamp( time() );
+
+        return parent::save( $options );
     }
 
     /**

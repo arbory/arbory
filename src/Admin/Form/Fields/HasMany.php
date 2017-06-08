@@ -81,13 +81,10 @@ class HasMany extends AbstractField
                 ->setValue( $model->getKey() )
         );
 
-        if( $this->isSortable() && $this->getOrderBy() )
-        {
-            $fieldSet->prepend(
-                ( new Hidden( $this->getOrderBy() ) )
-                    ->setValue( $model->{$this->getOrderBy()} )
-            );
-        }
+        $fieldSet->prepend(
+            ( new Hidden( $model->getKeyName() ) )
+                ->setValue( $model->getKey() )
+        );
 
         return $fieldSet;
     }

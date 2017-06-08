@@ -3,18 +3,29 @@
 namespace CubeSystems\Leaf\Admin\Module;
 
 use Closure;
+use CubeSystems\Leaf\Admin\Module;
 use Illuminate\Routing\Router;
 
-class Route
+/**
+ * Class ModuleRoutesRegistry
+ * @package CubeSystems\Leaf\Admin\Module
+ */
+class ModuleRoutesRegistry
 {
     /**
-     * @var array|string[]
+     * @var ResourceRoutes[]
      */
-    protected static $controllerSlugs = [];
+    protected $routes = [];
 
-    public static function register( $class, Closure $callback = null )
+    /**
+     * @param \CubeSystems\Leaf\Admin\Module $module
+     * @param Closure|null $callback
+     * @return ResourceRoutes
+     */
+    public function register( Module $module, Closure $callback = null )
     {
-        $slug = static::generateSlugFromClassName( $class );
+        $class = $module->getControllerClass();
+        $slug = $module->name();
 
         /**
          * @var $router Router
@@ -48,32 +59,17 @@ class Route
             'uses' => '\\' . $class . '@export'
         ] );
 
-        static::$controllerSlugs[$class] = $slug;
+        $this->routes[$module->name()] = new ResourceRoutes( $module );
+
+        return $this->routes[$module->name()];
     }
 
     /**
-     * @param $class
-     * @return string
+     * @param Module $module
+     * @return ResourceRoutes
      */
-    public static function generateSlugFromClassName( $class )
+    public function findByModule( Module $module )
     {
-        if( !preg_match( '#Controllers(\\\Admin)?\\\(?P<name>.*)Controller#ui', $class, $matches ) )
-        {
-            return substr( md5( $class ), 0, 8 );
-        }
-
-        $slug = str_replace( '\\', '', $matches['name'] );
-        $slug = preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1 ', $slug );
-
-        return str_slug( $slug );
-    }
-
-    /**
-     * @param $class
-     * @return string
-     */
-    public static function getControllerSlug( $class )
-    {
-        return array_get( static::$controllerSlugs, $class );
+        return array_get( $this->routes, $module->name() );
     }
 }

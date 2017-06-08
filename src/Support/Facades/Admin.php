@@ -4,7 +4,7 @@ namespace CubeSystems\Leaf\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class AdminModule extends Facade
+class Admin extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -13,6 +13,6 @@ class AdminModule extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'leaf_module_builder';
+        return 'leaf';
     }
 }

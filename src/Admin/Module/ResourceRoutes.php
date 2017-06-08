@@ -2,7 +2,7 @@
 
 namespace CubeSystems\Leaf\Admin\Module;
 
-use Illuminate\Routing\Controller;
+use CubeSystems\Leaf\Admin\Module;
 
 /**
  * Class ResourceRoutes
@@ -11,17 +11,17 @@ use Illuminate\Routing\Controller;
 class ResourceRoutes
 {
     /**
-     * @var string
+     * @var Module
      */
-    protected $baseName;
+    protected $module;
 
     /**
      * ResourceRoutes constructor.
-     * @param Controller $controller
+     * @param Module $module
      */
-    public function __construct( Controller $controller )
+    public function __construct( Module $module )
     {
-        $this->baseName = Route::getControllerSlug( get_class( $controller ) );
+        $this->module = $module;
     }
 
     /**
@@ -31,6 +31,6 @@ class ResourceRoutes
      */
     public function getUrl( $name, $parameters = [] )
     {
-        return route( config( 'leaf.uri' ) . '.' . $this->baseName . '.' . $name, $parameters );
+        return route( config( 'leaf.uri' ) . '.' . $this->module->name() . '.' . $name, $parameters );
     }
 }

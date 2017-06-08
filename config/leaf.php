@@ -1,18 +1,30 @@
 <?php
 
-use CubeSystems\Leaf\Menu\AbstractItem;
-use CubeSystems\Leaf\Services\Module;
-
 return [
     'uri' => 'admin',
-    'modules' => [
+
+    'locales' => [
+        'en'
     ],
+
+    'menu' => [
+        CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
+        CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class,
+        CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class,
+        [
+            CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class,
+            CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class
+        ],
+    ],
+
     'pagination' => [
         'items_per_page' => 15,
     ],
+
     'content_types' => [
         \CubeSystems\Leaf\Pages\TextPage::class,
     ],
+
     'auth' => [
         'activations' => [
             'expires' => 259200,
@@ -44,7 +56,4 @@ return [
             ],
         ],
     ],
-    'locales' => [
-        'en'
-    ]
 ];

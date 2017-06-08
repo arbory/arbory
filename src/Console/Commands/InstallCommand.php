@@ -93,6 +93,7 @@ class InstallCommand extends Command
 
         $this->createDirectories();
         $this->seedAdminControllers();
+        $this->publishFiles();
         $this->publishConfig();
         $this->addWebpackTask();
         $this->runMigrations();
@@ -123,6 +124,28 @@ class InstallCommand extends Command
             if( !$this->filesystem->isDirectory( $directory ) )
             {
                 $this->filesystem->makeDirectory( $directory );
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function publishFiles()
+    {
+        $this->info( 'Publishing files' );
+
+        $files = [
+            base_path( 'routes/pages.php' ) => [ 'pages', [] ]
+        ];
+
+        foreach( $files as $destination => list( $stub, $params ) )
+        {
+            if( !$this->filesystem->exists( $destination ) )
+            {
+                $content = $this->stubRegistry->make( $stub, $params );
+
+                $this->filesystem->put( $destination, $content );
             }
         }
     }

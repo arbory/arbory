@@ -6,20 +6,17 @@ Route::post( 'logout', [ 'as' => 'logout', 'uses' => 'Admin\SessionController@po
 
 Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
 {
-    AdminModule::register( CubeSystems\Leaf\Http\Controllers\Admin\MenuBuilderController::class );
-    AdminModule::register( CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class );
-    AdminModule::register( CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class );
-    AdminModule::register( CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class );
-    AdminModule::register( CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class );
+    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\DashboardController::class );
+    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class );
+    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class );
+    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class );
+    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\MenuBuilderController::class );
+    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class );
+    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class );
 
     Route::get( 'dashboard', [
         'as' => 'dashboard',
         'uses' => 'Admin\DashboardController@index'
-    ] );
-
-    Route::get( 'translations/list', [
-        'as' => 'translations.index',
-        'uses' => 'Admin\TranslationsController@index'
     ] );
 
     Route::get( 'translations/edit/{namespace}-{group}-{item}', [
