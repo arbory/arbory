@@ -75,6 +75,11 @@ class Module
      */
     public function isAuthorized( )
     {
+        if( !$this->admin->sentinel()->check() )
+        {
+            return false;
+        }
+
         /**
          * @var $roles Role[]|Collection
          */
