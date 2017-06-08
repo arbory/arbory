@@ -47,12 +47,5 @@
                 </tbody>
             </table>
         </div>
-
-        <footer class="main">
-            <div class="tools">
-                {{--@include('leaf::partials.pagination')--}}
-            </div>
-        </footer>
-
     </section>
 @stop
