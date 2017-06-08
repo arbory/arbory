@@ -220,7 +220,7 @@ class Builder
         $tools->getBlock( 'secondary' )->push( $this->exportOptions() );
         $tools->getBlock( 'primary' )->push( $this->createButton() );
 
-        if ( $this->grid->isPaginated() )
+        if ( $this->grid->isPaginated() && $this->items->hasPages() )
         {
             $pagination = ( new Pagination( $this->items ) )->render();
             $tools->getBlock( $pagination->attributes()->get( 'class' ) )->push( $pagination->content() );
