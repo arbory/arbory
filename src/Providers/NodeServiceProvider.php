@@ -71,14 +71,38 @@ class NodeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerContentTypes();
+        $this->registerNodes();
+        $this->detectCurrentLocaleFromRoute( $this->app[ 'router' ] );
+        $this->purgeOutdatedRouteCache();
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerContentTypes()
+    {
+        $path = base_path( 'routes/pages.php' );
+
+        if( !\FIle::exists( $path ) )
+        {
+            return;
+        }
+
         $this->app[ 'router' ]->group( [
             'middleware' => 'web',
             'namespace' => 'App\Http\Controllers',
-        ], function()
+        ], function() use ( $path )
         {
-            include base_path( 'routes/pages.php' );
+            include $path;
         } );
+    }
 
+    /**
+     * @return void
+     */
+    protected function registerNodes()
+    {
         if( !app()->runningInConsole() )
         {
             $this->app->booted( function()
@@ -95,9 +119,6 @@ class NodeServiceProvider extends ServiceProvider
         {
             $this->routes->registerNodes();
         }
-
-        $this->detectCurrentLocaleFromRoute( $this->app[ 'router' ] );
-        $this->purgeOutdatedRouteCache();
     }
 
     /**
