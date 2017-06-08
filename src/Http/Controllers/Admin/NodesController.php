@@ -82,7 +82,7 @@ class NodesController extends Controller
             } ) );
         } );
 
-        $form->addEventListeners( [ 'create.after', 'update.after' ], function () use ( $form )
+        $form->addEventListeners( [ 'create.after' ], function () use ( $form )
         {
             $this->afterSave( $form );
         } );
