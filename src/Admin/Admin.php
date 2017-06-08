@@ -51,7 +51,7 @@ class Admin
     }
 
     /**
-     * @return Sentinel
+     * @return \Cartalyst\Sentinel\Sentinel
      */
     public function sentinel()
     {
@@ -59,7 +59,7 @@ class Admin
     }
 
     /**
-     * @return AssetPipeline
+     * @return \CubeSystems\Leaf\Services\AssetPipeline
      */
     public function assets()
     {
@@ -67,7 +67,7 @@ class Admin
     }
 
     /**
-     * @return ModuleRoutesRegistry
+     * @return \CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry
      */
     public function routes()
     {
@@ -75,7 +75,7 @@ class Admin
     }
 
     /**
-     * @return ModuleRegistry
+     * @return \CubeSystems\Leaf\Services\ModuleRegistry
      */
     public function modules()
     {
@@ -83,7 +83,7 @@ class Admin
     }
 
     /**
-     * @return Menu
+     * @return \CubeSystems\Leaf\Menu\Menu
      */
     public function menu()
     {

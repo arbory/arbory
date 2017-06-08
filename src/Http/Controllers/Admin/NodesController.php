@@ -17,11 +17,11 @@ use CubeSystems\Leaf\Nodes\Node;
 use CubeSystems\Leaf\Nodes\Admin\Grid\Filter;
 use CubeSystems\Leaf\Nodes\Admin\Grid\Renderer;
 use CubeSystems\Leaf\Nodes\ContentTypeRegister;
+use CubeSystems\Leaf\Repositories\NodesRepository;
 use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Mockery\Matcher\Closure;
 
 class NodesController extends Controller
 {
@@ -82,7 +82,7 @@ class NodesController extends Controller
             } ) );
         } );
 
-        $form->addEventListeners( [ 'create.after', 'update.after' ], function () use ( $form )
+        $form->addEventListeners( [ 'create.after' ], function () use ( $form )
         {
             $this->afterSave( $form );
         } );
@@ -210,6 +210,33 @@ class NodesController extends Controller
 
     /**
      * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function nodeRepositionApi( Request $request )
+    {
+        /**
+         * @var NodesRepository $nodes
+         * @var Node $node
+         */
+        $nodes = $this->container->make( NodesRepository::class );
+        $node = $nodes->findOneBy( 'id', $request->input( 'id' ) );
+        $toLeftId = $request->input( 'toLeftId' );
+        $toRightId = $request->input( 'toRightId' );
+
+        if( $toLeftId )
+        {
+            $node->moveToRightOf( $nodes->findOneBy( 'id', $toLeftId ) );
+        }
+        elseif( $toRightId )
+        {
+            $node->moveToLeftOf( $nodes->findOneBy( 'id', $toRightId ) );
+        }
+
+        return \Response::make();
+    }
+
+    /**
+     * @param Request $request
      * @return string
      */
     protected function slugGeneratorApi( Request $request )
@@ -238,5 +265,4 @@ class NodesController extends Controller
 
         return $slug;
     }
-
 }
