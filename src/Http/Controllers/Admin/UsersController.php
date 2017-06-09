@@ -2,7 +2,9 @@
 
 namespace CubeSystems\Leaf\Http\Controllers\Admin;
 
+use Activation;
 use CubeSystems\Leaf\Admin\Form;
+use CubeSystems\Leaf\Admin\Form\Fields\Boolean;
 use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Admin\Traits\Crudify;
 use CubeSystems\Leaf\Admin\Form\Fields\BelongsToMany;
@@ -11,6 +13,7 @@ use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Auth\Users\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Sentinel;
@@ -31,14 +34,16 @@ class UsersController extends Controller
     /**
      * @param Model $model
      * @return Form
+     * @throws \InvalidArgumentException
      */
     protected function form( Model $model )
     {
-        $form = $this->module()->form( $model, function ( Form $form )
+        $form = $this->module()->form( $model, function ( Form $form ) use ( $model )
         {
             $form->addField( new Text( 'first_name' ) );
             $form->addField( new Text( 'last_name' ) );
             $form->addField( new Text( 'email' ) );
+            $form->addField( new Boolean( 'active' ) )->setValue( Activation::completed( $model ) );
             $form->addField( new BelongsToMany( 'roles' ) );
             $form->addField( new Password( 'password' ) );
         } );
@@ -47,7 +52,35 @@ class UsersController extends Controller
         {
             if( Sentinel::getUser()->getKey() === $form->getModel()->getKey() )
             {
-                throw new \Exception( 'You cannot remove yourself!' );
+                throw new \InvalidArgumentException( 'You cannot remove yourself!' );
+            }
+        } );
+
+        $form->addEventListener('create.before', function() use ( $model )
+        {
+            unset( $model->active );
+        } );
+
+        $form->addEventListeners( [ 'update.before', 'create.after' ], function( Request $request ) use ( $model )
+        {
+            unset( $model->active );
+
+            $active = $request->input( 'resource.active' );
+
+            if( $active && Activation::completed( $model ) )
+            {
+                return;
+            }
+
+            if( $active )
+            {
+                $activation = Activation::create( $model );
+
+                Activation::complete( $model, array_get( $activation, 'code' ) );
+            }
+            else
+            {
+                Activation::remove( $model );
             }
         } );
 
