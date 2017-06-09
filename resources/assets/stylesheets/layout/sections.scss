@@ -9,7 +9,7 @@ section
 
     > form .body
     {
-        padding-bottom: steps(3);
+        padding-bottom: steps(1);
     }
 
 }
@@ -71,7 +71,7 @@ section > form > footer
 section.nested
 {
     clear: both;
-    padding: steps(2);
+    padding: steps(1) steps(2);
 
     h1
     {
@@ -88,11 +88,18 @@ section.nested
         .item:not(tr)
         {
             border: 1px solid $color-border-normal;
-            padding: steps(2) 0;
+            padding: steps(1.5) 0;
             margin: 0 0 steps(2) 0;
             position: relative;
             background: $color-background-lightest;
             @include clear-inside;
+        }
+
+        .link-body > fieldset {
+            border: none ;
+            margin-bottom: 0 ;
+            padding-top: 0 ;
+            padding-bottom: 0 ;
         }
 
         .item.template
@@ -126,12 +133,6 @@ section.nested
         top:   0;
         width: auto;
     }
-
-    section.nested
-    {
-        padding-right: 0;
-    }
-
 }
 
 

@@ -39,7 +39,7 @@ class Link extends HasOne
      */
     protected function getHeader()
     {
-        return Html::header( Html::h1( $this->getLabel() ) );
+        return Html::div( Html::label( $this->getLabel() ) )->addClass( 'label-wrap' );
     }
 
     /**
@@ -49,7 +49,7 @@ class Link extends HasOne
     {
         $item = $this->getValue() ?: $this->getRelatedModel();
 
-        $block = Html::div()->addClass( 'body list' );
+        $block = Html::div()->addClass( 'link-body' );
 
         $fieldSetHtml = Html::fieldset()->addClass( 'item' );
 
