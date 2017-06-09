@@ -19,6 +19,8 @@ use Illuminate\Support\Collection;
  */
 class Renderer
 {
+    const COOKIE_NAME_NODES = 'nodes';
+
     /**
      * @var Grid
      */
@@ -84,6 +86,7 @@ class Renderer
 
         foreach( $items as $item )
         {
+            $cookie = $this->getNodeCookie( $item->getKey() );
             $children = $item->children;
             $hasChildren = ( $children && $children->count() );
 
@@ -92,9 +95,13 @@ class Renderer
                     'data-level' => $level,
                     'data-id' => $item->getKey(),
                 ] )
-                ->addClass( 'collapsed ' . ( ( $hasChildren ) ? 'has-children' : null ) );
+                ->addClass( ( ( $hasChildren ) ? 'has-children' : null ) );
 
-
+            if( array_get( $cookie, 'collapsed', false ) )
+            {
+                $li->addClass( 'collapsed' );
+            }
+            
             $li->append(
                 Toolbox::create( $this->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $item->getKey() ] ) )->render()
             );
@@ -173,5 +180,16 @@ class Renderer
             $this->table(),
             $this->footer(),
         ] );
+    }
+
+    /**
+     * @param string $nodeId
+     * @return mixed[]
+     */
+    protected function getNodeCookie( $nodeId )
+    {
+        $cookie = (array) json_decode( $_COOKIE[ self::COOKIE_NAME_NODES ] );
+
+        return (array) $cookie[ $nodeId ];
     }
 }
