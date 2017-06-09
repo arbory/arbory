@@ -13,16 +13,12 @@
 
         <div class="body">
             <table class="table">
-
                 <thead>
                 <tr>
-
                     <th>Group</th>
                     <th>Key</th>
                     @foreach($languages as $language)
                         <th>Text {{$language->locale}}</th>
-                        {{--<th>Locked {{$language->locale}}</th>--}}
-                        {{--<th>Unstable {{$language->locale}}</th>--}}
                     @endforeach
                 </tr>
                 </thead>
@@ -30,18 +26,15 @@
                 @foreach($translations as $translation)
                     <tr>
                         <td>
-                            <a href="{{$translation->edit_url}}">{!! $hhh($translation->namespace) !!}::{!! $hhh($translation->group) !!}</a>
+                            <a href="{{$translation->edit_url}}">{!! $highlight($translation->namespace) !!}
+                                ::{!! $highlight($translation->group) !!}</a>
                         </td>
-                        <td><a href="{{$translation->edit_url}}">{!! $hhh($translation->item) !!}</a></td>
-
+                        <td><a href="{{$translation->edit_url}}">{!! $highlight($translation->item) !!}</a></td>
                         @foreach($languages as $language)
                             <td>
-                                <a href="{{$translation->edit_url}}">{!! $hhh($translation->{$language->locale . '_text'}) !!}</a>
+                                <a href="{{$translation->edit_url}}">{!! $highlight($translation->{$language->locale . '_text'}) !!}</a>
                             </td>
-                            {{--<td>{{ $translation->{$language->locale . '_locked'} }}</td>--}}
-                            {{--<td>{{ $translation->{$language->locale . '_unstable'} }}</td>--}}
                         @endforeach
-
                     </tr>
                 @endforeach
                 </tbody>
