@@ -123,17 +123,12 @@ class TranslationsController extends Controller
                 'translations' => $paginatedItems,
                 'paginator' => $paginatedItems,
                 'search' => $request->get( 'search' ),
-                'hhh' => function ( $kek1 ) use ( $searchString )
+                'highlight' => function ( $text ) use ( $searchString )
                 {
-                    return str_replace( $searchString, '<span style="background-color: lime; font-weight:bold">' . htmlentities( $searchString ) . '</span>', htmlentities( $kek1 ) );
+                    return str_replace( $searchString, '<span style="background-color: lime; font-weight:bold">' . htmlentities( $searchString ) . '</span>', htmlentities( $text ) );
                 }
             ]
         );
-    }
-
-    public function show(  )
-    {
-        dd('Nothing to show');
     }
 
     /**
