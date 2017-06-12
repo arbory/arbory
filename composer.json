@@ -14,7 +14,7 @@
         "laravel/framework": "^5.4",
         "laravelcollective/html": "^5.4.0",
         "doctrine/dbal": "^2.5",
-        "baum/baum": "^1.1",
+        "gazsp/baum": "~1.1",
         "components/jquery": "^3.2",
         "components/jqueryui": "1.12.*",
         "components/jquery-cookie": "1.4.*",
