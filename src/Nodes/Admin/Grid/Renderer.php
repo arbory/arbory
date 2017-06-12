@@ -101,7 +101,7 @@ class Renderer
             {
                 $li->addClass( 'collapsed' );
             }
-            
+
             $li->append(
                 Toolbox::create( $this->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $item->getKey() ] ) )->render()
             );
@@ -188,8 +188,8 @@ class Renderer
      */
     protected function getNodeCookie( $nodeId )
     {
-        $cookie = (array) json_decode( $_COOKIE[ self::COOKIE_NAME_NODES ] );
+        $cookie = (array) json_decode( array_get( $_COOKIE, self::COOKIE_NAME_NODES ) );
 
-        return (array) $cookie[ $nodeId ];
+        return (array) array_get( $cookie, $nodeId );
     }
 }
