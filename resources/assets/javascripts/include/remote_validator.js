@@ -10,7 +10,7 @@ var RemoteValidator = function( form )
     v.form = form;
     v.clicked_button = null;
 
-    v.form.on('click.rails', submit_elements_selector, function( event ) {
+    v.form.on('click', submit_elements_selector, function( event ) {
         var target = jQuery( event.target );
 
         // webkit sends inner button elements as event targets instead of the button
@@ -84,31 +84,34 @@ var RemoteValidator = function( form )
                 }
                 event_params.response = json_response;
 
-                var errors = [];
-                jQuery.each( json_response.errors, function( fieldName, fieldErrors )
+                let errors = [];
+
+                jQuery.each( json_response, function( fieldName, fieldErrors )
                 {
                     jQuery.each( fieldErrors, function( index, error )
                     {
-                        var error_object = {
-                            message         : error.message,
-                            errorCode       : error.error_code,
-                            fieldName       : fieldName
-                        };
-                        if('data' in error)
-                        {
-                            error_object.data = error.data;
+                        if (fieldName.indexOf('.') > -1) {
+                            fieldName = fieldName.split('.').join('[') + ']';
                         }
+
+                        let error_object = {
+                            message: error,
+                            fieldName: fieldName
+                        };
+
                         errors.push(error_object);
                     });
                 });
 
                 jQuery.each( errors, function( index, error )
                 {
-                    var field = null;
+                    let field = null;
 
-                    var eventTarget = null;
+                    let eventTarget = null;
 
-                    field = v.form.find( '[name="' + error.fieldName + '"],[name="' + error.fieldName + '[]"]' ).filter(':not([type="hidden"])').first();
+                    field = v.form.find(
+                        '[name="' + error.fieldName + '"],[name="' + error.fieldName + '[]"]' ).filter(':not([type="hidden"])'
+                    ).first();
 
                     event_params.error = error;
 
@@ -423,6 +426,22 @@ jQuery(function(){
         // validation initalized finished, add data attribute for it (used by automatized test, etc)
         form.attr("data-remote-validation-initialized", true);
 
+        jQuery('.main .primary .button.primary').click(event => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: form.serialize(),
+                beforeSend: xhr => {
+                    form.trigger('ajax:beforeSend', [ xhr])
+                },
+                complete: xhr => {
+                    form.trigger('ajax:complete', [xhr])
+                },
+            });
+        });
     });
 
     // attach remote validation to any new default forms after any content load

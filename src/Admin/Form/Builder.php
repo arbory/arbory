@@ -133,9 +133,9 @@ class Builder
             'accept-charset' => 'UTF-8',
             'method' => 'post',
             'action' => $this->getAction(),
-//            'data-remote' => 'true',
-//            'data-remote-validation' => 'true',
-//            'data-type' => 'json',
+            'data-remote' => 'true',
+            'data-remote-validation' => 'true',
+            'data-type' => 'json',
         ] );
 
         $form->append( csrf_field() );
