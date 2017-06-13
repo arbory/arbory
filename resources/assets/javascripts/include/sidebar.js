@@ -15,11 +15,6 @@ jQuery(function(){
         first_level_side_items.filter('.open').trigger('sidecompactitemclose');
     });
 
-    body.on('sidecompactchange', function()
-    {
-        first_level_side_items.trigger('collapsericonupdate');
-    });
-
     body.on('contentloaded', function(e)
     {
         var header = jQuery(e.target).find('header').addBack().filter('body > header');
@@ -72,18 +67,6 @@ jQuery(function(){
             item.trigger( event );
         });
 
-        first_level_side_items.on('collapsericonupdate', function()
-        {
-            var item = jQuery(this);
-            var collapsed = item.hasClass('collapsed');
-            var compact = body.hasClass('side-compact');
-            var collapser_icon = item.find('.collapser i');
-
-            collapser_icon.toggleClass('fa-chevron-down',  !compact && collapsed);
-            collapser_icon.toggleClass('fa-chevron-up',    !compact && !collapsed);
-            collapser_icon.toggleClass('fa-chevron-right', compact);
-        });
-
         sidebar.find('.compacter button').on('click', function()
         {
             var button = jQuery(this);
@@ -108,42 +91,5 @@ jQuery(function(){
             button.attr('title', button.data(title_attribute));
             body.trigger('sidecompactchange');
         });
-
-        body.trigger('sidecompactchange');
-
-        sidebar.find('> nav .collapser button').on('click', function(e)
-        {
-            if (body.hasClass('side-compact'))
-            {
-                return; // allow click to bubble up to trigger
-            }
-
-            var item = jQuery(this).closest('li');
-            e.stopPropagation();
-            item.toggleClass('collapsed');
-            jQuery(this).blur();
-
-            item.trigger('collapsericonupdate');
-
-            var collapsed = item.hasClass('collapsed');
-
-            var setting_key = 'releaf.menu.collapsed.' + item.data('name');
-            body.trigger( 'settingssave', [ setting_key, collapsed ]  );
-
-        });
-
-        sidebar.find('> nav span.trigger').click(function()
-        {
-            if (body.hasClass('side-compact'))
-            {
-                var item  = jQuery(this).closest('li');
-                item.trigger('sidecompacttoggle');
-            }
-            else
-            {
-                jQuery(this).find('.collapser button').trigger('click');
-            }
-        });
-
     });
 });

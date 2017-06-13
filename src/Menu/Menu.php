@@ -8,6 +8,8 @@ use Illuminate\Support\Collection;
 
 class Menu
 {
+    const COOKIE_NAME_MENU = 'menu';
+
     /**
      * @var Collection
      */
@@ -47,6 +49,10 @@ class Menu
 
         foreach( $this->getItems() as $item )
         {
+            $name = snake_case( $item->getTitle() );
+            $cookie = $this->getMenuItemCookie( $name );
+            $collapsed = array_get( $cookie, 'collapsed', true );
+
             /** @var AbstractItem $item */
             if( !$item )
             {
@@ -54,14 +60,27 @@ class Menu
             }
 
             $li = Html::li()
-                ->addAttributes( [ 'data-name' => '' ] );
+                ->addAttributes( [ 'data-name' => $name ] );
 
             if ( $item->isAccessible() )
             {
-                $list->append( $item->render( $li ) );
+                $list->append(
+                    $item->render( $li )->addClass( $collapsed ? 'collapsed' : '' )
+                );
             }
         }
 
         return $list;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed[]
+     */
+    protected function getMenuItemCookie( string $name )
+    {
+        $cookie = (array) json_decode( array_get( $_COOKIE, self::COOKIE_NAME_MENU ) );
+
+        return (array) array_get( $cookie, $name );
     }
 }

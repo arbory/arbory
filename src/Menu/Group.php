@@ -32,7 +32,7 @@ class Group extends AbstractItem
         foreach( $this->getChildren() as $child )
         {
             /** @var AbstractItem $child */
-            $li = Html::li()->addAttributes( [ 'data-name' => '' ] );
+            $li = Html::li()->addAttributes( [ 'data-name' => snake_case( $child->getTitle() ) ] );
 
             if( $child->isAccessible() )
             {
