@@ -52,6 +52,14 @@ class HasMany extends AbstractField
     /**
      * @return bool
      */
+    public function canSortRelationItems()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
     public function canRemoveRelationItems()
     {
         return true;

@@ -13,6 +13,22 @@ class Sortable {
         });
     }
 
+    manualSort(event) {
+        const itemSelector = 'fieldset.item';
+        let button = $(event.target);
+        let item = button.closest(itemSelector);
+
+        if (button.hasClass('move-down')) {
+            item.insertAfter(item.next(itemSelector));
+        }
+
+        if (button.hasClass('move-up')) {
+            item.insertBefore(item.prev(itemSelector));
+        }
+
+        this.update();
+    }
+
     setLocationInput(item, locationIndex) {
         let inputs = item.find('input');
 
@@ -42,7 +58,10 @@ jQuery(document).ready($ => {
         let container = $(this).find('.body:first');
         let sortable = new Sortable(field, container);
 
+        container.on('click', '.sortable-navigation .button', event => sortable.manualSort(event));
+
         container.on('DOMNodeInserted DOMNodeRemoved', () => sortable.update());
+
         container.sortable({
             items: '> .item',
             update: () => sortable.update(),

@@ -88,7 +88,7 @@ section.nested
         .item:not(tr)
         {
             border: 1px solid $color-border-normal;
-            padding: steps(1.5) 0;
+            padding: steps(2) 0;
             margin: 0 0 steps(2) 0;
             position: relative;
             background: $color-background-lightest;
@@ -124,6 +124,22 @@ section.nested
 
         }
 
+    }
+
+    .sortable-navigation {
+        position: absolute;
+        right: steps(3);
+        top: 0;
+        width: auto;
+        display: none;
+
+        .button {
+            float: left;
+        }
+
+        .sortable & {
+            display: block;
+        }
     }
 
     .remove-item-box

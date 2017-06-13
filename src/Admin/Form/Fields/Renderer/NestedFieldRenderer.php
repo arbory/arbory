@@ -115,6 +115,33 @@ class NestedFieldRenderer
     }
 
     /**
+     * @return Element
+     */
+    protected function getSortableNavigation()
+    {
+        if( !$this->field->canSortRelationItems() )
+        {
+            return null;
+        }
+
+        $navigation = Html::div()->addClass( 'sortable-navigation' );
+
+        $navigation->append( Button::create()
+            ->title( trans( 'leaf::fields.relation.moveDown' ) )
+            ->type( 'button', 'only-icon secondary move-down' )
+            ->withIcon( 'chevron-down' )
+            ->iconOnly() );
+
+        $navigation->append( Button::create()
+            ->title( trans( 'leaf::fields.relation.moveUp' ) )
+            ->type( 'button', 'only-icon secondary move-up' )
+            ->withIcon( 'chevron-up' )
+            ->iconOnly() );
+
+        return $navigation;
+    }
+
+    /**
      * @param FieldSet $fieldSet
      * @param $index
      * @return Element
@@ -132,6 +159,8 @@ class NestedFieldRenderer
         {
             $fieldSetHtml->append( $field->render() );
         }
+
+        $fieldSetHtml->append( $this->getSortableNavigation() );
 
         $fieldSetHtml->append(
             $this->getFieldSetRemoveButton( $fieldSet->getNamespace() . '._destroy' )
