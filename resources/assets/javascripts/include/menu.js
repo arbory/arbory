@@ -156,11 +156,9 @@ jQuery(document).ready(function () {
     let menu = new Menu(jQuery('aside nav > ul'));
 
     jQuery.each(menu.getItems(), (key, menuItem) => {
-        let element = menuItem.element;
-
         menuItem.updateIcon();
 
-        element.add(element.find('> nav span.trigger')).on('click', () => {
+        menuItem.element.find('.trigger:first').on('click', () => {
             menuItem.toggleItems();
             menuItem.updateIcon();
 
