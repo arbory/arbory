@@ -146,6 +146,51 @@ input.text
 }
 
 
+.link-body {
+    & > fieldset {
+        margin: 0;
+
+        .field {
+            margin-left: 0;
+
+            &.type-text {
+                width: 48%;
+
+                &:not(:first-child) {
+                    float: right;
+                }
+
+                .content-fields > .nested > .nested > .list > .item > .nested > & {
+                    width: 396px;
+                    float: left;
+
+                    &:not(:first-child) {
+                        margin-left: steps(2);
+                    }
+                }
+
+                section.nested section.nested & {
+                    width: 360px;
+                    float: left;
+
+                    &:not(:first-child) {
+                        margin-left: steps(2);
+                    }
+                }
+            }
+
+            &.type-boolean {
+                min-height: 0;
+
+                .value {
+                    padding-top: 0;
+                }
+            }
+        }
+    }
+}
+
+
 section.nested
 {
     // :TODO: figure out a way to avoid having to re-specify explicit widths for nested fields
