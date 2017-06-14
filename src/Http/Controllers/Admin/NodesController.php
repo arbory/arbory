@@ -114,8 +114,6 @@ class NodesController extends Controller
         $node = $tools->model();
 
         $tools->add( 'add_child', $this->url( 'dialog', [ 'dialog' => 'content_types', 'parent_id' => $node->getKey() ] ) )->dialog();
-        $tools->add( 'copy', $this->url( 'dialog', [ 'dialog' => 'copy', 'parent_id' => $node->getKey() ] ) )->dialog();
-        $tools->add( 'move', $this->url( 'dialog', [ 'dialog' => 'move', 'parent_id' => $node->getKey() ] ) )->dialog();
         $tools->add( 'delete', $this->url( 'dialog', [ 'dialog' => 'confirm_delete', 'id' => $node->getKey() ] ) )->danger()->dialog();
     }
 
