@@ -9,6 +9,7 @@ use CubeSystems\Leaf\Admin\Traits\Crudify;
 use CubeSystems\Leaf\Auth\Roles\Role;
 use CubeSystems\Leaf\Admin\Module;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 
@@ -31,7 +32,7 @@ class RolesController extends Controller
      */
     protected function form( Model $model )
     {
-        return $this->module()->form( $model, function ( Form $form )
+        $form = $this->module()->form( $model, function ( Form $form )
         {
             /**
              * @var $options Collection
@@ -44,6 +45,19 @@ class RolesController extends Controller
             $form->addField( new Text( 'name' ) );
             $form->addField( ( new Form\Fields\MultipleSelect( 'permissions' ) )->options( $options ) );
         } );
+
+        $form->addEventListener( 'validate.before', function(Request $request) use ( $model )
+        {
+            $resource = $request->input( 'resource' );
+            $request->merge( [ 'resource' => array_merge( $resource, [ 'permissions' => [] ] ) ] );
+        } );
+
+        $form->addEventListener( 'create.before', function() use ( $model )
+        {
+            $model->slug = str_slug( $model->name );
+        } );
+
+        return $form;
     }
 
     /**
