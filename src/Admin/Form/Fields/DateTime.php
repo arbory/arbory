@@ -11,6 +11,16 @@ use CubeSystems\Leaf\Html\Elements\Element;
 class DateTime extends Text
 {
     /**
+     * @param string $name
+     */
+    public function __construct( $name )
+    {
+        $this->value = date( 'Y-m-d H:m' );
+
+        parent::__construct( $name );
+    }
+
+    /**
      * @return Element
      */
     public function render()
