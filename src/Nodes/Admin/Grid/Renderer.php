@@ -84,6 +84,8 @@ class Renderer
                 ->addAttributes( [ 'type' => 'button' ] )
         )->addClass( 'collapser-cell' );
 
+        $items = $items->sortBy('lft');
+
         foreach( $items as $item )
         {
             $cookie = $this->getNodeCookie( $item->getKey() );
