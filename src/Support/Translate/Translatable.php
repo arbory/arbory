@@ -155,14 +155,13 @@ trait Translatable
 
     /**
      * @param string $key
-     *
      * @return mixed
      */
     public function getAttribute( $key )
     {
         list( $attribute, $locale ) = $this->getAttributeAndLocale( $key );
 
-        if( $this->isTranslationAttribute( $attribute ) )
+        if( $this->isTranslatableAttribute( $attribute ) )
         {
             if( $this->getTranslation( $locale ) === null )
             {
@@ -195,7 +194,7 @@ trait Translatable
     {
         list( $attribute, $locale ) = $this->getAttributeAndLocale( $key );
 
-        if( $this->isTranslationAttribute( $attribute ) )
+        if( $this->isTranslatableAttribute( $attribute ) )
         {
             $this->getTranslationOrNew( $locale )->$attribute = $value;
         }
@@ -284,7 +283,7 @@ trait Translatable
             else
             {
                 list( $attribute, $locale ) = $this->getAttributeAndLocale( $key );
-                if( $this->isTranslationAttribute( $attribute ) )
+                if( $this->isTranslatableAttribute( $attribute ) )
                 {
                     $this->getTranslationOrNew( $locale )->fill( [ $attribute => $values ] );
                     unset( $attributes[ $key ] );
@@ -367,7 +366,7 @@ trait Translatable
      *
      * @return bool
      */
-    public function isTranslationAttribute( $key )
+    public function isTranslatableAttribute( $key )
     {
         return in_array( $key, $this->translatedAttributes );
     }
@@ -479,7 +478,7 @@ trait Translatable
      */
     public function __isset( $key )
     {
-        return $this->isTranslationAttribute( $key ) || parent::__isset( $key );
+        return $this->isTranslatableAttribute( $key ) || parent::__isset( $key );
     }
 
     /**

@@ -175,18 +175,21 @@ class Column
      */
     protected function getValue( Model $model )
     {
-        $value = $model->getAttribute( $this->getName() );
-
         if( $this->relationName )
         {
+            if ( $this->relationName === 'translations' )
+            {
+                return $model->getTranslation( null, true )->getAttribute( $this->relationColumn );
+            }
+
             $relation = $model->getAttribute( $this->relationName );
 
-            $value = ( $relation instanceof Relation )
+            return ( $relation instanceof Relation )
                 ? $relation->getAttribute( $this->relationColumn )
                 : $relation;
         }
 
-        return $value;
+        return $model->getAttribute( $this->getName() );
     }
 
     /**
