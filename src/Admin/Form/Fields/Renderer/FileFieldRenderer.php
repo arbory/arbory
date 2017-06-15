@@ -60,7 +60,7 @@ class FileFieldRenderer extends InputFieldRenderer
      * @param LeafFile $file
      * @return Element
      */
-    private function createFileDetails( LeafFile $file ): Element
+    public function createFileDetails( LeafFile $file ): Element
     {
         $fileSize = ( new FileSize( $file ) )->getReadableSize();
         $fileDetails = Html::div( $file->getOriginalName() . ' / ' . $fileSize );

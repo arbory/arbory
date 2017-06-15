@@ -143,6 +143,12 @@ input.text
             }
         }
     }
+
+    &[data-name=photo] {
+        img {
+            max-width: 200px;
+        }
+    }
 }
 
 
