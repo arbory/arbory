@@ -13,6 +13,8 @@ use CubeSystems\Leaf\Html\Elements\Inputs\Textarea;
  * Class Html
  * @package CubeSystems\Leaf\Html
  *
+ * @method static Element   meta()
+ *
  * @method static Element   header( $content = null )
  * @method static Element   footer( $content = null )
  * @method static Element   section( $content = null )
