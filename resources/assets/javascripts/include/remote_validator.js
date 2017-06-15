@@ -352,7 +352,7 @@ var RemoteValidator = function( form )
 
     jQuery( document ).on( 'validation:ok validation:error validation:fail', 'form', function( event, validator )
     {
-        if (validator !== v || event.isDefaultPrevented() || !v.form[0])
+        if (validator !== v || !v.form[0])
         {
             return;
         }

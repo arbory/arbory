@@ -195,7 +195,7 @@ class Form implements Renderable
      * @param $requestType
      * @return Request|mixed
      */
-    protected function validate( Request $request, $requestType )
+    public function validate( Request $request, $requestType )
     {
         $requestClass = array_get( $this->requestClasses, $requestType );
 

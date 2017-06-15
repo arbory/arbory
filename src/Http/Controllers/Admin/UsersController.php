@@ -12,6 +12,7 @@ use CubeSystems\Leaf\Admin\Form\Fields\Password;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Auth\Users\User;
+use CubeSystems\Leaf\Http\Requests\UpdateUserRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -47,6 +48,8 @@ class UsersController extends Controller
             $form->addField( new BelongsToMany( 'roles' ) );
             $form->addField( new Password( 'password' ) );
         } );
+
+        $form->updateWith( UpdateUserRequest::class );
 
         $form->on( 'delete.before', function ( Form $form )
         {

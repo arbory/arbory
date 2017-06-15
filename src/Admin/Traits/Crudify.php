@@ -132,13 +132,19 @@ trait Crudify
     /**
      * @param Request $request
      * @param $resourceId
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update( Request $request, $resourceId )
     {
-        $resource = $this->findOrNew( $resourceId );
+        $resource = $this->findornew( $resourceId );
+        $form = $this->form( $resource );
 
-        $this->form( $resource )->update( $request );
+        if ( $request->ajax() )
+        {
+            return response()->json( $form->validate( $request, 'update' ) );
+        }
+
+        $form->update( $request );
 
         return redirect( $this->module()->url( 'index' ) );
     }
