@@ -1,6 +1,5 @@
 <?php
 
-use CubeSystems\Leaf\Http\Controllers\Admin\MenuBuilderController;
 use CubeSystems\Leaf\Http\Controllers\Admin\NodesController;
 use CubeSystems\Leaf\Http\Controllers\Admin\RolesController;
 use CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController;
@@ -68,11 +67,6 @@ class LeafDatabaseSeeder extends Seeder
             $table->insert( [
                 'title' => 'Nodes',
                 'module' => NodesController::class,
-            ] );
-
-            $table->insert( [
-                'title' => 'Menu',
-                'module' => MenuBuilderController::class,
             ] );
 
             $table->insert( [

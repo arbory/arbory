@@ -10,7 +10,6 @@ Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class );
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class );
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class );
-    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\MenuBuilderController::class );
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class );
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class );
 
