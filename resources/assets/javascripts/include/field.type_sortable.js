@@ -1,8 +1,9 @@
 
 class Sortable {
-    constructor(field, container) {
+    constructor(field, params) {
         this.field = field;
-        this.container = container;
+        this.container = field.find('.body:first');
+        this.sortable = this.container.sortable(params);
     }
 
     update() {
@@ -15,8 +16,11 @@ class Sortable {
 
     manualSort(event) {
         const itemSelector = 'fieldset.item';
-        let button = $(event.target);
+        let button = jQuery(event.target);
         let item = button.closest(itemSelector);
+        let text = item.find('textarea');
+        
+        text.trigger('richtextsuspend');
 
         if (button.hasClass('move-down')) {
             item.insertAfter(item.next(itemSelector));
@@ -25,6 +29,8 @@ class Sortable {
         if (button.hasClass('move-up')) {
             item.insertBefore(item.prev(itemSelector));
         }
+
+        text.trigger('richtextresume');
 
         this.update();
     }
@@ -50,19 +56,12 @@ class Sortable {
     }
 }
 
-jQuery(document).ready($ => {
-    let fields = $('.sortable');
+jQuery(document).ready(() => {
+    let fields = jQuery('.sortable');
 
     fields.each(function () {
-        let field = $(this);
-        let container = $(this).find('.body:first');
-        let sortable = new Sortable(field, container);
-
-        container.on('click', '.sortable-navigation .button', event => sortable.manualSort(event));
-
-        container.on('DOMNodeInserted DOMNodeRemoved', () => sortable.update());
-
-        container.sortable({
+        let field = jQuery(this);
+        let sortable = new Sortable(field, {
             items: '> .item',
             update: () => sortable.update(),
             stop: (event, ui) => {
@@ -72,5 +71,9 @@ jQuery(document).ready($ => {
                 ui.item.find('textarea').trigger('richtextsuspend');
             }
         });
+
+        sortable.container.on('click', '.sortable-navigation .button', event => sortable.manualSort(event));
+
+        sortable.container.on('DOMNodeInserted DOMNodeRemoved', () => sortable.update());
     });
 });
