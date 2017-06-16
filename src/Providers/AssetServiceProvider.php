@@ -4,20 +4,17 @@ namespace CubeSystems\Leaf\Providers;
 
 use CubeSystems\Leaf\Services\AssetPipeline;
 use Illuminate\Support\ServiceProvider;
-use View;
 
 class AssetServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton( AssetPipeline::class );
-
-        View::composer( '*layout*', function( \Illuminate\View\View $view )
+        \View::composer( '*layout*', function( \Illuminate\View\View $view )
         {
             /**
              * @var AssetPipeline $assetsPipeline
              */
-            $assetsPipeline = $this->app->make( AssetPipeline::class );
+            $assetsPipeline = \Admin::assets();
 
             $view->with( [
                 'assetsJs' => $assetsPipeline->getJs(),
