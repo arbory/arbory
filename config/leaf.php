@@ -21,8 +21,17 @@ return [
         'items_per_page' => 15,
     ],
 
-    'content_types' => [
-        \CubeSystems\Leaf\Pages\TextPage::class,
+    'fields' => [
+        'map_coordinates' => [
+            'zoom' => 12,
+            'coordinates' => [
+                'lat' => 56.94725473000847,
+                'lng' => 24.099142639160167,
+            ]
+        ],
+        'sprite_icon' => [
+            'path' => base_path( 'resources/assets/svg/icons.svg' ),
+        ],
     ],
 
     'auth' => [

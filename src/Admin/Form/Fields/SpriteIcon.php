@@ -13,6 +13,16 @@ class SpriteIcon extends Select
     protected $spritePath;
 
     /**
+     * @param string $name
+     */
+    public function __construct( $name )
+    {
+        $this->spritePath = config( 'leaf.fields.sprite_icon.path' );
+
+        parent::__construct( $name );
+    }
+
+    /**
      * @param string $path
      * @return SpriteIcon
      */
@@ -42,11 +52,6 @@ class SpriteIcon extends Select
     protected function getIconIds(): Collection
     {
         $ids = new Collection();
-
-        if( !$this->spritePath )
-        {
-            $this->spritePath = base_path( 'resources/assets/svg/icons.svg' );
-        }
 
         if( !file_exists( $this->spritePath ) )
         {

@@ -4,29 +4,32 @@ namespace CubeSystems\Leaf\Admin\Form\Fields;
 
 use CubeSystems\Leaf\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
 
-// TODO; should make lat, lng, zoom defaults configurable
 class MapCoordinates extends AbstractField
 {
     /**
      * @var int
      */
-    protected $zoom = 12;
+    protected $zoom;
 
     /**
      * @var float
      */
-    protected $latitude = 56.94725473000847;
+    protected $latitude;
 
     /**
      * @var float
      */
-    protected $longitude = 24.099142639160167;
+    protected $longitude;
 
     /**
      * @return string
      */
     public function render()
     {
+        $this->zoom = config( 'leaf.fields.map_coordinates.zoom' );
+        $this->latitude = config( 'leaf.fields.map_coordinates.coordinates.lat' );
+        $this->longitude = config( 'leaf.fields.map_coordinates.coordinates.lng' );
+
         return ( new MapCoordinatesFieldRenderer( $this ) )->render();
     }
 
