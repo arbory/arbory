@@ -136,6 +136,10 @@ class LeafServiceProvider extends ServiceProvider
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ] );
 
+        $router->middlewareGroup( 'web', [
+            \CubeSystems\Leaf\Http\Middleware\LeafRouteRedirectMiddleware::class
+        ] );
+
         $router->aliasMiddleware( 'leaf.admin_auth', LeafAdminAuthMiddleware::class );
         $router->aliasMiddleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
         $router->aliasMiddleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
