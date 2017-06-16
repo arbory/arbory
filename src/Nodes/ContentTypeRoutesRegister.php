@@ -122,6 +122,7 @@ class ContentTypeRoutesRegister
             'as' => 'node.' . $node->getKey() . '.',
             'prefix' => $slug,
             'namespace' => false,
+            'middleware' => 'web'
         ];
 
         $this->getRouter()->group( $attributes, $this->getContentTypeHandler( $node->getContentType() ) );

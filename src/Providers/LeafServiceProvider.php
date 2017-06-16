@@ -18,6 +18,7 @@ use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
 use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
+use CubeSystems\Leaf\Http\Middleware\LeafRouteRedirectMiddleware;
 use CubeSystems\Leaf\Menu\Menu;
 use CubeSystems\Leaf\Menu\MenuFactory;
 use CubeSystems\Leaf\Services\AssetPipeline;
@@ -139,6 +140,7 @@ class LeafServiceProvider extends ServiceProvider
         $router->aliasMiddleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
         $router->aliasMiddleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
         $router->aliasMiddleware( 'leaf.admin_has_access', LeafAdminHasAccessMiddleware::class );
+        $router->aliasMiddleware( 'leaf.route_redirect', LeafRouteRedirectMiddleware::class );
 
         $this->registerLeafRoutes();
         $this->registerAppRoutes();

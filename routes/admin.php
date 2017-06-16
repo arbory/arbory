@@ -12,6 +12,7 @@ Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class );
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class );
     Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class );
+    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\RedirectsController::class );
 
     Route::get( 'dashboard', [
         'as' => 'dashboard',
