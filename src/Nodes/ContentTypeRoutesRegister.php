@@ -78,6 +78,11 @@ class ContentTypeRoutesRegister
      */
     public function getCurrentNode()
     {
+        if ( !$this->getRouter()->getCurrentRoute() )
+        {
+            return null;
+        }
+
         $currentRouteName = $this->getRouter()->getCurrentRoute()->getName();
 
         if( !preg_match( '#^node\.(?P<id>.*?)\.#', $currentRouteName, $matches ) )
