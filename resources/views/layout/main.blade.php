@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link href="/leaf/css/application.css" media="all" rel="stylesheet"/>
         <link href="/leaf/css/controllers/nodes.css" media="all" rel="stylesheet"/>
-            <link href="/leaf/css/controllers/menu_builder.css" media="all" rel="stylesheet"/>
 
         @foreach($assetsCss as $asset)
             <link href="{{mix( $asset )}}" media="all" rel="stylesheet"/>

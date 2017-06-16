@@ -44,11 +44,6 @@ module.exports = function (mix) {
         './public/leaf/css/controllers/'
     );
 
-    mix.sass(
-        './vendor/cubesystems/leaf/resources/assets/stylesheets/controllers/menu_builder.scss',
-        './public/leaf/css/controllers/'
-    );
-
     mix.copyDirectory(
         './vendor/ckeditor/ckeditor/',
         './public/leaf/ckeditor/'
