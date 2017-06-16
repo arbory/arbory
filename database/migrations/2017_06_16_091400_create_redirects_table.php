@@ -16,8 +16,8 @@ class CreateRedirectsTable extends Migration
         {
             $table->timestamps();
             $table->increments( 'id' );
-            $table->string( 'from_url' );
-            $table->string( 'to_url' );
+            $table->text( 'from_url' );
+            $table->text( 'to_url' );
         } );
     }
 }
