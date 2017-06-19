@@ -34,6 +34,11 @@ abstract class AbstractField implements FieldInterface
     protected $fieldSet;
 
     /**
+     * @var string
+     */
+    protected $rules;
+
+    /**
      * AbstractField constructor.
      * @param string $name
      */
@@ -143,6 +148,25 @@ abstract class AbstractField implements FieldInterface
     public function setFieldSet( FieldSet $fieldSet )
     {
         $this->fieldSet = $fieldSet;
+
+        return $this;
+    }
+
+    /**
+     * @return string}null
+     */
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
+    /**
+     * @param string $rules
+     * @return $this
+     */
+    public function setRules( string $rules )
+    {
+        $this->rules = $rules;
 
         return $this;
     }

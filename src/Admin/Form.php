@@ -3,13 +3,17 @@
 namespace CubeSystems\Leaf\Admin;
 
 use CubeSystems\Leaf\Admin\Form\Builder;
+use CubeSystems\Leaf\Admin\Form\Fields\AbstractField;
 use CubeSystems\Leaf\Admin\Form\FieldSet;
 use CubeSystems\Leaf\Admin\Form\Fields\FieldInterface;
 use CubeSystems\Leaf\Admin\Traits\EventDispatcher;
 use CubeSystems\Leaf\Html\Elements\Element;
+use CubeSystems\Leaf\Http\Requests\FormValidationRequest;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class Form
@@ -204,7 +208,9 @@ class Form implements Renderable
             return app()->make( $requestClass );
         }
 
-        return $request;
+        $validator = \Validator::make( $request->input(), $this->getRules() );
+
+        return $validator->fails() ? $validator : $request;
     }
 
     /**
@@ -250,5 +256,21 @@ class Form implements Renderable
     public function render()
     {
         return $this->builder->render();
+    }
+
+    /**
+     * @return array
+     */
+    public function getRules()
+    {
+        $rules = [];
+
+        foreach( $this->fields as $field )
+        {
+            /** @var AbstractField $field */
+            $rules[ $field->getNameSpacedName() ] = $field->getRules();
+        }
+
+        return array_filter( $rules, 'strlen' );
     }
 }

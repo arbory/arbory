@@ -41,6 +41,17 @@ interface FieldInterface
     public function setValue( $value );
 
     /**
+     * @param string $rules
+     * @return $this
+     */
+    public function setRules( string $rules );
+
+    /**
+     * @return string|null
+     */
+    public function getRules();
+
+    /**
      * @return string
      */
     public function getLabel();
