@@ -144,9 +144,11 @@ input.text
         }
     }
 
-    &[data-name=photo] {
+    &.type-item {
         img {
-            max-width: 200px;
+            width: steps(5);
+            margin-right: steps(1);
+            float: left;
         }
     }
 }
