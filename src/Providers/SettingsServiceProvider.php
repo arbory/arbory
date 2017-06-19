@@ -35,6 +35,8 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $settingsPath = config_path( 'settings.php' );
+
         $this->app->singleton( SettingRegistry::class, function()
         {
             return new SettingRegistry();
@@ -47,7 +49,10 @@ class SettingsServiceProvider extends ServiceProvider
 
         $this->settingRegistry = $this->app[ SettingRegistry::class ];
 
-        $this->importFromConfig( include config_path( 'settings.php' ) );
+        if( file_exists( $settingsPath ) )
+        {
+            $this->importFromConfig( include $settingsPath );
+        }
     }
 
     /**
