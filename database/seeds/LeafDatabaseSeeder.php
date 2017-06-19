@@ -37,7 +37,6 @@ class LeafDatabaseSeeder extends Seeder
     public function run()
     {
         $this->seedLocales();
-        $this->seedMenuItems();
     }
 
     /**
@@ -50,46 +49,6 @@ class LeafDatabaseSeeder extends Seeder
             $this->languageRepository->create( [
                 'locale' => 'en',
                 'name' => 'English'
-            ] );
-        }
-    }
-
-    /**
-     * @return void
-     */
-    protected function seedMenuItems()
-    {
-        $connection = $this->databaseManager->connection();
-        $table = $connection->table( 'admin_menu_items' );
-
-        if ( !$table->first() )
-        {
-            $table->insert( [
-                'title' => 'Nodes',
-                'module' => NodesController::class,
-            ] );
-
-            $table->insert( [
-                'title' => 'Users',
-            ] );
-
-            $usersMenuItemId = $connection->getPdo()->lastInsertId();
-
-            $table->insert( [
-                'title' => 'Admin users',
-                'parent_id' => $usersMenuItemId,
-                'module' => UsersController::class,
-            ] );
-
-            $table->insert( [
-                'title' => 'Admin roles',
-                'parent_id' => $usersMenuItemId,
-                'module' => RolesController::class,
-            ] );
-
-            $table->insert( [
-                'title' => 'Translations',
-                'module' => TranslationsController::class,
             ] );
         }
     }
