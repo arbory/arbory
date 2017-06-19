@@ -62,7 +62,7 @@ jQuery(function()
             });
         }
 
-        textarea.ckeditor(config);
+        CKEDITOR.replace( this, config );
 
         textarea.on('richtextsuspend', function()
         {
