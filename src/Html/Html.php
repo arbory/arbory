@@ -48,6 +48,8 @@ use CubeSystems\Leaf\Html\Elements\Inputs\Textarea;
  * @method static Element   form( $content = null )
  * @method static Element   button( $content = null )
  * @method static Element   label( $content = null )
+ *
+ * @method static Element   svg( $content = null )
  */
 class Html
 {
