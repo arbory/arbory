@@ -58,6 +58,14 @@ class LeafFile extends Model
     /**
      * @return string
      */
+    public function getExtension()
+    {
+        return pathinfo( $this->getOriginalName(), PATHINFO_EXTENSION );
+    }
+
+    /**
+     * @return string
+     */
     public function getId()
     {
         return $this->id;
