@@ -75,15 +75,17 @@ class NestedFieldRenderer
             return null;
         }
 
+        $title = trans( 'leaf::fields.has_many.add_item', [ 'name' => $this->field->getName() ] );
+
         return Html::footer(
             Html::button( [
                 Html::i()->addClass( 'fa fa-plus' ),
-                trans( 'leaf::fields.has_many.add_item' ),
+                $title,
             ] )
                 ->addClass( 'button with-icon primary add-nested-item' )
                 ->addAttributes( [
                     'type' => 'button',
-                    'title' => trans( 'leaf::fields.has_many.add_item' ),
+                    'title' => $title,
                 ] )
         );
     }

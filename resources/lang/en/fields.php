@@ -2,7 +2,7 @@
 
 return [
     'has_many' => [
-        'add_item' => 'Add item',
+        'add_item' => 'Add :name item',
     ],
     'relation' => [
         'remove' => 'Remove item',
