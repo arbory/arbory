@@ -1,6 +1,5 @@
 
 const COOKIE_NAME_NODES = 'nodes';
-let body = jQuery('body.controller-nodes');
 
 class Node {
     constructor(element) {
@@ -96,82 +95,81 @@ class NodeStoreItem {
     }
 }
 
-body.ready($ => {
-    const token = $('[name=_token]:first').val();
-    let container = $('.collection');
-    let nodes = container.find('ul[data-level] > li');
+class SlugApiHandler {
+    constructor(apiUrl) {
+        this.apiUrl = apiUrl;
+    }
 
-    nodes.each(function () {
-        let node = new Node($(this));
+    create(string) {
+        return jQuery.get( this.apiUrl, { name: string } );
+    }
+}
 
-        node.element.on('click', '> .collapser-cell > .collapser', () => node.toggleChildVisibility());
-
-        node.makeSortable({
-            items: '> li',
-            stop: (event, ui) => {
-                node = new Node(ui.item);
-
-                jQuery.post('/admin/nodes/api/node_reposition', {
-                    _token: token,
-                    id: node.id,
-                    toLeftId: node.getLeftSibling().id,
-                    toRightId: node.getRightSibling().id
-                });
-            }
-        });
-    });
-});
-
-jQuery(function()
-{
-    var body = jQuery('body.controller-nodes');
-
-    body.on('contentloaded', function(e)
-    {
-        var block = jQuery(e.target);
-
-        // slug generation
-        var name_input  = block.find('.field[data-name="name"] input');
-        var slug_field  = block.find('.field[data-name="slug"]');
-
-        if (name_input.length && slug_field.length)
-        {
-            var slug_input  = slug_field.find('input');
-            var slug_button = slug_field.find('.generate');
-            var slug_link   = slug_field.find('a');
-
-            slug_input.on('sluggenerate', function()
-            {
-                var url = slug_input.attr('data-generator-url');
-
-                slug_button.trigger('loadingstart');
-                jQuery.get( url, { name: name_input.val() }, function( slug )
-                {
-                    slug_input.val( slug );
-                    slug_link.find('span').text( encodeURIComponent( slug ) );
-                    slug_button.trigger('loadingend');
-                }, 'text');
-            });
-
-            slug_button.click(function()
-            {
-                slug_input.trigger('sluggenerate');
-            });
-
-            if (name_input.val() === '')
-            {
-                // bind onchange slug generation only if starting out with an empty name
-                name_input.change(function()
-                {
-                    slug_input.trigger('sluggenerate');
-                });
-            }
-        }
-
-    });
+jQuery(document).ready(() => {
+    let body = jQuery('body.controller-nodes');
+    let collection = jQuery('.collection');
+    let form = jQuery('#edit-resource');
 
     body.on('click', '.dialog .node-cell label', function() {
         jQuery('.dialog .node-cell label').removeClass('selected');
         jQuery(this).addClass('selected');
+    });
+
+    collection.ready(() => {
+        const token = jQuery('[name=_token]:first').val();
+
+        let nodes = collection.find('ul[data-level] > li');
+
+        nodes.each(function () {
+            let node = new Node(jQuery(this));
+
+            node.element.on('click', '> .collapser-cell > .collapser', () => node.toggleChildVisibility());
+
+            node.makeSortable({
+                items: '> li',
+                stop: (event, ui) => {
+                    node = new Node(ui.item);
+
+                    jQuery.post('/admin/nodes/api/node_reposition', {
+                        _token: token,
+                        id: node.id,
+                        toLeftId: node.getLeftSibling().id,
+                        toRightId: node.getRightSibling().id
+                    });
+                }
+            });
+        });
+    });
+
+    form.ready(() => {
+        let slugField  = form.find('.field[data-name=slug]');
+
+        let nameInput = jQuery('#resource_name');
+        let slugInput = jQuery('#resource_slug');
+
+        let generateButton = slugField.find('.button.generate');
+        let slugLink = slugField.find('.link');
+
+        let slugApi = new SlugApiHandler(slugInput.data('generatorUrl'));
+
+        let updateSlugLink = () => {
+            slugLink.find('span').text(encodeURIComponent(slugInput.val()));
+        };
+
+        let generateSlug = () => {
+            slugApi.create(nameInput.val()).done((value) => {
+                slugInput.val(value);
+                updateSlugLink();
+            });
+        };
+
+        nameInput.on('blur', () => {
+            if (! slugInput.val().length) {
+                generateSlug();
+            }
+        });
+
+        generateButton.on('click', () => generateSlug());
+        slugInput.on('keyup', () => updateSlugLink());
     });
 });
