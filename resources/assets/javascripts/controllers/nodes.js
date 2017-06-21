@@ -153,7 +153,7 @@ jQuery(document).ready(() => {
         let slugApi = new SlugApiHandler(slugInput.data('generatorUrl'));
 
         let updateSlugLink = () => {
-            slugLink.find('span').text(encodeURIComponent(slugInput.val()));
+            slugLink.find('span:last').text(encodeURIComponent(slugInput.val()));
         };
 
         let generateSlug = () => {

@@ -35,7 +35,6 @@ class Slug extends AbstractField
     public function render()
     {
         $baseUrl = url( '/' );
-        $uri = $this->getModel()->getUri();
 
         $label = Html::label( $this->getLabel() )->addAttributes( [ 'for' => $this->getNameSpacedName() ] );
 
@@ -57,10 +56,39 @@ class Slug extends AbstractField
             Html::div( [ $input, $button ] )->addClass( 'value' ),
             Html::div(
                 Html::link(
-                    [ $baseUrl . '/' . Html::span( $uri ) ]
-                )->addAttributes( [ 'href' => $baseUrl . '/' . $uri ] )
+                    [ $baseUrl . '/' . Html::span( $this->getUriToSlug() ) . '/' . Html::span( $this->getSlug() ) ]
+                )->addAttributes( [ 'href' => $baseUrl . '/' . $this->getUri() ] )
             )->addClass( 'link' ),
         ] )->addClass( 'field type-text' )->addAttributes( [ 'data-name' => 'slug' ] );
     }
 
+    /**
+     * @return string
+     */
+    protected function getUri()
+    {
+        return $this->getModel()->getUri();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSlug()
+    {
+        $uriParts = explode( '/', $this->getUri() );
+
+        return end( $uriParts );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUriToSlug()
+    {
+        $uriParts = explode( '/', $this->getUri() );
+
+        array_pop( $uriParts );
+
+        return implode( '/', $uriParts );
+    }
 }
