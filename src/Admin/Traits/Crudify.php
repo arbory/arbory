@@ -106,7 +106,14 @@ trait Crudify
      */
     public function store( Request $request )
     {
-        $this->form( $this->resource() )->store( $request );
+        $form = $this->form( $this->resource() );
+
+        if ( $request->ajax() )
+        {
+            return response()->json( $form->validate( $request, 'store' ) );
+        }
+
+        $form->store( $request );
 
         return redirect( $this->module()->url( 'index' ) );
     }
