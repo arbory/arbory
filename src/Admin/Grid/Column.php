@@ -177,9 +177,16 @@ class Column
     {
         if( $this->relationName )
         {
-            if ( $this->relationName === 'translations' && $model->getTranslation( null, true ) )
+            if ( $this->relationName === 'translations' )
             {
-                return $model->getTranslation( null, true )->getAttribute( $this->relationColumn );
+                $translation = $model->getTranslation( null, true );
+
+                if ( !$translation )
+                {
+                    return null;
+                }
+
+                return $translation->getAttribute( $this->relationColumn );
             }
 
             $relation = $model->getAttribute( $this->relationName );
