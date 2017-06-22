@@ -55,7 +55,7 @@ class SpriteIcon extends Select
 
         if( !file_exists( $this->spritePath ) )
         {
-            throw new \InvalidArgumentException( 'Provided sprite-sheet doesn\'t exist' );
+            throw new \InvalidArgumentException( sprintf( 'Provided sprite-sheet [%s] doesn\'t exist', $this->spritePath ) );
         }
 
         $xml = simplexml_load_string( file_get_contents( $this->spritePath ) );
