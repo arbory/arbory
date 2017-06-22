@@ -89,10 +89,13 @@ class HasMany extends AbstractField
                 ->setValue( $model->getKey() )
         );
 
-        $fieldSet->prepend(
-            ( new Hidden( $model->getKeyName() ) )
-                ->setValue( $model->getKey() )
-        );
+        if( $this->isSortable() && $this->getOrderBy() )
+        {
+            $fieldSet->prepend(
+                ( new Hidden( $this->getOrderBy() ) )
+                    ->setValue( $model->{$this->getOrderBy()} )
+            );
+        }
 
         return $fieldSet;
     }
@@ -170,7 +173,7 @@ class HasMany extends AbstractField
      */
     protected function isSortable(): bool
     {
-        foreach($this->fieldSet->getFields() as $field)
+        foreach( $this->fieldSet->getFields() as $field )
         {
             if( $field instanceof Sortable && $field->getSortableField() === $this )
             {
