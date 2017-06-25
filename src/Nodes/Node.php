@@ -63,7 +63,12 @@ class Node extends \Baum\Node
      */
     public function parents()
     {
-        return $this->parentsQuery()->get();
+        if( !$this->relationLoaded( 'parents') )
+        {
+            $this->setRelation('parents', $this->parentsQuery()->get() );
+        }
+
+        return $this->getRelation('parents');
     }
 
     /**
