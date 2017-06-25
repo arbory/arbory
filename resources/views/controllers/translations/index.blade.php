@@ -26,8 +26,7 @@
                 @foreach($translations as $translation)
                     <tr>
                         <td>
-                            <a href="{{$translation->edit_url}}">{!! $highlight($translation->namespace) !!}
-                                ::{!! $highlight($translation->group) !!}</a>
+                            <a href="{{$translation->edit_url}}">{!! $highlight($translation->namespace) !!}::{!! $highlight($translation->group) !!}</a>
                         </td>
                         <td><a href="{{$translation->edit_url}}">{!! $highlight($translation->item) !!}</a></td>
                         @foreach($languages as $language)
