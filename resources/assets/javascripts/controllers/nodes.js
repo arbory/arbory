@@ -7,7 +7,10 @@ class Node {
 
         this.id = element.data('id');
         this.level = element.data('level');
-        this.store = NodeStore.get(this.id);
+    }
+
+    getStorage() {
+        return NodeStore.get(this.id);
     }
 
     makeSortable(params) {
@@ -15,7 +18,7 @@ class Node {
     }
 
     toggleChildVisibility() {
-        this.store.setCollapsed(! this.store.isCollapsed());
+        this.getStorage().setCollapsed(! this.getStorage().isCollapsed());
 
         if (this.isCollapsed()) {
             this.element.removeClass('collapsed');
@@ -55,17 +58,18 @@ class NodeStore {
         let stored = this.getStored();
 
         if (typeof stored[id] === 'undefined') {
-            stored[id] = new NodeStoreItem({id: id});
+            stored[id] = true;
+
             NodeStore.save(stored);
         }
 
-        return new NodeStoreItem(stored[id]);
+        return new NodeStoreItem(id, stored[id]);
     }
 
     static saveItem(store) {
         let stored = this.getStored();
 
-        stored[store.id] = store;
+        stored[store.id] = store.getContents();
 
         NodeStore.save(stored);
     }
@@ -76,17 +80,22 @@ class NodeStore {
 }
 
 class NodeStoreItem {
-    constructor(stored) {
-        this.id = stored.id;
-        this.collapsed = stored.collapsed;
+    constructor(id, contents = {}) {
+        this.id = id;
+        this.contents = contents;
+    }
+
+    getContents() {
+        return this.contents;
     }
 
     isCollapsed() {
-        return this.collapsed;
+        return this.contents;
     }
 
     setCollapsed(state) {
-        this.collapsed = state;
+        this.contents = state;
+
         this.save();
     }
 

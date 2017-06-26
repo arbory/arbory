@@ -37,7 +37,10 @@ class MenuItem {
         this.menu = menu;
         this.element = element;
         this.name = element.data('name');
-        this.stored = MenuStore.get(this.name);
+    }
+
+    getStorage() {
+        return MenuStore.get(this.name);
     }
 
     getChildBlockElement() {
@@ -112,17 +115,18 @@ class MenuStore {
         let stored = this.getStored();
 
         if (typeof stored[id] === 'undefined') {
-            stored[id] = new MenuStoreItem({id: id});
+            stored[id] = null;
+
             MenuStore.save(stored);
         }
 
-        return new MenuStoreItem(stored[id]);
+        return new MenuStoreItem(id, stored[id]);
     }
 
     static saveItem(store) {
         let stored = this.getStored();
 
-        stored[store.id] = store;
+        stored[store.id] = store.getContents();
 
         MenuStore.save(stored);
     }
@@ -133,17 +137,22 @@ class MenuStore {
 }
 
 class MenuStoreItem {
-    constructor(stored) {
-        this.id = stored.id;
-        this.collapsed = stored.collapsed;
+    constructor(id, contents = {}) {
+        this.id = id;
+        this.contents = contents;
+    }
+
+    getContents() {
+        return this.contents;
     }
 
     isCollapsed() {
-        return this.collapsed;
+        return this.contents;
     }
 
     setCollapsed(state) {
-        this.collapsed = state;
+        this.contents = state;
+
         this.save();
     }
 
@@ -162,8 +171,8 @@ jQuery(document).ready(function () {
             menuItem.toggleItems();
             menuItem.updateIcon();
 
-            if (! menu.isCompact()) {
-                menuItem.stored.setCollapsed(menuItem.isCollapsed());
+            if (! menu.isCompact() && menuItem.hasChildren()) {
+                menuItem.getStorage().setCollapsed(menuItem.isCollapsed());
             }
         });
     });

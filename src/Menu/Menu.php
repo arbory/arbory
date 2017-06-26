@@ -50,8 +50,12 @@ class Menu
         foreach( $this->getItems() as $item )
         {
             $name = snake_case( $item->getTitle() );
-            $cookie = $this->getMenuItemCookie( $name );
-            $collapsed = array_get( $cookie, 'collapsed', true );
+            $collapsed = $this->getMenuItemCookie( $name );
+
+            if( !$this->hasMenuItemCookie( $name ) )
+            {
+                $collapsed = true;
+            }
 
             /** @var AbstractItem $item */
             if( !$item )
@@ -74,13 +78,28 @@ class Menu
     }
 
     /**
+     * @return array
+     */
+    protected function getMenuCookie()
+    {
+        return (array) json_decode( array_get( $_COOKIE, self::COOKIE_NAME_MENU ) );
+    }
+
+    /**
      * @param string $name
-     * @return mixed[]
+     * @return bool
+     */
+    protected function hasMenuItemCookie( string $name )
+    {
+        return array_has( $this->getMenuCookie(), $name );
+    }
+
+    /**
+     * @param string $name
+     * @return bool
      */
     protected function getMenuItemCookie( string $name )
     {
-        $cookie = (array) json_decode( array_get( $_COOKIE, self::COOKIE_NAME_MENU ) );
-
-        return (array) array_get( $cookie, $name );
+        return array_get( $this->getMenuCookie(), $name );
     }
 }

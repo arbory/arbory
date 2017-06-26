@@ -88,7 +88,7 @@ class Renderer
 
         foreach( $items as $item )
         {
-            $cookie = $this->getNodeCookie( $item->getKey() );
+            $collapsed = $this->getNodeCookie( $item->getKey() );
             $children = $item->children;
             $hasChildren = ( $children && $children->count() );
 
@@ -99,7 +99,7 @@ class Renderer
                 ] )
                 ->addClass( ( ( $hasChildren ) ? 'has-children' : null ) );
 
-            if( array_get( $cookie, 'collapsed', false ) )
+            if( $collapsed )
             {
                 $li->addClass( 'collapsed' );
             }
@@ -186,12 +186,12 @@ class Renderer
 
     /**
      * @param string $nodeId
-     * @return mixed[]
+     * @return bool
      */
     protected function getNodeCookie( $nodeId )
     {
         $cookie = (array) json_decode( array_get( $_COOKIE, self::COOKIE_NAME_NODES ) );
 
-        return (array) array_get( $cookie, $nodeId );
+        return array_get( $cookie, $nodeId, true );
     }
 }
