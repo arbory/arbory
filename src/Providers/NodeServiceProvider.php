@@ -84,7 +84,7 @@ class NodeServiceProvider extends ServiceProvider
     {
         $path = base_path( 'routes/pages.php' );
 
-        if( !\FIle::exists( $path ) )
+        if( !\File::exists( $path ) )
         {
             return;
         }
