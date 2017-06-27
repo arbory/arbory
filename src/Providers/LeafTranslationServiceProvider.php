@@ -1,12 +1,22 @@
 <?php namespace CubeSystems\Leaf\Providers;
 
-use Waavi\Translation\TranslationServiceProvider;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Translation\Translator;
+use Waavi\Translation\Cache\RepositoryFactory;
+use Waavi\Translation\Commands\CacheFlushCommand;
+use Waavi\Translation\Commands\FileLoaderCommand;
+use Waavi\Translation\Loaders\CacheLoader;
+use Waavi\Translation\Loaders\DatabaseLoader;
+use Waavi\Translation\Repositories\LanguageRepository;
+use Waavi\Translation\Repositories\TranslationRepository;
+
 
 /**
  * Class LeafTranslationServiceProvider
  * @package CubeSystems\Leaf\Providers
  */
-class LeafTranslationServiceProvider extends TranslationServiceProvider
+class LeafTranslationServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
@@ -15,10 +25,16 @@ class LeafTranslationServiceProvider extends TranslationServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom( $this->getTranslatorConfigPath(), 'translator' );
         $this->registerCacheRepository();
+        $this->registerLoader();
 
-        \Illuminate\Translation\TranslationServiceProvider::register();
+        $this->app->singleton( 'translator', function ( Application $app )
+        {
+            $trans = new Translator( $app['translation.loader'], $app->getLocale() );
+            $trans->setFallback( config( 'app.fallback_locale' ) );
+
+            return $trans;
+        } );
 
         $this->registerFileLoader();
         $this->registerCacheFlusher();
@@ -27,10 +43,77 @@ class LeafTranslationServiceProvider extends TranslationServiceProvider
     }
 
     /**
-     * @return string
+     *  IOC alias provided by this Service Provider.
+     *
+     * @return array
      */
-    private function getTranslatorConfigPath(): string
+    public function provides()
     {
-        return $this->app->basePath( 'vendor/waavi/translation/config/translator.php' );
+        return [ 'translation.cache.repository', 'translation.loader' ];
+    }
+
+    /**
+     *  Register the translation cache repository
+     *
+     * @return void
+     */
+    public function registerCacheRepository()
+    {
+        $this->app->singleton( 'translation.cache.repository', function ( $app )
+        {
+            return RepositoryFactory::make(
+                $app['cache']->getStore(),
+                'translations'
+            );
+        } );
+    }
+
+    /**
+     * Register the translation line loader.
+     *
+     * @return void
+     */
+    protected function registerLoader()
+    {
+        $this->app->singleton( 'translation.loader', function ( Application $app )
+        {
+            $defaultLocale = $app->getLocale();
+
+            $loader = new DatabaseLoader( $defaultLocale, $app->make( TranslationRepository::class ) );
+            $loader = new CacheLoader( $defaultLocale, $app['translation.cache.repository'], $loader, config( 'translator.cache.timeout', 60 ) );
+
+            return $loader;
+        } );
+    }
+
+    /**
+     * Register the translator:load language file loader.
+     *
+     * @return void
+     */
+    protected function registerFileLoader()
+    {
+        $app = $this->app;
+        $defaultLocale = config( 'app.locale' );
+        $languageRepository = $app->make( LanguageRepository::class );
+        $translationRepository = $app->make( TranslationRepository::class );
+        $translationsPath = base_path( 'resources/lang' );
+        $command = new FileLoaderCommand( $languageRepository, $translationRepository, $app['files'], $translationsPath, $defaultLocale );
+
+        $this->app['command.translator:load'] = $command;
+        $this->commands( 'command.translator:load' );
+    }
+
+    /**
+     *  Flushes the translation cache
+     *
+     * @return void
+     */
+    public function registerCacheFlusher()
+    {
+        $command = new CacheFlushCommand( $this->app['translation.cache.repository'], true );
+
+        $this->app['command.translator:flush'] = $command;
+        $this->commands( 'command.translator:flush' );
     }
 }
