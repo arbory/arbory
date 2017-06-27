@@ -79,13 +79,18 @@ class Builder
      */
     protected function header()
     {
+        $toolbox = null;
+
+        if( $this->form->getModel()->getKey() )
+        {
+            $toolbox = Toolbox::create(
+                $this->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $this->form->getModel()->getKey() ] )
+            )->render();
+        }
+
         return Html::header( [
             Html::h1( $this->form->getTitle() ),
-            Html::div(
-                Toolbox::create(
-                    $this->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $this->form->getModel()->getKey() ] )
-                )->render()
-            )->addClass( 'extras toolbox-wrap' )
+            Html::div( $toolbox )->addClass( 'extras toolbox-wrap' )
         ] );
     }
 
