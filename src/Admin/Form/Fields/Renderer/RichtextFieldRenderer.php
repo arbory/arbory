@@ -21,6 +21,11 @@ class RichtextFieldRenderer extends TextareaFieldRenderer
     protected $attachmentsUploadUrl;
 
     /**
+     * @var bool
+     */
+    protected $compact = false;
+
+    /**
      * @param $url
      * @return RichtextFieldRenderer
      */
@@ -40,8 +45,37 @@ class RichtextFieldRenderer extends TextareaFieldRenderer
         $textarea->addClass( 'richtext' );
         $textarea->addAttributes( [
             'data-attachment-upload-url' => $this->attachmentsUploadUrl,
-        ] );
+        ]);
+
+
+        if ( $this->isCompact() )
+        {
+            $textarea->addClass( 'compact' );
+        }
+        else
+        {
+            $textarea->addClass( 'full' );
+        }
 
         return $textarea;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCompact(): bool
+    {
+        return $this->compact;
+    }
+
+    /**
+     * @param bool $compact
+     * @return self
+     */
+    public function setCompact( bool $compact )
+    {
+        $this->compact = $compact;
+
+        return $this;
     }
 }
