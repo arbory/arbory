@@ -15,8 +15,6 @@ class DateTime extends Text
      */
     public function __construct( $name )
     {
-        $this->value = date( 'Y-m-d H:m' );
-
         parent::__construct( $name );
     }
 
