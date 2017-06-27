@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Menu;
 
 use CubeSystems\Leaf\Admin\Admin;
+use Waavi\Translation\Repositories\TranslationRepository;
 
 class MenuItemFactory
 {
@@ -12,11 +13,18 @@ class MenuItemFactory
     protected $admin;
 
     /**
-     * @param Admin $admin
+     * @var TranslationRepository
      */
-    public function __construct( Admin $admin )
+    protected $translations;
+
+    /**
+     * @param Admin $admin
+     * @param TranslationRepository $translations
+     */
+    public function __construct( Admin $admin, TranslationRepository $translations )
     {
         $this->admin = $admin;
+        $this->translations = $translations;
     }
 
     /**
@@ -61,8 +69,29 @@ class MenuItemFactory
     protected function getMenuItemName( $definition ): string
     {
         $name = is_array( $definition ) ? $definition[ 0 ] : $definition;
-        $name = str_replace( [ '_', 'controller' ], ' ', snake_case( class_basename( $name ) ) );
+        $name = str_replace('Controller', '', class_basename( $name ) );
+        $name = snake_case( $name );
+        $key = 'leaf::modules.' . $name;
 
-        return title_case( $name );
+        $translated = trans( $key );
+
+        if( $translated === $key )
+        {
+            $generatedText = title_case( str_replace( '_', ' ', $name ) );
+
+            $this->translations->create( [
+                'locale' => \App::getLocale(),
+                'namespace' => 'leaf',
+                'group' => 'modules',
+                'item' => $name,
+                'text' => $generatedText,
+            ] );
+
+            return $generatedText;
+        }
+
+        return $translated;
     }
+
+
 }
