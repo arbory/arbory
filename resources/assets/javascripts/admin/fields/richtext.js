@@ -1,5 +1,5 @@
 
-const CKEDITOR_CONFIG = {
+export const CKEDITOR_CONFIG = {
     language: 'en',
     entities_latin: false,
     forcePasteAsPlainText: true,
@@ -10,13 +10,7 @@ const CKEDITOR_CONFIG = {
     extraPlugins: 'embed',
 };
 
-CKEDITOR.basePath = '/leaf/ckeditor/';
-
-CKEDITOR.on('instanceReady', function(e) {
-    jQuery(e.editor.element.$).addClass("ckeditor-initialized");
-});
-
-export class RichText {
+export default class RichText {
     constructor(element, config = {}) {
         this.element = element;
         this.config = config;
@@ -107,18 +101,3 @@ export class RichText {
         return CKEDITOR_CONFIG;
     }
 }
-
-let body = jQuery('body');
-
-body.on('richtextinit', 'textarea.richtext', function (event, config) {
-    new RichText(this, config);
-});
-
-body.on('contentloaded', function (e) {
-    let block = jQuery(e.target);
-    let textareas = block.is('textarea.richtext') ? block : block.find('textarea.richtext');
-    // remove textareas that need not be initialized automatically
-    textareas = textareas.not('.template textarea, textarea.manual-init');
-
-    textareas.trigger('richtextinit');
-});

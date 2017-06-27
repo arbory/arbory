@@ -16,16 +16,16 @@ module.exports = function (mix) {
         './public/leaf/js/vendor.min.js'
     );
 
-    // mix.js(
-    //     './vendor/cubesystems/leaf/resources/assets/javascripts/application.js',
-    //     './public/leaf/js/application.js'
-    // );
+    mix.js(
+        './vendor/cubesystems/leaf/resources/assets/javascripts/admin.js',
+        './public/leaf/js'
+    );
 
     mix.scripts([
             './vendor/cubesystems/leaf/resources/assets/javascripts/environment.js',
             './public/leaf/js/vendor.min.js',
             './public/leaf/js/dependencies.min.js',
-            // './public/leaf/js/application.js'
+            './public/leaf/js/admin.js'
         ],
         './public/leaf/js/application.js'
     );
