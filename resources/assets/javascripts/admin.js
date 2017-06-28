@@ -3,25 +3,29 @@ import 'admin/ckeditor';
 import RichText from 'admin/fields/richtext';
 import CompactRichText from "./admin/fields/compact_richtext";
 
+export function initializeRichText(using, config ={}, className = '') {
+    for (let textArea of document.querySelectorAll('textarea.richtext')) {
+        if (textArea.classList.contains(className) && !(textArea.id in CKEDITOR.instances)) {
+            new using(textArea, config);
+        }
+    }
+}
+
+export function initializeFullRichText(config = {}, using = RichText) {
+    initializeRichText(using, config, 'full');
+}
+
+export function initializeCompactRichText(config = {}, using = CompactRichText) {
+    initializeRichText(using, config, 'compact');
+}
+
 let body = jQuery('body');
 
-// TODO: remove events
-
-jQuery('textarea.richtext').on('richtextinit', function(event, config) {
-    let textArea = jQuery(this);
-
-    if (textArea.hasClass('compact')) {
-        new CompactRichText(this, config);
-    } else {
-        new RichText(this, config);
-    }
+body.on('richtextinit nestedfieldsitemadd', () => {
+    initializeFullRichText();
+    initializeCompactRichText();
 });
 
-body.on('contentloaded', function (e) {
-    let block = jQuery(e.target);
-    let textareas = block.is('textarea.richtext') ? block : block.find('textarea.richtext');
-    // remove textareas that need not be initialized automatically
-    textareas = textareas.not('.template textarea, textarea.manual-init');
-
-    textareas.trigger('richtextinit');
+body.ready(() => {
+    body.trigger('richtextinit');
 });
