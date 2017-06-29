@@ -91,7 +91,8 @@ var RemoteValidator = function( form )
                     jQuery.each( fieldErrors, function( index, error )
                     {
                         if (fieldName.indexOf('.') > -1) {
-                            fieldName = fieldName.split('.').join('[') + ']';
+                            let nameParts = fieldName.split('.');
+                            fieldName = nameParts.shift() + '[' + nameParts.join('][') + ']';
                         }
 
                         let error_object = {

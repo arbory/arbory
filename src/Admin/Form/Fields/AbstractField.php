@@ -29,6 +29,11 @@ abstract class AbstractField implements FieldInterface
     protected $label;
 
     /**
+     * @var array
+     */
+    protected $rules = [];
+
+    /**
      * @var FieldSet
      */
     protected $fieldSet;
@@ -157,6 +162,25 @@ abstract class AbstractField implements FieldInterface
             : null;
 
         $this->getModel()->setAttribute( $this->getName(), $value );
+    }
+
+    /**
+     * @param string $rules
+     * @return FieldInterface
+     */
+    public function rules( string $rules ): FieldInterface
+    {
+        $this->rules = array_merge( $this->rules, explode( '|', $rules ) );
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRules(): array
+    {
+        return [ $this->getNameSpacedName() => implode( '|', $this->rules ) ];
     }
 
     /**

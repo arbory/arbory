@@ -81,8 +81,21 @@ class Translatable extends AbstractField
      */
     public function getTranslatableResource( $locale )
     {
-        $fieldSet = new FieldSet(
+        return $this->getLocaleFieldSet(
             $this->getModel()->translateOrNew( $locale ),
+            $locale
+        );
+    }
+
+    /**
+     * @param $model
+     * @param $locale
+     * @return FieldSet
+     */
+    protected function getLocaleFieldSet( $model, $locale )
+    {
+        $fieldSet = new FieldSet(
+            $model,
             $this->getNameSpacedName() . '.' . $locale
         );
 
@@ -117,5 +130,22 @@ class Translatable extends AbstractField
                 $field->afterModelSave( $request );
             }
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getRules(): array
+    {
+        $rules = [];
+
+        $translationsClass = $this->getModel()->getTranslationModelName();
+
+        foreach( $this->getLocaleFieldSet( new $translationsClass, '*' )->getFields() as $field )
+        {
+            $rules = array_merge( $rules, $field->getRules() );
+        }
+
+        return $rules;
     }
 }

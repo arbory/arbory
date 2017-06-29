@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Admin;
 use CubeSystems\Leaf\Admin\Form\Builder;
 use CubeSystems\Leaf\Admin\Form\FieldSet;
 use CubeSystems\Leaf\Admin\Form\Fields\FieldInterface;
+use CubeSystems\Leaf\Admin\Form\Validator;
 use CubeSystems\Leaf\Admin\Traits\EventDispatcher;
 use CubeSystems\Leaf\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
@@ -41,9 +42,9 @@ class Form implements Renderable
     protected $builder;
 
     /**
-     * @var array
+     * @var Validator
      */
-    protected $requestClasses = [];
+    protected $validator;
 
     /**
      * Form constructor.
@@ -55,6 +56,7 @@ class Form implements Renderable
         $this->model = $model;
         $this->fields = new FieldSet( $model, 'resource' );
         $this->builder = new Builder( $this );
+        $this->validator = app( Validator::class );
 
         $callback( $this );
 
@@ -127,12 +129,9 @@ class Form implements Renderable
      */
     public function store( Request $request )
     {
-        $this->trigger( 'validate.before', $request );
-
-        $this->validate( $request, 'store' );
-
         $this->trigger( 'create.before', $request );
 
+        $this->validate();
         $this->model->save();
 
         $this->trigger( 'create.after', $request );
@@ -145,10 +144,9 @@ class Form implements Renderable
      */
     public function update( Request $request )
     {
-        $this->validate( $request, 'update' );
-
         $this->trigger( 'update.before', $request );
 
+        $this->validate();
         $this->model->save();
 
         $this->trigger( 'update.after', $request );
@@ -169,46 +167,16 @@ class Form implements Renderable
     }
 
     /**
-     * @param $requestClass
-     * @return $this
+     * @return void
      */
-    public function storeWith( $requestClass )
+    public function validate()
     {
-        $this->requestClasses['store'] = $requestClass;
-
-        return $this;
+        $this->validator->setRules( $this->fields->getRules() );
+        $this->validator->validate();
     }
 
     /**
-     * @param $requestClass
-     * @return $this
-     */
-    public function updateWith( $requestClass )
-    {
-        $this->requestClasses['update'] = $requestClass;
-
-        return $this;
-    }
-
-    /**
-     * @param Request $request
-     * @param $requestType
-     * @return Request|mixed
-     */
-    public function validate( Request $request, $requestType )
-    {
-        $requestClass = array_get( $this->requestClasses, $requestType );
-
-        if( $requestClass )
-        {
-            return app()->make( $requestClass );
-        }
-
-        return $request;
-    }
-
-    /**
-     *
+     * @return void
      */
     protected function registerEventListeners()
     {

@@ -60,6 +60,21 @@ class FieldSet extends Collection
     }
 
     /**
+     *
+     */
+    public function getRules()
+    {
+        $rules = [];
+
+        foreach( $this->all() as $field )
+        {
+            $rules = array_merge( $rules, $field->getRules() );
+        }
+
+        return $rules;
+    }
+
+    /**
      * @param FieldInterface $field
      * @param null $key
      * @return FieldSet|Collection
@@ -91,6 +106,14 @@ class FieldSet extends Collection
         $field->setFieldSet( $this );
 
         parent::offsetSet( $key, $field );
+    }
+
+    /**
+     * @return array|FieldInterface[]
+     */
+    public function all()
+    {
+        return parent::all();
     }
 
 }
