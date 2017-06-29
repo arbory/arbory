@@ -8,6 +8,7 @@ export const CKEDITOR_CONFIG = {
     format_tags: 'p;h2;h3',
     toolbar: [['Bold', 'Italic'], ['Format'], ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], ['Subscript', 'Superscript'], ['NumberedList', 'BulletedList'], ['Link', 'Unlink', 'Anchor', 'Image', 'Embed'], ['Source', 'Maximize', 'ShowBlocks']],
     extraPlugins: 'embed',
+    embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}'
 };
 
 export default class RichText {
