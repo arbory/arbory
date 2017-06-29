@@ -30,6 +30,7 @@ use File;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Roboc\Glide\GlideImageServiceProvider;
@@ -125,7 +126,10 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerRoutesAndMiddlewares()
     {
-        $router = $this->app['router'];
+        /**
+         * @var Router $router
+         */
+        $router = $this->app[ 'router' ];
 
         $router->middlewareGroup( 'admin', [
             \App\Http\Middleware\EncryptCookies::class,
@@ -136,9 +140,7 @@ class LeafServiceProvider extends ServiceProvider
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ] );
 
-        $router->middlewareGroup( 'web', [
-            \CubeSystems\Leaf\Http\Middleware\LeafRouteRedirectMiddleware::class
-        ] );
+        $router->pushMiddlewareToGroup( 'web', \CubeSystems\Leaf\Http\Middleware\LeafRouteRedirectMiddleware::class );
 
         $router->aliasMiddleware( 'leaf.admin_auth', LeafAdminAuthMiddleware::class );
         $router->aliasMiddleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
