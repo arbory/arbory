@@ -68,6 +68,17 @@ interface FieldInterface
     public function getModel();
 
     /**
+     * @param string $rules
+     * @return FieldInterface
+     */
+    public function rules( string $rules ): FieldInterface;
+
+    /**
+     * @return array
+     */
+    public function getRules(): array;
+
+    /**
      * @param Request $request
      */
     public function beforeModelSave( Request $request );

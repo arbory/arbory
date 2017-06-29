@@ -41,15 +41,13 @@ class UsersController extends Controller
     {
         $form = $this->module()->form( $model, function ( Form $form ) use ( $model )
         {
-            $form->addField( new Text( 'first_name' ) );
-            $form->addField( new Text( 'last_name' ) );
-            $form->addField( new Text( 'email' ) );
+            $form->addField( new Text( 'first_name' ) )->rules('required');
+            $form->addField( new Text( 'last_name' ) )->rules('required');
+            $form->addField( new Text( 'email' ) )->rules('required');
             $form->addField( new Boolean( 'active' ) )->setValue( Activation::completed( $model ) );
             $form->addField( new BelongsToMany( 'roles' ) );
-            $form->addField( new Password( 'password' ) );
+            $form->addField( new Password( 'password' ) )->rules('required|min:6|confirmed');
         } );
-
-        $form->updateWith( UpdateUserRequest::class );
 
         $form->on( 'delete.before', function ( Form $form )
         {
