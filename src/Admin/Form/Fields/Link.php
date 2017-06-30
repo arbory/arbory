@@ -15,8 +15,8 @@ class Link extends HasOne
     {
         $fieldSetCallback = function( FieldSet $fieldSet )
         {
-            $fieldSet->add( new Text( 'href' ) );
-            $fieldSet->add( new Text( 'title' ) );
+            $fieldSet->add( new Text( 'href' ) )->rules('required');
+            $fieldSet->add( new Text( 'title' ) )->rules('required');
             $fieldSet->add( new Checkbox( 'new_tab' ) );
         };
 

@@ -102,4 +102,18 @@ class HasOne extends AbstractRelationField
         }
     }
 
+    /**
+     * @return array
+     */
+    public function getRules(): array
+    {
+        $rules = [];
+
+        foreach( $this->getRelationFieldSet( $this->getRelatedModel() )->getFields() as $field )
+        {
+            $rules = array_merge( $rules, $field->getRules() );
+        }
+
+        return $rules;
+    }
 }
