@@ -131,7 +131,6 @@ class Form implements Renderable
     {
         $this->trigger( 'create.before', $request );
 
-        $this->validate();
         $this->model->save();
 
         $this->trigger( 'create.after', $request );
@@ -146,7 +145,6 @@ class Form implements Renderable
     {
         $this->trigger( 'update.before', $request );
 
-        $this->validate();
         $this->model->save();
 
         $this->trigger( 'update.after', $request );
@@ -167,12 +165,16 @@ class Form implements Renderable
     }
 
     /**
-     * @return void
+     * @return Validator
      */
     public function validate()
     {
+        $this->trigger( 'validate.before', request() );
+
         $this->validator->setRules( $this->fields->getRules() );
         $this->validator->validate();
+
+        return $this->validator;
     }
 
     /**

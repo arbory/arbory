@@ -106,7 +106,16 @@ trait Crudify
      */
     public function store( Request $request )
     {
-        $this->form( $this->resource() )->store( $request );
+        $form = $this->form( $this->resource() );
+
+        $form->validate();
+
+        if( $request->ajax() )
+        {
+            return response()->json( [ 'ok' ] );
+        }
+
+        $form->store( $request );
 
         return redirect( $this->module()->url( 'index' ) );
     }
@@ -136,9 +145,16 @@ trait Crudify
      */
     public function update( Request $request, $resourceId )
     {
-        $resource = $this->findornew( $resourceId );
+        $resource = $this->findOrNew( $resourceId );
+        $form = $this->form( $resource );
+        $form->validate();
 
-        $this->form( $resource )->update( $request );
+        if( $request->ajax() )
+        {
+            return response()->json( [ 'ok' ] );
+        }
+
+        $form->update( $request );
 
         return redirect( $this->module()->url( 'index' ) );
     }
