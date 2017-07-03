@@ -1,7 +1,7 @@
 
 import 'admin/ckeditor';
-import RichText from 'admin/fields/richtext';
-import CompactRichText from "./admin/fields/compact_richtext";
+import RichText from 'admin/fields/RichText';
+import CompactRichText from "./admin/fields/CompactRichtText";
 import IconPicker from "./admin/fields/IconPicker";
 
 export function initializeRichText(using, config ={}, className = '') {
