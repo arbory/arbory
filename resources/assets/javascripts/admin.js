@@ -2,6 +2,7 @@
 import 'admin/ckeditor';
 import RichText from 'admin/fields/richtext';
 import CompactRichText from "./admin/fields/compact_richtext";
+import IconPicker from "./admin/fields/IconPicker";
 
 export function initializeRichText(using, config ={}, className = '') {
     for (let textArea of document.querySelectorAll('textarea.richtext')) {
@@ -28,4 +29,8 @@ body.on('richtextinit nestedfieldsitemadd', () => {
 
 body.ready(() => {
     body.trigger('richtextinit');
+
+    body.find('.type-icon-picker').each((key, element) => {
+        new IconPicker(element);
+    });
 });

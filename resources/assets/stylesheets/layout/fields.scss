@@ -151,6 +151,77 @@ input.text
             float: left;
         }
     }
+
+    &.type-icon-picker {
+        select {
+            display: none;
+        }
+
+        .value > .contents {
+            position: relative;
+
+            .icon {
+                svg {
+                    width: steps(2);
+                    height: steps(2);
+                }
+            }
+
+            .element {
+                height: steps(2);
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: steps(1);
+                right: steps(1);
+                margin: auto;
+
+                & > span:last-child {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                    padding-left: steps(1);
+                }
+            }
+
+            .selected {
+                user-select: none;
+                height: steps(3);
+                border: 1px solid $color-border-normal;
+            }
+
+            .items {
+                margin-top: -1px;
+                position: absolute;
+                left: 0;
+                right: 0;
+                z-index: 10;
+                padding: 0;
+                border: 1px solid $color-border-normal;
+                background-color: white;
+                height: steps(24);
+                overflow-x: auto;
+                display: none;
+
+                &.active {
+                    display: block;
+                }
+
+                li {
+                    cursor: default;
+                    position: relative;
+                    list-style: none;
+                    height: steps(3);
+
+                    &:hover {
+                        color: white;
+                        background-color: $color-highlight-normal;
+                    }
+                }
+            }
+        }
+    }
 }
 
 

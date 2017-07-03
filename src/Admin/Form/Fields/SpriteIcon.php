@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Admin\Form\Fields;
 
+use CubeSystems\Leaf\Admin\Form\Fields\Renderer\IconPickerRenderer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -46,6 +47,36 @@ class SpriteIcon extends Select
     }
 
     /**
+     * @param string $iconId
+     * @return null|\SimpleXMLElement
+     */
+    public function getIconContent( $iconId )
+    {
+        $xml = simplexml_load_string( file_get_contents( $this->spritePath ) );
+
+        foreach( $xml->children()->symbol as $node )
+        {
+            /** @var \SimpleXMLElement $node */
+            $id = null;
+
+            foreach( $node->attributes() as $attributeName => $attributeValue )
+            {
+                if( $attributeName === 'id' )
+                {
+                    $id = (string) $attributeValue;
+                }
+            }
+
+            if( $id === $iconId )
+            {
+                return $node;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return Collection
      * @throws \InvalidArgumentException
      */
@@ -80,6 +111,15 @@ class SpriteIcon extends Select
         }
 
         return $ids;
+    }
+
+    /**
+     * @return \CubeSystems\Leaf\Html\Elements\Element
+     * @throws \InvalidArgumentException
+     */
+    public function render()
+    {
+        return ( new IconPickerRenderer( $this, $this->getOptions() ) )->render();
     }
 
     /**
