@@ -15,6 +15,14 @@ export default class IconPicker {
         let selected = picker.find('.selected');
         let items = picker.find('.items');
 
+        jQuery(window).click(function() {
+            items.removeClass('active');
+        });
+
+        field.on('click', event => {
+            event.stopPropagation();
+        });
+
         selected.on('click', () => {
             items.toggleClass('active');
         });
