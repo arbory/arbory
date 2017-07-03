@@ -3,7 +3,9 @@ export default class IconPicker {
     constructor(element) {
         this.element = element;
 
-        this.registerEventHandlers();
+        if (!jQuery(this.element).data('initialized')) {
+            this.registerEventHandlers();
+        }
     }
 
     registerEventHandlers() {
@@ -28,5 +30,7 @@ export default class IconPicker {
 
             items.removeClass('active');
         });
+
+        field.data('initialized', true);
     }
 }

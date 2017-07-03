@@ -13,6 +13,10 @@ export const CKEDITOR_CONFIG = {
 
 export default class RichText {
     constructor(element, config = {}) {
+        if (element.id in CKEDITOR.instances) {
+            CKEDITOR.instances[element.id].destroy();
+        }
+
         this.element = element;
         this.config = config;
 

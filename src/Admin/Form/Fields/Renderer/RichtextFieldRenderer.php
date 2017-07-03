@@ -42,7 +42,7 @@ class RichtextFieldRenderer extends TextareaFieldRenderer
     protected function getInput()
     {
         $textarea = parent::getInput();
-        $textarea->addClass( 'richtext' );
+        $textarea->addClass( 'richtext type-richText' );
         $textarea->addAttributes( [
             'data-attachment-upload-url' => $this->attachmentsUploadUrl,
         ]);

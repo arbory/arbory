@@ -1,5 +1,5 @@
 
-import RichText from "./richtext";
+import RichText from "./RichText";
 
 export const CKEDITOR_CONFIG_COMPACT = {
     language: 'en',

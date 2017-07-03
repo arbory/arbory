@@ -1,36 +1,41 @@
 
 import 'admin/ckeditor';
 import RichText from 'admin/fields/RichText';
-import CompactRichText from "./admin/fields/CompactRichtText";
+import CompactRichText, {CKEDITOR_CONFIG_COMPACT} from "./admin/fields/CompactRichtText";
 import IconPicker from "./admin/fields/IconPicker";
+import {CKEDITOR_CONFIG} from "./admin/fields/RichText";
 
-export function initializeRichText(using, config ={}, className = '') {
-    for (let textArea of document.querySelectorAll('textarea.richtext')) {
-        if (textArea.classList.contains(className) && !(textArea.id in CKEDITOR.instances)) {
-            new using(textArea, config);
-        }
+export let FIELD_TYPE_DEFINITIONS = {
+    RichText: {
+        handler: RichText,
+        config: CKEDITOR_CONFIG,
+        selector: '.type-richText.full'
+    },
+    CompactRichText: {
+        handler: CompactRichText,
+        config: CKEDITOR_CONFIG_COMPACT,
+        selector: '.type-richText.compact'
+    },
+    IconPicker: {
+        handler: IconPicker,
+        selector: '.type-icon-picker'
     }
-}
+};
 
-export function initializeFullRichText(config = {}, using = RichText) {
-    initializeRichText(using, config, 'full');
-}
-
-export function initializeCompactRichText(config = {}, using = CompactRichText) {
-    initializeRichText(using, config, 'compact');
+export function initializeFields(scope) {
+    for (let [_, definition] of Object.entries(FIELD_TYPE_DEFINITIONS)) {
+        jQuery(scope).find(definition.selector).each((key, element) => {
+            new definition.handler(element, definition.config);
+        });
+    }
 }
 
 let body = jQuery('body');
 
-body.on('richtextinit nestedfieldsitemadd', () => {
-    initializeFullRichText();
-    initializeCompactRichText();
+body.on('nestedfieldsitemadd', 'section.nested', event => {
+    initializeFields(event.target);
 });
 
 body.ready(() => {
-    body.trigger('richtextinit');
-
-    body.find('.type-icon-picker').each((key, element) => {
-        new IconPicker(element);
-    });
+    initializeFields(body[0]);
 });
