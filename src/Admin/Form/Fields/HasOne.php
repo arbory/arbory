@@ -5,6 +5,7 @@ namespace CubeSystems\Leaf\Admin\Form\Fields;
 use CubeSystems\Leaf\Admin\Form\FieldSet;
 use CubeSystems\Leaf\Html\Elements\Element;
 use CubeSystems\Leaf\Html\Html;
+use CubeSystems\Leaf\Nodes\Node;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
