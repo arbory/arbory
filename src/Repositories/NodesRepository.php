@@ -3,6 +3,7 @@
 namespace CubeSystems\Leaf\Repositories;
 
 use CubeSystems\Leaf\Nodes\Node;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Settings;
 
@@ -13,9 +14,29 @@ use Settings;
 class NodesRepository extends AbstractModelsRepository
 {
     /**
+     * @var bool
+     */
+    protected $onlyActiveNodes = false;
+
+    /**
      * @var string
      */
     protected $modelClass = Node::class;
+
+    /**
+     * @return Builder
+     */
+    public function newQuery()
+    {
+        $query = parent::newQuery();
+
+        if( $this->isQueryingOnlyActiveNodes() )
+        {
+            $query->where( 'active', true );
+        }
+
+        return $query;
+    }
 
     /**
      * @param Node $node
@@ -25,7 +46,7 @@ class NodesRepository extends AbstractModelsRepository
      */
     public function findUnder( Node $node, string $key, $value )
     {
-        $query = $this->model->newQuery()->where( $key, $value )
+        $query = $this->newQuery()->where( $key, $value )
             ->whereBetween( $node->getLeftColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) )
             ->whereBetween( $node->getRightColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
 
@@ -40,7 +61,9 @@ class NodesRepository extends AbstractModelsRepository
      */
     public function findAbove( Node $node, string $key, $value )
     {
-        $query = $node->ancestorsAndSelf()->withoutSelf()->where( $key, $value );
+        $query = $this->newQuery()->where( $key, $value )
+            ->where( $node->getLeftColumnName(), '<=', $node->getLeft() )
+            ->where( $node->getRightColumnName(), '>=', $node->getRight() );
 
         return $query->get();
     }
@@ -57,7 +80,7 @@ class NodesRepository extends AbstractModelsRepository
 
         foreach( $parts as $depth => $part )
         {
-            $query = $this->model->newQuery()->where( 'depth', $depth )->where( 'slug', $part );
+            $query = $this->newQuery()->where( 'depth', $depth )->where( 'slug', $part );
 
             if( $node instanceof Node )
             {
@@ -93,5 +116,21 @@ class NodesRepository extends AbstractModelsRepository
     public function setLastUpdateTimestamp( int $time )
     {
         Settings::set( 'nodes.last_update', $time );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isQueryingOnlyActiveNodes(): bool
+    {
+        return $this->onlyActiveNodes;
+    }
+
+    /**
+     * @param bool $onlyActiveNodes
+     */
+    public function setQueryOnlyActiveNodes( bool $onlyActiveNodes )
+    {
+        $this->onlyActiveNodes = $onlyActiveNodes;
     }
 }

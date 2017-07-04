@@ -45,6 +45,15 @@ class NodeServiceProvider extends ServiceProvider
         AliasLoader::getInstance()->alias( 'Page', Page::class );
         AliasLoader::getInstance()->alias( 'Settings', Settings::class );
 
+        $this->app->singleton( NodesRepository::class, function()
+        {
+            $repository = new NodesRepository();
+
+            $repository->setQueryOnlyActiveNodes( true );
+
+            return $repository;
+        } );
+
         $this->app->singleton( ContentTypeRegister::class, function ()
         {
             return new ContentTypeRegister();

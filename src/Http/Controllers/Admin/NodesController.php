@@ -216,7 +216,7 @@ class NodesController extends Controller
          * @var NodesRepository $nodes
          * @var Node $node
          */
-        $nodes = $this->container->make( NodesRepository::class );
+        $nodes = new NodesRepository;
         $node = $nodes->findOneBy( 'id', $request->input( 'id' ) );
         $toLeftId = $request->input( 'toLeftId' );
         $toRightId = $request->input( 'toRightId' );
