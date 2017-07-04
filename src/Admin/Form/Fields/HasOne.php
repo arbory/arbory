@@ -41,6 +41,7 @@ class HasOne extends AbstractRelationField
     {
         $fieldSet = new FieldSet( $relatedModel, $this->getNameSpacedName() );
         $fieldSetCallback = $this->fieldSetCallback;
+
         $fieldSetCallback( $fieldSet );
 
         $fieldSet->add( new Hidden( $relatedModel->getKeyName() ) )
@@ -110,7 +111,23 @@ class HasOne extends AbstractRelationField
     {
         $rules = [];
 
-        foreach( $this->getRelationFieldSet( $this->getRelatedModel() )->getFields() as $field )
+        $relation = $this->getRelation();
+
+        if( $relation instanceof MorphTo )
+        {
+            $model = clone $this->fieldSet->getModel();
+
+            $model->setAttribute( $relation->getMorphType(), request()->input( $this->getFieldSet()->getNamespace() . '.' . $relation->getMorphType() ) );
+            $model->setAttribute( $relation->getForeignKey(), 0 );
+
+            $relatedModel = $model->{$this->getName()}()->getRelated();
+        }
+        else
+        {
+            $relatedModel = $this->getValue() ?: $this->getRelatedModel();
+        }
+
+        foreach( $this->getRelationFieldSet( $relatedModel )->getFields() as $field )
         {
             $rules = array_merge( $rules, $field->getRules() );
         }
