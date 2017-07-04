@@ -55,7 +55,7 @@ export default class RichText {
         let textarea = this.getTextarea();
         let form = textarea.closest("form");
 
-        form.on('beforevalidation', function () {
+        form.on('beforevalidation', () => {
             for (let instance in CKEDITOR.instances) {
                 if (CKEDITOR.instances.hasOwnProperty(instance)) {
                     CKEDITOR.instances[instance].updateElement();

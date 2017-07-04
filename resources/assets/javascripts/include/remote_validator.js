@@ -431,6 +431,8 @@ jQuery(function(){
             event.stopPropagation();
             event.preventDefault();
 
+            form.trigger('beforevalidation');
+
             $.ajax({
                 type: "POST",
                 url: form.attr('action'),
