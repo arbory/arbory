@@ -73,7 +73,7 @@ class NodesController extends Controller
             $form->addField( new Form\Fields\Boolean( 'active' ) );
             $form->addField( new HasOne( 'content', function( FieldSet $fieldSet ) use ( $node )
             {
-                $content = $node->content ?: $node->content()->getRelated();
+                $content = $fieldSet->getModel();
 
                 $class = ( new \ReflectionClass( $content ) )->getName();
                 $definition = $this->contentTypeRegister->findByModelClass( $class );
