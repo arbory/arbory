@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
+use Waavi\Translation\Cache\CacheRepositoryInterface;
 use Waavi\Translation\Models\Language;
 use Waavi\Translation\Models\Translation;
 use Waavi\Translation\Repositories\LanguageRepository;
@@ -201,6 +202,9 @@ class TranslationsController extends Controller
         /* @var $languages Language[] */
         $languages = $this->languagesRepository->all();
 
+        /** @var CacheRepositoryInterface $cache */
+        $cache = \App::make( 'translation.cache.repository' );
+
         foreach( $languages as $language )
         {
             /** @noinspection PhpUndefinedFieldInspection */
@@ -218,6 +222,8 @@ class TranslationsController extends Controller
                 $translation->id,
                 $request->get( 'text_' . $locale )
             );
+
+            $cache->flush( $locale, $request->get( 'group' ), $request->get( 'namespace' ) );
         }
 
         return redirect( route( 'admin.translations.index', $this->getContext() ) );
