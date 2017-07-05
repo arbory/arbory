@@ -45,7 +45,8 @@ export default class Sortable {
 
     manualSort(event) {
         const itemSelector = 'fieldset.item';
-        let button = jQuery(event.target);
+        let target = jQuery(event.target);
+        let button = target.is('button') ? target : target.closest('button');
         let item = button.closest(itemSelector);
         let text = item.find('textarea');
 
