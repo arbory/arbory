@@ -204,7 +204,7 @@ trait Crudify
 
         \Excel::create( snake_case( class_basename( $this ) ), function( LaravelExcelWriter $excel ) use ( $grid )
         {
-            $excel->sheet( null, function( LaravelExcelWorksheet $sheet ) use ( $grid )
+            $excel->sheet( 'Worksheet', function( LaravelExcelWorksheet $sheet ) use ( $grid )
             {
                 $sheet->fromArray( $grid->toArray() );
             } );
