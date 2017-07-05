@@ -9,7 +9,6 @@ export const CKEDITOR_CONFIG_COMPACT = {
     allowedContent: true,
     format_tags: 'p;h2;h3',
     toolbar: [['Bold', 'Italic'], ['Subscript', 'Superscript'], ['Link', 'Unlink'], ['Maximize', 'ShowBlocks']],
-    extraPlugins: 'embed',
     forceEnterMode: true,
     enterMode : CKEDITOR.ENTER_BR,
     shiftEnterMode: CKEDITOR.ENTER_BR,
