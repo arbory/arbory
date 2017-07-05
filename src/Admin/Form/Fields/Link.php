@@ -15,8 +15,8 @@ class Link extends HasOne
     {
         $fieldSetCallback = function( FieldSet $fieldSet )
         {
-            $fieldSet->add( new Text( 'href' ) )->rules('required');
-            $fieldSet->add( new Text( 'title' ) )->rules('required');
+            $fieldSet->add( new Text( 'href' ) );
+            $fieldSet->add( new Text( 'title' ) );
             $fieldSet->add( new Checkbox( 'new_tab' ) );
         };
 
@@ -59,5 +59,27 @@ class Link extends HasOne
         }
 
         return $block->append( $fieldSetHtml );
+    }
+
+    /**
+     * @return array
+     */
+    public function getRules(): array
+    {
+        $rules = $this->rules[ 0 ] ?? null;
+
+        if( $rules )
+        {
+            $this->fieldSetCallback = function( FieldSet $fieldSet ) use ( $rules )
+            {
+                $fieldSet->add( new Text( 'href' ) )->rules( $rules );
+                $fieldSet->add( new Text( 'title' ) )->rules( $rules );
+                $fieldSet->add( new Checkbox( 'new_tab' ) );
+            };
+        }
+
+        unset( $this->rules );
+
+        return parent::getRules();
     }
 }
