@@ -4,6 +4,7 @@ import RichText from 'admin/fields/RichText';
 import CompactRichText, {CKEDITOR_CONFIG_COMPACT} from "./admin/fields/CompactRichtText";
 import IconPicker from "./admin/fields/IconPicker";
 import {CKEDITOR_CONFIG} from "./admin/fields/RichText";
+import Sortable, {CONFIG_JQUERY_SORTABLE} from "./admin/fields/Sortable";
 
 export let FIELD_TYPE_DEFINITIONS = {
     RichText: {
@@ -19,6 +20,13 @@ export let FIELD_TYPE_DEFINITIONS = {
     IconPicker: {
         handler: IconPicker,
         selector: '.type-icon-picker'
+    },
+    Sortable: {
+        handler: Sortable,
+        config: {
+            vendor: CONFIG_JQUERY_SORTABLE
+        },
+        selector: '.type-sortable'
     }
 };
 

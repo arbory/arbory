@@ -35,7 +35,7 @@ class Sortable extends AbstractField
 
         return Html::div(
             $this->field->render()
-        )->addClass( 'nested sortable' )->addAttributes( [
+        )->addClass( 'nested type-sortable' )->addAttributes( [
             'data-sort-by' => $this->getName()
         ] );
     }
