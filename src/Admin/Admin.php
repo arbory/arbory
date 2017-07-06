@@ -4,9 +4,11 @@ namespace CubeSystems\Leaf\Admin;
 
 use Cartalyst\Sentinel\Sentinel;
 use CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry;
+use CubeSystems\Leaf\Auth\Roles\Role;
 use CubeSystems\Leaf\Menu\Menu;
 use CubeSystems\Leaf\Services\AssetPipeline;
 use CubeSystems\Leaf\Services\ModuleRegistry;
+use Illuminate\Support\Collection;
 
 class Admin
 {
@@ -34,6 +36,11 @@ class Admin
      * @var Menu
      */
     protected $menu;
+
+    /**
+     * @var bool
+     */
+    protected $authorized;
 
     /**
      * Admin constructor.
@@ -88,5 +95,42 @@ class Admin
     public function menu()
     {
         return $this->menu;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAuthorized()
+    {
+        if( $this->authorized === null )
+        {
+            $this->authorized = (bool) $this->sentinel()->check();
+        }
+
+        return $this->authorized;
+    }
+
+    /**
+     * @param $module
+     * @return bool
+     */
+    public function isAuthorizedFor( $module )
+    {
+        if( !$this->isAuthorized() )
+        {
+            return false;
+        }
+
+        /**
+         * @var $roles Role[]|Collection
+         */
+        $roles = $this->sentinel()->getUser()->roles;
+
+        $permissions = $roles->mapWithKeys( function ( Role $role )
+        {
+            return $role->getPermissions();
+        } )->toArray();
+
+        return in_array( $module, $permissions, true );
     }
 }

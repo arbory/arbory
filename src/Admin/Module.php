@@ -75,21 +75,7 @@ class Module
      */
     public function isAuthorized( )
     {
-        if( !$this->admin->sentinel()->check() )
-        {
-            return false;
-        }
-
-        /**
-         * @var $roles Role[]|Collection
-         */
-        $roles = $this->admin->sentinel()->getUser()->roles;
-
-        $permissions = $roles->mapWithKeys(function( Role $role ){
-            return $role->getPermissions();
-        })->toArray();
-
-        return in_array( $this->getControllerClass(), $permissions, true );
+        return $this->admin->isAuthorizedFor( $this->getControllerClass() );
     }
 
     /**
