@@ -89,7 +89,7 @@ class SettingsController extends Controller
         $factory = \App::make( SettingFactory::class );
         $result = null;
 
-        foreach( array_dot( config( 'settings' ) ) as $key => $value )
+        foreach( $this->settingRegistry->getSettings() as $key => $_ )
         {
             $result[ $key ] = $factory->build( $key );
         }
