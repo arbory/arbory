@@ -87,6 +87,11 @@ class SettingsServiceProvider extends ServiceProvider
                 $value = $data[ 'value' ] ?? $data;
                 $type = $data[ 'type' ] ?? null;
 
+                if ( $type )
+                {
+                    $value = array_get( $data, 'value' );
+                }
+
                 $definition = new SettingDefinition( $key, $value, $type );
                 $this->settingRegistry->register( $definition );
             }
