@@ -42,7 +42,7 @@ class NodesRepository extends AbstractModelsRepository
      * @param Node $node
      * @param string $key
      * @param mixed $value
-     * @return Collection|null
+     * @return Builder
      */
     public function findUnder( Node $node, string $key, $value )
     {
@@ -50,14 +50,14 @@ class NodesRepository extends AbstractModelsRepository
             ->whereBetween( $node->getLeftColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) )
             ->whereBetween( $node->getRightColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
 
-        return $query->get();
+        return $query;
     }
 
     /**
      * @param Node $node
      * @param string $key
      * @param mixed $value
-     * @return Collection|null
+     * @return Builder
      */
     public function findAbove( Node $node, string $key, $value )
     {
@@ -65,7 +65,7 @@ class NodesRepository extends AbstractModelsRepository
             ->where( $node->getLeftColumnName(), '<=', $node->getLeft() )
             ->where( $node->getRightColumnName(), '>=', $node->getRight() );
 
-        return $query->get();
+        return $query;
     }
 
     /***
