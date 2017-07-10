@@ -111,17 +111,16 @@ class UsersController extends Controller
             $grid->column( 'last_name' );
             $grid->column( 'email' );
             $grid->column( 'roles.name' )
-                ->display( function ( Collection $value )
+                ->display( function( Collection $value )
                 {
                     return Html::ul(
-                        $value->map( function ( $role )
+                        $value->map( function( $role )
                         {
                             return Html::li( (string) $role );
                         } )->toArray()
                     );
                 } );
-            $grid->column( 'created_at' );
-            $grid->column( 'updated_at' );
+            $grid->column( 'last_login' );
         } );
     }
 
