@@ -9,6 +9,7 @@ return [
 
     'menu' => [
         CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
+        CubeSystems\Leaf\Http\Controllers\Admin\LanguageController::class,
         CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class,
         CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class,
         CubeSystems\Leaf\Http\Controllers\Admin\RedirectsController::class,
