@@ -46,6 +46,11 @@ module.exports = function (mix) {
     );
 
     mix.copyDirectory(
+        'vendor/cubesystems/leaf/resources/assets/javascripts/lib/ckeditor/plugins/',
+        'public/leaf/ckeditor/plugins/'
+    );
+
+    mix.copyDirectory(
         'vendor/cubesystems/leaf/resources/assets/images/',
         'public/leaf/images/'
     );
