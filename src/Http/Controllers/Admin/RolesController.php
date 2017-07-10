@@ -46,9 +46,15 @@ class RolesController extends Controller
             $form->addField( ( new Form\Fields\MultipleSelect( 'permissions' ) )->options( $options ) );
         } );
 
-        $form->addEventListener( 'validate.before', function(Request $request) use ( $model )
+        $form->addEventListener( 'validate.before', function( Request $request ) use ( $model )
         {
             $resource = $request->input( 'resource' );
+
+            if( array_get( $resource, 'permissions' ) )
+            {
+                return;
+            }
+
             $request->merge( [ 'resource' => array_merge( $resource, [ 'permissions' => [] ] ) ] );
         } );
 
