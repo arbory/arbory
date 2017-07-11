@@ -108,6 +108,8 @@ trait Crudify
     {
         $form = $this->form( $this->resource() );
 
+        $request->request->add( [ 'fields' => $form->fields() ] );
+
         $form->validate();
 
         if( $request->ajax() )
@@ -147,6 +149,9 @@ trait Crudify
     {
         $resource = $this->findOrNew( $resourceId );
         $form = $this->form( $resource );
+
+        $request->request->add( [ 'fields' => $form->fields() ] );
+
         $form->validate();
 
         if( $request->ajax() )

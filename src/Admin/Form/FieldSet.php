@@ -2,7 +2,9 @@
 
 namespace CubeSystems\Leaf\Admin\Form;
 
+use CubeSystems\Leaf\Admin\Form\Fields\AbstractField;
 use CubeSystems\Leaf\Admin\Form\Fields\FieldInterface;
+use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -33,6 +35,100 @@ class FieldSet extends Collection
         $this->model = $model;
 
         parent::__construct( [] );
+    }
+
+    /**
+     * @param string $inputName
+     * @return AbstractField|null
+     */
+    public function findFieldByInputName( string $inputName )
+    {
+        $inputNameParts = explode( '.', $inputName );
+        $fields = $this->findFieldsByInputName( $inputName );
+
+        return array_get( $fields, end( $inputNameParts ) );
+    }
+
+    /**
+     * @param string $inputName
+     * @return array
+     */
+    public function findFieldsByInputName( string $inputName )
+    {
+        $inputNameParts = explode( '.', $inputName );
+
+        array_shift( $inputNameParts );
+
+        $fields = [];
+
+        /**
+         * @var FieldSet $previousFieldSet
+         * @var AbstractField $previousField
+         */
+        $previousFieldSet = null;
+        $previousField = null;
+
+        foreach( $inputNameParts as $index => $fieldName )
+        {
+            $field = null;
+
+            if( $previousFieldSet )
+            {
+                if( is_numeric( $fieldName ) && $previousField instanceof HasMany )
+                {
+                    /** @var HasMany $previousField */
+                    $nested = $previousField->getValue();
+
+                    if( $nested )
+                    {
+                        $resource = $nested->get( $fieldName );
+
+                        if ( !$resource )
+                        {
+                            continue;
+                        }
+
+                        /**
+                         * @var Collection $nested
+                         * @var FieldSet $fieldSet
+                         */
+                        $previousFieldSet = $previousField->getRelationFieldSet( $resource, $fieldName );
+
+                        continue;
+                    }
+                }
+                else
+                {
+                    $field = $previousFieldSet->getFieldByName( $fieldName );
+                }
+            }
+            else
+            {
+                $field = $this->getFieldByName( $fieldName );
+            }
+
+            if( $field )
+            {
+                $previousField = $field;
+                $previousFieldSet = $previousField->getFieldSet();
+
+                $fields[ $fieldName ] = $field;
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * @param string $fieldName
+     * @return AbstractField|null
+     */
+    public function getFieldByName( string $fieldName )
+    {
+        return $this->getFields()->first( function( AbstractField $field ) use ( $fieldName )
+        {
+            return $field->getName() === $fieldName;
+        } );
     }
 
     /**

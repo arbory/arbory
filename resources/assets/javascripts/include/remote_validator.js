@@ -433,10 +433,15 @@ jQuery(function(){
 
             form.trigger('beforevalidation');
 
+            let formData = new FormData(this);
+
             $.ajax({
                 type: "POST",
                 url: form.attr('action'),
-                data: form.serialize(),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
                 beforeSend: xhr => {
                     form.trigger('ajax:beforeSend', [ xhr])
                 },

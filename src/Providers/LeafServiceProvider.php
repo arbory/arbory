@@ -9,6 +9,7 @@ use CubeSystems\Leaf\Admin\Form\Fields\Link;
 use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
+use CubeSystems\Leaf\Admin\Form\FieldSet;
 use CubeSystems\Leaf\Console\Commands\GenerateCommand;
 use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
 use CubeSystems\Leaf\Console\Commands\InstallCommand;
@@ -59,6 +60,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->registerGeneratorStubs();
         $this->registerLocales();
         $this->registerViewComposers();
+        $this->registerValidationRules();
 
         $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'leaf' );
     }
@@ -295,6 +297,28 @@ class LeafServiceProvider extends ServiceProvider
     private function registerViewComposers()
     {
         $this->app->make( 'view' )->composer( '*layout*', LayoutViewComposer::class );
+    }
+
+    /**
+     * @return void
+     */
+    private function registerValidationRules()
+    {
+        \Validator::extendImplicit( 'leaf_file_required', function( $attribute )
+        {
+            /** @var FieldSet $fields */
+            $request = \request();
+            $fields = $request->request->get( 'fields' );
+            $field = $fields->findFieldByInputName( $attribute );
+            $file = $request->file( $attribute );
+
+            if( !$field )
+            {
+                return (bool) $file;
+            }
+
+            return $fields->findFieldByInputName( $attribute )->getValue() || $file;
+        } );
     }
 
     /**
