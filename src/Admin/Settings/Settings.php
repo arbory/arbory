@@ -41,6 +41,15 @@ class Settings
 
     /**
      * @param string $key
+     * @return bool
+     */
+    public function has( string $key )
+    {
+        return $this->settingRegistry->contains( $key );
+    }
+
+    /**
+     * @param string $key
      * @param mixed $value
      * @param mixed $type
      * @return void

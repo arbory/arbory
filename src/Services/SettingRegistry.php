@@ -39,6 +39,15 @@ class SettingRegistry
     }
 
     /**
+     * @param string $key
+     * @return bool
+     */
+    public function contains( string $key )
+    {
+        return $this->settings->contains( $key );
+    }
+
+    /**
      * @return Collection
      */
     public function getSettings(): Collection
