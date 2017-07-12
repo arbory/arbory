@@ -68,7 +68,6 @@ class FileFieldRenderer extends InputFieldRenderer
             Html::button()->addClass( 'remove fa fa-times' )->addAttributes([
                 'type' => 'submit',
                 'name' => Element::formatName( $this->field->getNameSpacedName() . '.remove' ),
-                'value' => 'kek'
             ]);
 
         return $fileDetails->append( $removeInput );
