@@ -62,8 +62,8 @@ class NodesController extends Controller
         {
             $form->addField( new Hidden( 'parent_id' ) );
             $form->addField( new Hidden( 'content_type' ) );
-            $form->addField( new Text( 'name' ) );
-            $form->addField( new Slug( 'slug', $this->url( 'api', 'slug_generator' ) ) );
+            $form->addField( new Text( 'name' ) )->rules( 'required' );
+            $form->addField( new Slug( 'slug', $this->url( 'api', 'slug_generator' ) ) )->rules( 'required' );
 
             $form->addField( new Text( 'meta_title' ) );
             $form->addField( new Text( 'meta_author' ) );

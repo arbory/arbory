@@ -42,7 +42,7 @@ class RolesController extends Controller
                 return [ $value->getControllerClass() => (string) $value ];
             } )->sort();
 
-            $form->addField( new Text( 'name' ) );
+            $form->addField( new Text( 'name' ) )->rules( 'required' );
             $form->addField( ( new Form\Fields\MultipleSelect( 'permissions' ) )->options( $options ) );
         } );
 

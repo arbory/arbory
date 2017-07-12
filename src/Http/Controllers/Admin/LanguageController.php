@@ -26,8 +26,8 @@ class LanguageController
     {
         return $this->module()->form( $model, function( Form $form )
         {
-            $form->addField( new Text( 'locale' ) );
-            $form->addField( new Text( 'name' ) );
+            $form->addField( new Text( 'locale' ) )->rules( 'required' );
+            $form->addField( new Text( 'name' ) )->rules( 'required' );
         } );
     }
 

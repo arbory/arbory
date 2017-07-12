@@ -27,8 +27,8 @@ class RedirectsController extends Controller
     {
         $form = $this->module()->form( $model, function( Form $form )
         {
-            $form->addField( new Text( 'from_url' ) );
-            $form->addField( new Text( 'to_url' ) );
+            $form->addField( new Text( 'from_url' ) )->rules( 'required' );
+            $form->addField( new Text( 'to_url' ) )->rules( 'required' );
         } );
 
         return $form;
