@@ -136,7 +136,8 @@ class InstallCommand extends Command
         $this->info( 'Publishing files' );
 
         $files = [
-            base_path( 'routes/pages.php' ) => [ 'pages', [] ]
+            base_path( 'routes/pages.php' ) => [ 'pages', [] ],
+            resource_path( 'assets/js/admin.js' ) => [ 'admin.js.stub', [] ]
         ];
 
         foreach( $files as $destination => list( $stub, $params ) )

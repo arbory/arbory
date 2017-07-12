@@ -1,49 +1,65 @@
+import FieldRegistry from "./admin/FieldRegistry";
 
-import 'admin/ckeditor';
-import RichText from 'admin/fields/RichText';
-import CompactRichText, {CKEDITOR_CONFIG_COMPACT} from "./admin/fields/CompactRichtText";
-import IconPicker from "./admin/fields/IconPicker";
-import {CKEDITOR_CONFIG} from "./admin/fields/RichText";
-import Sortable, {CONFIG_JQUERY_SORTABLE} from "./admin/fields/Sortable";
-
-export let FIELD_TYPE_DEFINITIONS = {
-    RichText: {
-        handler: RichText,
-        config: CKEDITOR_CONFIG,
-        selector: '.type-richText.full'
-    },
-    CompactRichText: {
-        handler: CompactRichText,
-        config: CKEDITOR_CONFIG_COMPACT,
-        selector: '.type-richText.compact'
-    },
-    IconPicker: {
-        handler: IconPicker,
-        selector: '.type-icon-picker'
-    },
-    Sortable: {
-        handler: Sortable,
-        config: {
-            vendor: CONFIG_JQUERY_SORTABLE
-        },
-        selector: '.type-sortable'
+class AdminPanel {
+    /**
+     * @param {FieldRegistry} registry
+     */
+    constructor(registry) {
+        this.registry = registry;
     }
-};
 
-export function initializeFields(scope) {
-    for (let [_, definition] of Object.entries(FIELD_TYPE_DEFINITIONS)) {
-        jQuery(scope).find(definition.selector).each((key, element) => {
-            new definition.handler(element, definition.config);
+    /**
+     * @param {FieldRegistry} registry
+     */
+    set registry(registry) {
+        this._registry = registry;
+    }
+
+    /**
+     * @return {FieldRegistry}
+     */
+    get registry() {
+        return this._registry;
+    }
+
+    /**
+     * @return {void}
+     */
+    initialize() {
+        CKEDITOR.basePath = '/leaf/ckeditor/';
+
+        CKEDITOR.on('instanceReady', function(e) {
+            jQuery(e.editor.element.$).addClass("ckeditor-initialized");
         });
+
+        this.registerEventHandlers();
+    }
+
+    /**
+     * @return {void}
+     */
+    registerEventHandlers() {
+        let body = jQuery('body');
+
+        body.on('nestedfieldsitemadd', 'section.nested', event => {
+            this.initializeFields(event.target);
+        });
+
+        body.ready(() => {
+            this.initializeFields(body[0]);
+        });
+    }
+
+    /**
+     * @return {void}
+     */
+    initializeFields(scope) {
+        for (let [_, definition] of Object.entries(this.registry.definitions)) {
+            jQuery(scope).find(definition.selector).each((key, element) => {
+                new definition.handler(element, definition.config);
+            });
+        }
     }
 }
 
-let body = jQuery('body');
-
-body.on('nestedfieldsitemadd', 'section.nested', event => {
-    initializeFields(event.target);
-});
-
-body.ready(() => {
-    initializeFields(body[0]);
-});
+export default new AdminPanel(FieldRegistry);
