@@ -1,26 +1,26 @@
 let fs = require('fs-extra');
 
-const controllers = fs.readdirSync('vendor/cubesystems/leaf/resources/assets/javascripts/controllers');
+const controllers = fs.readdirSync('vendor/cubesystems/leaf/resources/assets/js/controllers');
 
 module.exports = function (mix) {
 
     mix.js(
-        './vendor/cubesystems/leaf/resources/assets/javascripts/admin.js',
+        './vendor/cubesystems/leaf/resources/assets/js/admin.js',
         'public/leaf/js'
     );
 
     for (let name of controllers) {
-        mix.js('vendor/cubesystems/leaf/resources/assets/javascripts/controllers/' + name, 'public/leaf/js/controllers/');
+        mix.js('vendor/cubesystems/leaf/resources/assets/js/controllers/' + name, 'public/leaf/js/controllers/');
     }
 
     mix.scripts([
-            './vendor/cubesystems/leaf/resources/assets/javascripts/environment.js',
+            './vendor/cubesystems/leaf/resources/assets/js/environment.js',
             './vendor/components/jquery/jquery.min.js',
             './vendor/components/jqueryui/jquery-ui.min.js',
             './vendor/components/jquery-cookie/jquery.cookie.js',
             './vendor/ckeditor/ckeditor/ckeditor.js',
             './vendor/ckeditor/ckeditor/adapters/jquery.js',
-            './vendor/cubesystems/leaf/resources/assets/javascripts/include/**/*.js',
+            './vendor/cubesystems/leaf/resources/assets/js/include/**/*.js',
         ],
         'public/leaf/js/application.js'
     );
@@ -46,7 +46,7 @@ module.exports = function (mix) {
     );
 
     mix.copyDirectory(
-        'vendor/cubesystems/leaf/resources/assets/javascripts/lib/ckeditor/plugins/',
+        'vendor/cubesystems/leaf/resources/assets/js/lib/ckeditor/plugins/',
         'public/leaf/ckeditor/plugins/'
     );
 
