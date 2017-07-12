@@ -95,7 +95,6 @@ class InstallCommand extends Command
         $this->seedAdminControllers();
         $this->publishFiles();
         $this->publishConfig();
-        $this->addWebpackTask();
         $this->runMigrations();
         $this->runSeeder();
         $this->publishLanguages();
@@ -137,7 +136,8 @@ class InstallCommand extends Command
 
         $files = [
             base_path( 'routes/pages.php' ) => [ 'pages', [] ],
-            resource_path( 'assets/js/admin.js' ) => [ 'admin.js.stub', [] ]
+            base_path( 'webpack.mix.js' ) => [ 'webpack.mix.js', [] ],
+            resource_path( 'assets/js/admin.js' ) => [ 'admin.js', [] ],
         ];
 
         foreach( $files as $destination => list( $stub, $params ) )
@@ -207,29 +207,6 @@ class InstallCommand extends Command
 
         $this->call( 'translator:load' );
         $this->call( 'translator:flush' );
-    }
-
-    /**
-     *
-     */
-    protected function addWebpackTask()
-    {
-        $webpackConfig = 'webpack.mix.js';
-        $leafRequire = "require('./vendor/cubesystems/leaf/webpack.mix')(mix);";
-
-        try
-        {
-            $contents = $this->filesystem->get( $webpackConfig );
-
-            if( strpos( $contents, $leafRequire ) === false )
-            {
-                $this->filesystem->append( $webpackConfig, PHP_EOL . $leafRequire );
-            }
-        }
-        catch( FileNotFoundException $e )
-        {
-            $this->error( 'Webpack config not found' );
-        }
     }
 
     /*
