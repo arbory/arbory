@@ -222,6 +222,10 @@ input.text
             }
         }
     }
+
+    &[data-name="file"] {
+        word-wrap: break-word;
+    }
 }
 
 
