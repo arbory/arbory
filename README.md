@@ -67,6 +67,25 @@ AdminModule::register( App\Http\Controllers\Admin\TextController::class )->route
 } );
 ```
 
+## Validation
+
+[Validation rules](https://laravel.com/docs/5.4/validation) can be attached to any field, like so
+
+```php
+$form->addField( new Text( 'title' ) )->setRules( 'required' );
+```
+
+### Validating translations
+
+```php
+$form->addField( new Translatable( ( new Text( 'title' ) )->rules( 'required' ) ) );
+```
+
+### Custom validators
+
+* leaf_require_one_localized - at least one translation exists for this field
+* leaf_file_required - file has been uploaded or is being passed in request
+
 ## Generators
 
 ### Quick generator
