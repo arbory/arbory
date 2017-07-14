@@ -92,7 +92,7 @@ class Translatable extends AbstractField
      * @param $locale
      * @return FieldSet
      */
-    protected function getLocaleFieldSet( $model, $locale )
+    public function getLocaleFieldSet( $model, $locale )
     {
         $fieldSet = new FieldSet(
             $model,

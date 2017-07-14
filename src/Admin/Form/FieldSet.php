@@ -5,6 +5,9 @@ namespace CubeSystems\Leaf\Admin\Form;
 use CubeSystems\Leaf\Admin\Form\Fields\AbstractField;
 use CubeSystems\Leaf\Admin\Form\Fields\FieldInterface;
 use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
+use CubeSystems\Leaf\Admin\Form\Fields\Link;
+use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
+use CubeSystems\Leaf\Services\FieldSetFieldFinder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -55,68 +58,7 @@ class FieldSet extends Collection
      */
     public function findFieldsByInputName( string $inputName )
     {
-        $inputNameParts = explode( '.', $inputName );
-
-        array_shift( $inputNameParts );
-
-        $fields = [];
-
-        /**
-         * @var FieldSet $previousFieldSet
-         * @var AbstractField $previousField
-         */
-        $previousFieldSet = null;
-        $previousField = null;
-
-        foreach( $inputNameParts as $index => $fieldName )
-        {
-            $field = null;
-
-            if( $previousFieldSet )
-            {
-                if( is_numeric( $fieldName ) && $previousField instanceof HasMany )
-                {
-                    /** @var HasMany $previousField */
-                    $nested = $previousField->getValue();
-
-                    if( $nested )
-                    {
-                        $resource = $nested->get( $fieldName );
-
-                        if ( !$resource )
-                        {
-                            continue;
-                        }
-
-                        /**
-                         * @var Collection $nested
-                         * @var FieldSet $fieldSet
-                         */
-                        $previousFieldSet = $previousField->getRelationFieldSet( $resource, $fieldName );
-
-                        continue;
-                    }
-                }
-                else
-                {
-                    $field = $previousFieldSet->getFieldByName( $fieldName );
-                }
-            }
-            else
-            {
-                $field = $this->getFieldByName( $fieldName );
-            }
-
-            if( $field )
-            {
-                $previousField = $field;
-                $previousFieldSet = $previousField->getFieldSet();
-
-                $fields[ $fieldName ] = $field;
-            }
-        }
-
-        return $fields;
+        return ( new FieldSetFieldFinder( $this ) )->find( $inputName );
     }
 
     /**
@@ -129,6 +71,27 @@ class FieldSet extends Collection
         {
             return $field->getName() === $fieldName;
         } );
+    }
+
+    /**
+     * @param string $fieldName
+     * @return Collection|null
+     */
+    public function getFieldsByName( string $fieldName )
+    {
+        $fields = [];
+
+        foreach( $this->getFields()->toArray() as $field )
+        {
+            /** @var AbstractField $field */
+
+            if( $field->getName() === $fieldName )
+            {
+                $fields[] = $field;
+            }
+        }
+
+        return new Collection( $fields );
     }
 
     /**

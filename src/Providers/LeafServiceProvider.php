@@ -9,6 +9,7 @@ use CubeSystems\Leaf\Admin\Form\Fields\Link;
 use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
+use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
 use CubeSystems\Leaf\Admin\Form\FieldSet;
 use CubeSystems\Leaf\Console\Commands\GenerateCommand;
 use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
@@ -317,7 +318,55 @@ class LeafServiceProvider extends ServiceProvider
                 return (bool) $file;
             }
 
-            return $fields->findFieldByInputName( $attribute )->getValue() || $file;
+            return $field->getValue() || $file;
+        } );
+
+        \Validator::extendImplicit( 'leaf_require_one_localized', function( $attribute, $value )
+        {
+            /** @var FieldSet $fieldSet */
+            $request = \request();
+            $fieldSet = $request->request->get( 'fields' );
+            $fields = $fieldSet->findFieldsByInputName( $attribute );
+            $translatable = null;
+
+            foreach( array_reverse( $fields ) as $index => $field )
+            {
+                if ( $field instanceof Translatable )
+                {
+                    $translatable = $field;
+                }
+            }
+
+            if ( !$translatable || $value )
+            {
+                return (bool) $value;
+            }
+
+            $attributeLocale = null;
+            $checkLocales = $translatable->getLocales();
+
+            foreach( $checkLocales as $index => $checkLocale )
+            {
+                if( str_contains( $attribute, $checkLocale ) )
+                {
+                    $attributeLocale = $checkLocale;
+                    unset( $checkLocales[ $index ] );
+                    break;
+                }
+            }
+
+            foreach( $checkLocales as $index => $checkLocale )
+            {
+                $checkByAttribute = str_replace( $attributeLocale, $checkLocale, $attribute );
+                $field = $fieldSet->findFieldByInputName( $checkByAttribute );
+
+                if( $request->input( $checkByAttribute ) || $field->getValue() )
+                {
+                    return true;
+                }
+            }
+
+            return false;
         } );
     }
 
