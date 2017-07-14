@@ -8,6 +8,8 @@ use CubeSystems\Leaf\Html\Elements\Element;
 use Dimsav\Translatable\Translatable as TranslatableModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Waavi\Translation\Models\Language;
+use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
  * Class Translatable
@@ -36,9 +38,16 @@ class Translatable extends AbstractField
      */
     public function __construct( FieldInterface $field )
     {
+        /** @var LanguageRepository $languages */
+        $languages = \App::make( LanguageRepository::class );
+        
         $this->field = $field;
-        $this->locales = (array) config( 'translatable.locales' );
         $this->currentLocale = request()->getLocale();
+
+        $this->locales = $languages->all()->map( function( Language $language )
+        {
+            return $language->locale;
+        } )->toArray();
 
         parent::__construct( 'translations' );
     }
