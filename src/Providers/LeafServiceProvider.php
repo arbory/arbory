@@ -109,7 +109,7 @@ class LeafServiceProvider extends ServiceProvider
         ], 'config' );
 
         $this->publishes( [
-            $configFilename => config_path( 'settings.php' )
+            __DIR__ . '/../../stubs/settings.stub' => config_path( 'settings.php' )
         ], 'config' );
 
         $this->publishes( [
