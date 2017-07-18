@@ -62,9 +62,7 @@ Page::register( App\Pages\TextPage::class )
 ### Registering new admin modules
 
 ```php
-AdminModule::register( App\Http\Controllers\Admin\TextController::class )->routes( function() {
-    // ...
-} );
+Admin::modules()->register(  App\Http\Controllers\Admin\TextController::class );
 ```
 
 ## Validation
@@ -85,6 +83,27 @@ $form->addField( new Translatable( ( new Text( 'title' ) )->rules( 'required' ) 
 
 * leaf_require_one_localized - at least one translation exists for this field
 * leaf_file_required - file has been uploaded or is being passed in request
+
+## Settings
+
+Settings are registered as follows
+
+```php
+return [
+    'my_setting_key' => 'My setting value',
+]
+```
+
+### Defining a field type
+
+```php
+return [
+    'my_setting_key' => [
+        'value' => 'My setting value',
+        'type' => CubeSystems\Leaf\Admin\Form\Fields\CompactRichtext::class
+    ],
+]
+```
 
 ## Generators
 
