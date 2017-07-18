@@ -75,7 +75,7 @@ class InstallCommand extends Command
     }
 
     /**
-     *
+     * @return void
      */
     public function fire()
     {
@@ -94,6 +94,7 @@ class InstallCommand extends Command
         $this->createDirectories();
         $this->seedAdminControllers();
         $this->publishFiles();
+        $this->publishMixFile();
         $this->publishConfig();
         $this->runMigrations();
         $this->runSeeder();
@@ -136,7 +137,6 @@ class InstallCommand extends Command
 
         $files = [
             base_path( 'routes/pages.php' ) => [ 'pages', [] ],
-            base_path( 'webpack.mix.js' ) => [ 'webpack.mix.js', [] ],
             resource_path( 'assets/js/admin.js' ) => [ 'admin.js', [] ],
         ];
 
@@ -148,6 +148,31 @@ class InstallCommand extends Command
 
                 $this->filesystem->put( $destination, $content );
             }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function publishMixFile()
+    {
+        $webpackConfig = 'webpack.mix.js';
+        $leafRequire = "require('./vendor/cubesystems/leaf/webpack.mix')(mix);";
+
+        try
+        {
+            $contents = $this->filesystem->get( $webpackConfig );
+
+            if( strpos( $contents, $leafRequire ) === false )
+            {
+                $content = $this->stubRegistry->make( 'webpack.mix.js', [] );
+
+                $this->filesystem->put( base_path( 'webpack.mix.js' ), $content );
+            }
+        }
+        catch( FileNotFoundException $e )
+        {
+            $this->error( 'Webpack config not found' );
         }
     }
 
