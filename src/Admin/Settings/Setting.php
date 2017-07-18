@@ -2,6 +2,7 @@
 
 namespace CubeSystems\Leaf\Admin\Settings;
 
+use CubeSystems\Leaf\Files\LeafFile;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
@@ -31,5 +32,13 @@ class Setting extends Model
     public function __toString()
     {
         return (string) $this->name;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function value()
+    {
+        return $this->belongsTo( LeafFile::class, 'value' );
     }
 }

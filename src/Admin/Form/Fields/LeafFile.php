@@ -39,7 +39,14 @@ class LeafFile extends AbstractField
      */
     public function getValue()
     {
-        return parent::getValue();
+        $value = parent::getValue();
+
+        if ( is_string( $value ) )
+        {
+            $value = \CubeSystems\Leaf\Files\LeafFile::where( 'id', $value )->first();
+        }
+
+        return $value;
     }
 
     /**
