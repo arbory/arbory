@@ -300,16 +300,14 @@ class InstallCommand extends Command
         $administratorRole = $roles->create( [
             'name' => 'Administrator',
             'slug' => 'administrator',
-            'permissions' => [
-                'users.create' => true,
-                'users.update' => true,
-                'users.view' => true,
-                'users.destroy' => true,
-                'roles.create' => true,
-                'roles.update' => true,
-                'roles.view' => true,
-                'roles.delete' => true
-            ]
+            'permissions' => array_flatten(
+                array_merge(
+                    [
+                        \CubeSystems\Leaf\Http\Controllers\Admin\DashboardController::class
+                    ],
+                    config( 'leaf.menu' )
+                )
+            )
         ] );
 
         $administratorRole->users()->attach( $user );
