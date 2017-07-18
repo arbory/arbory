@@ -86,12 +86,20 @@ $form->addField( new Translatable( ( new Text( 'title' ) )->rules( 'required' ) 
 
 ## Settings
 
-Settings are registered as follows
+Register a setting (with optional nesting) and retrieve it
 
 ```php
 return [
-    'my_setting_key' => 'My setting value',
+    'my_letter' => [
+        'to' => 'a friend',
+        'subject' => 'Hello!'
+    ]
 ]
+```
+
+```php
+Settings::has('my_letter.to'); // true
+Settings::get('my_letter.to'); // "a friend"
 ```
 
 ### Defining a field type
