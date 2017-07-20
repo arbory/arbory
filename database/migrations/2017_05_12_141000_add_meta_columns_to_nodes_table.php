@@ -12,10 +12,6 @@ class AddMetaColumnsToNodesTable extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('nodes')) {
-            return;
-        }
-
         Schema::table( 'nodes', function ( Blueprint $table )
         {
             $table->string( 'meta_title' )->nullable();
