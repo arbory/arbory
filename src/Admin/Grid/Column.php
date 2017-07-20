@@ -214,7 +214,7 @@ class Column
             ] );
         }
 
-        return call_user_func_array( $this->displayer, [ $value, $this ] );
+        return call_user_func_array( $this->displayer, [ $value, $this, $model ] );
     }
 
     /**
