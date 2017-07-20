@@ -42,7 +42,7 @@ class Translatable extends AbstractField
         $languages = \App::make( LanguageRepository::class );
         
         $this->field = $field;
-        $this->currentLocale = request()->getLocale();
+        $this->currentLocale = \App::getLocale();
 
         $this->locales = $languages->all()->map( function( Language $language )
         {
