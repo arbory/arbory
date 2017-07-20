@@ -4,12 +4,10 @@ namespace CubeSystems\Leaf\Admin\Form;
 
 use CubeSystems\Leaf\Admin\Form\Fields\AbstractField;
 use CubeSystems\Leaf\Admin\Form\Fields\FieldInterface;
-use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
-use CubeSystems\Leaf\Admin\Form\Fields\Link;
-use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
 use CubeSystems\Leaf\Services\FieldSetFieldFinder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
  * Class FieldSet
@@ -58,7 +56,7 @@ class FieldSet extends Collection
      */
     public function findFieldsByInputName( string $inputName )
     {
-        return ( new FieldSetFieldFinder( $this ) )->find( $inputName );
+        return ( new FieldSetFieldFinder( app( LanguageRepository::class ), $this ) )->find( $inputName );
     }
 
     /**
@@ -75,7 +73,7 @@ class FieldSet extends Collection
 
     /**
      * @param string $fieldName
-     * @return Collection|null
+     * @return Collection
      */
     public function getFieldsByName( string $fieldName )
     {
