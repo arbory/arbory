@@ -7,6 +7,7 @@ use CubeSystems\Leaf\Admin\Form\Fields\Text;
 use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
 use CubeSystems\Leaf\Admin\Traits\Crudify;
+use CubeSystems\Leaf\Html\Html;
 use CubeSystems\Leaf\Support\Translate\Language;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -59,6 +60,12 @@ class LanguageController extends Controller
         {
             $grid->column( 'locale' );
             $grid->column( 'name' );
+            $grid->column( 'status' )->display( function( $_, $__, Language $language )
+            {
+                return Html::span( $language->trashed() ?
+                    trans( 'leaf::resources.status.disabled' ) : trans( 'leaf::resources.status.enabled' )
+                );
+            } );
         } );
 
         return $grid

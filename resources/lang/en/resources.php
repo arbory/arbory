@@ -6,5 +6,9 @@ return [
     'nothing_found' => 'Nothing Found',
     'export' => 'Export',
     'save' => 'Save',
-    'back_to_list' => 'Back'
+    'back_to_list' => 'Back',
+    'status' => [
+        'enabled' => 'Enabled',
+        'disabled' => 'Disabled'
+    ]
 ];
