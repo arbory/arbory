@@ -18,6 +18,7 @@
     <testsuites>
         <testsuite name="Admin test suite">
             <directory>tests/Admin</directory>
+            <directory>tests/Services</directory>
         </testsuite>
     </testsuites>
 </phpunit>
