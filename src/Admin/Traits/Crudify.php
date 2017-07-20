@@ -293,7 +293,17 @@ trait Crudify
      */
     protected function findOrNew( $resourceId ): Model
     {
-        $resource = $this->resource()->findOrNew( $resourceId );
+        /**
+         * @var Model $resource
+         */
+        $resource = $this->resource();
+
+        if( method_exists( $resource, 'bootSoftDeletes' ) )
+        {
+            $resource = $resource->withTrashed();
+        }
+
+        $resource = $resource->findOrNew( $resourceId );
         $resource->setAttribute( $resource->getKeyName(), $resourceId );
 
         return $resource;

@@ -9,11 +9,9 @@ use CubeSystems\Leaf\Admin\Grid\Filter;
 use CubeSystems\Leaf\Admin\Grid\FilterInterface;
 use CubeSystems\Leaf\Admin\Grid\Row;
 use CubeSystems\Leaf\Html\Elements\Content;
-use function foo\func;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 /**

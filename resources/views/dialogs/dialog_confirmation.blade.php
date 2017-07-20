@@ -1,8 +1,8 @@
 @extends('leaf::dialogs.base',['class' => 'confirm-destroy confirm'])
 
 @section('dialog')
-    <form class="edit_resource" id="edit_resource" action="{{$form_target}}" accept-charset="UTF-8" method="post">
-        <input type="hidden" name="_method" value="delete"/>
+    <form class="edit_resource" id="edit_resource" action="{{ $form_target }}" accept-charset="UTF-8" method="post">
+        <input type="hidden" name="_method" value="{{ $form_action }}"/>
         {{csrf_field()}}
         <header>
             @yield('dialog.header')

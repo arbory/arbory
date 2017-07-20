@@ -29,4 +29,14 @@ Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
         'as' => 'translations.update',
         'uses' => 'Admin\TranslationsController@store'
     ] );
+
+    Route::post( 'language/{language}/disable', [
+        'as' => 'language.disable',
+        'uses' => 'Admin\LanguageController@disable'
+    ] );
+
+    Route::post( 'language/{language}/restore', [
+        'as' => 'language.restore',
+        'uses' => 'Admin\LanguageController@restore'
+    ] );
 } );
