@@ -10,14 +10,22 @@ jQuery(document).ready($ => {
                 element: $(this)
             };
 
+            picker.getCoordinates = function () {
+                return this.convertToSemicolon(this.coordinatesInput.val());
+            };
+
+            picker.convertToSemicolon = function (value) {
+                return value.replace(' ', '').replace(',', ';');
+            };
+
             picker.hasValidInputLatLng = function () {
-                let coordinates = this.coordinatesInput.val();
+                let coordinates = this.getCoordinates();
 
                 return coordinates.length >= 3 && coordinates.includes(';');
             };
 
             picker.getInputLatLng = function () {
-                let coordinates = this.coordinatesInput.val().split(';');
+                let coordinates = this.getCoordinates().split(';');
 
                 return [
                     parseFloat(coordinates[0]),
