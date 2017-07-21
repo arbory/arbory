@@ -1,4 +1,4 @@
-import FieldRegistry from "./admin/FieldRegistry";
+import FieldRegistry from "./Admin/FieldRegistry";
 
 class AdminPanel {
     /**

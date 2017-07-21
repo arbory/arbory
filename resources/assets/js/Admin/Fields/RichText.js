@@ -1,5 +1,5 @@
 
-export const CKEDITOR_CONFIG = {
+export const CONFIG_EDITOR = {
     language: 'en',
     entities_latin: false,
     forcePasteAsPlainText: true,
@@ -104,6 +104,6 @@ export default class RichText {
     }
 
     getDefaultConfig() {
-        return CKEDITOR_CONFIG;
+        return CONFIG_EDITOR;
     }
 }

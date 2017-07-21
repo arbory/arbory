@@ -1,7 +1,7 @@
 
 import RichText from "./RichText";
 
-export const CKEDITOR_CONFIG_COMPACT = {
+export const CONFIG_EDITOR_COMPACT = {
     language: 'en',
     entities_latin: false,
     forcePasteAsPlainText: true,
@@ -15,8 +15,8 @@ export const CKEDITOR_CONFIG_COMPACT = {
     autoParagraph: false
 };
 
-export default class CompactRichText extends RichText {
+export default class RichTextCompact extends RichText {
     getDefaultConfig() {
-        return CKEDITOR_CONFIG_COMPACT;
+        return CONFIG_EDITOR_COMPACT;
     }
 }

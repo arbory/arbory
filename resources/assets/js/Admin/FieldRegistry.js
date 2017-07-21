@@ -1,17 +1,17 @@
-import RichText, {CKEDITOR_CONFIG} from "./fields/RichText";
-import CompactRichText, {CKEDITOR_CONFIG_COMPACT} from "./fields/CompactRichtText";
-import IconPicker from "./fields/IconPicker";
-import Sortable, {CONFIG_JQUERY_SORTABLE} from "./fields/Sortable";
+import RichText, {CONFIG_EDITOR} from "./Fields/RichText";
+import RichTextCompact, {CONFIG_EDITOR_COMPACT} from "./Fields/RichTextCompact";
+import IconPicker from "./Fields/IconPicker";
+import Sortable, {CONFIG_JQUERY_SORTABLE} from "./Fields/Sortable";
 
 export let FIELD_TYPE_DEFINITIONS = [
     {
         handler: RichText,
-        config: CKEDITOR_CONFIG,
+        config: CONFIG_EDITOR,
         selector: '.type-richText.full'
     },
     {
-        handler: CompactRichText,
-        config: CKEDITOR_CONFIG_COMPACT,
+        handler: RichTextCompact,
+        config: CONFIG_EDITOR_COMPACT,
         selector: '.type-richText.compact'
     },
     {
