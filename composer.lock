@@ -9,16 +9,16 @@
     "packages": [
         {
             "name": "alsofronie/eloquent-uuid",
-            "version": "v1.0.7",
+            "version": "v1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alsofronie/eloquent-uuid.git",
-                "reference": "ce68dbfd35ea2b607b70f3ac35d0412876c91d7c"
+                "reference": "90e5a41dca5d48dfa09006718a68a9d6be596f57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alsofronie/eloquent-uuid/zipball/ce68dbfd35ea2b607b70f3ac35d0412876c91d7c",
-                "reference": "ce68dbfd35ea2b607b70f3ac35d0412876c91d7c",
+                "url": "https://api.github.com/repos/alsofronie/eloquent-uuid/zipball/90e5a41dca5d48dfa09006718a68a9d6be596f57",
+                "reference": "90e5a41dca5d48dfa09006718a68a9d6be596f57",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "A Laravel Eloquent Model trait for using UUID's as primary keys",
-            "time": "2017-05-08 20:10:08"
+            "time": "2017-07-20 18:09:53"
         },
         {
             "name": "cartalyst/sentinel",
@@ -1611,16 +1611,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.4.28",
+            "version": "v5.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "442511fc62121085d184355e4f964c88942bbecb"
+                "reference": "b9a64955f4278f45ac348a6e000b5ecc85da167a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/442511fc62121085d184355e4f964c88942bbecb",
-                "reference": "442511fc62121085d184355e4f964c88942bbecb",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/b9a64955f4278f45ac348a6e000b5ecc85da167a",
+                "reference": "b9a64955f4278f45ac348a6e000b5ecc85da167a",
                 "shasum": ""
             },
             "require": {
@@ -1736,7 +1736,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-06-30 13:43:07"
+            "time": "2017-07-19 19:26:19"
         },
         {
             "name": "laravelcollective/html",

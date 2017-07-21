@@ -62,6 +62,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->registerLocales();
         $this->registerViewComposers();
         $this->registerValidationRules();
+        $this->registerAssets();
 
         $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'leaf' );
     }
@@ -367,6 +368,17 @@ class LeafServiceProvider extends ServiceProvider
             }
 
             return false;
+        } );
+    }
+
+    /**
+     * @return void
+     */
+    private function registerAssets()
+    {
+        \App::booted( function()
+        {
+            \Admin::assets()->js( '/js/admin.js' );
         } );
     }
 
