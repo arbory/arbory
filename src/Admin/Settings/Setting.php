@@ -3,12 +3,18 @@
 namespace CubeSystems\Leaf\Admin\Settings;
 
 use CubeSystems\Leaf\Files\LeafFile;
+use CubeSystems\Leaf\Services\SettingRegistry;
 use CubeSystems\Leaf\Support\Translate\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    use Translatable;
+    use Translatable {
+        save as protected translatableSave;
+        getAttribute as protected getTranslatableAttribute;
+        setAttribute as protected setTranslatableAttribute;
+        fill as protected translatableFill;
+    }
 
     /**
      * @var string
@@ -48,11 +54,85 @@ class Setting extends Model
     }
 
     /**
+     * @param array $attributes
+     * @return Model|self
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws \ErrorException
+     */
+    public function fill( array $attributes )
+    {
+        $name = array_get( $attributes, 'name' );
+
+        return $this->isTranslatable( $name ) ? $this->translatableFill( $attributes ) : parent::fill( $attributes );
+    }
+
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function getAttribute( $key )
+    {
+        if( in_array( $key, $this->translatedAttributes ) )
+        {
+            if( $this->isTranslatable() )
+            {
+                return $this->getTranslatableAttribute( $key );
+            }
+
+            return parent::getAttributeValue( $key );
+        }
+
+        return parent::getAttribute( $key );
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return Model|self
+     */
+    public function setAttribute( $key, $value )
+    {
+        return $this->isTranslatable() ? $this->setTranslatableAttribute( $key, $value ) : parent::setAttribute( $key, $value );
+    }
+
+    /**
+     * @param array $options
+     * @return bool
+     */
+    public function save( array $options = [] )
+    {
+        return $this->isTranslatable() ? $this->translatableSave( $options ) : parent::save( $options );
+    }
+
+    /**
      * @param mixed $column
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function value( $column = null )
     {
         return $column ? parent::value( $column ) : $this->belongsTo( LeafFile::class, 'value' );
+    }
+
+    /**
+     * @param string|null $settingName
+     * @return bool
+     */
+    public function isTranslatable( string $settingName = null ): bool
+    {
+        $settingName = $settingName ?? $this->name;
+
+        if( !$settingName )
+        {
+            return false;
+        }
+
+        /**
+         * @var SettingRegistry $registry
+         * @var SettingDefinition $definition
+         */
+        $registry = app( SettingRegistry::class );
+        $definition = $registry->find( $settingName );
+
+        return $definition->getType() === \CubeSystems\Leaf\Admin\Form\Fields\Translatable::class;
     }
 }
