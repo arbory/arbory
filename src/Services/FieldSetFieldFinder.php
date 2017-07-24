@@ -95,6 +95,11 @@ class FieldSetFieldFinder
         {
             $field = null;
 
+            if ( !$previousFieldSet )
+            {
+                break;
+            }
+
             /**
              * @var FieldSet $previousFieldSet
              * @var Collection $matchingFields
@@ -189,7 +194,7 @@ class FieldSetFieldFinder
 
             if ( !$fieldSet )
             {
-                return null;
+                continue;
             }
 
             $finder = new self( $this->languageRepository, $fieldSet, $field );

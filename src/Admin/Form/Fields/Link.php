@@ -23,8 +23,6 @@ class Link extends HasOne
         parent::__construct( $name, $fieldSetCallback );
     }
 
-
-
     /**
      * @return Element
      */
