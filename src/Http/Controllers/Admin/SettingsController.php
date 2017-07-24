@@ -5,9 +5,11 @@ namespace CubeSystems\Leaf\Http\Controllers\Admin;
 use CubeSystems\Leaf\Admin\Form;
 use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
 use CubeSystems\Leaf\Admin\Form\Fields\Text;
+use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
 use CubeSystems\Leaf\Admin\Grid;
 use CubeSystems\Leaf\Admin\Settings\Setting;
 use CubeSystems\Leaf\Admin\Settings\SettingDefinition;
+use CubeSystems\Leaf\Admin\Settings\SettingTranslation;
 use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
 use CubeSystems\Leaf\Admin\Traits\Crudify;
 use CubeSystems\Leaf\Providers\SettingsServiceProvider;
@@ -15,6 +17,7 @@ use CubeSystems\Leaf\Services\SettingFactory;
 use CubeSystems\Leaf\Services\SettingRegistry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
 
 class SettingsController extends Controller
 {
@@ -54,10 +57,8 @@ class SettingsController extends Controller
 
         $form = $this->module()->form( $model, function( Form $form ) use ( $definition )
         {
-            $type = $definition->getType();
-
-            $form->addField( new $type( 'value' ) )->setValue( $definition->getValue() );
-            $form->addField( new Hidden( 'type' ) )->setValue( $type );
+            $form->addField( $this->getField( $form, $definition ) );
+            $form->addField( new Hidden( 'type' ) )->setValue( $definition->getType() );
         } );
 
         return $form;
@@ -78,6 +79,53 @@ class SettingsController extends Controller
             ->tools( [] )
             ->items( $this->getSettings() )
             ->paginate( false );
+    }
+
+    /**
+     * @param Form $form
+     * @param SettingDefinition $definition
+     * @return Form\Fields\AbstractField
+     */
+    protected function getField( Form $form, SettingDefinition $definition )
+    {
+        /**
+         * @var Form\Fields\AbstractField $field
+         * @var Form\Fields\AbstractField $innerField
+         */
+        $type = $definition->getType();
+
+        if( $type === Translatable::class )
+        {
+            $inner = array_get( $definition->getConfigEntry(), 'value' );
+            $innerType = $inner[ 'type' ] ?? Text::class;
+            $innerField = new $innerType( 'value' );
+
+            $field = new Translatable( $innerField );
+            $field->setFieldSet( $form->fields() );
+
+            if( !$field->getValue() || $field->getValue()->isEmpty() )
+            {
+                $localized = array_get( $inner, 'value', [] );
+                $fieldValue = new Collection();
+
+                foreach( $localized as $locale => $value )
+                {
+                    $fieldValue->push( new SettingTranslation( [
+                        'locale' => $locale,
+                        'value' => $value
+                    ] ) );
+                }
+
+                $field->setValue( $fieldValue );
+            }
+        }
+        else
+        {
+            $field = new $type( 'value' );
+            $field->setValue( $definition->getValue() );
+        }
+
+        return $field;
     }
 
     /**

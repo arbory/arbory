@@ -22,15 +22,22 @@ class SettingDefinition
     protected $value;
 
     /**
+     * @var mixed
+     */
+    protected $configEntry;
+
+    /**
      * @param string $key
      * @param mixed $value
      * @param string|null $type
+     * @param mixed $configEntry
      */
-    public function __construct( string $key, $value = null, string $type = null )
+    public function __construct( string $key, $value = null, string $type = null, $configEntry = null )
     {
         $this->key = $key;
         $this->value = $value;
         $this->type = $type ?? Text::class;
+        $this->configEntry = $configEntry;
     }
 
     /**
@@ -79,6 +86,14 @@ class SettingDefinition
     public function setValue( $value )
     {
         $this->value = $value;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfigEntry()
+    {
+        return $this->configEntry;
     }
 
     /**

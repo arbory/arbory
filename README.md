@@ -113,6 +113,23 @@ return [
 ]
 ```
 
+### Translatable settings
+
+```php
+return [
+    'hello' => [
+        'type' => CubeSystems\Leaf\Admin\Form\Fields\Translatable::class,
+        'value' => [
+            'type' => CubeSystems\Leaf\Admin\Form\Fields\CompactRichtext::class,
+            'value' => [
+                'en' => 'Hello',
+                'lv' => 'Sveiks'
+            ]
+        ]
+    ],
+]
+```
+
 ## Generators
 
 ### Quick generator

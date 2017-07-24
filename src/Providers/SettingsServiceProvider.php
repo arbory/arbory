@@ -62,10 +62,12 @@ class SettingsServiceProvider extends ServiceProvider
     {
         Setting::all()->each( function( Setting $setting )
         {
-            $definition = new SettingDefinition( $setting->name, $setting->value, $setting->type );
-            $this->settingRegistry->register( $definition );
+            $definition = $this->settingRegistry->find( $setting->name );
 
-            $this->app[ 'config' ]->set( 'settings.' . $setting->name, $setting->value );
+            if( $definition )
+            {
+                $definition->setValue( $setting->value );
+            }
         } );
     }
 
@@ -92,7 +94,13 @@ class SettingsServiceProvider extends ServiceProvider
                     $value = array_get( $data, 'value' );
                 }
 
-                $definition = new SettingDefinition( $key, $value, $type );
+                if ( is_array( $value ) )
+                {
+                    $value = array_get( $value, 'value' );
+                    $value = array_get( $value, \Request::getLocale(), $value );
+                }
+
+                $definition = new SettingDefinition( $key, $value, $type, $data );
                 $this->settingRegistry->register( $definition );
             }
         }

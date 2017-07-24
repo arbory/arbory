@@ -3,14 +3,22 @@
 namespace CubeSystems\Leaf\Admin\Settings;
 
 use CubeSystems\Leaf\Files\LeafFile;
+use CubeSystems\Leaf\Support\Translate\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+    use Translatable;
+
     /**
      * @var string
      */
     protected $primaryKey = 'name';
+
+    /**
+     * @var string
+     */
+    protected $translationForeignKey = 'setting_name';
 
     /**
      * @var bool
@@ -21,9 +29,14 @@ class Setting extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'value',
-        'type'
+        'name', 'value', 'type'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $translatedAttributes = [
+        'value'
     ];
 
     /**
@@ -35,10 +48,11 @@ class Setting extends Model
     }
 
     /**
+     * @param mixed $column
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function value()
+    public function value( $column = null )
     {
-        return $this->belongsTo( LeafFile::class, 'value' );
+        return $column ? parent::value( $column ) : $this->belongsTo( LeafFile::class, 'value' );
     }
 }

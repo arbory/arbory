@@ -108,9 +108,44 @@ class Translatable extends AbstractField
             $this->getNameSpacedName() . '.' . $locale
         );
 
-        $fieldSet->push( clone $this->field );
+        $field = clone $this->field;
+
+        $field->setFieldSet( $fieldSet );
+
+        $defaultResource = $this->getDefaultResourceForLocale( $locale );
+
+        if( $defaultResource && !$field->getValue() )
+        {
+            $field->setValue( $defaultResource->{$field->getName()} );
+        }
+
+        $fieldSet->push( $field );
 
         return $fieldSet;
+    }
+
+    /**
+     * @see \CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::getField
+     *
+     * @param $locale
+     * @return Model|null
+     */
+    public function getDefaultResourceForLocale( $locale )
+    {
+        $resource = null;
+
+        if( $this->getValue() && !$this->getValue()->isEmpty() )
+        {
+            foreach( $this->getValue() as $index => $item )
+            {
+                if( $item->{$this->getModel()->getLocaleKey()} === $locale )
+                {
+                    $resource = $item;
+                }
+            }
+        }
+
+        return $resource;
     }
 
     /**
