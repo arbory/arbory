@@ -65,4 +65,14 @@ class Sortable extends AbstractField
     {
         return $this->field;
     }
+
+    /**
+     * @return array
+     */
+    public function getRules(): array
+    {
+        $this->field->setFieldSet( $this->getFieldSet() );
+
+        return $this->getSortableField()->getRules();
+    }
 }
