@@ -1,23 +1,23 @@
 <?php
 
-namespace CubeSystems\Leaf\Repositories;
+namespace Arbory\Base\Repositories;
 
-use CubeSystems\Leaf\Files\LeafFile;
+use Arbory\Base\Files\ArboryFile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use RuntimeException;
 use Storage;
 
 /**
- * Class LeafFileRepository
- * @package CubeSystems\Leaf\Repositories
+ * Class ArboryFilesRepository
+ * @package Arbory\Base\Repositories
  */
-class LeafFilesRepository extends AbstractModelsRepository
+class ArboryFilesRepository extends AbstractModelsRepository
 {
     /**
      * @var string
      */
-    protected $modelClass = LeafFile::class;
+    protected $modelClass = ArboryFile::class;
 
     /**
      * @var string
@@ -30,14 +30,14 @@ class LeafFilesRepository extends AbstractModelsRepository
     protected $disk;
 
     /**
-     * LeafFileRepository constructor.
+     * ArboryFilesRepository constructor.
      * @param string $diskName
-     * @param string $leafFileClass
+     * @param string $modelClass
      */
-    public function __construct( $diskName, $leafFileClass = LeafFile::class )
+    public function __construct( $diskName, $modelClass = ArboryFile::class )
     {
         $this->diskName = $diskName;
-        $this->modelClass = $leafFileClass;
+        $this->modelClass = $modelClass;
 
         parent::__construct();
     }
@@ -58,7 +58,7 @@ class LeafFilesRepository extends AbstractModelsRepository
     /**
      * @param UploadedFile $file
      * @param Model $owner
-     * @return LeafFile|null
+     * @return ArboryFile|null
      * @throws RuntimeException
      */
     public function createFromUploadedFile( UploadedFile $file, Model $owner )
@@ -84,25 +84,25 @@ class LeafFilesRepository extends AbstractModelsRepository
         }
 
         $modelClass = $this->modelClass;
-        $leafFile = new $modelClass(
+        $arboryFile = new $modelClass(
             $this->getCreateAttributesForCreatedFile( $file, $localFileName, $owner ),
             $localFileName
         );
 
-        /* @var $leafFile LeafFile */
-        if( !$leafFile->save() )
+        /* @var $arboryFile ArboryFile */
+        if( !$arboryFile->save() )
         {
             throw new RuntimeException( 'Could not save "' . $modelClass . '" to database' );
         }
 
-        return $leafFile;
+        return $arboryFile;
     }
 
     /**
      * @param $fileName
      * @param $fileContents
      * @param Model $owner
-     * @return LeafFile|null
+     * @return ArboryFile|null
      * @throws RuntimeException
      */
     public function createFromBlob( $fileName, $fileContents, Model $owner )
@@ -115,17 +115,17 @@ class LeafFilesRepository extends AbstractModelsRepository
         }
 
         $modelClass = $this->modelClass;
-        $leafFile = new $modelClass(
+        $arboryFile = new $modelClass(
             $this->getCreateAttributesForBlob( $fileName, $fileContents, $localFileName, $owner )
         );
 
-        /* @var $leafFile LeafFile */
-        if( !$leafFile->save() )
+        /* @var $arboryFile ArboryFile */
+        if( !$arboryFile->save() )
         {
             throw new RuntimeException( 'Could not save "' . $modelClass . '" to database' );
         }
 
-        return $leafFile;
+        return $arboryFile;
     }
 
     /**
@@ -203,15 +203,15 @@ class LeafFilesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param string $leafFileId
+     * @param string $arboryFileId
      * @return int
      */
-    public function delete( $leafFileId )
+    public function delete( $arboryFileId )
     {
-        $leafFile = $this->find( $leafFileId );
-        /* @var $leafFile LeafFile */
-        $this->getDisk()->delete( $leafFile->getLocalName() );
+        $arboryFile = $this->find( $arboryFileId );
+        /* @var $arboryFile ArboryFile */
+        $this->getDisk()->delete( $arboryFile->getLocalName() );
 
-        return parent::delete( $leafFileId );
+        return parent::delete( $arboryFileId );
     }
 }

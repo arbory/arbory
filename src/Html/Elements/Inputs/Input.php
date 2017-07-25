@@ -1,8 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Html\Elements\Inputs;
+namespace Arbory\Base\Html\Elements\Inputs;
 
-use CubeSystems\Leaf\Exceptions\BadMethodCallException;
+use Arbory\Base\Exceptions\BadMethodCallException;
 
 class Input extends AbstractInputField
 {

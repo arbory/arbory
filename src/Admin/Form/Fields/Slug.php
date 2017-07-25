@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Widgets\Button;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 /**
  * Class Slug
- * @package CubeSystems\Leaf\Admin\Form\Fields
+ * @package Arbory\Base\Admin\Form\Fields
  */
 class Slug extends AbstractField
 {
@@ -46,7 +46,7 @@ class Slug extends AbstractField
 
         $button = Button::create()
             ->type( 'button', 'secondary generate' )
-            ->title( trans( 'leaf::fields.slug.suggest_slug' ) )
+            ->title( trans( 'arbory::fields.slug.suggest_slug' ) )
             ->withIcon( 'keyboard-o' )
             ->iconOnly()
             ->render();

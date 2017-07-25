@@ -1,15 +1,15 @@
 <?php declare( strict_types=1 );
 
-namespace CubeSystems\Leaf\Views;
+namespace Arbory\Base\Views;
 
 use Cartalyst\Sentinel\Sentinel;
-use CubeSystems\Leaf\Menu\MenuFactory;
-use CubeSystems\Leaf\Menu\MenuItemFactory;
+use Arbory\Base\Menu\MenuFactory;
+use Arbory\Base\Menu\MenuItemFactory;
 use Illuminate\Contracts\View\View;
 
 /**
  * Class LayoutViewComposer
- * @package CubeSystems\Leaf\Views
+ * @package Arbory\Base\Views
  */
 final class LayoutViewComposer implements ViewComposer
 {
@@ -38,6 +38,6 @@ final class LayoutViewComposer implements ViewComposer
         $factory = new MenuFactory( $itemFactory );
 
         $view->with( 'user', $this->sentinel->getUser() );
-        $view->with( 'menu', $factory->build( config( 'leaf.menu' ) )->render() );
+        $view->with( 'menu', $factory->build( config( 'arbory.menu' ) )->render() );
     }
 }

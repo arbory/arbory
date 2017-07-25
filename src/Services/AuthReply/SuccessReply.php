@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Services\AuthReply;
+namespace Arbory\Base\Services\AuthReply;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 /**
  * Class SuccessReply
- * @package CubeSystems\Leaf\Services\AuthReply
+ * @package Arbory\Base\Services\AuthReply
  */
 class SuccessReply extends Reply
 {

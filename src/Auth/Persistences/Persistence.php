@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Auth\Persistences;
+namespace Arbory\Base\Auth\Persistences;
 
 use Cartalyst\Sentinel\Persistences\EloquentPersistence;
-use CubeSystems\Leaf\Auth\Users\User;
+use Arbory\Base\Auth\Users\User;
 
 /**
  * Class Persistence
- * @package CubeSystems\Leaf\Auth\Persistences
+ * @package Arbory\Base\Auth\Persistences
  */
 class Persistence extends EloquentPersistence
 {

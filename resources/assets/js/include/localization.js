@@ -146,7 +146,7 @@ jQuery(function()
 
             form.find('.field.i18n').trigger('localizationlocaleset', { locale : locale });
 
-            body.trigger( 'settingssave', [ "releaf.i18n.locale", locale ] );
+            body.trigger( 'settingssave', [ "arbory.i18n.locale", locale ] );
         });
 
 

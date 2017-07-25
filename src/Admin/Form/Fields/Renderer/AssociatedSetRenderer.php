@@ -1,17 +1,17 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use CubeSystems\Leaf\Admin\Form\Fields\FieldInterface;
-use CubeSystems\Leaf\Html\Elements\Content;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Elements\Inputs\Input;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Elements\Inputs\Input;
+use Arbory\Base\Html\Html;
 use Illuminate\Support\Collection;
 
 /**
  * Class AssociatedSetRenderer
- * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
+ * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
 class AssociatedSetRenderer
 {
@@ -43,7 +43,7 @@ class AssociatedSetRenderer
     }
 
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Element
+     * @return \Arbory\Base\Html\Elements\Element
      */
     protected function getLabel()
     {

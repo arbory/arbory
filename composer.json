@@ -1,5 +1,5 @@
 {
-    "name": "cubesystems/leaf",
+    "name": "arbory/arbory",
     "description": "Administration interface for Laravel",
     "type": "library",
     "license": "MIT",
@@ -36,7 +36,7 @@
         "diablomedia/phpunit-pretty-printer": "^2"
     },
     "autoload": {
-        "psr-4": { "CubeSystems\\Leaf\\": "src" },
+        "psr-4": { "Arbory\\Base\\": "src" },
         "classmap": ["database/seeds/"]
     }
 }

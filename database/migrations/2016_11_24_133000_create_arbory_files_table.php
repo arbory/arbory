@@ -3,18 +3,14 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-/**
- * Class CreateLeafFilesTable
- * @package Leaf\database\migrations
- */
-class CreateLeafFilesTable extends Migration
+class CreateArboryFilesTable extends Migration
 {
     /**
      *
      */
     public function up()
     {
-        Schema::create( 'leaf_files', function ( Blueprint $table )
+        Schema::create( 'arbory_files', function ( Blueprint $table )
         {
             $table->uuid( 'id' );
             $table->string( 'owner_id' );
@@ -36,6 +32,6 @@ class CreateLeafFilesTable extends Migration
      */
     public function down()
     {
-        Schema::drop( 'leaf_files' );
+        Schema::drop( 'arbory_files' );
     }
 }

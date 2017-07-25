@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Generatable;
+namespace Arbory\Base\Generator\Generatable;
 
-use CubeSystems\Leaf\Generator\Extras\Field;
-use CubeSystems\Leaf\Generator\GeneratorFormatter;
-use CubeSystems\Leaf\Generator\Schema;
-use CubeSystems\Leaf\Generator\Stubable;
-use CubeSystems\Leaf\Generator\StubGenerator;
-use CubeSystems\Leaf\Generator\Support\Traits\CompilesRelations;
-use CubeSystems\Leaf\Services\FieldTypeRegistry;
-use CubeSystems\Leaf\Services\StubRegistry;
+use Arbory\Base\Generator\Extras\Field;
+use Arbory\Base\Generator\GeneratorFormatter;
+use Arbory\Base\Generator\Schema;
+use Arbory\Base\Generator\Stubable;
+use Arbory\Base\Generator\StubGenerator;
+use Arbory\Base\Generator\Support\Traits\CompilesRelations;
+use Arbory\Base\Services\FieldTypeRegistry;
+use Arbory\Base\Services\StubRegistry;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;

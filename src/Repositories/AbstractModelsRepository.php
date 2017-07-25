@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Repositories;
+namespace Arbory\Base\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class AbstractModelRepository
- * @package CubeSystems\Leaf\Repositories
+ * @package Arbory\Base\Repositories
  */
 abstract class AbstractModelsRepository
 {
@@ -77,12 +77,12 @@ abstract class AbstractModelsRepository
     }
 
     /**
-     * @param $leafFileId
+     * @param $arboryFileId
      * @return mixed
      */
-    public function delete( $leafFileId )
+    public function delete( $arboryFileId )
     {
-        return $this->getModel()->destroy( $leafFileId );
+        return $this->getModel()->destroy( $arboryFileId );
     }
 
     /**

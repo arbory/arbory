@@ -1,1 +1,1 @@
-window.CKEDITOR_BASEPATH = '/leaf/ckeditor/';
+window.CKEDITOR_BASEPATH = '/arbory/ckeditor/';

@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Widgets;
+namespace Arbory\Base\Admin\Widgets;
 
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
  * Class Link
- * @package CubeSystems\Leaf\Admin\Widgets
+ * @package Arbory\Base\Admin\Widgets
  */
 class Link implements Renderable
 {

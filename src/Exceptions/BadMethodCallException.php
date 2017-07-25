@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Exceptions;
+namespace Arbory\Base\Exceptions;
 
 /**
  * Class BadMethodCallException
- * @package CubeSystems\Leaf\Exceptions
+ * @package Arbory\Base\Exceptions
  */
 class BadMethodCallException extends \Exception
 {

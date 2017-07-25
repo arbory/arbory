@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\FieldSet;
-use CubeSystems\Leaf\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
-use CubeSystems\Leaf\Html\Elements\Element;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
+use Arbory\Base\Html\Elements\Element;
 use Dimsav\Translatable\Translatable as TranslatableModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
  * Class Translatable
- * @package CubeSystems\Leaf\Field
+ * @package Arbory\Base\Admin\Form\Fields
  */
 class Translatable extends AbstractField
 {
@@ -125,7 +125,7 @@ class Translatable extends AbstractField
     }
 
     /**
-     * @see \CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::getField
+     * @see \Arbory\Base\Http\Controllers\Admin\SettingsController::getField
      *
      * @param $locale
      * @return Model|null

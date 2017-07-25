@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Html\Elements\Inputs;
+namespace Arbory\Base\Html\Elements\Inputs;
 
 class Select extends AbstractInputField
 {

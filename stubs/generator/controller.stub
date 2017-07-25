@@ -2,7 +2,7 @@
 
 namespace {{namespace}};
 
-use CubeSystems\Leaf\Nodes\Node;
+use Arbory\Base\Nodes\Node;
 use App\Http\Controllers\Controller;
 
 class {{className}} extends Controller

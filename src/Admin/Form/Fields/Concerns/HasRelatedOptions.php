@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields\Concerns;
+namespace Arbory\Base\Admin\Form\Fields\Concerns;
 
 use Illuminate\Support\Collection;
 
 /**
  * Class HasRelatedOptions
- * @package CubeSystems\Leaf\Admin\Form\Fields\Concerns
+ * @package Arbory\Base\Admin\Form\Fields\Concerns
  */
 trait HasRelatedOptions
 {

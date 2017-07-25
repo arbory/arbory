@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers\Admin;
+namespace Arbory\Base\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Admin\Form;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Admin\Traits\Crudify;
-use CubeSystems\Leaf\Pages\Redirect;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Pages\Redirect;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 

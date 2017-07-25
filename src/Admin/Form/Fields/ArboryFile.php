@@ -1,17 +1,17 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Renderer\FileFieldRenderer;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Repositories\LeafFilesRepository;
+use Arbory\Base\Admin\Form\Fields\Renderer\FileFieldRenderer;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Repositories\ArboryFilesRepository;
 use Illuminate\Http\Request;
 
 /**
- * Class LeafFile
- * @package CubeSystems\Leaf\Admin\Form\Fields
+ * Class ArboryFile
+ * @package Arbory\Base\Admin\Form\Fields
  */
-class LeafFile extends AbstractField
+class ArboryFile extends AbstractField
 {
     /**
      * @var string
@@ -35,7 +35,7 @@ class LeafFile extends AbstractField
     }
 
     /**
-     * @return \CubeSystems\Leaf\Files\LeafFile|null
+     * @return \Arbory\Base\Files\ArboryFile|null
      */
     public function getValue()
     {
@@ -43,7 +43,7 @@ class LeafFile extends AbstractField
 
         if ( is_string( $value ) )
         {
-            $value = \CubeSystems\Leaf\Files\LeafFile::where( 'id', $value )->first();
+            $value = \Arbory\Base\Files\ArboryFile::where( 'id', $value )->first();
         }
 
         return $value;
@@ -62,13 +62,13 @@ class LeafFile extends AbstractField
      */
     protected function deleteCurrentFileIfExists()
     {
-        $leafFilesRepository = app( 'leaf_files' );
+        $arboryFilesRepository = app( 'arbory_files' );
 
         $currentFile = $this->getValue();
 
         if( $currentFile )
         {
-            $leafFilesRepository->delete( $currentFile->getKey() );
+            $arboryFilesRepository->delete( $currentFile->getKey() );
         }
     }
 
@@ -99,9 +99,9 @@ class LeafFile extends AbstractField
         {
             $this->deleteCurrentFileIfExists();
 
-            $repository = new LeafFilesRepository( $this->disk );
+            $repository = new ArboryFilesRepository( $this->disk );
 
-            $leafFile = $repository->createFromUploadedFile( $uploadedFile, $this->getModel() );
+            $arboryFile = $repository->createFromUploadedFile( $uploadedFile, $this->getModel() );
 
             /**
              * @var $relation \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -115,8 +115,8 @@ class LeafFile extends AbstractField
 
             $localKey = explode( '.', $relation->getQualifiedForeignKey() )[ 1 ];
 
-            $this->getModel()->setAttribute( $localKey, $leafFile->getKey() );
-            $this->getModel()->setRelation( $this->getName(), $leafFile );
+            $this->getModel()->setAttribute( $localKey, $arboryFile->getKey() );
+            $this->getModel()->setRelation( $this->getName(), $arboryFile );
             $this->getModel()->save();
         }
     }

@@ -1,11 +1,11 @@
 <?php
 
-namespace CubeSystems\Leaf\Support\Facades;
+namespace Arbory\Base\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \CubeSystems\Leaf\Admin\Settings\Settings
+ * @see \Arbory\Base\Admin\Settings\Settings
  */
 class Settings extends Facade
 {
@@ -16,6 +16,6 @@ class Settings extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'leaf_settings';
+        return 'arbory_settings';
     }
 }

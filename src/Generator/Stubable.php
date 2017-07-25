@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator;
+namespace Arbory\Base\Generator;
 
 interface Stubable
 {

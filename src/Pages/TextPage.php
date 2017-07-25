@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Pages;
+namespace Arbory\Base\Pages;
 
-use CubeSystems\Leaf\Admin\Form\FieldSet;
-use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
-use CubeSystems\Leaf\Html\Elements\Element;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\Richtext;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class TextPage
- * @package CubeSystems\Leaf\Pages
+ * @package Arbory\Base\Pages
  */
 class TextPage extends Model implements PageInterface
 {

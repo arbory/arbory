@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers\Admin;
+namespace Arbory\Base\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Http\Requests\LoginRequest;
-use CubeSystems\Leaf\Services\AuthReply\Reply;
-use CubeSystems\Leaf\Services\AuthService;
+use Arbory\Base\Http\Requests\LoginRequest;
+use Arbory\Base\Services\AuthReply\Reply;
+use Arbory\Base\Services\AuthService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -17,7 +17,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * Class SessionController
- * @package CubeSystems\Leaf\Http\Controllers\Admin
+ * @package Arbory\Base\Http\Controllers\Admin
  */
 class SessionController extends BaseController
 {
@@ -33,7 +33,7 @@ class SessionController extends BaseController
      */
     public function __construct( AuthService $authService )
     {
-        $this->middleware( 'leaf.admin_quest', [ 'except' => 'postLogout' ] );
+        $this->middleware( 'arbory.admin_quest', [ 'except' => 'postLogout' ] );
 
         $this->authService = $authService;
     }
@@ -45,7 +45,7 @@ class SessionController extends BaseController
     public function getLogin( Request $request )
     {
         return view(
-            'leaf::layout.login',
+            'arbory::layout.login',
             [ 'input' => $request ]
         );
     }

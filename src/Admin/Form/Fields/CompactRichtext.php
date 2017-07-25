@@ -1,9 +1,9 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Renderer\RichtextFieldRenderer;
-use CubeSystems\Leaf\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\Renderer\RichtextFieldRenderer;
+use Arbory\Base\Html\Elements\Element;
 
 class CompactRichtext extends Richtext
 {

@@ -1,12 +1,12 @@
 <?php declare( strict_types=1 );
 
-namespace CubeSystems\Leaf\Views;
+namespace Arbory\Base\Views;
 
 use Illuminate\Contracts\View\View;
 
 /**
  * Interface ViewComposer
- * @package CubeSystems\Leaf\Views
+ * @package Arbory\Base\Views
  */
 interface ViewComposer
 {

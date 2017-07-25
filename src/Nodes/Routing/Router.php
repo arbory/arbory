@@ -1,17 +1,17 @@
 <?php
 
-namespace CubeSystems\Leaf\Nodes\Routing;
+namespace Arbory\Base\Nodes\Routing;
 
 use Closure;
-use CubeSystems\Leaf\Node;
-use CubeSystems\Leaf\Repositories\NodesRepository;
+use Arbory\Base\Nodes\Node;
+use Arbory\Base\Repositories\NodesRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 /**
  * Class Router
- * @package CubeSystems\Leaf\Nodes\Routing
+ * @package Arbory\Base\Nodes\Routing
  */
 class Router
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator;
+namespace Arbory\Base\Generator;
 
-use CubeSystems\Leaf\Generator\Extras\Field;
-use CubeSystems\Leaf\Generator\Extras\Relation;
+use Arbory\Base\Generator\Extras\Field;
+use Arbory\Base\Generator\Extras\Relation;
 use Illuminate\Support\Collection;
 
 Class GeneratorFormatter

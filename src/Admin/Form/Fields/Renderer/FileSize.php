@@ -1,12 +1,12 @@
 <?php declare( strict_types=1 );
 
-namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use CubeSystems\Leaf\Files\LeafFile;
+use Arbory\Base\Files\ArboryFile;
 
 /**
  * Class FileSize
- * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
+ * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
 final class FileSize
 {
@@ -23,15 +23,15 @@ final class FileSize
     ];
 
     /**
-     * @var LeafFile
+     * @var ArboryFile
      */
     private $file;
 
     /**
      * FileSize constructor.
-     * @param LeafFile $file
+     * @param ArboryFile $file
      */
-    public function __construct( LeafFile $file )
+    public function __construct( ArboryFile $file )
     {
         $this->file = $file;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Providers;
+namespace Arbory\Base\Providers;
 
 use Cartalyst\Sentinel\Activations\IlluminateActivationRepository;
 use Cartalyst\Sentinel\Checkpoints\ActivationCheckpoint;
@@ -14,21 +14,21 @@ use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Sessions\IlluminateSession;
 use Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository;
 use Cartalyst\Sentinel\Users\IlluminateUserRepository;
-use CubeSystems\Leaf\Auth\Activations\Activation;
-use CubeSystems\Leaf\Auth\Persistences\Persistence;
-use CubeSystems\Leaf\Auth\Reminders\Reminder;
-use CubeSystems\Leaf\Auth\Roles\Role;
-use CubeSystems\Leaf\Auth\Throttling\Throttle;
-use CubeSystems\Leaf\Auth\Users\User;
+use Arbory\Base\Auth\Activations\Activation;
+use Arbory\Base\Auth\Persistences\Persistence;
+use Arbory\Base\Auth\Reminders\Reminder;
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Auth\Throttling\Throttle;
+use Arbory\Base\Auth\Users\User;
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class LeafSentinelServiceProvider
- * @package CubesSystems\Leaf\Services
+ * Class ArboryAuthServiceProvider
+ * @package Arbory\Base\Providers
  */
-class LeafAuthServiceProvider extends ServiceProvider
+class ArboryAuthServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritDoc}
@@ -83,7 +83,7 @@ class LeafAuthServiceProvider extends ServiceProvider
         {
             return new IlluminateSession(
                 $app['session.store'],
-                'leaf_admin'
+                'arbory_admin'
             );
         } );
     }
@@ -100,7 +100,7 @@ class LeafAuthServiceProvider extends ServiceProvider
             return new IlluminateCookie(
                 $app['request'],
                 $app['cookie'],
-                'leaf_admin'
+                'arbory_admin'
             );
         } );
     }
@@ -197,7 +197,7 @@ class LeafAuthServiceProvider extends ServiceProvider
         {
             return new IlluminateActivationRepository(
                 Activation::class,
-                $app['config']->get( 'leaf.auth.activations.expires', 259200 )
+                $app['config']->get( 'arbory.auth.activations.expires', 259200 )
             );
         } );
     }
@@ -229,7 +229,7 @@ class LeafAuthServiceProvider extends ServiceProvider
     {
         $this->app->singleton( 'sentinel.throttling', function ( $app )
         {
-            $config = $app['config']->get( 'leaf.auth.throttling' );
+            $config = $app['config']->get( 'arbory.auth.throttling' );
 
             $globalInterval = array_get( $config, 'global.interval' );
             $globalThresholds = array_get( $config, 'global.thresholds' );
@@ -264,7 +264,7 @@ class LeafAuthServiceProvider extends ServiceProvider
             return new IlluminateReminderRepository(
                 $app['sentinel.users'],
                 Reminder::class,
-                $app['config']->get( 'leaf.auth.reminders.expires', 14400 )
+                $app['config']->get( 'arbory.auth.reminders.expires', 14400 )
             );
         } );
     }
@@ -354,7 +354,7 @@ class LeafAuthServiceProvider extends ServiceProvider
      */
     protected function garbageCollect()
     {
-        $config = $this->app['config']->get( 'leaf.auth' );
+        $config = $this->app['config']->get( 'arbory.auth' );
 
         $this->sweep(
             $this->app['sentinel.activations'], $config['activations']['lottery']

@@ -1,14 +1,14 @@
 <?php
 
-use CubeSystems\Leaf\Http\Controllers\Admin\NodesController;
-use CubeSystems\Leaf\Http\Controllers\Admin\RolesController;
-use CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController;
-use CubeSystems\Leaf\Http\Controllers\Admin\UsersController;
+use Arbory\Base\Http\Controllers\Admin\NodesController;
+use Arbory\Base\Http\Controllers\Admin\RolesController;
+use Arbory\Base\Http\Controllers\Admin\TranslationsController;
+use Arbory\Base\Http\Controllers\Admin\UsersController;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Seeder;
 use Waavi\Translation\Repositories\LanguageRepository;
 
-class LeafDatabaseSeeder extends Seeder
+class ArboryDatabaseSeeder extends Seeder
 {
     /**
      * @var LanguageRepository

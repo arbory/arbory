@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Module;
+namespace Arbory\Base\Admin\Module;
 
 use Closure;
-use CubeSystems\Leaf\Admin\Module;
+use Arbory\Base\Admin\Module;
 use Illuminate\Routing\Router;
 
 /**
  * Class ModuleRoutesRegistry
- * @package CubeSystems\Leaf\Admin\Module
+ * @package Arbory\Base\Admin\Module
  */
 class ModuleRoutesRegistry
 {
@@ -18,7 +18,7 @@ class ModuleRoutesRegistry
     protected $routes = [];
 
     /**
-     * @param \CubeSystems\Leaf\Admin\Module $module
+     * @param \Arbory\Base\Admin\Module $module
      * @param Closure|null $callback
      * @return ResourceRoutes
      */

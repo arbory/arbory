@@ -1,17 +1,17 @@
 <?php
 
-namespace CubeSystems\Leaf\Auth\Users;
+namespace Arbory\Base\Auth\Users;
 
 use Cartalyst\Sentinel\Users\EloquentUser;
-use CubeSystems\Leaf\Auth\Activations\Activation;
-use CubeSystems\Leaf\Auth\Persistences\Persistence;
-use CubeSystems\Leaf\Auth\Reminders\Reminder;
-use CubeSystems\Leaf\Auth\Roles\Role;
-use CubeSystems\Leaf\Auth\Throttling\Throttle;
+use Arbory\Base\Auth\Activations\Activation;
+use Arbory\Base\Auth\Persistences\Persistence;
+use Arbory\Base\Auth\Reminders\Reminder;
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Auth\Throttling\Throttle;
 
 /**
  * Class User
- * @package CubeSystems\Leaf\Auth\Users
+ * @package Arbory\Base\Auth\Users
  */
 class User extends EloquentUser
 {

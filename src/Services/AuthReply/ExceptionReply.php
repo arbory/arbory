@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Services\AuthReply;
+namespace Arbory\Base\Services\AuthReply;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -9,7 +9,7 @@ use Illuminate\Routing\UrlGenerator;
 
 /**
  * Class ExceptionReply
- * @package CubeSystems\Leaf\Services\AuthReply
+ * @package Arbory\Base\Services\AuthReply
  */
 class ExceptionReply extends Reply
 {

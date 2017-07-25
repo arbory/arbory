@@ -1,11 +1,11 @@
 <?php
 
-namespace CubeSystems\Leaf\Services\Content;
+namespace Arbory\Base\Services\Content;
 
 use Closure;
-use CubeSystems\Leaf\Nodes\ContentTypeDefinition;
-use CubeSystems\Leaf\Nodes\ContentTypeRegister;
-use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
+use Arbory\Base\Nodes\ContentTypeDefinition;
+use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 
 class PageBuilder
 {
@@ -40,7 +40,7 @@ class PageBuilder
     /**
      * @param string $model
      * @return $this
-     * @throws \CubeSystems\Leaf\Exceptions\BadMethodCallException
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function register( string $model )
     {
@@ -65,7 +65,7 @@ class PageBuilder
     /**
      * @param Closure $routes
      * @return $this
-     * @throws \CubeSystems\Leaf\Exceptions\BadMethodCallException
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function routes( Closure $routes )
     {
@@ -77,7 +77,7 @@ class PageBuilder
     /**
      * @param Closure $fieldSet
      * @return $this
-     * @throws \CubeSystems\Leaf\Exceptions\BadMethodCallException
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function fields( Closure $fieldSet )
     {

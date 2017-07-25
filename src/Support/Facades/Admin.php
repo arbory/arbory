@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Support\Facades;
+namespace Arbory\Base\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -13,6 +13,6 @@ class Admin extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'leaf';
+        return 'arbory';
     }
 }

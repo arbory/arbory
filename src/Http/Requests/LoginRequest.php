@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Requests;
+namespace Arbory\Base\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class LoginRequest
- * @package CubeSystems\Leaf\Http\Requests
+ * @package Arbory\Base\Http\Requests
  */
 class LoginRequest extends FormRequest
 {

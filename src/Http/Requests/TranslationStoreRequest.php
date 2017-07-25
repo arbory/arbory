@@ -1,12 +1,12 @@
 <?php
-namespace CubeSystems\Leaf\Http\Requests;
+namespace Arbory\Base\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
  * Class TranslationStoreRequest
- * @package CubeSystems\Leaf\Http\Requests
+ * @package Arbory\Base\Http\Requests
  */
 class TranslationStoreRequest extends FormRequest
 {

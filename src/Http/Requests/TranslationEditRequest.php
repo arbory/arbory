@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Requests;
+namespace Arbory\Base\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Generatable;
+namespace Arbory\Base\Generator\Generatable;
 
-use CubeSystems\Leaf\Generator\Extras\Field;
-use CubeSystems\Leaf\Generator\Extras\Structure;
-use CubeSystems\Leaf\Generator\Stubable;
-use CubeSystems\Leaf\Generator\StubGenerator;
-use CubeSystems\Leaf\Generator\Support\Traits\CompilesRelations;
+use Arbory\Base\Generator\Extras\Field;
+use Arbory\Base\Generator\Extras\Structure;
+use Arbory\Base\Generator\Stubable;
+use Arbory\Base\Generator\StubGenerator;
+use Arbory\Base\Generator\Support\Traits\CompilesRelations;
 use DateTimeImmutable;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Support\Collection;

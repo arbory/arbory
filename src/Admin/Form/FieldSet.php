@@ -1,17 +1,17 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form;
+namespace Arbory\Base\Admin\Form;
 
-use CubeSystems\Leaf\Admin\Form\Fields\AbstractField;
-use CubeSystems\Leaf\Admin\Form\Fields\FieldInterface;
-use CubeSystems\Leaf\Services\FieldSetFieldFinder;
+use Arbory\Base\Admin\Form\Fields\AbstractField;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Services\FieldSetFieldFinder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
  * Class FieldSet
- * @package CubeSystems\Leaf\Admin\Form
+ * @package Arbory\Base\Admin\Form
  */
 class FieldSet extends Collection
 {

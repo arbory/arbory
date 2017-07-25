@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Files;
+namespace Arbory\Base\Files;
 
 /**
- * Class LeafImage
- * @package CubeSystems\Leaf\Files
+ * Class ArboryImage
+ * @package Arbory\Base\Files
  */
-class LeafImage extends LeafFile
+class ArboryImage extends ArboryFile
 {
     /**
      * @return string

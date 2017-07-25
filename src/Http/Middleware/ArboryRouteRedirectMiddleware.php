@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Middleware;
+namespace Arbory\Base\Http\Middleware;
 
 use Closure;
-use CubeSystems\Leaf\Pages\Redirect;
+use Arbory\Base\Pages\Redirect;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class LeafRouteRedirectMiddleware
+class ArboryRouteRedirectMiddleware
 {
     /**
      * Handle an incoming request.

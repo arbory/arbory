@@ -53,7 +53,7 @@ jQuery( document ).ready(function()
 
                 if (trigger.is('.add-nested-item'))
                 {
-                    var template = jQuery(target_block.data('releaf-template'));
+                    var template = jQuery(target_block.data('arbory-template'));
                     if (template.length !== 1)
                     {
                         return null;

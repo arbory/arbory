@@ -4,16 +4,16 @@ Route::get( '/', [ 'as' => 'login.form', 'uses' => 'Admin\SessionController@getL
 Route::post( 'login', [ 'as' => 'login.attempt', 'uses' => 'Admin\SessionController@postLogin' ] );
 Route::post( 'logout', [ 'as' => 'logout', 'uses' => 'Admin\SessionController@postLogout' ] );
 
-Route::group( [ 'middleware' => 'leaf.admin_auth' ], function ()
+Route::group( [ 'middleware' => 'arbory.admin_auth' ], function ()
 {
-    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\DashboardController::class );
-    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class );
-    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class );
-    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class );
-    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class );
-    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class );
-    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\RedirectsController::class );
-    Admin::modules()->register( \CubeSystems\Leaf\Http\Controllers\Admin\LanguageController::class );
+    Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\DashboardController::class );
+    Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\UsersController::class );
+    Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\RolesController::class );
+    Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\NodesController::class );
+    Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\TranslationsController::class );
+    Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\SettingsController::class );
+    Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\RedirectsController::class );
+    Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\LanguageController::class );
 
     Route::get( 'dashboard', [
         'as' => 'dashboard',

@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Settings;
+namespace Arbory\Base\Admin\Settings;
 
-use CubeSystems\Leaf\Files\LeafFile;
-use CubeSystems\Leaf\Services\SettingRegistry;
-use CubeSystems\Leaf\Support\Translate\Translatable;
+use Arbory\Base\Files\ArboryFile;
+use Arbory\Base\Services\SettingRegistry;
+use Arbory\Base\Support\Translate\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
@@ -110,7 +110,7 @@ class Setting extends Model
      */
     public function value( $column = null )
     {
-        return $column ? parent::value( $column ) : $this->belongsTo( LeafFile::class, 'value' );
+        return $column ? parent::value( $column ) : $this->belongsTo( ArboryFile::class, 'value' );
     }
 
     /**
@@ -133,6 +133,6 @@ class Setting extends Model
         $registry = app( SettingRegistry::class );
         $definition = $registry->find( $settingName );
 
-        return $definition->getType() === \CubeSystems\Leaf\Admin\Form\Fields\Translatable::class;
+        return $definition->getType() === \Arbory\Base\Admin\Form\Fields\Translatable::class;
     }
 }

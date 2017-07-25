@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Widgets;
+namespace Arbory\Base\Admin\Widgets;
 
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
  * Class SearchField
- * @package CubeSystems\Leaf\Admin\Widgets
+ * @package Arbory\Base\Admin\Widgets
  */
 class SearchField implements Renderable
 {
@@ -78,7 +78,7 @@ class SearchField implements Renderable
             ->addClass( 'button only-icon' )
             ->addAttributes( [
                 'type' => 'submit',
-                'title' => trans( 'leaf::filter.search' ),
+                'title' => trans( 'arbory::filter.search' ),
                 'autocomplete' => 'off',
             ] );
 

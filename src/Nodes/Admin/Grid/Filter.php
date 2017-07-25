@@ -1,8 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Nodes\Admin\Grid;
+namespace Arbory\Base\Nodes\Admin\Grid;
 
-use CubeSystems\Leaf\Admin\Grid\FilterInterface;
+use Arbory\Base\Admin\Grid\FilterInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;

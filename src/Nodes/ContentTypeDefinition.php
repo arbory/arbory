@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Nodes;
+namespace Arbory\Base\Nodes;
 
 use Closure;
 

@@ -1,18 +1,18 @@
 <?php
 
-namespace CubeSystems\Leaf\Console\Commands;
+namespace Arbory\Base\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Database\Seeder;
-use LeafDatabaseSeeder;
+use ArboryDatabaseSeeder;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Class SeedCommand
- * @package CubeSystems\Leaf\Console\Commands
+ * @package Arbory\Base\Console\Commands
  */
 class SeedCommand extends Command
 {
@@ -21,12 +21,12 @@ class SeedCommand extends Command
     /**
      * @var string
      */
-    protected $name = 'leaf:seed';
+    protected $name = 'arbory:seed';
 
     /**
      * @var string
      */
-    protected $description = 'Seed the the database with with initial records for Leaf framework';
+    protected $description = 'Seed the database with initial records for Arbory admin interface';
 
     /**
      * @var DatabaseManager
@@ -90,7 +90,7 @@ class SeedCommand extends Command
     protected function getOptions()
     {
         return [
-            [ 'class', null, InputOption::VALUE_OPTIONAL, 'The class name of the root seeder', LeafDatabaseSeeder::class ],
+            [ 'class', null, InputOption::VALUE_OPTIONAL, 'The class name of the root seeder', ArboryDatabaseSeeder::class ],
 
             [ 'database', null, InputOption::VALUE_OPTIONAL, 'The database connection to seed' ],
 

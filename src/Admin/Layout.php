@@ -1,16 +1,16 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin;
+namespace Arbory\Base\Admin;
 
 use Closure;
-use CubeSystems\Leaf\Admin\Layout\Row;
-use CubeSystems\Leaf\Html\Elements\Content;
+use Arbory\Base\Admin\Layout\Row;
+use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 
 /**
  * Class Layout
- * @package CubeSystems\Leaf\Admin
+ * @package Arbory\Base\Admin
  */
 class Layout implements Renderable
 {
@@ -116,7 +116,7 @@ class Layout implements Renderable
             'bodyClass' => $this->bodyClass,
         ];
 
-        return view( 'leaf::controllers.resource.layout', $variables )->render();
+        return view( 'arbory::controllers.resource.layout', $variables )->render();
     }
 
 }

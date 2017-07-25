@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers\Admin;
+namespace Arbory\Base\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Admin\Form;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Admin\Traits\Crudify;
-use CubeSystems\Leaf\Auth\Roles\Role;
-use CubeSystems\Leaf\Admin\Module;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Admin\Module;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

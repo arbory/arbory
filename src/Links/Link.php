@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Links;
+namespace Arbory\Base\Links;
 
 use Illuminate\Database\Eloquent\Model;
 

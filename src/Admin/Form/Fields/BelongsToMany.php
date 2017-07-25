@@ -1,16 +1,16 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Concerns\HasRelationships;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 /**
  * Class BelongsToMany
- * @package CubeSystems\Leaf\Admin\Form\Fields
+ * @package Arbory\Base\Admin\Form\Fields
  */
 class BelongsToMany extends AbstractField
 {

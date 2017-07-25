@@ -1,8 +1,8 @@
-[![Packagist](https://img.shields.io/packagist/v/cubesystems/leaf.svg)](https://packagist.org/packages/cubesystems/leaf)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cubesystems/leaf/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cubesystems/leaf/?branch=master)
-[![Build Status](https://travis-ci.org/cubesystems/leaf.svg?branch=master)](https://travis-ci.org/cubesystems/leaf)
+[![Packagist](https://img.shields.io/packagist/v/arbory/base.svg)](https://packagist.org/packages/arbory/base)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arbory/base/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arbory/base/?branch=master)
+[![Build Status](https://travis-ci.org/arbory/base.svg?branch=master)](https://travis-ci.org/arbory/base)
 [![Dependency Status](https://www.versioneye.com/user/projects/58f8b23ec2ef420052a23406/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58f8b23ec2ef420052a23406)
-[![Coverage Status](https://coveralls.io/repos/github/cubesystems/leaf/badge.svg?branch=master)](https://coveralls.io/github/cubesystems/leaf?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/arbory/base/badge.svg?branch=master)](https://coveralls.io/github/arbory/base?branch=master)
 
 ## Installation
 #### Create new Laravel project
@@ -18,29 +18,29 @@ composer create-project --prefer-dist laravel/laravel my-project
 cd my-project
 ```
 
-#### Require Leaf package
+#### Require Arbory package
 ```bash
-composer require cubesystems/leaf dev-master
+composer require arbory/base dev-master
 ```
 #### Fill in database info
 ```bash
 vi .env
 ```
 
-#### Add Leaf service providers in your application configuration
+#### Add Arbory service providers in your application configuration
 
 config/app.php
 ```php
 'providers' => [
     ...
-    CubeSystems\Leaf\Providers\LeafServiceProvider::class,
-    CubeSystems\Leaf\Providers\NodeServiceProvider::class,
+    Arbory\Base\Providers\ArboryServiceProvider::class,
+    Arbory\Base\Providers\NodeServiceProvider::class,
 ]
 ```
 
 #### Run installer and follow instructions
 ```bash
-php artisan leaf:install
+php artisan arbory:install
 ```
 
 ## Usage
@@ -51,7 +51,7 @@ php artisan leaf:install
 Page::register( App\Pages\TextPage::class )
     ->fields( function( FieldSet $fieldSet )
     {
-        $fieldSet->add( new CubeSystems\Leaf\Admin\Form\Fields\Richtext( 'text' ) );
+        $fieldSet->add( new Arbory\Base\Admin\Form\Fields\Richtext( 'text' ) );
     } )
     ->routes( function()
     {
@@ -81,8 +81,8 @@ $form->addField( new Translatable( ( new Text( 'title' ) )->rules( 'required' ) 
 
 ### Custom validators
 
-* leaf_require_one_localized - at least one translation exists for this field
-* leaf_file_required - file has been uploaded or is being passed in request
+* arbory_require_one_localized - at least one translation exists for this field
+* arbory_file_required - file has been uploaded or is being passed in request
 
 ## Settings
 
@@ -108,7 +108,7 @@ Settings::get('my_letter.to'); // "a friend"
 return [
     'my_setting_key' => [
         'value' => 'My setting value',
-        'type' => CubeSystems\Leaf\Admin\Form\Fields\CompactRichtext::class
+        'type' => Arbory\Base\Admin\Form\Fields\CompactRichtext::class
     ],
 ]
 ```
@@ -118,9 +118,9 @@ return [
 ```php
 return [
     'hello' => [
-        'type' => CubeSystems\Leaf\Admin\Form\Fields\Translatable::class,
+        'type' => Arbory\Base\Admin\Form\Fields\Translatable::class,
         'value' => [
-            'type' => CubeSystems\Leaf\Admin\Form\Fields\CompactRichtext::class,
+            'type' => Arbory\Base\Admin\Form\Fields\CompactRichtext::class,
             'value' => [
                 'en' => 'Hello',
                 'lv' => 'Sveiks'
@@ -135,7 +135,7 @@ return [
 ### Quick generator
 
 ```bash
-php artisan leaf:generate {type?} {--T|table=}
+php artisan arbory:generate {type?} {--T|table=}
 ```
 
 Generators available for
@@ -149,7 +149,7 @@ Generators available for
 ### Verbose Generator
 
 ```bash
-php artisan leaf:generator
+php artisan arbory:generator
 ```
 
 ## Coding style

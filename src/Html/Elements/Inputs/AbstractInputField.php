@@ -1,9 +1,9 @@
 <?php
 
-namespace CubeSystems\Leaf\Html\Elements\Inputs;
+namespace Arbory\Base\Html\Elements\Inputs;
 
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 abstract class AbstractInputField extends Element
 {

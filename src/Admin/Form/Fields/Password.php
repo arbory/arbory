@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Html\Elements\Content;
-use CubeSystems\Leaf\Html\Elements\Inputs\Input;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Inputs\Input;
+use Arbory\Base\Html\Html;
 use Illuminate\Http\Request;
 
 /**
  * Class Password
- * @package CubeSystems\Leaf\Admin\Form\Fields
+ * @package Arbory\Base\Admin\Form\Fields
  */
 class Password extends AbstractField
 {

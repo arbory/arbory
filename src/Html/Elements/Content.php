@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Html\Elements;
+namespace Arbory\Base\Html\Elements;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;

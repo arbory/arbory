@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Auth\Roles;
+namespace Arbory\Base\Auth\Roles;
 
 use Cartalyst\Sentinel\Roles\EloquentRole;
-use CubeSystems\Leaf\Auth\Users\User;
+use Arbory\Base\Auth\Users\User;
 
 /**
  * Class Role
- * @package CubeSystems\Leaf\Auth\Roles
+ * @package Arbory\Base\Auth\Roles
  */
 class Role extends EloquentRole
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Traits;
+namespace Arbory\Base\Admin\Traits;
 
 use Closure;
 
 /**
  * Class EventDispatcher
- * @package CubeSystems\Leaf\Admin\Traits
+ * @package Arbory\Base\Admin\Traits
  */
 trait EventDispatcher
 {

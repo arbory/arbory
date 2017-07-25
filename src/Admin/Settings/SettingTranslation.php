@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Settings;
+namespace Arbory\Base\Admin\Settings;
 
 use Illuminate\Database\Eloquent\Model;
 

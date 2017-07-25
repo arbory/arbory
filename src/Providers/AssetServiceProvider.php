@@ -1,8 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Providers;
+namespace Arbory\Base\Providers;
 
-use CubeSystems\Leaf\Services\AssetPipeline;
+use Arbory\Base\Services\AssetPipeline;
 use Illuminate\Support\ServiceProvider;
 
 class AssetServiceProvider extends ServiceProvider

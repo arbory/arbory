@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Nodes;
+namespace Arbory\Base\Nodes;
 
 use Alsofronie\Uuid\UuidModelTrait;
-use CubeSystems\Leaf\Pages\PageInterface;
-use CubeSystems\Leaf\Repositories\NodesRepository;
+use Arbory\Base\Pages\PageInterface;
+use Arbory\Base\Repositories\NodesRepository;
 use Illuminate\Database\Query\Builder;
 
 /**
  * Class Node
- * @package CubeSystems\Leaf
+ * @package Arbory\Base\Nodes
  */
 class Node extends \Baum\Node
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Renderer\RichtextFieldRenderer;
-use CubeSystems\Leaf\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\Renderer\RichtextFieldRenderer;
+use Arbory\Base\Html\Elements\Element;
 
 /**
  * Class Richtext
- * @package CubeSystems\Leaf\Admin\Form\Fields
+ * @package Arbory\Base\Admin\Form\Fields
  */
 class Richtext extends AbstractField
 {

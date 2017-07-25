@@ -1,8 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Services;
+namespace Arbory\Base\Services;
 
-use CubeSystems\Leaf\Admin\Settings\SettingDefinition;
+use Arbory\Base\Admin\Settings\SettingDefinition;
 use Illuminate\Support\Collection;
 
 class SettingRegistry

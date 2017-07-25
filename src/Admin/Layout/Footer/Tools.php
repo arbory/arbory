@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Layout\Footer;
+namespace Arbory\Base\Admin\Layout\Footer;
 
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 
 /**
  * Class Tools
- * @package CubeSystems\Leaf\Admin\Layout\Footer
+ * @package Arbory\Base\Admin\Layout\Footer
  */
 class Tools implements Renderable
 {

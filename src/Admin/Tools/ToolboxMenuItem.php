@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Tools;
+namespace Arbory\Base\Admin\Tools;
 
 /**
  * Class AbstractAction
- * @package CubeSystems\Leaf\Admin\Form\Fields\ToolboxActions
+ * @package Arbory\Base\Admin\Form\Fields\ToolboxActions
  */
 class ToolboxMenuItem
 {

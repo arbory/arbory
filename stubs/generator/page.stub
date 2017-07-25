@@ -2,7 +2,7 @@
 
 namespace {{namespace}};
 
-use CubeSystems\Leaf\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\FieldSet;
 use Illuminate\Database\Eloquent\Model;
 {{use}}
 

@@ -1,17 +1,17 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Tools;
+namespace Arbory\Base\Admin\Tools;
 
-use CubeSystems\Leaf\Admin\Tools\ToolboxMenuItem;
-use CubeSystems\Leaf\Html\Elements\Content;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Tools\ToolboxMenuItem;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 /**
  * Class Toolbox
- * @package CubeSystems\Leaf\Admin\Form\Fields
+ * @package Arbory\Base\Admin\Form\Fields
  */
 class ToolboxMenu implements Renderable
 {

@@ -1,17 +1,17 @@
 <?php
 
-namespace CubeSystems\Leaf\Html;
+namespace Arbory\Base\Html;
 
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Elements\Inputs\CheckBox;
-use CubeSystems\Leaf\Html\Elements\Inputs\Input;
-use CubeSystems\Leaf\Html\Elements\Inputs\Option;
-use CubeSystems\Leaf\Html\Elements\Inputs\Select;
-use CubeSystems\Leaf\Html\Elements\Inputs\Textarea;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Elements\Inputs\CheckBox;
+use Arbory\Base\Html\Elements\Inputs\Input;
+use Arbory\Base\Html\Elements\Inputs\Option;
+use Arbory\Base\Html\Elements\Inputs\Select;
+use Arbory\Base\Html\Elements\Inputs\Textarea;
 
 /**
  * Class Html
- * @package CubeSystems\Leaf\Html
+ * @package Arbory\Base\Html
  *
  * @method static Element   title( $content = null )
  * @method static Element   meta()

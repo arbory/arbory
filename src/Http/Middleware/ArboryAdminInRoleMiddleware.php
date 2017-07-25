@@ -1,18 +1,19 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Middleware;
+namespace Arbory\Base\Http\Middleware;
 
-use Cartalyst\Sentinel\Sentinel;
+use Cartalyst\Sentinel\Roles\RoleInterface;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Sentinel;
 
 /**
- * Class SentinelUserHasAccess
- * @package CubeSystems\Leaf\Http\Middleware
+ * Class SentinelUserInRole
+ * @package Arbory\Base\Http\Middleware
  */
-class LeafAdminHasAccessMiddleware
+class ArboryAdminInRoleMiddleware
 {
     /**
      * @var Sentinel
@@ -20,7 +21,7 @@ class LeafAdminHasAccessMiddleware
     protected $sentinel;
 
     /**
-     * LeafAdminHasAccessMiddleware constructor.
+     * ArboryAdminInRoleMiddleware constructor.
      * @param Sentinel $sentinel
      */
     public function __construct( Sentinel $sentinel )
@@ -31,10 +32,10 @@ class LeafAdminHasAccessMiddleware
     /**
      * @param Request $request
      * @param Closure $next
-     * @param string $permission
-     * @return JsonResponse|RedirectResponse
+     * @param string|int|RoleInterface $role
+     * @return JsonResponse|RedirectResponse|mixed
      */
-    public function handle( Request $request, Closure $next, $permission )
+    public function handle( Request $request, Closure $next, $role )
     {
         if( !$this->sentinel->check() )
         {
@@ -42,7 +43,7 @@ class LeafAdminHasAccessMiddleware
         }
 
         /** @noinspection PhpUndefinedMethodInspection */
-        if( !$this->sentinel->hasAccess( $permission ) )
+        if( !$this->sentinel->inRole( $role ) )
         {
             return $this->denied( $request );
         }
@@ -58,13 +59,13 @@ class LeafAdminHasAccessMiddleware
     {
         if( $request->ajax() )
         {
-            $message = trans( 'leaf.admin_unauthorized', 'Unauthorized' );
+            $message = trans( 'arbory.admin_unauthorized', 'Unauthorized' );
 
             return response()->json( [ 'error' => $message ], 401 );
         }
         else
         {
-            $message = trans( 'leaf.admin_need_permission', 'You do not have permission to do that.' );
+            $message = trans( 'arbory.admin_need_permission', 'You do not have permission to do that.' );
             session()->flash( 'error', $message );
 
             return redirect()->back();

@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Widgets;
+namespace Arbory\Base\Admin\Widgets;
 
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 
 /**
  * Class Select
- * @package CubeSystems\Leaf\Admin\Widgets
+ * @package Arbory\Base\Admin\Widgets
  */
 class Select implements Renderable
 {
@@ -23,7 +23,7 @@ class Select implements Renderable
     protected $selected;
 
     /**
-     * @var \CubeSystems\Leaf\Html\Elements\Inputs\Select
+     * @var \Arbory\Base\Html\Elements\Inputs\Select
      */
     protected $element;
 
@@ -77,7 +77,7 @@ class Select implements Renderable
     }
 
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Inputs\Select
+     * @return \Arbory\Base\Html\Elements\Inputs\Select
      */
     public function render()
     {

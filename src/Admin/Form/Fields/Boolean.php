@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
 use Illuminate\Http\Request;
 

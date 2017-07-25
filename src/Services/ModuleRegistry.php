@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Services;
+namespace Arbory\Base\Services;
 
-use CubeSystems\Leaf\Admin\Admin;
-use CubeSystems\Leaf\Admin\Module;
+use Arbory\Base\Admin\Admin;
+use Arbory\Base\Admin\Module;
 use Illuminate\Support\Collection;
 
 /**
  * Class ModuleRegistryService
- * @package CubeSystems\Leaf\Services
+ * @package Arbory\Base\Services
  */
 class ModuleRegistry
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Menu;
+namespace Arbory\Base\Menu;
 
-use CubeSystems\Leaf\Admin\Admin;
+use Arbory\Base\Admin\Admin;
 use Waavi\Translation\Repositories\TranslationRepository;
 
 class MenuItemFactory
@@ -71,7 +71,7 @@ class MenuItemFactory
         $name = is_array( $definition ) ? $definition[ 0 ] : $definition;
         $name = str_replace('Controller', '', class_basename( $name ) );
         $name = snake_case( $name );
-        $key = 'leaf::modules.' . $name;
+        $key = 'arbory::modules.' . $name;
 
         $translated = trans( $key );
 
@@ -81,7 +81,7 @@ class MenuItemFactory
 
             $this->translations->create( [
                 'locale' => \App::getLocale(),
-                'namespace' => 'leaf',
+                'namespace' => 'arbory',
                 'group' => 'modules',
                 'item' => $name,
                 'text' => $generatedText,

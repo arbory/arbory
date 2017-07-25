@@ -1,8 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Renderer\IconPickerRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\IconPickerRenderer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -18,7 +18,7 @@ class SpriteIcon extends Select
      */
     public function __construct( $name )
     {
-        $this->spritePath = config( 'leaf.fields.sprite_icon.path' );
+        $this->spritePath = config( 'arbory.fields.sprite_icon.path' );
 
         parent::__construct( $name );
     }
@@ -114,7 +114,7 @@ class SpriteIcon extends Select
     }
 
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Element
+     * @return \Arbory\Base\Html\Elements\Element
      * @throws \InvalidArgumentException
      */
     public function render()

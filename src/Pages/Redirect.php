@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Pages;
+namespace Arbory\Base\Pages;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -1,32 +1,32 @@
-<?php namespace CubeSystems\Leaf\Providers;
+<?php namespace Arbory\Base\Providers;
 
-use CubeSystems\Leaf\Admin\Admin;
-use CubeSystems\Leaf\Admin\Form\Fields\Checkbox;
-use CubeSystems\Leaf\Admin\Form\Fields\DateTime;
-use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
-use CubeSystems\Leaf\Admin\Form\Fields\LeafFile;
-use CubeSystems\Leaf\Admin\Form\Fields\Link;
-use CubeSystems\Leaf\Admin\Form\Fields\Richtext;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Admin\Form\Fields\Textarea;
-use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
-use CubeSystems\Leaf\Admin\Form\FieldSet;
-use CubeSystems\Leaf\Console\Commands\GenerateCommand;
-use CubeSystems\Leaf\Console\Commands\GeneratorCommand;
-use CubeSystems\Leaf\Console\Commands\InstallCommand;
-use CubeSystems\Leaf\Console\Commands\SeedCommand;
-use CubeSystems\Leaf\Files\LeafImage;
-use CubeSystems\Leaf\Http\Middleware\LeafAdminAuthMiddleware;
-use CubeSystems\Leaf\Http\Middleware\LeafAdminGuestMiddleware;
-use CubeSystems\Leaf\Http\Middleware\LeafAdminHasAccessMiddleware;
-use CubeSystems\Leaf\Http\Middleware\LeafAdminInRoleMiddleware;
-use CubeSystems\Leaf\Http\Middleware\LeafRouteRedirectMiddleware;
-use CubeSystems\Leaf\Menu\Menu;
-use CubeSystems\Leaf\Menu\MenuFactory;
-use CubeSystems\Leaf\Services\AssetPipeline;
-use CubeSystems\Leaf\Services\FieldTypeRegistry;
-use CubeSystems\Leaf\Services\StubRegistry;
-use CubeSystems\Leaf\Views\LayoutViewComposer;
+use Arbory\Base\Admin\Admin;
+use Arbory\Base\Admin\Form\Fields\Checkbox;
+use Arbory\Base\Admin\Form\Fields\DateTime;
+use Arbory\Base\Admin\Form\Fields\Hidden;
+use Arbory\Base\Admin\Form\Fields\ArboryFile;
+use Arbory\Base\Admin\Form\Fields\Link;
+use Arbory\Base\Admin\Form\Fields\Richtext;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\Fields\Textarea;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Console\Commands\GenerateCommand;
+use Arbory\Base\Console\Commands\GeneratorCommand;
+use Arbory\Base\Console\Commands\InstallCommand;
+use Arbory\Base\Console\Commands\SeedCommand;
+use Arbory\Base\Files\ArboryImage;
+use Arbory\Base\Http\Middleware\ArboryAdminAuthMiddleware;
+use Arbory\Base\Http\Middleware\ArboryAdminGuestMiddleware;
+use Arbory\Base\Http\Middleware\ArboryAdminHasAccessMiddleware;
+use Arbory\Base\Http\Middleware\ArboryAdminInRoleMiddleware;
+use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
+use Arbory\Base\Menu\Menu;
+use Arbory\Base\Menu\MenuFactory;
+use Arbory\Base\Services\AssetPipeline;
+use Arbory\Base\Services\FieldTypeRegistry;
+use Arbory\Base\Services\StubRegistry;
+use Arbory\Base\Views\LayoutViewComposer;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use File;
 use Illuminate\Filesystem\Filesystem;
@@ -39,10 +39,10 @@ use Roboc\Glide\GlideImageServiceProvider;
 use Route;
 
 /**
- * Class LeafServiceProvider
- * @package CubeSystems\Leaf
+ * Class ArboryServiceProvider
+ * @package Arbory\Base
  */
-class LeafServiceProvider extends ServiceProvider
+class ArboryServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -64,7 +64,7 @@ class LeafServiceProvider extends ServiceProvider
         $this->registerValidationRules();
         $this->registerAssets();
 
-        $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'leaf' );
+        $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'arbory' );
     }
 
     /**
@@ -72,10 +72,10 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerServiceProviders()
     {
-        $this->app->register( LeafTranslationServiceProvider::class );
+        $this->app->register( ArboryTranslationServiceProvider::class );
         $this->app->register( TranslatableServiceProvider::class );
-        $this->app->register( LeafFileServiceProvider::class );
-        $this->app->register( LeafAuthServiceProvider::class );
+        $this->app->register( ArboryFileServiceProvider::class );
+        $this->app->register( ArboryAuthServiceProvider::class );
         $this->app->register( GlideImageServiceProvider::class );
         $this->app->register( AssetServiceProvider::class );
         $this->app->register( SettingsServiceProvider::class );
@@ -101,12 +101,12 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerResources()
     {
-        $configFilename = __DIR__ . '/../../config/leaf.php';
+        $configFilename = __DIR__ . '/../../config/arbory.php';
 
-        $this->mergeConfigFrom( $configFilename, 'leaf' );
+        $this->mergeConfigFrom( $configFilename, 'arbory' );
 
         $this->publishes( [
-            $configFilename => config_path( 'leaf.php' )
+            $configFilename => config_path( 'arbory.php' )
         ], 'config' );
 
         $this->publishes( [
@@ -118,11 +118,11 @@ class LeafServiceProvider extends ServiceProvider
         ], 'config' );
 
         $this->publishes([
-            __DIR__ . '/../../resources/lang/' => base_path('resources/lang/vendor/leaf')
+            __DIR__ . '/../../resources/lang/' => base_path('resources/lang/vendor/arbory')
         ], 'lang');
 
         $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
-        $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'leaf' );
+        $this->loadViewsFrom( __DIR__ . '/../../resources/views', 'arbory' );
     }
 
     /**
@@ -144,25 +144,25 @@ class LeafServiceProvider extends ServiceProvider
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ] );
 
-        $router->pushMiddlewareToGroup( 'web', \CubeSystems\Leaf\Http\Middleware\LeafRouteRedirectMiddleware::class );
+        $router->pushMiddlewareToGroup( 'web', \Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware::class );
 
-        $router->aliasMiddleware( 'leaf.admin_auth', LeafAdminAuthMiddleware::class );
-        $router->aliasMiddleware( 'leaf.admin_quest', LeafAdminGuestMiddleware::class );
-        $router->aliasMiddleware( 'leaf.admin_in_role', LeafAdminInRoleMiddleware::class );
-        $router->aliasMiddleware( 'leaf.admin_has_access', LeafAdminHasAccessMiddleware::class );
-        $router->aliasMiddleware( 'leaf.route_redirect', LeafRouteRedirectMiddleware::class );
+        $router->aliasMiddleware( 'arbory.admin_auth', ArboryAdminAuthMiddleware::class );
+        $router->aliasMiddleware( 'arbory.admin_quest', ArboryAdminGuestMiddleware::class );
+        $router->aliasMiddleware( 'arbory.admin_in_role', ArboryAdminInRoleMiddleware::class );
+        $router->aliasMiddleware( 'arbory.admin_has_access', ArboryAdminHasAccessMiddleware::class );
+        $router->aliasMiddleware( 'arbory.route_redirect', ArboryRouteRedirectMiddleware::class );
 
-        $this->registerLeafRoutes();
+        $this->registerAdminRoutes();
         $this->registerAppRoutes();
     }
 
-    private function registerLeafRoutes()
+    private function registerAdminRoutes()
     {
         $this->app['router']->group( [
             'as' => 'admin.',
             'middleware' => 'admin',
-            'namespace' => '\CubeSystems\Leaf\Http\Controllers',
-            'prefix' => config( 'leaf.uri' )
+            'namespace' => '\Arbory\Base\Http\Controllers',
+            'prefix' => config( 'arbory.uri' )
         ], function ()
         {
             include __DIR__ . '/../../routes/admin.php';
@@ -180,9 +180,9 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->app['router']->group( [
             'as' => 'admin.',
-            'middleware' => [ 'admin', 'leaf.admin_auth' ],
+            'middleware' => [ 'admin', 'arbory.admin_auth' ],
             'namespace' => '',
-            'prefix' => config( 'leaf.uri' )
+            'prefix' => config( 'arbory.uri' )
         ],function () use ($adminRoutes)
         {
             include $adminRoutes;
@@ -190,15 +190,15 @@ class LeafServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register Leaf commands
+     * Register Arbory commands
      */
     private function registerCommands()
     {
         $commands = [
-            'leaf.seed' => SeedCommand::class,
-            'leaf.install' => InstallCommand::class,
-            'leaf.generator' => GeneratorCommand::class,
-            'leaf.generate' => GenerateCommand::class
+            'arbory.seed' => SeedCommand::class,
+            'arbory.install' => InstallCommand::class,
+            'arbory.generator' => GeneratorCommand::class,
+            'arbory.generate' => GenerateCommand::class
         ];
 
         foreach( $commands as $containerKey => $commandClass )
@@ -223,11 +223,11 @@ class LeafServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register Leaf module registry
+     * Register Arbory module registry
      */
     private function registerModuleRegistry()
     {
-        $this->app->singleton( 'leaf', function ()
+        $this->app->singleton( 'arbory', function ()
         {
             return new Admin(
                 $this->app['sentinel'],
@@ -238,12 +238,12 @@ class LeafServiceProvider extends ServiceProvider
 
         $this->app->singleton( Admin::class, function ()
         {
-            return $this->app['leaf'];
+            return $this->app['arbory'];
         } );
     }
 
     /**
-     * Register leaf fields
+     * Register Arbory fields
      */
     private function registerFields()
     {
@@ -258,8 +258,8 @@ class LeafServiceProvider extends ServiceProvider
             $fieldTypeRegistry->registerByType( 'datetime', DateTime::class, 'string' );
             $fieldTypeRegistry->registerByType( 'boolean', Checkbox::class, 'bool' );
 
-            $fieldTypeRegistry->registerByRelation( 'file', LeafFile::class );
-            $fieldTypeRegistry->registerByRelation( 'image', LeafImage::class );
+            $fieldTypeRegistry->registerByRelation( 'file', ArboryFile::class );
+            $fieldTypeRegistry->registerByRelation( 'image', ArboryImage::class );
             $fieldTypeRegistry->registerByRelation( 'link', Link::class );
 
             return $fieldTypeRegistry;
@@ -277,7 +277,7 @@ class LeafServiceProvider extends ServiceProvider
 
             $stubRegistry->registerStubs(
                 $app[ Filesystem::class ],
-                base_path( 'vendor/cubesystems/leaf/stubs' )
+                base_path( 'vendor/arbory/base/stubs' )
             );
 
             return $stubRegistry;
@@ -289,8 +289,8 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerLocales()
     {
-        config()->set( 'translator.locales', config( 'leaf.locales' ) );
-        config()->set( 'translatable.locales', config( 'leaf.locales' ) );
+        config()->set( 'translator.locales', config( 'arbory.locales' ) );
+        config()->set( 'translatable.locales', config( 'arbory.locales' ) );
     }
 
     /**
@@ -306,7 +306,7 @@ class LeafServiceProvider extends ServiceProvider
      */
     private function registerValidationRules()
     {
-        \Validator::extendImplicit( 'leaf_file_required', function( $attribute )
+        \Validator::extendImplicit( 'arbory_file_required', function( $attribute )
         {
             /** @var FieldSet $fields */
             $request = \request();
@@ -322,7 +322,7 @@ class LeafServiceProvider extends ServiceProvider
             return $field->getValue() || $file;
         } );
 
-        \Validator::extendImplicit( 'leaf_require_one_localized', function( $attribute, $value )
+        \Validator::extendImplicit( 'arbory_require_one_localized', function( $attribute, $value )
         {
             /** @var FieldSet $fieldSet */
             $request = \request();
@@ -389,6 +389,6 @@ class LeafServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [ 'leaf', 'leaf.seed', 'leaf.modules', 'leaf.menu' ];
+        return [ 'arbory', 'arbory.seed', 'arbory.modules', 'arbory.menu' ];
     }
 }

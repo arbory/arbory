@@ -1,9 +1,9 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Settings;
+namespace Arbory\Base\Admin\Settings;
 
-use CubeSystems\Leaf\Providers\SettingsServiceProvider;
-use CubeSystems\Leaf\Services\SettingRegistry;
+use Arbory\Base\Providers\SettingsServiceProvider;
+use Arbory\Base\Services\SettingRegistry;
 use Illuminate\Support\Collection;
 
 class Settings

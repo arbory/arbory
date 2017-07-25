@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Extras;
+namespace Arbory\Base\Generator\Extras;
 
 class Field
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Traits;
+namespace Arbory\Base\Admin\Traits;
 
-use CubeSystems\Leaf\Admin\Form;
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Admin\Layout;
-use CubeSystems\Leaf\Admin\Module;
-use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Module;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -232,7 +232,7 @@ trait Crudify
     }
 
     /**
-     * @param \CubeSystems\Leaf\Admin\Tools\ToolboxMenu $tools
+     * @param \Arbory\Base\Admin\Tools\ToolboxMenu $tools
      */
     protected function toolbox( ToolboxMenu $tools )
     {
@@ -251,7 +251,7 @@ trait Crudify
         $resourceId = $request->get( 'id' );
         $model = $this->resource()->find( $resourceId );
 
-        return view( 'leaf::dialogs.confirm_delete', [
+        return view( 'arbory::dialogs.confirm_delete', [
             'form_target' => $this->url( 'destroy', [ $resourceId ] ),
             'list_url' => $this->url( 'index' ),
             'object_name' => (string) $model,

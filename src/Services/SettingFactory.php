@@ -1,9 +1,9 @@
 <?php
 
-namespace CubeSystems\Leaf\Services;
+namespace Arbory\Base\Services;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Admin\Settings\Setting;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Settings\Setting;
 
 class SettingFactory
 {

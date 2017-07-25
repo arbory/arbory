@@ -1,18 +1,18 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin;
+namespace Arbory\Base\Admin;
 
 use Closure;
-use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
-use CubeSystems\Leaf\Admin\Widgets\Breadcrumbs;
-use CubeSystems\Leaf\Auth\Roles\Role;
-use CubeSystems\Leaf\Services\ModuleConfiguration;
+use Arbory\Base\Admin\Module\ResourceRoutes;
+use Arbory\Base\Admin\Widgets\Breadcrumbs;
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Services\ModuleConfiguration;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 /**
  * Class Module
- * @package CubeSystems\Leaf\Services
+ * @package Arbory\Base\Services
  */
 class Module
 {

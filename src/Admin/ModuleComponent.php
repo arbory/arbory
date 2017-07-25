@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin;
+namespace Arbory\Base\Admin;
 
 /**
  * Class ModuleComponent
- * @package CubeSystems\Leaf\Admin
+ * @package Arbory\Base\Admin
  */
 trait ModuleComponent
 {

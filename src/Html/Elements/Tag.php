@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Html\Elements;
+namespace Arbory\Base\Html\Elements;
 
 /**
  * Class Tag
- * @package CubeSystems\Leaf\Html
+ * @package Arbory\Base\Html
  */
 class Tag
 {

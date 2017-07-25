@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Services;
+namespace Arbory\Base\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

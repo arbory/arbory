@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use CubeSystems\Leaf\Html\Elements\Element;
+use Arbory\Base\Html\Elements\Element;
 
 /**
  * Class RichtextFieldRenderer
- * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
+ * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
 class RichtextFieldRenderer extends TextareaFieldRenderer
 {

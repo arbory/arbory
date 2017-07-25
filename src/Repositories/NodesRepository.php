@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Repositories;
+namespace Arbory\Base\Repositories;
 
-use CubeSystems\Leaf\Nodes\Node;
+use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Settings;
 
 /**
  * Class NodesRepository
- * @package CubeSystems\Leaf\Repositories
+ * @package Arbory\Base\Repositories
  */
 class NodesRepository extends AbstractModelsRepository
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Services;
+namespace Arbory\Base\Services;
 
 class Stub
 {

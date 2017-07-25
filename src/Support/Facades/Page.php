@@ -1,11 +1,11 @@
 <?php
 
-namespace CubeSystems\Leaf\Support\Facades;
+namespace Arbory\Base\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \CubeSystems\Leaf\Services\Content\PageBuilder
+ * @see \Arbory\Base\Services\Content\PageBuilder
  */
 class Page extends Facade
 {
@@ -16,6 +16,6 @@ class Page extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'leaf_page_builder';
+        return 'arbory_page_builder';
     }
 }

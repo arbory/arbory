@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Support\Translate;
+namespace Arbory\Base\Support\Translate;
 
 use Config;
 use Illuminate\Database\Eloquent\Model;

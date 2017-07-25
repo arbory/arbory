@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Auth\Reminders;
+namespace Arbory\Base\Auth\Reminders;
 
 use Cartalyst\Sentinel\Reminders\EloquentReminder;
 
 /**
  * Class Reminder
- * @package CubeSystems\Leaf\Auth\Reminders
+ * @package Arbory\Base\Auth\Reminders
  */
 class Reminder extends EloquentReminder
 {

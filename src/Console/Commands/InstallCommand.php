@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Console\Commands;
+namespace Arbory\Base\Console\Commands;
 
 use Cartalyst\Sentinel\Sentinel;
-use CubeSystems\Leaf\Providers\LeafServiceProvider;
-use CubeSystems\Leaf\Services\StubRegistry;
+use Arbory\Base\Providers\ArboryServiceProvider;
+use Arbory\Base\Services\StubRegistry;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
@@ -12,12 +12,12 @@ use Illuminate\Database\DatabaseManager;
 use Illuminate\Filesystem\Filesystem;
 use InvalidArgumentException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use LeafDatabaseSeeder;
+use ArboryDatabaseSeeder;
 use Illuminate\Console\DetectsApplicationNamespace;
 
 /**
  * Class SeedCommand
- * @package CubeSystems\Leaf\Console\Commands
+ * @package Arbory\Base\Console\Commands
  */
 class InstallCommand extends Command
 {
@@ -26,7 +26,7 @@ class InstallCommand extends Command
     /**
      * @var string
      */
-    protected $name = 'leaf:install';
+    protected $name = 'arbory:install';
 
     /**
      * @var string
@@ -157,13 +157,13 @@ class InstallCommand extends Command
     protected function publishMixFile()
     {
         $webpackConfig = 'webpack.mix.js';
-        $leafRequire = "require('./vendor/cubesystems/leaf/webpack.mix')(mix);";
+        $arboryRequire = "require('./vendor/arbory/base/webpack.mix')(mix);";
 
         try
         {
             $contents = $this->filesystem->get( $webpackConfig );
 
-            if( strpos( $contents, $leafRequire ) === false )
+            if( strpos( $contents, $arboryRequire ) === false )
             {
                 $content = $this->stubRegistry->make( 'webpack.mix.js', [] );
 
@@ -194,7 +194,7 @@ class InstallCommand extends Command
 
             if( !$this->filesystem->isFile( $path ) )
             {
-                $content = $this->stubRegistry->make( 'extended_leaf_admin_controller', [
+                $content = $this->stubRegistry->make( 'extended_arbory_admin_controller', [
                     'namespaceRoot' => $this->getAppNamespace(),
                     'className' => $className,
                     'extendsClassName' => $className,
@@ -212,7 +212,7 @@ class InstallCommand extends Command
     {
         $this->info( 'Publishing configuration file' );
         $this->call( 'vendor:publish', [
-            '--provider' => LeafServiceProvider::class,
+            '--provider' => ArboryServiceProvider::class,
             '--tag' => 'config',
         ] );
     }
@@ -225,7 +225,7 @@ class InstallCommand extends Command
         $this->info( 'Publishing language resources' );
 
         $this->call( 'vendor:publish', [
-            '--provider' => LeafServiceProvider::class,
+            '--provider' => ArboryServiceProvider::class,
             '--tag' => 'lang',
             '--force' => null,
         ] );
@@ -239,9 +239,9 @@ class InstallCommand extends Command
      */
     protected function runSeeder()
     {
-        $this->info( 'Running leaf database seeder' );
+        $this->info( 'Running Arbory database seeder' );
         $this->call( 'db:seed', [
-            '--class' => LeafDatabaseSeeder::class
+            '--class' => ArboryDatabaseSeeder::class
         ] );
     }
 
@@ -303,9 +303,9 @@ class InstallCommand extends Command
             'permissions' => array_flatten(
                 array_merge(
                     [
-                        \CubeSystems\Leaf\Http\Controllers\Admin\DashboardController::class
+                        \Arbory\Base\Http\Controllers\Admin\DashboardController::class
                     ],
-                    config( 'leaf.menu' )
+                    config( 'arbory.menu' )
                 )
             )
         ] );

@@ -1,4 +1,4 @@
-@extends('leaf::layout.main')
+@extends('arbory::layout.main')
 
 @section('content.header')
     {!! $header !!}
@@ -16,7 +16,7 @@
             {{ csrf_field() }}
 
             <header>
-                <h1>{{trans('leaf.translations.edit')}} {{$namespace}}::{{$group}}.{{$item}}</h1>
+                <h1>{{trans('arbory.translations.edit')}} {{$namespace}}::{{$group}}.{{$item}}</h1>
             </header>
 
             <div class="body">
@@ -46,14 +46,14 @@
             <footer class="main">
                 <div class="tools">
                     <div class="primary">
-                        <button class="button with-icon primary" title="Saglabāt" type="submit" data-type="ok">
-                            <i class="fa fa-check"></i>{{trans('leaf.translations.save')}}
+                        <button class="button with-icon primary" title="{{trans('arbory.translations.save')}}" type="submit" data-type="ok">
+                            <i class="fa fa-check"></i>{{trans('arbory.translations.save')}}
                         </button>
                     </div>
                     <div class="secondary">
                         <a class="button with-icon secondary"
-                           title="Atpakaļ uz sarakstu"
-                           href="{{$back_to_index_url}}"><i class="fa fa-caret-left"></i>{{trans('leaf.translations.back_to_index')}}
+                           title="{{trans('arbory.translations.back_to_index')}}"
+                           href="{{$back_to_index_url}}"><i class="fa fa-caret-left"></i>{{trans('arbory.translations.back_to_index')}}
                         </a></div>
                 </div>
             </footer>

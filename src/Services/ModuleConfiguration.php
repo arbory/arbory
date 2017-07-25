@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Services;
+namespace Arbory\Base\Services;
 
-use CubeSystems\Leaf\Admin\Module;
+use Arbory\Base\Admin\Module;
 
 /**
  * Class ModuleConfig
- * @package CubeSystems\Leaf\Services
+ * @package Arbory\Base\Services
  */
 class ModuleConfiguration
 {

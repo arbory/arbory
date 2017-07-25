@@ -18,7 +18,7 @@
 
 #### Modules
 
-* Fix return types (e.g. `CubeSystems\Leaf\Admin\Module::getUrl()`)
+* Fix return types (e.g. `Arbory\Base\Admin\Module::getUrl()`)
 
 ## Needs refactoring
 

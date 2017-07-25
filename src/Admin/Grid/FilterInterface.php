@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Grid;
+namespace Arbory\Base\Admin\Grid;
 
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 /**
  * Interface FilterInterface
- * @package CubeSystems\Leaf\Admin\Grid
+ * @package Arbory\Base\Admin\Grid
  */
 interface FilterInterface
 {

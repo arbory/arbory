@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Widgets;
+namespace Arbory\Base\Admin\Widgets;
 
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Exception;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
  * Class ExceptionMessage
- * @package CubeSystems\Leaf\Admin\Widgets
+ * @package Arbory\Base\Admin\Widgets
  */
 class ExceptionMessage implements Renderable
 {

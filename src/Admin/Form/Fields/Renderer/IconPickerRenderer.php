@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use CubeSystems\Leaf\Admin\Form\Fields\SpriteIcon;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Form\Fields\SpriteIcon;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 class IconPickerRenderer extends SelectFieldRenderer
 {

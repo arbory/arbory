@@ -1,4 +1,4 @@
-@extends('leaf::layout.main')
+@extends('arbory::layout.main')
 
 @section('content')
     Welcome

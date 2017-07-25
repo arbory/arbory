@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Console;
+namespace Arbory\Base\Console;
 
-use CubeSystems\Leaf\Console\Commands\SeedCommand;
+use Arbory\Base\Console\Commands\SeedCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 /**
  * Class Kernel
- * @package CubeSystems\Leaf\Console
+ * @package Arbory\Base\Console
  */
 class Kernel extends ConsoleKernel
 {

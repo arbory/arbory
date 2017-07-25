@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Generatable;
+namespace Arbory\Base\Generator\Generatable;
 
-use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
-use CubeSystems\Leaf\Admin\Form\Fields\HasOne;
-use CubeSystems\Leaf\Generator\Extras\Field;
-use CubeSystems\Leaf\Generator\Extras\Relation;
-use CubeSystems\Leaf\Generator\Stubable;
-use CubeSystems\Leaf\Generator\StubGenerator;
-use CubeSystems\Leaf\Generator\Support\Traits\CompilesRelations;
+use Arbory\Base\Admin\Form\Fields\HasMany;
+use Arbory\Base\Admin\Form\Fields\HasOne;
+use Arbory\Base\Generator\Extras\Field;
+use Arbory\Base\Generator\Extras\Relation;
+use Arbory\Base\Generator\Stubable;
+use Arbory\Base\Generator\StubGenerator;
+use Arbory\Base\Generator\Support\Traits\CompilesRelations;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

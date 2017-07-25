@@ -1,4 +1,4 @@
-@extends('leaf::layout.main')
+@extends('arbory::layout.main')
 
 @section('content.header')
     {!! $header !!}
@@ -8,7 +8,7 @@
     <section>
 
         <header>
-            <h1>@lang('leaf::translations.all_translations')</h1>
+            <h1>@lang('arbory::translations.all_translations')</h1>
         </header>
 
         <div class="body">

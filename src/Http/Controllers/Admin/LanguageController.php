@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers\Admin;
+namespace Arbory\Base\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Admin\Form;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
-use CubeSystems\Leaf\Admin\Traits\Crudify;
-use CubeSystems\Leaf\Html\Html;
-use CubeSystems\Leaf\Support\Translate\Language;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Support\Translate\Language;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -63,7 +63,7 @@ class LanguageController extends Controller
             $grid->column( 'status' )->display( function( $_, $__, Language $language )
             {
                 return Html::span( $language->trashed() ?
-                    trans( 'leaf::resources.status.disabled' ) : trans( 'leaf::resources.status.enabled' )
+                    trans( 'arbory::resources.status.disabled' ) : trans( 'arbory::resources.status.enabled' )
                 );
             } );
         } );
@@ -119,7 +119,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param \CubeSystems\Leaf\Admin\Tools\ToolboxMenu $tools
+     * @param \Arbory\Base\Admin\Tools\ToolboxMenu $tools
      */
     protected function toolbox( ToolboxMenu $tools )
     {
@@ -148,7 +148,7 @@ class LanguageController extends Controller
         $resourceId = $request->get( 'id' );
         $model = $this->resource()->find( $resourceId );
 
-        return view( 'leaf::dialogs.confirm_disable', [
+        return view( 'arbory::dialogs.confirm_disable', [
             'form_target' => $this->url( 'disable', [ $resourceId ] ),
             'list_url' => $this->url( 'index' ),
             'object_name' => (string) $model,
@@ -164,7 +164,7 @@ class LanguageController extends Controller
         $resourceId = $request->get( 'id' );
         $model = $this->resource()->withTrashed()->find( $resourceId );
 
-        return view( 'leaf::dialogs.confirm_restore', [
+        return view( 'arbory::dialogs.confirm_restore', [
             'form_target' => $this->url( 'restore', [ $resourceId ] ),
             'list_url' => $this->url( 'index' ),
             'object_name' => (string) $model,

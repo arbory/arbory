@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\FieldSet;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 class Link extends HasOne
 {

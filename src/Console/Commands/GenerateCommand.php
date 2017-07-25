@@ -1,19 +1,19 @@
 <?php
 
-namespace CubeSystems\Leaf\Console\Commands;
+namespace Arbory\Base\Console\Commands;
 
-use CubeSystems\Leaf\Generator\Generatable\AdminController;
-use CubeSystems\Leaf\Generator\Generatable\Controller;
-use CubeSystems\Leaf\Generator\Extras\Field;
-use CubeSystems\Leaf\Generator\Extras\Structure;
-use CubeSystems\Leaf\Generator\Generatable\Model;
-use CubeSystems\Leaf\Generator\Generatable\Page;
-use CubeSystems\Leaf\Generator\Generatable\View;
-use CubeSystems\Leaf\Generator\GeneratorFormatter;
-use CubeSystems\Leaf\Generator\Schema;
-use CubeSystems\Leaf\Generator\StubGenerator;
-use CubeSystems\Leaf\Services\FieldTypeRegistry;
-use CubeSystems\Leaf\Services\StubRegistry;
+use Arbory\Base\Generator\Generatable\AdminController;
+use Arbory\Base\Generator\Generatable\Controller;
+use Arbory\Base\Generator\Extras\Field;
+use Arbory\Base\Generator\Extras\Structure;
+use Arbory\Base\Generator\Generatable\Model;
+use Arbory\Base\Generator\Generatable\Page;
+use Arbory\Base\Generator\Generatable\View;
+use Arbory\Base\Generator\GeneratorFormatter;
+use Arbory\Base\Generator\Schema;
+use Arbory\Base\Generator\StubGenerator;
+use Arbory\Base\Services\FieldTypeRegistry;
+use Arbory\Base\Services\StubRegistry;
 use Doctrine\DBAL\Schema\Column;
 use Illuminate\Console\Command;
 use Illuminate\Database\DatabaseManager;
@@ -26,7 +26,7 @@ class GenerateCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'leaf:generate {type?} {--T|table=}';
+    protected $signature = 'arbory:generate {type?} {--T|table=}';
 
     /**
      * @var string

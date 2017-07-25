@@ -1,18 +1,18 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form;
+namespace Arbory\Base\Admin\Form;
 
-use CubeSystems\Leaf\Admin\Form;
-use CubeSystems\Leaf\Admin\Widgets\Button;
-use CubeSystems\Leaf\Admin\Widgets\Link;
-use CubeSystems\Leaf\Admin\Tools\Toolbox;
-use CubeSystems\Leaf\Html\Elements\Content;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Admin\Tools\Toolbox;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 /**
  * Class Builder
- * @package CubeSystems\Leaf\Admin\Form
+ * @package Arbory\Base\Admin\Form
  */
 class Builder
 {
@@ -75,7 +75,7 @@ class Builder
     }
 
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Element
+     * @return \Arbory\Base\Html\Elements\Element
      */
     protected function header()
     {
@@ -107,14 +107,14 @@ class Builder
                 ->type( 'submit', 'primary' )
                 ->withIcon( 'check' )
                 ->disableOnSubmit()
-                ->title( trans( 'leaf::resources.save' ) )
+                ->title( trans( 'arbory::resources.save' ) )
         );
 
         $secondary->append(
             Link::create( $this->url( 'index' ) )
                 ->asButton( 'secondary' )
                 ->withIcon( 'caret-left' )
-                ->title( trans( 'leaf::resources.back_to_list' ) )
+                ->title( trans( 'arbory::resources.back_to_list' ) )
         );
 
         $footerTools = Html::div( [
@@ -154,7 +154,7 @@ class Builder
     }
 
     /**
-     * @return \CubeSystems\Leaf\Admin\Widgets\Breadcrumbs
+     * @return \Arbory\Base\Admin\Widgets\Breadcrumbs
      */
     protected function breadcrumbs()
     {

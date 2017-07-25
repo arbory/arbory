@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin;
+namespace Arbory\Base\Admin;
 
 use Cartalyst\Sentinel\Sentinel;
-use CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry;
-use CubeSystems\Leaf\Auth\Roles\Role;
-use CubeSystems\Leaf\Menu\Menu;
-use CubeSystems\Leaf\Services\AssetPipeline;
-use CubeSystems\Leaf\Services\ModuleRegistry;
+use Arbory\Base\Admin\Module\ModuleRoutesRegistry;
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Menu\Menu;
+use Arbory\Base\Services\AssetPipeline;
+use Arbory\Base\Services\ModuleRegistry;
 use Illuminate\Support\Collection;
 
 class Admin
@@ -66,7 +66,7 @@ class Admin
     }
 
     /**
-     * @return \CubeSystems\Leaf\Services\AssetPipeline
+     * @return \Arbory\Base\Services\AssetPipeline
      */
     public function assets()
     {
@@ -74,7 +74,7 @@ class Admin
     }
 
     /**
-     * @return \CubeSystems\Leaf\Admin\Module\ModuleRoutesRegistry
+     * @return \Arbory\Base\Admin\Module\ModuleRoutesRegistry
      */
     public function routes()
     {
@@ -82,7 +82,7 @@ class Admin
     }
 
     /**
-     * @return \CubeSystems\Leaf\Services\ModuleRegistry
+     * @return \Arbory\Base\Services\ModuleRegistry
      */
     public function modules()
     {
@@ -90,7 +90,7 @@ class Admin
     }
 
     /**
-     * @return \CubeSystems\Leaf\Menu\Menu
+     * @return \Arbory\Base\Menu\Menu
      */
     public function menu()
     {

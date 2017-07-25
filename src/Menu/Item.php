@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Menu;
+namespace Arbory\Base\Menu;
 
-use CubeSystems\Leaf\Admin\Admin;
-use CubeSystems\Leaf\Admin\Module\ResourceRoutes;
-use CubeSystems\Leaf\Html\Elements;
-use CubeSystems\Leaf\Html\Html;
-use CubeSystems\Leaf\Admin\Module;
+use Arbory\Base\Admin\Admin;
+use Arbory\Base\Admin\Module\ResourceRoutes;
+use Arbory\Base\Html\Elements;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Module;
 
 class Item extends AbstractItem
 {
@@ -16,7 +16,7 @@ class Item extends AbstractItem
     protected $admin;
 
     /**
-     * @var \CubeSystems\Leaf\Admin\Module
+     * @var \Arbory\Base\Admin\Module
      */
     protected $module;
 
@@ -75,7 +75,7 @@ class Item extends AbstractItem
     }
 
     /**
-     * @return \CubeSystems\Leaf\Admin\Module
+     * @return \Arbory\Base\Admin\Module
      */
     public function getModule(): Module
     {
@@ -83,7 +83,7 @@ class Item extends AbstractItem
     }
 
     /**
-     * @param \CubeSystems\Leaf\Admin\Module $module
+     * @param \Arbory\Base\Admin\Module $module
      */
     public function setModule( Module $module )
     {

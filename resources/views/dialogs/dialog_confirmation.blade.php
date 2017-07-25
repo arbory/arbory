@@ -1,4 +1,4 @@
-@extends('leaf::dialogs.base',['class' => 'confirm-destroy confirm'])
+@extends('arbory::dialogs.base',['class' => 'confirm-destroy confirm'])
 
 @section('dialog')
     <form class="edit_resource" id="edit_resource" action="{{ $form_target }}" accept-charset="UTF-8" method="post">

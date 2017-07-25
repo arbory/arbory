@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Grid;
+namespace Arbory\Base\Admin\Grid;
 
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 
 /**
  * Class Filter
- * @package CubeSystems\Leaf\Admin\Grid
+ * @package Arbory\Base\Admin\Grid
  */
 class Filter implements FilterInterface
 {

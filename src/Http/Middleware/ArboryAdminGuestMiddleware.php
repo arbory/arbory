@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Middleware;
+namespace Arbory\Base\Http\Middleware;
 
 use Cartalyst\Sentinel\Sentinel;
 use Closure;
@@ -9,10 +9,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class LeafAdminGuestMiddleware
- * @package CubeSystems\Leaf\Http\Middleware
+ * Class ArboryAdminGuestMiddleware
+ * @package Arbory\Base\Http\Middleware
  */
-class LeafAdminGuestMiddleware
+class ArboryAdminGuestMiddleware
 {
     /**
      * @var Sentinel
@@ -20,7 +20,7 @@ class LeafAdminGuestMiddleware
     protected $sentinel;
 
     /**
-     * LeafAdminGuestMiddleware constructor.
+     * ArboryAdminGuestMiddleware constructor.
      * @param $sentinel
      */
     public function __construct( Sentinel $sentinel )
@@ -41,7 +41,7 @@ class LeafAdminGuestMiddleware
         {
             if( $request->ajax() )
             {
-                $message = trans( 'leaf.admin_unauthorized', 'Unauthorized' );
+                $message = trans( 'arbory.admin_unauthorized', 'Unauthorized' );
 
                 return response()->json( [ 'error' => $message ], 401 );
             }

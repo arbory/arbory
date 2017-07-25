@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin;
+namespace Arbory\Base\Admin;
 
 use Closure;
-use CubeSystems\Leaf\Admin\Grid\Builder;
-use CubeSystems\Leaf\Admin\Grid\Column;
-use CubeSystems\Leaf\Admin\Grid\Filter;
-use CubeSystems\Leaf\Admin\Grid\FilterInterface;
-use CubeSystems\Leaf\Admin\Grid\Row;
-use CubeSystems\Leaf\Html\Elements\Content;
+use Arbory\Base\Admin\Grid\Builder;
+use Arbory\Base\Admin\Grid\Column;
+use Arbory\Base\Admin\Grid\Filter;
+use Arbory\Base\Admin\Grid\FilterInterface;
+use Arbory\Base\Admin\Grid\Row;
+use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
 
 /**
  * Class Grid
- * @package CubeSystems\Leaf\Admin
+ * @package Arbory\Base\Admin
  */
 class Grid implements Renderable
 {

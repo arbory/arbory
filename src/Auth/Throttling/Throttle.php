@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Auth\Throttling;
+namespace Arbory\Base\Auth\Throttling;
 
 use Cartalyst\Sentinel\Throttling\EloquentThrottle;
 
 /**
  * Class Throttle
- * @package CubeSystems\Leaf\Auth\Throttling
+ * @package Arbory\Base\Auth\Throttling
  */
 class Throttle extends EloquentThrottle
 {

@@ -8,14 +8,14 @@ return [
     ],
 
     'menu' => [
-        CubeSystems\Leaf\Http\Controllers\Admin\NodesController::class,
-        CubeSystems\Leaf\Http\Controllers\Admin\LanguageController::class,
-        CubeSystems\Leaf\Http\Controllers\Admin\SettingsController::class,
-        CubeSystems\Leaf\Http\Controllers\Admin\TranslationsController::class,
-        CubeSystems\Leaf\Http\Controllers\Admin\RedirectsController::class,
+        Arbory\Base\Http\Controllers\Admin\NodesController::class,
+        Arbory\Base\Http\Controllers\Admin\LanguageController::class,
+        Arbory\Base\Http\Controllers\Admin\SettingsController::class,
+        Arbory\Base\Http\Controllers\Admin\TranslationsController::class,
+        Arbory\Base\Http\Controllers\Admin\RedirectsController::class,
         [
-            CubeSystems\Leaf\Http\Controllers\Admin\UsersController::class,
-            CubeSystems\Leaf\Http\Controllers\Admin\RolesController::class
+            Arbory\Base\Http\Controllers\Admin\UsersController::class,
+            Arbory\Base\Http\Controllers\Admin\RolesController::class
         ],
     ],
 

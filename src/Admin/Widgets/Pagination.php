@@ -1,16 +1,16 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Widgets;
+namespace Arbory\Base\Admin\Widgets;
 
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
  * Class Pagination
- * @package CubeSystems\Leaf\Admin\Widgets
+ * @package Arbory\Base\Admin\Widgets
  */
 class Pagination implements Renderable
 {
@@ -61,7 +61,7 @@ class Pagination implements Renderable
 
         $previousPage->append( Html::i()->addClass( 'fa fa-chevron-left' ) );
         $previousPage->addClass( 'button only-icon secondary previous' );
-        $previousPage->addAttributes( [ 'title' => trans( 'leaf::pagination.previous_page' ) ] );
+        $previousPage->addAttributes( [ 'title' => trans( 'arbory::pagination.previous_page' ) ] );
 
         return $previousPage;
     }
@@ -104,7 +104,7 @@ class Pagination implements Renderable
 
         $nextPage->append( Html::i()->addClass( 'fa fa-chevron-right' ) );
         $nextPage->addClass( 'button only-icon secondary next' );
-        $nextPage->addAttributes( [ 'title' => trans( 'leaf::pagination.next_page' ) ] );
+        $nextPage->addAttributes( [ 'title' => trans( 'arbory::pagination.next_page' ) ] );
 
         return $nextPage;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Menu;
+namespace Arbory\Base\Menu;
 
 class MenuFactory
 {

@@ -1,18 +1,18 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use CubeSystems\Leaf\Admin\Form\FieldSet;
-use CubeSystems\Leaf\Admin\Widgets\Button;
-use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Admin\Form\Fields\HasMany;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use function foo\func;
 use Illuminate\Support\Collection;
 
 /**
  * Class NestedFieldRenderer
- * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
+ * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
 class NestedFieldRenderer
 {
@@ -75,7 +75,7 @@ class NestedFieldRenderer
             return null;
         }
 
-        $title = trans( 'leaf::fields.has_many.add_item', [ 'name' => $this->field->getName() ] );
+        $title = trans( 'arbory::fields.has_many.add_item', [ 'name' => $this->field->getName() ] );
 
         return Html::footer(
             Html::button( [
@@ -102,7 +102,7 @@ class NestedFieldRenderer
         }
 
         $button = Button::create()
-            ->title( trans( 'leaf::fields.relation.remove' ) )
+            ->title( trans( 'arbory::fields.relation.remove' ) )
             ->type( 'button', 'only-icon danger remove-nested-item' )
             ->withIcon( 'trash-o' )
             ->iconOnly();
@@ -129,13 +129,13 @@ class NestedFieldRenderer
         $navigation = Html::div()->addClass( 'sortable-navigation' );
 
         $navigation->append( Button::create()
-            ->title( trans( 'leaf::fields.relation.moveDown' ) )
+            ->title( trans( 'arbory::fields.relation.moveDown' ) )
             ->type( 'button', 'only-icon secondary move-down' )
             ->withIcon( 'chevron-down' )
             ->iconOnly() );
 
         $navigation->append( Button::create()
-            ->title( trans( 'leaf::fields.relation.moveUp' ) )
+            ->title( trans( 'arbory::fields.relation.moveUp' ) )
             ->type( 'button', 'only-icon secondary move-up' )
             ->withIcon( 'chevron-up' )
             ->iconOnly() );
@@ -194,7 +194,7 @@ class NestedFieldRenderer
             ->addClass( 'nested' )
             ->addAttributes( [
                 'data-name' => $this->field->getName(),
-                'data-releaf-template' => $this->getRelationFromTemplate(),
+                'data-arbory-template' => $this->getRelationFromTemplate(),
             ] );
     }
 

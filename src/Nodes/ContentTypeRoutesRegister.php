@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Nodes;
+namespace Arbory\Base\Nodes;
 
 use Closure;
-use CubeSystems\Leaf\Exceptions\BadMethodCallException;
+use Arbory\Base\Exceptions\BadMethodCallException;
 use Illuminate\Support\Collection;
 
 /**
  * Class Router
- * @package CubeSystems\Leaf\Nodes\Routing
+ * @package Arbory\Base\Nodes\Routing
  */
 class ContentTypeRoutesRegister
 {

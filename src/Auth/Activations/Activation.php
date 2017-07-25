@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Auth\Activations;
+namespace Arbory\Base\Auth\Activations;
 
 use Cartalyst\Sentinel\Activations\EloquentActivation;
 
 /**
  * Class Activation
- * @package CubeSystems\Leaf\Auth\Activations
+ * @package Arbory\Base\Auth\Activations
  */
 class Activation extends EloquentActivation
 {

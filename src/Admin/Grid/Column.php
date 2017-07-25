@@ -1,18 +1,18 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Grid;
+namespace Arbory\Base\Admin\Grid;
 
 use Closure;
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
  * Class Column
- * @package CubeSystems\Leaf\Admin\Grid
+ * @package Arbory\Base\Admin\Grid
  */
 class Column
 {

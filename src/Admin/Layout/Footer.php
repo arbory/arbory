@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Layout;
+namespace Arbory\Base\Admin\Layout;
 
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 
 /**
  * Class Footer
- * @package CubeSystems\Leaf\Admin\Layout
+ * @package Arbory\Base\Admin\Layout
  */
 class Footer implements Renderable
 {

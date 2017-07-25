@@ -2,8 +2,8 @@
 
 namespace Tests\Admin\Form\Fields\Renderer;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Renderer\FileSize;
-use CubeSystems\Leaf\Files\LeafFile;
+use Arbory\Base\Admin\Form\Fields\Renderer\FileSize;
+use Arbory\Base\Files\ArboryFile;
 use Mockery;
 use Mockery\Mock;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 final class FileSizeTest extends TestCase
 {
     /**
-     * @var Mock|LeafFile
+     * @var Mock|ArboryFile
      */
     private $file;
 
@@ -29,7 +29,7 @@ final class FileSizeTest extends TestCase
      */
     protected function setUp()
     {
-        $this->file = Mockery::mock( LeafFile::class );
+        $this->file = Mockery::mock( ArboryFile::class );
         $this->fileSize = new FileSize( $this->file );
     }
 

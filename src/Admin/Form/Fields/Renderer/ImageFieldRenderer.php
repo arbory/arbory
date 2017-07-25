@@ -1,18 +1,18 @@
 <?php declare( strict_types=1 );
 
-namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use CubeSystems\Leaf\Html\Elements\Inputs\Input;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Inputs\Input;
+use Arbory\Base\Html\Html;
 
 /**
  * Class ImageFieldRenderer
- * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
+ * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
 final class ImageFieldRenderer extends FileFieldRenderer
 {
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Element
+     * @return \Arbory\Base\Html\Elements\Element
      */
     public function render()
     {
@@ -22,12 +22,12 @@ final class ImageFieldRenderer extends FileFieldRenderer
 
         $value = Html::div();
 
-        $leafFile = $this->getFile();
+        $arboryFile = $this->getFile();
 
-        if( $leafFile )
+        if( $arboryFile )
         {
             $value->append( Html::image()->addAttributes( [ 'src' => $image->getUrl() ] ) );
-            $value->append( $this->createFileDetails( $leafFile ) );
+            $value->append( $this->createFileDetails( $arboryFile ) );
         }
 
         $value->append( $input );

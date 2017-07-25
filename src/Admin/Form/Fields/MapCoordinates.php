@@ -1,8 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
 
 class MapCoordinates extends AbstractField
 {
@@ -26,9 +26,9 @@ class MapCoordinates extends AbstractField
      */
     public function render()
     {
-        $this->zoom = config( 'leaf.fields.map_coordinates.zoom' );
-        $this->latitude = config( 'leaf.fields.map_coordinates.coordinates.lat' );
-        $this->longitude = config( 'leaf.fields.map_coordinates.coordinates.lng' );
+        $this->zoom = config( 'arbory.fields.map_coordinates.zoom' );
+        $this->latitude = config( 'arbory.fields.map_coordinates.coordinates.lat' );
+        $this->longitude = config( 'arbory.fields.map_coordinates.coordinates.lng' );
 
         return ( new MapCoordinatesFieldRenderer( $this ) )->render();
     }

@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator;
+namespace Arbory\Base\Generator;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Generator\Extras\Field;
-use CubeSystems\Leaf\Generator\Extras\Relation;
-use CubeSystems\Leaf\Generator\Extras\Structure;
+use Arbory\Base\Admin\Form\Fields\Hidden;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Generator\Extras\Field;
+use Arbory\Base\Generator\Extras\Relation;
+use Arbory\Base\Generator\Extras\Structure;
 use Illuminate\Support\Collection;
 
 class Schema

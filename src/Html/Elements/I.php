@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Html\Elements;
+namespace Arbory\Base\Html\Elements;
 
 /**
  * Class I
- * @package CubeSystems\Leaf\Html\Elements
+ * @package Arbory\Base\Html\Elements
  */
 class I extends Element
 {

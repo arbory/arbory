@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Support\Slug;
+namespace Arbory\Base\Support\Slug;
 
 use Spatie\Sluggable\SlugOptions;
 

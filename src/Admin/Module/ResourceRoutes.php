@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Module;
+namespace Arbory\Base\Admin\Module;
 
-use CubeSystems\Leaf\Admin\Module;
+use Arbory\Base\Admin\Module;
 
 /**
  * Class ResourceRoutes
- * @package CubeSystems\Leaf\Admin\Module
+ * @package Arbory\Base\Admin\Module
  */
 class ResourceRoutes
 {
@@ -31,6 +31,6 @@ class ResourceRoutes
      */
     public function getUrl( $name, $parameters = [] )
     {
-        return route( config( 'leaf.uri' ) . '.' . $this->module->name() . '.' . $name, $parameters );
+        return route( config( 'arbory.uri' ) . '.' . $this->module->name() . '.' . $name, $parameters );
     }
 }

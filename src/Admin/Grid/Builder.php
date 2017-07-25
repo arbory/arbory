@@ -1,23 +1,23 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Grid;
+namespace Arbory\Base\Admin\Grid;
 
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Admin\Widgets\Pagination;
-use CubeSystems\Leaf\Admin\Layout\Footer;
-use CubeSystems\Leaf\Admin\Layout\Footer\Tools;
-use CubeSystems\Leaf\Admin\Widgets\Link;
-use CubeSystems\Leaf\Admin\Widgets\SearchField;
-use CubeSystems\Leaf\Html\Elements\Content;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Widgets\Pagination;
+use Arbory\Base\Admin\Layout\Footer;
+use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Admin\Widgets\SearchField;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 /**
  * Class Builder
- * @package CubeSystems\Leaf\Admin\Grid
+ * @package Arbory\Base\Admin\Grid
  */
 class Builder
 {
@@ -49,7 +49,7 @@ class Builder
     }
 
     /**
-     * @return \CubeSystems\Leaf\Admin\Widgets\Breadcrumbs
+     * @return \Arbory\Base\Admin\Widgets\Breadcrumbs
      */
     protected function breadcrumbs()
     {
@@ -57,7 +57,7 @@ class Builder
     }
 
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Element
+     * @return \Arbory\Base\Html\Elements\Element
      */
     protected function searchField()
     {
@@ -141,12 +141,12 @@ class Builder
     protected function tableHeader(): Element
     {
         $header = Html::header( [
-            Html::h1( trans( 'leaf::resources.all_resources' ) ),
+            Html::h1( trans( 'arbory::resources.all_resources' ) ),
         ] );
 
         if( $this->grid->isPaginated() )
         {
-            $header->append( Html::span( trans( 'leaf::pagination.items_found', [ 'total' => $this->items->total() ] ) )
+            $header->append( Html::span( trans( 'arbory::pagination.items_found', [ 'total' => $this->items->total() ] ) )
                 ->addClass( 'extras totals only-text' ) );
         }
 
@@ -190,7 +190,7 @@ class Builder
             Link::create( $this->url( 'create' ) )
             ->asButton( 'primary' )
             ->withIcon( 'plus' )
-            ->title( trans( 'leaf::resources.create_new' ) );
+            ->title( trans( 'arbory::resources.create_new' ) );
     }
 
     /**
@@ -201,7 +201,7 @@ class Builder
         return
             Html::div( [
                 Html::span(
-                    trans( 'leaf::resources.export' )
+                    trans( 'arbory::resources.export' )
                 )->addClass( 'title' ),
                 Html::div(
                     Link::create( $this->url( 'export', [ 'as' => 'xls' ] ) )
@@ -230,7 +230,7 @@ class Builder
     }
 
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Element
+     * @return \Arbory\Base\Html\Elements\Element
      */
     protected function footer()
     {

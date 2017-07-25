@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Html;
+namespace Arbory\Base\Html;
 
 use Illuminate\Support\HtmlString as IlluminateHtmlString;
 

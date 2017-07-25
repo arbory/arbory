@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Nodes;
+namespace Arbory\Base\Nodes;
 
 class NodeCollection extends \Baum\Extensions\Eloquent\Collection
 {

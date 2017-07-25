@@ -1,18 +1,18 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers\Admin;
+namespace Arbory\Base\Http\Controllers\Admin;
 
 use Activation;
-use CubeSystems\Leaf\Admin\Form;
-use CubeSystems\Leaf\Admin\Form\Fields\Boolean;
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Admin\Traits\Crudify;
-use CubeSystems\Leaf\Admin\Form\Fields\BelongsToMany;
-use CubeSystems\Leaf\Admin\Form\Fields\Password;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Html\Html;
-use CubeSystems\Leaf\Auth\Users\User;
-use CubeSystems\Leaf\Http\Requests\UpdateUserRequest;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Form\Fields\Boolean;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Admin\Form\Fields\BelongsToMany;
+use Arbory\Base\Admin\Form\Fields\Password;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Auth\Users\User;
+use Arbory\Base\Http\Requests\UpdateUserRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -21,7 +21,7 @@ use Sentinel;
 
 /**
  * Class UsersController
- * @package CubeSystems\Leaf\Http\Controllers\Admin
+ * @package Arbory\Base\Http\Controllers\Admin
  */
 class UsersController extends Controller
 {

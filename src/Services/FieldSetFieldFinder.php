@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Services;
+namespace Arbory\Base\Services;
 
-use CubeSystems\Leaf\Admin\Form\Fields\AbstractField;
-use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
-use CubeSystems\Leaf\Admin\Form\Fields\HasOne;
-use CubeSystems\Leaf\Admin\Form\Fields\Link;
-use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
-use CubeSystems\Leaf\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\AbstractField;
+use Arbory\Base\Admin\Form\Fields\HasMany;
+use Arbory\Base\Admin\Form\Fields\HasOne;
+use Arbory\Base\Admin\Form\Fields\Link;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Form\FieldSet;
 use Illuminate\Support\Collection;
 use Waavi\Translation\Models\Language;
 use Waavi\Translation\Repositories\LanguageRepository;

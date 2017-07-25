@@ -2,9 +2,10 @@
 
 namespace {{namespaceRoot}}Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Http\Controllers\Admin\{{extendsClassName}} as Leaf{{extendsClassName}};
+use Arbory\Base\Http\Controllers\Admin\
+{{extendsClassName}} as Arbory{{extendsClassName}};
 
-class {{className}} extends Leaf{{extendsClassName}}
+class {{className}} extends Arbory{{extendsClassName}}
 {
 
 }

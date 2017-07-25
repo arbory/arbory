@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Elements\Inputs\CheckBox;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Elements\Inputs\CheckBox;
+use Arbory\Base\Html\Html;
 
 /**
  * Class CheckBoxFieldRenderer
- * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
+ * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
 class CheckBoxFieldRenderer extends InputFieldRenderer
 {
@@ -18,7 +18,7 @@ class CheckBoxFieldRenderer extends InputFieldRenderer
     protected $type = 'boolean';
 
     /**
-     * @var \CubeSystems\Leaf\Admin\Form\Fields\Checkbox
+     * @var \Arbory\Base\Admin\Form\Fields\Checkbox
      */
     protected $field;
 

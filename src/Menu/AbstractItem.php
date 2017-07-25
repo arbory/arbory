@@ -1,8 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Menu;
+namespace Arbory\Base\Menu;
 
-use CubeSystems\Leaf\Html\Elements\Element;
+use Arbory\Base\Html\Elements\Element;
 
 abstract class AbstractItem
 {

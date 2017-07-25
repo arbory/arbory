@@ -1,16 +1,16 @@
 <?php
 
-namespace CubeSystems\Leaf\Providers;
+namespace Arbory\Base\Providers;
 
-use CubeSystems\Leaf\Nodes\ContentTypeRegister;
-use CubeSystems\Leaf\Nodes\ContentTypeRoutesRegister;
-use CubeSystems\Leaf\Nodes\Node;
-use CubeSystems\Leaf\Repositories\NodesRepository;
-use CubeSystems\Leaf\Services\Content\PageBuilder;
-use CubeSystems\Leaf\Support\Facades\Admin;
-use CubeSystems\Leaf\Support\Facades\LeafRouter;
-use CubeSystems\Leaf\Support\Facades\Page;
-use CubeSystems\Leaf\Support\Facades\Settings;
+use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Nodes\ContentTypeRoutesRegister;
+use Arbory\Base\Nodes\Node;
+use Arbory\Base\Repositories\NodesRepository;
+use Arbory\Base\Services\Content\PageBuilder;
+use Arbory\Base\Support\Facades\Admin;
+use Arbory\Base\Support\Facades\ArboryRouter;
+use Arbory\Base\Support\Facades\Page;
+use Arbory\Base\Support\Facades\Settings;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Events\RouteMatched;
@@ -19,7 +19,7 @@ use Illuminate\Support\ServiceProvider;
 
 /**
  * Class NodeServiceProvider
- * @package CubeSystems\Leaf\Providers
+ * @package Arbory\Base\Providers
  */
 class NodeServiceProvider extends ServiceProvider
 {
@@ -40,7 +40,7 @@ class NodeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        AliasLoader::getInstance()->alias( 'LeafRouter', LeafRouter::class );
+        AliasLoader::getInstance()->alias( 'ArboryRouter', ArboryRouter::class );
         AliasLoader::getInstance()->alias( 'Admin', Admin::class );
         AliasLoader::getInstance()->alias( 'Page', Page::class );
         AliasLoader::getInstance()->alias( 'Settings', Settings::class );
@@ -59,20 +59,20 @@ class NodeServiceProvider extends ServiceProvider
             return new ContentTypeRegister();
         } );
 
-        $this->app->singleton( 'leaf_router', function ()
+        $this->app->singleton( 'arbory_router', function ()
         {
             return $this->app->make( ContentTypeRoutesRegister::class );
         } );
 
-        $this->app->singleton( 'leaf_page_builder', function()
+        $this->app->singleton( 'arbory_page_builder', function()
         {
             return new PageBuilder(
                 $this->app->make( ContentTypeRegister::class ),
-                $this->app->make( 'leaf_router' )
+                $this->app->make( 'arbory_router' )
             );
         } );
 
-        $this->routes = $this->app->make( 'leaf_router' );
+        $this->routes = $this->app->make( 'arbory_router' );
     }
 
     /**

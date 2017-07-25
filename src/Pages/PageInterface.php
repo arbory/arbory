@@ -1,10 +1,10 @@
 <?php
 
 
-namespace CubeSystems\Leaf\Pages;
+namespace Arbory\Base\Pages;
 
 
-use CubeSystems\Leaf\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\FieldSet;
 
 interface PageInterface
 {

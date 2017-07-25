@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers\Admin;
+namespace Arbory\Base\Http\Controllers\Admin;
 
 use Illuminate\Routing\Controller;
 
 /**
  * Class DashboardController
- * @package CubeSystems\Leaf\Http\Controllers
+ * @package Arbory\Base\Http\Controllers
  */
 class DashboardController extends Controller
 {
@@ -15,6 +15,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view( 'leaf::controllers.dashboard.index' );
+        return view( 'arbory::controllers.dashboard.index' );
     }
 }

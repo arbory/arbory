@@ -1,20 +1,20 @@
 <?php
 
-namespace CubeSystems\Leaf\Services;
+namespace Arbory\Base\Services;
 
 use Carbon\Carbon;
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users\UserInterface;
-use CubeSystems\Leaf\Services\AuthReply\ExceptionReply;
-use CubeSystems\Leaf\Services\AuthReply\FailureReply;
-use CubeSystems\Leaf\Services\AuthReply\Reply;
-use CubeSystems\Leaf\Services\AuthReply\SuccessReply;
+use Arbory\Base\Services\AuthReply\ExceptionReply;
+use Arbory\Base\Services\AuthReply\FailureReply;
+use Arbory\Base\Services\AuthReply\Reply;
+use Arbory\Base\Services\AuthReply\SuccessReply;
 use Exception;
 use InvalidArgumentException;
 
 /**
  * Class AuthService
- * @package CubeSystems\Services
+ * @package Arbory\Base\Services
  */
 class AuthService
 {

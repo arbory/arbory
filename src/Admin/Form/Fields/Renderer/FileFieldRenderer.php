@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use CubeSystems\Leaf\Files\LeafFile;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Elements\Inputs\Input;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Files\ArboryFile;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Elements\Inputs\Input;
+use Arbory\Base\Html\Html;
 
 /**
  * Class FileFieldRenderer
- * @package CubeSystems\Leaf\Admin\Form\Fields\Renderer
+ * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
 class FileFieldRenderer extends InputFieldRenderer
 {
@@ -19,7 +19,7 @@ class FileFieldRenderer extends InputFieldRenderer
     protected $type = 'item';
 
     /**
-     * @return LeafFile
+     * @return ArboryFile
      */
     protected function getFile()
     {
@@ -35,7 +35,7 @@ class FileFieldRenderer extends InputFieldRenderer
     }
 
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Element
+     * @return \Arbory\Base\Html\Elements\Element
      */
     public function render()
     {
@@ -44,11 +44,11 @@ class FileFieldRenderer extends InputFieldRenderer
 
         $value = Html::div();
 
-        $leafFile = $this->getFile();
+        $file = $this->getFile();
 
-        if( $leafFile )
+        if( $file )
         {
-            $value->append( $this->createFileDetails( $leafFile ) );
+            $value->append( $this->createFileDetails( $file ) );
         }
 
         $value->append( $input );
@@ -57,10 +57,10 @@ class FileFieldRenderer extends InputFieldRenderer
     }
 
     /**
-     * @param LeafFile $file
+     * @param ArboryFile $file
      * @return Element
      */
-    public function createFileDetails( LeafFile $file ): Element
+    public function createFileDetails( ArboryFile $file ): Element
     {
         $fileSize = ( new FileSize( $file ) )->getReadableSize();
         $fileDetails = Html::div( $file->getOriginalName() . ' / ' . $fileSize );

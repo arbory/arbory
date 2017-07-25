@@ -1,4 +1,4 @@
-<?php namespace CubeSystems\Leaf\Providers;
+<?php namespace Arbory\Base\Providers;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -13,10 +13,10 @@ use Waavi\Translation\Repositories\TranslationRepository;
 
 
 /**
- * Class LeafTranslationServiceProvider
- * @package CubeSystems\Leaf\Providers
+ * Class ArboryTranslationServiceProvider
+ * @package Arbory\Base\Providers
  */
-class LeafTranslationServiceProvider extends ServiceProvider
+class ArboryTranslationServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
@@ -39,7 +39,7 @@ class LeafTranslationServiceProvider extends ServiceProvider
         $this->registerFileLoader();
         $this->registerCacheFlusher();
 
-        $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'leaf' );
+        $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'arbory' );
     }
 
     /**

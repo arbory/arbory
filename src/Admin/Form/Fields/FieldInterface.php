@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\FieldSet;
-use CubeSystems\Leaf\Html\Elements\Element;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 /**
  * Interface FieldInterface
- * @package CubeSystems\Leaf\Admin\Form\Fields
+ * @package Arbory\Base\Admin\Form\Fields
  */
 interface FieldInterface
 {

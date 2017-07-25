@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form\Fields;
+namespace Arbory\Base\Admin\Form\Fields;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
-use CubeSystems\Leaf\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Http\Request;
 
 /**
  * Class Checkbox
- * @package CubeSystems\Leaf\Admin\Form\Fields
+ * @package Arbory\Base\Admin\Form\Fields
  */
 class Checkbox extends AbstractField
 {

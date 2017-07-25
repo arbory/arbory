@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Providers;
+namespace Arbory\Base\Providers;
 
 use Cartalyst\Support\ServiceProvider;
-use CubeSystems\Leaf\Admin\Settings\Setting;
-use CubeSystems\Leaf\Admin\Settings\SettingDefinition;
-use CubeSystems\Leaf\Admin\Settings\Settings;
-use CubeSystems\Leaf\Services\SettingRegistry;
+use Arbory\Base\Admin\Settings\Setting;
+use Arbory\Base\Admin\Settings\SettingDefinition;
+use Arbory\Base\Admin\Settings\Settings;
+use Arbory\Base\Services\SettingRegistry;
 use Illuminate\Foundation\Application;
 
 class SettingsServiceProvider extends ServiceProvider
@@ -42,7 +42,7 @@ class SettingsServiceProvider extends ServiceProvider
             return new SettingRegistry();
         } );
 
-        $this->app->singleton( 'leaf_settings', function()
+        $this->app->singleton( 'arbory_settings', function()
         {
             return new Settings( $this->app[ SettingRegistry::class ] );
         } );

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaf</title>
+    <title>Arbory</title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <link href="{{ mix('/leaf/css/application.css') }}" media="all" rel="stylesheet"/>
-    <link href="{{ mix('/leaf/css/controllers/sessions.css') }}" media="all" rel="stylesheet"/>
+    <link href="{{ mix('/arbory/css/application.css') }}" media="all" rel="stylesheet"/>
+    <link href="{{ mix('/arbory/css/controllers/sessions.css') }}" media="all" rel="stylesheet"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
-<body class="controller-leaf-sessions view-edit">
+<body class="controller-arbory-sessions view-edit">
 
 @if($errors->count())
     <div class="notifications">
@@ -52,6 +52,6 @@
         </form>
     </div>
 </div>
-<script src="{{ mix('/leaf/js/application.js') }}"></script>
+<script src="{{ mix('/arbory/js/application.js') }}"></script>
 </body>
 </html>

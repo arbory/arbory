@@ -76,14 +76,14 @@ jQuery(function(){
             if (body.hasClass('side-compact'))
             {
                 body.trigger('sidecompactcloseall');
-                body.trigger( 'settingssave', [ "releaf.side.compact", false ] );
+                body.trigger( 'settingssave', [ "arbory.side.compact", false ] );
                 body.removeClass('side-compact');
                 icon.addClass('fa-angle-double-left').removeClass('fa-angle-double-right');
                 title_attribute = 'title-collapse';
             }
             else
             {
-                body.trigger( 'settingssave', [ "releaf.side.compact", true ] );
+                body.trigger( 'settingssave', [ "arbory.side.compact", true ] );
                 body.addClass('side-compact');
                 icon.addClass('fa-angle-double-right').removeClass('fa-angle-double-left');
                 title_attribute = 'title-expand';

@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Generatable;
+namespace Arbory\Base\Generator\Generatable;
 
-use CubeSystems\Leaf\Generator\Extras\Field;
-use CubeSystems\Leaf\Generator\Stubable;
-use CubeSystems\Leaf\Generator\StubGenerator;
+use Arbory\Base\Generator\Extras\Field;
+use Arbory\Base\Generator\Stubable;
+use Arbory\Base\Generator\StubGenerator;
 use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

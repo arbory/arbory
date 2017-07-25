@@ -1,6 +1,6 @@
 @import '../environment';
 
-.controller-leaf-sessions
+.controller-arbory-sessions
 {
     @include inverted( $background-color: $color-background-inverted-darkest );
 
@@ -24,7 +24,7 @@
                 width:  steps(5);
                 height: steps(11);
                 background-repeat: no-repeat;
-                background-image: url("/leaf/images/logo-login.png");
+                background-image: url("/arbory/images/logo-login.png");
             }
         }
     }

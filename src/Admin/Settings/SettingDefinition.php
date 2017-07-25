@@ -1,8 +1,8 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Settings;
+namespace Arbory\Base\Admin\Settings;
 
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\Fields\Text;
 
 class SettingDefinition
 {

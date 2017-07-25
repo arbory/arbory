@@ -1,7 +1,7 @@
 //= require jquery-ui
 //= require font-awesome
 
-// leaf path prefix is used so that any overrides in the project's folder
+// Arbory path prefix is used so that any overrides in the project's folder
 // can be placed in stylesheets folder and not clash with other stylesheets of the project
 @import 'environment';  // import sass variables, functions and mixins
-@import 'layout';       // import releaf styling rules
+@import 'layout';       // import arbory styling rules

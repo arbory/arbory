@@ -1,15 +1,15 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Grid;
+namespace Arbory\Base\Admin\Grid;
 
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Cell
- * @package CubeSystems\Leaf\Admin\Grid
+ * @package Arbory\Base\Admin\Grid
  */
 class Cell implements Renderable
 {

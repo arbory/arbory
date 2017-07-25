@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Generator\Support\Traits;
+namespace Arbory\Base\Generator\Support\Traits;
 
-use CubeSystems\Leaf\Admin\Form\Fields\HasMany;
-use CubeSystems\Leaf\Admin\Form\Fields\HasOne;
-use CubeSystems\Leaf\Generator\Extras\Relation;
-use CubeSystems\Leaf\Generator\GeneratorFormatter;
-use CubeSystems\Leaf\Generator\Schema;
-use CubeSystems\Leaf\Services\StubRegistry;
+use Arbory\Base\Admin\Form\Fields\HasMany;
+use Arbory\Base\Admin\Form\Fields\HasOne;
+use Arbory\Base\Generator\Extras\Relation;
+use Arbory\Base\Generator\GeneratorFormatter;
+use Arbory\Base\Generator\Schema;
+use Arbory\Base\Services\StubRegistry;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 

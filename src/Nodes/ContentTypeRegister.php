@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Nodes;
+namespace Arbory\Base\Nodes;
 
 use Illuminate\Support\Collection;
 
 /**
  * Class ContentTypesRepository
- * @package CubeSystems\Leaf\Nodes
+ * @package Arbory\Base\Nodes
  */
 class ContentTypeRegister
 {
@@ -20,7 +20,7 @@ class ContentTypeRegister
      */
     public function __construct()
     {
-        $contentTypes = collect( config( 'leaf.content_types', [] ) );
+        $contentTypes = collect( config( 'arbory.content_types', [] ) );
         $contentTypeNames = $contentTypes->map( function( $item )
         {
             return new ContentTypeDefinition( $item );

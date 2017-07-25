@@ -1,23 +1,23 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers\Admin;
+namespace Arbory\Base\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Admin\Form;
-use CubeSystems\Leaf\Admin\Form\FieldSet;
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Admin\Layout;
-use CubeSystems\Leaf\Admin\Traits\Crudify;
-use CubeSystems\Leaf\Admin\Form\Fields\HasOne;
-use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
-use CubeSystems\Leaf\Admin\Form\Fields\Slug;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
-use CubeSystems\Leaf\Nodes\ContentTypeDefinition;
-use CubeSystems\Leaf\Nodes\Node;
-use CubeSystems\Leaf\Nodes\Admin\Grid\Filter;
-use CubeSystems\Leaf\Nodes\Admin\Grid\Renderer;
-use CubeSystems\Leaf\Nodes\ContentTypeRegister;
-use CubeSystems\Leaf\Repositories\NodesRepository;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Admin\Form\Fields\HasOne;
+use Arbory\Base\Admin\Form\Fields\Hidden;
+use Arbory\Base\Admin\Form\Fields\Slug;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Nodes\ContentTypeDefinition;
+use Arbory\Base\Nodes\Node;
+use Arbory\Base\Nodes\Admin\Grid\Filter;
+use Arbory\Base\Nodes\Admin\Grid\Renderer;
+use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Repositories\NodesRepository;
 use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -53,7 +53,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param \CubeSystems\Leaf\Nodes\Node $node
+     * @param \Arbory\Base\Nodes\Node $node
      * @return Form
      */
     protected function form( Node $node )
@@ -107,7 +107,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param \CubeSystems\Leaf\Admin\Tools\ToolboxMenu $tools
+     * @param \Arbory\Base\Admin\Tools\ToolboxMenu $tools
      */
     protected function toolbox( ToolboxMenu $tools )
     {
@@ -203,7 +203,7 @@ class NodesController extends Controller
             ];
         } );
 
-        return view( 'leaf::dialogs.content_types', [ 'types' => $types ] );
+        return view( 'arbory::dialogs.content_types', [ 'types' => $types ] );
     }
 
     /**

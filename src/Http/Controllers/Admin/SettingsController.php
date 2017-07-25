@@ -1,20 +1,20 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers\Admin;
+namespace Arbory\Base\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Admin\Form;
-use CubeSystems\Leaf\Admin\Form\Fields\Hidden;
-use CubeSystems\Leaf\Admin\Form\Fields\Text;
-use CubeSystems\Leaf\Admin\Form\Fields\Translatable;
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Admin\Settings\Setting;
-use CubeSystems\Leaf\Admin\Settings\SettingDefinition;
-use CubeSystems\Leaf\Admin\Settings\SettingTranslation;
-use CubeSystems\Leaf\Admin\Tools\ToolboxMenu;
-use CubeSystems\Leaf\Admin\Traits\Crudify;
-use CubeSystems\Leaf\Providers\SettingsServiceProvider;
-use CubeSystems\Leaf\Services\SettingFactory;
-use CubeSystems\Leaf\Services\SettingRegistry;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Form\Fields\Hidden;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Settings\Setting;
+use Arbory\Base\Admin\Settings\SettingDefinition;
+use Arbory\Base\Admin\Settings\SettingTranslation;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Providers\SettingsServiceProvider;
+use Arbory\Base\Services\SettingFactory;
+use Arbory\Base\Services\SettingRegistry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
@@ -146,7 +146,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param \CubeSystems\Leaf\Admin\Tools\ToolboxMenu $tools
+     * @param \Arbory\Base\Admin\Tools\ToolboxMenu $tools
      */
     protected function toolbox( ToolboxMenu $tools )
     {

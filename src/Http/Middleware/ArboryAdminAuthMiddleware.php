@@ -1,20 +1,20 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Middleware;
+namespace Arbory\Base\Http\Middleware;
 
 use Cartalyst\Sentinel\Sentinel;
 use Closure;
-use CubeSystems\Leaf\Admin\Module;
-use CubeSystems\Leaf\Services\ModuleRegistry;
+use Arbory\Base\Admin\Module;
+use Arbory\Base\Services\ModuleRegistry;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class AdminMiddleware
- * @package CubeSystems\Leaf\Http\Middleware
+ * Class ArboryAdminAuthMiddleware
+ * @package Arbory\Base\Http\Middleware
  */
-class LeafAdminAuthMiddleware
+class ArboryAdminAuthMiddleware
 {
     /**
      * @var Sentinel
@@ -22,7 +22,7 @@ class LeafAdminAuthMiddleware
     protected $sentinel;
 
     /**
-     * LeafAdminAuthMiddleware constructor.
+     * ArboryAdminAuthMiddleware constructor.
      * @param Sentinel $sentinel
      */
     public function __construct( Sentinel $sentinel )
@@ -79,7 +79,7 @@ class LeafAdminAuthMiddleware
 
     /**
      * @param Request $request
-     * @return \CubeSystems\Leaf\Admin\Module|null
+     * @return \Arbory\Base\Admin\Module|null
      */
     private function resolveTargetModule( Request $request )
     {

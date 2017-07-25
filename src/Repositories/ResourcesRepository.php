@@ -1,10 +1,10 @@
 <?php
 
-namespace CubeSystems\Leaf\Repositories;
+namespace Arbory\Base\Repositories;
 
 /**
  * Class ResourcesRepository
- * @package CubeSystems\Leaf\Repositories
+ * @package Arbory\Base\Repositories
  */
 class ResourcesRepository extends AbstractModelsRepository
 {

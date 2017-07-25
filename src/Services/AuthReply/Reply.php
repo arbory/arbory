@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Services\AuthReply;
+namespace Arbory\Base\Services\AuthReply;
 
 use Exception;
 use Illuminate\Http\Response;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 
 /**
  * Class Reply
- * @package CubeSystems\Leaf\Services\AuthReply
+ * @package Arbory\Base\Services\AuthReply
  */
 abstract class Reply implements Jsonable, Arrayable
 {

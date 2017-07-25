@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Layout;
+namespace Arbory\Base\Admin\Layout;
 
-use CubeSystems\Leaf\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 
 /**
  * Class Row
- * @package CubeSystems\Leaf\Admin\Layout
+ * @package Arbory\Base\Admin\Layout
  */
 class Row implements Renderable
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Http\Controllers\Admin;
+namespace Arbory\Base\Http\Controllers\Admin;
 
-use CubeSystems\Leaf\Admin\Widgets\Breadcrumbs;
-use CubeSystems\Leaf\Admin\Widgets\SearchField;
-use CubeSystems\Leaf\Html\Html;
-use CubeSystems\Leaf\Http\Requests\TranslationStoreRequest;
-use CubeSystems\Leaf\Menu\Menu;
-use CubeSystems\Leaf\Services\ModuleRegistry;
+use Arbory\Base\Admin\Widgets\Breadcrumbs;
+use Arbory\Base\Admin\Widgets\SearchField;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Http\Requests\TranslationStoreRequest;
+use Arbory\Base\Menu\Menu;
+use Arbory\Base\Services\ModuleRegistry;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Query\Builder;
@@ -25,7 +25,7 @@ use Waavi\Translation\Repositories\TranslationRepository;
 
 /**
  * Class TranslationsController
- * @package CubeSystems\Leaf\Http\Controllers\Admin
+ * @package Arbory\Base\Http\Controllers\Admin
  */
 class TranslationsController extends Controller
 {
@@ -117,7 +117,7 @@ class TranslationsController extends Controller
         $paginatedItems = $this->getPaginatedItems( $translationsQuery );
 
         return view(
-            'leaf::controllers.translations.index',
+            'arbory::controllers.translations.index',
             [
                 'header' => Html::header( [ $this->getIndexBreadcrumbs(), ( new SearchField( '' ) )->render() ] ),
                 'languages' => $languages,
@@ -176,7 +176,7 @@ class TranslationsController extends Controller
         }
 
         return view(
-            'leaf::controllers.translations.edit',
+            'arbory::controllers.translations.edit',
             [
                 'header' => Html::header( [ $this->getEditBreadcrumbs( $translationKey ) ] ),
                 'input' => $request,

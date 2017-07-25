@@ -1,20 +1,20 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin;
+namespace Arbory\Base\Admin;
 
-use CubeSystems\Leaf\Admin\Form\Builder;
-use CubeSystems\Leaf\Admin\Form\FieldSet;
-use CubeSystems\Leaf\Admin\Form\Fields\FieldInterface;
-use CubeSystems\Leaf\Admin\Form\Validator;
-use CubeSystems\Leaf\Admin\Traits\EventDispatcher;
-use CubeSystems\Leaf\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Builder;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Validator;
+use Arbory\Base\Admin\Traits\EventDispatcher;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 /**
  * Class Form
- * @package CubeSystems\Leaf\Admin
+ * @package Arbory\Base\Admin
  */
 class Form implements Renderable
 {
@@ -91,7 +91,7 @@ class Form implements Renderable
         {
             $this->title = ( $this->model->getKey() )
                 ? (string) $this->model
-                : trans( 'leaf::resources.create_new' );
+                : trans( 'arbory::resources.create_new' );
         }
 
         return $this->title;
@@ -215,7 +215,7 @@ class Form implements Renderable
     }
 
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Content|Element
+     * @return \Arbory\Base\Html\Elements\Content|Element
      */
     public function render()
     {

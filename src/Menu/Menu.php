@@ -1,9 +1,9 @@
 <?php
 
-namespace CubeSystems\Leaf\Menu;
+namespace Arbory\Base\Menu;
 
-use CubeSystems\Leaf\Html\Elements;
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Elements;
+use Arbory\Base\Html\Html;
 use Illuminate\Support\Collection;
 
 class Menu

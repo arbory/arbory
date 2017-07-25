@@ -2,8 +2,8 @@
 
 namespace Tests\Services;
 
-use CubeSystems\Leaf\Services\Stub;
-use CubeSystems\Leaf\Services\StubRegistry;
+use Arbory\Base\Services\Stub;
+use Arbory\Base\Services\StubRegistry;
 use Mockery;
 use Mockery\Mock;
 use PHPUnit\Framework\TestCase;

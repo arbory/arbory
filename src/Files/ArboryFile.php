@@ -1,6 +1,6 @@
 <?php
 
-namespace CubeSystems\Leaf\Files;
+namespace Arbory\Base\Files;
 
 use Alsofronie\Uuid\UuidModelTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +17,7 @@ use Storage;
  * @property string owner_class
  * @property string local_name
  */
-class LeafFile extends Model
+class ArboryFile extends Model
 {
     use UuidModelTrait;
 

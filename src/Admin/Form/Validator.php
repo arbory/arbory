@@ -1,12 +1,12 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Form;
+namespace Arbory\Base\Admin\Form;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class Validator
- * @package CubeSystems\Leaf\Admin\Form
+ * @package Arbory\Base\Admin\Form
  */
 class Validator extends FormRequest
 {

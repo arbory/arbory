@@ -1,13 +1,13 @@
 <?php
 
-namespace CubeSystems\Leaf\Support\Facades;
+namespace Arbory\Base\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \Illuminate\Routing\Router
  */
-class LeafRouter extends Facade
+class ArboryRouter extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -16,6 +16,6 @@ class LeafRouter extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'leaf_router';
+        return 'arbory_router';
     }
 }

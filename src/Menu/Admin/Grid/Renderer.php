@@ -1,16 +1,16 @@
 <?php
 
-namespace CubeSystems\Leaf\Menu\Admin\Grid;
+namespace Arbory\Base\Menu\Admin\Grid;
 
-use CubeSystems\Leaf\Admin\Grid;
-use CubeSystems\Leaf\Admin\Layout\Footer;
-use CubeSystems\Leaf\Admin\Layout\Footer\Tools;
-use CubeSystems\Leaf\Admin\Widgets\Link;
-use CubeSystems\Leaf\Html\Elements\Content;
-use CubeSystems\Leaf\Html\Elements\Element;
-use CubeSystems\Leaf\Html\Html;
-use CubeSystems\Leaf\Menu\AbstractItem;
-use CubeSystems\Leaf\Nodes\MenuItem;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Layout\Footer;
+use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Menu\AbstractItem;
+use Arbory\Base\Nodes\MenuItem;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
@@ -50,8 +50,8 @@ class Renderer
     {
         return new Content( [
             Html::header( [
-                Html::h1( trans( 'leaf::resources.all_resources' ) ),
-                Html::span( trans( 'leaf::pagination.items_found', [ 'total' => $this->page->total() ] ) )
+                Html::h1( trans( 'arbory::resources.all_resources' ) ),
+                Html::span( trans( 'arbory::pagination.items_found', [ 'total' => $this->page->total() ] ) )
                     ->addClass( 'extras totals only-text' )
             ] ),
             Html::div(
@@ -153,7 +153,7 @@ class Renderer
         $createButton = Link::create( $this->url( 'create' ) )
             ->asButton( 'primary' )
             ->withIcon( 'plus' )
-            ->title( trans( 'leaf::resources.create_new' ) );
+            ->title( trans( 'arbory::resources.create_new' ) );
 
         $tools = new Tools();
         $tools->getBlock( 'primary' )->push( $createButton );

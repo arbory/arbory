@@ -1,14 +1,14 @@
 <?php
 
-namespace CubeSystems\Leaf\Admin\Widgets;
+namespace Arbory\Base\Admin\Widgets;
 
-use CubeSystems\Leaf\Html\Html;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 
 /**
  * Class Breadcrumbs
- * @package CubeSystems\Leaf\Admin\Widgets
+ * @package Arbory\Base\Admin\Widgets
  */
 class Breadcrumbs implements Renderable
 {
@@ -23,7 +23,7 @@ class Breadcrumbs implements Renderable
     public function __construct()
     {
         $this->items = new Collection();
-        $this->addItem( trans( 'leaf::breadcrumbs.home' ), route( 'admin.dashboard' ) );
+        $this->addItem( trans( 'arbory::breadcrumbs.home' ), route( 'admin.dashboard' ) );
     }
 
     /**
@@ -50,7 +50,7 @@ class Breadcrumbs implements Renderable
     }
 
     /**
-     * @return \CubeSystems\Leaf\Html\Elements\Element
+     * @return \Arbory\Base\Html\Elements\Element
      */
     public function render()
     {

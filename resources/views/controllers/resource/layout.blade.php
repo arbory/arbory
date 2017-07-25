@@ -1,4 +1,4 @@
-@extends('leaf::layout.main', [ 'body_class' => $bodyClass ])
+@extends('arbory::layout.main', [ 'body_class' => $bodyClass ])
 
 @section('content')
 
