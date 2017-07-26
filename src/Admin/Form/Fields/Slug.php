@@ -42,7 +42,10 @@ class Slug extends AbstractField
             ->setName( $this->getNameSpacedName() )
             ->setValue( $this->getValue() )
             ->addClass( 'text' )
-            ->addAttributes( [ 'data-generator-url' => $this->apiUrl ] );
+            ->addAttributes( [
+                'data-generator-url' => $this->apiUrl,
+                'data-node-parent-id' => $this->getParentId()
+            ] );
 
         $button = Button::create()
             ->type( 'button', 'secondary generate' )
@@ -132,7 +135,7 @@ class Slug extends AbstractField
          * @var Node $parentNode
          */
         $repository = new NodesRepository;
-        $parentNode = $repository->find( request( 'parent_id' ) );
+        $parentNode = $repository->find( $this->getParentId() );
 
         return $parentNode ? $parentNode->getUri() : (string) null;
     }
@@ -143,5 +146,13 @@ class Slug extends AbstractField
     protected function getUriToSlug()
     {
         return $this->getUriToExistingModel() ?: $this->getUriToNewModel();
+    }
+
+    /**
+     * @return int
+     */
+    protected function getParentId()
+    {
+        return request( 'parent_id' ) ?: $this->getModel()->getParentId();
     }
 }
