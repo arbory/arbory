@@ -277,7 +277,7 @@ class ArboryServiceProvider extends ServiceProvider
 
             $stubRegistry->registerStubs(
                 $app[ Filesystem::class ],
-                base_path( 'vendor/arbory/base/stubs' )
+                base_path( 'vendor/arbory/arbory/stubs' )
             );
 
             return $stubRegistry;
