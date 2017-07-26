@@ -1,8 +1,8 @@
-[![Packagist](https://img.shields.io/packagist/v/arbory/base.svg)](https://packagist.org/packages/arbory/base)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arbory/base/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arbory/base/?branch=master)
-[![Build Status](https://travis-ci.org/arbory/base.svg?branch=master)](https://travis-ci.org/arbory/base)
+[![Packagist](https://img.shields.io/packagist/v/arbory/arbory.svg)](https://packagist.org/packages/arbory/arbory)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arbory/arbory/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arbory/arbory/?branch=master)
+[![Build Status](https://travis-ci.org/arbory/arbory.svg?branch=master)](https://travis-ci.org/arbory/arbory)
 [![Dependency Status](https://www.versioneye.com/user/projects/58f8b23ec2ef420052a23406/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58f8b23ec2ef420052a23406)
-[![Coverage Status](https://coveralls.io/repos/github/arbory/base/badge.svg?branch=master)](https://coveralls.io/github/arbory/base?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/arbory/arbory/badge.svg?branch=master)](https://coveralls.io/github/arbory/arbory?branch=master)
 
 ## Installation
 #### Create new Laravel project
