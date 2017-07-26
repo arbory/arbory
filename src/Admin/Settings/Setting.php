@@ -133,6 +133,6 @@ class Setting extends Model
         $registry = app( SettingRegistry::class );
         $definition = $registry->find( $settingName );
 
-        return $definition->getType() === \Arbory\Base\Admin\Form\Fields\Translatable::class;
+        return $definition && $definition->getType() === \Arbory\Base\Admin\Form\Fields\Translatable::class;
     }
 }
