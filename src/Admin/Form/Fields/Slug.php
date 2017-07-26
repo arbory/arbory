@@ -5,6 +5,8 @@ namespace Arbory\Base\Admin\Form\Fields;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Nodes\Node;
+use Arbory\Base\Repositories\NodesRepository;
 
 /**
  * Class Slug
@@ -34,8 +36,6 @@ class Slug extends AbstractField
      */
     public function render()
     {
-        $baseUrl = url( '/' );
-
         $label = Html::label( $this->getLabel() )->addAttributes( [ 'for' => $this->getNameSpacedName() ] );
 
         $input = Html::input()
@@ -56,10 +56,41 @@ class Slug extends AbstractField
             Html::div( [ $input, $button ] )->addClass( 'value' ),
             Html::div(
                 Html::link(
-                    [ $baseUrl . '/' . Html::span( $this->getUriToSlug() ) . '/' . Html::span( $this->getSlug() ) ]
-                )->addAttributes( [ 'href' => $baseUrl . '/' . $this->getUri() ] )
+                    $this->getLinkValue()
+                )->addAttributes( [ 'href' => $this->getLinkHref() ] )
             )->addClass( 'link' ),
         ] )->addClass( 'field type-text' )->addAttributes( [ 'data-name' => 'slug' ] );
+    }
+
+    /**
+     * @return array
+     */
+    protected function getLinkValue()
+    {
+        $urlToSlug = $this->getUriToSlug();
+        $urlToSlugElement = Html::span( $this->getUriToSlug() );
+
+        if( $urlToSlug )
+        {
+            $urlToSlugElement .= '/';
+        }
+
+        return [ url( '/' ) . '/' . $urlToSlugElement . Html::span( $this->getSlug() ) ];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLinkHref()
+    {
+        $urlToSlug = $this->getUriToSlug();
+
+        if( $urlToSlug )
+        {
+            $urlToSlug .= '/';
+        }
+
+        return url( '/' ) . '/' . $urlToSlug . $this->getSlug();
     }
 
     /**
@@ -83,12 +114,34 @@ class Slug extends AbstractField
     /**
      * @return string
      */
-    protected function getUriToSlug()
+    protected function getUriToExistingModel()
     {
         $uriParts = explode( '/', $this->getUri() );
 
         array_pop( $uriParts );
 
         return implode( '/', $uriParts );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUriToNewModel()
+    {
+        /**
+         * @var Node $parentNode
+         */
+        $repository = new NodesRepository;
+        $parentNode = $repository->find( request( 'parent_id' ) );
+
+        return $parentNode ? $parentNode->getUri() : (string) null;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUriToSlug()
+    {
+        return $this->getUriToExistingModel() ?: $this->getUriToNewModel();
     }
 }
