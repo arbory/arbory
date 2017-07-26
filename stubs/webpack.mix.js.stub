@@ -15,7 +15,7 @@ mix.webpackConfig({
     resolve: {
         modules: [
             path.resolve(__dirname, './node_modules'),
-            path.resolve(__dirname, './vendor/arbory/base/resources/assets/js/')
+            path.resolve(__dirname, './vendor/arbory/arbory/resources/assets/js/')
         ]
     }
 });
@@ -24,4 +24,4 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .js('resources/assets/js/admin.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');
 
-require('./vendor/arbory/base/webpack.mix')(mix);
+require('./vendor/arbory/arbory/webpack.mix')(mix);
