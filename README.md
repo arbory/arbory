@@ -20,7 +20,7 @@ cd my-project
 
 #### Require Arbory package
 ```bash
-composer require arbory/base dev-master
+composer require arbory/arbory dev-master
 ```
 #### Fill in database info
 ```bash
