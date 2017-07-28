@@ -23,7 +23,7 @@
                 @foreach($translations as $translation)
                     <div class="field type-text" data-name="text_{{$translation->locale}}">
                         <div class="label-wrap">
-                            <label for="text_{{$translation->locale}}">Kek {{$translation->locale}}</label>
+                            <label for="text_{{$translation->locale}}">{{$translation->locale}}</label>
                         </div>
                         <div class="value">
 
