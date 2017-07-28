@@ -22,7 +22,6 @@ use Arbory\Base\Http\Middleware\ArboryAdminHasAccessMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminInRoleMiddleware;
 use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
 use Arbory\Base\Menu\Menu;
-use Arbory\Base\Menu\MenuFactory;
 use Arbory\Base\Services\AssetPipeline;
 use Arbory\Base\Services\FieldTypeRegistry;
 use Arbory\Base\Services\StubRegistry;
@@ -80,6 +79,7 @@ class ArboryServiceProvider extends ServiceProvider
         $this->app->register( AssetServiceProvider::class );
         $this->app->register( SettingsServiceProvider::class );
         $this->app->register( ExcelServiceProvider::class );
+        $this->app->register( FileManagerServiceProvider::class );
     }
 
     /**

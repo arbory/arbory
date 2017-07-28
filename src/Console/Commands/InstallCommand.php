@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Console\Commands;
 
+use Arbory\Base\Providers\FileManagerServiceProvider;
 use Cartalyst\Sentinel\Sentinel;
 use Arbory\Base\Providers\ArboryServiceProvider;
 use Arbory\Base\Services\StubRegistry;
@@ -14,6 +15,7 @@ use InvalidArgumentException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ArboryDatabaseSeeder;
 use Illuminate\Console\DetectsApplicationNamespace;
+use Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider;
 
 /**
  * Class SeedCommand
@@ -98,6 +100,7 @@ class InstallCommand extends Command
         $this->publishConfig();
         $this->runMigrations();
         $this->runSeeder();
+        $this->publishFileManager();
         $this->publishLanguages();
         $this->createAdminUser();
         $this->npmDependencies();
@@ -214,6 +217,25 @@ class InstallCommand extends Command
         $this->call( 'vendor:publish', [
             '--provider' => ArboryServiceProvider::class,
             '--tag' => 'config',
+        ] );
+    }
+
+    /**
+     * @return void
+     */
+    protected function publishFileManager()
+    {
+        $this->info( 'Publishing file manager resources' );
+
+        $this->call( 'vendor:publish', [
+            '--provider' => FileManagerServiceProvider::class,
+            '--force' => null,
+        ] );
+
+        $this->call( 'vendor:publish', [
+            '--provider' => LaravelFilemanagerServiceProvider::class,
+            '--tag' => 'lfm_public',
+            '--force' => null,
         ] );
     }
 

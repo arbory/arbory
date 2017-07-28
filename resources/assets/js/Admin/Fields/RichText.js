@@ -28,7 +28,11 @@ export default class RichText {
         let textarea = this.getTextarea();
         let config = Object.assign(this.getDefaultConfig(), {
             width: '100%',
-            height: textarea.outerHeight()
+            height: textarea.outerHeight(),
+            filebrowserImageBrowseUrl: '/admin/filemanager?type=Images',
+            filebrowserImageUploadUrl: '/admin/filemanager/upload?type=Images&_token=',
+            filebrowserBrowseUrl: '/admin/filemanager?type=Files',
+            filebrowserUploadUrl: '/admin/filemanager/upload?type=Files&_token='
         });
 
         if (!textarea.attr('id')) {
