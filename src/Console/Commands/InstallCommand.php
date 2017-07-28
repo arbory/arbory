@@ -160,7 +160,7 @@ class InstallCommand extends Command
     protected function publishMixFile()
     {
         $webpackConfig = 'webpack.mix.js';
-        $arboryRequire = "require('./vendor/arbory/base/webpack.mix')(mix);";
+        $arboryRequire = "require('./vendor/arbory/arbory/webpack.mix')(mix);";
 
         try
         {
