@@ -21,6 +21,8 @@ class ArboryFile extends Model
 {
     use UuidModelTrait;
 
+    protected $table = 'files';
+
     /**
      * @var array
      */
