@@ -308,4 +308,13 @@ trait Crudify
 
         return $resource;
     }
+
+    /**
+     * @param Request $request
+     * @return array|Request|string
+     */
+    public function slugGeneratorApi(Request $request)
+    {
+        return str_slug( request( 'from' ) );
+    }
 }

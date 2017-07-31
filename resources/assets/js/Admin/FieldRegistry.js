@@ -2,6 +2,7 @@ import RichText, {CONFIG_EDITOR} from "./Fields/RichText";
 import RichTextCompact, {CONFIG_EDITOR_COMPACT} from "./Fields/RichTextCompact";
 import IconPicker from "./Fields/IconPicker";
 import Sortable, {CONFIG_JQUERY_SORTABLE} from "./Fields/Sortable";
+import Slug from "./Fields/Slug";
 
 export let FIELD_TYPE_DEFINITIONS = [
     {
@@ -24,7 +25,11 @@ export let FIELD_TYPE_DEFINITIONS = [
             vendor: CONFIG_JQUERY_SORTABLE
         },
         selector: '.type-sortable'
-    }
+    },
+    {
+        handler: Slug,
+        selector: '.field[data-name=slug]'
+    },
 ];
 
 class Definition {

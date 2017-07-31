@@ -63,7 +63,7 @@ class NodesController extends Controller
             $form->addField( new Hidden( 'parent_id' ) );
             $form->addField( new Hidden( 'content_type' ) );
             $form->addField( new Text( 'name' ) )->rules( 'required' );
-            $form->addField( new Slug( 'slug', $this->url( 'api', 'slug_generator' ) ) )->rules( 'required' );
+            $form->addField( new Slug( 'slug', 'name', $this->url( 'api', 'slug_generator' ) ) )->rules( 'required' );
 
             $form->addField( new Text( 'meta_title' ) );
             $form->addField( new Text( 'meta_author' ) );
@@ -248,17 +248,17 @@ class NodesController extends Controller
                 ->toArray();
         }
 
-        $name = $request->get( 'name' );
-        $slug = str_slug( $name );
+        $from = $request->get( 'from' );
+        $slug = str_slug( $from );
 
         if( in_array( $slug, $reservedSlugs, true ) && $request->has( 'id' ) )
         {
-            $slug = str_slug( $request->get( 'id' ) . '-' . $name );
+            $slug = str_slug( $request->get( 'id' ) . '-' . $from );
         }
 
         if( in_array( $slug, $reservedSlugs, true ) )
         {
-            $slug = str_slug( $name . '-' . random_int( 0, 9999 ) );
+            $slug = str_slug( $from . '-' . random_int( 0, 9999 ) );
         }
 
         return $slug;

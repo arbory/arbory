@@ -226,6 +226,30 @@ input.text
     &[data-name="file"] {
         word-wrap: break-word;
     }
+
+    &[data-name="slug"]
+    {
+        .button.generate
+        {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        input[type="text"]
+        {
+            padding-right: steps(4);
+        }
+
+        .link
+        {
+            padding: steps(0.5) 0;
+            span
+            {
+                color: $color-text-normal;
+            }
+        }
+    }
 }
 
 

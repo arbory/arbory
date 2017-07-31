@@ -104,21 +104,9 @@ class NodeStoreItem {
     }
 }
 
-class SlugApiHandler {
-    constructor(apiUrl, parameters = {}) {
-        this.apiUrl = apiUrl;
-        this.parameters = parameters;
-    }
-
-    create(string) {
-        return jQuery.get(this.apiUrl, Object.assign({name: string}, this.parameters));
-    }
-}
-
 jQuery(document).ready(() => {
     let body = jQuery('body.controller-nodes');
     let collection = jQuery('.collection');
-    let form = jQuery('#edit-resource');
 
     body.on('click', '.dialog .node-cell label', function() {
         jQuery('.dialog .node-cell label').removeClass('selected');
@@ -149,39 +137,5 @@ jQuery(document).ready(() => {
                 }
             });
         });
-    });
-
-    form.ready(() => {
-        let slugField  = form.find('.field[data-name=slug]');
-
-        let nameInput = jQuery('#resource_name');
-        let slugInput = jQuery('#resource_slug');
-
-        let generateButton = slugField.find('.button.generate');
-        let slugLink = slugField.find('.link');
-
-        let slugApi = new SlugApiHandler(slugInput.data('generatorUrl'), {
-            parent_id: slugInput.data('nodeParentId')
-        });
-
-        let updateSlugLink = () => {
-            slugLink.find('span:last').text(encodeURIComponent(slugInput.val()));
-        };
-
-        let generateSlug = () => {
-            slugApi.create(nameInput.val()).done((value) => {
-                slugInput.val(value);
-                updateSlugLink();
-            });
-        };
-
-        nameInput.on('blur', () => {
-            if (! slugInput.val().length) {
-                generateSlug();
-            }
-        });
-
-        generateButton.on('click', () => generateSlug());
-        slugInput.on('keyup', () => updateSlugLink());
     });
 });
