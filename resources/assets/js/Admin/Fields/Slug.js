@@ -36,7 +36,9 @@ export default class Slug {
      */
     getApi() {
         return new SlugApiHandler(this.getGeneratorUrl(), {
-            parent_id: this.getNodeParentId()
+            parent_id: this.getNodeParentId(),
+            model_table: this.getModelTable(),
+            column_name: this.getFieldName()
         });
     }
 
@@ -69,10 +71,24 @@ export default class Slug {
     }
 
     /**
+     * @return {int}
+     */
+    getModelTable() {
+        return this.getFieldInput().data('modelTable');
+    }
+
+    /**
      * @return {jQuery}
      */
     getField() {
         return jQuery(this.element);
+    }
+
+    /**
+     * @return {string}
+     */
+    getFieldName() {
+        return this.getField().data('name');
     }
 
     /**

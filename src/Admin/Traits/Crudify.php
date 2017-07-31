@@ -313,8 +313,18 @@ trait Crudify
      * @param Request $request
      * @return array|Request|string
      */
-    public function slugGeneratorApi(Request $request)
+    public function slugGeneratorApi( Request $request )
     {
-        return str_slug( request( 'from' ) );
+        /** @var \Illuminate\Database\Query\Builder $query */
+        $slug = str_slug( $request->input( 'from' ) );
+        $column = $request->input( 'column_name' );
+        $query = \DB::table( $request->input( 'model_table' ) )->where( $column, $slug );
+
+        if( $column && $query->exists() )
+        {
+            $slug .= '-' . random_int( 0, 9999 );
+        }
+
+        return $slug;
     }
 }
