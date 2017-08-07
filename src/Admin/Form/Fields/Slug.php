@@ -66,7 +66,7 @@ class Slug extends AbstractField
             Html::div( $label )->addClass( 'label-wrap' ),
             Html::div( [ $input, $button ] )->addClass( 'value' ),
             $this->getLinkElement(),
-        ] )->addClass( 'field type-text' )->addAttributes( [ 'data-name' => 'slug' ] );
+        ] )->addClass( 'field type-slug' )->addAttributes( [ 'data-name' => 'slug' ] );
     }
 
     /**

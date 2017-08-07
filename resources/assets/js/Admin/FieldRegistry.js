@@ -28,7 +28,7 @@ export let FIELD_TYPE_DEFINITIONS = [
     },
     {
         handler: Slug,
-        selector: '.field[data-name=slug]'
+        selector: '.type-slug'
     },
 ];
 
