@@ -4,6 +4,7 @@ namespace Arbory\Base\Nodes;
 
 use Closure;
 use Arbory\Base\Exceptions\BadMethodCallException;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Collection;
 
 /**
@@ -82,8 +83,17 @@ class ContentTypeRoutesRegister
         {
             return null;
         }
-        
-        $currentRouteName = $this->getRouter()->getCurrentRoute()->getName();
+
+        return $this->getNodeFromRoute( $this->getRouter()->getCurrentRoute() );
+    }
+
+    /**
+     * @param Route $route
+     * @return Node|null
+     */
+    public function getNodeFromRoute( Route $route )
+    {
+        $currentRouteName = $route->getName();
 
         if( !preg_match( '#^node\.(?P<id>.*?)\.#', $currentRouteName, $matches ) )
         {
@@ -93,6 +103,9 @@ class ContentTypeRoutesRegister
         return Node::with( 'content' )->find( $matches['id'] );
     }
 
+    /**
+     * @return void
+     */
     public function registerNodes()
     {
         $this->registerRoutesForNodeCollection( Node::all()->unorderedHierarchicalList() );
