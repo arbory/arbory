@@ -17,6 +17,7 @@ class Hidden extends AbstractField
     public function render()
     {
         return Html::input()
+            ->addAttributes( [ 'data-name' => $this->getName() ] )
             ->setType( 'hidden' )
             ->setValue( $this->getValue() )
             ->setName( $this->getNameSpacedName() );

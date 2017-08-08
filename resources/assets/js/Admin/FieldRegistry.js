@@ -3,6 +3,7 @@ import RichTextCompact, {CONFIG_EDITOR_COMPACT} from "./Fields/RichTextCompact";
 import IconPicker from "./Fields/IconPicker";
 import Sortable, {CONFIG_JQUERY_SORTABLE} from "./Fields/Sortable";
 import Slug from "./Fields/Slug";
+import ObjectRelation from "./Fields/ObjectRelation";
 
 export let FIELD_TYPE_DEFINITIONS = [
     {
@@ -29,6 +30,10 @@ export let FIELD_TYPE_DEFINITIONS = [
     {
         handler: Slug,
         selector: '.type-slug'
+    },
+    {
+        handler: ObjectRelation,
+        selector: ObjectRelation.getSelector()
     },
 ];
 

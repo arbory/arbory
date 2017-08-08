@@ -1,0 +1,67 @@
+
+.type-object-relation {
+    user-select: none;
+
+    &:not(.single) {
+        float: none;
+    }
+
+    .related {
+        height: steps(2);
+    }
+
+    .relations {
+        max-height: steps(20);
+        border: 1px solid $color-border-normal;
+        overflow: auto;
+
+        .item {
+            cursor: default;
+            position: relative;
+            list-style: none;
+            height: steps(2);
+            padding-left: steps(1);
+            overflow: hidden;
+
+            // nested item indentation
+            @for $i from 1 through 10
+            {
+                &[data-level="#{$i}"] {
+                    padding-left: ($i+1) * steps(1);
+                }
+            }
+
+            &:hover {
+                color: white;
+                background-color: $color-highlight-normal;
+            }
+        }
+    }
+
+    &.single {
+        .related {
+            position: relative;
+            height: steps(3);
+            border: 1px solid $color-border-normal;
+
+            .item {
+                padding-left: steps(1);
+                padding-top: steps(0.5);
+            }
+        }
+
+        .relations {
+            display: none;
+            position: absolute;
+            top: steps(3);
+            z-index: 10;
+            background-color: white;
+            width: 100%;
+            margin-top: -1px;
+
+            &.active {
+                display: block;
+            }
+        }
+    }
+}

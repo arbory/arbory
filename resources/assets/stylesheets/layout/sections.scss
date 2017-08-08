@@ -85,7 +85,7 @@ section.nested
 
     .list
     {
-        .item:not(tr)
+        fieldset.item
         {
             border: 1px solid $color-border-normal;
             padding: steps(2) 0;
