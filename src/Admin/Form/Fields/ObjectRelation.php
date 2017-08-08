@@ -159,7 +159,7 @@ class ObjectRelation extends AbstractField
             'owner_type' => ( new \ReflectionClass( $this->getModel() ) )->getName()
         ] );
 
-        if( $relatedId || $relatedType )
+        if( $relatedId && $relatedType )
         {
             $relation->fill( [
                 'related_id' => $relatedId,
