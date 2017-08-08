@@ -106,9 +106,14 @@ class ObjectRelation extends AbstractField
      */
     public function getValue()
     {
-        $relation = $this->getModel()->morphMany( Relation::class, 'owner' )->where( 'name', $this->getName() );
+        if( !$this->value )
+        {
+            $relation = $this->getModel()->morphMany( Relation::class, 'owner' )->where( 'name', $this->getName() );
 
-        return $this->isSingular() ? $relation->first() : $relation->get();
+            $this->value = $this->isSingular() ? $relation->first() : $relation->get();
+        }
+
+        return $this->value;
     }
 
     /**
