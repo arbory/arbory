@@ -231,12 +231,6 @@ class InstallCommand extends Command
             '--provider' => FileManagerServiceProvider::class,
             '--force' => null,
         ] );
-
-        $this->call( 'vendor:publish', [
-            '--provider' => LaravelFilemanagerServiceProvider::class,
-            '--tag' => 'lfm_public',
-            '--force' => null,
-        ] );
     }
 
     /**

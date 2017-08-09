@@ -54,4 +54,9 @@ module.exports = function (mix) {
         'vendor/arbory/arbory/resources/assets/images/',
         'public/arbory/images/'
     );
+
+    mix.copyDirectory(
+        'vendor/unisharp/laravel-filemanager/public/',
+        'public/vendor/laravel-filemanager/'
+    );
 };
