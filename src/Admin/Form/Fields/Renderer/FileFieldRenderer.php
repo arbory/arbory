@@ -14,6 +14,11 @@ use Arbory\Base\Html\Html;
 class FileFieldRenderer extends InputFieldRenderer
 {
     /**
+     * @var \Arbory\Base\Admin\Form\Fields\ArboryFile
+     */
+    protected $field;
+
+    /**
      * @var string
      */
     protected $type = 'item';
@@ -70,6 +75,11 @@ class FileFieldRenderer extends InputFieldRenderer
                 'name' => Element::formatName( $this->field->getNameSpacedName() . '.remove' ),
             ]);
 
-        return $fileDetails->append( $removeInput );
+        if( !$this->field->isRequired() )
+        {
+            $fileDetails->append( $removeInput );
+        }
+
+        return $fileDetails;
     }
 }

@@ -62,6 +62,11 @@ class ArboryFile extends AbstractField
      */
     protected function deleteCurrentFileIfExists()
     {
+        if ( $this->isRequired() )
+        {
+            return;
+        }
+
         $arboryFilesRepository = app( 'arbory_files' );
 
         $currentFile = $this->getValue();
@@ -119,5 +124,13 @@ class ArboryFile extends AbstractField
             $this->getModel()->setRelation( $this->getName(), $arboryFile );
             $this->getModel()->save();
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequired(): bool
+    {
+        return in_array( 'arbory_file_required', $this->getRules(), true );
     }
 }
