@@ -120,10 +120,6 @@ class FieldSetFieldFinder
                     );
                 }
             }
-            else
-            {
-                // TODO: implement for sortable
-            }
 
             if( !$field && $previousField )
             {

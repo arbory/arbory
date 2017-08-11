@@ -75,4 +75,12 @@ class Sortable extends AbstractField
 
         return $this->getSortableField()->getRules();
     }
+
+    /**
+     * @return HasMany
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
 }

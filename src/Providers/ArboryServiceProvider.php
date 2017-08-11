@@ -3,6 +3,7 @@
 use Arbory\Base\Admin\Admin;
 use Arbory\Base\Admin\Form\Fields\Checkbox;
 use Arbory\Base\Admin\Form\Fields\DateTime;
+use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\ArboryFile;
 use Arbory\Base\Admin\Form\Fields\Link;
@@ -31,6 +32,7 @@ use File;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\ExcelServiceProvider;
@@ -306,7 +308,31 @@ class ArboryServiceProvider extends ServiceProvider
      */
     private function registerValidationRules()
     {
-        \Validator::extendImplicit( 'arbory_file_required', function( $attribute )
+        $isDestroyed = function( Request $request, $attribute )
+        {
+            $fieldSet = $request->request->get( 'fields' );
+            $fields = $fieldSet->findFieldsByInputName( $attribute );
+            $fields = array_reverse( $fields );
+
+            foreach( $fields as $fieldName => $field )
+            {
+                if( $field instanceof HasMany )
+                {
+                    $attributeParts = explode( '.', $attribute );
+                    $toManyIndex = array_search( $fieldName, $attributeParts, true );
+                    $attributeParent = array_slice( $attributeParts, 0, $toManyIndex + 2 );
+                    $attributeParent = implode( '.', $attributeParent );
+
+                    $isDestroyed = array_get( $request->input( $attributeParent ), '_destroy' );
+
+                    return filter_var( $isDestroyed, FILTER_VALIDATE_BOOLEAN );
+                }
+            }
+
+            return false;
+        };
+
+        \Validator::extendImplicit( 'arbory_file_required', function( $attribute ) use ( $isDestroyed )
         {
             /** @var FieldSet $fields */
             $request = \request();
@@ -319,16 +345,21 @@ class ArboryServiceProvider extends ServiceProvider
                 return (bool) $file;
             }
 
-            return $field->getValue() || $file;
+            return $isDestroyed( $request, $attribute ) || ( $field->getValue() || $file );
         } );
 
-        \Validator::extendImplicit( 'arbory_require_one_localized', function( $attribute, $value )
+        \Validator::extendImplicit( 'arbory_require_one_localized', function( $attribute, $value ) use ( $isDestroyed )
         {
             /** @var FieldSet $fieldSet */
             $request = \request();
             $fieldSet = $request->request->get( 'fields' );
             $fields = $fieldSet->findFieldsByInputName( $attribute );
             $translatable = null;
+
+            if( $isDestroyed( $request, $attribute ) )
+            {
+                return true;
+            }
 
             foreach( array_reverse( $fields ) as $index => $field )
             {
@@ -361,7 +392,7 @@ class ArboryServiceProvider extends ServiceProvider
                 $checkByAttribute = str_replace( $attributeLocale, $checkLocale, $attribute );
                 $field = $fieldSet->findFieldByInputName( $checkByAttribute );
 
-                if( $request->input( $checkByAttribute ) || $field->getValue() )
+                if( $request->input( $checkByAttribute ) || ( $field->getValue() && $request->input( $checkByAttribute ) !== null ) )
                 {
                     return true;
                 }

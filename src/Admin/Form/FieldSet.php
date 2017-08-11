@@ -4,6 +4,7 @@ namespace Arbory\Base\Admin\Form;
 
 use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Sortable;
 use Arbory\Base\Services\FieldSetFieldFinder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -86,6 +87,11 @@ class FieldSet extends Collection
             if( $field->getName() === $fieldName )
             {
                 $fields[] = $field;
+            }
+
+            if( $field instanceof Sortable && $field->getField()->getName() === $fieldName )
+            {
+                $fields[] = $field->getField();
             }
         }
 
