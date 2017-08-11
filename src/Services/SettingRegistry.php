@@ -44,7 +44,7 @@ class SettingRegistry
      */
     public function contains( string $key )
     {
-        return $this->settings->contains( $key );
+        return $this->settings->has( $key );
     }
 
     /**
