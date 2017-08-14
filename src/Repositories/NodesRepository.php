@@ -40,30 +40,40 @@ class NodesRepository extends AbstractModelsRepository
 
     /**
      * @param Node $node
-     * @param string $key
-     * @param mixed $value
+     * @param string|null $key
+     * @param mixed|null $value
      * @return Builder
      */
-    public function findUnder( Node $node, string $key, $value )
+    public function findUnder( Node $node, string $key = null, $value = null )
     {
-        $query = $this->newQuery()->where( $key, $value )
-            ->whereBetween( $node->getLeftColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) )
-            ->whereBetween( $node->getRightColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
+        $query = $this->newQuery()
+            ->whereBetween( $node->getLeftColumnName(), [ $node->getLeft() + 1, $node->getRight() - 1 ] )
+            ->whereBetween( $node->getRightColumnName(), [ $node->getLeft() + 1, $node->getRight() - 1 ] );
+
+        if ( $key && $value )
+        {
+            $query->where( $key, $value );
+        }
 
         return $query;
     }
 
     /**
      * @param Node $node
-     * @param string $key
-     * @param mixed $value
+     * @param string|null $key
+     * @param mixed|null $value
      * @return Builder
      */
-    public function findAbove( Node $node, string $key, $value )
+    public function findAbove( Node $node, string $key = null, $value = null )
     {
-        $query = $this->newQuery()->where( $key, $value )
+        $query = $this->newQuery()
             ->where( $node->getLeftColumnName(), '<=', $node->getLeft() )
             ->where( $node->getRightColumnName(), '>=', $node->getRight() );
+
+        if ( $key && $value )
+        {
+            $query->where( $key, $value );
+        }
 
         return $query;
     }
