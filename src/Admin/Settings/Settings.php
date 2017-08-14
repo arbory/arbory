@@ -45,7 +45,7 @@ class Settings
      */
     public function has( string $key )
     {
-        return $this->settingRegistry->contains( $key );
+        return (bool) $this->get( $key );
     }
 
     /**
