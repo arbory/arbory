@@ -60,8 +60,13 @@ class IconPickerRenderer extends SelectFieldRenderer
 
         /** @var SpriteIcon $field */
         $field = $this->field;
-
         $iconNode = $field->getIconContent( $id );
+
+        if ( !$iconNode )
+        {
+            return Html::div()->addClass( 'element' );
+        }
+
         $content = (string) $iconNode->path->asXML();
 
         $attributes = $iconNode->attributes();
