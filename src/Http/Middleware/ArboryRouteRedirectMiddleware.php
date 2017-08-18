@@ -18,11 +18,12 @@ class ArboryRouteRedirectMiddleware
      */
     public function handle( $request, Closure $next )
     {
-        $url = $request->url();
-        $redirect = Redirect::query()
-            ->where( 'from_url', $url )
-            ->orWhere( 'from_url', $url . '/' )
-            ->first( [ 'to_url' ] );
+        $redirect = Redirect::query();
+
+        $redirect->where( 'from_url', $request->url() );
+        $redirect->orWhere( 'from_url', 'LIKE', '%' . $request->path() . '%' );
+
+        $redirect = $redirect->first( [ 'to_url' ] );
 
         if( $redirect )
         {

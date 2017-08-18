@@ -29,6 +29,7 @@ use Arbory\Base\Services\StubRegistry;
 use Arbory\Base\Views\LayoutViewComposer;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use File;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
@@ -146,13 +147,16 @@ class ArboryServiceProvider extends ServiceProvider
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ] );
 
-        $router->pushMiddlewareToGroup( 'web', \Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware::class );
-
         $router->aliasMiddleware( 'arbory.admin_auth', ArboryAdminAuthMiddleware::class );
         $router->aliasMiddleware( 'arbory.admin_quest', ArboryAdminGuestMiddleware::class );
         $router->aliasMiddleware( 'arbory.admin_in_role', ArboryAdminInRoleMiddleware::class );
         $router->aliasMiddleware( 'arbory.admin_has_access', ArboryAdminHasAccessMiddleware::class );
         $router->aliasMiddleware( 'arbory.route_redirect', ArboryRouteRedirectMiddleware::class );
+
+        $this->app->booted( function( $app )
+        {
+            $app[ Kernel::class ]->prependMiddleware( ArboryRouteRedirectMiddleware::class );
+        } );
 
         $this->registerAdminRoutes();
         $this->registerAppRoutes();
