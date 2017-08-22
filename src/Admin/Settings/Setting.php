@@ -110,7 +110,15 @@ class Setting extends Model
      */
     public function value( $column = null )
     {
-        return $column ? parent::value( $column ) : $this->belongsTo( ArboryFile::class, 'value' );
+        return $column ? parent::value( $column ) : $this->file();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function file()
+    {
+        return $this->belongsTo( ArboryFile::class, 'value' );
     }
 
     /**

@@ -60,7 +60,7 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function importFromDatabase()
     {
-        Setting::all()->each( function( Setting $setting )
+        Setting::with( 'translations', 'file' )->get()->each( function( Setting $setting )
         {
             $definition = $this->settingRegistry->find( $setting->name );
 
