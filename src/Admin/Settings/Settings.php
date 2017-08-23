@@ -33,12 +33,17 @@ class Settings
     {
         $definition = $this->settingRegistry->find( $key );
 
-        if( $definition->isFile() )
+        if( !$definition )
         {
-            return $definition->getModel()->file;
+            return $default;
         }
 
-        return $definition ? $definition->getValue() : $default;
+        if( $definition->isFile() )
+        {
+            return $definition->getModel()->file ?? $default;
+        }
+
+        return $definition->getValue() ?: $default;
     }
 
     /**
