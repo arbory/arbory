@@ -12,6 +12,8 @@ use Arbory\Base\Admin\Settings\SettingDefinition;
 use Arbory\Base\Admin\Settings\SettingTranslation;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Files\ArboryFile;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Providers\SettingsServiceProvider;
 use Arbory\Base\Services\SettingFactory;
 use Arbory\Base\Services\SettingRegistry;
@@ -41,10 +43,7 @@ class SettingsController extends Controller
     )
     {
         $this->settingRegistry = $settingRegistry;
-
-        /** @var SettingsServiceProvider $settingsService */
-        $settingsService = \App::make( SettingsServiceProvider::class );
-        $settingsService->importFromDatabase();
+        $this->settingRegistry->importFromDatabase();
     }
 
     /**
@@ -72,7 +71,39 @@ class SettingsController extends Controller
         $grid = $this->module()->grid( $this->resource(), function( Grid $grid )
         {
             $grid->column( 'name' );
-            $grid->column( 'value' );
+            $grid->column( 'value' )->display( function( $value, $column, Setting $setting )
+            {
+                $container = Html::span();
+                $definition = $setting->getDefinition();
+
+                if( $definition->isFile() )
+                {
+                    /** @var ArboryFile $file */
+                    $file = $setting->file;
+
+                    if( !$file )
+                    {
+                        return null;
+                    }
+
+                    if( $definition->isImage() )
+                    {
+                        return $container->append( Html::image()->addAttributes( [
+                            'src' => $file->getUrl(),
+                            'width' => 64,
+                            'height' => 64
+                        ] ) );
+                    }
+
+                    return $container->append(
+                        Html::link( $file->getOriginalName() )->addAttributes( [
+                            'href' => $file->getUrl()
+                        ] )
+                    );
+                }
+
+                return $container->append( $value );
+            } );
         } );
 
         return $grid

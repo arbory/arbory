@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Services;
 
+use Arbory\Base\Admin\Settings\Setting;
 use Arbory\Base\Admin\Settings\SettingDefinition;
 use Illuminate\Support\Collection;
 
@@ -53,5 +54,57 @@ class SettingRegistry
     public function getSettings(): Collection
     {
         return $this->settings;
+    }
+
+    /**
+     * @return void
+     */
+    public function importFromDatabase()
+    {
+        Setting::with( 'translations', 'file' )->get()->each( function( Setting $setting )
+        {
+            $definition = $this->find( $setting->name );
+
+            if( $definition )
+            {
+                $definition->setModel( $setting );
+                $definition->setValue( $setting->value );
+            }
+        } );
+    }
+
+    /**
+     * @param array $properties
+     * @param string $before
+     */
+    public function importFromConfig( array $properties, $before = '' )
+    {
+        foreach( $properties as $key => $data )
+        {
+            if( is_array( $data ) && !empty( $data ) && !array_key_exists( 'value', $data ) )
+            {
+                $this->importFromConfig( $data, $before . $key . '.' );
+            }
+            else
+            {
+                $key = $before . $key;
+                $value = $data[ 'value' ] ?? $data;
+                $type = $data[ 'type' ] ?? null;
+
+                if ( $type )
+                {
+                    $value = array_get( $data, 'value' );
+                }
+
+                if ( is_array( $value ) )
+                {
+                    $value = array_get( $value, 'value' );
+                    $value = array_get( $value, request()->getLocale(), $value );
+                }
+
+                $definition = new SettingDefinition( $key, $value, $type, $data );
+                $this->register( $definition );
+            }
+        }
     }
 }

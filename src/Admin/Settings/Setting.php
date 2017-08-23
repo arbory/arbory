@@ -143,4 +143,18 @@ class Setting extends Model
 
         return $definition && $definition->getType() === \Arbory\Base\Admin\Form\Fields\Translatable::class;
     }
+
+    /**
+     * @return SettingDefinition|null
+     */
+    public function getDefinition()
+    {
+        /**
+         * @var SettingRegistry $registry
+         * @var SettingDefinition $definition
+         */
+        $registry = app( SettingRegistry::class );
+
+        return $registry->find( $this->name ) ?? new SettingDefinition( $this->name );
+    }
 }

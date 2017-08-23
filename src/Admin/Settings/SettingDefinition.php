@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Settings;
 
+use Arbory\Base\Admin\Form\Fields\ArboryFile;
+use Arbory\Base\Admin\Form\Fields\ArboryImage;
 use Arbory\Base\Admin\Form\Fields\Text;
 
 class SettingDefinition
@@ -27,17 +29,45 @@ class SettingDefinition
     protected $configEntry;
 
     /**
+     * @var Setting|null
+     */
+    protected $model;
+
+    /**
      * @param string $key
      * @param mixed $value
      * @param string|null $type
      * @param mixed $configEntry
+     * @param Setting|null $databaseEntry
      */
-    public function __construct( string $key, $value = null, string $type = null, $configEntry = null )
+    public function __construct(
+        string $key, $value = null, string $type = null, $configEntry = null, Setting $databaseEntry = null
+    )
     {
         $this->key = $key;
         $this->value = $value;
         $this->type = $type ?? Text::class;
         $this->configEntry = $configEntry;
+        $this->model = $databaseEntry;
+    }
+
+
+    /**
+     * @return void
+     */
+    public function save()
+    {
+        $setting = new Setting( $this->toArray() );
+
+        if( $this->isInDatabase() )
+        {
+            $setting->exists = true;
+            $setting->update();
+        }
+        else
+        {
+            $setting->save();
+        }
     }
 
     /**
@@ -97,21 +127,19 @@ class SettingDefinition
     }
 
     /**
-     * @return void
+     * @return Setting|null
      */
-    public function save()
+    public function getModel()
     {
-        $setting = new Setting( $this->toArray() );
+        return $this->model;
+    }
 
-        if( $this->isInDatabase() )
-        {
-            $setting->exists = true;
-            $setting->update();
-        }
-        else
-        {
-            $setting->save();
-        }
+    /**
+     * @param Setting|null $model
+     */
+    public function setModel( $model )
+    {
+        $this->model = $model;
     }
 
     /**
@@ -120,6 +148,25 @@ class SettingDefinition
     public function isInDatabase(): bool
     {
         return Setting::query()->where( 'name', $this->getKey() )->exists();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFile(): bool
+    {
+        return in_array( $this->getType(), [
+            ArboryFile::class,
+            ArboryImage::class
+        ], true );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isImage(): bool
+    {
+        return $this->getType() === ArboryImage::class;
     }
 
     /**

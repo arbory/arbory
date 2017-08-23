@@ -3,40 +3,16 @@
 namespace Arbory\Base\Providers;
 
 use Cartalyst\Support\ServiceProvider;
-use Arbory\Base\Admin\Settings\Setting;
-use Arbory\Base\Admin\Settings\SettingDefinition;
 use Arbory\Base\Admin\Settings\Settings;
 use Arbory\Base\Services\SettingRegistry;
-use Illuminate\Foundation\Application;
 
 class SettingsServiceProvider extends ServiceProvider
 {
     /**
-     * @var SettingRegistry
-     */
-    protected $settingRegistry;
-
-    /**
-     * @param Application $app
-     * @param SettingRegistry $settingRegistry
-     */
-    public function __construct(
-        Application $app,
-        SettingRegistry $settingRegistry = null
-    )
-    {
-        parent::__construct( $app );
-
-        $this->settingRegistry = $settingRegistry;
-    }
-
-    /**
-     * @return void
+     * {@inheritDoc}
      */
     public function register()
     {
-        $settingsPath = config_path( 'settings.php' );
-
         $this->app->singleton( SettingRegistry::class, function()
         {
             return new SettingRegistry();
@@ -46,63 +22,18 @@ class SettingsServiceProvider extends ServiceProvider
         {
             return new Settings( $this->app[ SettingRegistry::class ] );
         } );
+    }
 
-        $this->settingRegistry = $this->app[ SettingRegistry::class ];
+    /**
+     * {@inheritDoc}
+     */
+    public function boot()
+    {
+        $settingsPath = config_path( 'settings.php' );
 
         if( file_exists( $settingsPath ) )
         {
-            $this->importFromConfig( include $settingsPath );
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public function importFromDatabase()
-    {
-        Setting::with( 'translations', 'file' )->get()->each( function( Setting $setting )
-        {
-            $definition = $this->settingRegistry->find( $setting->name );
-
-            if( $definition )
-            {
-                $definition->setValue( $setting->value );
-            }
-        } );
-    }
-
-    /**
-     * @param array $properties
-     * @param string $before
-     */
-    public function importFromConfig( array $properties, $before = '' )
-    {
-        foreach( $properties as $key => $data )
-        {
-            if( is_array( $data ) && !empty( $data ) && !array_key_exists( 'value', $data ) )
-            {
-                $this->importFromConfig( $data, $before . $key . '.' );
-            }
-            else
-            {
-                $key = $before . $key;
-                $value = $data[ 'value' ] ?? $data;
-                $type = $data[ 'type' ] ?? null;
-
-                if ( $type )
-                {
-                    $value = array_get( $data, 'value' );
-                }
-
-                if ( is_array( $value ) )
-                {
-                    $value = array_get( $value, 'value' );
-                    $value = array_get( $value, \Request::getLocale(), $value );
-                }
-
-                $definition = new SettingDefinition( $key, $value, $type, $data );
-                $this->settingRegistry->register( $definition );
-            }
+            $this->app[ SettingRegistry::class ]->importFromConfig( include $settingsPath );
         }
     }
 }

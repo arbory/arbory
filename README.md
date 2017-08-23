@@ -113,6 +113,21 @@ return [
 ]
 ```
 
+### File settings
+
+```php
+return [
+    'my_setting_file' => [
+        'value' => null,
+        'type' => Arbory\Base\Admin\Form\Fields\ArboryFile::class
+    ],
+    'my_setting_image' => [
+        'value' => null,
+        'type' => Arbory\Base\Admin\Form\Fields\ArboryImage::class
+    ],
+]
+```
+
 ### Translatable settings
 
 ```php

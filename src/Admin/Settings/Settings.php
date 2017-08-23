@@ -21,10 +21,7 @@ class Settings
     )
     {
         $this->settingRegistry = $settingRegistry;
-
-        /** @var SettingsServiceProvider $settingsService */
-        $settingsService = \App::make( SettingsServiceProvider::class );
-        $settingsService->importFromDatabase();
+        $this->settingRegistry->importFromDatabase();
     }
 
     /**
@@ -35,6 +32,11 @@ class Settings
     public function get( string $key, $default = null )
     {
         $definition = $this->settingRegistry->find( $key );
+
+        if( $definition->isFile() )
+        {
+            return $definition->getModel()->file;
+        }
 
         return $definition ? $definition->getValue() : $default;
     }
