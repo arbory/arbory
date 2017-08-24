@@ -12,9 +12,24 @@ use Illuminate\Contracts\Support\Renderable;
  */
 class FieldRenderer implements Renderable
 {
+    /**
+     * @var string
+     */
     protected $type;
+
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var string
+     */
     protected $label;
+
+    /**
+     * @var mixed
+     */
     protected $value;
 
     /**
@@ -100,5 +115,4 @@ class FieldRenderer implements Renderable
     {
         return $this->build();
     }
-
 }

@@ -7,6 +7,10 @@ use Arbory\Base\Html\Html;
 
 abstract class AbstractInputField extends Element
 {
+    /**
+     * @param mixed $value
+     * @return self
+     */
     public function setValue( $value )
     {
         $this->attributes()->put( 'value', $value );
@@ -14,6 +18,10 @@ abstract class AbstractInputField extends Element
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @return self
+     */
     public function setName( $name )
     {
         $this->attributes()->put( 'name', Element::formatName( $name ) );
@@ -22,13 +30,20 @@ abstract class AbstractInputField extends Element
         return $this;
     }
 
+    /**
+     * @param string $text
+     * @return Element
+     */
     public function getLabel( $text )
     {
         return Html::label( $text )->addAttributes( [ 'for' => $this->attributes()->get( 'id' ) ] );
     }
 
+    /**
+     * @return string
+     */
     protected function formatInputId()
     {
-        return strtr( $this->attributes()->get( 'name' ), [ '[' => '_', ']' => '' ] );
+        return rtrim( strtr( $this->attributes()->get( 'name' ), [ '[' => '_', ']' => '' ] ), '_');
     }
 }

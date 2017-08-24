@@ -18,7 +18,7 @@ class Select implements Renderable
     protected $options;
 
     /**
-     * @var string
+     * @var array
      */
     protected $selected;
 
@@ -26,6 +26,11 @@ class Select implements Renderable
      * @var \Arbory\Base\Html\Elements\Inputs\Select
      */
     protected $element;
+
+    /**
+     * @var array
+     */
+    protected $attributes = [];
 
     /**
      * Select constructor.
@@ -45,7 +50,7 @@ class Select implements Renderable
 
     /**
      * @param $name
-     * @return Select
+     * @return self
      */
     public function name( $name )
     {
@@ -56,7 +61,7 @@ class Select implements Renderable
 
     /**
      * @param $options
-     * @return Select
+     * @return self
      */
     public function options( $options )
     {
@@ -66,12 +71,23 @@ class Select implements Renderable
     }
 
     /**
-     * @param $value
-     * @return Select
+     * @param mixed $value
+     * @return self
      */
     public function selected( $value )
     {
-        $this->selected = $value;
+        $this->selected = (array) $value;
+
+        return $this;
+    }
+
+    /**
+     * @param array $attributes
+     * @return self
+     */
+    public function attributes( array $attributes )
+    {
+        $this->attributes = $attributes;
 
         return $this;
     }
@@ -85,13 +101,15 @@ class Select implements Renderable
         {
             $option = Html::option( (string) $title )->setValue( $key );
 
-            if( (string) $this->selected === (string) $key )
+            if( in_array( $key, $this->selected ) )
             {
                 $option->select();
             }
 
             $this->element->append( $option );
         }
+
+        $this->element->addAttributes( $this->attributes );
 
         return $this->element;
     }

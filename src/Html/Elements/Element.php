@@ -8,6 +8,10 @@ namespace Arbory\Base\Html\Elements;
  */
 class Element
 {
+    const FIELD_NAME_MULTIPLE_ENDINGS = [
+        '[]', '[ ]'
+    ];
+
     /**
      * @var Tag
      */
@@ -123,11 +127,39 @@ class Element
     }
 
     /**
+     * @param Element|array|string $content
+     * @return $this
+     */
+    public function prepend( $content )
+    {
+        if( is_array( $content ) )
+        {
+            foreach( $content as $item )
+            {
+                $this->prepend( $item );
+            }
+
+            return $this;
+        }
+
+        $this->content()->push( $content );
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @return string
      */
     public static function formatName( $name ): string
     {
+        $multiple = ends_with( $name, self::FIELD_NAME_MULTIPLE_ENDINGS );
+
+        if( $multiple )
+        {
+            $name = rtrim( $name, implode( '', self::FIELD_NAME_MULTIPLE_ENDINGS ) );
+        }
+
         $nameParts = preg_split( '/\./', $name, NULL, PREG_SPLIT_NO_EMPTY );
 
         $inputName = array_pull( $nameParts, 0 );
@@ -137,6 +169,6 @@ class Element
             $inputName .= '[' . implode( '][', $nameParts ) . ']';
         }
 
-        return $inputName;
+        return $inputName . ( $multiple ? '[]' : '' );
     }
 }

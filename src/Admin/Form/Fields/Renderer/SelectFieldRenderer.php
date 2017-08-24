@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 class SelectFieldRenderer
 {
     /**
-     * @var FieldInterface
+     * @var \Arbory\Base\Admin\Form\Fields\Select
      */
     protected $field;
 
@@ -50,10 +50,17 @@ class SelectFieldRenderer
      */
     protected function getSelectInput()
     {
-        return ( new Select )
+        $select = ( new Select )
             ->name( $this->field->getNameSpacedName() )
             ->options( $this->options )
             ->selected( $this->field->getValue() );
+
+        if( $this->field->isMultiple() )
+        {
+            $select->name( $this->field->getNameSpacedName() . '[]' );
+        }
+
+        return $select;
     }
 
     /**
@@ -61,11 +68,20 @@ class SelectFieldRenderer
      */
     public function render()
     {
+        $selectInput = $this->getSelectInput();
         $field = new FieldRenderer();
         $field->setType( 'select' );
         $field->setName( $this->field->getName() );
         $field->setLabel( $this->getLabel() );
-        $field->setValue( $this->getSelectInput() );
+
+        if( $this->field->isMultiple() )
+        {
+            $selectInput->attributes( [
+                'multiple'
+            ] );
+        }
+
+        $field->setValue( $selectInput );
 
         return $field->render();
     }

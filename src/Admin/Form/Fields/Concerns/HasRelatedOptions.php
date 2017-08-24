@@ -18,11 +18,16 @@ trait HasRelatedOptions
     protected $options;
 
     /**
-     * @param Collection $options
+     * @param Collection|array $options
      * @return $this
      */
-    public function options( Collection $options )
+    public function options( $options )
     {
+        if( is_array( $options ) )
+        {
+            $options = new Collection( $options );
+        }
+
         $this->options = $options;
 
         return $this;

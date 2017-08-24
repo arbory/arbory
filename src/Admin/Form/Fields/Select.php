@@ -15,6 +15,11 @@ class Select extends AbstractField
     use HasRelatedOptions;
 
     /**
+     * @var bool
+     */
+    protected $multiple = false;
+
+    /**
      * @return \Arbory\Base\Html\Elements\Element
      */
     public function render()
@@ -24,6 +29,7 @@ class Select extends AbstractField
 
     /**
      * @param Request $request
+     * @throws \RuntimeException
      */
     public function beforeModelSave( Request $request )
     {
@@ -32,9 +38,14 @@ class Select extends AbstractField
             ? $request->input( $this->getNameSpacedName() )
             : null;
 
-        if( !$this->options->has( $value ) )
+        if( !$this->containsValidValues( $value ) )
         {
-            throw new \RuntimeException( 'Bad select field value for "' . $this->getName() . '  "' );
+            throw new \RuntimeException( sprintf( 'Bad select field value for "%s"', $this->getName() ) );
+        }
+
+        if( is_array( $value ) )
+        {
+            $value = implode( ',', $value );
         }
 
         if( method_exists( $this->getModel(), $this->getName() ) )
@@ -43,5 +54,56 @@ class Select extends AbstractField
         }
 
         $this->getModel()->setAttribute( $property, $value );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMultiple(): bool
+    {
+        return $this->multiple;
+    }
+
+    /**
+     * @param bool $multiple
+     * @return self
+     */
+    public function setMultiple( bool $multiple )
+    {
+        $this->multiple = $multiple;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $input
+     * @return bool
+     */
+    public function containsValidValues( $input ): bool
+    {
+        if( !is_array( $input ) )
+        {
+            $input = [ $input ];
+        }
+
+        foreach( $input as $item )
+        {
+            if( !$this->options->has( $item ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getValue()
+    {
+        $value = parent::getValue();
+
+        return $this->isMultiple() ? explode( ',', $value ) : $value;
     }
 }
