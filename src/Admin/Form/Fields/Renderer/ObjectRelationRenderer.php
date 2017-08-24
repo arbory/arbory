@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 use Arbory\Base\Admin\Form\Fields\ObjectRelation;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class ObjectRelationRenderer
@@ -28,10 +29,18 @@ class ObjectRelationRenderer
     public function render()
     {
         $item = $this->field->getModel();
-        $block = Html::section( [
-            $this->getRelatedElement(),
-            $this->getRelationalElement()
-        ] )->addAttributes( [ 'data-name' => $this->field->getName() ] );
+        $contents = Html::div( $this->getAvailableRelationElement() )->addClass( 'contents' );
+        $block = Html::section()->addAttributes( [ 'data-name' => $this->field->getName() ] );
+        $relatedItemsElement = $this->getRelatedItemsElement();
+
+        if( $this->field->isSingular() )
+        {
+            $contents->append( $relatedItemsElement );
+        }
+        else
+        {
+            $contents->prepend( $relatedItemsElement );
+        }
 
         foreach( $this->field->getRelationFieldSet( $item )->getFields() as $field )
         {
@@ -40,6 +49,8 @@ class ObjectRelationRenderer
 
         if( $this->field->isSingular() )
         {
+            $block->append( $contents );
+
             $field = new FieldRenderer();
             $field->setType( 'select' );
             $field->setName( $this->field->getName() );
@@ -50,38 +61,61 @@ class ObjectRelationRenderer
             return $field->render()->addClass( 'type-object-relation single' );
         }
 
-        return $block->addClass( 'field type-object-relation' );
+        $block->prepend( Html::div( Html::label( $this->field->getName() ) )->addClass( 'label-wrap' ) );
+        $block->append( $contents );
+
+        return $block->addClass( 'field type-object-relation multiple' );
     }
 
     /**
      * @return Element
      */
-    protected function getRelatedElement()
+    protected function getRelatedItemsElement()
     {
-        $value = $this->field->getValue();
+        $items = [];
+        $values = $this->field->getValue();
 
-        $title = Html::span( $value ? $value->related()->first() : null )->addClass( 'title' );
+        if( $values )
+        {
+            $values = $values instanceof Collection ? $values : new Collection( [ $values ] );
 
-        return Html::div( Html::div( $title )->addClass( 'item' ) )->addClass( 'related' );
+            foreach( $values as $value )
+            {
+                $relation = $value->related()->first();
+
+                if( $relation )
+                {
+                    $items[] = $this->buildRelationalItemElement( $relation );
+                }
+            }
+        }
+
+        return Html::div( $items )->addClass( 'related' );
     }
 
     /**
      * @return Element
      */
-    protected function getRelationalElement()
+    protected function getAvailableRelationElement()
     {
-        return Html::div( $this->getRelationalItemElements() )->addClass( 'relations' );
+        return Html::div( $this->getAvailableRelationalItemsElement() )->addClass( 'relations' );
     }
 
     /**
      * @return array
      */
-    protected function getRelationalItemElements()
+    protected function getAvailableRelationalItemsElement()
     {
         $items = [];
         $relational = $this->field->getOptions();
 
-        foreach($relational as $relation) {
+        foreach( $relational as $relation )
+        {
+            if( $this->field->hasRelationWith( $relation ) )
+            {
+                continue;
+            }
+
             $items[] = $this->buildRelationalItemElement( $relation );
         }
 

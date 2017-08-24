@@ -6,11 +6,7 @@
         float: none;
     }
 
-    .related {
-        height: steps(2);
-    }
-
-    .relations {
+    .relations, .related {
         max-height: steps(20);
         border: 1px solid $color-border-normal;
         overflow: auto;
@@ -38,15 +34,56 @@
         }
     }
 
+    &.multiple
+    {
+        clear: both;
+        width: auto;
+        margin-right: steps(2);
+        padding: 0;
+
+        .contents {
+            border: 1px solid $color-border-normal;
+            overflow: hidden;
+            position: relative;
+            height: steps(20);
+        }
+
+        .relations, .related {
+            height: 100%;
+            border: none;
+        }
+
+        .relations {
+            float: left;
+            width: 50%;
+            background-color: $color-background-lightest;
+        }
+
+        .related {
+            float: right;
+            width: 50%;
+        }
+    }
+
     &.single {
         .related {
             position: relative;
             height: steps(3);
             border: 1px solid $color-border-normal;
 
+            &:hover {
+                border-color: $color-border-darker;
+            }
+
             .item {
                 padding-left: steps(1);
                 padding-top: steps(0.5);
+                height: 100%;
+
+                &:hover {
+                    color: $color-text-darkest;
+                    background-color: transparent;
+                }
             }
         }
 

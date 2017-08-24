@@ -1,6 +1,5 @@
 
 export default class ObjectRelation {
-
     /**
      * @return {string}
      */
@@ -15,6 +14,7 @@ export default class ObjectRelation {
     constructor(element, config) {
         this.element = element;
         this.config = config;
+        this.selected = new Set(this.getInitialValues());
 
         this.registerEventHandlers();
     }
@@ -52,6 +52,16 @@ export default class ObjectRelation {
 
             field.children('.value').on('click', event => event.stopPropagation());
             relationalItems.on('click', () => relational.toggleClass('active'));
+        } else {
+            this.getRelatedElement().on('click', '.item', event => {
+                let item = jQuery(event.target);
+
+                if (!item.hasClass('item')) {
+                    item = item.closest('.item');
+                }
+
+                this.removeRelation(item);
+            });
         }
     }
 
@@ -59,10 +69,60 @@ export default class ObjectRelation {
      * @param item
      */
     selectRelation(item) {
-        let title = item.find('.title').text();
+        let key = item.data('key');
 
-        this.getRelatedIdInputElement().val(item.data('key'));
-        this.getRelatedElement().find('.title').html(title);
+        if (this.selected.has(key)) {
+            return;
+        }
+
+        if (this.isSingular()) {
+            this.selected.clear();
+        }
+
+        this.selected.add(key);
+
+        this.updateSelectedInputElement();
+
+        if (this.isSingular()) {
+            this.getRelatedElement().html(item.clone());
+        } else {
+            this.getRelatedElement().append(item);
+        }
+    }
+
+    /**
+     * @param item
+     */
+    removeRelation(item) {
+        this.selected.delete(item.data('key'));
+
+        this.getRelationalElement().append(item);
+
+        this.updateSelectedInputElement();
+    }
+
+    /**
+     * @return {Array}
+     */
+    getInitialValues() {
+        let selected = [];
+        let items = this.getRelatedElement().find('.item');
+
+        items.each((key, element) => {
+            let item = jQuery(element);
+
+            selected.push(item.data('key'));
+        });
+
+        return selected;
+    }
+
+    /**
+     * @return {void}
+     */
+    updateSelectedInputElement()
+    {
+        this.getRelatedIdInputElement().val(Array.from(this.selected).join(','));
     }
 
     /**
@@ -83,7 +143,7 @@ export default class ObjectRelation {
      * @return {jQuery}
      */
     getRelatedIdInputElement() {
-        return this.getField().find('input[data-name=related_id]');
+        return this.getField().find('[data-name=related_id]');
     }
 
     /**
