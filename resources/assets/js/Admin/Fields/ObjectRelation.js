@@ -69,34 +69,41 @@ export default class ObjectRelation {
      * @param item
      */
     selectRelation(item) {
+        let selectedItem = item.clone();
         let key = item.data('key');
 
-        if (this.selected.has(key) || this.selected.size >= this.getLimit()) {
+        if (this.selected.has(key) || (!this.isSingular() && this.selected.size >= this.getLimit())) {
             return;
         }
 
         if (this.isSingular()) {
             this.selected.clear();
+            this.getRelationalElement().find('.item').attr('data-inactive', 'false');
         }
 
         this.selected.add(key);
 
-        this.updateSelectedInputElement();
+        item.attr('data-inactive', 'true');
 
         if (this.isSingular()) {
-            this.getRelatedElement().html(item);
+            this.getRelatedElement().html(selectedItem);
         } else {
-            this.getRelatedElement().append(item);
+            this.getRelatedElement().append(selectedItem);
         }
+
+        this.updateSelectedInputElement();
     }
 
     /**
      * @param item
      */
     removeRelation(item) {
-        this.selected.delete(item.data('key'));
+        let key = item.data('key');
 
-        this.getRelationalElement().append(item);
+        this.selected.delete(key);
+
+        item.remove();
+        this.getRelationalElement().find('.item[data-key=' + key + ']').attr('data-inactive', 'false');
 
         this.updateSelectedInputElement();
     }
@@ -137,6 +144,13 @@ export default class ObjectRelation {
      */
     getLimit() {
         return parseInt(this.getField().data('limit'));
+    }
+
+    /**
+     * @return {boolean}
+     */
+    hasIndentation() {
+        return this.getField().data('indent') !== undefined;
     }
 
     /**

@@ -6,34 +6,42 @@
         float: none;
     }
 
-    .relations, .related {
+    &[data-indent] {
         .item {
-            cursor: default;
-            position: relative;
-            list-style: none;
-            height: steps(2);
-            padding-left: steps(1);
-            overflow: hidden;
-
-            // nested item indentation
-            @for $i from 1 through 10
-            {
-                &[data-level="#{$i}"] {
-                    padding-left: ($i+1) * steps(1);
-                }
-            }
-
-            &[data-inactive=false]:hover {
-                color: white;
-                background-color: $color-highlight-normal;
-            }
-
             &[data-inactive=true] {
                 color: $color-text-lightest;
 
                 &:hover {
                     color: $color-text-normal;
                     background-color: $color-highlight-lightest;
+                }
+            }
+        }
+    }
+
+    .relations, .related {
+        .item {
+            cursor: default;
+            position: relative;
+            list-style: none;
+            overflow: hidden;
+            height: steps(2);
+            padding-left: steps(1);
+
+            &[data-inactive=false]:hover {
+                color: white;
+                background-color: $color-highlight-normal;
+            }
+        }
+    }
+
+    .relations {
+        .item {
+            // nested item indentation
+            @for $i from 1 through 10
+            {
+                &[data-level="#{$i}"] {
+                    padding-left: ($i+1) * steps(1);
                 }
             }
         }

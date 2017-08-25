@@ -404,60 +404,60 @@ RemoteValidator.prototype.submit_form = function()
     v.form[0].submit();
 };
 
-// jQuery(function(){
-//     // define validation handlers
-//     jQuery( document ).on( 'validation:init', 'form', function( event )
-//     {
-//         if (event.isDefaultPrevented())
-//         {
-//             return;
-//         }
-//
-//         var form = jQuery(event.target);
-//
-//         if (form.data( 'validator' ))
-//         {
-//             // multiple validators on a single form are not supported
-//             // a validator already exists. return
-//             return;
-//         }
-//
-//         form.data( 'validator', new RemoteValidator(form));
-//
-//         // validation initalized finished, add data attribute for it (used by automatized test, etc)
-//         form.attr("data-remote-validation-initialized", true);
-//
-//         jQuery('.main .primary .button.primary').click(event => {
-//             event.stopPropagation();
-//             event.preventDefault();
-//
-//             form.trigger('beforevalidation');
-//
-//             let formData = new FormData(this);
-//
-//             $.ajax({
-//                 type: "POST",
-//                 url: form.attr('action'),
-//                 data: formData,
-//                 cache: false,
-//                 contentType: false,
-//                 processData: false,
-//                 beforeSend: xhr => {
-//                     form.trigger('ajax:beforeSend', [ xhr])
-//                 },
-//                 complete: xhr => {
-//                     form.trigger('ajax:complete', [xhr])
-//                 },
-//             });
-//         });
-//     });
-//
-//     // attach remote validation to any new default forms after any content load
-//     jQuery('body').on('contentloaded', function( event )
-//     {
-//         var block = jQuery(event.target);
-//         var forms = (block.is('form[data-remote-validation]')) ? block : block.find('form[data-remote-validation]');
-//
-//         forms.trigger('validation:init');
-//     });
-// });
+jQuery(function(){
+    // define validation handlers
+    jQuery( document ).on( 'validation:init', 'form', function( event )
+    {
+        if (event.isDefaultPrevented())
+        {
+            return;
+        }
+
+        var form = jQuery(event.target);
+
+        if (form.data( 'validator' ))
+        {
+            // multiple validators on a single form are not supported
+            // a validator already exists. return
+            return;
+        }
+
+        form.data( 'validator', new RemoteValidator(form));
+
+        // validation initalized finished, add data attribute for it (used by automatized test, etc)
+        form.attr("data-remote-validation-initialized", true);
+
+        jQuery('.main .primary .button.primary').click(event => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            form.trigger('beforevalidation');
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: xhr => {
+                    form.trigger('ajax:beforeSend', [ xhr])
+                },
+                complete: xhr => {
+                    form.trigger('ajax:complete', [xhr])
+                },
+            });
+        });
+    });
+
+    // attach remote validation to any new default forms after any content load
+    jQuery('body').on('contentloaded', function( event )
+    {
+        var block = jQuery(event.target);
+        var forms = (block.is('form[data-remote-validation]')) ? block : block.find('form[data-remote-validation]');
+
+        forms.trigger('validation:init');
+    });
+});

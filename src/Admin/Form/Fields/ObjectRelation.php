@@ -70,6 +70,14 @@ class ObjectRelation extends AbstractField
     }
 
     /**
+     * @return bool
+     */
+    public function hasIndentation()
+    {
+        return (bool) $this->getIndentAttribute();
+    }
+
+    /**
      * @return string
      */
     public function getIndentAttribute()
@@ -295,5 +303,13 @@ class ObjectRelation extends AbstractField
         $fieldSet->add( new Hidden( 'related_type' ) )->setValue( ( new \ReflectionClass( $this->relatedModelType ) )->getName() );
 
         return $fieldSet;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelatedModelType(): string
+    {
+        return $this->relatedModelType;
     }
 }

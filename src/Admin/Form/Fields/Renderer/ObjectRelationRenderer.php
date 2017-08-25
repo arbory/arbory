@@ -2,9 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\ObjectRelation;
-use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,13 +31,21 @@ class ObjectRelationRenderer
         $name = $this->field->getName();
         $limit = $this->field->getLimit();
         $label = $this->field->getLabel();
+        $relates = strtolower( class_basename( $this->field->getRelatedModelType() ) );
+        $class = 'field type-object-relation relates-' . $relates;
+        $attributes = [
+            'data-name' => $name,
+            'data-limit' => $limit
+        ];
 
         $contents = Html::div( $this->getAvailableRelationElement() )->addClass( 'contents' );
         $relatedItemsElement = $this->getRelatedItemsElement();
-        $block = Html::section()->addAttributes( [
-            'data-name' => $name,
-            'data-limit' => $limit
-        ] );
+        $block = Html::div();
+
+        if( $this->field->hasIndentation() )
+        {
+            $attributes += [ 'data-indent' => $this->field->getIndentAttribute() ];
+        }
 
         if( $this->field->isSingular() )
         {
@@ -66,7 +72,7 @@ class ObjectRelationRenderer
 
             $field->setValue( $block );
 
-            return $field->render()->addClass( 'type-object-relation single' );
+            return $field->render()->addClass( $class . ' single' )->addAttributes( $attributes );
         }
 
         if( $limit > 1 )
@@ -77,7 +83,7 @@ class ObjectRelationRenderer
         $block->prepend( Html::div( Html::label( $label ) )->addClass( 'label-wrap' ) );
         $block->append( $contents );
 
-        return $block->addClass( 'field type-object-relation multiple' );
+        return $block->addClass( $class . ' multiple' )->addAttributes( $attributes );
     }
 
     /**
@@ -144,6 +150,7 @@ class ObjectRelationRenderer
         )->addClass( 'item' )->addAttributes( [
             'data-key' => $model->getKey(),
             'data-level' => $model->getAttributeValue( $this->field->getIndentAttribute() ),
+            'data-inactive' => $isRelated && $this->field->hasIndentation() ? 'true' : 'false'
         ] );
     }
 }

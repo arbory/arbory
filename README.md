@@ -84,6 +84,29 @@ $form->addField( new Translatable( ( new Text( 'title' ) )->rules( 'required' ) 
 * arbory_require_one_localized - at least one translation exists for this field
 * arbory_file_required - file has been uploaded or is being passed in request
 
+## Fields
+
+### Object Relation
+
+Create a relation to another model 
+
+```php
+new Arbory\Base\Admin\Form\Fields\ObjectRelation( 'field_name', Arbory\Base\Nodes\Node::class );
+```
+
+To limit the amount of relations the user can select a third argument can be passed. Relation fields limited to a single model will be rendered more compactly.
+
+```php
+new ObjectRelation( 'field_name', Arbory\Base\Nodes\Node::class, 1 ); // single relation, compact view 
+new ObjectRelation( 'field_name', Arbory\Base\Nodes\Node::class, 10 ); 
+```
+
+An optional depth parameter can be passed (automatically set for the node relation) which adds visual nesting to the field items
+
+```php
+( new ObjectRelation( 'field_name', Arbory\Base\Nodes\Node::class ) )->setIndentAttribute( 'depth' );
+```
+
 ## Settings
 
 Register a setting (with optional nesting) and retrieve it
