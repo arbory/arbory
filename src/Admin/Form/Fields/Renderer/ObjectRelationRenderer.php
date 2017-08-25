@@ -2,7 +2,9 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\ObjectRelation;
+use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,10 +30,16 @@ class ObjectRelationRenderer
      */
     public function render()
     {
-        $item = $this->field->getModel();
+        $name = $this->field->getName();
+        $limit = $this->field->getLimit();
+        $label = $this->field->getLabel();
+
         $contents = Html::div( $this->getAvailableRelationElement() )->addClass( 'contents' );
-        $block = Html::section()->addAttributes( [ 'data-name' => $this->field->getName() ] );
         $relatedItemsElement = $this->getRelatedItemsElement();
+        $block = Html::section()->addAttributes( [
+            'data-name' => $name,
+            'data-limit' => $limit
+        ] );
 
         if( $this->field->isSingular() )
         {
@@ -42,7 +50,7 @@ class ObjectRelationRenderer
             $contents->prepend( $relatedItemsElement );
         }
 
-        foreach( $this->field->getRelationFieldSet( $item )->getFields() as $field )
+        foreach( $this->field->getInnerFieldSet()->getFields() as $field )
         {
             $block->append( $field->render() );
         }
@@ -53,15 +61,20 @@ class ObjectRelationRenderer
 
             $field = new FieldRenderer();
             $field->setType( 'select' );
-            $field->setName( $this->field->getName() );
-            $field->setLabel( $this->field->getLabel() );
+            $field->setName( $name );
+            $field->setLabel( $label );
 
             $field->setValue( $block );
 
             return $field->render()->addClass( 'type-object-relation single' );
         }
 
-        $block->prepend( Html::div( Html::label( $this->field->getName() ) )->addClass( 'label-wrap' ) );
+        if( $limit > 1 )
+        {
+            $label .= Html::strong( sprintf( ' (%s)', $limit ) );
+        }
+
+        $block->prepend( Html::div( Html::label( $label ) )->addClass( 'label-wrap' ) );
         $block->append( $contents );
 
         return $block->addClass( 'field type-object-relation multiple' );
@@ -111,12 +124,7 @@ class ObjectRelationRenderer
 
         foreach( $relational as $relation )
         {
-            if( $this->field->hasRelationWith( $relation ) )
-            {
-                continue;
-            }
-
-            $items[] = $this->buildRelationalItemElement( $relation );
+            $items[] = $this->buildRelationalItemElement( $relation, $this->field->hasRelationWith( $relation ) );
         }
 
         return $items;
@@ -124,9 +132,10 @@ class ObjectRelationRenderer
 
     /**
      * @param Model $model
+     * @param bool $isRelated
      * @return Element
      */
-    protected function buildRelationalItemElement( Model $model )
+    protected function buildRelationalItemElement( Model $model, bool $isRelated = false )
     {
         return Html::div(
             Html::span(
@@ -134,7 +143,7 @@ class ObjectRelationRenderer
             )->addClass( 'title' )
         )->addClass( 'item' )->addAttributes( [
             'data-key' => $model->getKey(),
-            'data-level' => $model->getAttributeValue( $this->field->getIndentAttribute() )
+            'data-level' => $model->getAttributeValue( $this->field->getIndentAttribute() ),
         ] );
     }
 }

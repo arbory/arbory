@@ -32,6 +32,7 @@ use Arbory\Base\Html\Elements\Inputs\Textarea;
  *
  * @method static Element   div( $content = null )
  * @method static Element   span( $content = null )
+ * @method static Element   strong( $content = null )
  * @method static Element   ol( $content = null )
  * @method static Element   ul( $content = null )
  * @method static Element   li( $content = null )

@@ -71,7 +71,7 @@ export default class ObjectRelation {
     selectRelation(item) {
         let key = item.data('key');
 
-        if (this.selected.has(key)) {
+        if (this.selected.has(key) || this.selected.size >= this.getLimit()) {
             return;
         }
 
@@ -84,7 +84,7 @@ export default class ObjectRelation {
         this.updateSelectedInputElement();
 
         if (this.isSingular()) {
-            this.getRelatedElement().html(item.clone());
+            this.getRelatedElement().html(item);
         } else {
             this.getRelatedElement().append(item);
         }
@@ -130,6 +130,13 @@ export default class ObjectRelation {
      */
     getField() {
         return jQuery(this.element);
+    }
+
+    /**
+     * @return {Number}
+     */
+    getLimit() {
+        return parseInt(this.getField().data('limit'));
     }
 
     /**

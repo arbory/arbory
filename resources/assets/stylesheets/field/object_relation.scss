@@ -7,10 +7,6 @@
     }
 
     .relations, .related {
-        max-height: steps(20);
-        border: 1px solid $color-border-normal;
-        overflow: auto;
-
         .item {
             cursor: default;
             position: relative;
@@ -27,9 +23,18 @@
                 }
             }
 
-            &:hover {
+            &[data-inactive=false]:hover {
                 color: white;
                 background-color: $color-highlight-normal;
+            }
+
+            &[data-inactive=true] {
+                color: $color-text-lightest;
+
+                &:hover {
+                    color: $color-text-normal;
+                    background-color: $color-highlight-lightest;
+                }
             }
         }
     }
@@ -95,6 +100,9 @@
             background-color: white;
             width: 100%;
             margin-top: -1px;
+            overflow: auto;
+            border: 1px solid $color-border-normal;
+            max-height: steps(20);
 
             &.active {
                 display: block;

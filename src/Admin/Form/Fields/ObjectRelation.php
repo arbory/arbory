@@ -23,11 +23,6 @@ class ObjectRelation extends AbstractField
     protected $options;
 
     /**
-     * @var \Closure;
-     */
-    protected $fieldSetCallback;
-
-    /**
      * @var string|null
      */
     protected $indentAttribute;
@@ -71,30 +66,6 @@ class ObjectRelation extends AbstractField
      */
     public function render()
     {
-        $this->fieldSetCallback = function( FieldSet $fields )
-        {
-            $value = $this->getValue();
-            $ids = null;
-
-            if( $value )
-            {
-                if( $this->isSingular() )
-                {
-                    $ids = $value->related_id;
-                }
-                else
-                {
-                    $ids = $value->map( function( $item )
-                    {
-                        return $item->related_id;
-                    } )->implode( ',' );
-                }
-            }
-
-            $fields->add( new Hidden( 'related_id' ) )->setValue( $ids );
-            $fields->add( new Hidden( 'related_type' ) )->setValue( ( new \ReflectionClass( $this->relatedModelType ) )->getName() );
-        };
-
         return ( new ObjectRelationRenderer( $this ) )->render();
     }
 
@@ -127,23 +98,6 @@ class ObjectRelation extends AbstractField
         }
 
         return $this->value;
-    }
-
-    /**
-     * @param Model $relatedModel
-     * @return FieldSet
-     */
-    public function getRelationFieldSet( Model $relatedModel )
-    {
-        $fieldSet = new FieldSet( $relatedModel, $this->getNameSpacedName() );
-
-        $fieldSetCallback = $this->fieldSetCallback;
-        $fieldSetCallback( $fieldSet );
-
-        $fieldSet->add( new Hidden( $relatedModel->getKeyName() ) )
-            ->setValue( $relatedModel->getKey() );
-
-        return $fieldSet;
     }
 
     /**
@@ -302,5 +256,44 @@ class ObjectRelation extends AbstractField
     public function isSingular()
     {
         return $this->getLimit() === 1;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRules(): array
+    {
+        return $this->getInnerFieldSet()->getRules();
+    }
+
+    /**
+     * @return FieldSet
+     */
+    public function getInnerFieldSet()
+    {
+        $fieldSet = new FieldSet( $this->getModel(), $this->getNameSpacedName() );
+
+        $value = $this->getValue();
+        $ids = null;
+
+        if( $value )
+        {
+            if( $this->isSingular() )
+            {
+                $ids = $value->related_id;
+            }
+            else
+            {
+                $ids = $value->map( function( $item )
+                {
+                    return $item->related_id;
+                } )->implode( ',' );
+            }
+        }
+
+        $fieldSet->add( new Hidden( 'related_id' ) )->setValue( $ids )->rules( implode( '|', $this->rules ) );
+        $fieldSet->add( new Hidden( 'related_type' ) )->setValue( ( new \ReflectionClass( $this->relatedModelType ) )->getName() );
+
+        return $fieldSet;
     }
 }
