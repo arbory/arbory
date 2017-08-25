@@ -103,7 +103,15 @@ class Builder
         $secondary = Html::div()->addClass( 'secondary' );
 
         $primary->append(
-            Button::create()
+            Button::create( 'save_and_return', true )
+                ->type( 'submit', 'secondary' )
+                ->withIcon( 'check' )
+                ->disableOnSubmit()
+                ->title( trans( 'arbory::resources.save_and_return' ) )
+        );
+
+        $primary->append(
+            Button::create( 'save', true )
                 ->type( 'submit', 'primary' )
                 ->withIcon( 'check' )
                 ->disableOnSubmit()

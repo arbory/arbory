@@ -119,7 +119,7 @@ trait Crudify
 
         $form->store( $request );
 
-        return redirect( $this->module()->url( 'index' ) );
+        return $this->getAfterEditResponse( $request );
     }
 
     /**
@@ -161,7 +161,7 @@ trait Crudify
 
         $form->update( $request );
 
-        return redirect( $this->module()->url( 'index' ) );
+        return $this->getAfterEditResponse( $request );
     }
 
     /**
@@ -326,5 +326,14 @@ trait Crudify
         }
 
         return $slug;
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    protected function getAfterEditResponse( Request $request )
+    {
+        return redirect( $request->has( 'save_and_return' ) ? $this->module()->url( 'index' ) : $request->url() );
     }
 }

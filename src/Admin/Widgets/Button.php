@@ -28,12 +28,25 @@ class Button implements Renderable
     protected $title;
 
     /**
-     * Link constructor.
+     * @var string
      */
-    public function __construct()
+    protected $name;
+
+    /**
+     * @var mixed
+     */
+    protected $value;
+
+    /**
+     * @param string|null $name
+     * @param null $value
+     */
+    public function __construct( string $name = null, $value = null )
     {
+        $this->name = $name;
+        $this->value = $value;
         $this->element = Html::button();
-        $this->element->addClass( 'button ');
+        $this->element->addClass( 'button ' );
     }
 
     /**
@@ -74,7 +87,10 @@ class Button implements Renderable
      */
     public function type( $inputType, $visualType = null )
     {
-        $this->element->addAttributes( [ 'type' => $inputType ] );
+        $attributes = [ 'type' => $inputType ];
+        $attributes += array_filter( [ 'name' => $this->name, 'value' => $this->value ] );
+
+        $this->element->addAttributes( $attributes );
 
         if( $visualType )
         {
@@ -124,11 +140,12 @@ class Button implements Renderable
     }
 
     /**
+     * @param string|null $name
+     * @param null $value
      * @return Button
      */
-    public static function create( )
+    public static function create( string $name = null, $value = null )
     {
-        return new static;
+        return new static( $name, $value );
     }
-
 }
