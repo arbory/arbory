@@ -142,7 +142,7 @@ class Element
             return $this;
         }
 
-        $this->content()->push( $content );
+        $this->content()->prepend( $content );
 
         return $this;
     }
