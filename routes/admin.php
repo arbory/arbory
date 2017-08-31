@@ -15,11 +15,6 @@ Route::group( [ 'middleware' => 'arbory.admin_auth' ], function ()
     Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\RedirectsController::class );
     Admin::modules()->register( \Arbory\Base\Http\Controllers\Admin\LanguageController::class );
 
-    Route::get( 'dashboard', [
-        'as' => 'dashboard',
-        'uses' => 'Admin\DashboardController@index'
-    ] );
-
     Route::get( 'translations/edit/{namespace}-{group}-{item}', [
         'as' => 'translations.edit',
         'uses' => 'Admin\TranslationsController@edit'

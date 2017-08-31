@@ -23,7 +23,7 @@ class Breadcrumbs implements Renderable
     public function __construct()
     {
         $this->items = new Collection();
-        $this->addItem( trans( 'arbory::breadcrumbs.home' ), route( 'admin.dashboard' ) );
+        $this->addItem( trans( 'arbory::breadcrumbs.home' ), route( 'admin.dashboard.index' ) );
     }
 
     /**

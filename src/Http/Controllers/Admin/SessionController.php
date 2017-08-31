@@ -76,7 +76,7 @@ class SessionController extends BaseController
         }
         else
         {
-            $path = session()->pull( 'url.intended', route( 'admin.dashboard' ) );
+            $path = session()->pull( 'url.intended', route( 'admin.login.form' ) );
 
             return $result->dispatch( $path );
         }
