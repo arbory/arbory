@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class ArboryAdminGuestMiddleware
@@ -47,7 +48,14 @@ class ArboryAdminGuestMiddleware
             }
             else
             {
-                return redirect( route( 'admin.dashboard' ) );
+                $firstAvailableModule = \Admin::modules()->first( function ( $module ) { return $module->isAuthorized(); } );
+
+                if( !$firstAvailableModule )
+                {
+                    throw new AccessDeniedHttpException();
+                }
+
+                return redirect( $firstAvailableModule->url('index') );
             }
         }
 
