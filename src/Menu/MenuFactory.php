@@ -24,9 +24,10 @@ class MenuFactory
      */
     public function build( array $items )
     {
-        foreach( $items as &$item )
+        foreach( $items as $key => &$item )
         {
-            $item = $this->menuItemFactory->build( $item );
+            $title = !is_numeric( $key ) ? $key : null;
+            $item = $this->menuItemFactory->build( $item, $title );
         }
 
         return new Menu( collect( $items ) );

@@ -29,10 +29,10 @@ class MenuItemFactory
 
     /**
      * @param array|string $definition
+     * @param null $title
      * @return AbstractItem
-     * @throws \DomainException
      */
-    public function build( $definition ): AbstractItem
+    public function build( $definition, $title = null ): AbstractItem
     {
         $menuItem = null;
 
@@ -57,7 +57,7 @@ class MenuItemFactory
             $menuItem = new Item( $this->admin, $module );
         }
 
-        $menuItem->setTitle( $this->getMenuItemName( $definition ) );
+        $menuItem->setTitle( $this->getMenuItemName( $title ?: $definition ) );
 
         return $menuItem;
     }
