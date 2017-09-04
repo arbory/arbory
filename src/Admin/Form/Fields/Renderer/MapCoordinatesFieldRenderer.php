@@ -36,6 +36,7 @@ class MapCoordinatesFieldRenderer implements Renderable
      */
     protected function getBody()
     {
+        $value = $this->field->getValue();
         $body = Html::div();
 
         $body->append( Html::div()->addClass( 'canvas' ) );
@@ -43,6 +44,7 @@ class MapCoordinatesFieldRenderer implements Renderable
         $field = new Text( $this->field->getName() );
         $field->setLabel( (string) null );
         $field->setFieldSet( $this->field->getFieldSet() );
+        $field->setValue( is_array( $value ) ? implode( ',', $value ) : $value );
 
         $body->append( $field->render() );
 
