@@ -30,7 +30,7 @@ class ObjectRelation extends AbstractField
     /**
      * @var int|null
      */
-    protected $limit = 1;
+    protected $limit;
 
     /**
      * @param string $name
@@ -114,57 +114,66 @@ class ObjectRelation extends AbstractField
      */
     public function beforeModelSave( Request $request )
     {
-        $namespacedName = $this->getNameSpacedName();
-
-        $request->merge( [
-            'relations' => [ $this->getName() => $request->input( $namespacedName ) ]
-        ] );
-
-        $request->except( $namespacedName );
+        $request->except( $this->getNameSpacedName() );
     }
 
     /**
      * @param Request $request
      * @return void
      * @throws \Exception
+     * @throws \ReflectionException
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function afterModelSave( Request $request )
     {
-        $attributes = $request->input( 'relations.' . $this->getName() );
-        $relatedIds = array_get( $attributes, 'related_id' );
-        $relatedType = array_get( $attributes, 'related_type' );
-
-        $ownerName = $this->getName();
-        $ownerId = $this->getModel()->getKey();
-        $ownerType = ( new \ReflectionClass( $this->getModel() ) )->getName();
-
-        if( !$relatedType )
-        {
-            return;
-        }
+        $attributes = $request->input( $this->getNameSpacedName() );
+        $relationIds = explode( ',', array_get( $attributes, 'related_id' ) );
 
         if( $this->isSingular() )
         {
-            $relation = Relation::firstOrNew( [
-                'name' => $ownerName,
-                'owner_id' => $ownerId,
-                'owner_type' => $ownerType
-            ] );
+            $this->saveOne( reset( $relationIds ) );
+        }
+        else
+        {
+            $this->saveMany( $relationIds );
+        }
 
-            $relation->fill( [
-                'related_id' => $relatedIds,
-                'related_type' => $relatedType
-            ] );
+        $this->deleteOldRelations( $relationIds );
+    }
 
-            $relation->save();
-
+    /**
+     * @param int $relationId
+     * @return void
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     */
+    protected function saveOne( $relationId )
+    {
+        if( !$relationId )
+        {
             return;
         }
 
-        $relatedIds = explode( ',', $relatedIds );
+        $relation = Relation::firstOrNew( [
+            'name' => $this->getName(),
+            'owner_id' => $this->getOwnerId(),
+            'owner_type' => $this->getOwnerType()
+        ] );
 
-        foreach( $relatedIds as $id )
+        $relation->fill( [
+            'related_id' => $relationId,
+            'related_type' => $this->getRelatedModelType()
+        ] );
+
+        $relation->save();
+    }
+
+    /**
+     * @param int[] $relationIds
+     * @return void
+     */
+    protected function saveMany( $relationIds )
+    {
+        foreach( $relationIds as $id )
         {
             if( !$id )
             {
@@ -172,17 +181,15 @@ class ObjectRelation extends AbstractField
             }
 
             $relation = Relation::firstOrNew( [
-                'name' => $ownerName,
-                'owner_id' => $ownerId,
-                'owner_type' => $ownerType,
+                'name' => $this->getName(),
+                'owner_id' => $this->getOwnerId(),
+                'owner_type' => $this->getOwnerType(),
                 'related_id' => $id,
-                'related_type' => $relatedType
+                'related_type' => $this->getRelatedModelType()
             ] );
 
             $relation->save();
         }
-
-        $this->deleteOldRelations( $relatedIds );
     }
 
     /**
@@ -311,5 +318,28 @@ class ObjectRelation extends AbstractField
     public function getRelatedModelType(): string
     {
         return $this->relatedModelType;
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getOwnerType()
+    {
+        try
+        {
+            return ( new \ReflectionClass( $this->getModel() ) )->getName();
+        }
+        catch( \ReflectionException $e )
+        {
+            return null;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getOwnerId()
+    {
+        return $this->getModel()->getKey();
     }
 }

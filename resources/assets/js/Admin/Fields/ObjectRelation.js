@@ -72,7 +72,7 @@ export default class ObjectRelation {
         let selectedItem = item.clone();
         let key = item.data('key');
 
-        if (this.selected.has(key) || (!this.isSingular() && this.selected.size >= this.getLimit())) {
+        if (this.selected.has(key) || (!this.isSingular() && this.hasLimit() && this.selected.size >= this.getLimit())) {
             return;
         }
 
@@ -140,6 +140,13 @@ export default class ObjectRelation {
     }
 
     /**
+     * @return {boolean}
+     */
+    hasLimit() {
+        return this.getLimit() > 0;
+    }
+
+    /**
      * @return {Number}
      */
     getLimit() {
@@ -154,7 +161,7 @@ export default class ObjectRelation {
     }
 
     /**
-     * @return {bool}
+     * @return {boolean}
      */
     isSingular() {
         return this.getField().hasClass('single');
