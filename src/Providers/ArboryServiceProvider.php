@@ -20,6 +20,7 @@ use Arbory\Base\Files\ArboryImage;
 use Arbory\Base\Http\Middleware\ArboryAdminAuthMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminGuestMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminHasAccessMiddleware;
+use Arbory\Base\Http\Middleware\ArboryAdminHasAllowedIpMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminInRoleMiddleware;
 use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
 use Arbory\Base\Menu\Menu;
@@ -145,6 +146,7 @@ class ArboryServiceProvider extends ServiceProvider
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            ArboryAdminHasAllowedIpMiddleware::class
         ] );
 
         $router->aliasMiddleware( 'arbory.admin_auth', ArboryAdminAuthMiddleware::class );
@@ -152,6 +154,7 @@ class ArboryServiceProvider extends ServiceProvider
         $router->aliasMiddleware( 'arbory.admin_in_role', ArboryAdminInRoleMiddleware::class );
         $router->aliasMiddleware( 'arbory.admin_has_access', ArboryAdminHasAccessMiddleware::class );
         $router->aliasMiddleware( 'arbory.route_redirect', ArboryRouteRedirectMiddleware::class );
+        $router->aliasMiddleware( 'arbory.admin_has_allowed_ip', ArboryAdminHasAllowedIpMiddleware::class );
 
         $this->app->booted( function( $app )
         {

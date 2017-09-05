@@ -14,7 +14,6 @@ use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Providers\SettingsServiceProvider;
 use Arbory\Base\Services\SettingFactory;
 use Arbory\Base\Services\SettingRegistry;
 use Illuminate\Database\Eloquent\Model;

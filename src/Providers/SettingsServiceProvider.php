@@ -29,11 +29,17 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $settingsPath = config_path( 'settings.php' );
+        $paths = [
+            __DIR__ . '/../../config/settings.php',
+            config_path( 'settings.php' )
+        ];
 
-        if( file_exists( $settingsPath ) )
+        foreach( $paths as $path )
         {
-            $this->app[ SettingRegistry::class ]->importFromConfig( include $settingsPath );
+            if( file_exists( $path ) )
+            {
+                $this->app[ SettingRegistry::class ]->importFromConfig( include $path );
+            }
         }
     }
 }

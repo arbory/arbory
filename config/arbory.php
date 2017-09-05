@@ -37,6 +37,11 @@ return [
     ],
 
     'auth' => [
+        'ip' => [
+            'allowed' => [
+                '127.0.0.1'
+            ]
+        ],
         'activations' => [
             'expires' => 259200,
             'lottery' => [ 2, 100 ],
