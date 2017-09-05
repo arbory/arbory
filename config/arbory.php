@@ -38,9 +38,7 @@ return [
 
     'auth' => [
         'ip' => [
-            'allowed' => [
-                '127.0.0.1'
-            ]
+            'allowed' => []
         ],
         'activations' => [
             'expires' => 259200,
