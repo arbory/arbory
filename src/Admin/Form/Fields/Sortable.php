@@ -63,7 +63,7 @@ class Sortable extends AbstractField
      */
     public function getSortableField()
     {
-        return $this->field;
+        return $this->field->setFieldSet( $this->getFieldSet() );
     }
 
     /**
