@@ -7,21 +7,31 @@
 ## Installation
 #### Create new Laravel project
 ```bash
-laravel new my-project
+composer create-project --prefer-dist laravel/laravel my-project "5.4.*"
 ```
-or
-```bash
-composer create-project --prefer-dist laravel/laravel my-project
-```
+
 #### Go to project root
 ```bash
 cd my-project
+```
+
+#### Set the minimum stability
+```bash
+vi composer.json
+```
+```json
+{
+    ...
+    "minimum-stability": "dev",
+    ...
+}
 ```
 
 #### Require Arbory package
 ```bash
 composer require arbory/arbory dev-master
 ```
+
 #### Fill in database info
 ```bash
 vi .env
