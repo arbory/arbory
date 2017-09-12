@@ -19,7 +19,7 @@ cd my-project
 ```bash
 vi composer.json
 ```
-```json
+```
 {
     ...
     "minimum-stability": "dev",
