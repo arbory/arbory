@@ -153,9 +153,8 @@
 
                 ul
                 {
-                    width: steps(18);
+                    text-align: left;
                     margin-left: steps(2);
-                    float: left;
                 }
             }
 
@@ -169,6 +168,8 @@
 
                     li
                     {
+                        width: steps(16);
+                        float: left;
                         margin-bottom: steps(1);
                     }
                 }
