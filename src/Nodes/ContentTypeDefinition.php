@@ -76,6 +76,16 @@ class ContentTypeDefinition
      */
     protected function makeNameFromType( $type ): string
     {
-        return preg_replace( '/(?!^)[A-Z]{2,}(?=[A-Z][a-z])|[A-Z][a-z]/', '$0', class_basename( $type ) );
+        $className = class_basename( $type );
+        $title = preg_replace( '/Page$/', '', $className );
+
+        return implode( ' ',
+            preg_split(
+                '/(?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z])/',
+                $title,
+                -1,
+                PREG_SPLIT_NO_EMPTY
+            )
+        );
     }
 }
