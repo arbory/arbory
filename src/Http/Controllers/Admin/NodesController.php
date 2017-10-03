@@ -192,7 +192,7 @@ class NodesController extends Controller
             $this->resource()->findOrNew( $request->get( 'parent_id' ) )
         );
 
-        $types = $contentTypes->map( function ( ContentTypeDefinition $definition, string $type ) use ( $request )
+        $types = $contentTypes->sort()->map( function ( ContentTypeDefinition $definition, string $type ) use ( $request )
         {
             return [
                 'title' => $definition->getName(),
