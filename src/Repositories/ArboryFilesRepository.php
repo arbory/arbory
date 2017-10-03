@@ -199,7 +199,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
      */
     protected function getLocalFilenameForUploadedFile( UploadedFile $file ): string
     {
-        return $this->getFreeFileName( sha1_file( $file->getRealPath() ) );
+        return $this->getFreeFileName( sha1_file( $file->getRealPath() ) . '.' . $file->getClientOriginalExtension() );
     }
 
     /**

@@ -7,6 +7,7 @@ use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 
@@ -67,29 +68,30 @@ class HasOne extends AbstractRelationField
         $relatedModel = $this->getValue() ?: $this->getRelatedModel();
         $relation = $this->getRelation();
 
-        foreach( $this->getRelationFieldSet($relatedModel)->getFields() as $field )
-        {
+        foreach ($this->getRelationFieldSet($relatedModel)->getFields() as $field) {
             $field->beforeModelSave( $request );
         }
 
-        if( $relation instanceof MorphTo )
-        {
+        if ($relation instanceof MorphOne) {
+            $polymorphicFields = [
+                $relation->getMorphType() => get_class( $relation->getParent() ),
+                $relation->getForeignKeyName() => $relation->getParent()->{$relatedModel->getKeyName()}
+            ];
+            $relatedModel->fill($polymorphicFields)->save();
+
+        } elseif ($relation instanceof MorphTo) {
             $relatedModel->save();
 
             $this->getModel()->fill( [
                 $relation->getMorphType() => get_class( $relatedModel ),
                 $relation->getForeignKey() => $relatedModel->{$relatedModel->getKeyName()},
             ] )->save();
-        }
-        elseif( $relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo )
-        {
+        }  elseif ($relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo) {
             $relatedModel->save();
 
             $this->getModel()->setAttribute( $relation->getForeignKey(), $relatedModel->getKey() );
             $this->getModel()->save();
-        }
-        elseif( $relation instanceof \Illuminate\Database\Eloquent\Relations\HasOne )
-        {
+        } elseif ($relation instanceof \Illuminate\Database\Eloquent\Relations\HasOne) {
             $relatedModel->save();
 
             $localKey = explode( '.', $relation->getQualifiedParentKeyName() )[1];
@@ -98,8 +100,7 @@ class HasOne extends AbstractRelationField
             $this->getModel()->save();
         }
 
-        foreach( $this->getRelationFieldSet( $relatedModel )->getFields() as $field )
-        {
+        foreach ($this->getRelationFieldSet( $relatedModel )->getFields() as $field) {
             $field->afterModelSave( $request );
         }
     }

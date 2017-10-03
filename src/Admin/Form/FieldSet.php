@@ -91,7 +91,7 @@ class FieldSet extends Collection
 
             if( $field instanceof Sortable && $field->getField()->getName() === $fieldName )
             {
-                $fields[] = $field->getField();
+                $fields[] = $field->getSortableField();
             }
         }
 

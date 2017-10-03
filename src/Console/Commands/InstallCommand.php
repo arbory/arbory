@@ -197,7 +197,7 @@ class InstallCommand extends Command
 
             if( !$this->filesystem->isFile( $path ) )
             {
-                $content = $this->stubRegistry->make( 'extended_arbory_admin_controller', [
+                $content = $this->stubRegistry->make( 'extended_admin_controller', [
                     'namespaceRoot' => $this->getAppNamespace(),
                     'className' => $className,
                     'extendsClassName' => $className,
