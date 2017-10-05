@@ -428,7 +428,6 @@ jQuery(function(){
         form.attr("data-remote-validation-initialized", true);
 
         jQuery('.main .primary .button[name=save], .main .primary .button[name=save_and_return]').click(event => {
-            event.stopPropagation();
             event.preventDefault();
 
             form.trigger('beforevalidation');
