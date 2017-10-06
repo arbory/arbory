@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Renderer\FileFieldRenderer;
+use Arbory\Base\Files\ArboryFileFactory;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Repositories\ArboryFilesRepository;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 /**
  * Class ArboryFile
  * @package Arbory\Base\Admin\Form\Fields
+ * @method \Arbory\Base\Files\ArboryFile getModel
  */
 class ArboryFile extends AbstractField
 {
@@ -58,7 +60,7 @@ class ArboryFile extends AbstractField
     }
 
     /**
-     *
+     * @return void
      */
     protected function deleteCurrentFileIfExists()
     {
@@ -88,6 +90,8 @@ class ArboryFile extends AbstractField
     /**
      * @param Request $request
      * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
     public function afterModelSave( Request $request )
@@ -104,25 +108,9 @@ class ArboryFile extends AbstractField
         {
             $this->deleteCurrentFileIfExists();
 
-            $repository = new ArboryFilesRepository( $this->disk );
+            $factory = new ArboryFileFactory( new ArboryFilesRepository( $this->getDisk() ) );
 
-            $arboryFile = $repository->createFromUploadedFile( $uploadedFile, $this->getModel() );
-
-            /**
-             * @var $relation \Illuminate\Database\Eloquent\Relations\BelongsTo
-             */
-            $relation = $this->getModel()->{$this->getName()}();
-
-            if( !$relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo )
-            {
-                throw new \InvalidArgumentException( 'Unsupported relation' );
-            }
-
-            $localKey = explode( '.', $relation->getQualifiedForeignKey() )[ 1 ];
-
-            $this->getModel()->setAttribute( $localKey, $arboryFile->getKey() );
-            $this->getModel()->setRelation( $this->getName(), $arboryFile );
-            $this->getModel()->save();
+            $factory->make( $this->getModel(), $uploadedFile, $this->getName() );
         }
     }
 

@@ -209,7 +209,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
     public function delete( $arboryFileId )
     {
         $arboryFile = $this->find( $arboryFileId );
-        /* @var $arboryFile ArboryFile */
+
         $this->getDisk()->delete( $arboryFile->getLocalName() );
 
         return parent::delete( $arboryFileId );
