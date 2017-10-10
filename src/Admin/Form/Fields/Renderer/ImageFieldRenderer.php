@@ -26,7 +26,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
 
         if( $arboryFile )
         {
-            $value->append( Html::image()->addAttributes( [ 'src' => $image->getUrl() ] ) );
+            $value->append( Html::image()->addAttributes( [ 'src' => $image->getUrl( $this->getManipulationParameters() ) ] ) );
             $value->append( $this->createFileDetails( $arboryFile ) );
         }
 
@@ -43,5 +43,20 @@ final class ImageFieldRenderer extends FileFieldRenderer
         return parent::getInput()->addAttributes( [
             'accept' => 'image/*'
         ] );
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getManipulationParameters()
+    {
+        return [
+            'h' => 64,
+            'w' => 64,
+            'q' => 40,
+            'fm' => 'jpg',
+            'fit' => 'crop'
+        ];
     }
 }
