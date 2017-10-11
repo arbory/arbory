@@ -97,6 +97,7 @@ class InstallCommand extends Command
         $this->seedAdminControllers();
         $this->publishFiles();
         $this->publishMixFile();
+        $this->publishFrontMixFile();
         $this->publishConfig();
         $this->runMigrations();
         $this->runSeeder();
@@ -176,6 +177,21 @@ class InstallCommand extends Command
         catch( FileNotFoundException $e )
         {
             $this->error( 'Webpack config not found' );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function publishFrontMixFile()
+    {
+        $webpackConfig = 'webpack.mix.front.js';
+
+        if (!$this->filesystem->exists($webpackConfig))
+        {
+            $content = $this->stubRegistry->make( 'webpack.mix.front.js', [] );
+
+            $this->filesystem->put( base_path( 'webpack.mix.front.js' ), $content );
         }
     }
 
@@ -345,6 +361,6 @@ class InstallCommand extends Command
         shell_exec( 'npm install --silent' );
 
         $this->info( 'Compiling assets' );
-        shell_exec( 'npm run dev' );
+        shell_exec( 'npm run dev -- -- --env.site=admin' );
     }
 }

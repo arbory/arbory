@@ -1,0 +1,10 @@
+const path = require( "path" );
+
+module.exports = function( mix ) {
+
+    mix
+        .setPublicPath( path.normalize( 'public/front' ) )
+        .sass( 'resources/assets/sass/app.scss', 'css' )
+        .js( 'resources/assets/js/app.js', 'js' );
+};
+
