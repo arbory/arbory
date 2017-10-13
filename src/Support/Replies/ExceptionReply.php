@@ -1,30 +1,24 @@
 <?php
 
-namespace Arbory\Base\Services\AuthReply;
+namespace Arbory\Base\Support\Replies;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\UrlGenerator;
 
-/**
- * Class FailureReply
- * @package Arbory\Base\Services\AuthReply
- */
-class FailureReply extends Reply
+class ExceptionReply extends Reply
 {
     /**
-     * The recommended status code to include with the server response
-     * @var integer
+     * @var int
      */
-    protected $statusCode = 422;
+    protected $statusCode = 500;
 
     /**
-     * A boolean flag indicating if the manager class action was successful
-     * @var boolean
+     * @var bool
      */
     protected $success = false;
 
     /**
-     * Convert the reply to the appropriate redirect or response object
      * @var string $url
      * @return JsonResponse|RedirectResponse
      */
@@ -37,13 +31,24 @@ class FailureReply extends Reply
             return new JsonResponse( $this->toArray(), $this->statusCode );
         }
 
-        // Should we post a flash message?
         if( $this->has( 'message' ) )
         {
             session()->flash( 'error', $this->message );
         }
 
-        // Go to the specified url
-        return redirect( $url );
+        return redirect()->to( $this->determineRedirectUrl() )->withInput( $request->input() );
+    }
+
+    /**
+     * @return string
+     */
+    protected function determineRedirectUrl()
+    {
+        if( $this->redirectUrl )
+        {
+            return $this->redirectUrl;
+        }
+
+        return app( UrlGenerator::class )->previous();
     }
 }

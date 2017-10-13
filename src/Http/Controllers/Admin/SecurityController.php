@@ -3,8 +3,9 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Http\Requests\LoginRequest;
+use Arbory\Base\Services\Authentication\SecurityStrategy;
 use Arbory\Base\Services\AuthReply\Reply;
-use Arbory\Base\Services\AuthService;
+use Arbory\Base\Services\SecurityService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,32 +16,28 @@ use Illuminate\Support\Facades\Redirect;
 use View;
 use Illuminate\Routing\Controller as BaseController;
 
-/**
- * Class SessionController
- * @package Arbory\Base\Http\Controllers\Admin
- */
-class SessionController extends BaseController
+class SecurityController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * @var AuthService
+     * @var SecurityStrategy
      */
-    protected $authService;
+    protected $security;
 
     /**
-     * @param AuthService $authService
+     * @param SecurityStrategy $security
      */
-    public function __construct( AuthService $authService )
+    public function __construct( SecurityStrategy $security )
     {
         $this->middleware( 'arbory.admin_quest', [ 'except' => 'postLogout' ] );
 
-        $this->authService = $authService;
+        $this->security = $security;
     }
 
     /**
      * @param Request $request
-     * @return View
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function getLogin( Request $request )
     {
@@ -59,27 +56,18 @@ class SessionController extends BaseController
         $credentials = array_only( $request->get( 'user' ), [ 'email', 'password' ] );
         $remember = (bool) $request->get( 'remember', false );
 
-        /* @var $result Reply */
-        $result = $this->authService->authenticate( $credentials, $remember );
+        $result = $this->security->authenticate( $credentials, $remember );
 
-        if( $result->isFailure() )
+        if( $result->isSuccess() )
         {
-            $redirect = redirect( route( 'admin.login.form' ) );
-
-            /* @var $redirect RedirectResponse */
-
-            return $redirect
-                ->withInput()
-                ->withErrors( [
-                    'user.email' => $result->message
-                ] );
+            return $result->dispatch( session()->pull( 'url.intended', route( 'admin.login.form' ) ) );
         }
-        else
-        {
-            $path = session()->pull( 'url.intended', route( 'admin.login.form' ) );
 
-            return $result->dispatch( $path );
-        }
+        return redirect( route( 'admin.login.form' ) )
+            ->withInput()
+            ->withErrors( [
+                'user.email' => $result->getMessage()
+            ] );
     }
 
     /**
@@ -87,8 +75,7 @@ class SessionController extends BaseController
      */
     public function postLogout()
     {
-        /* @var $result Reply */
-        $this->authService->logout( null, null );
+        $this->security->logout( null, null );
 
         return redirect( route( 'admin.login.form' ) );
     }

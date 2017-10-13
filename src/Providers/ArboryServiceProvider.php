@@ -25,6 +25,8 @@ use Arbory\Base\Http\Middleware\ArboryAdminInRoleMiddleware;
 use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Services\AssetPipeline;
+use Arbory\Base\Services\Authentication\SessionSecurityService;
+use Arbory\Base\Services\Authentication\SecurityStrategy;
 use Arbory\Base\Services\FieldTypeRegistry;
 use Arbory\Base\Services\StubRegistry;
 use Arbory\Base\Views\LayoutViewComposer;
@@ -66,6 +68,11 @@ class ArboryServiceProvider extends ServiceProvider
         $this->registerViewComposers();
         $this->registerValidationRules();
         $this->registerAssets();
+
+        $this->app->singleton( SecurityStrategy::class, function()
+        {
+            return $this->app->make( SessionSecurityService::class );
+        } );
 
         $this->loadTranslationsFrom( __DIR__ . '/resources/lang', 'arbory' );
     }

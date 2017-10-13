@@ -1,30 +1,23 @@
 <?php
 
-namespace Arbory\Base\Services\AuthReply;
+namespace Arbory\Base\Support\Replies;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
-/**
- * Class SuccessReply
- * @package Arbory\Base\Services\AuthReply
- */
 class SuccessReply extends Reply
 {
     /**
-     * The recommended status code to include with the server response
-     * @var integer
+     * @var int
      */
     protected $statusCode = 200;
 
     /**
-     * A boolean flag indicating if the manager class action was successful
-     * @var boolean
+     * @var bool
      */
     protected $success = true;
 
     /**
-     * Convert the reply to the appropriate redirect or response object
      * @var string $url
      * @return JsonResponse|RedirectResponse
      */
@@ -37,13 +30,11 @@ class SuccessReply extends Reply
             return new JsonResponse( $this->toArray(), $this->statusCode );
         }
 
-        // Should we post a flash message?
         if( $this->has( 'message' ) )
         {
             session()->flash( 'success', $this->message );
         }
 
-        // Go to the specified url
         return redirect( $url );
     }
 }

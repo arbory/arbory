@@ -1,6 +1,6 @@
 <?php
 
-namespace Arbory\Base\Services\AuthReply;
+namespace Arbory\Base\Support\Replies;
 
 use Exception;
 use Illuminate\Http\Response;
@@ -8,46 +8,35 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
-/**
- * Class Reply
- * @package Arbory\Base\Services\AuthReply
- */
 abstract class Reply implements Jsonable, Arrayable
 {
     /**
-     * The data payload returned by the manager class
      * @var array
      */
     protected $payload = [];
 
     /**
-     * A message from the manager class to be conveyed to the user
      * @var string
      */
     protected $message = '';
 
     /**
-     * The recommended status code to include with the server response
-     * @var integer
+     * @var int
      */
     protected $statusCode = 400;
 
     /**
-     * A boolean flag indicating if the manager class action was successful
-     * @var boolean
+     * @var bool
      */
     protected $success = false;
 
     /**
-     * If an exception was caught, it will be available here for reference
      * @var Exception|Null
      */
     protected $exception = null;
 
     /**
-     * Occasionally we will need to manually specify a redirect location when
-     * an error occurs; this is that url.
-     * @var null
+     * @var string|null
      */
     protected $redirectUrl = null;
 
@@ -64,8 +53,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * Convert the dispatch to the appropriate redirect or response object
-     * @var   string $url
+     * @var string $url
      * @return Response|Redirect
      */
     abstract public function dispatch( $url = '/' );
@@ -73,17 +61,9 @@ abstract class Reply implements Jsonable, Arrayable
     /**
      * @return bool
      */
-    public function isSuccessful()
+    public function isSuccess()
     {
         return $this->success;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFailure()
-    {
-        return !$this->success;
     }
 
     /**
@@ -119,38 +99,36 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * Determine if a value exists within this object
-     * @param  string $key
+     * @param string $key
      * @return bool
      */
     public function has( $key )
     {
-        if( $key == 'message' )
+        if( $key === 'message' )
         {
-            return !empty( $this->message );
+            return $this->hasMessage();
         }
 
-        if( $key == 'exception' )
+        if( $key === 'exception' )
         {
-            return !is_null( $this->exception );
+            return $this->hasCaughtException();
         }
 
         return array_key_exists( $key, $this->payload );
     }
 
     /**
-     * Unset a payload array key => value
-     * @param  string $key
+     * @param string $key
      * @return void
      */
     public function remove( $key )
     {
-        if( $key == 'message' )
+        if( $key === 'message' )
         {
             $this->message = '';
         }
 
-        if( $key == 'exception' )
+        if( $key === 'exception' )
         {
             $this->exception = null;
         }
@@ -162,11 +140,11 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    public function caughtAnException()
+    public function hasCaughtException()
     {
-        return !is_null( $this->exception );
+        return $this->exception !== null;
     }
 
     /**
@@ -179,7 +157,6 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * Convert the dispatch object to an array
      * @return array
      */
     public function toArray()
@@ -201,8 +178,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * Convert the dispatch object to json
-     * @param  integer $options
+     * @param integer $options
      * @return string
      */
     public function toJson( $options = 0 )
@@ -211,23 +187,22 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * Dynamically retrieve payload data
-     * @param  string $key
+     * @param string $key
      * @return mixed|null
      */
     public function __get( $key )
     {
-        if( $key == 'message' )
+        if( $key === 'message' )
         {
             return $this->message;
         }
 
-        if( $key == 'statusCode' )
+        if( $key === 'statusCode' )
         {
             return $this->statusCode;
         }
 
-        if( $key == 'exception' )
+        if( $key === 'exception' )
         {
             return $this->exception;
         }
@@ -238,5 +213,13 @@ abstract class Reply implements Jsonable, Arrayable
         }
 
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }
