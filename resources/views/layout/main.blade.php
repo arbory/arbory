@@ -29,13 +29,11 @@
 
         <div class="notifications" data-close-text="Close"></div>
 
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}"></script>
+
         <script src="{{ mix('/arbory/js/application.js') }}"></script>
         <script src="{{ mix('/arbory/js/controllers/nodes.js') }}"></script>
         <script src="{{ mix('/arbory/js/admin.js') }}"></script>
-
-        <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}">
-        </script>
 
         @foreach($assetsJs as $asset)
             <script src="{{ mix( $asset ) }}"></script>
