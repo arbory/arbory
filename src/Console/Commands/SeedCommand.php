@@ -47,7 +47,7 @@ class SeedCommand extends Command
      * @return void
      * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
-    public function fire()
+    public function handle()
     {
         if( !$this->confirmToProceed() )
         {
