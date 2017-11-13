@@ -137,7 +137,6 @@ class FieldSetFieldFinder
             {
                 $previousField = $field;
 
-//                dd($field, $previousField, $fieldName);
                 $resolvedFieldSet = $this->resolveFieldSet( $previousField, $fieldName );
 
                 $previousFieldSet = $resolvedFieldSet ?? $previousFieldSet;
