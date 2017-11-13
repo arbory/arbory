@@ -137,6 +137,7 @@ class FieldSetFieldFinder
             {
                 $previousField = $field;
 
+//                dd($field, $previousField, $fieldName);
                 $resolvedFieldSet = $this->resolveFieldSet( $previousField, $fieldName );
 
                 $previousFieldSet = $resolvedFieldSet ?? $previousFieldSet;
@@ -221,7 +222,7 @@ class FieldSetFieldFinder
 
             if( $nested )
             {
-                $resource = $nested->get( $fieldName );
+                $resource = method_exists( $nested, 'getModel' ) ? $nested->getModel() : $nested->get( $fieldName );
 
                 if( !$resource )
                 {
