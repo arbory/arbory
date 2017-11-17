@@ -113,7 +113,7 @@ class Renderer
                 $li->append( $collapser );
             }
 
-            $cell = Html::div()->addClass( 'node-cell active' );
+            $cell = Html::div()->addClass( 'node-cell ' . ( $item->isActive() ? 'active'  : '' ) );
 
             $link = str_replace( '__ID__', $item->getKey(), $url );
 

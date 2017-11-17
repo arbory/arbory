@@ -119,6 +119,11 @@ class ContentTypeRoutesRegister
     {
         foreach( $items as $item )
         {
+            if ( !$item->active )
+            {
+                continue;
+            }
+
             $slug = $base . '/' . $item->getSlug();
 
             $this->registerNodeRoutes( $item, $slug );

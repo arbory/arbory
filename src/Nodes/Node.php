@@ -136,10 +136,34 @@ class Node extends \Baum\Node
      * @param $name
      * @param array $parameters
      * @param bool $absolute
-     * @return string
+     * @return string|null
      */
     public function getUrl( $name, array $parameters = [], $absolute = true )
     {
-        return route( 'node.' . $this->getKey() . '.' . $name, $parameters, $absolute );
+        $routes = app( 'routes' );
+        $routeName = 'node.' . $this->getKey() . '.' . $name;
+        $route = $routes->getByName( $routeName );
+
+        return $route ? route( $routeName, $parameters, $absolute ) : null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        $active = $this->active;
+
+        if( !$this->active )
+        {
+            return false;
+        }
+
+        if( $this->parents()->isEmpty() )
+        {
+            return $active;
+        }
+
+        return $this->parent()->first()->isActive();
     }
 }
