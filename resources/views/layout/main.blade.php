@@ -7,6 +7,8 @@
         <link href="{{ mix('/arbory/css/application.css') }}" media="all" rel="stylesheet"/>
         <link href="{{ mix('/arbory/css/controllers/nodes.css') }}" media="all" rel="stylesheet"/>
 
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         @foreach($assetsCss as $asset)
             <link href="{{ mix( $asset ) }}" media="all" rel="stylesheet"/>
         @endforeach

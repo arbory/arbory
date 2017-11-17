@@ -25,14 +25,15 @@ export default class RichText {
     }
 
     initialize() {
+        let token = this.getToken();
         let textarea = this.getTextarea();
         let config = Object.assign(this.getDefaultConfig(), {
             width: '100%',
             height: textarea.outerHeight(),
             filebrowserImageBrowseUrl: '/admin/filemanager?type=Images',
-            filebrowserImageUploadUrl: '/admin/filemanager/upload?type=Images&_token=',
+            filebrowserImageUploadUrl: '/admin/filemanager/upload?type=Images&_token=' + token,
             filebrowserBrowseUrl: '/admin/filemanager?type=Files',
-            filebrowserUploadUrl: '/admin/filemanager/upload?type=Files&_token='
+            filebrowserUploadUrl: '/admin/filemanager/upload?type=Files&_token=' + token
         });
 
         if (!textarea.attr('id')) {
@@ -109,5 +110,11 @@ export default class RichText {
 
     getDefaultConfig() {
         return CONFIG_EDITOR;
+    }
+
+    getToken() {
+        let token = document.head.querySelector('meta[name="csrf-token"]');
+
+        return token ? token.content : null;
     }
 }
