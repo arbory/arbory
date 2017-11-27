@@ -89,4 +89,20 @@ class Row implements Renderable
             return strip_tags( $cell );
         } )->toArray();
     }
+
+    /**
+     * @return Grid
+     */
+    public function getGrid()
+    {
+        return $this->grid;
+    }
+
+    /**
+     * @return Model
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
 }
