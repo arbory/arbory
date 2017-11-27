@@ -129,6 +129,17 @@ An optional depth parameter can be passed (automatically set for the node relati
 ( new ObjectRelation( 'field_name', Arbory\Base\Nodes\Node::class ) )->setIndentAttribute( 'depth' );
 ```
 
+Items can be grouped by an attribute
+
+```php
+$getName = function( \Arbory\Base\Nodes\Node $model ) 
+{
+    return class_basename( $model->content_type );
+};
+
+( new ObjectRelation( 'field_name', Arbory\Base\Nodes\Node::class ) )->groupBy( 'content_type', $getName );
+```
+
 ## Settings
 
 Register a setting (with optional nesting) and retrieve it

@@ -2,10 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationGroupedRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationRenderer;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Content\Relation;
 use Arbory\Base\Nodes\Node;
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -31,6 +33,16 @@ class ObjectRelation extends AbstractField
      * @var int|null
      */
     protected $limit;
+
+    /**
+     * @var string
+     */
+    private $groupByAttribute;
+
+    /**
+     * @var Closure|null
+     */
+    private $groupByGetName;
 
     /**
      * @param string $name
@@ -66,7 +78,11 @@ class ObjectRelation extends AbstractField
      */
     public function render()
     {
-        return ( new ObjectRelationRenderer( $this ) )->render();
+        $renderer = $this->isGrouped() ?
+            ObjectRelationGroupedRenderer::class :
+            ObjectRelationRenderer::class;
+
+        return ( new $renderer( $this ) )->render();
     }
 
     /**
@@ -87,10 +103,28 @@ class ObjectRelation extends AbstractField
 
     /**
      * @param string $indentAttribute
+     * @return self
      */
-    public function setIndentAttribute( string $indentAttribute )
+    public function setIndentAttribute( string $indentAttribute = null )
     {
         $this->indentAttribute = $indentAttribute;
+
+        return $this;
+    }
+
+    /**
+     * @param string $attribute
+     * @param Closure $groupName
+     * @return self
+     */
+    public function groupBy( string $attribute, Closure $groupName = null )
+    {
+        $this->setIndentAttribute( null );
+
+        $this->groupByAttribute = $attribute;
+        $this->groupByGetName = $groupName;
+
+        return $this;
     }
 
     /**
@@ -243,10 +277,12 @@ class ObjectRelation extends AbstractField
      */
     public function getOptions()
     {
-        return $this->options ?: $this->relatedModelType::all()->mapWithKeys( function( $item )
+        $values = $this->options ?: $this->relatedModelType::all()->mapWithKeys( function( $item )
         {
             return [ $item->getKey() => $item ];
         } );
+
+        return $this->groupByAttribute ? $values->groupBy( $this->groupByAttribute ) : $values;
     }
 
     /**
@@ -341,5 +377,29 @@ class ObjectRelation extends AbstractField
     protected function getOwnerId()
     {
         return $this->getModel()->getKey();
+    }
+
+    /**
+     * @return string
+     */
+    public function getGroupByAttribute()
+    {
+        return $this->groupByAttribute;
+    }
+
+    /**
+     * @return Closure|null
+     */
+    public function getGroupByGetName()
+    {
+        return $this->groupByGetName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGrouped()
+    {
+        return (bool) $this->groupByAttribute;
     }
 }
