@@ -354,12 +354,17 @@ class ArboryServiceProvider extends ServiceProvider
             $field = $fields->findFieldByInputName( $attribute );
             $file = $request->file( $attribute );
 
+            if( $isDestroyed( $request, $attribute ) )
+            {
+                return true;
+            }
+
             if( !$field )
             {
                 return (bool) $file;
             }
 
-            return $isDestroyed( $request, $attribute ) || ( $field->getValue() || $file );
+            return $field->getValue() || $file;
         } );
 
         \Validator::extendImplicit( 'arbory_require_one_localized', function( $attribute, $value ) use ( $isDestroyed )
