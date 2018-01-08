@@ -22,10 +22,8 @@ class Grid implements Renderable
 {
     use ModuleComponent;
 
-    /**
-     * @var string
-     */
-    protected $keyName;
+    const FOOTER_SIDE_PRIMARY = 'primary';
+    const FOOTER_SIDE_SECONDARY = 'secondary';
 
     /**
      * @var Model
@@ -45,7 +43,12 @@ class Grid implements Renderable
     /**
      * @var array
      */
-    protected $tools = [ 'create', 'search' ];
+    protected $enabledDefaultTools = [ 'create', 'search' ];
+
+    /**
+     * @var array
+     */
+    protected $tools = [];
 
     /**
      * @var Collection|null
@@ -73,13 +76,11 @@ class Grid implements Renderable
     protected $filter;
 
     /**
-     * Grid constructor.
      * @param Model $model
      * @param Closure $builder
      */
     public function __construct( Model $model, Closure $builder )
     {
-        $this->keyName = $model->getKeyName();
         $this->model = $model;
         $this->columns = new Collection();
         $this->rows = new Collection();
@@ -117,12 +118,30 @@ class Grid implements Renderable
     }
 
     /**
+     * @param Renderable $tool
+     * @param string|null $side
+     * @return void
+     */
+    public function addTool( Renderable $tool, string $side = null )
+    {
+        $this->tools[] = [ $tool, $side ?: self::FOOTER_SIDE_SECONDARY ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getTools()
+    {
+        return $this->tools;
+    }
+
+    /**
      * @param string[] $tools
      * @return Grid
      */
     public function tools( array $tools )
     {
-        $this->tools = $tools;
+        $this->enabledDefaultTools = $tools;
 
         return $this;
     }
@@ -256,9 +275,9 @@ class Grid implements Renderable
     /**
      * @return string[]
      */
-    public function getTools(): array
+    public function getEnabledDefaultTools(): array
     {
-        return $this->tools;
+        return $this->enabledDefaultTools;
     }
 
     /**
@@ -274,7 +293,7 @@ class Grid implements Renderable
      */
     public function hasTools(): bool
     {
-        return !empty( $this->tools );
+        return !empty( $this->enabledDefaultTools );
     }
 
     /**
@@ -283,7 +302,7 @@ class Grid implements Renderable
      */
     public function hasTool( string $tool ): bool
     {
-        return in_array( $tool, $this->tools, false );
+        return in_array( $tool, $this->enabledDefaultTools, false );
     }
 
     /**
