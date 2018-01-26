@@ -81,8 +81,10 @@ class FileFieldRenderer extends InputFieldRenderer
                 'name' => Element::formatName($this->field->getNameSpacedName() . '.remove'),
             ]);
 
+        $fileDetails->append($downloadLink);
+
         if (!$this->field->isRequired()) {
-            $fileDetails->append([$downloadLink, $removeInput]);
+            $fileDetails->append($removeInput);
         }
 
         return $fileDetails;
