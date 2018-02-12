@@ -39,6 +39,16 @@ export default class ObjectRelation {
             this.selectRelation(item);
         });
 
+        if (this.isGrouped()) {
+            relational.on('click', '.group > .title', (event) => {
+                let group = jQuery(event.target).closest('.group');
+
+                group.find('.item').each((_, element) => {
+                    this.selectRelation(jQuery(element));
+                });
+            })
+        }
+
         if (this.isSingular()) {
             jQuery(window).click(function() {
                 relational.removeClass('active');
@@ -165,6 +175,13 @@ export default class ObjectRelation {
      */
     isSingular() {
         return this.getField().hasClass('single');
+    }
+
+    /**
+     * @return {boolean}
+     */
+    isGrouped() {
+        return this.getField().data('grouped') !== undefined;
     }
 
     /**

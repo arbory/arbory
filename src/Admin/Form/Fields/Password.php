@@ -15,6 +15,7 @@ class Password extends AbstractField
 {
     /**
      * @return Content
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function render()
     {
@@ -30,29 +31,22 @@ class Password extends AbstractField
             ->append( Html::div( $input )->addClass( 'value' ) )
             ->addClass( 'field type-password' ) );
 
-
-        $confirmationInput = new Input;
-        $confirmationInput->setName( $this->getNameSpacedName() . '_confirmation' );
-        $confirmationInput->setType( 'password' );
-        $confirmationInput->addClass( 'text' );
-
-        $content->push( Html::div()
-            ->append( Html::div( $confirmationInput->getLabel( $this->getLabel() ) )->addClass( 'label-wrap' ) )
-            ->append( Html::div( $confirmationInput )->addClass( 'value' ) )
-            ->addClass( 'field type-password' ) );
-
         return $content;
     }
 
     /**
      * @param Request $request
+     * @return void
      */
-    public function afterModelSave( Request $request )
+    public function beforeModelSave( Request $request )
     {
         $password = $request->input( $this->getNameSpacedName() );
         $hasher = \Sentinel::getUserRepository()->getHasher();
 
-        $this->getModel()->setAttribute( $this->getName(), $hasher->hash( $password ) );
+        if( $password )
+        {
+            $this->getModel()->setAttribute( $this->getName(), $hasher->hash( $password ) );
+        }
     }
 }
 

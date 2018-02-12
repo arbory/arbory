@@ -75,6 +75,18 @@ Page::register( App\Pages\TextPage::class )
 Admin::modules()->register(  App\Http\Controllers\Admin\TextController::class );
 ```
 
+### Working with nodes
+
+The node repository is used to ensure that the website only displays active nodes to the user
+
+```php
+$currentNode = app( Arbory\Base\Nodes\Node::class );
+$nodes = app( Arbory\Base\Repositories\NodesRepository::class ); 
+
+// returns only the active children of the current node
+$nodes->findUnder( $currentNode );
+```
+
 ## Validation
 
 [Validation rules](https://laravel.com/docs/5.4/validation) can be attached to any field, like so
@@ -115,6 +127,17 @@ An optional depth parameter can be passed (automatically set for the node relati
 
 ```php
 ( new ObjectRelation( 'field_name', Arbory\Base\Nodes\Node::class ) )->setIndentAttribute( 'depth' );
+```
+
+Items can be grouped by an attribute
+
+```php
+$getName = function( \Arbory\Base\Nodes\Node $model ) 
+{
+    return class_basename( $model->content_type );
+};
+
+( new ObjectRelation( 'field_name', Arbory\Base\Nodes\Node::class ) )->groupBy( 'content_type', $getName );
 ```
 
 ## Settings

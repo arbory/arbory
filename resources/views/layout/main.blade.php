@@ -7,6 +7,8 @@
         <link href="{{ mix('/arbory/css/application.css') }}" media="all" rel="stylesheet"/>
         <link href="{{ mix('/arbory/css/controllers/nodes.css') }}" media="all" rel="stylesheet"/>
 
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         @foreach($assetsCss as $asset)
             <link href="{{ mix( $asset ) }}" media="all" rel="stylesheet"/>
         @endforeach
@@ -29,7 +31,7 @@
 
         <div class="notifications" data-close-text="Close"></div>
 
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ config('arbory.services.google.maps_api_key') }}&libraries=places"></script>
 
         <script src="{{ mix('/arbory/js/application.js') }}"></script>
         <script src="{{ mix('/arbory/js/controllers/nodes.js') }}"></script>

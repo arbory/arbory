@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\MapCoordinates;
 use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Html\Elements\Element;
@@ -41,12 +42,15 @@ class MapCoordinatesFieldRenderer implements Renderable
 
         $body->append( Html::div()->addClass( 'canvas' ) );
         
-        $field = new Text( $this->field->getName() );
-        $field->setLabel( (string) null );
+        $field = new Hidden( $this->field->getName() );
         $field->setFieldSet( $this->field->getFieldSet() );
         $field->setValue( is_array( $value ) ? implode( ',', $value ) : $value );
-
         $body->append( $field->render() );
+
+        $field = new Text( 'search' );
+        $field->setLabel( (string) null );
+        $field->setFieldSet( $this->field->getFieldSet() );
+        $body->append( Html::div( $field->render() )->addClass( 'search_address' ) );
 
         return $body->addClass( 'body' );
     }

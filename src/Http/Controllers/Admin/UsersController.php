@@ -43,10 +43,10 @@ class UsersController extends Controller
         {
             $form->addField( new Text( 'first_name' ) )->rules('required');
             $form->addField( new Text( 'last_name' ) )->rules('required');
-            $form->addField( new Text( 'email' ) )->rules('required');
+            $form->addField( new Text( 'email' ) )->rules('required|unique:admin_users,email,' . $model->getKey());
+            $form->addField( new Password( 'password' ) )->rules('min:6|' . ( $model->exists ? 'nullable' : 'required' ));
             $form->addField( new Boolean( 'active' ) )->setValue( Activation::completed( $model ) );
             $form->addField( new BelongsToMany( 'roles' ) );
-            $form->addField( new Password( 'password' ) )->rules('required|min:6|confirmed');
         } );
 
         $form->on( 'delete.before', function ( Form $form )
@@ -60,6 +60,16 @@ class UsersController extends Controller
         $form->addEventListener('create.before', function() use ( $model )
         {
             unset( $model->active );
+        } );
+
+        $form->addEventListener( 'update.before', function( Request $request ) use ( $model )
+        {
+            if( $model->exists && !$request->has( 'resource.password' ) )
+            {
+                $parameters = $request->except( [ 'resource.password' ] );
+
+                $request->request->replace( $parameters );
+            }
         } );
 
         $form->addEventListeners( [ 'update.before', 'create.after' ], function( Request $request ) use ( $model )

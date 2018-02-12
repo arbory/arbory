@@ -209,9 +209,16 @@ class Column
 
         if( $this->displayer === null )
         {
-            return Html::link( (string) $value )->addAttributes( [
-                'href' => $this->grid->getModule()->url( 'edit', [ $model->getKey() ] )
-            ] );
+            $value = (string) $value;
+
+            if( $this->grid->hasTool( 'create' ) )
+            {
+                return Html::link( (string) $value )->addAttributes( [
+                    'href' => $this->grid->getModule()->url( 'edit', [ $model->getKey() ] )
+                ] );
+            }
+
+            return Html::span( (string) $value );
         }
 
         return call_user_func_array( $this->displayer, [ $value, $this, $model ] );

@@ -4,6 +4,7 @@ import IconPicker from "./Fields/IconPicker";
 import Sortable, {CONFIG_JQUERY_SORTABLE} from "./Fields/Sortable";
 import Slug from "./Fields/Slug";
 import ObjectRelation from "./Fields/ObjectRelation";
+import MapCoordinates from "./Fields/MapCoordinates";
 
 export let FIELD_TYPE_DEFINITIONS = [
     {
@@ -35,6 +36,10 @@ export let FIELD_TYPE_DEFINITIONS = [
         handler: ObjectRelation,
         selector: ObjectRelation.getSelector()
     },
+    {
+        handler: MapCoordinates,
+        selector: '.coordinate_picker'
+    }
 ];
 
 class Definition {

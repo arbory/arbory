@@ -221,7 +221,7 @@ class FieldSetFieldFinder
 
             if( $nested )
             {
-                $resource = $nested->get( $fieldName );
+                $resource = method_exists( $nested, 'getModel' ) ? $nested->getModel() : $nested->get( $fieldName );
 
                 if( !$resource )
                 {
@@ -237,8 +237,12 @@ class FieldSetFieldFinder
         }
         elseif( $field instanceof HasOne )
         {
-            /** @var HasOne $field */
-            return $field->getRelationFieldSet( $field->getValue() ?: $field->getRelatedModel() );
+            if( $field->getValue() )
+            {
+                return $field->getRelationFieldSet( $field->getValue() );
+            }
+
+            return new FieldSet( $field->getRelatedModel(), $field->getNameSpacedName() );
         }
         elseif( $field instanceof Translatable )
         {

@@ -42,5 +42,24 @@ class Validator extends FormRequest
         return $this->rules;
     }
 
+    /**
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $input = $this->all();
+        $destroyed = [];
 
+        foreach( array_dot( $input ) as $namespace => $value )
+        {
+            if( ends_with( $namespace, '._destroy' ) && $value === 'true' )
+            {
+                $destroyed[] = substr( $namespace, 0, strrpos( $namespace, "." ) );
+            }
+        }
+
+        array_forget( $input, $destroyed );
+
+        $this->replace( $input );
+    }
 }

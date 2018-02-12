@@ -219,6 +219,8 @@ class Builder
 
         $tools->getBlock( 'secondary' )->push( $this->exportOptions() );
         $tools->getBlock( 'primary' )->push( $this->createButton() );
+        
+        $this->addCustomToolsToFooterToolset( $tools );
 
         if ( $this->grid->isPaginated() && $this->items->hasPages() )
         {
@@ -227,6 +229,18 @@ class Builder
         }
 
         return $tools;
+    }
+
+    /**
+     * @param Tools $toolset
+     * @return void
+     */
+    protected function addCustomToolsToFooterToolset( Tools $toolset )
+    {
+        foreach( $this->grid->getTools() as list( $tool, $location ) )
+        {
+            $toolset->getBlock( $location )->push( $tool->render() );
+        }
     }
 
     /**

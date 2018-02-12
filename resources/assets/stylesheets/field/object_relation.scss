@@ -20,6 +20,8 @@
     }
 
     .relations, .related {
+        overflow: auto;
+
         .item {
             cursor: default;
             position: relative;
@@ -36,6 +38,17 @@
     }
 
     .relations {
+        .group {
+            & > .title {
+                font-weight: bold;
+                padding-left: steps(1);
+            }
+
+            .item {
+                padding-left: steps(2);
+            }
+        }
+
         .item {
             // nested item indentation
             @for $i from 1 through 10
@@ -70,6 +83,20 @@
             float: left;
             width: 50%;
             background-color: $color-background-lightest;
+
+            .group {
+                & > .title {
+                    display: block;
+
+                    &:hover {
+                        background-color: $color-highlight-normal;
+
+                        & ~ .item {
+                            background-color: $color-highlight-lightest;
+                        }
+                    }
+                }
+            }
         }
 
         .related {

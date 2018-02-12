@@ -32,8 +32,33 @@ class ArboryAdminHasAllowedIpMiddleware
     protected function isAllowedIp( Request $request ): bool
     {
         $ips = $this->getAllowedIps();
+        $requestIp = $request->ip();
 
-        return empty( $ips ) || in_array( $request->ip(), $ips, true );
+        if( empty( $ips ) )
+        {
+            return true;
+        }
+
+        foreach( $ips as $allowed )
+        {
+            if( str_contains( $allowed, '-' ) )
+            {
+                $ip = ip2long( $requestIp );
+                list( $from, $to ) = explode( '-', $allowed );
+
+                if( $ip <= ip2long( $to ) && ip2long( $from ) <= $ip )
+                {
+                    return true;
+                }
+            }
+
+            if( $requestIp === $allowed )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
