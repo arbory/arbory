@@ -86,7 +86,7 @@ var RemoteValidator = function( form )
 
                 let errors = [];
 
-                jQuery.each( json_response, function( fieldName, fieldErrors )
+                jQuery.each( json_response.errors, function( fieldName, fieldErrors )
                 {
                     jQuery.each( fieldErrors, function( index, error )
                     {
