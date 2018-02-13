@@ -20,7 +20,7 @@
         "components/jquery-cookie": "1.4.*",
         "ckeditor/ckeditor": "^4.5",
         "alsofronie/eloquent-uuid": "^1.0.5",
-        "dimsav/laravel-translatable": "8.*|9.*",
+        "dimsav/laravel-translatable": "7.*|8.*|9.*",
         "cartalyst/sentinel": "^2.0.13",
         "waavi/translation": "^2.3.0",
         "roboc/laravel-glide": "^1.1.0",
