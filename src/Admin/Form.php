@@ -171,8 +171,8 @@ class Form implements Renderable
     {
         $this->trigger( 'validate.before', request() );
 
-        $this->validator->setRules( $this->fields->getRules() );
-        $this->validator->validate();
+        $this->validator->setRules($this->fields->getRules());
+        $this->validator->validate($this->validator->rules());
 
         return $this->validator;
     }
