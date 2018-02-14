@@ -1,11 +1,11 @@
 <?php namespace Arbory\Base\Providers;
 
+use Arbory\Base\Console\Commands\TranslationsCacheFlushCommand;
+use Arbory\Base\Console\Commands\TranslationsLoaderCommand;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Translation\Translator;
 use Waavi\Translation\Cache\RepositoryFactory;
-use Waavi\Translation\Commands\CacheFlushCommand;
-use Waavi\Translation\Commands\FileLoaderCommand;
 use Waavi\Translation\Loaders\CacheLoader;
 use Waavi\Translation\Loaders\DatabaseLoader;
 use Waavi\Translation\Repositories\LanguageRepository;
@@ -98,7 +98,7 @@ class ArboryTranslationServiceProvider extends ServiceProvider
         $languageRepository = $app->make( LanguageRepository::class );
         $translationRepository = $app->make( TranslationRepository::class );
         $translationsPath = base_path( 'resources/lang' );
-        $command = new FileLoaderCommand( $languageRepository, $translationRepository, $app['files'], $translationsPath, $defaultLocale );
+        $command = new TranslationsLoaderCommand( $languageRepository, $translationRepository, $app['files'], $translationsPath, $defaultLocale );
 
         $this->app['command.translator:load'] = $command;
         $this->commands( 'command.translator:load' );
@@ -111,7 +111,7 @@ class ArboryTranslationServiceProvider extends ServiceProvider
      */
     public function registerCacheFlusher()
     {
-        $command = new CacheFlushCommand( $this->app['translation.cache.repository'], true );
+        $command = new TranslationsCacheFlushCommand( $this->app['translation.cache.repository'], true );
 
         $this->app['command.translator:flush'] = $command;
         $this->commands( 'command.translator:flush' );

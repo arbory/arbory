@@ -1,26 +1,25 @@
-let fs = require('fs-extra');
-
-const controllers = fs.readdirSync('vendor/arbory/arbory/resources/assets/js/controllers');
-
 module.exports = function (mix) {
 
+    mix.webpackConfig({resolve: {symlinks: false}});
+
     mix.js(
-        './vendor/arbory/arbory/resources/assets/js/admin.js',
+        'vendor/arbory/arbory/resources/assets/js/admin.js',
         'public/arbory/js'
     );
 
-    for (let name of controllers) {
-        mix.js('vendor/arbory/arbory/resources/assets/js/controllers/' + name, 'public/arbory/js/controllers/');
-    }
+    mix.js(
+        'vendor/arbory/arbory/resources/assets/js/controllers/*',
+        'public/arbory/js/controllers/'
+    );
 
     mix.scripts([
-            './vendor/arbory/arbory/resources/assets/js/environment.js',
-            './vendor/components/jquery/jquery.min.js',
-            './vendor/components/jqueryui/jquery-ui.min.js',
-            './vendor/components/jquery-cookie/jquery.cookie.js',
-            './vendor/ckeditor/ckeditor/ckeditor.js',
-            './vendor/ckeditor/ckeditor/adapters/jquery.js',
-            './vendor/arbory/arbory/resources/assets/js/include/**/*.js',
+            'vendor/arbory/arbory/resources/assets/js/environment.js',
+            'vendor/components/jquery/jquery.min.js',
+            'vendor/components/jqueryui/jquery-ui.min.js',
+            'vendor/components/jquery-cookie/jquery.cookie.js',
+            'vendor/ckeditor/ckeditor/ckeditor.js',
+            'vendor/ckeditor/ckeditor/adapters/jquery.js',
+            'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
         ],
         'public/arbory/js/application.js'
     );
