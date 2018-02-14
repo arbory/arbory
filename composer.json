@@ -24,7 +24,7 @@
         "cartalyst/sentinel": "^2.0.13",
         "composer/composer": "1.*@alpha",
         "waavi/translation": "^2.1.5",
-        "roboc/laravel-glide": "1.0.*",
+        "roboc/laravel-glide": "^1.0.0",
         "roave/security-advisories": "dev-master",
         "spatie/laravel-sluggable": "^1.5",
         "maatwebsite/excel": "~2.1.0",
