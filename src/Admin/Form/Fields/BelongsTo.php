@@ -21,7 +21,13 @@ class BelongsTo extends AbstractField
      */
     public function render()
     {
-        return ( new OptionFieldRenderer( $this ) )->render();
+        $renderer = new OptionFieldRenderer( $this );
+        $foreignKey = $this->getRelation()->getForeignKey();
+        $foreignId = $this->getModel()->getAttribute( $foreignKey );
+
+        $renderer->setSelected( $foreignId );
+
+        return $renderer->render();
     }
 
     /**
