@@ -92,12 +92,8 @@ class HasOne extends AbstractRelationField
             $this->getModel()->setAttribute( $relation->getForeignKey(), $relatedModel->getKey() );
             $this->getModel()->save();
         } elseif ($relation instanceof \Illuminate\Database\Eloquent\Relations\HasOne) {
+            $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
             $relatedModel->save();
-
-            $localKey = explode( '.', $relation->getQualifiedParentKeyName() )[1];
-
-            $this->getModel()->setAttribute( $localKey, $relatedModel->getKey() );
-            $this->getModel()->save();
         }
 
         foreach ($this->getRelationFieldSet( $relatedModel )->getFields() as $field) {
