@@ -243,7 +243,11 @@ class NodesController extends Controller
 
         if( $request->has( 'parent_id' ) )
         {
-            $reservedSlugs = $this->resource()->where( 'parent_id', $request->get( 'parent_id' ) )
+            $reservedSlugs = $this->resource()
+                ->where( [
+                    [ 'parent_id', $request->get( 'parent_id' ) ],
+                    [ 'id', '<>', $request->get( 'object_id' ) ]
+                ] )
                 ->pluck( 'slug' )
                 ->toArray();
         }

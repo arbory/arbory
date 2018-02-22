@@ -101,7 +101,7 @@ input.text
 
 
     &.type-richtext,
-    &.type-textarea
+    &.type-textarea:not(.i18n)
     {
         float: none;
         clear: both;
@@ -227,7 +227,7 @@ input.text
         word-wrap: break-word;
     }
 
-    &[data-name="slug"]
+    &[data-name="slug"], .localization[data-name="slug"]
     {
         .button.generate
         {
