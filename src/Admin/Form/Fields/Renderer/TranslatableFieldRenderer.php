@@ -110,12 +110,7 @@ class TranslatableFieldRenderer
     public function render()
     {
         $block = Html::div()->addClass( 'field i18n' );
-
-        if ($this->field->getFieldClass() === Slug::class) {
-            $block->addClass('type-slug');
-        } else {
-            $block->addClass('type-text');
-        }
+        $block->addClass($this->field->getFieldTypeName());
 
         foreach( $this->field->getLocales() as $locale )
         {

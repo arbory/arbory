@@ -101,7 +101,7 @@ input.text
 
 
     &.type-richtext,
-    &.type-textarea
+    &.type-textarea:not(.i18n)
     {
         float: none;
         clear: both;
