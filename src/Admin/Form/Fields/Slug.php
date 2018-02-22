@@ -52,7 +52,8 @@ class Slug extends AbstractField
                 'data-generator-url' => $this->getApiUrl(),
                 'data-from-field-name' => $this->getFromFieldName(),
                 'data-node-parent-id' => $this->getParentId(),
-                'data-model-table' => $this->getModel()->getTable()
+                'data-model-table' => $this->getModel()->getTable(),
+                'data-object-id' => $this->getModel()->id
             ] );
 
         $button = Button::create()
