@@ -82,8 +82,7 @@ abstract class AbstractField implements FieldInterface
      */
     public function getFieldTypeName()
     {
-        $class = substr(strrchr(static::class, '\\'), 1);
-        return 'type-' . camel_case($class);
+        return 'type-' . camel_case(class_basename(static::class));
     }
 
     /**
