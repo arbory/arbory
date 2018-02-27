@@ -24,7 +24,6 @@
         "waavi/translation": "^2.1.5",
         "cartalyst/sentinel": "^2.0.13",
         "roboc/laravel-glide": "^1.1.0",
-        "roave/security-advisories": "dev-master",
         "spatie/laravel-sluggable": "^2.1.0",
         "maatwebsite/excel": "~2.1.0",
         "unisharp/laravel-filemanager": "^1.8.0"
