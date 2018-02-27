@@ -15,37 +15,14 @@ composer create-project --prefer-dist laravel/laravel my-project "5.6.*"
 cd my-project
 ```
 
-#### Set the minimum stability
-```bash
-vi composer.json
-```
-```
-{
-    ...
-    "minimum-stability": "dev",
-    ...
-}
-```
-
 #### Require Arbory package
 ```bash
-composer require arbory/arbory 0.2.*
+composer require arbory/arbory "0.2.*"
 ```
 
 #### Fill in database info
 ```bash
 vi .env
-```
-
-#### Add Arbory service providers in your application configuration
-
-config/app.php
-```php
-'providers' => [
-    ...
-    Arbory\Base\Providers\ArboryServiceProvider::class,
-    Arbory\Base\Providers\NodeServiceProvider::class,
-]
 ```
 
 #### Run installer and follow instructions
