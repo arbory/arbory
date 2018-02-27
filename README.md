@@ -7,7 +7,7 @@
 ## Installation
 #### Create new Laravel project
 ```bash
-composer create-project --prefer-dist laravel/laravel my-project "5.4.*"
+composer create-project --prefer-dist laravel/laravel my-project "5.6.*"
 ```
 
 #### Go to project root
@@ -29,7 +29,7 @@ vi composer.json
 
 #### Require Arbory package
 ```bash
-composer require arbory/arbory dev-master
+composer require arbory/arbory 0.2.*
 ```
 
 #### Fill in database info
@@ -89,7 +89,7 @@ $nodes->findUnder( $currentNode );
 
 ## Validation
 
-[Validation rules](https://laravel.com/docs/5.4/validation) can be attached to any field, like so
+[Validation rules](https://laravel.com/docs/5.6/validation) can be attached to any field, like so
 
 ```php
 $form->addField( new Text( 'title' ) )->setRules( 'required' );
