@@ -130,27 +130,41 @@ class ObjectRelationRenderer
 
         foreach( $relational as $relation )
         {
-            $items[] = $this->buildRelationalItemElement( $relation, $this->field->hasRelationWith( $relation ) );
+            if ( $relation instanceof Model )
+            {
+                $items[] = $this->buildRelationalItemElement( $relation, $this->field->hasRelationWith( $relation ) );
+            }
+            else
+            {
+                $items[] = $this->buildRelationalItemElement( $relation );
+            }
         }
 
         return $items;
     }
 
     /**
-     * @param Model $model
+     * @param mixed $value
      * @param bool $isRelated
      * @return Element
      */
-    protected function buildRelationalItemElement( Model $model, bool $isRelated = false )
+    protected function buildRelationalItemElement( $value, bool $isRelated = false )
     {
-        return Html::div(
+        $element = Html::div(
             Html::span(
-                (string) $model
+                (string) $value
             )->addClass( 'title' )
-        )->addClass( 'item' )->addAttributes( [
-            'data-key' => $model->getKey(),
-            'data-level' => $model->getAttributeValue( $this->field->getIndentAttribute() ),
-            'data-inactive' => $isRelated && $this->field->hasIndentation() ? 'true' : 'false'
-        ] );
+        )->addClass( 'item' );
+
+        if( $value instanceof Model )
+        {
+            $element->addAttributes( [
+                'data-key' => $value->getKey(),
+                'data-level' => $value->getAttributeValue( $this->field->getIndentAttribute() ),
+                'data-inactive' => $isRelated && $this->field->hasIndentation() ? 'true' : 'false'
+            ] );
+        }
+
+        return $element;
     }
 }
