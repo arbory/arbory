@@ -124,10 +124,24 @@ class NodeServiceProvider extends ServiceProvider
 
             $this->routes->registerNodes();
         }
-        elseif( !$this->app->routesAreCached() && \Schema::hasTable( 'nodes' ) )
+        elseif( !$this->app->routesAreCached() && $this->isDbConfigured() )
         {
             $this->routes->registerNodes();
         }
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isDbConfigured(): bool
+    {
+        try {
+            \DB::connection()->getPdo();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return \Schema::hasTable('nodes');
     }
 
     /**
