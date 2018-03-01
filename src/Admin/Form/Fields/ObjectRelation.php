@@ -45,6 +45,11 @@ class ObjectRelation extends AbstractField
     private $groupByGetName;
 
     /**
+     * @var bool
+     */
+    private $default = true;
+
+    /**
      * @param string $name
      * @param string|Collection $relatedModelTypeOrCollection
      * @param int $limit
@@ -113,6 +118,17 @@ class ObjectRelation extends AbstractField
     }
 
     /**
+     * @param Model|bool $default
+     * @return self
+     */
+    public function default( $default )
+    {
+        $this->default = $default;
+
+        return $this;
+    }
+
+    /**
      * @param string $attribute
      * @param Closure $groupName
      * @return self
@@ -155,24 +171,32 @@ class ObjectRelation extends AbstractField
      * @param Request $request
      * @return void
      * @throws \Exception
-     * @throws \ReflectionException
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function afterModelSave( Request $request )
     {
         $attributes = $request->input( $this->getNameSpacedName() );
         $relationIds = explode( ',', array_get( $attributes, 'related_id' ) );
+        $value = $this->getValue();
 
         if( $this->isSingular() )
         {
-            $this->saveOne( reset( $relationIds ) );
+            $id = reset( $relationIds );
+
+            if( !$id && $value instanceof Model )
+            {
+                $this->deleteOldRelations();
+
+                return;
+            }
+
+            $this->saveOne( $id );
         }
         else
         {
             $this->saveMany( $relationIds );
+            $this->deleteOldRelations( $relationIds );
         }
-
-        $this->deleteOldRelations( $relationIds );
     }
 
     /**
@@ -231,17 +255,16 @@ class ObjectRelation extends AbstractField
      * @return void
      * @throws \Exception
      */
-    protected function deleteOldRelations( $updatedRelationIds )
+    protected function deleteOldRelations( $updatedRelationIds = [] )
     {
-        if( $this->isSingular() )
+        $relations = $this->getValue();
+
+        if ($this->isSingular())
         {
-            return;
+            $relations = [ $relations ];
         }
 
-        /**
-         * @var Relation $relation
-         */
-        foreach( $this->getValue() as $relation )
+        foreach( $relations as $relation )
         {
             if( !in_array( $relation->related_id, $updatedRelationIds ) )
             {
@@ -277,10 +300,17 @@ class ObjectRelation extends AbstractField
      */
     public function getOptions()
     {
-        $values = $this->options ?: $this->relatedModelType::all()->mapWithKeys( function( $item )
+        $values = collect();
+
+        if ( $this->hasDefault() )
+        {
+            $values->push( null );
+        }
+
+        $values = $values->merge($this->options ?: $this->relatedModelType::all()->mapWithKeys( function( $item )
         {
             return [ $item->getKey() => $item ];
-        } );
+        } ) );
 
         return $this->groupByAttribute ? $values->groupBy( $this->groupByAttribute ) : $values;
     }
@@ -401,5 +431,13 @@ class ObjectRelation extends AbstractField
     public function isGrouped()
     {
         return (bool) $this->groupByAttribute;
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasDefault()
+    {
+        return $this->isSingular() && $this->default;
     }
 }
