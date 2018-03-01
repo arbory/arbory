@@ -140,6 +140,11 @@ class ArboryFilesRepository extends AbstractModelsRepository
         {
             $fileNameParts = pathinfo( $fileName );
             $fileName = $fileNameParts['filename'] . '-' . str_random( 10 );
+
+            if (( $extension = array_get( $fileNameParts, 'extension', false ) ))
+            {
+                $fileName .= '.' . $extension;
+            }
         }
 
         return $fileName;
