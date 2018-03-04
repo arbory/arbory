@@ -3,7 +3,6 @@
 namespace Arbory\Base\Console\Commands;
 
 use Arbory\Base\Providers\FileManagerServiceProvider;
-use Cartalyst\Sentinel\Sentinel;
 use Arbory\Base\Providers\ArboryServiceProvider;
 use Arbory\Base\Services\StubRegistry;
 use Exception;
@@ -11,11 +10,9 @@ use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Filesystem\Filesystem;
-use InvalidArgumentException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ArboryDatabaseSeeder;
 use Illuminate\Console\DetectsApplicationNamespace;
-use Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider;
 
 /**
  * Class SeedCommand
@@ -36,11 +33,6 @@ class InstallCommand extends Command
     protected $description = '';
 
     /**
-     * @var Sentinel
-     */
-    protected $sentinel;
-
-    /**
      * @var Filesystem
      */
     protected $filesystem;
@@ -56,19 +48,16 @@ class InstallCommand extends Command
     protected $stubRegistry;
 
     /**
-     * @param Sentinel $sentinel
      * @param Filesystem $filesystem
      * @param DatabaseManager $databaseManager
      * @param StubRegistry $stubRegistry
      */
     public function __construct(
-        Sentinel $sentinel,
         Filesystem $filesystem,
         DatabaseManager $databaseManager,
         StubRegistry $stubRegistry
     )
     {
-        $this->sentinel = $sentinel;
         $this->filesystem = $filesystem;
         $this->databaseManager = $databaseManager;
         $this->stubRegistry = $stubRegistry;
@@ -275,58 +264,7 @@ class InstallCommand extends Command
      */
     protected function createAdminUser()
     {
-        $users = $this->sentinel->getUserRepository();
-        $activations = $this->sentinel->getActivationRepository();
-        $roles = $this->sentinel->getRoleRepository();
-
-        if( $users->all()->count() > 0 )
-        {
-            $this->info( 'Admin user already exists' );
-
-            return;
-        }
-
-        $this->info( 'Let\'s create admin user' );
-
-        $user = null;
-
-        while( $user === null )
-        {
-            $email = $this->ask( 'Admin email' );
-            $password = $this->secret( 'What is the password?' );
-
-            try
-            {
-                $user = $users->create( [
-                    'email' => $email,
-                    'password' => $password
-                ] );
-
-                $activation = $activations->create( $user );
-                $activations->complete( $user, $activation->getCode() );
-
-                break;
-            }
-            catch( InvalidArgumentException $exception )
-            {
-                $this->error( $exception->getMessage() );
-            }
-        }
-
-        $administratorRole = $roles->create( [
-            'name' => 'Administrator',
-            'slug' => 'administrator',
-            'permissions' => array_flatten(
-                array_merge(
-                    [
-                        \Arbory\Base\Http\Controllers\Admin\DashboardController::class
-                    ],
-                    config( 'arbory.menu' )
-                )
-            )
-        ] );
-
-        $administratorRole->users()->attach( $user );
+        $this->call('arbory:create-user');
     }
 
     /**

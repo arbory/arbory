@@ -12,6 +12,7 @@ use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\Textarea;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Console\Commands\CreateUserCommand;
 use Arbory\Base\Console\Commands\GenerateCommand;
 use Arbory\Base\Console\Commands\GeneratorCommand;
 use Arbory\Base\Console\Commands\InstallCommand;
@@ -212,6 +213,7 @@ class ArboryServiceProvider extends ServiceProvider
     {
         $commands = [
             'arbory.seed' => SeedCommand::class,
+            'arbory.create-user' => CreateUserCommand::class,
             'arbory.install' => InstallCommand::class,
             'arbory.generator' => GeneratorCommand::class,
             'arbory.generate' => GenerateCommand::class

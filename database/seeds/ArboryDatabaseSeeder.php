@@ -1,9 +1,5 @@
 <?php
 
-use Arbory\Base\Http\Controllers\Admin\NodesController;
-use Arbory\Base\Http\Controllers\Admin\RolesController;
-use Arbory\Base\Http\Controllers\Admin\TranslationsController;
-use Arbory\Base\Http\Controllers\Admin\UsersController;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Seeder;
 use Waavi\Translation\Repositories\LanguageRepository;
