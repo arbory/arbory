@@ -13,7 +13,7 @@ module.exports = function (mix) {
         mix.js('vendor/arbory/arbory/resources/assets/js/controllers/' + name, 'public/arbory/js/controllers/');
     }
 
-    mix.scripts([
+    mix.babel([
             './vendor/arbory/arbory/resources/assets/js/environment.js',
             './vendor/components/jquery/jquery.min.js',
             './vendor/components/jqueryui/jquery-ui.min.js',
