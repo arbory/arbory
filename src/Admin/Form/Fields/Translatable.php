@@ -192,4 +192,12 @@ class Translatable extends AbstractField
 
         return $rules;
     }
+
+    /**
+     * @return string
+     */
+    public function getFieldTypeName()
+    {
+        return $this->field->getFieldTypeName();
+    }
 }

@@ -78,6 +78,14 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
+     * @return string
+     */
+    public function getFieldTypeName()
+    {
+        return 'type-' . camel_case(class_basename(static::class));
+    }
+
+    /**
      * @return mixed
      */
     public function getValue()

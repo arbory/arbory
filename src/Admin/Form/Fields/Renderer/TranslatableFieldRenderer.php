@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\Slug;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -108,15 +109,13 @@ class TranslatableFieldRenderer
      */
     public function render()
     {
-        $block = Html::div()->addClass( 'field type-text i18n' );
-
+        $block = Html::div()->addClass( 'field i18n' );
+        $block->addClass($this->field->getFieldTypeName());
         foreach( $this->field->getLocales() as $locale )
         {
             $block->append( $this->getLocalizedFieldContent( $locale ) );
         }
-
         $block->append( $this->getLocalizationSwitch() );
-
         return $block;
     }
 }

@@ -243,7 +243,11 @@ class NodesController extends Controller
 
         if( $request->has( 'parent_id' ) )
         {
-            $reservedSlugs = $this->resource()->where( 'parent_id', $request->get( 'parent_id' ) )
+            $reservedSlugs = $this->resource()
+                ->where( [
+                    [ 'parent_id', $request->get( 'parent_id' ) ],
+                    [ 'id', '<>', $request->get( 'object_id' ) ]
+                ] )
                 ->pluck( 'slug' )
                 ->toArray();
         }
@@ -260,7 +264,7 @@ class NodesController extends Controller
         {
             $slug = str_slug( $from . '-' . random_int( 0, 9999 ) );
         }
-
+        
         return $slug;
     }
 }

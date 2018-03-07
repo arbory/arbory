@@ -318,13 +318,19 @@ trait Crudify
         /** @var \Illuminate\Database\Query\Builder $query */
         $slug = str_slug( $request->input( 'from' ) );
         $column = $request->input( 'column_name' );
+
         $query = \DB::table( $request->input( 'model_table' ) )->where( $column, $slug );
 
+        if ($locale = $request->input('locale')) {
+            $query->where('locale', $locale);
+        }
+        if ($objectId = $request->input('object_id')) {
+            $query->where('id', '<>', $objectId);
+        }
         if( $column && $query->exists() )
         {
             $slug .= '-' . random_int( 0, 9999 );
         }
-
         return $slug;
     }
 
