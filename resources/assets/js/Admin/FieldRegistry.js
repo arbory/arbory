@@ -30,7 +30,11 @@ export let FIELD_TYPE_DEFINITIONS = [
     },
     {
         handler: Slug,
-        selector: '.type-slug'
+        selector: '.type-slug > .localization'
+    },
+    {
+        handler: Slug,
+        selector: '.type-slug:not(.i18n)'
     },
     {
         handler: ObjectRelation,

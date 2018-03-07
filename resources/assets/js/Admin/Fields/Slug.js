@@ -8,6 +8,8 @@ export default class Slug {
     constructor(element, config) {
         this.element = element;
         this.config = config;
+        this.translatable = this.getField().hasClass('localization');
+        this.initial = this.getFieldInput().val().length === 0;
 
         this.registerEventHandlers();
     }
@@ -16,9 +18,11 @@ export default class Slug {
      * @return {void}
      */
     registerEventHandlers() {
-        this.getFieldInput().on('keyup', () => this.updateFieldLinkValue());
         this.getFieldGenerateButton().on('click', () => this.generate());
-        this.getFromFieldInput().on('blur', () => this.generate());
+        if (this.initial) {
+            this.getFieldInput().on('keyup', () => this.updateFieldLinkValue());
+            this.getFromFieldInput().on('blur', () => this.generate());
+        }
     }
 
     /**
@@ -37,8 +41,10 @@ export default class Slug {
     getApi() {
         return new SlugApiHandler(this.getGeneratorUrl(), {
             parent_id: this.getNodeParentId(),
+            object_id: this.getObjectId(),
             model_table: this.getModelTable(),
-            column_name: this.getFieldName()
+            column_name: this.getFieldName(),
+            locale: this.getFieldLocale()
         });
     }
 
@@ -64,10 +70,17 @@ export default class Slug {
     }
 
     /**
-     * @return {int}
+     * @return {string}
      */
     getNodeParentId() {
         return this.getFieldInput().data('nodeParentId');
+    }
+
+    /**
+     * @return {int}
+     */
+    getObjectId() {
+        return this.getFieldInput().data('objectId');
     }
 
     /**
@@ -99,6 +112,13 @@ export default class Slug {
     }
 
     /**
+     * @return string
+     */
+    getFieldLocale() {
+        return this.getField().closest('.localization').data('locale');
+    }
+
+    /**
      * @return {jQuery}
      */
     getFieldGenerateButton() {
@@ -116,7 +136,13 @@ export default class Slug {
      * @return {jQuery}
      */
     getFromField() {
-        return this.getForm().find('.field[data-name=' + this.getFromFieldName() + ']');
+        let selector = '.field';
+        let attributes = '[data-name=' + this.getFromFieldName() + ']';
+        if (this.translatable) {
+            selector = '.localization';
+            attributes += '[data-locale=' + this.getFieldLocale() + ']';
+        }
+        return this.getForm().find(selector + attributes);
     }
 
     /**
