@@ -1,6 +1,13 @@
 module.exports = function (mix) {
 
-    mix.webpackConfig({resolve: {symlinks: false}});
+    mix.webpackConfig(function () {
+        var config = mix.config.webpackConfig || {};
+
+        config.resolve = config.resolve || {};
+        config.resolve.symlinks = false;
+
+        return config;
+    });
 
     mix.js(
         'vendor/arbory/arbory/resources/assets/js/admin.js',
