@@ -45,7 +45,8 @@
                 "Arbory\\Base\\Providers\\NodeServiceProvider"
             ],
             "dont-discover": [
-                "waavi/translation"
+                "waavi/translation",
+                "cartalyst/sentinel"
             ]
         }
     }
