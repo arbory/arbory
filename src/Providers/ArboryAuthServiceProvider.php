@@ -49,7 +49,6 @@ class ArboryAuthServiceProvider extends ServiceProvider
         $this->registerCheckpoints();
         $this->registerReminders();
         $this->registerSentinel();
-        $this->setUserResolver();
     }
 
     /**
@@ -395,21 +394,5 @@ class ArboryAuthServiceProvider extends ServiceProvider
     protected function configHitsLottery( array $lottery )
     {
         return mt_rand( 1, $lottery[1] ) <= $lottery[0];
-    }
-
-    /**
-     * Sets the user resolver on the request class.
-     *
-     * @return void
-     */
-    protected function setUserResolver()
-    {
-        $this->app->rebinding( 'request', function ( $app, $request )
-        {
-            $request->setUserResolver( function () use ( $app )
-            {
-                return $app['sentinel']->getUser();
-            } );
-        } );
     }
 }
