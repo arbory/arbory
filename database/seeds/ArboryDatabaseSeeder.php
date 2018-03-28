@@ -44,7 +44,7 @@ class ArboryDatabaseSeeder extends Seeder
      */
     protected function seedLocales()
     {
-        if( $this->languageRepository->getModel()->all()->isEmpty() )
+        if( !$this->languageRepository->getModel()->where( [ 'locale' => 'en' ] )->first() )
         {
             $this->languageRepository->create( [
                 'locale' => 'en',
