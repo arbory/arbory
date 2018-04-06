@@ -12,6 +12,10 @@ body > header
         text-align: left;
         float: left;
         margin: steps(1) 0 0 steps(1);
+        img 
+        {
+            width: steps(10);
+        }
     }
 
 
