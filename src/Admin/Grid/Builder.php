@@ -198,13 +198,19 @@ class Builder
      */
     protected function exportOptions()
     {
+        $parameters = ['as' => 'xls'];
+        if( request()->has('page') )
+        {
+            $parameters['page'] = intval( request('page') );
+        }
+
         return
             Html::div( [
                 Html::span(
                     trans( 'arbory::resources.export' )
                 )->addClass( 'title' ),
                 Html::div(
-                    Link::create( $this->url( 'export', [ 'as' => 'xls' ] ) )
+                    Link::create( $this->url( 'export', $parameters ) )
                         ->title( 'xls' )
                 )->addClass( 'options' )
             ] )->addClass( 'export' );
