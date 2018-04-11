@@ -21,10 +21,11 @@
 
             .logo
             {
-                width:  steps(5);
+                width:  steps(24);
                 height: steps(11);
                 background-repeat: no-repeat;
-                background-image: url("/arbory/images/logo-login.png");
+                background-image: url("/arbory/images/logo-login.svg");
+                margin-left: steps(1);
             }
         }
     }
