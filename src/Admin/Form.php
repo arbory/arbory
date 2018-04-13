@@ -7,6 +7,7 @@ use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Validator;
 use Arbory\Base\Admin\Traits\EventDispatcher;
+use Arbory\Base\Content\Relation;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
@@ -160,6 +161,11 @@ class Form implements Renderable
         $this->trigger( 'delete.before', $this );
 
         $this->model->delete();
+
+        $this->model->morphMany( Relation::class, 'related' )->get()->each( function( Relation $relation )
+        {
+            $relation->delete();
+        });
 
         $this->trigger( 'delete.after', $this );
     }
