@@ -213,12 +213,12 @@ class Column
 
             if( $this->grid->hasTool( 'create' ) )
             {
-                return Html::link( (string) $value )->addAttributes( [
+                return Html::link( $value )->addAttributes( [
                     'href' => $this->grid->getModule()->url( 'edit', [ $model->getKey() ] )
                 ] );
             }
 
-            return Html::span( (string) $value );
+            return Html::span( $value );
         }
 
         return call_user_func_array( $this->displayer, [ $value, $this, $model ] );

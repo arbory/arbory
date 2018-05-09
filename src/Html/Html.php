@@ -38,6 +38,7 @@ use Arbory\Base\Html\Elements\Inputs\Textarea;
  * @method static Element   li( $content = null )
  * @method static Element   i( $content = null )
  * @method static Element   abbr( $content = null )
+ * @method static Element   hr( $content = null )
  *
  * @method static Element   table( $content = null )
  * @method static Element   thead( $content = null )
