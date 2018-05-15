@@ -1,8 +1,13 @@
 {
     "name": "arbory/arbory",
     "description": "Administration interface for Laravel",
+    "keywords": ["laravel", "admin", "cms", "arbory"],
     "type": "library",
     "license": "MIT",
+    "support": {
+      "issues": "https://github.com/arbory/arbory/issues",
+      "source": "https://github.com/arbory/arbory"
+    },
     "authors": [
         {
             "name": "Roberts",
