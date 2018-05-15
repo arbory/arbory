@@ -141,9 +141,10 @@ class TranslationsController extends Controller
      */
     public function edit( Request $request, $namespace, $group, $item )
     {
+        $group = str_replace('.', '/', $group);
         $translationKey = $namespace . '::' . $group . '.' . $item;
         $this->request = $request;
-        
+
         /* @var $languages Language[] */
         $languages = $this->languagesRepository->all();
 
@@ -265,7 +266,7 @@ class TranslationsController extends Controller
             'admin.translations.edit',
             [
                 'namespace' => $item->namespace,
-                'group' => $item->group,
+                'group' => str_replace('/', '.', $item->group),
                 'item' => $item->item,
                 'page' => $paginator->currentPage(),
                 'search' => $this->request->get( 'search' )

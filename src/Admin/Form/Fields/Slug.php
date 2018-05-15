@@ -92,15 +92,18 @@ class Slug extends AbstractField
      */
     protected function getLinkValue()
     {
-        $urlToSlug = $this->getUriToSlug();
-        $urlToSlugElement = Html::span( $this->getUriToSlug() );
+        $urlToSlug = ltrim($this->getUriToSlug(), "/");
+        $urlToSlugElement = Html::span( $urlToSlug );
 
-        if( $urlToSlug )
-        {
-            $urlToSlugElement .= '/';
-        }
-
-        return [ url( '/' ) . '/' . $urlToSlugElement . Html::span( $this->getValue() ) ];
+        return [
+            [
+                url( '/' ),
+                '/',
+                $urlToSlugElement,
+                ( $urlToSlug ) ? '/' : ''
+            ],
+            Html::span( $this->getValue() )
+        ];
     }
 
     /**

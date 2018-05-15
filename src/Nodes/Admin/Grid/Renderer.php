@@ -78,7 +78,7 @@ class Renderer
 
         $list = Html::ul()->addAttributes( [ 'data-level' => $level ] );
 
-        $collapser = (string) Html::div(
+        $collapser = Html::div(
             Html::button( Html::i()->addClass( 'fa fa-chevron-right' ) )
                 ->addClass( 'button only-icon secondary collapser trigger' )
                 ->addAttributes( [ 'type' => 'button' ] )

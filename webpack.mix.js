@@ -1,6 +1,13 @@
 module.exports = function (mix) {
 
-    mix.webpackConfig({resolve: {symlinks: false}});
+    mix.webpackConfig(function () {
+        var config = mix.config.webpackConfig || {};
+
+        config.resolve = config.resolve || {};
+        config.resolve.symlinks = false;
+
+        return config;
+    });
 
     mix.js(
         'vendor/arbory/arbory/resources/assets/js/admin.js',
@@ -12,7 +19,7 @@ module.exports = function (mix) {
         'public/arbory/js/controllers/'
     );
 
-    mix.scripts([
+    mix.babel([
             'vendor/arbory/arbory/resources/assets/js/environment.js',
             'vendor/components/jquery/jquery.min.js',
             'vendor/components/jqueryui/jquery-ui.min.js',

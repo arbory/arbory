@@ -30,27 +30,4 @@ class Link extends Model
     {
         return (bool) $this->new_tab;
     }
-
-    /**
-     * @return string
-     */
-    public function getTarget()
-    {
-        return $this->isNewTab() ? '_blank' : '';
-    }
-
-    /**
-     * @return string
-     */
-    public function getAttributes()
-    {
-        $target = $this->getTarget();
-
-        if( !$target )
-        {
-            return (string) null;
-        }
-
-        return 'target=\'' . $target . '\'';
-    }
 }
