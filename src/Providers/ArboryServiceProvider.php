@@ -13,8 +13,6 @@ use Arbory\Base\Admin\Form\Fields\Textarea;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Console\Commands\CreateUserCommand;
-use Arbory\Base\Console\Commands\GenerateCommand;
-use Arbory\Base\Console\Commands\GeneratorCommand;
 use Arbory\Base\Console\Commands\InstallCommand;
 use Arbory\Base\Console\Commands\SeedCommand;
 use Arbory\Base\Files\ArboryImage;
@@ -29,12 +27,10 @@ use Arbory\Base\Services\AssetPipeline;
 use Arbory\Base\Services\Authentication\SessionSecurityService;
 use Arbory\Base\Services\Authentication\SecurityStrategy;
 use Arbory\Base\Services\FieldTypeRegistry;
-use Arbory\Base\Services\StubRegistry;
 use Arbory\Base\Views\LayoutViewComposer;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use File;
 use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -64,7 +60,6 @@ class ArboryServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerRoutesAndMiddlewares();
         $this->registerFields();
-        $this->registerGeneratorStubs();
         $this->registerLocales();
         $this->registerViewComposers();
         $this->registerValidationRules();
@@ -215,8 +210,6 @@ class ArboryServiceProvider extends ServiceProvider
             'arbory.seed' => SeedCommand::class,
             'arbory.create-user' => CreateUserCommand::class,
             'arbory.install' => InstallCommand::class,
-            'arbory.generator' => GeneratorCommand::class,
-            'arbory.generate' => GenerateCommand::class
         ];
 
         foreach( $commands as $containerKey => $commandClass )
@@ -281,24 +274,6 @@ class ArboryServiceProvider extends ServiceProvider
             $fieldTypeRegistry->registerByRelation( 'link', Link::class );
 
             return $fieldTypeRegistry;
-        } );
-    }
-
-    /**
-     * Register stubs used by generators
-     */
-    private function registerGeneratorStubs()
-    {
-        $this->app->singleton( StubRegistry::class, function( Application $app )
-        {
-            $stubRegistry = new StubRegistry();
-
-            $stubRegistry->registerStubs(
-                $app[ Filesystem::class ],
-                base_path( 'vendor/arbory/arbory/stubs' )
-            );
-
-            return $stubRegistry;
         } );
     }
 
