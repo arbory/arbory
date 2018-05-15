@@ -79,7 +79,7 @@ class Builder
             return $this->getColumnHeader( $column );
         } );
 
-        $tableColumns->push( Html::th( Html::span( '&nbsp;' ) ) );
+        $tableColumns->push( Html::th( Html::span( '' ) ) );
 
         return $tableColumns;
     }
