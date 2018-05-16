@@ -32,6 +32,11 @@ class FieldRenderer implements Renderable
      */
     protected $value;
 
+    public function __toString()
+    {
+        return (string) $this->render();
+    }
+
     /**
      * @param $type
      * @return $this
