@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 use Arbory\Base\Admin\Form\Fields\SpriteIcon;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\HtmlString;
 
 class IconPickerRenderer extends SelectFieldRenderer
 {
@@ -73,7 +74,7 @@ class IconPickerRenderer extends SelectFieldRenderer
         $width = (int) $attributes->width;
         $height = (int) $attributes->height;
 
-        $icon = Html::span( Html::svg( $content )
+        $icon = Html::span( Html::svg( new HtmlString($content) )
             ->addAttributes( [
                 'width' => $width,
                 'height' => $height,
