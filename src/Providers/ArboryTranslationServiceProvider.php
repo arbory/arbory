@@ -4,10 +4,13 @@ use Arbory\Base\Console\Commands\TranslationsCacheFlushCommand;
 use Arbory\Base\Console\Commands\TranslationsLoaderCommand;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Translation\FileLoader as LaravelFileLoader;
 use Illuminate\Translation\Translator;
 use Waavi\Translation\Cache\RepositoryFactory;
 use Waavi\Translation\Loaders\CacheLoader;
 use Waavi\Translation\Loaders\DatabaseLoader;
+use Waavi\Translation\Loaders\FileLoader;
+use Waavi\Translation\Loaders\MixedLoader;
 use Waavi\Translation\Repositories\LanguageRepository;
 use Waavi\Translation\Repositories\TranslationRepository;
 
@@ -18,6 +21,13 @@ use Waavi\Translation\Repositories\TranslationRepository;
  */
 class ArboryTranslationServiceProvider extends ServiceProvider
 {
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
+
     /**
      * Register the service provider.
      *
@@ -75,15 +85,17 @@ class ArboryTranslationServiceProvider extends ServiceProvider
      */
     protected function registerLoader()
     {
-        $this->app->singleton( 'translation.loader', function ( Application $app )
-        {
+        $this->app->singleton('translation.loader', function (Application $app) {
             $defaultLocale = $app->getLocale();
+            $cacheTimeout = config('translator.cache.timeout', 60);
 
-            $loader = new DatabaseLoader( $defaultLocale, $app->make( TranslationRepository::class ) );
-            $loader = new CacheLoader( $defaultLocale, $app['translation.cache.repository'], $loader, config( 'translator.cache.timeout', 60 ) );
+            $laravelFileLoader = new LaravelFileLoader($app['files'], base_path('/resources/lang'));
+            $fileLoader = new FileLoader($defaultLocale, $laravelFileLoader);
+            $databaseLoader = new DatabaseLoader($defaultLocale, $app->make(TranslationRepository::class));
+            $loader = new MixedLoader($defaultLocale, $databaseLoader, $fileLoader);
 
-            return $loader;
-        } );
+            return new CacheLoader($defaultLocale, $app['translation.cache.repository'], $loader, $cacheTimeout);
+        });
     }
 
     /**
