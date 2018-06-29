@@ -16,7 +16,7 @@ export default class MapCoordinates {
      */
     registerEventHandlers() {
         let field = this.getField();
-        let name = field.data('data-name');
+        let name = field.data('name');
 
         this.canvas = field.find('.canvas');
         this.coordinatesInput = field.find('input[data-name=\'' + name + '\']');
