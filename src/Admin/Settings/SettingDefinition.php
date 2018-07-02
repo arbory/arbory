@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Settings;
 use Arbory\Base\Admin\Form\Fields\ArboryFile;
 use Arbory\Base\Admin\Form\Fields\ArboryImage;
 use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\Fields\Translatable;
 
 class SettingDefinition
 {
@@ -167,6 +168,14 @@ class SettingDefinition
     public function isImage(): bool
     {
         return $this->getType() === ArboryImage::class;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTranslatable(): bool
+    {
+        return $this->getType() === Translatable::class;
     }
 
     /**

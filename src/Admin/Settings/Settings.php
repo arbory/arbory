@@ -43,6 +43,11 @@ class Settings
             return $definition->getModel()->file ?? $default;
         }
 
+        if( $definition->isTranslatable() )
+        {
+            return $definition->getModel()->getAttribute( 'value' ) ?? $default;
+        }
+
         return $definition->getValue() ?: $default;
     }
 
