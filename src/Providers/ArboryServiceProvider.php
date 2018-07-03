@@ -314,7 +314,7 @@ class ArboryServiceProvider extends ServiceProvider
      */
     private function registerViewComposers()
     {
-        $this->app->make( 'view' )->composer( '*layout*', LayoutViewComposer::class );
+        $this->app->make('view')->composer('arbory::layout.main', LayoutViewComposer::class);
     }
 
     /**
