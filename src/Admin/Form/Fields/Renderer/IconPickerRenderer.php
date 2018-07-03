@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 use Arbory\Base\Admin\Form\Fields\SpriteIcon;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\HtmlString;
 
 class IconPickerRenderer extends SelectFieldRenderer
 {
@@ -20,7 +21,7 @@ class IconPickerRenderer extends SelectFieldRenderer
 
         $input = $this->getSelectInput();
 
-        $field->setValue( $input . $this->getIconSelectElement() );
+        $field->setValue( [ $input,  $this->getIconSelectElement() ] );
 
         return $field->render()->addClass( 'type-icon-picker' );
     }
@@ -39,12 +40,12 @@ class IconPickerRenderer extends SelectFieldRenderer
             $items->append( Html::li( $this->getSvgIconElement( $option ) ) );
         }
 
-        return Html::div(
+        return Html::div([
             Html::div(
-                $this->getSvgIconElement( $field->getValue() )
-            )->addClass( 'selected' )
-            . $items
-        )->addClass( 'contents' );
+                $this->getSvgIconElement($field->getValue())
+            )->addClass('selected'),
+            $items
+        ])->addClass('contents');
     }
 
     /**
@@ -67,13 +68,13 @@ class IconPickerRenderer extends SelectFieldRenderer
             return Html::div()->addClass( 'element' );
         }
 
-        $content = (string) $iconNode->path->asXML();
+        $content = $iconNode->path->asXML();
 
         $attributes = $iconNode->attributes();
         $width = (int) $attributes->width;
         $height = (int) $attributes->height;
 
-        $icon = Html::span( Html::svg( $content )
+        $icon = Html::span( Html::svg( new HtmlString($content) )
             ->addAttributes( [
                 'width' => $width,
                 'height' => $height,
@@ -81,6 +82,6 @@ class IconPickerRenderer extends SelectFieldRenderer
                 'role' => 'presentation',
             ] ) )->addClass( 'icon' );
 
-        return Html::div( $icon . Html::span( $id ) )->addClass( 'element' );
+        return Html::div( [ $icon, Html::span( $id ) ] )->addClass( 'element' );
     }
 }

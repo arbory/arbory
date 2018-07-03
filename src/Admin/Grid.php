@@ -61,11 +61,6 @@ class Grid implements Renderable
     protected $paginated = true;
 
     /**
-     * @var Closure
-     */
-    protected $builder;
-
-    /**
      * @var Builder
      */
     protected $renderer;
@@ -77,17 +72,17 @@ class Grid implements Renderable
 
     /**
      * @param Model $model
-     * @param Closure $builder
+     * @param Closure $layout
      */
-    public function __construct( Model $model, Closure $builder )
+    public function __construct( Model $model, Closure $layout )
     {
         $this->model = $model;
         $this->columns = new Collection();
         $this->rows = new Collection();
-        $this->builder = $builder;
         $this->renderer = new Builder( $this );
 
         $this->setupFilter();
+        $this->setupLayout( $layout );
     }
 
     /**
@@ -96,6 +91,14 @@ class Grid implements Renderable
     public function __toString()
     {
         return (string) $this->render();
+    }
+
+    /**
+     * @param Closure $layout
+     */
+    protected function setupLayout( Closure $layout ): void
+    {
+        $layout($this);
     }
 
     /**
@@ -115,6 +118,14 @@ class Grid implements Renderable
         $this->filter = $filter;
 
         return $this;
+    }
+
+    /**
+     * @return FilterInterface
+     */
+    public function getFilter()
+    {
+        return $this->filter;
     }
 
     /**
@@ -249,8 +260,6 @@ class Grid implements Renderable
      */
     protected function fetchData()
     {
-        call_user_func( $this->builder, $this );
-
         if( method_exists( $this->filter, 'setPaginated' ) )
         {
             $this->filter->setPaginated( $this->paginated );

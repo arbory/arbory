@@ -21,7 +21,7 @@ class FileFieldRenderer extends InputFieldRenderer
     /**
      * @var string
      */
-    protected $type = 'item';
+    protected $type = 'file';
 
     /**
      * @return ArboryFile
@@ -69,21 +69,27 @@ class FileFieldRenderer extends InputFieldRenderer
     {
         $fileSize = (new FileSize($file))->getReadableSize();
 
-        $fileDetails = Html::div();
+        $fileDetails = Html::div()->addClass('file-details');
         $downloadLink = Html::a($file->getOriginalName() . ' / ' . $fileSize)->addAttributes([
             'href' => $file->getUrl(),
-            "target" => "_blank",
-            "download"
+            'target' => '_blank',
+            'download'
         ]);
-        $removeInput =
+        $removeButton =
             Html::button()->addClass('remove fa fa-times')->addAttributes([
-                'type' => 'submit',
-                'name' => Element::formatName($this->field->getNameSpacedName() . '.remove'),
+                'type' => 'button',
             ]);
+
+        $removeInput = Html::input()
+            ->setType('hidden')
+            ->setName($this->field->getNameSpacedName() . '.remove')
+            ->setValue('')
+            ->addClass('remove');
 
         $fileDetails->append($downloadLink);
 
         if (!$this->field->isRequired()) {
+            $fileDetails->append($removeButton);
             $fileDetails->append($removeInput);
         }
 

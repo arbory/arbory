@@ -26,7 +26,13 @@ final class ImageFieldRenderer extends FileFieldRenderer
 
         if( $arboryFile )
         {
-            $value->append( Html::image()->addAttributes( [ 'src' => $image->getUrl( $this->getManipulationParameters() ) ] ) );
+            $value->append(
+                Html::image()
+                    ->addAttributes([
+                        'src' => $image->getUrl($this->getManipulationParameters())
+                    ])
+                    ->addClass('thumbnail')
+            );
             $value->append( $this->createFileDetails( $arboryFile ) );
         }
 

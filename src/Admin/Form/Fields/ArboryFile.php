@@ -31,7 +31,7 @@ class ArboryFile extends AbstractField
     /**
      * @param string $disk
      */
-    public function setDisk( string $disk )
+    public function setDisk(string $disk)
     {
         $this->disk = $disk;
     }
@@ -43,9 +43,8 @@ class ArboryFile extends AbstractField
     {
         $value = parent::getValue();
 
-        if ( is_string( $value ) )
-        {
-            $value = \Arbory\Base\Files\ArboryFile::where( 'id', $value )->first();
+        if (is_string($value)) {
+            $value = \Arbory\Base\Files\ArboryFile::where('id', $value)->first();
         }
 
         return $value;
@@ -56,7 +55,7 @@ class ArboryFile extends AbstractField
      */
     public function render()
     {
-        return ( new FileFieldRenderer( $this ) )->render();
+        return (new FileFieldRenderer($this))->render();
     }
 
     /**
@@ -64,18 +63,16 @@ class ArboryFile extends AbstractField
      */
     protected function deleteCurrentFileIfExists()
     {
-        if ( $this->isRequired() )
-        {
+        if ($this->isRequired()) {
             return;
         }
 
-        $arboryFilesRepository = app( 'arbory_files' );
+        $arboryFilesRepository = app('arbory_files');
 
         $currentFile = $this->getValue();
 
-        if( $currentFile )
-        {
-            $arboryFilesRepository->delete( $currentFile->getKey() );
+        if ($currentFile) {
+            $arboryFilesRepository->delete($currentFile->getKey());
         }
     }
 
@@ -83,7 +80,7 @@ class ArboryFile extends AbstractField
      * @param Request $request
      * @return void
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
     }
 
@@ -94,23 +91,20 @@ class ArboryFile extends AbstractField
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function afterModelSave( Request $request )
+    public function afterModelSave(Request $request)
     {
-        $input = $request->input( $this->getNameSpacedName() );
-        $uploadedFile = $request->file( $this->getNameSpacedName() );
+        $input = $request->input($this->getNameSpacedName());
+        $uploadedFile = $request->file($this->getNameSpacedName());
 
-        if( $input && array_key_exists( 'remove', $input ) )
-        {
+        if (array_get($input, 'remove')) {
             $this->deleteCurrentFileIfExists();
         }
 
-        if( $uploadedFile )
-        {
+        if ($uploadedFile) {
             $this->deleteCurrentFileIfExists();
 
-            $factory = new ArboryFileFactory( new ArboryFilesRepository( $this->getDisk() ) );
-
-            $factory->make( $this->getModel(), $uploadedFile, $this->getName() );
+            $factory = new ArboryFileFactory(new ArboryFilesRepository($this->getDisk()));
+            $factory->make($this->getModel(), $uploadedFile, $this->getName());
         }
     }
 
@@ -119,6 +113,6 @@ class ArboryFile extends AbstractField
      */
     public function isRequired(): bool
     {
-        return in_array( 'arbory_file_required', $this->getRules(), true );
+        return in_array('arbory_file_required', $this->getRules(), true);
     }
 }
