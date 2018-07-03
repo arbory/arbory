@@ -198,16 +198,22 @@ class Builder
      */
     protected function exportOptions()
     {
+        $parameters = request()->all();
+
         return
-            Html::div( [
+            Html::div([
                 Html::span(
-                    trans( 'arbory::resources.export' )
-                )->addClass( 'title' ),
+                    trans('arbory::resources.export')
+                )->addClass('title'),
                 Html::div(
-                    Link::create( $this->url( 'export', [ 'as' => 'xls' ] ) )
-                        ->title( 'xls' )
-                )->addClass( 'options' )
-            ] )->addClass( 'export' );
+                    Link::create($this->url('export', $parameters + ['as' => 'xls']))
+                        ->title('XLS')
+                )->addClass('options'),
+                Html::div(
+                    Link::create($this->url('export', $parameters + ['as' => 'json']))
+                        ->title('JSON')
+                )->addClass('options')
+            ])->addClass('export');
     }
 
     /**
