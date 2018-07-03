@@ -162,11 +162,11 @@ class Column
         {
             return $query->orWhereHas( $this->relationName, function( QueryBuilder $query ) use ( $string )
             {
-                $query->where( $this->relationColumn, 'like', "$string%" );
+                $query->where( $this->relationColumn, 'like', "%$string%" );
             } );
         }
 
-        return $query->where( $this->getName(), 'like', "$string%", 'OR' );
+        return $query->where( $this->getName(), 'like', "%$string%", 'OR' );
     }
 
     /**
