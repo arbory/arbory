@@ -5,6 +5,7 @@ import Sortable, {CONFIG_JQUERY_SORTABLE} from "./Fields/Sortable";
 import Slug from "./Fields/Slug";
 import ObjectRelation from "./Fields/ObjectRelation";
 import MapCoordinates from "./Fields/MapCoordinates";
+import File from "./Fields/File";
 
 export let FIELD_TYPE_DEFINITIONS = [
     {
@@ -43,6 +44,10 @@ export let FIELD_TYPE_DEFINITIONS = [
     {
         handler: MapCoordinates,
         selector: '.coordinate_picker'
+    },
+    {
+        handler: File,
+        selector: '.type-file'
     }
 ];
 
