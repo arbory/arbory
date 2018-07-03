@@ -119,7 +119,6 @@ class UsersController extends Controller
             $grid->column( 'email' )->sortable();
             $grid->column( 'first_name' );
             $grid->column( 'last_name' );
-            $grid->column( 'email' );
             $grid->column( 'roles.name' )
                 ->display( function( Collection $value )
                 {
