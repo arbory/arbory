@@ -46,16 +46,13 @@ class Row implements Renderable
     }
 
     /**
-     * @return Collection
+     * @return Collection|Cell[]
      */
     public function getCells(): Collection
     {
-        return $this->grid->getColumns()->map( function ( Column $column )
-        {
-            $cell = new Cell( $column, $this, $this->model );
-
-            return $cell->render();
-        } );
+        return $this->grid->getColumns()->map(function (Column $column) {
+            return new Cell($column, $this, $this->model);
+        });
     }
 
     /**
@@ -85,8 +82,8 @@ class Row implements Renderable
      */
     public function toArray(): array
     {
-        return $this->getCells()->map( function( Element $cell ) {
-            return strip_tags( $cell );
+        return $this->getCells()->mapWithKeys( function( Cell $cell ) {
+            return [ $cell->getColumn()->getName() => strip_tags( $cell ) ];
         } )->toArray();
     }
 

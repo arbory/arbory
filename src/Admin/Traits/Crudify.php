@@ -2,8 +2,10 @@
 
 namespace Arbory\Base\Admin\Traits;
 
+use Arbory\Base\Admin\Exports\Type\ExcelExport;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Grid\ExportBuilder;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Module;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
@@ -201,19 +203,25 @@ trait Crudify
      * @param Request $request
      * @param string $as
      * @return mixed
-     * @throws \PHPExcel_Exception
      */
-    public function export( Request $request, $as )
+    public function export(Request $request, $as)
     {
         $grid = $this->grid();
+        $grid->setRenderer(new ExportBuilder($grid));
+        $grid->paginate(false);
 
-        \Excel::create( snake_case( class_basename( $this ) ), function( LaravelExcelWriter $excel ) use ( $grid )
-        {
-            $excel->sheet( 'Worksheet', function( LaravelExcelWorksheet $sheet ) use ( $grid )
-            {
-                $sheet->fromArray( $grid->toArray() );
-            } );
-        } )->export( $as );
+        $dataSet = $grid->render();
+
+        switch ($as) {
+            case 'xls':
+                return \Excel::download(new ExcelExport($dataSet), $this->module()->name() . '.xlsx');
+                break;
+
+            case 'json':
+            default:
+                return response()->json($dataSet->getItems());
+                break;
+        }
     }
 
     /**
