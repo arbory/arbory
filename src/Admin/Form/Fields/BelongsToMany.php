@@ -76,8 +76,7 @@ class BelongsToMany extends AbstractField
         foreach( $relatedModel::all() as $modelOption )
         {
             $name = [
-                'resource',
-                $this->getName(),
+                $this->getNameSpacedName(),
                 $modelOption->getKey()
             ];
 
