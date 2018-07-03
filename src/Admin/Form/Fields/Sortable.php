@@ -41,6 +41,23 @@ class Sortable extends AbstractField
     }
 
     /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->getField()->getLabel();
+    }
+
+    /**
+     * @param string $label
+     * @return HasMany
+     */
+    public function setLabel($label)
+    {
+        return $this->getField()->setLabel($label);
+    }
+
+    /**
      * @param Request $request
      * @return void
      */
