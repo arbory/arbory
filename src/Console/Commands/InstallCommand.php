@@ -15,7 +15,7 @@ use InvalidArgumentException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ArboryDatabaseSeeder;
 use Illuminate\Console\DetectsApplicationNamespace;
-use Unisharp\LaravelFilemanager\LaravelFilemanagerServiceProvider;
+use UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider;
 
 /**
  * Class SeedCommand
