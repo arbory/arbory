@@ -5,7 +5,7 @@ namespace Arbory\Base\Providers;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
-use Unisharp\LaravelFilemanager\LaravelFilemanagerServiceProvider;
+use UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider;
 
 class FileManagerServiceProvider extends ServiceProvider
 {
