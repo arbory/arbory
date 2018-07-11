@@ -38,14 +38,23 @@ class Settings
             return $default;
         }
 
+        $model = $definition->getModel();
+
         if( $definition->isFile() )
         {
-            return $definition->getModel()->file ?? $default;
+            return $model->file ?? $default;
         }
 
         if( $definition->isTranslatable() )
         {
-            return $definition->getModel()->getAttribute( 'value' ) ?? $default;
+            if( $model && $model->getAttribute( 'value' ) )
+            {
+                return $model->getAttribute( 'value' );
+            }
+            else
+            {
+                return $default;
+            }
         }
 
         return $definition->getValue() ?: $default;
