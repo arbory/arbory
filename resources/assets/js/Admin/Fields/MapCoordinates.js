@@ -26,6 +26,10 @@ export default class MapCoordinates {
             center: this.getCenterPosition()
         });
 
+        google.maps.event.addDomListener(this.canvas[0], 'mousedown', function(e) {
+            e.stopPropagation();
+        });
+
         this.marker = new google.maps.Marker({map: this.map, draggable: true});
 
         this.search = new google.maps.places.SearchBox(this.getSearchField()[0]);
