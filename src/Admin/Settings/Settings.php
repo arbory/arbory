@@ -16,9 +16,7 @@ class Settings
     /**
      * @param SettingRegistry $settingRegistry
      */
-    public function __construct(
-        SettingRegistry $settingRegistry
-    )
+    public function __construct(SettingRegistry $settingRegistry)
     {
         $this->settingRegistry = $settingRegistry;
         $this->settingRegistry->importFromDatabase();
@@ -29,23 +27,26 @@ class Settings
      * @param mixed $default
      * @return mixed
      */
-    public function get( string $key, $default = null )
+    public function get(string $key, $default = null)
     {
-        $definition = $this->settingRegistry->find( $key );
+        $definition = $this->settingRegistry->find($key);
 
-        if( !$definition )
-        {
+        if (!$definition) {
             return $default;
         }
 
-        if( $definition->isFile() )
-        {
-            return $definition->getModel()->file ?? $default;
+        $model = $definition->getModel();
+
+        if ($definition->isFile()) {
+            return $model->file ?? $default;
         }
 
-        if( $definition->isTranslatable() )
-        {
-            return $definition->getModel()->getAttribute( 'value' ) ?? $default;
+        if ($definition->isTranslatable()) {
+            if ($model && $model->getAttribute('value')) {
+                return $model->getAttribute('value');
+            } else {
+                return $default;
+            }
         }
 
         return $definition->getValue() ?: $default;
@@ -55,9 +56,9 @@ class Settings
      * @param string $key
      * @return bool
      */
-    public function has( string $key )
+    public function has(string $key)
     {
-        return (bool) $this->get( $key );
+        return (bool)$this->get($key);
     }
 
     /**
@@ -66,11 +67,11 @@ class Settings
      * @param mixed $type
      * @return void
      */
-    public function set( string $key, $value, string $type = null )
+    public function set(string $key, $value, string $type = null)
     {
-        $definition = new SettingDefinition( $key, $value, $type );
+        $definition = new SettingDefinition($key, $value, $type);
 
-        $this->settingRegistry->register( $definition );
+        $this->settingRegistry->register($definition);
 
         $definition->save();
     }
@@ -80,9 +81,9 @@ class Settings
      */
     public function all(): Collection
     {
-        return $this->settingRegistry->getSettings()->mapWithKeys( function( SettingDefinition $definition )
+        return $this->settingRegistry->getSettings()->mapWithKeys(function (SettingDefinition $definition)
         {
-            return [ $definition->getKey() => $definition->getValue() ];
-        } );
+            return [$definition->getKey() => $definition->getValue()];
+        });
     }
 }
