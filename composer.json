@@ -47,8 +47,26 @@
         "laravel": {
             "providers": [
                 "Arbory\\Base\\Providers\\ArboryServiceProvider",
-                "Arbory\\Base\\Providers\\NodeServiceProvider"
+                "Arbory\\Base\\Providers\\NodeServiceProvider",
+                "Arbory\\Base\\Providers\\TranslationServiceProvider",
+                "Dimsav\\Translatable\\TranslatableServiceProvider",
+                "Arbory\\Base\\Providers\\FileServiceProvider",
+                "Arbory\\Base\\Providers\\AuthServiceProvider",
+                "Roboc\\Glide\\GlideImageServiceProvider",
+                "Arbory\\Base\\Providers\\SettingsServiceProvider",
+                "Maatwebsite\\Excel\\ExcelServiceProvider",
+                "Arbory\\Base\\Providers\\FileManagerServiceProvider",
+                "Arbory\\Base\\Providers\\RoutesServiceProvider",
+                "Arbory\\Base\\Providers\\LayoutServiceProvider",
+                "Arbory\\Base\\Providers\\ValidationRulesServiceProvider"
             ],
+            "aliases": {
+                "Activation": "Cartalyst\\Sentinel\\Laravel\\Facades\\Activation",
+                "Reminder": "Cartalyst\\Sentinel\\Laravel\\Facades\\Reminde",
+                "Sentinel": "Cartalyst\\Sentinel\\Laravel\\Facades\\Sentinel",
+                "GlideImage": "Roboc\\Glide\\Support\\Facades\\GlideImage",
+                "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+            },
             "dont-discover": [
                 "waavi/translation",
                 "cartalyst/sentinel"

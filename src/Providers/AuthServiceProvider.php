@@ -25,10 +25,10 @@ use Illuminate\Http\Response;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class ArboryAuthServiceProvider
+ * Class AuthServiceProvider
  * @package Arbory\Base\Providers
  */
-class ArboryAuthServiceProvider extends ServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritDoc}
@@ -61,14 +61,13 @@ class ArboryAuthServiceProvider extends ServiceProvider
         $this->registerSession();
         $this->registerCookie();
 
-        $this->app->singleton( 'sentinel.persistence', function ( $app )
-        {
+        $this->app->singleton('sentinel.persistence', function ($app) {
             return new IlluminatePersistenceRepository(
                 $app['sentinel.session'],
                 $app['sentinel.cookie'],
                 Persistence::class
             );
-        } );
+        });
     }
 
     /**
@@ -78,13 +77,12 @@ class ArboryAuthServiceProvider extends ServiceProvider
      */
     protected function registerSession()
     {
-        $this->app->singleton( 'sentinel.session', function ( $app )
-        {
+        $this->app->singleton('sentinel.session', function ($app) {
             return new IlluminateSession(
                 $app['session.store'],
                 'arbory_admin'
             );
-        } );
+        });
     }
 
     /**
@@ -94,14 +92,13 @@ class ArboryAuthServiceProvider extends ServiceProvider
      */
     protected function registerCookie()
     {
-        $this->app->singleton( 'sentinel.cookie', function ( $app )
-        {
+        $this->app->singleton('sentinel.cookie', function ($app) {
             return new IlluminateCookie(
                 $app['request'],
                 $app['cookie'],
                 'arbory_admin'
             );
-        } );
+        });
     }
 
     /**
@@ -113,14 +110,13 @@ class ArboryAuthServiceProvider extends ServiceProvider
     {
         $this->registerHasher();
 
-        $this->app->singleton( 'sentinel.users', function ( $app )
-        {
+        $this->app->singleton('sentinel.users', function ($app) {
             return new IlluminateUserRepository(
                 $app['sentinel.hasher'],
                 $app['events'],
                 User::class
             );
-        } );
+        });
     }
 
     /**
@@ -130,10 +126,9 @@ class ArboryAuthServiceProvider extends ServiceProvider
      */
     protected function registerHasher()
     {
-        $this->app->singleton( 'sentinel.hasher', function ()
-        {
+        $this->app->singleton('sentinel.hasher', function () {
             return new NativeHasher;
-        } );
+        });
     }
 
     /**
@@ -143,10 +138,9 @@ class ArboryAuthServiceProvider extends ServiceProvider
      */
     protected function registerRoles()
     {
-        $this->app->singleton( 'sentinel.roles', function ()
-        {
-            return new IlluminateRoleRepository( Role::class );
-        } );
+        $this->app->singleton('sentinel.roles', function () {
+            return new IlluminateRoleRepository(Role::class);
+        });
     }
 
     /**
@@ -161,13 +155,12 @@ class ArboryAuthServiceProvider extends ServiceProvider
 
         $this->registerThrottleCheckpoint();
 
-        $this->app->singleton( 'sentinel.checkpoints', function ( $app )
-        {
+        $this->app->singleton('sentinel.checkpoints', function ($app) {
             return [
                 $app["sentinel.checkpoint.throttle"],
                 $app["sentinel.checkpoint.activation"]
             ];
-        } );
+        });
     }
 
     /**
@@ -179,10 +172,9 @@ class ArboryAuthServiceProvider extends ServiceProvider
     {
         $this->registerActivations();
 
-        $this->app->singleton( 'sentinel.checkpoint.activation', function ( $app )
-        {
-            return new ActivationCheckpoint( $app['sentinel.activations'] );
-        } );
+        $this->app->singleton('sentinel.checkpoint.activation', function ($app) {
+            return new ActivationCheckpoint($app['sentinel.activations']);
+        });
     }
 
     /**
@@ -192,13 +184,12 @@ class ArboryAuthServiceProvider extends ServiceProvider
      */
     protected function registerActivations()
     {
-        $this->app->singleton( 'sentinel.activations', function ( $app )
-        {
+        $this->app->singleton('sentinel.activations', function ($app) {
             return new IlluminateActivationRepository(
                 Activation::class,
-                $app['config']->get( 'arbory.auth.activations.expires', 259200 )
+                $app['config']->get('arbory.auth.activations.expires', 259200)
             );
-        } );
+        });
     }
 
     /**
@@ -210,13 +201,12 @@ class ArboryAuthServiceProvider extends ServiceProvider
     {
         $this->registerThrottling();
 
-        $this->app->singleton( 'sentinel.checkpoint.throttle', function ( $app )
-        {
+        $this->app->singleton('sentinel.checkpoint.throttle', function ($app) {
             return new ThrottleCheckpoint(
                 $app['sentinel.throttling'],
                 $app['request']->getClientIp()
             );
-        } );
+        });
     }
 
     /**
@@ -226,18 +216,17 @@ class ArboryAuthServiceProvider extends ServiceProvider
      */
     protected function registerThrottling()
     {
-        $this->app->singleton( 'sentinel.throttling', function ( $app )
-        {
-            $config = $app['config']->get( 'arbory.auth.throttling' );
+        $this->app->singleton('sentinel.throttling', function ($app) {
+            $config = $app['config']->get('arbory.auth.throttling');
 
-            $globalInterval = array_get( $config, 'global.interval' );
-            $globalThresholds = array_get( $config, 'global.thresholds' );
+            $globalInterval = array_get($config, 'global.interval');
+            $globalThresholds = array_get($config, 'global.thresholds');
 
-            $ipInterval = array_get( $config, 'ip.interval' );
-            $ipThresholds = array_get( $config, 'ip.thresholds' );
+            $ipInterval = array_get($config, 'ip.interval');
+            $ipThresholds = array_get($config, 'ip.thresholds');
 
-            $userInterval = array_get( $config, 'user.interval' );
-            $userThresholds = array_get( $config, 'user.thresholds' );
+            $userInterval = array_get($config, 'user.interval');
+            $userThresholds = array_get($config, 'user.thresholds');
 
             return new IlluminateThrottleRepository(
                 Throttle::class,
@@ -248,7 +237,7 @@ class ArboryAuthServiceProvider extends ServiceProvider
                 $userInterval,
                 $userThresholds
             );
-        } );
+        });
     }
 
     /**
@@ -258,14 +247,13 @@ class ArboryAuthServiceProvider extends ServiceProvider
      */
     protected function registerReminders()
     {
-        $this->app->singleton( 'sentinel.reminders', function ( $app )
-        {
+        $this->app->singleton('sentinel.reminders', function ($app) {
             return new IlluminateReminderRepository(
                 $app['sentinel.users'],
                 Reminder::class,
-                $app['config']->get( 'arbory.auth.reminders.expires', 14400 )
+                $app['config']->get('arbory.auth.reminders.expires', 14400)
             );
-        } );
+        });
     }
 
     /**
@@ -275,8 +263,7 @@ class ArboryAuthServiceProvider extends ServiceProvider
      */
     protected function registerSentinel()
     {
-        $this->app->singleton( 'sentinel', function ( $app )
-        {
+        $this->app->singleton('sentinel', function ($app) {
             $sentinel = new Sentinel(
                 $app['sentinel.persistence'],
                 $app['sentinel.users'],
@@ -285,43 +272,38 @@ class ArboryAuthServiceProvider extends ServiceProvider
                 $app['events']
             );
 
-            if( isset( $app['sentinel.checkpoints'] ) )
-            {
-                foreach( $app['sentinel.checkpoints'] as $key => $checkpoint )
-                {
-                    $sentinel->addCheckpoint( $key, $checkpoint );
+            if (isset($app['sentinel.checkpoints'])) {
+                foreach ($app['sentinel.checkpoints'] as $key => $checkpoint) {
+                    $sentinel->addCheckpoint($key, $checkpoint);
                 }
             }
 
-            $sentinel->setActivationRepository( $app['sentinel.activations'] );
-            $sentinel->setReminderRepository( $app['sentinel.reminders'] );
+            $sentinel->setActivationRepository($app['sentinel.activations']);
+            $sentinel->setReminderRepository($app['sentinel.reminders']);
 
-            $sentinel->setRequestCredentials( function () use ( $app )
-            {
+            $sentinel->setRequestCredentials(function () use ($app) {
                 $request = $app['request'];
 
                 $login = $request->getUser();
                 $password = $request->getPassword();
 
-                if( $login === null && $password === null )
-                {
+                if ($login === null && $password === null) {
                     return;
                 }
 
-                return compact( 'login', 'password' );
-            } );
+                return compact('login', 'password');
+            });
 
-            $sentinel->creatingBasicResponse( function ()
-            {
-                $headers = [ 'WWW-Authenticate' => 'Basic' ];
+            $sentinel->creatingBasicResponse(function () {
+                $headers = ['WWW-Authenticate' => 'Basic'];
 
-                return new Response( 'Invalid credentials.', 401, $headers );
-            } );
+                return new Response('Invalid credentials.', 401, $headers);
+            });
 
             return $sentinel;
-        } );
+        });
 
-        $this->app->alias( 'sentinel', 'Cartalyst\Sentinel\Sentinel' );
+        $this->app->alias('sentinel', 'Cartalyst\Sentinel\Sentinel');
     }
 
     /**
@@ -353,7 +335,7 @@ class ArboryAuthServiceProvider extends ServiceProvider
      */
     protected function garbageCollect()
     {
-        $config = $this->app['config']->get( 'arbory.auth' );
+        $config = $this->app['config']->get('arbory.auth');
 
         $this->sweep(
             $this->app['sentinel.activations'], $config['activations']['lottery']
@@ -371,16 +353,12 @@ class ArboryAuthServiceProvider extends ServiceProvider
      * @param  array $lottery
      * @return void
      */
-    protected function sweep( $repository, array $lottery )
+    protected function sweep($repository, array $lottery)
     {
-        if( $this->configHitsLottery( $lottery ) )
-        {
-            try
-            {
+        if ($this->configHitsLottery($lottery)) {
+            try {
                 $repository->removeExpired();
-            }
-            catch( Exception $e )
-            {
+            } catch (Exception $e) {
             }
         }
     }
@@ -391,8 +369,8 @@ class ArboryAuthServiceProvider extends ServiceProvider
      * @param  array $lottery
      * @return bool
      */
-    protected function configHitsLottery( array $lottery )
+    protected function configHitsLottery(array $lottery)
     {
-        return mt_rand( 1, $lottery[1] ) <= $lottery[0];
+        return mt_rand(1, $lottery[1]) <= $lottery[0];
     }
 }

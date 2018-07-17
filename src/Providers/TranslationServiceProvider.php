@@ -14,12 +14,11 @@ use Waavi\Translation\Loaders\MixedLoader;
 use Waavi\Translation\Repositories\LanguageRepository;
 use Waavi\Translation\Repositories\TranslationRepository;
 
-
 /**
- * Class ArboryTranslationServiceProvider
+ * Class TranslationServiceProvider
  * @package Arbory\Base\Providers
  */
-class ArboryTranslationServiceProvider extends ServiceProvider
+class TranslationServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -38,18 +37,17 @@ class ArboryTranslationServiceProvider extends ServiceProvider
         $this->registerCacheRepository();
         $this->registerLoader();
 
-        $this->app->singleton( 'translator', function ( Application $app )
-        {
-            $trans = new Translator( $app['translation.loader'], $app->getLocale() );
-            $trans->setFallback( config( 'app.fallback_locale' ) );
+        $this->app->singleton('translator', function (Application $app) {
+            $trans = new Translator($app['translation.loader'], $app->getLocale());
+            $trans->setFallback(config('app.fallback_locale'));
 
             return $trans;
-        } );
+        });
 
         $this->registerFileLoader();
         $this->registerCacheFlusher();
 
-        $this->loadTranslationsFrom( __DIR__ . '/../../resources/lang', 'arbory' );
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'arbory');
     }
 
     /**
@@ -59,7 +57,7 @@ class ArboryTranslationServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [ 'translation.cache.repository', 'translation.loader' ];
+        return ['translation.cache.repository', 'translation.loader'];
     }
 
     /**
@@ -69,13 +67,12 @@ class ArboryTranslationServiceProvider extends ServiceProvider
      */
     public function registerCacheRepository()
     {
-        $this->app->singleton( 'translation.cache.repository', function ( $app )
-        {
+        $this->app->singleton('translation.cache.repository', function ($app) {
             return RepositoryFactory::make(
                 $app['cache']->getStore(),
                 'translations'
             );
-        } );
+        });
     }
 
     /**
@@ -106,14 +103,20 @@ class ArboryTranslationServiceProvider extends ServiceProvider
     protected function registerFileLoader()
     {
         $app = $this->app;
-        $defaultLocale = config( 'app.locale' );
-        $languageRepository = $app->make( LanguageRepository::class );
-        $translationRepository = $app->make( TranslationRepository::class );
-        $translationsPath = base_path( 'resources/lang' );
-        $command = new TranslationsLoaderCommand( $languageRepository, $translationRepository, $app['files'], $translationsPath, $defaultLocale );
+        $defaultLocale = config('app.locale');
+        $languageRepository = $app->make(LanguageRepository::class);
+        $translationRepository = $app->make(TranslationRepository::class);
+        $translationsPath = base_path('resources/lang');
+        $command = new TranslationsLoaderCommand(
+            $languageRepository,
+            $translationRepository,
+            $app['files'],
+            $translationsPath,
+            $defaultLocale
+        );
 
         $this->app['command.translator:load'] = $command;
-        $this->commands( 'command.translator:load' );
+        $this->commands('command.translator:load');
     }
 
     /**
@@ -123,9 +126,9 @@ class ArboryTranslationServiceProvider extends ServiceProvider
      */
     public function registerCacheFlusher()
     {
-        $command = new TranslationsCacheFlushCommand( $this->app['translation.cache.repository'], true );
+        $command = new TranslationsCacheFlushCommand($this->app['translation.cache.repository'], true);
 
         $this->app['command.translator:flush'] = $command;
-        $this->commands( 'command.translator:flush' );
+        $this->commands('command.translator:flush');
     }
 }
