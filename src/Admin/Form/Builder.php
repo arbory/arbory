@@ -9,22 +9,18 @@ use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
  * Class Builder
  * @package Arbory\Base\Admin\Form
  */
-class Builder
+class Builder implements Renderable
 {
     /**
      * @var Form
      */
     protected $form;
-
-    /**
-     * @var string
-     */
-    protected $action;
 
     /**
      * Builder constructor.
@@ -33,35 +29,6 @@ class Builder
     public function __construct( Form $form )
     {
         $this->form = $form;
-    }
-
-    /**
-     * @param $action
-     * @return $this
-     */
-    public function setAction( $action )
-    {
-        $this->action = $action;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAction()
-    {
-        if( $this->action )
-        {
-            return $this->action;
-        }
-
-        if( $this->form->getModel()->getKey() )
-        {
-            return $this->url( 'update', $this->form->getModel()->getKey() );
-        }
-
-        return $this->url( 'store' );
     }
 
     /**
@@ -145,7 +112,7 @@ class Builder
             'enctype' => 'multipart/form-data',
             'accept-charset' => 'UTF-8',
             'method' => 'post',
-            'action' => $this->getAction(),
+            'action' => $this->form->getAction(),
             'data-remote' => 'true',
             'data-remote-validation' => 'true',
             'data-type' => 'json',

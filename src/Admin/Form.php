@@ -2,15 +2,11 @@
 
 namespace Arbory\Base\Admin;
 
-use Arbory\Base\Admin\Form\Builder;
 use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Validator;
 use Arbory\Base\Admin\Traits\EventDispatcher;
+use Arbory\Base\Admin\Traits\Renderable;
 use Arbory\Base\Content\Relation;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Services\FieldTypeRegistry;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -18,15 +14,21 @@ use Illuminate\Http\Request;
  * Class Form
  * @package Arbory\Base\Admin
  */
-class Form implements Renderable
+class Form
 {
     use ModuleComponent;
     use EventDispatcher;
+    use Renderable;
 
     /**
      * @var Model
      */
     protected $model;
+
+    /**
+     * @var string
+     */
+    protected $action;
 
     /**
      * @var FieldSet
@@ -37,11 +39,6 @@ class Form implements Renderable
      * @var string
      */
     protected $title;
-
-    /**
-     * @var Builder
-     */
-    protected $builder;
 
     /**
      * @var Validator
@@ -56,18 +53,9 @@ class Form implements Renderable
     {
         $this->model = $model;
         $this->fields = new FieldSet( $model, 'resource' );
-        $this->builder = new Builder( $this );
         $this->validator = app( Validator::class );
 
         $this->registerEventListeners();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->render();
     }
 
     /**
@@ -82,7 +70,7 @@ class Form implements Renderable
     }
 
     /**
-     * @return string|\Symfony\Component\Translation\TranslatorInterface
+     * @return string
      */
     public function getTitle()
     {
@@ -105,6 +93,33 @@ class Form implements Renderable
     }
 
     /**
+     * @param $action
+     * @return $this
+     */
+    public function setAction($action)
+    {
+        $this->action = $action;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        if ($this->action) {
+            return $this->action;
+        }
+
+        if ($this->getModel()->getKey()) {
+            return $this->getModule()->url('update', $this->getModel()->getKey());
+        }
+
+        return $this->getModule()->url('store');
+    }
+
+    /**
      * @return FieldSet
      */
     public function fields()
@@ -121,17 +136,6 @@ class Form implements Renderable
         $fieldConstructor($this->fields(), $this->getModel());
 
         return $this;
-    }
-
-    /**
-     * @param FieldInterface $field
-     * @return FieldInterface
-     */
-    public function addField( FieldInterface $field )
-    {
-        $this->fields()->push( $field );
-
-        return $field;
     }
 
     /**
@@ -216,24 +220,5 @@ class Form implements Renderable
                 }
             }
         );
-    }
-
-    /**
-     * @param $action
-     * @return $this
-     */
-    public function setAction( $action )
-    {
-        $this->builder->setAction( $action );
-
-        return $this;
-    }
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Content|Element
-     */
-    public function render()
-    {
-        return $this->builder->render();
     }
 }

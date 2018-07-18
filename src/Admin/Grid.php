@@ -2,14 +2,14 @@
 
 namespace Arbory\Base\Admin;
 
-use Closure;
-use Arbory\Base\Admin\Grid\Builder;
 use Arbory\Base\Admin\Grid\Column;
 use Arbory\Base\Admin\Grid\Filter;
 use Arbory\Base\Admin\Grid\FilterInterface;
 use Arbory\Base\Admin\Grid\Row;
+use Arbory\Base\Admin\Traits\Renderable;
 use Arbory\Base\Html\Elements\Content;
-use Illuminate\Contracts\Support\Renderable;
+use Closure;
+use Illuminate\Contracts\Support\Renderable as RenderableInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -18,9 +18,10 @@ use Illuminate\Support\Collection;
  * Class Grid
  * @package Arbory\Base\Admin
  */
-class Grid implements Renderable
+class Grid
 {
     use ModuleComponent;
+    use Renderable;
 
     const FOOTER_SIDE_PRIMARY = 'primary';
     const FOOTER_SIDE_SECONDARY = 'secondary';
@@ -61,11 +62,6 @@ class Grid implements Renderable
     protected $paginated = true;
 
     /**
-     * @var Builder
-     */
-    protected $renderer;
-
-    /**
      * @var Filter
      */
     protected $filter;
@@ -79,7 +75,6 @@ class Grid implements Renderable
         $this->model = $model;
         $this->columns = new Collection();
         $this->rows = new Collection();
-        $this->renderer = new Builder( $this );
 
         $this->setupFilter();
     }
@@ -131,11 +126,11 @@ class Grid implements Renderable
     }
 
     /**
-     * @param Renderable $tool
+     * @param RenderableInterface $tool
      * @param string|null $side
      * @return void
      */
-    public function addTool( Renderable $tool, string $side = null )
+    public function addTool( RenderableInterface $tool, string $side = null )
     {
         $this->tools[] = [ $tool, $side ?: self::FOOTER_SIDE_SECONDARY ];
     }
@@ -175,6 +170,15 @@ class Grid implements Renderable
         return $this;
     }
 
+    public function getItems()
+    {
+        if ($this->items === null) {
+            $this->items = $this->fetchData();
+        }
+
+        return $this->items;
+    }
+
     /**
      * @param bool $paginate
      * @return Grid
@@ -184,14 +188,6 @@ class Grid implements Renderable
         $this->paginated = $paginate;
 
         return $this;
-    }
-
-    /**
-     * @param $renderer
-     */
-    public function setRenderer( $renderer )
-    {
-        $this->renderer = $renderer;
     }
 
     /**
@@ -275,12 +271,9 @@ class Grid implements Renderable
      */
     public function render()
     {
-        $result = $this->fetchData();
-        $items = $this->items ?? $result;
+        $this->buildRows( $this->getItems() );
 
-        $this->buildRows( $items );
-
-        return $this->renderer->render( $items );
+        return $this->renderer->render();
     }
 
     /**
