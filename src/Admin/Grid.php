@@ -74,7 +74,7 @@ class Grid implements Renderable
      * @param Model $model
      * @param Closure $layout
      */
-    public function __construct( Model $model, Closure $layout )
+    public function __construct( Model $model )
     {
         $this->model = $model;
         $this->columns = new Collection();
@@ -82,7 +82,6 @@ class Grid implements Renderable
         $this->renderer = new Builder( $this );
 
         $this->setupFilter();
-        $this->setupLayout( $layout );
     }
 
     /**
@@ -94,11 +93,14 @@ class Grid implements Renderable
     }
 
     /**
-     * @param Closure $layout
+     * @param Closure $constructor
+     * @return $this
      */
-    protected function setupLayout( Closure $layout ): void
+    public function setColumns( Closure $constructor ): self
     {
-        $layout($this);
+        $constructor($this);
+
+        return $this;
     }
 
     /**

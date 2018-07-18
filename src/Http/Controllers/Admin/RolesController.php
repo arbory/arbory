@@ -72,14 +72,13 @@ class RolesController extends Controller
     /**
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
-        return $this->module()->grid( $this->resource(), function ( Grid $grid )
-        {
-            $grid->column( 'name' )->sortable();
-            $grid->column( 'created_at' )->sortable();
-            $grid->column( 'updated_at' );
-        } );
+        return $grid->setColumns(function (Grid $grid) {
+            $grid->column('name')->sortable();
+            $grid->column('created_at')->sortable();
+            $grid->column('updated_at');
+        });
     }
 
     /**

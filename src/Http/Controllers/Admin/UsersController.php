@@ -2,7 +2,6 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Activation;
 use Arbory\Base\Admin\Admin;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
@@ -12,7 +11,6 @@ use Arbory\Base\Auth\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
-use Sentinel;
 
 /**
  * Class UsersController
@@ -100,36 +98,32 @@ class UsersController extends Controller
     /**
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
-        return $this->module()->grid( $this->resource(), function ( Grid $grid )
-        {
-            $grid->column( 'email', 'avatar' )
-                ->display( function ( $value )
-                {
+        return $grid->setColumns(function (Grid $grid) {
+            $grid->column('email', 'avatar')
+                ->display(function ($value) {
                     return Html::span(
-                        Html::image()->addAttributes( [
-                            'src' => '//www.gravatar.com/avatar/' . md5( $value ) . '?d=retro',
+                        Html::image()->addAttributes([
+                            'src' => '//www.gravatar.com/avatar/' . md5($value) . '?d=retro',
                             'width' => 32,
                             'alt' => $value,
-                        ] )
+                        ])
                     );
-                } );
-            $grid->column( 'email' )->sortable();
-            $grid->column( 'first_name' );
-            $grid->column( 'last_name' );
-            $grid->column( 'roles.name' )
-                ->display( function( Collection $value )
-                {
+                });
+            $grid->column('email')->sortable();
+            $grid->column('first_name');
+            $grid->column('last_name');
+            $grid->column('roles.name')
+                ->display(function (Collection $value) {
                     return Html::ul(
-                        $value->map( function( $role )
-                        {
-                            return Html::li( (string) $role );
-                        } )->toArray()
+                        $value->map(function ($role) {
+                            return Html::li((string)$role);
+                        })->toArray()
                     );
-                } );
-            $grid->column( 'last_login' );
-        } );
+                });
+            $grid->column('last_login');
+        });
     }
 
     /**

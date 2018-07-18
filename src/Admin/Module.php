@@ -93,18 +93,6 @@ class Module
     }
 
     /**
-     * @param Model $model
-     * @return Grid
-     */
-    public function grid( Model $model, Closure $builder )
-    {
-        $grid = new Grid( $model, $builder );
-        $grid->setModule( $this );
-
-        return $grid;
-    }
-
-    /**
      * @return string
      */
     public function name()

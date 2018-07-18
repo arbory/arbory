@@ -82,15 +82,14 @@ class NodesController extends Controller
     }
 
     /**
+     * @param Grid $grid
      * @return Grid
      */
-    public function grid()
+    public function grid( Grid $grid)
     {
-        $grid = $this->module()->grid( $this->resource(), function ( Grid $grid )
-        {
-            $grid->column( 'name' );
-        } );
-
+        $grid->setColumns(function (Grid $grid) {
+            $grid->column('name');
+        });
         $grid->setFilter( new Filter( $this->resource() ) );
         $grid->setRenderer( new Renderer( $grid ) );
 

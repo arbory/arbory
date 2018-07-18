@@ -60,52 +60,48 @@ class SettingsController extends Controller
     }
 
     /**
+     * @param Grid $grid
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
-        $grid = $this->module()->grid( $this->resource(), function( Grid $grid )
-        {
-            $grid->column( 'name' );
-            $grid->column( 'value' )->display( function( $value, $column, Setting $setting )
-            {
+        $grid->setColumns(function (Grid $grid) {
+            $grid->column('name');
+            $grid->column('value')->display(function ($value, $column, Setting $setting) {
                 $container = Html::span();
                 $definition = $setting->getDefinition();
 
-                if( $definition->isFile() )
-                {
+                if ($definition->isFile()) {
                     /** @var ArboryFile $file */
                     $file = $setting->file;
 
-                    if( !$file )
-                    {
+                    if (!$file) {
                         return null;
                     }
 
-                    if( $definition->isImage() )
-                    {
-                        return $container->append( Html::image()->addAttributes( [
+                    if ($definition->isImage()) {
+                        return $container->append(Html::image()->addAttributes([
                             'src' => $file->getUrl(),
                             'width' => 64,
                             'height' => 64
-                        ] ) );
+                        ]));
                     }
 
                     return $container->append(
-                        Html::link( $file->getOriginalName() )->addAttributes( [
+                        Html::link($file->getOriginalName())->addAttributes([
                             'href' => $file->getUrl()
-                        ] )
+                        ])
                     );
                 }
 
-                return $container->append( $value );
-            } );
-        } );
+                return $container->append($value);
+            });
+        });
 
         return $grid
-            ->tools( [] )
-            ->items( $this->getSettings() )
-            ->paginate( false );
+            ->tools([])
+            ->items($this->getSettings())
+            ->paginate(false);
     }
 
     /**

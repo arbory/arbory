@@ -65,11 +65,24 @@ trait Crudify
     }
 
     /**
+     * @param Grid $grid
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
-        return $this->module()->grid( $this->resource(), function ( Grid $grid ) { return $grid; } );
+        return $grid;
+    }
+
+    /**
+     * @param Model $model
+     * @return Grid
+     */
+    protected function buildGrid(Model $model)
+    {
+        $grid = new Grid($model);
+        $grid->setModule($this->module());
+
+        return $this->grid($grid);
     }
 
     /**
@@ -77,12 +90,11 @@ trait Crudify
      */
     public function index()
     {
-        $layout = new Layout( function ( Layout $layout )
-        {
-            $layout->body( $this->grid( $this->resource() ) );
-        } );
+        $layout = new Layout(function (Layout $layout) {
+            $layout->body($this->buildGrid($this->resource()));
+        });
 
-        $layout->bodyClass( 'controller-' . str_slug( $this->module()->name() ) . ' view-index' );
+        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index');
 
         return $layout;
     }
@@ -204,19 +216,18 @@ trait Crudify
 
 
     /**
-     * @param Request $request
-     * @param string $as
+     * @param string $type
      * @return mixed
      */
-    public function export(Request $request, $as)
+    public function export($type)
     {
-        $grid = $this->grid();
+        $grid = $this->buildGrid($this->resource());
         $grid->setRenderer(new ExportBuilder($grid));
         $grid->paginate(false);
 
         $dataSet = $grid->render();
 
-        switch ($as) {
+        switch ($type) {
             case 'xls':
                 return \Excel::download(new ExcelExport($dataSet), $this->module()->name() . '.xlsx');
                 break;

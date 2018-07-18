@@ -30,15 +30,14 @@ class RedirectsController extends Controller
     }
 
     /**
+     * @param Grid $grid
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
-        $grid = $this->module()->grid($this->resource(), function (Grid $grid) {
+        return $grid->setColumns(function (Grid $grid) {
             $grid->column('from_url');
             $grid->column('to_url');
         });
-
-        return $grid;
     }
 }

@@ -47,25 +47,24 @@ class LanguageController extends Controller
     }
 
     /**
+     * @param Grid $grid
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
-        $grid = $this->module()->grid( $this->resource(), function( Grid $grid )
-        {
-            $grid->column( 'locale' );
-            $grid->column( 'name' );
-            $grid->column( 'status' )->display( function( $_, $__, Language $language )
-            {
-                return Html::span( $language->trashed() ?
-                    trans( 'arbory::resources.status.disabled' ) : trans( 'arbory::resources.status.enabled' )
+        $grid->setColumns(function (Grid $grid) {
+            $grid->column('locale');
+            $grid->column('name');
+            $grid->column('status')->display(function ($_, $__, Language $language) {
+                return Html::span($language->trashed() ?
+                    trans('arbory::resources.status.disabled') : trans('arbory::resources.status.enabled')
                 );
-            } );
-        } );
+            });
+        });
 
         return $grid
-            ->items( Language::withTrashed()->get() )
-            ->paginate( false );
+            ->items(Language::withTrashed()->get())
+            ->paginate(false);
     }
 
     /**
