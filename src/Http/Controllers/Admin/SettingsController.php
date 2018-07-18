@@ -3,7 +3,6 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Grid;
@@ -16,7 +15,6 @@ use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Services\SettingFactory;
 use Arbory\Base\Services\SettingRegistry;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 
@@ -46,18 +44,17 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param Model $model
+     * @param Form $form
      * @return Form
      */
-    protected function form( Model $model )
+    protected function form(Form $form)
     {
-        $definition = $this->settingRegistry->find( $model->getKey() );
+        $definition = $this->settingRegistry->find($form->getModel()->getKey());
 
-        $form = $this->module()->form( $model, function( Form $form ) use ( $definition )
-        {
-            $form->addField( $this->getField( $form, $definition ) );
-            $form->addField( new Hidden( 'type' ) )->setValue( $definition->getType() );
-        } );
+        $form->setFields(function (Form\FieldSet $fields) use ($definition) {
+            $fields->add($this->getField($fields, $definition));
+            $fields->hidden('type')->setValue($definition->getType());
+        });
 
         return $form;
     }
@@ -112,11 +109,11 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param Form $form
+     * @param Form\FieldSet $fields
      * @param SettingDefinition $definition
-     * @return Form\Fields\AbstractField
+     * @return Form\Fields\AbstractField|Translatable
      */
-    protected function getField( Form $form, SettingDefinition $definition )
+    protected function getField( Form\FieldSet $fields, SettingDefinition $definition )
     {
         /**
          * @var Form\Fields\AbstractField $field
@@ -131,7 +128,7 @@ class SettingsController extends Controller
             $innerField = new $innerType( 'value' );
 
             $field = new Translatable( $innerField );
-            $field->setFieldSet( $form->fields() );
+            $field->setFieldSet( $fields );
 
             if( !$field->getValue() || $field->getValue()->isEmpty() )
             {
@@ -165,9 +162,9 @@ class SettingsController extends Controller
     {
         /** @var SettingFactory $factory */
         $factory = \App::make( SettingFactory::class );
-        $result = null;
+        $result = [];
 
-        foreach( $this->settingRegistry->getSettings() as $key => $_ )
+        foreach( $this->settingRegistry->getSettings()->keys() as $key )
         {
             $result[ $key ] = $factory->build( $key );
         }

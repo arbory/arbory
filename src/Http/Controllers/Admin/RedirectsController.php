@@ -3,11 +3,9 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Pages\Redirect;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 
 class RedirectsController extends Controller
@@ -20,18 +18,15 @@ class RedirectsController extends Controller
     protected $resource = Redirect::class;
 
     /**
-     * @param Model $model
+     * @param Form $form
      * @return Form
      */
-    protected function form( Model $model )
+    protected function form(Form $form)
     {
-        $form = $this->module()->form( $model, function( Form $form )
-        {
-            $form->addField( new Text( 'from_url' ) )->rules( 'required' );
-            $form->addField( new Text( 'to_url' ) )->rules( 'required' );
-        } );
-
-        return $form;
+        return $form->setFields(function (Form\FieldSet $fields) {
+            $fields->text('from_url')->rules('required');
+            $fields->text('to_url')->rules('required');
+        });
     }
 
     /**
@@ -39,11 +34,10 @@ class RedirectsController extends Controller
      */
     public function grid()
     {
-        $grid = $this->module()->grid( $this->resource(), function( Grid $grid )
-        {
-            $grid->column( 'from_url' );
-            $grid->column( 'to_url' );
-        } );
+        $grid = $this->module()->grid($this->resource(), function (Grid $grid) {
+            $grid->column('from_url');
+            $grid->column('to_url');
+        });
 
         return $grid;
     }

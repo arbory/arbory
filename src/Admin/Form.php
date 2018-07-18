@@ -9,6 +9,7 @@ use Arbory\Base\Admin\Form\Validator;
 use Arbory\Base\Admin\Traits\EventDispatcher;
 use Arbory\Base\Content\Relation;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Services\FieldTypeRegistry;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -50,16 +51,13 @@ class Form implements Renderable
     /**
      * Form constructor.
      * @param Model $model
-     * @param $callback
      */
-    public function __construct( Model $model, $callback )
+    public function __construct( Model $model )
     {
         $this->model = $model;
         $this->fields = new FieldSet( $model, 'resource' );
         $this->builder = new Builder( $this );
         $this->validator = app( Validator::class );
-
-        $callback( $this );
 
         $this->registerEventListeners();
     }
@@ -112,6 +110,17 @@ class Form implements Renderable
     public function fields()
     {
         return $this->fields;
+    }
+
+    /**
+     * @param \Closure $fieldConstructor
+     * @return $this
+     */
+    public function setFields(\Closure $fieldConstructor)
+    {
+        $fieldConstructor($this->fields(), $this->getModel());
+
+        return $this;
     }
 
     /**
