@@ -4,9 +4,9 @@ namespace Arbory\Base\Admin\Grid;
 
 use Arbory\Base\Admin\Exports\DataSetExport;
 use Arbory\Base\Admin\Grid as AdminGrid;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Renderable;
 
-class ExportBuilder
+class ExportBuilder implements Renderable
 {
     /**
      * @var AdminGrid

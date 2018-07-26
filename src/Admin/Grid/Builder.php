@@ -11,7 +11,7 @@ use Arbory\Base\Admin\Widgets\SearchField;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -19,7 +19,7 @@ use Illuminate\Support\Collection;
  * Class Builder
  * @package Arbory\Base\Admin\Grid
  */
-class Builder
+class Builder implements Renderable
 {
     /**
      * @var Grid
@@ -275,12 +275,11 @@ class Builder
     }
 
     /**
-     * @param Collection|Paginator $items
      * @return Content
      */
-    public function render( $items )
+    public function render()
     {
-        $this->items = $items;
+        $this->items = $this->grid->getItems();
 
         return new Content( [
             Html::header( [

@@ -5,8 +5,8 @@
     "type": "library",
     "license": "MIT",
     "support": {
-      "issues": "https://github.com/arbory/arbory/issues",
-      "source": "https://github.com/arbory/arbory"
+        "issues": "https://github.com/arbory/arbory/issues",
+        "source": "https://github.com/arbory/arbory"
     },
     "authors": [
         {
@@ -55,6 +55,7 @@
                 "Roboc\\Glide\\GlideImageServiceProvider",
                 "Arbory\\Base\\Providers\\SettingsServiceProvider",
                 "Maatwebsite\\Excel\\ExcelServiceProvider",
+                "Arbory\\Base\\Providers\\FormBuilderServiceProvider",
                 "Arbory\\Base\\Providers\\FileManagerServiceProvider",
                 "Arbory\\Base\\Providers\\RoutesServiceProvider",
                 "Arbory\\Base\\Providers\\LayoutServiceProvider",
@@ -72,5 +73,8 @@
                 "cartalyst/sentinel"
             ]
         }
+    },
+    "config": {
+        "component-dir": "vendor/components"
     }
 }

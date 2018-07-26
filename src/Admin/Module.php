@@ -93,32 +93,6 @@ class Module
     }
 
     /**
-     * @param Model $model
-     * @param Closure $closure
-     * @return Form
-     */
-    public function form( Model $model, Closure $closure )
-    {
-        $form = new Form( $model, $closure );
-        $form->setModule( $this );
-
-        return $form;
-    }
-
-    /**
-     * @param Model $model
-     * @param Closure $builder
-     * @return Grid
-     */
-    public function grid( Model $model, Closure $builder )
-    {
-        $grid = new Grid( $model, $builder );
-        $grid->setModule( $this );
-
-        return $grid;
-    }
-
-    /**
      * @return string
      */
     public function name()
