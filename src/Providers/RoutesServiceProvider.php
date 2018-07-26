@@ -8,7 +8,7 @@ use Arbory\Base\Http\Middleware\ArboryAdminHasAccessMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminHasAllowedIpMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminInRoleMiddleware;
 use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
