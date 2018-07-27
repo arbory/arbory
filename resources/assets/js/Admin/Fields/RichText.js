@@ -31,9 +31,9 @@ export default class RichText {
             width: '100%',
             height: textarea.outerHeight(),
             filebrowserImageBrowseUrl: '/admin/filemanager?type=Images',
-            filebrowserImageUploadUrl: '/admin/filemanager/upload?type=Images&_token=' + token,
+            filebrowserImageUploadUrl: '/admin/filemanager/upload?type=Images&responseType=json&_token=' + token,
             filebrowserBrowseUrl: '/admin/filemanager?type=Files',
-            filebrowserUploadUrl: '/admin/filemanager/upload?type=Files&_token=' + token
+            filebrowserUploadUrl: '/admin/filemanager/upload?type=Files&responseType=json&_token=' + token
         });
 
         if (!textarea.attr('id')) {

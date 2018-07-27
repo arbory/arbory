@@ -62,7 +62,7 @@ trait Crudify
         $form->setModule($this->module());
         $form->setRenderer(new Form\Builder($form));
 
-        return $this->form($form);
+        return $this->form($form) ?: $form;
     }
 
     /**
@@ -84,7 +84,7 @@ trait Crudify
         $grid->setModule($this->module());
         $grid->setRenderer(new Grid\Builder($grid));
 
-        return $this->grid($grid);
+        return $this->grid($grid) ?: $grid;
     }
 
     /**

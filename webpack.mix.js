@@ -4,11 +4,6 @@ module.exports = function (mix) {
     mix.webpackConfig({resolve: {symlinks: false}});
 
     mix.js(
-        'vendor/arbory/arbory/resources/assets/js/admin.js',
-        'js'
-    );
-
-    mix.js(
         'vendor/arbory/arbory/resources/assets/js/controllers/*',
         'js/controllers/'
     );

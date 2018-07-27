@@ -20,7 +20,7 @@ class Select implements Renderable
     /**
      * @var array
      */
-    protected $selected;
+    protected $selected = [];
 
     /**
      * @var \Arbory\Base\Html\Elements\Inputs\Select
