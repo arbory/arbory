@@ -35,7 +35,6 @@
 
         <script src="{{ mix('js/application.js', 'arbory') }}"></script>
         <script src="{{ mix('js/controllers/nodes.js', 'arbory') }}"></script>
-        <script src="{{ mix('js/admin.js', 'arbory') }}"></script>
 
         @foreach($assets->getJs() as $script)
             <script src="{{ mix($script, 'arbory') }}"></script>
