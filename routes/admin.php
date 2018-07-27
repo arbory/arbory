@@ -36,6 +36,11 @@ Route::group( [ 'middleware' => 'arbory.admin_auth' ], function () {
             'uses' => 'Admin\LanguageController@restore'
         ] );
     } );
+
+    Route::post( 'file-manager/upload', [
+        'as' => 'filemanager.upload',
+        'uses' => 'Admin\UploadController@upload'
+    ] );
 } );
 
 
