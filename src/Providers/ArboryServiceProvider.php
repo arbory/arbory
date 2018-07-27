@@ -22,6 +22,7 @@ use Arbory\Base\Http\Middleware\ArboryAdminGuestMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminHasAccessMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminHasAllowedIpMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminInRoleMiddleware;
+use Arbory\Base\Http\Middleware\ArboryAdminModuleAccessMiddleware;
 use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Services\AssetPipeline;
@@ -157,6 +158,7 @@ class ArboryServiceProvider extends ServiceProvider
         ] );
 
         $router->aliasMiddleware( 'arbory.admin_auth', ArboryAdminAuthMiddleware::class );
+        $router->aliasMiddleware( 'arbory.admin_module_access', ArboryAdminModuleAccessMiddleware::class );
         $router->aliasMiddleware( 'arbory.admin_quest', ArboryAdminGuestMiddleware::class );
         $router->aliasMiddleware( 'arbory.admin_in_role', ArboryAdminInRoleMiddleware::class );
         $router->aliasMiddleware( 'arbory.admin_has_access', ArboryAdminHasAccessMiddleware::class );

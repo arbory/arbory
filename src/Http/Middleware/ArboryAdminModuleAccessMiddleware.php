@@ -9,10 +9,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class ArboryAdminAuthMiddleware
+ * Class ArboryAdminModuleAccessMiddleware
  * @package Arbory\Base\Http\Middleware
  */
-class ArboryAdminAuthMiddleware
+class ArboryAdminModuleAccessMiddleware
 {
     /**
      * @var Sentinel
@@ -20,7 +20,7 @@ class ArboryAdminAuthMiddleware
     protected $sentinel;
 
     /**
-     * ArboryAdminAuthMiddleware constructor.
+     * ArboryAdminModuleAccessMiddleware constructor.
      * @param Sentinel $sentinel
      */
     public function __construct( Sentinel $sentinel )
@@ -37,7 +37,14 @@ class ArboryAdminAuthMiddleware
      */
     public function handle( $request, Closure $next )
     {
-        if( !$this->sentinel->check() )
+        $targetModule = $this->resolveTargetModule( $request );
+
+        if( !$targetModule )
+        {
+            throw new \RuntimeException( 'Could not find target module for route controller' );
+        }
+
+        if( !$targetModule->isAuthorized() )
         {
             return $this->denied( $request );
         }
@@ -61,5 +68,16 @@ class ArboryAdminAuthMiddleware
         return redirect()
             ->guest( route( 'admin.login.form' ) )
             ->with( 'error', $message );
+    }
+
+    /**
+     * @param Request $request
+     * @return \Arbory\Base\Admin\Module|null
+     */
+    private function resolveTargetModule( Request $request )
+    {
+        $controller = $request->route()->getController();
+
+        return \Admin::modules()->findModuleByController( $controller );
     }
 }
