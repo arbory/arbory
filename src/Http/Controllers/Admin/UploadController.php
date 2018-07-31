@@ -30,8 +30,7 @@ class UploadController extends LfmUploadController
      */
     protected function errorResponse()
     {
-        $responseType = request()->input('responseType');
-        if ($responseType && $responseType == 'json') {
+        if (request('responseType') === 'json') {
             return [
                 "uploaded" => 0,
                 "error" => [
