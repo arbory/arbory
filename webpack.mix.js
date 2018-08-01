@@ -55,10 +55,5 @@ module.exports = function (mix) {
         'public/arbory/laravel-filemanager/'
     );
 
-    mix.version([
-        'public/arbory/ckeditor/',
-        'public/arbory/ckeditor/plugins/',
-        'public/arbory/images/',
-        'public/arbory/laravel-filemanager/'
-    ]);
+    mix.version();
 };
