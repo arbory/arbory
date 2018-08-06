@@ -109,8 +109,8 @@ class Translatable extends AbstractField
         );
 
         $field = clone $this->field;
-
         $field->setFieldSet( $fieldSet );
+        $field->rules( implode( '|', $this->rules ) );
 
         $defaultResource = $this->getDefaultResourceForLocale( $locale );
 
