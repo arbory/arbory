@@ -51,22 +51,29 @@ class Filter implements FilterInterface
     }
 
     /**
+     * @param Collection|Column[] $columns
      * @return void
      */
-    protected function order()
+    protected function order(Collection $columns)
     {
-        $orderBy = $this->request->get( '_order_by' );
+        $orderBy = $this->request->get('_order_by');
+        $orderDirection = $this->request->get('_order', 'asc');
 
-        if(
-            !$orderBy
-            ||
-            strpos( $orderBy, '.' ) !== false
-        )
-        {
+        if (!$orderBy) {
             return;
         }
 
-        $this->query->orderBy( $this->request->get( '_order_by' ), $this->request->get( '_order', 'asc' ) );
+        $column = $columns->filter(function (Column $column) {
+            return $column->isSortable();
+        })->filter(function (Column $column) use ($orderBy) {
+            return $column->getName() === $orderBy;
+        })->first();
+
+        if (!$column) {
+            return;
+        }
+
+        $this->query->orderBy($column->getName(), $orderDirection);
     }
 
     /**
@@ -137,7 +144,7 @@ class Filter implements FilterInterface
             $this->search( $this->request->get( 'search' ), $columns );
         }
 
-        $this->order();
+        $this->order( $columns );
 
         return $this->loadItems();
     }
