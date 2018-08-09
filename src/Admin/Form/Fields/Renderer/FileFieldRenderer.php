@@ -70,9 +70,10 @@ class FileFieldRenderer extends InputFieldRenderer
         $fileSize = (new FileSize($file))->getReadableSize();
 
         $fileDetails = Html::div()->addClass('file-details');
-        $downloadLink = Html::a($file->getOriginalName() . ' / ' . $fileSize)->addAttributes([
+        $downloadLink = Html::a(str_limit($file->getOriginalName(), 20) . ' / ' . $fileSize)->addAttributes([
             'href' => $file->getUrl(),
             'target' => '_blank',
+            'title' => $file->getOriginalName(),
             'download'
         ]);
         $removeButton =
