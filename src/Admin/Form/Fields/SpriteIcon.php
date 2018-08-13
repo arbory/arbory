@@ -14,6 +14,11 @@ class SpriteIcon extends Select
     protected $spritePath;
 
     /**
+     * @var string
+     */
+    protected $filter;
+
+    /**
      * @param string $name
      */
     public function __construct( $name )
@@ -30,6 +35,16 @@ class SpriteIcon extends Select
     public function sprite( string $path ): self
     {
         $this->spritePath = $path;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function filter( string $filter )
+    {
+        $this->filter = $filter;
 
         return $this;
     }
@@ -102,6 +117,11 @@ class SpriteIcon extends Select
                 {
                     $id = (string) $attributeValue;
                 }
+            }
+
+            if( $this->filter && !str_contains($id, $this->filter) )
+            {
+                continue;
             }
 
             if( $id )
