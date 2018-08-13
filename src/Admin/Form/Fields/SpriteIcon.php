@@ -118,7 +118,9 @@ class SpriteIcon extends Select
                     $id = (string) $attributeValue;
                 }
             }
-            if($this->filter && !str_contains($id, $this->filter) ) {
+
+            if( $this->filter && !str_contains($id, $this->filter) )
+            {
                 continue;
             }
 
