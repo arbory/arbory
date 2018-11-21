@@ -36,7 +36,7 @@ class AddIndexesToNodesTable extends Migration
         Schema::table( 'nodes', function ( Blueprint $table )
         {
             $table->dropUnique( 'nodes_id_unique' );
-            $table->dropUnique( 'nodes_content_type_content_id_index' );
+            $table->dropUnique( 'nodes_content_type_content_id_unique' );
 
             $table->dropIndex( 'nodes_slug_index' );
             $table->dropIndex( 'nodes_parent_id_index' );
