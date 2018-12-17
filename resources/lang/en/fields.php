@@ -9,5 +9,6 @@ return [
     ],
     'slug' => [
         'suggest_slug' => 'Suggest Slug',
+        'page_preview' => 'Page Preview',
     ],
 ];
