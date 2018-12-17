@@ -67,6 +67,7 @@ class Slug extends AbstractField
             Html::div( $label )->addClass( 'label-wrap' ),
             Html::div( [ $input, $button ] )->addClass( 'value' ),
             $this->getLinkElement(),
+            $this->getPreviewLinkElement(),
         ] )->addClass( 'field type-slug' )->addAttributes( [ 'data-name' => 'slug' ] );
     }
 
@@ -84,6 +85,23 @@ class Slug extends AbstractField
             Html::link(
                 $this->getLinkValue()
             )->addAttributes( [ 'href' => $this->getLinkHref() ] )
+        )->addClass( 'link' );
+    }
+
+    /**
+     * @return Element|null
+     */
+    protected function getPreviewLinkElement()
+    {
+        if ( !$this->hasUriToSlug() || $this->getModel()->isActive() || !$this->getValue()  )
+        {
+            return null;
+        }
+
+        return Html::div(
+            Html::link(
+                trans( 'arbory::fields.slug.page_preview' )
+            )->addAttributes( [ 'href' => $this->getPreviewLinkHref() ] )
         )->addClass( 'link' );
     }
 
@@ -119,6 +137,24 @@ class Slug extends AbstractField
         }
 
         return url( '/' ) . '/' . $urlToSlug . $this->getValue();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPreviewLinkHref()
+    {
+        $urlToSlug = $this->getUriToSlug();
+
+        if ( $urlToSlug )
+        {
+            $urlToSlug .= '/';
+        }
+
+        $slugHashed = base64_encode( env( 'APP_KEY' ) . '/' .  $urlToSlug . $this->getValue() );
+
+        return url( '/' ) . '/' . $slugHashed;
+
     }
 
     /**
