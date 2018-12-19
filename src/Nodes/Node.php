@@ -24,6 +24,7 @@ class Node extends \Baum\Node
         'content_type',
         'content_id',
         'item_position',
+        'activate_at',
         'active',
         'locale',
         'meta_title',

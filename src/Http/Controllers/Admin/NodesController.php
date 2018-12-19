@@ -7,6 +7,7 @@ use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Admin\Form\Fields\DateTime;
 use Arbory\Base\Admin\Form\Fields\HasOne;
 use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\Slug;
@@ -69,6 +70,11 @@ class NodesController extends Controller
             $form->addField( new Text( 'meta_author' ) );
             $form->addField( new Text( 'meta_keywords' ) );
             $form->addField( new Text( 'meta_description' ) );
+
+            if ( config ( 'arbory.schedule.activate-nodes' ) )
+            {
+                $form->addField( new DateTime( 'activate_at' ) )->allowNull( true );
+            }
 
             $form->addField( new Form\Fields\Boolean( 'active' ) );
             $form->addField( new HasOne( 'content', function( FieldSet $fieldSet ) use ( $node )
