@@ -270,8 +270,7 @@ class ArboryServiceProvider extends ServiceProvider
     {
         $this->app->booted( function( $app ) use ( $commandClass )
         {
-            $app[ Schedule::class ]->command( $commandClass )->everyMinute()
-                ->appendOutputTo( storage_path( 'logs/examplecommand.log' ) );
+            $app[ Schedule::class ]->command( $commandClass )->everyMinute();
         } );
     }
 
