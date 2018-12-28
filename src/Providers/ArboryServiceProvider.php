@@ -198,7 +198,7 @@ class ArboryServiceProvider extends ServiceProvider
 
         $this->app['router']->group( [
             'as' => 'admin.',
-            'middleware' => [ 'admin', 'arbory.admin_auth' ],
+            'middleware' => [ 'admin', 'arbory.admin_auth', 'arbory.admin_module_access' ],
             'namespace' => '',
             'prefix' => config( 'arbory.uri' )
         ],function () use ($adminRoutes)
