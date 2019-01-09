@@ -74,9 +74,9 @@ class NodesController extends Controller
             if ( config ( 'arbory.schedule.activate-nodes' ) )
             {
                 $form->addField( new DateTime( 'activate_at' ) )->allowNull( true );
+                $form->addField( new DateTime( 'expire_at' ) )->allowNull( true );
             }
 
-            $form->addField( new Form\Fields\Boolean( 'active' ) );
             $form->addField( new HasOne( 'content', function( FieldSet $fieldSet ) use ( $node )
             {
                 $content = $fieldSet->getModel();

@@ -6,6 +6,7 @@ use Alsofronie\Uuid\UuidModelTrait;
 use Arbory\Base\Pages\PageInterface;
 use Arbory\Base\Repositories\NodesRepository;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * Class Node
@@ -14,7 +15,7 @@ use Illuminate\Database\Query\Builder;
 class Node extends \Baum\Node
 {
     use UuidModelTrait;
-    
+
     /**
      * @var array
      */
@@ -25,12 +26,30 @@ class Node extends \Baum\Node
         'content_id',
         'item_position',
         'activate_at',
-        'active',
         'locale',
         'meta_title',
         'meta_author',
         'meta_keywords',
-        'meta_description'
+        'meta_description',
+        'activate_at',
+        'expire_at'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'activate_at' => 'datetime:Y-m-d H:i',
+        'expire_at'   => 'datetime:Y-m-d H:i',
+    ];
+
+
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'activate_at',
+        'expire_at'
     ];
 
     /**
@@ -38,17 +57,18 @@ class Node extends \Baum\Node
      */
     public function __toString()
     {
-        return (string) $this->name;
+        $this->dates;
+        return (string)$this->name;
     }
 
     /**
      * {{@inheritdoc}}
      */
-    public function save( array $options = [] )
+    public function save(array $options = [])
     {
-        ( new NodesRepository )->setLastUpdateTimestamp( time() );
+        (new NodesRepository)->setLastUpdateTimestamp(time());
 
-        return parent::save( $options );
+        return parent::save($options);
     }
 
     /**
@@ -64,9 +84,8 @@ class Node extends \Baum\Node
      */
     public function parents()
     {
-        if( !$this->relationLoaded( 'parents') )
-        {
-            $this->setRelation('parents', $this->parentsQuery()->get() );
+        if (!$this->relationLoaded('parents')) {
+            $this->setRelation('parents', $this->parentsQuery()->get());
         }
 
         return $this->getRelation('parents');
@@ -78,9 +97,9 @@ class Node extends \Baum\Node
     public function parentsQuery()
     {
         return $this->newQuery()
-            ->where( $this->getLeftColumnName(), '<', (int) $this->getLeft() )
-            ->where( $this->getRightColumnName(), '>', (int) $this->getRight() )
-            ->orderBy( $this->getDepthColumnName(), 'asc' );
+            ->where($this->getLeftColumnName(), '<', (int)$this->getLeft())
+            ->where($this->getRightColumnName(), '>', (int)$this->getRight())
+            ->orderBy($this->getDepthColumnName(), 'asc');
     }
 
     /**
@@ -111,9 +130,9 @@ class Node extends \Baum\Node
      * @param array $models
      * @return NodeCollection
      */
-    public function newCollection( array $models = array() )
+    public function newCollection(array $models = array())
     {
-        return new NodeCollection( $models );
+        return new NodeCollection($models);
     }
 
     /**
@@ -121,31 +140,30 @@ class Node extends \Baum\Node
      */
     public function getUri()
     {
-        $uri = [ ];
+        $uri = [];
 
-        foreach( $this->parents() as $parent )
-        {
+        foreach ($this->parents() as $parent) {
             $uri[] = $parent->getSlug();
         }
 
         $uri[] = $this->getSlug();
 
-        return implode( '/', $uri );
+        return implode('/', $uri);
     }
 
     /**
-     * @param $name
+     * @param       $name
      * @param array $parameters
-     * @param bool $absolute
+     * @param bool  $absolute
      * @return string|null
      */
-    public function getUrl( $name, array $parameters = [], $absolute = true )
+    public function getUrl($name, array $parameters = [], $absolute = true)
     {
-        $routes = app( 'routes' );
+        $routes    = app('routes');
         $routeName = 'node.' . $this->getKey() . '.' . $name;
-        $route = $routes->getByName( $routeName );
+        $route     = $routes->getByName($routeName);
 
-        return $route ? route( $routeName, $parameters, $absolute ) : null;
+        return $route ? route($routeName, $parameters, $absolute) : null;
     }
 
     /**
@@ -153,18 +171,24 @@ class Node extends \Baum\Node
      */
     public function isActive()
     {
-        $active = $this->active;
-
-        if( !$this->active )
-        {
+        if (is_null($this->activate_at)
+            || $this->activate_at->isFuture()
+            || (!is_null($this->expire_at) && $this->expire_at->isPast())) {
             return false;
         }
 
-        if( $this->parents()->isEmpty() )
-        {
-            return $active;
+        if ($this->parents()->isNotEmpty()) {
+            return $this->parent()->first()->isActive();
         }
 
-        return $this->parent()->first()->isActive();
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getActiveAttribute()
+    {
+        return $this->isActive();
     }
 }
