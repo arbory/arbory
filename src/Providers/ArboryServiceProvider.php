@@ -12,7 +12,6 @@ use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\Textarea;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Console\Commands\ActivateNodesCommand;
 use Arbory\Base\Console\Commands\GenerateCommand;
 use Arbory\Base\Console\Commands\GeneratorCommand;
 use Arbory\Base\Console\Commands\InstallCommand;
@@ -34,7 +33,6 @@ use Arbory\Base\Services\StubRegistry;
 use Arbory\Base\Views\LayoutViewComposer;
 use Dimsav\Translatable\TranslatableServiceProvider;
 use File;
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
@@ -64,7 +62,6 @@ class ArboryServiceProvider extends ServiceProvider
         $this->registerAliases();
         $this->registerModuleRegistry();
         $this->registerCommands();
-        $this->registerScheduleCommands();
         $this->registerRoutesAndMiddlewares();
         $this->registerFields();
         $this->registerGeneratorStubs();
@@ -219,8 +216,7 @@ class ArboryServiceProvider extends ServiceProvider
             'arbory.seed' => SeedCommand::class,
             'arbory.install' => InstallCommand::class,
             'arbory.generator' => GeneratorCommand::class,
-            'arbory.generate' => GenerateCommand::class,
-            'arbory.activate-nodes' => ActivateNodesCommand::class,
+            'arbory.generate' => GenerateCommand::class
         ];
 
         foreach( $commands as $containerKey => $commandClass )
@@ -242,36 +238,6 @@ class ArboryServiceProvider extends ServiceProvider
         } );
 
         $this->commands( $containerKey );
-    }
-
-    /**
-     * Register Arbory schedule commands
-     */
-    private function registerScheduleCommands()
-    {
-        $scheduleCommands = [
-            'activate-nodes' => ActivateNodesCommand::class,
-        ];
-
-        foreach ( $scheduleCommands as $commandName => $commandClass )
-        {
-            if ( config ( 'arbory.schedule.' . $commandName ) )
-            {
-                $this->registerScheduleCommand( $commandClass );
-            }
-        }
-    }
-
-    /**
-     * @param string $commandClass
-     * @return void
-     */
-    private function registerScheduleCommand( string $commandClass  )
-    {
-        $this->app->booted( function( $app ) use ( $commandClass )
-        {
-            $app[ Schedule::class ]->command( $commandClass )->everyMinute();
-        } );
     }
 
     /**
