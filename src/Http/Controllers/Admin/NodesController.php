@@ -71,11 +71,8 @@ class NodesController extends Controller
             $form->addField( new Text( 'meta_keywords' ) );
             $form->addField( new Text( 'meta_description' ) );
 
-            if ( config ( 'arbory.schedule.activate-nodes' ) )
-            {
-                $form->addField( new DateTime( 'activate_at' ) )->allowNull( true );
-                $form->addField( new DateTime( 'expire_at' ) )->allowNull( true );
-            }
+            $form->addField( new DateTime( 'activate_at' ) )->allowNull( true );
+            $form->addField( new DateTime( 'expire_at' ) )->allowNull( true );
 
             $form->addField( new HasOne( 'content', function( FieldSet $fieldSet ) use ( $node )
             {
