@@ -57,7 +57,6 @@ class Node extends \Baum\Node
      */
     public function __toString()
     {
-        $this->dates;
         return (string)$this->name;
     }
 

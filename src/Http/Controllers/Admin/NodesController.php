@@ -7,11 +7,14 @@ use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Admin\Traits\HasActivationDates;
 use Arbory\Base\Admin\Form\Fields\DateTime;
+use Arbory\Base\Admin\Form\Fields\ActivationToggle;
 use Arbory\Base\Admin\Form\Fields\HasOne;
 use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\Slug;
 use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\Fields\Boolean;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\Node;
@@ -73,6 +76,10 @@ class NodesController extends Controller
 
             $form->addField( new DateTime( 'activate_at' ) )->allowNull( true );
             $form->addField( new DateTime( 'expire_at' ) )->allowNull( true )->rules('nullable|after_or_equal:resource.activate_at');
+
+            if ($node->active) {
+                $form->addField( (new ActivationToggle('deactivate')) );
+            }
 
             $form->addField( new HasOne( 'content', function( FieldSet $fieldSet ) use ( $node )
             {
