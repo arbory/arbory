@@ -49,8 +49,14 @@ class ActivationToggle extends AbstractField
 
     public function beforeModelSave(Request $request)
     {
-        $this->getModel()->setAttribute($this->getActivateAtName(), null);
-        $this->getModel()->setAttribute($this->getExpireAtName(), null);
+        $value = $request->has($this->getNameSpacedName())
+            ? $request->input($this->getNameSpacedName())
+            : null;
+
+        if ($value) {
+            $this->getModel()->setAttribute($this->getActivateAtName(), null);
+            $this->getModel()->setAttribute($this->getExpireAtName(), null);
+        }
     }
 
     /**
