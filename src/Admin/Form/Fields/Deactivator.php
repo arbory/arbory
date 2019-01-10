@@ -21,7 +21,7 @@ class ActivationToggle extends AbstractField
     /**
      * @param string $name
      */
-    public function __construct($name)
+    public function __construct($name = 'deactivate')
     {
         parent::__construct($name);
     }
