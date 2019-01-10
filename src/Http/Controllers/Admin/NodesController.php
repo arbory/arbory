@@ -9,7 +9,7 @@ use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Admin\Traits\HasActivationDates;
 use Arbory\Base\Admin\Form\Fields\DateTime;
-use Arbory\Base\Admin\Form\Fields\ActivationToggle;
+use Arbory\Base\Admin\Form\Fields\Deactivator;
 use Arbory\Base\Admin\Form\Fields\HasOne;
 use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\Slug;
@@ -78,7 +78,7 @@ class NodesController extends Controller
             $form->addField( new DateTime( 'expire_at' ) )->allowNull( true )->rules('nullable|after_or_equal:resource.activate_at');
 
             if ($node->active) {
-                $form->addField( (new ActivationToggle('deactivate')) );
+                $form->addField( (new Deactivator('deactivate')) );
             }
 
             $form->addField( new HasOne( 'content', function( FieldSet $fieldSet ) use ( $node )
