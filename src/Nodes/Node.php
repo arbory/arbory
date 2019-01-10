@@ -5,6 +5,7 @@ namespace Arbory\Base\Nodes;
 use Alsofronie\Uuid\UuidModelTrait;
 use Arbory\Base\Pages\PageInterface;
 use Arbory\Base\Repositories\NodesRepository;
+use Arbory\Base\Support\Activation\HasActivationDates;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 
@@ -15,6 +16,7 @@ use Illuminate\Support\Carbon;
 class Node extends \Baum\Node
 {
     use UuidModelTrait;
+    use HasActivationDates;
 
     /**
      * @var array
@@ -31,23 +33,6 @@ class Node extends \Baum\Node
         'meta_author',
         'meta_keywords',
         'meta_description',
-        'activate_at',
-        'expire_at'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $casts = [
-        'activate_at' => 'datetime:Y-m-d H:i',
-        'expire_at'   => 'datetime:Y-m-d H:i',
-    ];
-
-
-    /**
-     * @var array
-     */
-    protected $dates = [
         'activate_at',
         'expire_at'
     ];
@@ -165,10 +150,15 @@ class Node extends \Baum\Node
         return $route ? route($routeName, $parameters, $absolute) : null;
     }
 
+    public function isActive()
+    {
+        return $this->active;
+    }
+
     /**
      * @return bool
      */
-    public function isActive()
+    public function getActiveAttribute()
     {
         if (is_null($this->activate_at)
             || $this->activate_at->isFuture()
@@ -181,13 +171,5 @@ class Node extends \Baum\Node
         }
 
         return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getActiveAttribute()
-    {
-        return $this->isActive();
     }
 }
