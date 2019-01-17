@@ -3,8 +3,6 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Html\Elements\Element;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 /**
  * Class DateTime
@@ -12,8 +10,6 @@ use Illuminate\Http\Request;
  */
 class DateTime extends Text
 {
-    protected $carbonFormat = 'Y-m-d H:i:s';
-
     public $allowNull = false;
 
     /**
@@ -48,26 +44,5 @@ class DateTime extends Text
     public function isNullAllowed()
     {
         return $this->allowNull;
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function beforeModelSave(Request $request)
-    {
-        $value = $request->has($this->getNameSpacedName())
-            ? $request->input($this->getNameSpacedName())
-            : null;
-
-        $this->getModel()->setAttribute($this->getName(), $this->prepareForCarbon($value));
-    }
-
-    /**
-     * @param $value
-     * @return string|null
-     */
-    protected function prepareForCarbon($value)
-    {
-        return $value ? Carbon::createFromFormat('Y-m-d H:i', $value)->format($this->carbonFormat) : null;
     }
 }
