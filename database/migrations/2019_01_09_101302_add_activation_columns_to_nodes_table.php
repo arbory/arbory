@@ -13,10 +13,11 @@ class AddActivationColumnsToNodesTable extends Migration
      */
     public function up()
     {
-        Schema::table('nodes', function (Blueprint $table) {
+        Schema::table('nodes', function (Blueprint $table)
+        {
             $table->dropColumn('active');
             $table->dateTime('expire_at')->nullable();
-            $table->dateTime( 'activate_at' )->nullable();
+            $table->dateTime('activate_at')->nullable();
         });
     }
 
@@ -27,10 +28,11 @@ class AddActivationColumnsToNodesTable extends Migration
      */
     public function down()
     {
-        Schema::table('nodes', function (Blueprint $table) {
-            $table->tinyInteger( 'active' )->default( 0 );
+        Schema::table('nodes', function (Blueprint $table)
+        {
+            $table->tinyInteger('active')->default(0);
             $table->dropColumn('expire_at');
-            $table->dropColumn( 'activate_at' );
+            $table->dropColumn('activate_at');
         });
     }
 }
