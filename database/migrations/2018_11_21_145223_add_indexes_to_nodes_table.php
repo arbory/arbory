@@ -13,17 +13,16 @@ class AddIndexesToNodesTable extends Migration
      */
     public function up()
     {
-        Schema::table( 'nodes', function ( Blueprint $table )
-        {
-            $table->Unique( 'id' );
-            $table->Unique( [ 'content_type', 'content_id' ] );
+        Schema::table('nodes', function (Blueprint $table) {
+            $table->Unique('id');
+            $table->Unique(['content_type', 'content_id']);
 
-            $table->index( 'slug' );
-            $table->index( 'parent_id' );
-            $table->index( 'lft' );
-            $table->index( 'rgt' );
-            $table->index( 'active' );
-        } );
+            $table->index('slug');
+            $table->index('parent_id');
+            $table->index('lft');
+            $table->index('rgt');
+            $table->index('active');
+        });
     }
 
     /**
@@ -33,16 +32,15 @@ class AddIndexesToNodesTable extends Migration
      */
     public function down()
     {
-        Schema::table( 'nodes', function ( Blueprint $table )
-        {
-            $table->dropUnique( 'nodes_id_unique' );
-            $table->dropUnique( 'nodes_content_type_content_id_unique' );
+        Schema::table('nodes', function (Blueprint $table) {
+            $table->dropUnique('nodes_id_unique');
+            $table->dropUnique('nodes_content_type_content_id_unique');
 
-            $table->dropIndex( 'nodes_slug_index' );
-            $table->dropIndex( 'nodes_parent_id_index' );
-            $table->dropIndex( 'nodes_lft_index' );
-            $table->dropIndex( 'nodes_rgt_index' );
-            $table->dropIndex( 'nodes_active_index' );
-        } );
+            $table->dropIndex('nodes_slug_index');
+            $table->dropIndex('nodes_parent_id_index');
+            $table->dropIndex('nodes_lft_index');
+            $table->dropIndex('nodes_rgt_index');
+            $table->dropIndex('nodes_active_index');
+        });
     }
 }
