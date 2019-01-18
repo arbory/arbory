@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -22,16 +23,14 @@ class AddMetaColumnsToNodesTable extends Migration
     }
 
     /**
+     * Reverse the migrations.
+     *
      * @return void
      */
     public function down()
     {
-        Schema::table( 'nodes', function ( Blueprint $table )
-        {
-            $table->dropColumn( 'meta_title' );
-            $table->dropColumn( 'meta_author' );
-            $table->dropColumn( 'meta_keywords' );
-            $table->dropColumn( 'meta_description' );
-        } );
+        Schema::table('nodes', function (Blueprint $table) {
+            $table->dropColumn(['meta_title', 'meta_author', 'meta_keywords', 'meta_description']);
+        });
     }
 }
