@@ -21,4 +21,14 @@ class CreateSettingsTable extends Migration
             $table->text( 'value' )->nullable();
         } );
     }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('settings');
+    }
 }

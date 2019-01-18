@@ -21,4 +21,14 @@ class CreateSettingTranslationsTable extends Migration
             $table->foreign( 'setting_name' )->references( 'name' )->on( 'settings' )->onDelete( 'cascade' );
         } );
     }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('setting_translations');
+    }
 }

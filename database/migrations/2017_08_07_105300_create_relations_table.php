@@ -21,4 +21,14 @@ class CreateRelationsTable extends Migration
             $table->string( 'related_id' );
         } );
     }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('relations');
+    }
 }

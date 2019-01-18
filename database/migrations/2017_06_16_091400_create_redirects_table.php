@@ -20,4 +20,14 @@ class CreateRedirectsTable extends Migration
             $table->text( 'to_url' );
         } );
     }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('redirects');
+    }
 }

@@ -16,4 +16,17 @@ class ModifyColumnsInLinksTable extends Migration
             $table->text( 'href' )->nullable()->change();
         } );
     }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('links', function (Blueprint $table) {
+            $table->string('title')->change();
+            $table->string('href')->change();
+        });
+    }
 }

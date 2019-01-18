@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class IncreaseLocaleLength extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -27,7 +26,14 @@ class IncreaseLocaleLength extends Migration
      */
     public function down()
     {
-        //
-    }
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        Schema::table('translator_languages', function ($table) {
+            $table->string('locale', 6)->change();
+        });
 
+        Schema::table('translator_translations', function ($table) {
+            $table->string('locale', 6)->change();
+        });
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+    }
 }
