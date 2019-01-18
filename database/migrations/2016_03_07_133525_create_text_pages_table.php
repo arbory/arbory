@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -12,12 +13,11 @@ class CreateTextPagesTable extends Migration
      */
     public function up()
     {
-        Schema::create( 'text_pages', function ( Blueprint $table )
-        {
-            $table->increments( 'id' );
-            $table->text( 'html' );
+        Schema::create('text_pages', function (Blueprint $table) {
+            $table->increments('id');
+            $table->text('html');
             $table->timestamps();
-        } );
+        });
     }
 
     /**
@@ -27,6 +27,6 @@ class CreateTextPagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('text_pages');
+        Schema::dropIfExists('text_pages');
     }
 }

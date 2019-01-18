@@ -13,13 +13,12 @@ class AddMetaColumnsToNodesTable extends Migration
      */
     public function up()
     {
-        Schema::table( 'nodes', function ( Blueprint $table )
-        {
-            $table->string( 'meta_title' )->nullable();
-            $table->string( 'meta_author' )->nullable();
-            $table->string( 'meta_keywords' )->nullable();
-            $table->string( 'meta_description' )->nullable();
-        } );
+        Schema::table('nodes', function (Blueprint $table) {
+            $table->string('meta_title')->nullable();
+            $table->string('meta_author')->nullable();
+            $table->string('meta_keywords')->nullable();
+            $table->string('meta_description')->nullable();
+        });
     }
 
     /**

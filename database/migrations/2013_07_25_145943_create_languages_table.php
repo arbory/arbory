@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateLanguagesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -12,7 +13,7 @@ class CreateLanguagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('translator_languages', function ($table) {
+        Schema::create('translator_languages', function (Blueprint $table) {
             $table->increments('id');
             $table->string('locale', 6)->unique();
             $table->string('name', 60)->unique();
@@ -28,7 +29,6 @@ class CreateLanguagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('translator_languages');
+        Schema::dropIfExists('translator_languages');
     }
-
 }
