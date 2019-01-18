@@ -10,8 +10,6 @@ use Arbory\Base\Html\Elements\Element;
  */
 class DateTime extends Text
 {
-    public $allowNull = false;
-
     /**
      * @param string $name
      */
@@ -26,23 +24,5 @@ class DateTime extends Text
     public function render()
     {
         return (new Renderer\DateFieldRenderer($this))->render();
-    }
-
-    /**
-     * @param bool $allowNull
-     * @return Date
-     */
-    public function allowNull($allowNull = true)
-    {
-        $this->allowNull = $allowNull;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNullAllowed()
-    {
-        return $this->allowNull;
     }
 }

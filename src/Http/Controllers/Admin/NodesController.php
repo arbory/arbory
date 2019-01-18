@@ -74,8 +74,8 @@ class NodesController extends Controller
             $form->addField( new Text( 'meta_keywords' ) );
             $form->addField( new Text( 'meta_description' ) );
 
-            $form->addField( new DateTime( 'activate_at' ) )->allowNull( true );
-            $form->addField( new DateTime( 'expire_at' ) )->allowNull( true )->rules('nullable|after_or_equal:resource.activate_at');
+            $form->addField( new DateTime( 'activate_at' ) );
+            $form->addField( new DateTime( 'expire_at' ) )->rules('nullable|after_or_equal:resource.activate_at');
 
             if ($node->active) {
                 $form->addField( (new Deactivator('deactivate')) );
