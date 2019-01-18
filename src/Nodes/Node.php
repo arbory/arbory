@@ -149,6 +149,7 @@ class Node extends \Baum\Node
         return $route ? route($routeName, $parameters, $absolute) : null;
     }
 
+
     public function isActive()
     {
         return $this->active;
@@ -159,9 +160,7 @@ class Node extends \Baum\Node
      */
     public function getActiveAttribute()
     {
-        if (is_null($this->activate_at)
-            || $this->activate_at->isFuture()
-            || (!is_null($this->expire_at) && $this->expire_at->isPast())) {
+        if (!$this->hasActivated() || $this->hasExpired()) {
             return false;
         }
 

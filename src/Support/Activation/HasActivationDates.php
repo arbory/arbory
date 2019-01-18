@@ -57,4 +57,20 @@ trait HasActivationDates
             });
     }
 
+    /**
+     * @return bool
+     */
+    public function hasExpired()
+    {
+        return !is_null($this->expire_at) && $this->expire_at->isPast();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasActivated()
+    {
+        return !is_null($this->activate_at) && $this->activate_at->isPast();
+    }
+
 }
