@@ -31,13 +31,7 @@ trait HasActivationDates
      */
     public function getActiveAttribute()
     {
-        if (is_null($this->activate_at)
-            || $this->activate_at->isFuture()
-            || (!is_null($this->expire_at) && $this->expire_at->isPast())) {
-            return false;
-        }
-
-        return true;
+        return $this->hasActivated() && !$this->hasExpired();
     }
 
     /**
