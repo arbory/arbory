@@ -3,13 +3,11 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Support\Translate\Language;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Waavi\Translation\Repositories\LanguageRepository;
@@ -31,46 +29,42 @@ class LanguageController extends Controller
     /**
      * @param LanguageRepository $repository
      */
-    public function __construct(
-        LanguageRepository $repository
-    )
+    public function __construct(LanguageRepository $repository)
     {
         $this->repository = $repository;
     }
 
     /**
-     * @param Model $model
+     * @param Form $form
      * @return Form
      */
-    public function form( Model $model )
+    public function form(Form $form)
     {
-        return $this->module()->form( $model, function( Form $form )
-        {
-            $form->addField( new Text( 'locale' ) )->rules( 'required' );
-            $form->addField( new Text( 'name' ) )->rules( 'required' );
-        } );
+        return $form->setFields(function (Form\FieldSet $fields) {
+            $fields->text('locale')->rules('required');
+            $fields->text('name')->rules('required');
+        });
     }
 
     /**
+     * @param Grid $grid
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
-        $grid = $this->module()->grid( $this->resource(), function( Grid $grid )
-        {
-            $grid->column( 'locale' );
-            $grid->column( 'name' );
-            $grid->column( 'status' )->display( function( $_, $__, Language $language )
-            {
-                return Html::span( $language->trashed() ?
-                    trans( 'arbory::resources.status.disabled' ) : trans( 'arbory::resources.status.enabled' )
+        $grid->setColumns(function (Grid $grid) {
+            $grid->column('locale');
+            $grid->column('name');
+            $grid->column('status')->display(function ($_, $__, Language $language) {
+                return Html::span($language->trashed() ?
+                    trans('arbory::resources.status.disabled') : trans('arbory::resources.status.enabled')
                 );
-            } );
-        } );
+            });
+        });
 
         return $grid
-            ->items( Language::withTrashed()->get() )
-            ->paginate( false );
+            ->items(Language::withTrashed()->get())
+            ->paginate(false);
     }
 
     /**

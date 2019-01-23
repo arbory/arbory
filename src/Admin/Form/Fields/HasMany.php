@@ -111,45 +111,41 @@ class HasMany extends AbstractField
     /**
      * @param Request $request
      */
-    public function afterModelSave( Request $request )
+    public function afterModelSave(Request $request)
     {
-        $items = (array) $request->input( $this->getNameSpacedName(), [] );
+        $items = (array)$request->input($this->getNameSpacedName(), []);
 
-        foreach( $items as $index => $item )
-        {
-            $relatedModel = $this->findRelatedModel( $item );
+        foreach ($items as $index => $item) {
+            $relatedModel = $this->findRelatedModel($item);
 
-            if( filter_var( array_get( $item, '_destroy' ), FILTER_VALIDATE_BOOLEAN ) )
-            {
+            if (filter_var(array_get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
                 $relatedModel->delete();
 
                 continue;
             }
+
+            $relation = $this->getRelation();
+
+            if ($relation instanceof MorphMany) {
+                $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
+                $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
+            }
+
+            $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
 
             $relatedFieldSet = $this->getRelationFieldSet(
                 $relatedModel,
                 $index
             );
 
-            foreach( $relatedFieldSet->getFields() as $field )
-            {
-                $field->beforeModelSave( $request );
+            foreach ($relatedFieldSet->getFields() as $field) {
+                $field->beforeModelSave($request);
             }
-
-            $relation = $this->getRelation();
-
-            if( $relation instanceof MorphMany )
-            {
-                $relatedModel->setAttribute( $relation->getMorphType(), get_class( $this->getModel() ) ); // TODO:
-            }
-
-            $relatedModel->setAttribute( $relation->getForeignKeyName(), $this->getModel()->getKey() );
 
             $relatedModel->save();
 
-            foreach( $relatedFieldSet->getFields() as $field )
-            {
-                $field->afterModelSave( $request );
+            foreach ($relatedFieldSet->getFields() as $field) {
+                $field->afterModelSave($request);
             }
         }
     }

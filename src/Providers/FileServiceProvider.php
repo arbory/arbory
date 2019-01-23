@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Arbory\Base\Providers;
 
 use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Repositories\ArboryFilesRepository;
 use Illuminate\Support\ServiceProvider;
 
-class ArboryFileServiceProvider extends ServiceProvider
+class FileServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
@@ -16,9 +15,8 @@ class ArboryFileServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton( 'arbory_files', function ()
-        {
-            return new ArboryFilesRepository( 'local', ArboryFile::class );
-        } );
+        $this->app->singleton('arbory_files', function () {
+            return new ArboryFilesRepository('local', ArboryFile::class);
+        });
     }
 }

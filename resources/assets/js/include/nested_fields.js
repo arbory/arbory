@@ -53,12 +53,20 @@ jQuery( document ).ready(function()
 
                 if (trigger.is('.add-nested-item'))
                 {
-                    var template = jQuery(target_block.data('arbory-template'));
+                    var template = null;
+
+                    if (target_block.is('.polymorphic')) {
+                        var type_select = target_block.find('footer select.template-types');
+                        template = jQuery(type_select.find('option:selected').data('template'));
+                    }
+                    else {
+                        template = jQuery(target_block.data('arbory-template'));
+                    }
+
                     if (template.length !== 1)
                     {
                         return null;
                     }
-
 
                     var new_item = template;
 

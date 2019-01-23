@@ -6,6 +6,7 @@ use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Sortable;
 use Arbory\Base\Services\FieldSetFieldFinder;
+use Arbory\Base\Services\FieldTypeRegistry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Waavi\Translation\Repositories\LanguageRepository;
@@ -13,6 +14,30 @@ use Waavi\Translation\Repositories\LanguageRepository;
 /**
  * Class FieldSet
  * @package Arbory\Base\Admin\Form
+ * @method \Arbory\Base\Admin\Form\Fields\BelongsTo belongsTo( string $relationName )
+ * @method \Arbory\Base\Admin\Form\Fields\BelongsToMany belongsToMany( string $relationName )
+ * @method \Arbory\Base\Admin\Form\Fields\Boolean boolean( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\Checkbox checkbox( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\DateTime dateTime( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\ArboryFile file( string $relationName )
+ * @method \Arbory\Base\Admin\Form\Fields\HasMany hasMany( string $relationName, \Closure $fieldSetCallback )
+ * @method \Arbory\Base\Admin\Form\Fields\HasOne hasOne( string $relationName, \Closure $fieldSetCallback )
+ * @method \Arbory\Base\Admin\Form\Fields\Hidden hidden( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\SpriteIcon icon( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\ArboryImage image( string $relationName )
+ * @method \Arbory\Base\Admin\Form\Fields\Link link( string $relationName )
+ * @method \Arbory\Base\Admin\Form\Fields\MapCoordinates map( string $relationName )
+ * @method \Arbory\Base\Admin\Form\Fields\CompactRichtext markup( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\MultipleSelect multipleSelect( string $relationName )
+ * @method \Arbory\Base\Admin\Form\Fields\ObjectRelation objectRelation( string $relationName, $relatedModelTypeOrCollection, int $limit = 0 )
+ * @method \Arbory\Base\Admin\Form\Fields\Password password( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\Richtext richtext( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\Select select( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\Slug slug( string $fieldName, string $fromFieldName, string $apiUrl )
+ * @method \Arbory\Base\Admin\Form\Fields\Sortable sortable( string $fieldName, \Arbory\Base\Admin\Form\Fields\HasMany $field )
+ * @method \Arbory\Base\Admin\Form\Fields\Text text( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\Textarea textarea( string $fieldName )
+ * @method \Arbory\Base\Admin\Form\Fields\Translatable translatable( FieldInterface $field )
  */
 class FieldSet extends Collection
 {
@@ -27,6 +52,11 @@ class FieldSet extends Collection
     protected $model;
 
     /**
+     * @var FieldTypeRegistry
+     */
+    protected $fieldTypeRegister;
+
+    /**
      * Resource constructor.
      * @param Model $model
      * @param string $namespace
@@ -35,6 +65,7 @@ class FieldSet extends Collection
     {
         $this->namespace = $namespace;
         $this->model = $model;
+        $this->fieldTypeRegister = app(FieldTypeRegistry::class);
 
         parent::__construct( [] );
     }
@@ -179,4 +210,14 @@ class FieldSet extends Collection
         return parent::all();
     }
 
+    public function __call($method, $parameters)
+    {
+        $fieldTypeClass = $this->fieldTypeRegister->findByType($method);
+
+        if (class_exists($fieldTypeClass)) {
+            return $this->add(new $fieldTypeClass(...$parameters));
+        }
+
+        parent::__call($method, $parameters);
+    }
 }

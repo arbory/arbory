@@ -1,1 +1,0 @@
-$fieldSet->add( new {{fieldClass}}( '{{fieldName}}' ) );

@@ -1,8 +1,13 @@
 {
     "name": "arbory/arbory",
     "description": "Administration interface for Laravel",
+    "keywords": ["laravel", "admin", "cms", "arbory"],
     "type": "library",
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/arbory/arbory/issues",
+        "source": "https://github.com/arbory/arbory"
+    },
     "authors": [
         {
             "name": "Roberts",
@@ -26,7 +31,7 @@
         "roboc/laravel-glide": "^1.1.0",
         "spatie/laravel-sluggable": "^2.1.0",
         "maatwebsite/excel": "^3.0.5",
-        "unisharp/laravel-filemanager": "^1.8.0"
+        "unisharp/laravel-filemanager": "^1.8.5"
     },
     "require-dev" : {
         "satooshi/php-coveralls": "^1.0",
@@ -42,12 +47,34 @@
         "laravel": {
             "providers": [
                 "Arbory\\Base\\Providers\\ArboryServiceProvider",
-                "Arbory\\Base\\Providers\\NodeServiceProvider"
+                "Arbory\\Base\\Providers\\NodeServiceProvider",
+                "Arbory\\Base\\Providers\\TranslationServiceProvider",
+                "Dimsav\\Translatable\\TranslatableServiceProvider",
+                "Arbory\\Base\\Providers\\FileServiceProvider",
+                "Arbory\\Base\\Providers\\AuthServiceProvider",
+                "Roboc\\Glide\\GlideImageServiceProvider",
+                "Arbory\\Base\\Providers\\SettingsServiceProvider",
+                "Maatwebsite\\Excel\\ExcelServiceProvider",
+                "Arbory\\Base\\Providers\\FormBuilderServiceProvider",
+                "Arbory\\Base\\Providers\\FileManagerServiceProvider",
+                "Arbory\\Base\\Providers\\RoutesServiceProvider",
+                "Arbory\\Base\\Providers\\LayoutServiceProvider",
+                "Arbory\\Base\\Providers\\ValidationRulesServiceProvider"
             ],
+            "aliases": {
+                "Activation": "Cartalyst\\Sentinel\\Laravel\\Facades\\Activation",
+                "Reminder": "Cartalyst\\Sentinel\\Laravel\\Facades\\Reminde",
+                "Sentinel": "Cartalyst\\Sentinel\\Laravel\\Facades\\Sentinel",
+                "GlideImage": "Roboc\\Glide\\Support\\Facades\\GlideImage",
+                "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+            },
             "dont-discover": [
                 "waavi/translation",
                 "cartalyst/sentinel"
             ]
         }
+    },
+    "config": {
+        "component-dir": "vendor/components"
     }
 }

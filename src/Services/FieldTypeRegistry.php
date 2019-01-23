@@ -3,116 +3,48 @@
 namespace Arbory\Base\Services;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class FieldTypeRegistry
 {
     /**
      * @var Collection
      */
-    protected $fieldsByType;
+    protected $fieldTypes;
 
     /**
-     * @var Collection
+     * FieldTypeRegistry constructor.
      */
-    protected $fieldsByRelation;
-
-    /**
-     * @var Collection
-     */
-    protected $fieldTypeHints;
-
     public function __construct()
     {
-        $this->fieldsByType = new Collection();
-        $this->fieldsByRelation = new Collection();
-        $this->fieldTypeHints = new Collection();
+        $this->fieldTypes = new Collection();
     }
 
     /**
-     * @param string $databaseType
-     * @param string $fieldClass
-     * @return void
+     * @param string $type
+     * @param string $class
+     * @return $this
      */
-    public function registerByType( string $databaseType, string $fieldClass, string $typeHint = null )
+    public function register(string $type, string $class): self
     {
-        $this->fieldsByType->put( $databaseType, $fieldClass );
+        $this->fieldTypes->put($type, $class);
 
-        if( $typeHint )
-        {
-            $this->fieldTypeHints->put( $fieldClass, $typeHint );
-        }
-    }
-
-    /**
-     * @param string $tableName
-     * @param string $fieldClass
-     * @return void
-     */
-    public function registerByRelation( string $tableName, string $fieldClass )
-    {
-        $this->fieldsByRelation->put( $tableName, $fieldClass );
-    }
-
-    /**
-     * @param string $fieldName
-     * @param string $fieldType
-     * @return string
-     */
-    public function resolve( string $fieldName, string $fieldType )
-    {
-        if( Str::contains( $fieldName, '.' ) )
-        {
-            list( $tableName, $tableFieldName ) = explode( '.', $fieldName );
-
-            return $this->findByRelationName( $tableName );
-        }
-
-        return $this->findByTypeName( $fieldType );
-    }
-
-    /**
-     * @param string $name
-     * @return string|null
-     */
-    public function findByRelationName( string $name )
-    {
-        return $this->fieldsByRelation->get( $name );
-    }
-
-    /**
-     * @param string $name
-     * @return string|null
-     */
-    public function findByTypeName( string $name )
-    {
-        return $this->fieldsByType->get( $name );
-    }
-
-    /**
-     * @param string $fieldType
-     * @return string
-     */
-    public function getFieldTypeHint( string $fieldType )
-    {
-        $typeHint = $this->fieldTypeHints->get( $fieldType );
-
-        return $typeHint ?: 'int';
+        return $this;
     }
 
     /**
      * @return Collection
      */
-    public function getFieldsByType(): Collection
+    public function getFieldTypes()
     {
-        return $this->fieldsByType;
+        return $this->fieldTypes;
     }
 
     /**
-     * @return Collection
+     * @param $type
+     * @return string|null
      */
-    public function getFieldsByRelation(): Collection
+    public function findByType($type): ?string
     {
-        return $this->fieldsByRelation;
+        return $this->fieldTypes->get($type);
     }
 }

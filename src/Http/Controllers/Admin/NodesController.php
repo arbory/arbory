@@ -57,59 +57,55 @@ class NodesController extends Controller
     }
 
     /**
-     * @param \Arbory\Base\Nodes\Node $node
+     * @param Form $form
      * @return Form
      */
-    protected function form( Node $node )
+    protected function form(Form $form)
     {
-        $form = $this->module()->form( $node, function ( Form $form ) use ( $node )
-        {
-            $form->addField( new Hidden( 'parent_id' ) );
-            $form->addField( new Hidden( 'content_type' ) );
-            $form->addField( new Text( 'name' ) )->rules( 'required' );
-            $form->addField( new Slug( 'slug', 'name', $this->url( 'api', 'slug_generator' ) ) )->rules( 'required' );
 
-            $form->addField( new Text( 'meta_title' ) );
-            $form->addField( new Text( 'meta_author' ) );
-            $form->addField( new Text( 'meta_keywords' ) );
-            $form->addField( new Text( 'meta_description' ) );
+        $form->setFields(function (FieldSet $fields) {
+            $fields->hidden('parent_id');
+            $fields->hidden('content_type');
+            $fields->text('name')->rules('required');
+            $fields->slug('slug', 'name', $this->getSlugGeneratorUrl())->rules('required');
+            $fields->text('meta_title');
+            $fields->text('meta_author');
+            $fields->text('meta_keywords');
+            $fields->text('meta_description');
+            $fields->dateTime('activate_at');
+            $fields->dateTime('expire_at')->rules('nullable|after_or_equal:resource.activate_at');
 
-            $form->addField( new DateTime( 'activate_at' ) );
-            $form->addField( new DateTime( 'expire_at' ) )->rules('nullable|after_or_equal:resource.activate_at');
-
-            if ($node->active) {
-                $form->addField( (new Deactivator('deactivate')) );
+            if ($fields->getModel()->active) {
+                $fields->add(new Deactivator('deactivate'));
             }
 
-            $form->addField( new HasOne( 'content', function( FieldSet $fieldSet ) use ( $node )
-            {
+            $fields->hasOne('content', function (FieldSet $fieldSet) {
+
                 $content = $fieldSet->getModel();
 
-                $class = ( new \ReflectionClass( $content ) )->getName();
-                $definition = $this->contentTypeRegister->findByModelClass( $class );
+                $class = (new \ReflectionClass($content))->getName();
+                $definition = $this->contentTypeRegister->findByModelClass($class);
 
-                $definition->getFieldSetHandler()->call( $content, $fieldSet );
-            } ) );
-        } );
+                $definition->getFieldSetHandler()->call($content, $fieldSet);
+            });
+        });
 
-        $form->addEventListeners( [ 'create.after' ], function () use ( $form )
-        {
-            $this->afterSave( $form );
-        } );
+        $form->addEventListeners(['create.after'], function () use ($form) {
+            $this->afterSave($form);
+        });
 
         return $form;
     }
 
     /**
+     * @param Grid $grid
      * @return Grid
      */
-    public function grid()
+    public function grid( Grid $grid)
     {
-        $grid = $this->module()->grid( $this->resource(), function ( Grid $grid )
-        {
-            $grid->column( 'name' );
-        } );
-
+        $grid->setColumns(function (Grid $grid) {
+            $grid->column('name');
+        });
         $grid->setFilter( new Filter( $this->resource() ) );
         $grid->setRenderer( new Renderer( $grid ) );
 
@@ -151,7 +147,7 @@ class NodesController extends Controller
 
         $layout = new Layout( function ( Layout $layout ) use ( $node )
         {
-            $layout->body( $this->form( $node ) );
+            $layout->body( $this->buildForm( $node ) );
         } );
 
         $layout->bodyClass( 'controller-' . str_slug( $this->module()->name() ) . ' view-edit' );
@@ -276,5 +272,13 @@ class NodesController extends Controller
         }
 
         return $slug;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSlugGeneratorUrl()
+    {
+        return $this->url('api', 'slug_generator');
     }
 }
