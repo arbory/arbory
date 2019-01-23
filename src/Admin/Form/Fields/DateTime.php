@@ -13,9 +13,9 @@ class DateTime extends Text
     /**
      * @param string $name
      */
-    public function __construct( $name )
+    public function __construct($name)
     {
-        parent::__construct( $name );
+        parent::__construct($name);
     }
 
     /**
@@ -23,6 +23,6 @@ class DateTime extends Text
      */
     public function render()
     {
-        return ( new Renderer\DateFieldRenderer( $this ) )->render();
+        return (new Renderer\DateFieldRenderer($this))->render();
     }
 }

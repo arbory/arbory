@@ -7,6 +7,14 @@ use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Admin\Traits\HasActivationDates;
+use Arbory\Base\Admin\Form\Fields\DateTime;
+use Arbory\Base\Admin\Form\Fields\Deactivator;
+use Arbory\Base\Admin\Form\Fields\HasOne;
+use Arbory\Base\Admin\Form\Fields\Hidden;
+use Arbory\Base\Admin\Form\Fields\Slug;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\Fields\Boolean;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\Node;
@@ -54,6 +62,7 @@ class NodesController extends Controller
      */
     protected function form(Form $form)
     {
+
         $form->setFields(function (FieldSet $fields) {
             $fields->hidden('parent_id');
             $fields->hidden('content_type');
@@ -63,8 +72,15 @@ class NodesController extends Controller
             $fields->text('meta_author');
             $fields->text('meta_keywords');
             $fields->text('meta_description');
-            $fields->boolean('active');
+            $fields->dateTime('activate_at');
+            $fields->dateTime('expire_at')->rules('nullable|after_or_equal:resource.activate_at');
+
+            if ($fields->getModel()->active) {
+                $fields->add(new Deactivator('deactivate'));
+            }
+
             $fields->hasOne('content', function (FieldSet $fieldSet) {
+
                 $content = $fieldSet->getModel();
 
                 $class = (new \ReflectionClass($content))->getName();
