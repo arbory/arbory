@@ -14,8 +14,8 @@ class AddIndexesToNodesTable extends Migration
     public function up()
     {
         Schema::table('nodes', function (Blueprint $table) {
-            $table->Unique('id');
-            $table->Unique(['content_type', 'content_id']);
+            $table->unique('id');
+            $table->unique(['content_type', 'content_id']);
 
             $table->index('slug');
             $table->index('parent_id');
