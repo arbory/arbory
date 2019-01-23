@@ -13,9 +13,9 @@ class AddIndexesToFilesTable extends Migration
      */
     public function up()
     {
-        Schema::table( 'files', function ( Blueprint $table ) {
-            $table->unique( 'id' );
-        } );
+        Schema::table('files', function (Blueprint $table) {
+            $table->unique('id');
+        });
     }
 
     /**
@@ -25,8 +25,8 @@ class AddIndexesToFilesTable extends Migration
      */
     public function down()
     {
-        Schema::table( 'files', function ( Blueprint $table ) {
-            $table->dropUnique( 'files_id_unique' );
-        } );
+        Schema::table('files', function (Blueprint $table) {
+            $table->dropUnique('files_id_unique');
+        });
     }
 }
