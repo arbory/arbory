@@ -32,7 +32,7 @@ class NodesRepository extends AbstractModelsRepository
 
         if( $this->isQueryingOnlyActiveNodes() )
         {
-            $query->where( 'active', true );
+            $query->active();
         }
 
         return $query;
