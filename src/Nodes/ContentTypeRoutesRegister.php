@@ -115,27 +115,23 @@ class ContentTypeRoutesRegister
      * @param NodeCollection|Node[] $items
      * @param string $base
      */
-    protected function registerRoutesForNodeCollection( Collection $items, $base = '' )
+    protected function registerRoutesForNodeCollection(Collection $items, $base = '')
     {
-        foreach( $items as $item )
-        {
+        foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            if ( !$item->active )
-            {
-                $this->registerNodeRoutes( $item, base64_encode( env('APP_KEY') . $slug ) );
-                if( $item->children->count() )
-                {
-                    $this->registerPreviewRoutesForNodeCollection( $item->children, $slug );
+            if (!$item->active) {
+                $this->registerNodeRoutes($item, base64_encode(env('APP_KEY') . $slug));
+                if ($item->children->count()) {
+                    $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
                 }
                 continue;
             }
 
-            $this->registerNodeRoutes( $item, $slug );
+            $this->registerNodeRoutes($item, $slug);
 
-            if( $item->children->count() )
-            {
-                $this->registerRoutesForNodeCollection( $item->children, $slug );
+            if ($item->children->count()) {
+                $this->registerRoutesForNodeCollection($item->children, $slug);
             }
         }
     }
@@ -144,17 +140,15 @@ class ContentTypeRoutesRegister
      * @param NodeCollection|Node[] $items
      * @param string $base
      */
-    protected function registerPreviewRoutesForNodeCollection( Collection $items, $base = '' )
+    protected function registerPreviewRoutesForNodeCollection(Collection $items, $base = '')
     {
-        foreach( $items as $item )
-        {
+        foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            $this->registerNodeRoutes( $item, base64_encode( env('APP_KEY') . $slug ) );
+            $this->registerNodeRoutes($item, base64_encode(env('APP_KEY') . $slug));
 
-            if( $item->children->count() )
-            {
-                $this->registerPreviewRoutesForNodeCollection( $item->children, $slug );
+            if ($item->children->count()) {
+                $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
             }
         }
     }
