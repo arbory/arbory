@@ -133,7 +133,7 @@ class Slug extends AbstractField
             $urlToSlug .= '/';
         }
 
-        return url('/') . '/' . $urlToSlug . $this->getValue();
+        return url($urlToSlug . $this->getValue());
     }
 
     /**
@@ -147,9 +147,9 @@ class Slug extends AbstractField
             $urlToSlug .= '/';
         }
 
-        $slugHashed = base64_encode(env('APP_KEY') . '/' .  $urlToSlug . $this->getValue());
+        $slugHashed = 'preview-' . sha1('__cms-preview' . '/' . $urlToSlug . $this->getValue());
 
-        return url( '/' ) . '/' . $slugHashed;
+        return url($slugHashed);
     }
 
     /**

@@ -121,7 +121,7 @@ class ContentTypeRoutesRegister
             $slug = $base . '/' . $item->getSlug();
 
             if (!$item->active) {
-                $this->registerNodeRoutes($item, base64_encode(env('APP_KEY') . $slug));
+                $this->registerNodeRoutes($item, 'preview-' . sha1('__cms-preview' . $slug));
                 if ($item->children->count()) {
                     $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
                 }
@@ -145,7 +145,7 @@ class ContentTypeRoutesRegister
         foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            $this->registerNodeRoutes($item, base64_encode(env('APP_KEY') . $slug));
+            $this->registerNodeRoutes($item, 'preview-' . sha1('__cms-preview' . $slug));
 
             if ($item->children->count()) {
                 $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
