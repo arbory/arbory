@@ -115,22 +115,40 @@ class ContentTypeRoutesRegister
      * @param NodeCollection|Node[] $items
      * @param string $base
      */
-    protected function registerRoutesForNodeCollection( Collection $items, $base = '' )
+    protected function registerRoutesForNodeCollection(Collection $items, $base = '')
     {
-        foreach( $items as $item )
-        {
-            if ( !$item->active )
-            {
+        foreach ($items as $item) {
+            $slug = $base . '/' . $item->getSlug();
+
+            if (! $item->active) {
+                $this->registerNodeRoutes($item, 'preview-' . sha1('cms-preview' . $slug));
+                if ($item->children->count()) {
+                    $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
+                }
                 continue;
             }
 
+            $this->registerNodeRoutes($item, $slug);
+
+            if ($item->children->count()) {
+                $this->registerRoutesForNodeCollection($item->children, $slug);
+            }
+        }
+    }
+
+    /**
+     * @param NodeCollection|Node[] $items
+     * @param string $base
+     */
+    protected function registerPreviewRoutesForNodeCollection(Collection $items, $base = '')
+    {
+        foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            $this->registerNodeRoutes( $item, $slug );
+            $this->registerNodeRoutes($item, 'preview-' . sha1('cms-preview' . $slug));
 
-            if( $item->children->count() )
-            {
-                $this->registerRoutesForNodeCollection( $item->children, $slug );
+            if ($item->children->count()) {
+                $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
             }
         }
     }
@@ -148,6 +166,6 @@ class ContentTypeRoutesRegister
             'middleware' => 'web'
         ];
 
-        $this->getRouter()->group( $attributes, $this->getContentTypeHandler( $node->getContentType() ) );
+        $this->getRouter()->group($attributes, $this->getContentTypeHandler($node->getContentType()));
     }
 }
