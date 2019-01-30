@@ -120,8 +120,8 @@ class ContentTypeRoutesRegister
         foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            if (!$item->active) {
-                $this->registerNodeRoutes($item, 'preview-' . sha1('__cms-preview' . $slug));
+            if (! $item->active) {
+                $this->registerNodeRoutes($item, 'preview-' . sha1('cms-preview' . $slug));
                 if ($item->children->count()) {
                     $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
                 }
@@ -145,7 +145,7 @@ class ContentTypeRoutesRegister
         foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            $this->registerNodeRoutes($item, 'preview-' . sha1('__cms-preview' . $slug));
+            $this->registerNodeRoutes($item, 'preview-' . sha1('cms-preview' . $slug));
 
             if ($item->children->count()) {
                 $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
@@ -166,6 +166,6 @@ class ContentTypeRoutesRegister
             'middleware' => 'web'
         ];
 
-        $this->getRouter()->group( $attributes, $this->getContentTypeHandler( $node->getContentType() ) );
+        $this->getRouter()->group($attributes, $this->getContentTypeHandler($node->getContentType()));
     }
 }
