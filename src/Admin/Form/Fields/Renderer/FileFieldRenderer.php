@@ -58,7 +58,7 @@ class FileFieldRenderer extends InputFieldRenderer
 
         $value->append( $input );
 
-        return $this->buildField( $label, $value );
+        return $value;
     }
 
     /**

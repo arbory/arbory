@@ -38,7 +38,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
 
         $value->append( $input );
 
-        return $this->buildField( $label, $value );
+        return $value;
     }
 
     /**

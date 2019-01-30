@@ -7,7 +7,7 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Illuminate\Contracts\Support\Renderable;
 
-interface VisibleFieldRendererInterface
+interface InputGroupRendererInterface
 {
     /**
      * @param FieldInterface $field

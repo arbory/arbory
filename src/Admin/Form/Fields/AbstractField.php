@@ -3,8 +3,8 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Concerns\IsTranslatable;
-use Arbory\Base\Admin\Form\Fields\Renderer\VisibleFieldRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\VisibleFieldRendererInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRendererInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
@@ -48,22 +48,22 @@ abstract class AbstractField implements FieldInterface
     /**
      * @var bool
      */
-    protected $disabled;
+    protected $disabled = false;
 
     /**
      * @var bool
      */
-    protected $readOnly;
+    protected $readOnly = false;
 
     /**
      * @var bool
      */
-    protected $required;
+    protected $required = false;
 
     /**
      * @var Renderable
      */
-    protected $renderer = VisibleFieldRenderer::class;
+    protected $renderer;
 
     /**
      * @var Content
@@ -241,12 +241,11 @@ abstract class AbstractField implements FieldInterface
      */
     public function render()
     {
-        /**
-         * @var $renderer VisibleFieldRendererInterface
-         */
-         $renderer = app($this->getRenderer());
+         $renderer = app()->makeWith($this->getRenderer(), [
+             'field' => $this
+         ]);
 
-         return $renderer->render($this);
+         return $renderer;
     }
 
     /**
@@ -332,19 +331,19 @@ abstract class AbstractField implements FieldInterface
     /**
      * @return Content
      */
-    public function getInfoBlock(): Content
+    public function getInfoBlock()
     {
         return $this->infoBlock;
     }
 
     /**
-     * @param Content $infoBlock
+     * @param string|null $content
      *
      * @return FieldInterface
      */
-    public function setInfoBlock( Content $infoBlock ): FieldInterface
+    public function setInfoBlock( $content = null ): FieldInterface
     {
-        $this->infoBlock = $infoBlock;
+        $this->infoBlock = $content;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Elements\Inputs\AbstractInputField;
 use Arbory\Base\Html\Html;
@@ -10,27 +11,57 @@ use Arbory\Base\Html\Html;
  * Class InputFieldRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class InputFieldRenderer extends BaseRenderer
+class InputFieldRenderer implements InputRendererInterface
 {
+    /**
+     * @var FieldInterface
+     */
+    protected $field;
+
+    /**
+     * @var array
+     */
+    protected $attributes = [];
+
+    /**
+     * InputFieldRenderer constructor.
+     *
+     * @param FieldInterface $field
+     */
+    public function __construct(FieldInterface $field)
+    {
+        $this->field = $field;
+    }
+
     /**
      * @return AbstractInputField
      */
-    protected function getInput()
+    public function render()
     {
         return Html::input()
             ->setName( $this->field->getNameSpacedName() )
             ->setValue( $this->field->getValue() )
-            ->addClass( 'text' );
+            ->addClass( 'text' )
+            ->addAttributes($this->getAttributes());
     }
 
     /**
-     * @return Element
+     * @param array $attributes
+     *
+     * @return InputRendererInterface
      */
-    public function render()
+    public function setAttributes($attributes = []): InputRendererInterface
     {
-        $input = $this->getInput();
-        $label = $input->getLabel( $this->field->getLabel() );
+        $this->attributes = $attributes;
 
-        return $this->buildField( $label, $input );
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
     }
 }

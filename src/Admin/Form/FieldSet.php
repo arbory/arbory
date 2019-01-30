@@ -4,7 +4,10 @@ namespace Arbory\Base\Admin\Form;
 
 use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRendererInterface;
 use Arbory\Base\Admin\Form\Fields\Sortable;
+use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Services\FieldSetFieldFinder;
 use Arbory\Base\Services\FieldTypeRegistry;
 use Illuminate\Database\Eloquent\Model;
@@ -57,15 +60,23 @@ class FieldSet extends Collection
     protected $fieldTypeRegister;
 
     /**
-     * Resource constructor.
-     * @param Model $model
-     * @param string $namespace
+     * @var InputGroupRendererInterface|null
      */
-    public function __construct( Model $model, $namespace )
+    protected $inputGroupRenderer;
+
+    /**
+     * Resource constructor.
+     *
+     * @param Model                            $model
+     * @param string                           $namespace
+     * @param InputGroupRendererInterface|null $inputGroupRenderer
+     */
+    public function __construct( Model $model, $namespace, InputGroupRendererInterface $inputGroupRenderer = null )
     {
         $this->namespace = $namespace;
         $this->model = $model;
         $this->fieldTypeRegister = app(FieldTypeRegistry::class);
+        $this->inputGroupRenderer = $inputGroupRenderer ?: app(InputGroupRenderer::class); // TODO: Temporary
 
         parent::__construct( [] );
     }
@@ -203,11 +214,50 @@ class FieldSet extends Collection
     }
 
     /**
+     * Renders fieldSet with defined renderer
+     *
+     * @return Content
+     */
+    public function render()
+    {
+        $content = new Content();
+
+        $renderer = $this->getInputGroupRenderer();
+
+        foreach($this->all() as $field)
+        {
+            $content->push($renderer ? $renderer->render($field) : $field->render());
+        }
+
+        return $content;
+    }
+
+    /**
      * @return array|FieldInterface[]
      */
     public function all()
     {
         return parent::all();
+    }
+
+    /**
+     * @return InputGroupRendererInterface|null
+     */
+    public function getInputGroupRenderer(): ?InputGroupRendererInterface
+    {
+        return $this->inputGroupRenderer;
+    }
+
+    /**
+     * @param InputGroupRendererInterface|null $inputGroupRenderer
+     *
+     * @return FieldSet
+     */
+    public function setInputGroupRenderer(?InputGroupRendererInterface $inputGroupRenderer): self
+    {
+        $this->inputGroupRenderer = $inputGroupRenderer;
+
+        return $this;
     }
 
     public function __call($method, $parameters)

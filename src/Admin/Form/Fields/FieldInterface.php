@@ -143,16 +143,16 @@ interface FieldInterface
     public function setRenderer( ?string $renderable = null ): FieldInterface;
 
     /**
-     * @return Content|string
+     * @return string|null
      */
     public function getInfoBlock();
 
     /**
-     * @param Content $content
+     * @param string|null $content
      *
      * @return FieldInterface
      */
-    public function setInfoBlock( Content $content ): FieldInterface;
+    public function setInfoBlock( $content = null ): FieldInterface;
 
     /**
      * @param int $rows
