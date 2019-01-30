@@ -15,7 +15,7 @@ use Waavi\Translation\Repositories\LanguageRepository;
  * Class Translatable
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Translatable extends AbstractField
+class Translatable extends AbstractField implements ProxyFieldInterface
 {
     /**
      * @var FieldInterface
@@ -199,5 +199,13 @@ class Translatable extends AbstractField
     public function getFieldTypeName()
     {
         return $this->field->getFieldTypeName();
+    }
+
+    /**
+     * @return FieldInterface
+     */
+    public function getField(): FieldInterface
+    {
+        return $this->field;
     }
 }

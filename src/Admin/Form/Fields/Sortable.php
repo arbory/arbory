@@ -6,7 +6,7 @@ use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Illuminate\Http\Request;
 
-class Sortable extends AbstractField
+class Sortable extends AbstractField implements ProxyFieldInterface
 {
     /**
      * @var HasMany
@@ -96,7 +96,7 @@ class Sortable extends AbstractField
     /**
      * @return HasMany
      */
-    public function getField()
+    public function getField(): FieldInterface
     {
         return $this->field;
     }

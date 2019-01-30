@@ -131,4 +131,14 @@ class HasOne extends AbstractRelationField
 
         return $rules;
     }
+
+    /**
+     * @param $model
+     *
+     * @return FieldSet
+     */
+    public function getNestedFieldSet( $model )
+    {
+        return $this->getRelationFieldSet( $model );
+    }
 }

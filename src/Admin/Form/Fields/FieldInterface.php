@@ -1,9 +1,10 @@
 <?php
-
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -92,4 +93,76 @@ interface FieldInterface
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|Element|string
      */
     public function render();
+
+    /**
+     * @return bool
+     */
+    public function getRequired(): bool;
+
+    /**
+     * @param bool $required
+     *
+     * @return mixed
+     */
+    public function setRequired( bool $required = false ): FieldInterface;
+
+    /**
+     * @return bool
+     */
+    public function getDisabled(): bool;
+
+    /**
+     * @param bool $disabled
+     *
+     * @return FieldInterface
+     */
+    public function setDisabled( bool $disabled = false ): FieldInterface;
+
+    /**
+     * @return bool
+     */
+    public function getReadOnly(): bool;
+
+    /**
+     * @param bool $readOnly
+     *
+     * @return FieldInterface
+     */
+    public function setReadOnly( bool $readOnly = false ): FieldInterface;
+
+    /**
+     * @return string|null
+     */
+    public function getRenderer(): ?string;
+
+    /**
+     * @param string|null $renderable
+     *
+     * @return FieldInterface
+     */
+    public function setRenderer( ?string $renderable = null ): FieldInterface;
+
+    /**
+     * @return Content|string
+     */
+    public function getInfoBlock();
+
+    /**
+     * @param Content $content
+     *
+     * @return FieldInterface
+     */
+    public function setInfoBlock( Content $content ): FieldInterface;
+
+    /**
+     * @param int $rows
+     *
+     * @return FieldInterface
+     */
+    public function setRows( int $rows ): FieldInterface;
+
+    /**
+     * @return int
+     */
+    public function getRows(): int;
 }

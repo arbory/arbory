@@ -3,7 +3,11 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Concerns\IsTranslatable;
+use Arbory\Base\Admin\Form\Fields\Renderer\VisibleFieldRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\VisibleFieldRendererInterface;
 use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Elements\Content;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -40,6 +44,36 @@ abstract class AbstractField implements FieldInterface
      * @var FieldSet
      */
     protected $fieldSet;
+
+    /**
+     * @var bool
+     */
+    protected $disabled;
+
+    /**
+     * @var bool
+     */
+    protected $readOnly;
+
+    /**
+     * @var bool
+     */
+    protected $required;
+
+    /**
+     * @var Renderable
+     */
+    protected $renderer = VisibleFieldRenderer::class;
+
+    /**
+     * @var Content
+     */
+    protected $infoBlock;
+
+    /**
+     * @var int
+     */
+    protected $rows;
 
     /**
      * AbstractField constructor.
@@ -205,6 +239,133 @@ abstract class AbstractField implements FieldInterface
     /**
      * @return View
      */
-    abstract public function render();
+    public function render()
+    {
+        /**
+         * @var $renderer VisibleFieldRendererInterface
+         */
+         $renderer = app($this->getRenderer());
 
+         return $renderer->render($this);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * @param bool $disabled
+     *
+     * @return AbstractField
+     */
+    public function setDisabled( bool $disabled = false ): FieldInterface
+    {
+        $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getReadOnly(): bool
+    {
+        return $this->readOnly;
+    }
+
+    /**
+     * @param bool $readOnly
+     *
+     * @return FieldInterface
+     */
+    public function setReadOnly( bool $readOnly = false ): FieldInterface
+    {
+        $this->readOnly = $readOnly;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getRequired(): bool
+    {
+        return $this->required;
+    }
+
+    /**
+     * @param bool $required
+     *
+     * @return FieldInterface
+     */
+    public function setRequired( bool $required = false ): FieldInterface
+    {
+        $this->required = $required;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRenderer(): ?string
+    {
+        return $this->renderer;
+    }
+
+    /**
+     * @param string|null $renderer
+     *
+     * @return FieldInterface
+     */
+    public function setRenderer( ?string $renderer = null ): FieldInterface
+    {
+        $this->renderer = $renderer;
+
+        return $this;
+    }
+
+    /**
+     * @return Content
+     */
+    public function getInfoBlock(): Content
+    {
+        return $this->infoBlock;
+    }
+
+    /**
+     * @param Content $infoBlock
+     *
+     * @return FieldInterface
+     */
+    public function setInfoBlock( Content $infoBlock ): FieldInterface
+    {
+        $this->infoBlock = $infoBlock;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRows(): int
+    {
+        return $this->rows;
+    }
+
+    /**
+     * @param int $rows
+     *
+     * @return FieldInterface
+     */
+    public function setRows( int $rows ): FieldInterface
+    {
+        $this->rows = $rows;
+
+        return $this;
+    }
 }

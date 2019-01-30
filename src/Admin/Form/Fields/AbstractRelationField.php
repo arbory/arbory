@@ -4,7 +4,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 
-abstract class AbstractRelationField extends AbstractField
+abstract class AbstractRelationField extends AbstractField implements NestedFieldInterface
 {
     use HasRelationships;
 

@@ -67,6 +67,14 @@ abstract class BaseRenderer
 
         if( $label )
         {
+            if( $this->field->getRequired() )
+            {
+                $label = Html::span( $label )
+                    ->append( Html::span( ' *' )->addClass( 'required-form-field' ) );
+
+                $template->addClass(' field-required');
+            }
+            
             $template->append( Html::div( $label )->addClass( 'label-wrap' ) );
         }
 

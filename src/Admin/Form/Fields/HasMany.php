@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
  * Class HasMany
  * @package Arbory\Base\Admin\Form\Fields
  */
-class HasMany extends AbstractField
+class HasMany extends AbstractField implements NestedFieldInterface
 {
     use HasRelationships;
 
@@ -212,5 +212,10 @@ class HasMany extends AbstractField
         }
 
         return $rules;
+    }
+
+    public function getNestedFieldSet( $model )
+    {
+        return $this->getRelationFieldSet( $model, 0 );
     }
 }
