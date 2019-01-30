@@ -34,7 +34,7 @@ class Slug extends AbstractField
         $this->apiUrl = $apiUrl;
         $this->fromFieldName = $fromFieldName;
 
-        parent::__construct( $name );
+        parent::__construct($name);
     }
 
     /**
@@ -42,7 +42,7 @@ class Slug extends AbstractField
      */
     public function render()
     {
-        $label = Html::label($this->getLabel() )->addAttributes([ 'for' => $this->getNameSpacedName()]);
+        $label = Html::label($this->getLabel())->addAttributes(['for' => $this->getNameSpacedName()]);
 
         $input = Html::input()
             ->setName($this->getNameSpacedName())
@@ -68,7 +68,7 @@ class Slug extends AbstractField
             Html::div([$input, $button])->addClass('value'),
             $this->getLinkElement(),
             $this->getPreviewLinkElement(),
-        ])->addClass('field type-slug')->addAttributes([ 'data-name' => 'slug' ]);
+        ])->addClass('field type-slug')->addAttributes(['data-name' => 'slug']);
     }
 
     /**
@@ -76,7 +76,7 @@ class Slug extends AbstractField
      */
     protected function getLinkElement()
     {
-        if(! $this->hasUriToSlug()) {
+        if (! $this->hasUriToSlug()) {
             return null;
         }
 
@@ -191,7 +191,7 @@ class Slug extends AbstractField
      */
     protected function getUriToSlug()
     {
-        if(! $this->getModel() instanceof Node) {
+        if (! $this->getModel() instanceof Node) {
             return false;
         }
 
