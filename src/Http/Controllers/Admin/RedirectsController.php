@@ -27,10 +27,16 @@ class RedirectsController extends Controller
     protected function form(Model $model)
     {
         $form = $this->module()->form($model, function (Form $form) {
-            $form->addField(new Text('from_url'))->rules('required');
-            $form->addField(new Text('to_url'))->rules('required');
+            $form->addField(new Text('from_url'))
+                ->rules('required')
+                ->setLabel(trans('arbory::redirect.from_url'));
+            $form->addField(new Text('to_url'))
+                ->rules('required')
+                ->setLabel(trans('arbory::redirect.to_url'));
 
-            $form->addField(new Select('status'))->options($this->getStatusOptions());
+            $form->addField(new Select('status'))
+                ->options($this->getStatusOptions())
+                ->setLabel(trans('arbory::redirect.status.name'));
         });
 
         return $form;
@@ -42,8 +48,8 @@ class RedirectsController extends Controller
     public function grid()
     {
         $grid = $this->module()->grid($this->resource(), function (Grid $grid) {
-            $grid->column('from_url');
-            $grid->column('to_url');
+            $grid->column('from_url', trans('arbory::redirect.from_url'));
+            $grid->column('to_url', trans('arbory::redirect.to_url'));
         });
 
         return $grid;
