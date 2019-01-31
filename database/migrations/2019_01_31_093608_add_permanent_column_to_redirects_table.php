@@ -14,7 +14,7 @@ class AddPermanentColumnToRedirectsTable extends Migration
     public function up()
     {
         Schema::table('redirects', function (Blueprint $table) {
-            $table->boolean('permanent')->default(1);
+            $table->integer('status')->default(301);
         });
     }
 
@@ -26,7 +26,7 @@ class AddPermanentColumnToRedirectsTable extends Migration
     public function down()
     {
         Schema::table('redirects', function (Blueprint $table) {
-            $table->dropColumn('permanent');
+            $table->dropColumn('status');
         });
     }
 }

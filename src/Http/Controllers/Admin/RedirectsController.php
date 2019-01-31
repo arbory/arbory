@@ -3,7 +3,7 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\Checkbox;
+use Arbory\Base\Admin\Form\Fields\Select;
 use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Traits\Crudify;
@@ -30,8 +30,7 @@ class RedirectsController extends Controller
             $form->addField(new Text('from_url'))->rules('required');
             $form->addField(new Text('to_url'))->rules('required');
 
-            $permanentValue = $form->getModel()->getKey() ? $form->getModel()->permanent : 1;
-            $form->addField(new Checkbox('permanent'))->setValue($permanentValue);
+            $form->addField(new Select('status'))->options($this->getStatusOptions());
         });
 
         return $form;
@@ -48,5 +47,15 @@ class RedirectsController extends Controller
         });
 
         return $grid;
+    }
+
+    private function getStatusOptions()
+    {
+        $statusOptions = [];
+        foreach ($this->resource::AVAILABLE_STATUSES as $status) {
+            $statusOptions[$status] = trans('arbory::redirect.status.' . $status);
+        }
+
+        return $statusOptions;
     }
 }

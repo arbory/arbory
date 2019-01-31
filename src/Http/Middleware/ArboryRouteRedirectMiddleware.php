@@ -23,12 +23,11 @@ class ArboryRouteRedirectMiddleware
         $redirect->where('from_url', $request->url());
         $redirect->orWhere('from_url', 'LIKE', '_' . $request->path() . '_');
 
-        $redirect = $redirect->first(['to_url', 'permanent']);
+        $redirect = $redirect->first(['to_url', 'status']);
 
         if ($redirect) {
-            $redirectCode = $redirect->permanent ? 301 : 302;
 
-            return \Redirect::to($redirect->to_url, $redirectCode);
+            return \Redirect::to($redirect->to_url, $redirect->status);
         }
 
         return $next($request);
