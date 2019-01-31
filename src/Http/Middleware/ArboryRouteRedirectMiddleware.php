@@ -16,20 +16,20 @@ class ArboryRouteRedirectMiddleware
      * @param \Closure $next
      * @return RedirectResponse
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
         $redirect = Redirect::query();
 
-        $redirect->where( 'from_url', $request->url() );
-        $redirect->orWhere( 'from_url', 'LIKE', '_' . $request->path() . '_' );
-        
-        $redirect = $redirect->first( [ 'to_url' ] );
+        $redirect->where('from_url', $request->url());
+        $redirect->orWhere('from_url', 'LIKE', '_' . $request->path() . '_');
 
-        if( $redirect )
-        {
-            return \Redirect::to( $redirect->to_url, 301 );
+        $redirect = $redirect->first(['to_url', 'status']);
+
+        if ($redirect) {
+
+            return \Redirect::to($redirect->to_url, $redirect->status);
         }
 
-        return $next( $request );
+        return $next($request);
     }
 }
