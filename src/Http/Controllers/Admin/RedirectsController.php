@@ -30,11 +30,7 @@ class RedirectsController extends Controller
             $form->addField(new Text('from_url'))->rules('required');
             $form->addField(new Text('to_url'))->rules('required');
 
-            if ($form->getModel()->getKey()) {
-                $permanentValue = $form->getModel()->permanent;
-            } else {
-                $permanentValue = 1;
-            }
+            $permanentValue = $form->getModel()->getKey() ? $form->getModel()->permanent : 1;
             $form->addField(new Checkbox('permanent'))->setValue($permanentValue);
         });
 
