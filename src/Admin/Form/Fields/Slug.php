@@ -67,8 +67,11 @@ class Slug extends AbstractField
             Html::div($label)->addClass('label-wrap'),
             Html::div([$input, $button])->addClass('value'),
             $this->getLinkElement(),
-            $this->getPreviewLinkElement()
         ])->addClass('field type-slug')->addAttributes(['data-name' => 'slug']);
+
+        if (config('arbory.preview.enabled')) {
+            $content->append($this->getPreviewLinkElement());
+        }
 
         return $content;
     }

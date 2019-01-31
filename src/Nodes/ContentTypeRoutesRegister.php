@@ -120,7 +120,7 @@ class ContentTypeRoutesRegister
         foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            if (! $item->active) {
+            if (! $item->active && config('arbory.preview.enabled')) {
                 $this->registerNodeRoutes($item, 'preview-' . sha1(config('arbory.preview.slug_salt') . $slug));
                 if ($item->children->count()) {
                     $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
