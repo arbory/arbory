@@ -1,14 +1,15 @@
 <?php
 
 
-namespace Arbory\Base\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\InputRendererInterface;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 
-class InputGroupRenderer implements InputGroupRendererInterface
+class LabeledFieldStyle implements FieldStyleInterface
 {
 
     public function render(FieldInterface $field)

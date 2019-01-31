@@ -18,6 +18,8 @@ class SpriteIcon extends Select
      */
     protected $filter;
 
+    protected $renderer = IconPickerRenderer::class;
+
     /**
      * @param string $name
      */
@@ -131,15 +133,6 @@ class SpriteIcon extends Select
         }
 
         return $ids;
-    }
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     * @throws \InvalidArgumentException
-     */
-    public function render()
-    {
-        return ( new IconPickerRenderer( $this, $this->getOptions() ) )->render();
     }
 
     /**

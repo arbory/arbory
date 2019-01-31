@@ -11,6 +11,8 @@ use Arbory\Base\Html\Html;
  */
 class Hidden extends AbstractField
 {
+    protected $style = 'raw';
+
     /**
      * @return Element
      */

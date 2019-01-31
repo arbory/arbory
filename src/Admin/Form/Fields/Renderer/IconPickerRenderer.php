@@ -14,16 +14,11 @@ class IconPickerRenderer extends SelectFieldRenderer
      */
     public function render()
     {
-        $field = new FieldRenderer();
-        $field->setType( 'select' );
-        $field->setName( $this->field->getName() );
-        $field->setLabel( $this->getLabel() );
+        $input = parent::render();
+        
+        $div = Html::div([ $input,  $this->getIconSelectElement() ]);
 
-        $input = $this->getSelectInput();
-
-        $field->setValue( [ $input,  $this->getIconSelectElement() ] );
-
-        return $field->render()->addClass( 'type-icon-picker' );
+        return $div->addClass( 'type-icon-picker' );
     }
 
     /**

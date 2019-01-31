@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Nodes\Node;
@@ -42,8 +43,6 @@ class Slug extends AbstractField
      */
     public function render()
     {
-        $label = Html::label($this->getLabel())->addAttributes(['for' => $this->getNameSpacedName()]);
-
         $input = Html::input()
             ->setName($this->getNameSpacedName())
             ->setValue($this->getValue())
@@ -63,12 +62,13 @@ class Slug extends AbstractField
             ->iconOnly()
             ->render();
 
-        return Html::div([
-            Html::div($label)->addClass('label-wrap'),
-            Html::div([$input, $button])->addClass('value'),
-            $this->getLinkElement(),
-            $this->getPreviewLinkElement(),
-        ])->addClass('field type-slug')->addAttributes(['data-name' => 'slug']);
+        $content = new Content();
+
+        $content->push(Html::div([$input, $button])->addClass('value'));
+        $content->push($this->getLinkElement());
+        $content->push($this->getPreviewLinkElement());
+
+        return $content;
     }
 
     /**

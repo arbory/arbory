@@ -227,7 +227,7 @@ input.text
         word-wrap: break-word;
     }
 
-    &[data-name="slug"], .localization[data-name="slug"]
+    &.type-slug, .localization.type-slug
     {
         .button.generate
         {

@@ -14,6 +14,8 @@ class Checkbox extends AbstractField
 {
     protected $renderer = CheckBoxFieldRenderer::class;
 
+    protected $style = 'basic';
+
     /**
      * @param Request $request
      */

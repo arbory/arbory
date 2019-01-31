@@ -63,6 +63,15 @@ return [
         'translatable' => Arbory\Base\Admin\Form\Fields\Translatable::class,
     ],
 
+    'field_styles' => [
+        'normal' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\LabeledFieldStyle::class,
+        'basic' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\BasicFieldStyle::class,
+        'raw' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\RawFieldStyle::class,
+        'nested' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\NestedFieldStyle::class,
+    ],
+
+    'default_field_style' => 'normal',
+
     'auth' => [
         'ip' => [
             'allowed' => []

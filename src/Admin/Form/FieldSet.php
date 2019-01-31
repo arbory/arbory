@@ -4,9 +4,8 @@ namespace Arbory\Base\Admin\Form;
 
 use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRendererInterface;
 use Arbory\Base\Admin\Form\Fields\Sortable;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Services\FieldSetFieldFinder;
 use Arbory\Base\Services\FieldTypeRegistry;
@@ -60,23 +59,28 @@ class FieldSet extends Collection
     protected $fieldTypeRegister;
 
     /**
-     * @var InputGroupRendererInterface|null
+     * @var StyleManager
      */
-    protected $inputGroupRenderer;
+    protected $styleManager;
+
 
     /**
      * Resource constructor.
      *
-     * @param Model                            $model
-     * @param string                           $namespace
-     * @param InputGroupRendererInterface|null $inputGroupRenderer
+     * @param Model        $model
+     * @param string       $namespace
+     * @param StyleManager $styleManager
      */
-    public function __construct( Model $model, $namespace, InputGroupRendererInterface $inputGroupRenderer = null )
+    public function __construct( Model $model, $namespace, StyleManager $styleManager = null )
     {
+        if(is_null($styleManager)) {
+            $styleManager = app(StyleManager::class);
+        }
+
         $this->namespace = $namespace;
         $this->model = $model;
         $this->fieldTypeRegister = app(FieldTypeRegistry::class);
-        $this->inputGroupRenderer = $inputGroupRenderer ?: app(InputGroupRenderer::class); // TODO: Temporary
+        $this->styleManager = $styleManager;
 
         parent::__construct( [] );
     }
@@ -220,13 +224,16 @@ class FieldSet extends Collection
      */
     public function render()
     {
-        $content = new Content();
+        $content      = new Content();
+        $styleManager = $this->getStyleManager();
+        $defaultStyle = $styleManager->getDefaultStyle();
 
-        $renderer = $this->getInputGroupRenderer();
+        foreach ( $this->all() as $field ) {
+            $style = $field->getStyle() ?: $defaultStyle;
 
-        foreach($this->all() as $field)
-        {
-            $content->push($renderer ? $renderer->render($field) : $field->render());
+            $content->push(
+                $styleManager->make($style, $field)
+            );
         }
 
         return $content;
@@ -241,25 +248,31 @@ class FieldSet extends Collection
     }
 
     /**
-     * @return InputGroupRendererInterface|null
+     * @return StyleManager
      */
-    public function getInputGroupRenderer(): ?InputGroupRendererInterface
+    public function getStyleManager(): StyleManager
     {
-        return $this->inputGroupRenderer;
+        return $this->styleManager;
     }
 
     /**
-     * @param InputGroupRendererInterface|null $inputGroupRenderer
+     * @param StyleManager $styleManager
      *
      * @return FieldSet
      */
-    public function setInputGroupRenderer(?InputGroupRendererInterface $inputGroupRenderer): self
+    public function setStyleManager( StyleManager $styleManager ): self
     {
-        $this->inputGroupRenderer = $inputGroupRenderer;
+        $this->styleManager = $styleManager;
 
         return $this;
     }
 
+    /**
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @return FieldInterface|mixed
+     */
     public function __call($method, $parameters)
     {
         $fieldTypeClass = $this->fieldTypeRegister->findByType($method);
@@ -268,6 +281,6 @@ class FieldSet extends Collection
             return $this->add(new $fieldTypeClass(...$parameters));
         }
 
-        parent::__call($method, $parameters);
+        return parent::__call($method, $parameters);
     }
 }

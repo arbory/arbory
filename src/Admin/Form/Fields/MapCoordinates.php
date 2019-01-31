@@ -21,16 +21,18 @@ class MapCoordinates extends AbstractField
      */
     protected $longitude;
 
-    /**
-     * @return string
-     */
-    public function render()
+    protected $renderer = MapCoordinatesFieldRenderer::class;
+
+    protected $style = 'nested';
+
+    public function __construct( string $name )
     {
+        parent::__construct($name);
+
         $this->zoom = config( 'arbory.fields.map_coordinates.zoom' );
         $this->latitude = config( 'arbory.fields.map_coordinates.coordinates.lat' );
         $this->longitude = config( 'arbory.fields.map_coordinates.coordinates.lng' );
 
-        return ( new MapCoordinatesFieldRenderer( $this ) )->render();
     }
 
     /**

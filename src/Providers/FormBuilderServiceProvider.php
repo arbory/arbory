@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Services\FieldTypeRegistry;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,6 +18,13 @@ class FormBuilderServiceProvider extends ServiceProvider
             }
 
             return $registry;
+        });
+
+        $this->app->singleton(StyleManager::class, function ( $app ) {
+            $defaultStyle = config('arbory.default_field_style');
+
+            return new StyleManager($app, (array) config('arbory.field_styles'), $defaultStyle);
+
         });
     }
 }

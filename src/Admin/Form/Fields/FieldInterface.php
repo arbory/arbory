@@ -165,4 +165,16 @@ interface FieldInterface
      * @return int
      */
     public function getRows(): int;
+
+    /**
+     * @return string
+     */
+    public function getStyle();
+
+    /**
+     * @param string $style
+     *
+     * @return mixed
+     */
+    public function setStyle( string $style );
 }

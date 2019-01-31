@@ -76,6 +76,11 @@ abstract class AbstractField implements FieldInterface
     protected $rows;
 
     /**
+     * @var string
+     */
+    protected $style;
+
+    /**
      * AbstractField constructor.
      * @param string $name
      */
@@ -364,6 +369,26 @@ abstract class AbstractField implements FieldInterface
     public function setRows( int $rows ): FieldInterface
     {
         $this->rows = $rows;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStyle()
+    {
+        return $this->style;
+    }
+
+    /**
+     * @param string $style
+     *
+     * @return FieldInterface
+     */
+    public function setStyle( string $style ): FieldInterface
+    {
+        $this->style = $style;
 
         return $this;
     }
