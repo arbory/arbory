@@ -3,6 +3,7 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Form\Fields\Checkbox;
 use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Traits\Crudify;
@@ -29,6 +30,13 @@ class RedirectsController extends Controller
         {
             $form->addField( new Text( 'from_url' ) )->rules( 'required' );
             $form->addField( new Text( 'to_url' ) )->rules( 'required' );
+
+            if ($form->getModel()->getKey()) {
+                $permanentValue = $form->getModel()->permanent;
+            } else {
+                $permanentValue = 1;
+            }
+            $form->addField(new Checkbox('permanent'))->setValue($permanentValue);
         } );
 
         return $form;

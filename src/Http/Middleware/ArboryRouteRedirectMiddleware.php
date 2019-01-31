@@ -27,7 +27,13 @@ class ArboryRouteRedirectMiddleware
 
         if( $redirect )
         {
-            return \Redirect::to( $redirect->to_url, 301 );
+            if ($redirect->permanent) {
+                $redirectCode = 301;
+            } else {
+                $redirectCode = 302;
+            }
+
+            return \Redirect::to($redirect->to_url, $redirectCode);
         }
 
         return $next( $request );

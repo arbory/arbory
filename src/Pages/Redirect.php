@@ -11,7 +11,8 @@ class Redirect extends Model
      */
     protected $fillable = [
         'from_url',
-        'to_url'
+        'to_url',
+        'permanent'
     ];
 
     /**
