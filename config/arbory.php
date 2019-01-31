@@ -105,7 +105,7 @@ return [
     ],
 
     'preview' => [
-        'enabled' => env('ARBORY_PREVIEW_ENABLED', false),
+        'enabled' => true,
         'slug_salt' => env('APP_KEY')
     ]
 ];
