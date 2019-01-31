@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
  */
 class Checkbox extends AbstractField
 {
+    protected $renderer = CheckBoxFieldRenderer::class;
+
     /**
      * @param Request $request
      */
@@ -20,13 +22,5 @@ class Checkbox extends AbstractField
         $value = $request->has( $this->getNameSpacedName() ) ?: false;
 
         $this->getModel()->setAttribute( $this->getName(), $value );
-    }
-
-    /**
-     * @return Element
-     */
-    public function render()
-    {
-        return ( new CheckBoxFieldRenderer( $this ) )->render();
     }
 }

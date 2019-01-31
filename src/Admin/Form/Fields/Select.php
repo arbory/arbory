@@ -14,18 +14,12 @@ class Select extends AbstractField
 {
     use HasRelatedOptions;
 
+    protected $renderer = SelectFieldRenderer::class;
+
     /**
      * @var bool
      */
     protected $multiple = false;
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     */
-    public function render()
-    {
-        return ( new SelectFieldRenderer( $this, $this->getOptions() ) )->render();
-    }
 
     /**
      * @param Request $request

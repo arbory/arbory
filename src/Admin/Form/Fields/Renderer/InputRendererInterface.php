@@ -17,4 +17,16 @@ interface InputRendererInterface
      * @return array
      */
     public function getAttributes();
+
+    /**
+     * @param array $attributes
+     *
+     * @return InputRendererInterface
+     */
+    public function addAttributes($attributes = []): InputRendererInterface;
+
+    /**
+     * @return mixed
+     */
+    public function __toString();
 }

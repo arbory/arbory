@@ -32,23 +32,22 @@ class InputGroupRenderer implements InputGroupRendererInterface
 
         $template->append($this->buildLabel($field, $inputId));
 
-        if ($value) {
-            $renderer = $field->render();
+        $renderer = $field->render();
 
-            if($renderer instanceof InputRendererInterface) {
-                $renderer->setAttributes(
-                    array_replace($renderer->getAttributes(), [
-                        'id' => $inputId
-                    ])
-                );
+        if($renderer instanceof InputRendererInterface) {
+            $renderer->setAttributes(
+                array_replace($renderer->getAttributes(), [
+                    'id' => $inputId
+                ])
+            );
 
-                $content = $renderer->render();
-            } else {
-                $content = $renderer;
-            }
-
-            $template->append(Html::div($content)->addClass('value'));
+            $content = $renderer->render();
+        } else {
+            $content = $renderer;
         }
+
+        $template->append(Html::div($content)->addClass('value'));
+
 
         return $template;
     }

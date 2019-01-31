@@ -64,4 +64,27 @@ class InputFieldRenderer implements InputRendererInterface
     {
         return $this->attributes;
     }
+
+    /**
+     * @return mixed|string
+     */
+    public function __toString()
+    {
+        return (string) $this->render();
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return InputRendererInterface
+     */
+    public function addAttributes( $attributes = [] ): InputRendererInterface
+    {
+        $this->attributes = array_merge(
+            $this->attributes,
+            $attributes
+        );
+
+        return $this;
+    }
 }

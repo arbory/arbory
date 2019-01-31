@@ -27,6 +27,7 @@ class CheckBoxFieldRenderer extends InputFieldRenderer
      */
     protected function getInput()
     {
+        /** @var CheckBox $checkBox */
         $checkBox = Html::checkbox()->setName( $this->field->getNameSpacedName() );
 
         if( $this->field->getValue() )
@@ -44,11 +45,9 @@ class CheckBoxFieldRenderer extends InputFieldRenderer
     {
         $input = $this->getInput();
 
-        return Html::div(
-            Html::div( [
+        return Html::div( [
                 $input,
                 $input->getLabel( $this->field->getLabel() )
-            ] )->addClass( 'value' )
-        )->addClass( 'field type-boolean' );
+            ] );
     }
 }

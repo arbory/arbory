@@ -11,44 +11,18 @@ use Arbory\Base\Html\Elements\Element;
 class RichtextFieldRenderer extends TextareaFieldRenderer
 {
     /**
-     * @var string
-     */
-    protected $type = 'richtext';
-
-    /**
-     * @var
-     */
-    protected $attachmentsUploadUrl;
-
-    /**
-     * @var bool
-     */
-    protected $compact = false;
-
-    /**
-     * @param $url
-     * @return RichtextFieldRenderer
-     */
-    public function setAttachmentsUploadUrl( $url )
-    {
-        $this->attachmentsUploadUrl = $url;
-
-        return $this;
-    }
-
-    /**
      * @return Element
      */
-    protected function getInput()
+    public function render()
     {
-        $textarea = parent::getInput();
+        $textarea = parent::render();
         $textarea->addClass( 'richtext type-richText' );
         $textarea->addAttributes( [
-            'data-attachment-upload-url' => $this->attachmentsUploadUrl,
+            'data-attachment-upload-url' => $this->field->getAttachmentsUploadUrl(),
         ]);
 
 
-        if ( $this->isCompact() )
+        if ( $this->field->isCompact() )
         {
             $textarea->addClass( 'compact' );
         }
@@ -58,24 +32,5 @@ class RichtextFieldRenderer extends TextareaFieldRenderer
         }
 
         return $textarea;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCompact(): bool
-    {
-        return $this->compact;
-    }
-
-    /**
-     * @param bool $compact
-     * @return self
-     */
-    public function setCompact( bool $compact )
-    {
-        $this->compact = $compact;
-
-        return $this;
     }
 }

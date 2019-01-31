@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
  * Class AssociatedSetRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class AssociatedSetRenderer
+class AssociatedSetRenderer extends InputFieldRenderer
 {
     /**
      * @var FieldInterface
@@ -26,20 +26,13 @@ class AssociatedSetRenderer
     protected $values;
 
     /**
-     * @var Collection
-     */
-    protected $options;
-
-    /**
      * AssociatedSetRenderer constructor.
      * @param FieldInterface $field
-     * @param Collection $options
      */
-    public function __construct( FieldInterface $field, Collection $options )
+    public function __construct( FieldInterface $field )
     {
         $this->field = $field;
         $this->values = (array) $field->getValue();
-        $this->options = $options;
     }
 
     /**
@@ -59,7 +52,7 @@ class AssociatedSetRenderer
 
         $index = 0;
 
-        foreach( $this->options as $value => $label )
+        foreach( $this->field->getOptions() as $value => $label )
         {
             $content[] = $this->getAssociatedItem(
                 $this->field->getNameSpacedName() . '.' . $index,
@@ -90,7 +83,9 @@ class AssociatedSetRenderer
             $checkbox->select();
         }
 
-        return Html::div( $checkbox )->addClass( 'type-associated-set-item' );
+        return Html::div( $checkbox )
+                   ->addClass( 'type-associated-set-item' )
+                   ->addAttributes($this->attributes);
     }
 
     /**
@@ -98,12 +93,14 @@ class AssociatedSetRenderer
      */
     public function render()
     {
-        $field = new FieldRenderer();
-        $field->setType( 'associated-set' );
-        $field->setName( $this->field->getName() );
-        $field->setLabel( $this->getLabel() );
-        $field->setValue( $this->getAssociatedItemsList() );
+//        $field = new FieldRenderer();
+//        $field->setType( 'associated-set' );
+//        $field->setName( $this->field->getName() );
+//        $field->setLabel( $this->getLabel() );
+//        $field->setValue(  );
+//
+//        return $field->render();
 
-        return $field->render();
+        return $this->getAssociatedItemsList();
     }
 }
