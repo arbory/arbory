@@ -20,6 +20,6 @@ class Redirect extends Model
      */
     public function __toString()
     {
-        return (string) $this->to_url;
+        return (string)$this->to_url;
     }
 }

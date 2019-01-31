@@ -24,12 +24,11 @@ class RedirectsController extends Controller
      * @param Model $model
      * @return Form
      */
-    protected function form( Model $model )
+    protected function form(Model $model)
     {
-        $form = $this->module()->form( $model, function( Form $form )
-        {
-            $form->addField( new Text( 'from_url' ) )->rules( 'required' );
-            $form->addField( new Text( 'to_url' ) )->rules( 'required' );
+        $form = $this->module()->form($model, function (Form $form) {
+            $form->addField(new Text('from_url'))->rules('required');
+            $form->addField(new Text('to_url'))->rules('required');
 
             if ($form->getModel()->getKey()) {
                 $permanentValue = $form->getModel()->permanent;
@@ -37,7 +36,7 @@ class RedirectsController extends Controller
                 $permanentValue = 1;
             }
             $form->addField(new Checkbox('permanent'))->setValue($permanentValue);
-        } );
+        });
 
         return $form;
     }
@@ -47,11 +46,10 @@ class RedirectsController extends Controller
      */
     public function grid()
     {
-        $grid = $this->module()->grid( $this->resource(), function( Grid $grid )
-        {
-            $grid->column( 'from_url' );
-            $grid->column( 'to_url' );
-        } );
+        $grid = $this->module()->grid($this->resource(), function (Grid $grid) {
+            $grid->column('from_url');
+            $grid->column('to_url');
+        });
 
         return $grid;
     }
