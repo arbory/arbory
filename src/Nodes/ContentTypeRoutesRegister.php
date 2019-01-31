@@ -120,10 +120,9 @@ class ContentTypeRoutesRegister
         foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            if (! $item->active && config('arbory.preview.enabled')) {
-                $this->registerNodeRoutes($item, 'preview-' . sha1(config('arbory.preview.slug_salt') . $slug));
-                if ($item->children->count()) {
-                    $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
+            if (! $item->active) {
+                if (config('arbory.preview.enabled')) {
+                    $this->registerPreviewRoutes($item, $slug);
                 }
                 continue;
             }
@@ -133,6 +132,19 @@ class ContentTypeRoutesRegister
             if ($item->children->count()) {
                 $this->registerRoutesForNodeCollection($item->children, $slug);
             }
+        }
+    }
+
+    /**
+     * @param Node $item
+     * @param string $slug
+     */
+    protected function registerPreviewRoutes(Node $item, $slug)
+    {
+        $this->registerNodeRoutes($item, 'preview-' . sha1(config('arbory.preview.slug_salt') . $slug));
+
+        if ($item->children->count()) {
+            $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
         }
     }
 
