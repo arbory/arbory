@@ -63,12 +63,14 @@ class Slug extends AbstractField
             ->iconOnly()
             ->render();
 
-        return Html::div([
+        $content = Html::div([
             Html::div($label)->addClass('label-wrap'),
             Html::div([$input, $button])->addClass('value'),
             $this->getLinkElement(),
-            $this->getPreviewLinkElement(),
+            $this->getPreviewLinkElement()
         ])->addClass('field type-slug')->addAttributes(['data-name' => 'slug']);
+
+        return $content;
     }
 
     /**
@@ -147,7 +149,7 @@ class Slug extends AbstractField
             $urlToSlug .= '/';
         }
 
-        $slugHashed = 'preview-' . sha1('__cms-preview' . '/' . $urlToSlug . $this->getValue());
+        $slugHashed = 'preview-' . sha1(config('arbory.preview.slug_salt') . '/' . $urlToSlug . $this->getValue());
 
         return url($slugHashed);
     }
