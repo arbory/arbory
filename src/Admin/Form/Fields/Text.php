@@ -8,7 +8,11 @@ use Arbory\Base\Html\Elements\Element;
  * Class Text
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Text extends AbstractField
+class Text extends ControlField
 {
-    protected $renderer = Renderer\InputFieldRenderer::class;
+    protected $elementType = self::ELEMENT_TYPE_INPUT;
+
+    protected $classes = [
+        'text'
+    ];
 }

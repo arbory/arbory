@@ -6,7 +6,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\IconPickerRenderer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-class SpriteIcon extends Select
+class IconPicker extends Select
 {
     /**
      * @var string
@@ -32,7 +32,8 @@ class SpriteIcon extends Select
 
     /**
      * @param string $path
-     * @return SpriteIcon
+     *
+     * @return IconPicker
      */
     public function sprite( string $path ): self
     {

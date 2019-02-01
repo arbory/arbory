@@ -4,7 +4,6 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Concerns\IsTranslatable;
 use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRendererInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
@@ -44,21 +43,6 @@ abstract class AbstractField implements FieldInterface
      * @var FieldSet
      */
     protected $fieldSet;
-
-    /**
-     * @var bool
-     */
-    protected $disabled = false;
-
-    /**
-     * @var bool
-     */
-    protected $readOnly = false;
-
-    /**
-     * @var bool
-     */
-    protected $required = false;
 
     /**
      * @var Renderable
@@ -254,66 +238,6 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
-     * @return bool
-     */
-    public function getDisabled(): bool
-    {
-        return $this->disabled;
-    }
-
-    /**
-     * @param bool $disabled
-     *
-     * @return AbstractField
-     */
-    public function setDisabled( bool $disabled = false ): FieldInterface
-    {
-        $this->disabled = $disabled;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getReadOnly(): bool
-    {
-        return $this->readOnly;
-    }
-
-    /**
-     * @param bool $readOnly
-     *
-     * @return FieldInterface
-     */
-    public function setReadOnly( bool $readOnly = false ): FieldInterface
-    {
-        $this->readOnly = $readOnly;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getRequired(): bool
-    {
-        return $this->required;
-    }
-
-    /**
-     * @param bool $required
-     *
-     * @return FieldInterface
-     */
-    public function setRequired( bool $required = false ): FieldInterface
-    {
-        $this->required = $required;
-
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getRenderer(): ?string
@@ -391,5 +315,19 @@ abstract class AbstractField implements FieldInterface
         $this->style = $style;
 
         return $this;
+    }
+
+    public function getFieldClass()
+    {
+        $type = snake_case(class_basename(get_class($this)), '-');
+
+        return "type-{$type}";
+    }
+
+    public function getFieldId()
+    {
+
+
+        return null;
     }
 }

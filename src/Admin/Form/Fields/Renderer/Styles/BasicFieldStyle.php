@@ -2,22 +2,14 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\InputRendererInterface;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 
-class BasicFieldStyle implements FieldStyleInterface
+class BasicFieldStyle extends AbstractFieldStyle
 {
-
     public function render(FieldInterface $field)
     {
-        $namespacedName = $field->getNameSpacedName();
-        $inputName      = $this->getInputName($namespacedName);
-        $inputId        = $this->getInputId($inputName);
-        $type           = str_slug(class_basename(get_class($field)));
-
         $template = Html::div()->addClass('field');
-        $template->addClass('type-' . $type);
+        $template->addClass($field->getFieldClass());
 
         if ($name = $field->getName()) {
             $template->addAttributes(
@@ -27,33 +19,8 @@ class BasicFieldStyle implements FieldStyleInterface
             );
         }
 
-        $renderer = $field->render();
-
-        if($renderer instanceof InputRendererInterface) {
-            $renderer->setAttributes(
-                array_replace($renderer->getAttributes(), [
-                    'id' => $inputId
-                ])
-            );
-
-            $content = $renderer->render();
-        } else {
-            $content = $renderer;
-        }
-
-        $template->append($content);
-
-
+        $template->append($this->renderField($field));
+        
         return $template;
-    }
-
-    protected function getInputName($namespacedName)
-    {
-        return Element::formatName($namespacedName);
-    }
-
-    protected function getInputId($name)
-    {
-        return rtrim(strtr($name, ['[' => '_', ']' => '']), '_');
     }
 }

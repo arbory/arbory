@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
  * Class AssociatedSetRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class AssociatedSetRenderer extends InputFieldRenderer
+class AssociatedSetRenderer extends ControlFieldRenderer
 {
     /**
      * @var FieldInterface
@@ -33,14 +33,6 @@ class AssociatedSetRenderer extends InputFieldRenderer
     {
         $this->field = $field;
         $this->values = (array) $field->getValue();
-    }
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     */
-    protected function getLabel()
-    {
-        return Html::label( $this->field->getLabel() );
     }
 
     /**
@@ -84,8 +76,7 @@ class AssociatedSetRenderer extends InputFieldRenderer
         }
 
         return Html::div( $checkbox )
-                   ->addClass( 'type-associated-set-item' )
-                   ->addAttributes($this->attributes);
+                   ->addClass( 'type-associated-set-item' );
     }
 
     /**

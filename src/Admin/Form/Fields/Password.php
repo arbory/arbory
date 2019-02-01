@@ -2,20 +2,21 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\InputFieldRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\PasswordFieldRenderer;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Elements\Inputs\Input;
-use Arbory\Base\Html\Html;
 use Illuminate\Http\Request;
 
 /**
  * Class Password
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Password extends AbstractField
+class Password extends ControlField
 {
-    protected $renderer = PasswordFieldRenderer::class;
+    protected $classes = [
+        'text'
+    ];
+
+    protected $attributes = [
+        'type' => 'password'
+    ];
 
     /**
      * @param Request $request

@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -15,8 +16,10 @@ use Illuminate\Http\Request;
  * Class HasOne
  * @package Arbory\Base\Admin\Form\Fields
  */
-class HasOne extends AbstractRelationField
+class HasOne extends AbstractRelationField implements FieldRenderOptionsInterface
 {
+    use HasRenderOptions;
+
     /**
      * @return Element
      */
@@ -24,12 +27,14 @@ class HasOne extends AbstractRelationField
     {
         $item = $this->getValue() ?: $this->getRelatedModel();
 
-        $block = Html::div()->addClass( 'section content-fields' );
+        $block = Html::div()
+                     ->addClass( 'section content-fields' )
+                     ->addAttributes($this->getAttributes())
+                     ->addClass(implode(' ', $this->getClasses()));
 
-        foreach( $this->getRelationFieldSet( $item )->getFields() as $field )
-        {
-            $block->append( $field->render() );
-        }
+        $block->append(
+            $this->getRelationFieldSet( $item )->render()
+        );
 
         return $block;
     }

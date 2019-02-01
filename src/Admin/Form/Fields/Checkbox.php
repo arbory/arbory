@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
  * Class Checkbox
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Checkbox extends AbstractField
+class Checkbox extends ControlField
 {
     protected $renderer = CheckBoxFieldRenderer::class;
 

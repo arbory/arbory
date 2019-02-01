@@ -9,7 +9,7 @@ use Arbory\Base\Html\Elements\Element;
  * Class Richtext
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Richtext extends AbstractField
+class Richtext extends Textarea
 {
     /**
      * @var

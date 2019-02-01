@@ -5,10 +5,11 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 use Arbory\Base\Admin\Form\Fields\ObjectRelation;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class ObjectRelationRenderer
+class ObjectRelationRenderer implements Renderable
 {
     /**
      * @var ObjectRelation

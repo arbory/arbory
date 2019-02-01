@@ -13,8 +13,14 @@ use Illuminate\Http\Request;
  * @package Arbory\Base\Admin\Form\Fields
  * @method \Arbory\Base\Files\ArboryFile getModel
  */
-class ArboryFile extends AbstractField
+class ArboryFile extends ControlField
 {
+    protected $elementType = 'input';
+
+    protected $attributes = [
+        'type' => 'file'
+    ];
+
     /**
      * @var string
      */

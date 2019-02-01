@@ -16,8 +16,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
      */
     public function render()
     {
-        $input = $this->getInput();
-        $label = $input->getLabel( $this->field->getLabel() );
+        $input = parent::render();
         $image = $this->field->getValue();
 
         $value = Html::div();

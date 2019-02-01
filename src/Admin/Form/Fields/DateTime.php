@@ -10,19 +10,15 @@ use Arbory\Base\Html\Elements\Element;
  */
 class DateTime extends Text
 {
-    /**
-     * @param string $name
-     */
-    public function __construct($name)
-    {
-        parent::__construct($name);
-    }
+    protected $classes = [
+        'text',
+        'datetime-picker'
+    ];
 
-    /**
-     * @return Element
-     */
-    public function render()
+    public function getValue()
     {
-        return (new Renderer\DateFieldRenderer($this))->render();
+        $value = parent::getValue();
+        
+        return $value ? date('Y-m-d H:i', strtotime($value)) : null;
     }
 }

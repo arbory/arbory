@@ -11,17 +11,12 @@ use Arbory\Base\Html\Html;
  * Class FileFieldRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class FileFieldRenderer extends InputFieldRenderer
+class FileFieldRenderer extends ControlFieldRenderer
 {
     /**
      * @var \Arbory\Base\Admin\Form\Fields\ArboryFile
      */
     protected $field;
-
-    /**
-     * @var string
-     */
-    protected $type = 'file';
 
     /**
      * @return ArboryFile
@@ -32,20 +27,11 @@ class FileFieldRenderer extends InputFieldRenderer
     }
 
     /**
-     * @return Input
-     */
-    protected function getInput()
-    {
-        return Html::input()->setType( 'file' )->setName( $this->field->getNameSpacedName() );
-    }
-
-    /**
      * @return \Arbory\Base\Html\Elements\Element
      */
     public function render()
     {
-        $input = $this->getInput();
-        $label = $input->getLabel( $this->field->getLabel() );
+        $input = parent::render();
 
         $value = Html::div();
 

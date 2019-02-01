@@ -46,7 +46,7 @@ return [
         'hasMany' => Arbory\Base\Admin\Form\Fields\HasMany::class,
         'hasOne' => Arbory\Base\Admin\Form\Fields\HasOne::class,
         'hidden' => Arbory\Base\Admin\Form\Fields\Hidden::class,
-        'icon' => Arbory\Base\Admin\Form\Fields\SpriteIcon::class,
+        'icon' => Arbory\Base\Admin\Form\Fields\IconPicker::class,
         'image' => Arbory\Base\Admin\Form\Fields\ArboryImage::class,
         'link' => Arbory\Base\Admin\Form\Fields\Link::class,
         'map' => Arbory\Base\Admin\Form\Fields\MapCoordinates::class,

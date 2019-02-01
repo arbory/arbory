@@ -80,7 +80,7 @@ class StyleManager
 
             return $style->render($field);
         } else {
-            throw new \InvalidArgumentException("Unknown field style '{$name}'");
+            throw new \InvalidArgumenCotException("Unknown field style '{$name}'");
         }
     }
 

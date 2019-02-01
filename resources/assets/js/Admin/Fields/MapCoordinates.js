@@ -16,13 +16,14 @@ export default class MapCoordinates {
      */
     registerEventHandlers() {
         let field = this.getField();
-        let name = field.data('name');
-
+        
         this.canvas = field.find('.canvas');
-        this.coordinatesInput = field.find('input[data-name=\'' + name + '\']');
+        this.coordinatesInput = this.getInput();
+
+        console.log('this', this.getInput());
 
         this.map = new google.maps.Map(this.canvas[0], {
-            zoom: field.data('zoom'),
+            zoom: this.coordinatesInput.data('zoom'),
             center: this.getCenterPosition()
         });
 
@@ -99,6 +100,7 @@ export default class MapCoordinates {
 
     getCenterPosition() {
         let field = this.getField();
+        let input = this.getInput();
 
         if (this.hasValidInputLatLng()) {
             let coordinates = this.getInputLatLng();
@@ -110,8 +112,8 @@ export default class MapCoordinates {
         }
 
         return {
-            lat: field.data('latitude'),
-            lng: field.data('longitude')
+            lat: input.data('latitude'),
+            lng: input.data('longitude')
         };
     }
 
@@ -136,10 +138,16 @@ export default class MapCoordinates {
     }
 
     getSearchField() {
-        return this.getField().find('.search_address input');
+        return this.getField().find('.search-input');
     }
 
     getField() {
         return jQuery(this.element);
+    }
+
+    getInput() {
+        let field = this.getField();
+
+        return field.find(`input.coordinates-input`);
     }
 }

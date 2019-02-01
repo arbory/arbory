@@ -43,7 +43,7 @@ export let FIELD_TYPE_DEFINITIONS = [
     },
     {
         handler: MapCoordinates,
-        selector: '.coordinate_picker'
+        selector: '.type-map-coordinates'
     },
     {
         handler: File,

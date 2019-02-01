@@ -10,7 +10,7 @@ use Arbory\Base\Html\Html;
  * Class CheckBoxFieldRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class CheckBoxFieldRenderer extends InputFieldRenderer
+class CheckBoxFieldRenderer extends ControlFieldRenderer
 {
     /**
      * @var string
@@ -22,20 +22,18 @@ class CheckBoxFieldRenderer extends InputFieldRenderer
      */
     protected $field;
 
-    /**
-     * @return CheckBox
-     */
-    protected function getInput()
+    protected function getElement()
     {
-        /** @var CheckBox $checkBox */
-        $checkBox = Html::checkbox()->setName( $this->field->getNameSpacedName() );
+        $input = parent::getElement();
+
+        $input->setType('checkbox');
 
         if( $this->field->getValue() )
         {
-            $checkBox->select();
+            $input->addAttributes(['checked' => '']);
         }
 
-        return $checkBox;
+        return $input;
     }
 
     /**
@@ -43,11 +41,11 @@ class CheckBoxFieldRenderer extends InputFieldRenderer
      */
     public function render()
     {
-        $input = $this->getInput();
+        $input = parent::render();
 
         return Html::div( [
-                $input,
-                $input->getLabel( $this->field->getLabel() )
-            ] );
+            $input,
+            $input->getLabel( $this->field->getLabel() )
+        ] );
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
  * Class Dropdown
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Select extends AbstractField
+class Select extends ControlField
 {
     use HasRelatedOptions;
 

@@ -9,19 +9,11 @@ use Arbory\Base\Html\Html;
  * Class Hidden
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Hidden extends AbstractField
+class Hidden extends ControlField
 {
     protected $style = 'raw';
 
-    /**
-     * @return Element
-     */
-    public function render()
-    {
-        return Html::input()
-            ->addAttributes( [ 'data-name' => $this->getName() ] )
-            ->setType( 'hidden' )
-            ->setValue( $this->getValue() )
-            ->setName( $this->getNameSpacedName() );
-    }
+    protected $attributes = [
+        'type' => 'hidden'
+    ];
 }

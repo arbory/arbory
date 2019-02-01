@@ -2,7 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\SpriteIcon;
+use Arbory\Base\Admin\Form\Fields\IconPicker;
+use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\HtmlString;
@@ -15,10 +16,10 @@ class IconPickerRenderer extends SelectFieldRenderer
     public function render()
     {
         $input = parent::render();
-        
-        $div = Html::div([ $input,  $this->getIconSelectElement() ]);
 
-        return $div->addClass( 'type-icon-picker' );
+        $content = [ $input, $this->getIconSelectElement() ];
+
+        return new Content($content);
     }
 
     /**
@@ -26,7 +27,7 @@ class IconPickerRenderer extends SelectFieldRenderer
      */
     protected function getIconSelectElement()
     {
-        /** @var SpriteIcon $field */
+        /** @var IconPicker $field */
         $field = $this->field;
         $items = Html::ul()->addClass( 'items' );
 
@@ -54,7 +55,7 @@ class IconPickerRenderer extends SelectFieldRenderer
             return Html::svg();
         }
 
-        /** @var SpriteIcon $field */
+        /** @var IconPicker $field */
         $field = $this->field;
         $iconNode = $field->getIconContent( $id );
 

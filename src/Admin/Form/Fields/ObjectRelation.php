@@ -87,7 +87,9 @@ class ObjectRelation extends AbstractField
             ObjectRelationGroupedRenderer::class :
             ObjectRelationRenderer::class;
 
-        return ( new $renderer( $this ) )->render();
+        $this->setRenderer($renderer);
+
+        return parent::render();
     }
 
     /**

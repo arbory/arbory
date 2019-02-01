@@ -93,43 +93,7 @@ interface FieldInterface
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|Element|string
      */
     public function render();
-
-    /**
-     * @return bool
-     */
-    public function getRequired(): bool;
-
-    /**
-     * @param bool $required
-     *
-     * @return mixed
-     */
-    public function setRequired( bool $required = false ): FieldInterface;
-
-    /**
-     * @return bool
-     */
-    public function getDisabled(): bool;
-
-    /**
-     * @param bool $disabled
-     *
-     * @return FieldInterface
-     */
-    public function setDisabled( bool $disabled = false ): FieldInterface;
-
-    /**
-     * @return bool
-     */
-    public function getReadOnly(): bool;
-
-    /**
-     * @param bool $readOnly
-     *
-     * @return FieldInterface
-     */
-    public function setReadOnly( bool $readOnly = false ): FieldInterface;
-
+    
     /**
      * @return string|null
      */
@@ -177,4 +141,16 @@ interface FieldInterface
      * @return mixed
      */
     public function setStyle( string $style );
+
+    /**
+     * @return string
+     */
+    public function getFieldClass();
+
+    /**
+     * Element ID for label
+     *
+     * @return string
+     */
+    public function getFieldId();
 }

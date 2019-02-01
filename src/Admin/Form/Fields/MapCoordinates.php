@@ -2,10 +2,17 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Elements\Element;
 
-class MapCoordinates extends AbstractField
+class MapCoordinates extends AbstractField implements NestedFieldInterface,FieldRenderOptionsInterface
 {
+    use HasNestedFieldSet;
+    use HasRenderOptions;
+
     /**
      * @var int
      */
@@ -32,7 +39,6 @@ class MapCoordinates extends AbstractField
         $this->zoom = config( 'arbory.fields.map_coordinates.zoom' );
         $this->latitude = config( 'arbory.fields.map_coordinates.coordinates.lat' );
         $this->longitude = config( 'arbory.fields.map_coordinates.coordinates.lng' );
-
     }
 
     /**
@@ -79,4 +85,23 @@ class MapCoordinates extends AbstractField
 
         return $this;
     }
+
+    public function configureFieldSet( FieldSet $fieldSet )
+    {
+        $namespace = $fieldSet->getNamespace();
+
+        $namespace = substr($namespace,  0, strrpos($namespace, '.') );
+        $fieldSet = new FieldSet($fieldSet->getModel(), $namespace);
+
+        $fieldSet->hidden($this->getName())
+            ->addAttributes($this->getData())
+            ->addClass('coordinates-input');
+        $fieldSet->text("search")
+                 ->setName('')
+                 ->setLabel('')
+                 ->addClass('search-input');
+
+        return $fieldSet;
+    }
+
 }

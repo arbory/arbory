@@ -8,7 +8,7 @@ use Arbory\Base\Html\Elements\Element;
  * Class RichtextFieldRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class RichtextFieldRenderer extends TextareaFieldRenderer
+class RichtextFieldRenderer extends ControlFieldRenderer
 {
     /**
      * @return Element

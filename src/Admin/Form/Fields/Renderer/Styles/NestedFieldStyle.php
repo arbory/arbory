@@ -3,12 +3,10 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\InputRendererInterface;
-use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 
-class NestedFieldStyle implements FieldStyleInterface
+class NestedFieldStyle extends AbstractFieldStyle
 {
     /**
      * @param $label
@@ -23,42 +21,14 @@ class NestedFieldStyle implements FieldStyleInterface
 
     public function render( FieldInterface $field )
     {
-        $namespacedName = $field->getNameSpacedName();
-        $inputName      = $this->getInputName($namespacedName);
-        $inputId        = $this->getInputId($inputName);
-
-        $renderer = $field->render();
-
-        if ( $renderer instanceof InputRendererInterface ) {
-            $renderer->setAttributes(
-                array_replace($renderer->getAttributes(), [
-                    'id' => $inputId,
-                ])
-            );
-
-            $content = $renderer->render();
-        } else {
-            $content = $renderer;
-        }
-
-
         return Html::section([
             $this->getHeader($field->getLabel()),
-            $content,
+            $this->renderField($field),
         ])
            ->addClass('nested')
+           ->addClass($field->getFieldClass())
            ->addAttributes([
                'data-name' => $field->getName(),
            ]);
-    }
-
-    protected function getInputName( $namespacedName )
-    {
-        return Element::formatName($namespacedName);
-    }
-
-    protected function getInputId( $name )
-    {
-        return rtrim(strtr($name, [ '[' => '_', ']' => '' ]), '_');
     }
 }
