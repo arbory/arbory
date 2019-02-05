@@ -2,7 +2,6 @@
 
 namespace Arbory\Base\Admin\Traits;
 
-use Arbory\Base\Admin\Exports\Type\ExcelExport;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Grid\ExportBuilder;
@@ -13,9 +12,22 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Arbory\Base\Admin\Exports\DataSetExport;
+use Arbory\Base\Admin\Exports\ExportInterface;
+use Arbory\Base\Admin\Exports\Type\ExcelExport;
+use Arbory\Base\Admin\Exports\Type\JsonExport;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Crudify
 {
+    /**
+     * @var array
+     */
+    protected static $exportTypes = [
+        'xls' => ExcelExport::class,
+        'json' => JsonExport::class,
+    ];
+
     /**
      * @var Module
      */
@@ -218,8 +230,9 @@ trait Crudify
 
 
     /**
-     * @param string $type
-     * @return mixed
+     * @param $type
+     * @return BinaryFileResponse
+     * @throws \Exception
      */
     public function export($type)
     {
@@ -227,18 +240,27 @@ trait Crudify
         $grid->setRenderer(new ExportBuilder($grid));
         $grid->paginate(false);
 
+        /** @var DataSetExport $dataSet */
         $dataSet = $grid->render();
 
-        switch ($type) {
-            case 'xls':
-                return \Excel::download(new ExcelExport($dataSet), $this->module()->name() . '.xlsx');
-                break;
+        $exporter = $this->getExporter($type, $dataSet);
 
-            case 'json':
-            default:
-                return response()->json($dataSet->getItems());
-                break;
+        return $exporter->download($this->module()->name());
+    }
+
+    /**
+     * @param $type
+     * @param DataSetExport $dataSet
+     * @return ExportInterface
+     * @throws \Exception
+     */
+    protected function getExporter($type, DataSetExport $dataSet): ExportInterface
+    {
+        if (! isset(self::$exportTypes[$type])) {
+            throw new \Exception('Export Type not found - ' . $type);
         }
+
+        return new self::$exportTypes[$type]($dataSet);
     }
 
     /**
