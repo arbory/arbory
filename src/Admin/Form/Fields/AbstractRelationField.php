@@ -15,7 +15,7 @@ abstract class AbstractRelationField extends AbstractField implements NestedFiel
      * @param string $name
      * @param callable $fieldSetCallback
      */
-    public function __construct( $name, callable $fieldSetCallback )
+    public function __construct( $name, callable $fieldSetCallback = null )
     {
         parent::__construct( $name );
 

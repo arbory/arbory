@@ -11,5 +11,5 @@ use Arbory\Base\Html\Elements\Element;
  */
 final class ArboryImage extends ArboryFile
 {
-    protected $renderer = ImageFieldRenderer::class;
+    protected $rendererClass = ImageFieldRenderer::class;
 }

@@ -12,7 +12,7 @@ use Arbory\Base\Html\Elements\Element;
  */
 class MultipleSelect extends AbstractField
 {
-    protected $renderer = AssociatedSetRenderer::class;
+    protected $rendererClass = AssociatedSetRenderer::class;
 
     use HasRelatedOptions;
 }

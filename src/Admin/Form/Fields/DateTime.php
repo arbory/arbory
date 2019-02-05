@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Html\Elements\Element;
+use Carbon\Carbon;
 
 /**
  * Class DateTime
@@ -15,10 +16,36 @@ class DateTime extends Text
         'datetime-picker'
     ];
 
+    protected $format = 'Y-m-d H:i';
+
+    /**
+     * @return string
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param string $format
+     *
+     * @return DateTime
+     */
+    public function setFormat( string $format ): DateTime
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
     public function getValue()
     {
         $value = parent::getValue();
-        
-        return $value ? date('Y-m-d H:i', strtotime($value)) : null;
+
+        if($value) {
+            return Carbon::parse($value)->format($this->getFormat());
+        }
+
+        return null;
     }
 }

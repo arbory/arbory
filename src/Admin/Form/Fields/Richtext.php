@@ -24,7 +24,7 @@ class Richtext extends Textarea
     /**
      * @var string
      */
-    protected $renderer = RichtextFieldRenderer::class;
+    protected $rendererClass = RichtextFieldRenderer::class;
 
     /**
      * @return mixed

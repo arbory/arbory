@@ -1,6 +1,7 @@
 <?php
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
@@ -97,14 +98,28 @@ interface FieldInterface
     /**
      * @return string|null
      */
-    public function getRenderer(): ?string;
+    public function getRendererClass(): ?string;
 
     /**
      * @param string|null $renderable
      *
      * @return FieldInterface
      */
-    public function setRenderer( ?string $renderable = null ): FieldInterface;
+    public function setRendererClass( ?string $renderable = null ): FieldInterface;
+
+    /**
+     * @return RendererInterface|null
+     */
+    public function getRenderer():?RendererInterface;
+
+    /**
+     * Set a render class override
+     *
+     * @param RendererInterface|null $renderer
+     *
+     * @return FieldInterface
+     */
+    public function setRenderer( ?RendererInterface $renderer ): FieldInterface;
 
     /**
      * @return string|null
@@ -143,9 +158,9 @@ interface FieldInterface
     public function setStyle( string $style );
 
     /**
-     * @return string
+     * @return array
      */
-    public function getFieldClass();
+    public function getFieldClasses(): array;
 
     /**
      * Element ID for label
@@ -153,4 +168,11 @@ interface FieldInterface
      * @return string
      */
     public function getFieldId();
+
+    /**
+     * @param RendererInterface $renderer
+     *
+     * @return mixed
+     */
+    public function beforeRender(RendererInterface $renderer);
 }

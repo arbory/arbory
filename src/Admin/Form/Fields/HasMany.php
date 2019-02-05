@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
  * Class HasMany
  * @package Arbory\Base\Admin\Form\Fields
  */
-class HasMany extends AbstractField implements NestedFieldInterface
+class HasMany extends AbstractRelationField implements NestedFieldInterface
 {
     use HasRelationships;
 
@@ -28,6 +28,12 @@ class HasMany extends AbstractField implements NestedFieldInterface
      * @var string
      */
     protected $orderBy;
+
+    protected $rendererClass = NestedFieldRenderer::class;
+
+    protected $style = 'nested';
+
+    protected $isSortable = false;
 
     /**
      * AbstractRelationField constructor.
@@ -63,14 +69,6 @@ class HasMany extends AbstractField implements NestedFieldInterface
     public function canRemoveRelationItems()
     {
         return true;
-    }
-
-    /**
-     * @return Element|string
-     */
-    public function render()
-    {
-        return ( new NestedFieldRenderer( $this, $this->orderBy ) )->render();
     }
 
     /**
@@ -167,17 +165,9 @@ class HasMany extends AbstractField implements NestedFieldInterface
     /**
      * @return bool
      */
-    protected function isSortable(): bool
+    public function isSortable(): bool
     {
-        foreach( $this->fieldSet->getFields() as $field )
-        {
-            if( $field instanceof Sortable && $field->getSortableField() === $this )
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->isSortable;
     }
 
     /**
@@ -217,5 +207,20 @@ class HasMany extends AbstractField implements NestedFieldInterface
     public function getNestedFieldSet( $model )
     {
         return $this->getRelationFieldSet( $model, 0 );
+    }
+
+    /**
+     * Make this field sortable
+     *
+     * @param string $field
+     *
+     * @return $this
+     */
+    public function sortable( $field = 'position' )
+    {
+        $this->isSortable = true;
+        $this->setOrderBy($field);
+
+        return $this;
     }
 }

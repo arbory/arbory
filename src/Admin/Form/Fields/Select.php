@@ -14,7 +14,7 @@ class Select extends ControlField
 {
     use HasRelatedOptions;
 
-    protected $renderer = SelectFieldRenderer::class;
+    protected $rendererClass = SelectFieldRenderer::class;
 
     /**
      * @var bool

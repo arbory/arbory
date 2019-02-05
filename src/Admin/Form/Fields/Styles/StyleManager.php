@@ -5,7 +5,9 @@ namespace Arbory\Base\Admin\Form\Fields\Styles;
 
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\GenericRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\FieldStyleInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptions;
 use Illuminate\Foundation\Application;
 
 class StyleManager
@@ -70,7 +72,7 @@ class StyleManager
      *
      * @return mixed|null
      */
-    public function make( string $name, FieldInterface $field )
+    public function render( string $name, FieldInterface $field )
     {
         if ( $this->styles->has($name) ) {
             /** @var FieldStyleInterface $style */
@@ -78,7 +80,19 @@ class StyleManager
                 $this->styles->get($name)
             );
 
-            return $style->render($field);
+            $options = $this->newOptions();
+
+            if($renderer = $field->getRenderer()) {
+                $options = $field->getRenderer()->configure($options);
+            } else {
+                $renderer = new GenericRenderer();
+
+                $renderer->setField($field);
+            }
+
+            $field->beforeRender($renderer);
+
+            return $style->render($renderer, $options);
         } else {
             throw new \InvalidArgumenCotException("Unknown field style '{$name}'");
         }
@@ -98,5 +112,10 @@ class StyleManager
     public function setDefaultStyle( string $defaultStyle ): void
     {
         $this->defaultStyle = $defaultStyle;
+    }
+
+    public function newOptions()
+    {
+        return new StyleOptions();
     }
 }

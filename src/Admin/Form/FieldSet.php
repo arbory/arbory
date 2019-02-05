@@ -220,6 +220,7 @@ class FieldSet extends Collection
     {
         $field->setFieldSet( $this );
 
+
         parent::offsetSet( $key, $field );
     }
 
@@ -237,7 +238,7 @@ class FieldSet extends Collection
             $style = $field->getStyle() ?: $this->defaultStyle;
 
             $content->push(
-                $styleManager->make($style, $field)
+                $styleManager->render($style, $field)
             );
         }
 

@@ -3,10 +3,12 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 
-class NestedFieldStyle extends AbstractFieldStyle
+class NestedFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
 {
     /**
      * @param $label
@@ -19,16 +21,23 @@ class NestedFieldStyle extends AbstractFieldStyle
     }
 
 
-    public function render( FieldInterface $field )
+    public function render(RendererInterface $renderer, StyleOptionsInterface $options)
     {
-        return Html::section([
+        $field = $renderer->getField();
+
+        $section = Html::section([
             $this->getHeader($field->getLabel()),
             $this->renderField($field),
         ])
            ->addClass('nested')
-           ->addClass($field->getFieldClass())
+           ->addClass(implode(' ', $field->getFieldClasses()))
            ->addAttributes([
                'data-name' => $field->getName(),
            ]);
+
+        $section->addAttributes($options->getAttributes());
+        $section->addClass(implode(' ', $options->getClasses()));
+
+        return $section;
     }
 }

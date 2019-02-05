@@ -8,7 +8,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
 
-class MapCoordinates extends AbstractField implements NestedFieldInterface,FieldRenderOptionsInterface
+class MapCoordinates extends AbstractField implements NestedFieldInterface,RenderOptionsInterface
 {
     use HasNestedFieldSet;
     use HasRenderOptions;
@@ -28,7 +28,7 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface,Field
      */
     protected $longitude;
 
-    protected $renderer = MapCoordinatesFieldRenderer::class;
+    protected $rendererClass = MapCoordinatesFieldRenderer::class;
 
     protected $style = 'nested';
 

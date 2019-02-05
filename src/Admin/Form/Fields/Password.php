@@ -18,6 +18,11 @@ class Password extends ControlField
         'type' => 'password'
     ];
 
+    public function getValue()
+    {
+        return null;
+    }
+
     /**
      * @param Request $request
      * @return void

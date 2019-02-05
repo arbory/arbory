@@ -13,6 +13,8 @@ class Link extends HasOne
 
     protected $style = 'nested';
 
+    protected $urlRules;
+
     /**
      * @param string $name
      */
@@ -38,25 +40,28 @@ class Link extends HasOne
         parent::__construct( $name, $fieldSetCallback );
     }
 
-    /**
-     * @return array
-     */
-    public function getRules(): array
+    public function configureFieldSet( FieldSet $fieldSet )
     {
-        $rules = $this->rules[ 0 ] ?? null;
+        $fieldSet->text( 'href' );
+        $fieldSet->text( 'title' );
+        $fieldSet->checkbox( 'new_tab');
 
-        if( $rules )
-        {
-            $this->fieldSetCallback = function( FieldSet $fieldSet ) use ( $rules )
-            {
-                $fieldSet->text( 'href' )->rules( $rules );
-                $fieldSet->text( 'title' )->rules( $rules );
-                $fieldSet->checkbox( 'new_tab');
-            };
-        }
+        return $fieldSet;
+    }
 
-        unset( $this->rules );
+    /**
+     * @return mixed
+     */
+    public function getUrlRules()
+    {
+        return $this->urlRules;
+    }
 
-        return parent::getRules();
+    /**
+     * @param mixed $urlRules
+     */
+    public function setUrlRules( $urlRules ): void
+    {
+        $this->urlRules = $urlRules;
     }
 }

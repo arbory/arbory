@@ -9,7 +9,7 @@ use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
 use Arbory\Base\Admin\Form\Fields\Renderer\ControlFieldRenderer;
 use Arbory\Base\Html\Elements\Element;
 
-class ControlField extends AbstractField implements ControlFieldInterface, FieldRenderOptionsInterface
+class ControlField extends AbstractField implements ControlFieldInterface, RenderOptionsInterface
 
 {
     use IsControlField;
@@ -21,7 +21,7 @@ class ControlField extends AbstractField implements ControlFieldInterface, Field
 
     protected $elementType = self::ELEMENT_TYPE_INPUT;
 
-    protected $renderer = ControlFieldRenderer::class;
+    protected $rendererClass = ControlFieldRenderer::class;
 
     /**
      * @return string

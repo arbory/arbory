@@ -6,15 +6,22 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
 use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Html\Html;
 
-class LabeledFieldStyle extends AbstractFieldStyle
+class LabeledFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
 {
-    public function render( FieldInterface $field )
+    public function render(RendererInterface $renderer, StyleOptionsInterface $options)
     {
+        $field = $renderer->getField();
+
         $inputId  = $field->getFieldId();
         $template = Html::div()->addClass('field');
-        $template->addClass($field->getFieldClass());
+        $template->addClass(implode(' ', $field->getFieldClasses()));
+
+        $template->addAttributes($options->getAttributes());
+        $template->addClass(implode(' ', $options->getClasses()));
 
         if ( $name = $field->getName() ) {
             $template->addAttributes(
@@ -25,8 +32,6 @@ class LabeledFieldStyle extends AbstractFieldStyle
         }
 
         $template->append($this->buildLabel($field, $inputId));
-
-
         $template->append(Html::div($this->renderField($field))->addClass('value'));
 
 

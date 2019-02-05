@@ -1,6 +1,6 @@
 <?php declare( strict_types=1 );
 
-namespace Arbory\Base\Admin\Form\Fields\Renderer;
+namespace Arbory\Base\Admin\Form\Fields\Helpers;
 
 use Arbory\Base\Files\ArboryFile;
 

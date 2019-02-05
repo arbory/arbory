@@ -6,16 +6,17 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\FieldRenderOptionsInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Elements\Inputs\Textarea;
 use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
-class ControlFieldRenderer implements Renderable
+class ControlFieldRenderer implements RendererInterface
 {
     /**
-     * @var FieldInterface|ControlFieldInterface|FieldRenderOptionsInterface
+     * @var FieldInterface|ControlFieldInterface|RenderOptionsInterface
      */
     protected $field;
 
@@ -117,5 +118,35 @@ class ControlFieldRenderer implements Renderable
         }
 
         return $element;
+    }
+
+    /**
+     * @param FieldInterface $field
+     *
+     * @return self
+     */
+    public function setField( FieldInterface $field ):RendererInterface
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * @return FieldInterface
+     */
+    public function getField(): FieldInterface
+    {
+        return $this->field;
+    }
+
+    /**
+     * @param StyleOptionsInterface $options
+     *
+     * @return StyleOptionsInterface
+     */
+    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    {
+        return $options;
     }
 }

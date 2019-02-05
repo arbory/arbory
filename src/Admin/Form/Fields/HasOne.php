@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
  * Class HasOne
  * @package Arbory\Base\Admin\Form\Fields
  */
-class HasOne extends AbstractRelationField implements FieldRenderOptionsInterface
+class HasOne extends AbstractRelationField implements RenderOptionsInterface
 {
     use HasRenderOptions;
 

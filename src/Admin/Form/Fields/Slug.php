@@ -155,7 +155,7 @@ class Slug extends AbstractField
     /**
      * @return string
      */
-    protected function getUri()
+    public function getUri()
     {
         return $this->getModel()->getUri();
     }
@@ -189,7 +189,7 @@ class Slug extends AbstractField
     /**
      * @return string
      */
-    protected function getUriToSlug()
+    public function getUriToSlug()
     {
         if (! $this->getModel() instanceof Node) {
             return false;
@@ -209,7 +209,7 @@ class Slug extends AbstractField
     /**
      * @return int
      */
-    protected function getParentId()
+    public function getParentId()
     {
         $model = $this->getModel();
 

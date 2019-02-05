@@ -18,7 +18,7 @@ class IconPicker extends Select
      */
     protected $filter;
 
-    protected $renderer = IconPickerRenderer::class;
+    protected $rendererClass = IconPickerRenderer::class;
 
     /**
      * @param string $name

@@ -18,7 +18,7 @@ class BelongsTo extends Select
 {
     use HasRelationships;
 
-    protected $renderer = SelectFieldRenderer::class;
+    protected $rendererClass = SelectFieldRenderer::class;
 
     public function getValue()
     {

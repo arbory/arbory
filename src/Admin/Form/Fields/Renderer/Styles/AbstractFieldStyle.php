@@ -5,7 +5,7 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\FieldRenderOptionsInterface;
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\InputRendererInterface;
 
 abstract class AbstractFieldStyle
@@ -14,7 +14,7 @@ abstract class AbstractFieldStyle
     {
         $content = $field->render();
 
-        if($field instanceof FieldRenderOptionsInterface) {
+        if($field instanceof RenderOptionsInterface) {
             if($wrapper = $field->getWrapper()) {
                 return $wrapper($content);
             }

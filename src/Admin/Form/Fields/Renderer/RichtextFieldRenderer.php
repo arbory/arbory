@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Html\Elements\Element;
 
 /**
@@ -10,6 +11,16 @@ use Arbory\Base\Html\Elements\Element;
  */
 class RichtextFieldRenderer extends ControlFieldRenderer
 {
+    /**
+     * @param RenderOptionsInterface $options
+     *
+     * @return RenderOptionsInterface
+     */
+    public function configureOptions(RenderOptionsInterface $options)
+    {
+        return $options;
+    }
+
     /**
      * @return Element
      */

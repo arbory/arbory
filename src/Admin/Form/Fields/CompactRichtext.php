@@ -15,5 +15,5 @@ class CompactRichtext extends Richtext
     /**
      * @var string
      */
-    protected $renderer = RichtextFieldRenderer::class;
+    protected $rendererClass = RichtextFieldRenderer::class;
 }

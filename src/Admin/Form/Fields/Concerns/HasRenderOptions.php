@@ -4,7 +4,7 @@
 namespace Arbory\Base\Admin\Form\Fields\Concerns;
 
 
-use Arbory\Base\Admin\Form\Fields\FieldRenderOptionsInterface;
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 
 trait HasRenderOptions
 {
@@ -29,9 +29,21 @@ trait HasRenderOptions
      *
      * @return mixed
      */
-    public function addAttributes( array $attributes = [] )
+    public function addAttributes( array $attributes ):RenderOptionsInterface
     {
         $this->attributes = array_merge($this->attributes, $attributes);
+
+        return $this;
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return RenderOptionsInterface
+     */
+    public function setAttributes( array $attributes ):RenderOptionsInterface
+    {
+        $this->attributes = $attributes;
 
         return $this;
     }
@@ -42,7 +54,7 @@ trait HasRenderOptions
      *
      * @return mixed
      */
-    public function addClass( $classes )
+    public function addClass( $classes ):RenderOptionsInterface
     {
         $classes = explode(" ", $classes);
 
@@ -52,6 +64,18 @@ trait HasRenderOptions
                 $classes
             )
         );
+
+        return $this;
+    }
+
+    /**
+     * @param $classes
+     *
+     * @return RenderOptionsInterface
+     */
+    public function setClasses( $classes ):RenderOptionsInterface
+    {
+        $this->classes = $classes;
 
         return $this;
     }
@@ -83,9 +107,9 @@ trait HasRenderOptions
     /**
      * @param callable|null $value
      *
-     * @return FieldRenderOptionsInterface
+     * @return RenderOptionsInterface
      */
-    public function setWrapper( ?callable $value ): FieldRenderOptionsInterface
+    public function setWrapper( ?callable $value ): RenderOptionsInterface
     {
         $this->wrapper = $value;
 

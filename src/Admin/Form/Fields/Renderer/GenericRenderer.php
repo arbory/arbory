@@ -1,48 +1,27 @@
 <?php
 
+
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
+
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\Hidden;
-use Arbory\Base\Admin\Form\Fields\MapCoordinates;
-use Arbory\Base\Admin\Form\Fields\Text;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 
-class MapCoordinatesFieldRenderer implements RendererInterface
+class GenericRenderer implements RendererInterface
 {
     /**
-     * @var MapCoordinates
+     * @var FieldInterface
      */
     protected $field;
 
     /**
-     * @param MapCoordinates $field
-     */
-    public function __construct( MapCoordinates $field )
-    {
-        $this->field = $field;
-    }
-
-    /**
-     * @return Element
+     * Get the evaluated contents of the object.
+     *
+     * @return string
      */
     public function render()
     {
-        $value = $this->field->getValue();
-        $body  = Html::div();
-
-        $body->append(Html::div()->addClass('canvas'));
-
-        $body->append(
-            $this->field->getNestedFieldSet($this->field->getModel())->render()
-        );
-
-        return $body->addClass('body');
+        return $this->field->render();
     }
 
     /**

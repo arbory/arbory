@@ -4,6 +4,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Concerns\IsTranslatable;
 use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
@@ -45,7 +46,12 @@ abstract class AbstractField implements FieldInterface
     protected $fieldSet;
 
     /**
-     * @var Renderable
+     * @var string
+     */
+    protected $rendererClass;
+
+    /**
+     * @var RendererInterface
      */
     protected $renderer;
 
@@ -230,7 +236,7 @@ abstract class AbstractField implements FieldInterface
      */
     public function render()
     {
-         $renderer = app()->makeWith($this->getRenderer(), [
+         $renderer = app()->makeWith($this->getRendererClass(), [
              'field' => $this
          ]);
 
@@ -240,19 +246,21 @@ abstract class AbstractField implements FieldInterface
     /**
      * @return string|null
      */
-    public function getRenderer(): ?string
+    public function getRendererClass(): ?string
     {
-        return $this->renderer;
+        return $this->rendererClass;
     }
 
     /**
-     * @param string|null $renderer
+     * @param string|null $rendererClass
      *
      * @return FieldInterface
      */
-    public function setRenderer( ?string $renderer = null ): FieldInterface
+    public function setRendererClass( ?string $rendererClass = null ): FieldInterface
     {
-        $this->renderer = $renderer;
+        $this->rendererClass = $rendererClass;
+        
+        $this->setRenderer(null);
 
         return $this;
     }
@@ -317,17 +325,68 @@ abstract class AbstractField implements FieldInterface
         return $this;
     }
 
-    public function getFieldClass()
+    /**
+     * @return array
+     */
+    public function getFieldClasses():array
     {
         $type = snake_case(class_basename(get_class($this)), '-');
 
-        return "type-{$type}";
+        return ["type-{$type}"];
     }
 
+    /**
+     * @return string|null
+     */
     public function getFieldId()
     {
-
-
         return null;
+    }
+
+    /**
+     * @return RendererInterface|null
+     */
+    public function getRenderer(): ?RendererInterface
+    {
+        if ( is_null($this->renderer) && $this->rendererClass ) {
+            $this->renderer = $this->newRenderer();
+        }
+
+        return $this->renderer;
+    }
+
+    /**
+     * @param RendererInterface|null $renderer
+     *
+     * @return FieldInterface
+     */
+    public function setRenderer(?RendererInterface $renderer):FieldInterface
+    {
+        $this->renderer = $renderer;
+
+        return $this;
+    }
+
+    /**                 
+     * @return RendererInterface
+     */
+    public function newRenderer()
+    {
+        return app()->makeWith(
+            $this->rendererClass,
+            [
+                'field' => $this
+            ]
+        );
+    }
+
+    /**
+     * @param RendererInterface $renderer
+     *
+     * @return mixed|void
+     */
+    public function beforeRender( RendererInterface $renderer )
+    {
+
     }
 }

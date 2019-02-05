@@ -1,3 +1,9 @@
+/**
+ * @typedef {Object} Options
+ * @property {number} limit
+ * @property {string} grouped
+ * @property {number} indent
+ */
 
 export default class ObjectRelation {
     /**
@@ -160,14 +166,14 @@ export default class ObjectRelation {
      * @return {Number}
      */
     getLimit() {
-        return parseInt(this.getField().data('limit'));
+        return parseInt(this.getOptions().limit);
     }
 
     /**
      * @return {boolean}
      */
     hasIndentation() {
-        return this.getField().data('indent') !== undefined;
+        return this.getOptions().indent !== undefined;
     }
 
     /**
@@ -181,7 +187,7 @@ export default class ObjectRelation {
      * @return {boolean}
      */
     isGrouped() {
-        return this.getField().data('grouped') !== undefined;
+        return this.getOptions().grouped !== undefined;
     }
 
     /**
@@ -203,5 +209,18 @@ export default class ObjectRelation {
      */
     getRelationalElement() {
         return this.getField().find('.relations');
+    }
+
+    /**
+     * @return {Options}
+     */
+    getOptions() {
+        let element = this.getField().find('.object-relation');
+
+        return {
+            limit: element.data('limit'),
+            grouped: element.data('grouped'),
+            indent: element.data('indent')
+        };
     }
 }

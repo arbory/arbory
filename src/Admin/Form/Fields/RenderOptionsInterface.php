@@ -6,14 +6,14 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Html\Elements\Element;
 
-interface FieldRenderOptionsInterface
+interface RenderOptionsInterface
 {
     /**
      * @param callable|null $value
      *
-     * @return FieldRenderOptionsInterface
+     * @return RenderOptionsInterface
      */
-    public function setWrapper(?callable $value):FieldRenderOptionsInterface;
+    public function setWrapper(?callable $value):RenderOptionsInterface;
 
     /**
      * @return callable|null
@@ -25,7 +25,14 @@ interface FieldRenderOptionsInterface
      *
      * @return mixed
      */
-    public function addAttributes(array $attributes = []);
+    public function addAttributes(array $attributes):RenderOptionsInterface;
+
+    /**
+     * @param array $attributes
+     *
+     * @return RenderOptionsInterface
+     */
+    public function setAttributes(array $attributes):RenderOptionsInterface;
 
     /**
      * @return array
@@ -33,12 +40,18 @@ interface FieldRenderOptionsInterface
     public function getAttributes():array;
 
     /**
-     *
      * @param string|array $classes
      *
      * @return mixed
      */
     public function addClass($classes);
+
+    /**
+     * @param $classes
+     *
+     * @return RenderOptionsInterface
+     */
+    public function setClasses($classes):RenderOptionsInterface;
 
     /**
      * @return array
