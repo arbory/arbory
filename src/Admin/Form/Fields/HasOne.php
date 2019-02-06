@@ -45,10 +45,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
      */
     public function getRelationFieldSet( Model $relatedModel )
     {
-        $fieldSet = new FieldSet( $relatedModel, $this->getNameSpacedName() );
-        $fieldSetCallback = $this->fieldSetCallback;
-
-        $fieldSetCallback( $fieldSet );
+        $fieldSet = $this->getNestedFieldSet($relatedModel);
 
         $fieldSet->add( new Hidden( $relatedModel->getKeyName() ) )
             ->setValue( $relatedModel->getKey() );
@@ -135,15 +132,5 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         }
 
         return $rules;
-    }
-
-    /**
-     * @param $model
-     *
-     * @return FieldSet
-     */
-    public function getNestedFieldSet( $model )
-    {
-        return $this->getRelationFieldSet( $model );
     }
 }

@@ -8,6 +8,7 @@ use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\GenericRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\FieldStyleInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptions;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Illuminate\Foundation\Application;
 
 class StyleManager
@@ -67,12 +68,13 @@ class StyleManager
     }
 
     /**
-     * @param string         $name
-     * @param FieldInterface $field
+     * @param string                     $name
+     * @param FieldInterface             $field
+     * @param StyleOptionsInterface|null $options
      *
      * @return mixed|null
      */
-    public function render( string $name, FieldInterface $field )
+    public function render( string $name, FieldInterface $field, ?StyleOptionsInterface $options = null )
     {
         if ( $this->styles->has($name) ) {
             /** @var FieldStyleInterface $style */
@@ -80,7 +82,7 @@ class StyleManager
                 $this->styles->get($name)
             );
 
-            $options = $this->newOptions();
+            $options = $options ?: $this->newOptions();
 
             if($renderer = $field->getRenderer()) {
                 $options = $field->getRenderer()->configure($options);

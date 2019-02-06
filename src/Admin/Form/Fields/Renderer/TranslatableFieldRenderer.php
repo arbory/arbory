@@ -2,7 +2,10 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptions;
 use Arbory\Base\Admin\Form\Fields\Slug;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -29,13 +32,13 @@ class TranslatableFieldRenderer
 
     /**
      * @param $locale
-     * @return Element
+     * @return FieldInterface
      */
     protected function getLocalizedField( $locale )
     {
         $resource = $this->field->getTranslatableResource( $locale );
 
-        return $resource->getFields()->first()->render();
+        return $resource->getFields()->first();
     }
 
     /**
@@ -44,16 +47,27 @@ class TranslatableFieldRenderer
      */
     protected function getLocalizedFieldContent( $locale )
     {
-        $fieldContent = $this->getLocalizedField( $locale );
-        $fieldContent->attributes()->put( 'class', 'localization' );
-        $fieldContent->attributes()->put( 'data-locale', $locale );
+        $field = $this->getLocalizedField( $locale );
+
+
+        /**
+         * @var $styleManager StyleManager
+         */
+        $styleManager = app(StyleManager::class);
+
+
+        $options = new StyleOptions();
+
+        $options->addAttributes(
+            ['data-locale' => $locale]
+        )->addClass('localization');
 
         if( $this->field->getCurrentLocale() === $locale )
         {
-            $fieldContent->addClass( 'active' );
+            $options->addClass( 'active' );
         }
 
-        return $fieldContent;
+        return $styleManager->render($field->getStyle() ?: $styleManager->getDefaultStyle(), $field, $options);
     }
 
     /**

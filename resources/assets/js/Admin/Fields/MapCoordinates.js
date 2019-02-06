@@ -19,9 +19,7 @@ export default class MapCoordinates {
         
         this.canvas = field.find('.canvas');
         this.coordinatesInput = this.getInput();
-
-        console.log('this', this.getInput());
-
+        
         this.map = new google.maps.Map(this.canvas[0], {
             zoom: this.coordinatesInput.data('zoom'),
             center: this.getCenterPosition()

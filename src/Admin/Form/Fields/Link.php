@@ -20,13 +20,6 @@ class Link extends HasOne
      */
     public function __construct( string $name )
     {
-        $fieldSetCallback = function( FieldSet $fieldSet )
-        {
-            $fieldSet->text( 'href' );
-            $fieldSet->text( 'title' );
-            $fieldSet->checkbox( 'new_tab' );
-        };
-
         $this->wrapper = function ($content) {
             $div = Html::div()->addClass('link-body');
             $fieldset = Html::fieldset()->addClass('item');
@@ -37,7 +30,7 @@ class Link extends HasOne
             return $div;
         };
 
-        parent::__construct( $name, $fieldSetCallback );
+        parent::__construct( $name, null );
     }
 
     public function configureFieldSet( FieldSet $fieldSet )

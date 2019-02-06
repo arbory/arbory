@@ -32,6 +32,8 @@ class Translatable extends AbstractField implements ProxyFieldInterface
      */
     protected $currentLocale;
 
+    protected $style = 'raw';
+
     /**
      * Translatable constructor.
      * @param FieldInterface $field
