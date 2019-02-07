@@ -114,10 +114,10 @@ trait Crudify
     }
 
     /**
-     * @param $resourceId
+     * @param int $resourceId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function show($resourceId)
+    public function show(int $resourceId)
     {
         return redirect($this->module()->url('edit', $resourceId));
     }
@@ -158,10 +158,10 @@ trait Crudify
     }
 
     /**
-     * @param $resourceId
+     * @param int $resourceId
      * @return Layout
      */
-    public function edit($resourceId)
+    public function edit(int $resourceId)
     {
         $resource = $this->findOrNew($resourceId);
 
@@ -176,10 +176,10 @@ trait Crudify
 
     /**
      * @param Request $request
-     * @param $resourceId
+     * @param int $resourceId
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $resourceId)
+    public function update(Request $request, int $resourceId)
     {
         $resource = $this->findOrNew($resourceId);
         $form = $this->buildForm($resource);
@@ -198,10 +198,10 @@ trait Crudify
     }
 
     /**
-     * @param $resourceId
+     * @param int $resourceId
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($resourceId)
+    public function destroy(int $resourceId)
     {
         $resource = $this->resource()->findOrFail($resourceId);
 
@@ -212,10 +212,10 @@ trait Crudify
 
     /**
      * @param Request $request
-     * @param $name
+     * @param string $name
      * @return mixed
      */
-    public function dialog(Request $request, $name)
+    public function dialog(Request $request, string $name)
     {
         $method = camel_case($name) . 'Dialog';
 
@@ -230,11 +230,11 @@ trait Crudify
 
 
     /**
-     * @param $type
+     * @param string $type
      * @return BinaryFileResponse
      * @throws \Exception
      */
-    public function export($type)
+    public function export(string $type): BinaryFileResponse
     {
         $grid = $this->buildGrid($this->resource());
         $grid->setRenderer(new ExportBuilder($grid));
@@ -249,12 +249,12 @@ trait Crudify
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @param DataSetExport $dataSet
      * @return ExportInterface
      * @throws \Exception
      */
-    protected function getExporter($type, DataSetExport $dataSet): ExportInterface
+    protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
         if (! isset(self::$exportTypes[$type])) {
             throw new \Exception('Export Type not found - ' . $type);
@@ -267,7 +267,7 @@ trait Crudify
      * @param Request $request
      * @return string
      */
-    protected function toolboxDialog(Request $request)
+    protected function toolboxDialog(Request $request): string
     {
         $node = $this->findOrNew($request->get('id'));
 
@@ -309,10 +309,10 @@ trait Crudify
 
     /**
      * @param Request $request
-     * @param $name
+     * @param string $name
      * @return null
      */
-    public function api(Request $request, $name)
+    public function api(Request $request, string $name)
     {
         $method = camel_case($name) . 'Api';
 
@@ -326,20 +326,20 @@ trait Crudify
     }
 
     /**
-     * @param $route
+     * @param string $route
      * @param array $parameters
      * @return string
      */
-    public function url($route, $parameters = [])
+    public function url(string $route, $parameters = [])
     {
         return $this->module()->url($route, $parameters);
     }
 
     /**
-     * @param mixed $resourceId
+     * @param int $resourceId
      * @return Model
      */
-    protected function findOrNew($resourceId): Model
+    protected function findOrNew(int $resourceId): Model
     {
         /**
          * @var Model $resource

@@ -37,7 +37,7 @@ class JsonExport implements ExportInterface
             self::EXTENSION
         ]);
 
-        $tempPath = storage_path('app/cache/' . $fileName);
+        $tempPath = sys_get_temp_dir() . '/' . $fileName;
 
         File::put($tempPath, $this->export->getItems()->toJson(JSON_PRETTY_PRINT));
 
