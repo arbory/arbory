@@ -114,10 +114,10 @@ trait Crudify
     }
 
     /**
-     * @param int $resourceId
+     * @param $resourceId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function show(int $resourceId)
+    public function show($resourceId)
     {
         return redirect($this->module()->url('edit', $resourceId));
     }
@@ -158,10 +158,10 @@ trait Crudify
     }
 
     /**
-     * @param int $resourceId
+     * @param $resourceId
      * @return Layout
      */
-    public function edit(int $resourceId)
+    public function edit($resourceId)
     {
         $resource = $this->findOrNew($resourceId);
 
@@ -176,10 +176,10 @@ trait Crudify
 
     /**
      * @param Request $request
-     * @param int $resourceId
+     * @param $resourceId
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, int $resourceId)
+    public function update(Request $request, $resourceId)
     {
         $resource = $this->findOrNew($resourceId);
         $form = $this->buildForm($resource);
@@ -198,10 +198,10 @@ trait Crudify
     }
 
     /**
-     * @param int $resourceId
+     * @param $resourceId
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy(int $resourceId)
+    public function destroy($resourceId)
     {
         $resource = $this->resource()->findOrFail($resourceId);
 
@@ -336,10 +336,10 @@ trait Crudify
     }
 
     /**
-     * @param int $resourceId
+     * @param mixed $resourceId
      * @return Model
      */
-    protected function findOrNew(int $resourceId): Model
+    protected function findOrNew($resourceId): Model
     {
         /**
          * @var Model $resource
