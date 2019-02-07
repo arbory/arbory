@@ -20,6 +20,8 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
 {
     use HasRenderOptions;
 
+    protected $style = 'nested';
+
     /**
      * @return Element
      */
@@ -47,8 +49,8 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
     {
         $fieldSet = $this->getNestedFieldSet($relatedModel);
 
-        $fieldSet->add( new Hidden( $relatedModel->getKeyName() ) )
-            ->setValue( $relatedModel->getKey() );
+        $fieldSet->hidden( $relatedModel->getKeyName() )
+                 ->setValue( $relatedModel->getKey() );
 
         return $fieldSet;
     }

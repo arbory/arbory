@@ -281,12 +281,12 @@ class FieldSet extends Collection
      */
     public function __call($method, $parameters)
     {
-        $fieldTypeClass = $this->fieldTypeRegister->findByType($method);
-
-        if (class_exists($fieldTypeClass)) {
-            return $this->add(new $fieldTypeClass(...$parameters));
+        if($this->fieldTypeRegister->has($method)) {
+            return $this->add(
+                $this->fieldTypeRegister->resolve($method, $parameters)
+            );
         }
-
+        
         return parent::__call($method, $parameters);
     }
 

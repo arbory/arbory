@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Elements\Inputs\Input;
@@ -93,5 +94,12 @@ class AssociatedSetRenderer extends ControlFieldRenderer
 //        return $field->render();
 
         return $this->getAssociatedItemsList();
+    }
+
+    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    {
+        $options->addClass('type-associated-set');
+
+        return $options;
     }
 }
