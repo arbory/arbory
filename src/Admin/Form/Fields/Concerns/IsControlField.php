@@ -16,7 +16,7 @@ trait IsControlField
     /**
      * @var bool
      */
-    protected $readOnly = false;
+    protected $interactive = true;
 
     /**
      * @var bool
@@ -26,7 +26,7 @@ trait IsControlField
     /**
      * @return bool
      */
-    public function getDisabled(): bool
+    public function isDisabled(): bool
     {
         return $this->disabled;
     }
@@ -46,19 +46,19 @@ trait IsControlField
     /**
      * @return bool
      */
-    public function getReadOnly(): bool
+    public function isInteractive(): bool
     {
-        return $this->readOnly;
+        return $this->interactive;
     }
 
     /**
-     * @param bool $readOnly
+     * @param bool $interactive
      *
      * @return FieldInterface
      */
-    public function setReadOnly( bool $readOnly = false ): FieldInterface
+    public function setInteractive( bool $interactive = false ): FieldInterface
     {
-        $this->readOnly = $readOnly;
+        $this->interactive = $interactive;
 
         return $this;
     }
@@ -66,7 +66,7 @@ trait IsControlField
     /**
      * @return bool
      */
-    public function getRequired(): bool
+    public function isRequired(): bool
     {
         return $this->required;
     }

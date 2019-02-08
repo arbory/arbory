@@ -14,6 +14,8 @@ class Select extends ControlField
 {
     use HasRelatedOptions;
 
+    protected $control = \Arbory\Base\Admin\Form\Controls\Select::class;
+
     protected $rendererClass = SelectFieldRenderer::class;
 
     /**

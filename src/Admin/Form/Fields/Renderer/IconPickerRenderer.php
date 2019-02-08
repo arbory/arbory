@@ -77,17 +77,31 @@ class IconPickerRenderer extends SelectFieldRenderer
         }
 
         $attributes = $iconNode->attributes();
-        $width = (int) $attributes->width;
-        $height = (int) $attributes->height;
+
+        $dimensions = $this->field->getDimensions();
+
+        $width = $dimensions ? $dimensions[0] : (int) $attributes->width;
+        $height = $dimensions ? $dimensions[1] : (int) $attributes->height;
 
         $icon = Html::span( Html::svg( new HtmlString($content) )
             ->addAttributes( [
                 'width' => $width,
                 'height' => $height,
-                'viewBox' => sprintf( '0 0 %d %d', $width, $height ),
+                'viewBox' => $this->resolveViewBox($iconNode, $width, $height),
                 'role' => 'presentation',
             ] ) )->addClass( 'icon' );
 
         return Html::div( [ $icon, Html::span( $id ) ] )->addClass( 'element' );
+    }
+
+    protected function resolveViewBox(\SimpleXMLElement $iconNode, $width, $height)
+    {
+        $resolver = $this->field->getViewboxResolver();
+
+        if($resolver) {
+            return $resolver($iconNode, $width, $height);
+        } else {
+            return sprintf( '0 0 %d %d', $width, $height );
+        }
     }
 }

@@ -2,8 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\TextareaFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Controls\Textarea as TextareaControl;
 
 /**
  * Class Textarea
@@ -11,7 +10,7 @@ use Arbory\Base\Html\Elements\Element;
  */
 class Textarea extends ControlField
 {
-    protected $elementType = self::ELEMENT_TYPE_TEXTAREA;
+    protected $control = TextareaControl::class;
 
     protected $attributes = [
         'rows' => 5,

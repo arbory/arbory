@@ -4,46 +4,28 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 
+use Arbory\Base\Admin\Form\Controls\Input as InputControl;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
 use Arbory\Base\Admin\Form\Fields\Renderer\ControlFieldRenderer;
 use Arbory\Base\Html\Elements\Element;
 
 class ControlField extends AbstractField implements ControlFieldInterface, RenderOptionsInterface
-
 {
     use IsControlField;
     use HasRenderOptions;
-
-    const ELEMENT_TYPE_INPUT = 'input';
-    const ELEMENT_TYPE_SELECT = 'select';
-    const ELEMENT_TYPE_TEXTAREA = 'textarea';
-
-    protected $elementType = self::ELEMENT_TYPE_INPUT;
-
+    
+    protected $control = InputControl::class;
     protected $rendererClass = ControlFieldRenderer::class;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getElementType(): string
-    {
-        return $this->elementType;
-    }
-
-    /**
-     * @param string $elementType
-     */
-    public function setElementType( string $elementType ): void
-    {
-        $this->elementType = $elementType;
-    }
-
     public function getFieldId()
     {
-        return $this->getInputIdFromNamespace(
+        return $this->getName() ? $this->getInputIdFromNamespace(
             $this->getNameSpacedName()
-        );
+        ) : null;
     }
 
 
@@ -81,5 +63,25 @@ class ControlField extends AbstractField implements ControlFieldInterface, Rende
         return $this->getInputId(
             $this->getInputName($namespacedName)
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getControl()
+    {
+        return $this->control;
+    }
+
+    /**
+     * @param mixed $control
+     *
+     * @return ControlField
+     */
+    public function setControl( $control ): self
+    {
+        $this->control = $control;
+
+        return $this;
     }
 }

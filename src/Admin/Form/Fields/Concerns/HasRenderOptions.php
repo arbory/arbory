@@ -49,6 +49,20 @@ trait HasRenderOptions
     }
 
     /**
+     * @param array $attributeKeys
+     *
+     * @return RenderOptionsInterface
+     */
+    public function removeAttributes( array $attributeKeys ):RenderOptionsInterface
+    {
+        foreach($attributeKeys as $key) {
+            unset($this->attributes[$key]);
+        }
+
+        return $this;
+    }
+
+    /**
      *
      * @param string|array $classes
      *
@@ -75,7 +89,23 @@ trait HasRenderOptions
      */
     public function setClasses( $classes ):RenderOptionsInterface
     {
-        $this->classes = $classes;
+        $this->classes = array_wrap($classes);
+
+        return $this;
+    }
+
+    /**
+     * @param string|array $classes
+     *
+     * @return RenderOptionsInterface
+     */
+    public function removeClasses( $classes ):RenderOptionsInterface
+    {
+        $classes = array_wrap($classes);
+
+        $this->classes = array_filter($this->classes, function ($value) use($classes) {
+            return !in_array($value, $classes, true);
+        });
 
         return $this;
     }

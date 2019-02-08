@@ -4,6 +4,7 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptions;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Form\Fields\Slug;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Admin\Form\Fields\Translatable;
@@ -14,7 +15,7 @@ use Arbory\Base\Html\Html;
  * Class TranslatableFieldRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class TranslatableFieldRenderer
+class TranslatableFieldRenderer implements RendererInterface
 {
     /**
      * @var Translatable
@@ -67,7 +68,13 @@ class TranslatableFieldRenderer
             $options->addClass( 'active' );
         }
 
-        return $styleManager->render($field->getStyle() ?: $styleManager->getDefaultStyle(), $field, $options);
+        $block = $styleManager->render($field->getStyle() ?: $styleManager->getDefaultStyle(), $field, $options);
+
+        if($block instanceof Element) {
+            $block->attributes()->put('class', '');
+        }
+
+        return $block;
     }
 
     /**
@@ -134,5 +141,37 @@ class TranslatableFieldRenderer
         $block->append( $this->getLocalizationSwitch() );
 
         return $block;
+    }
+
+    /**
+     * @param FieldInterface $field
+     *
+     * @return mixed
+     */
+    public function setField( FieldInterface $field ): RendererInterface
+    {
+        $this->field = $field;
+
+        return $field;
+    }
+
+    /**
+     * @return FieldInterface
+     */
+    public function getField(): FieldInterface
+    {
+        return $this->field;
+    }
+
+    /**
+     * Configure the style before rendering the field
+     *
+     * @param StyleOptionsInterface $options
+     *
+     * @return StyleOptionsInterface
+     */
+    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    {
+        return $options;
     }
 }

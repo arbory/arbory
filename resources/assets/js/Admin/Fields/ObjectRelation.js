@@ -61,6 +61,10 @@ export default class ObjectRelation {
             });
 
             related.on('click', () => {
+                if(!this.isInteractive()) {
+                    return false;
+                }
+
                 jQuery(ObjectRelation.getSelector() + ' .relations.active').removeClass('active');
 
                 relational.toggleClass('active');
@@ -85,6 +89,10 @@ export default class ObjectRelation {
      * @param item
      */
     selectRelation(item) {
+        if(!this.isInteractive()) {
+            return false;
+        }
+
         let selectedItem = item.clone();
         let key = item.data('key');
 
@@ -114,6 +122,10 @@ export default class ObjectRelation {
      * @param item
      */
     removeRelation(item) {
+        if(!this.isInteractive()) {
+            return false;
+        }
+
         let key = item.data('key');
 
         this.selected.delete(key);
@@ -222,5 +234,13 @@ export default class ObjectRelation {
             grouped: element.data('grouped'),
             indent: element.data('indent')
         };
+    }
+
+
+    isInteractive() {
+        let disabled = $(this.element).data('disabled');
+        let interactive = $(this.element).data('interactive');
+
+        return interactive && !disabled;
     }
 }

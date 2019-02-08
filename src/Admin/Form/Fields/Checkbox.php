@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Controls\Checkbox as CheckboxControl;
 use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
 use Illuminate\Http\Request;
 
 /**
@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 class Checkbox extends ControlField
 {
     protected $rendererClass = CheckBoxFieldRenderer::class;
+
+    protected $control = CheckboxControl::class;
 
     protected $style = 'basic';
 

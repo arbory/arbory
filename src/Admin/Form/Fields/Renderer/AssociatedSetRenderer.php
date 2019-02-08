@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Controls\Checkbox;
+use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Html;
-use Illuminate\Support\Collection;
 
 /**
  * Class AssociatedSetRenderer
@@ -28,11 +28,12 @@ class AssociatedSetRenderer extends ControlFieldRenderer
 
     /**
      * AssociatedSetRenderer constructor.
+     *
      * @param FieldInterface $field
      */
     public function __construct( FieldInterface $field )
     {
-        $this->field = $field;
+        $this->field  = $field;
         $this->values = (array) $field->getValue();
     }
 
@@ -45,8 +46,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
 
         $index = 0;
 
-        foreach( $this->field->getOptions() as $value => $label )
-        {
+        foreach ( $this->field->getOptions() as $value => $label ) {
             $content[] = $this->getAssociatedItem(
                 $this->field->getNameSpacedName() . '.' . $index,
                 $value,
@@ -63,21 +63,33 @@ class AssociatedSetRenderer extends ControlFieldRenderer
      * @param string $name
      * @param string $value
      * @param string $label
+     *
      * @return Element
      */
     protected function getAssociatedItem( $name, $value, $label )
     {
-        $checkbox = Html::checkbox( ( new Input )->setName( $name )->getLabel( $label ) );
-        $checkbox->setName( $name );
-        $checkbox->setValue( $value );
+        $checkbox = new Checkbox();
 
-        if( in_array( $value, $this->values, true ) )
-        {
-            $checkbox->select();
+        $inputName = Element::formatName($name);
+
+
+        $checkbox->setName($inputName);
+        $checkbox->setValue($value);
+
+        if ( $this->field instanceof ControlFieldInterface ) {
+            $checkbox->setReadOnly(! $this->field->isInteractive());
+            $checkbox->setDisabled($this->field->isDisabled());
         }
 
-        return Html::div( $checkbox )
-                   ->addClass( 'type-associated-set-item' );
+        if ( in_array($value, $this->values, true) ) {
+            $checkbox->setChecked(true);
+        }
+
+        return Html::div([
+            $checkbox->render($checkbox->element()),
+            Html::label($label)->addAttributes([ 'for' => $this->field->getFieldId() ]),
+        ])
+                   ->addClass('type-associated-set-item');
     }
 
     /**
@@ -85,17 +97,14 @@ class AssociatedSetRenderer extends ControlFieldRenderer
      */
     public function render()
     {
-//        $field = new FieldRenderer();
-//        $field->setType( 'associated-set' );
-//        $field->setName( $this->field->getName() );
-//        $field->setLabel( $this->getLabel() );
-//        $field->setValue(  );
-//
-//        return $field->render();
-
         return $this->getAssociatedItemsList();
     }
 
+    /**
+     * @param StyleOptionsInterface $options
+     *
+     * @return StyleOptionsInterface
+     */
     public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
     {
         $options->addClass('type-associated-set');

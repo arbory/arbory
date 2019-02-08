@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Html\Elements\Element;
 use Carbon\Carbon;
 
@@ -47,5 +48,12 @@ class DateTime extends Text
         }
 
         return null;
+    }
+
+    public function beforeRender( RendererInterface $renderer )
+    {
+        if($this->isDisabled() || !$this->isInteractive()) {
+            $this->removeClasses('datetime-picker');
+        }
     }
 }

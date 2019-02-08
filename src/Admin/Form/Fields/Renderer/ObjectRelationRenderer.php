@@ -180,6 +180,12 @@ class ObjectRelationRenderer implements RendererInterface
      */
     public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
     {
+        if(!$this->field->isInteractive() || $this->field->isDisabled()) {
+            $options->addClass('disabled');
+        } else {
+            $options->addClass('interactive');
+        }
+        
         return $options;
     }
 }

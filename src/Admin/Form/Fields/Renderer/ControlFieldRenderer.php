@@ -4,14 +4,12 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 
+use Arbory\Base\Admin\Form\Controls\InputControlInterface;
 use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
-use Arbory\Base\Html\Elements\Inputs\Input;
-use Arbory\Base\Html\Elements\Inputs\Textarea;
-use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Html\Elements\Element;
 
 class ControlFieldRenderer implements RendererInterface
 {
@@ -32,92 +30,53 @@ class ControlFieldRenderer implements RendererInterface
 
     public function render()
     {
-        $element = $this->getElement();
+        $control = $this->getControl();
+        $control = $this->configureControl($control);
 
-        $element->addAttributes(
+        return $control->render($control->element());
+    }
+
+    /**
+     * @param InputControlInterface $control
+     *
+     * @return InputControlInterface
+     */
+    public function configureControl( InputControlInterface $control )
+    {
+        $control->addAttributes(
             $this->field->getAttributes()
         );
 
+
         if ( $this->field->getFieldId() ) {
-            $element->addAttributes(
+            $control->addAttributes(
                 [ 'id' => $this->field->getFieldId() ]
             );
         }
 
-        $element->addClass(
-            implode( " ", $this->field->getClasses() )
+        $control->addClass(
+            implode(" ", $this->field->getClasses())
         );
 
-        if($this->field->getName() &&
-           !$element->attributes()->get('name')) {
-            $element->setName($this->field->getNameSpacedName());
+        if ( $this->field->getName() ) {
+            $control->setName(
+                Element::formatName($this->field->getNameSpacedName())
+            );
         }
 
-        $element = $this->setValue($element);
+        $control->setValue($this->field->getValue());
+        $control->setReadOnly(! $this->field->isInteractive());
+        $control->setDisabled($this->field->isDisabled());
 
-        if($this->field instanceof ControlFieldInterface)
-        {
-            if($this->field->getDisabled()) {
-                $element->addAttributes([
-                    'disabled' => ''
-                ]);
-            }
-
-            if($this->field->getReadOnly()) {
-                $element->addAttributes([
-                    'readonly' => ''
-                ]);
-            }
-        }
-
-        return $element;
+        return $control;
     }
 
     /**
-     * @return Input|\Arbory\Base\Html\Elements\Inputs\Select|Textarea
+     * @return InputControlInterface
      */
-    protected function getElement()
+    public function getControl(): InputControlInterface
     {
-        switch ( $this->field->getElementType() ) {
-            case 'input':
-                $element = Html::input();
-
-                break;
-
-            case 'textarea':
-                $element = Html::textarea();
-
-                break;
-            case 'select':
-                $element = Html::select();
-
-                break;
-
-            default:
-                throw new \LogicException("Unknown element type");
-        }
-
-        return $element;
-    }
-
-    /**
-     * @param $element
-     *
-     * @return mixed
-     */
-    protected function setValue($element)
-    {
-        if($value = $this->field->getValue()) {
-            if($element instanceof Textarea) {
-                $element->append($value);
-            }
-
-            if($element instanceof Input) {
-                $element->setValue($value);
-            }
-        }
-
-        return $element;
+        return app()->make($this->field->getControl());
     }
 
     /**
@@ -125,7 +84,7 @@ class ControlFieldRenderer implements RendererInterface
      *
      * @return self
      */
-    public function setField( FieldInterface $field ):RendererInterface
+    public function setField( FieldInterface $field ): RendererInterface
     {
         $this->field = $field;
 

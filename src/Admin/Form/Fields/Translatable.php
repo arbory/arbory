@@ -34,6 +34,8 @@ class Translatable extends AbstractField implements ProxyFieldInterface
 
     protected $style = 'raw';
 
+    protected $rendererClass = TranslatableFieldRenderer::class;
+
     /**
      * Translatable constructor.
      * @param FieldInterface $field
@@ -71,19 +73,23 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     }
 
     /**
+     * @param array $locales
+     *
+     * @return $this
+     */
+    public function setLocales( array $locales = [] )
+    {
+        $this->locales = $locales;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getCurrentLocale()
     {
         return $this->currentLocale;
-    }
-
-    /**
-     * @return Element|string
-     */
-    public function render()
-    {
-        return ( new TranslatableFieldRenderer( $this ) )->render();
     }
 
     /**

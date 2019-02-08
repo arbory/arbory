@@ -9,7 +9,7 @@ interface ControlFieldInterface
     /**
      * @return bool
      */
-    public function getRequired(): bool;
+    public function isRequired(): bool;
 
     /**
      * @param bool $required
@@ -21,9 +21,11 @@ interface ControlFieldInterface
     /**
      * @return bool
      */
-    public function getDisabled(): bool;
+    public function isDisabled(): bool;
 
     /**
+     * Disable any interaction and does not send any input back to the server
+     *
      * @param bool $disabled
      *
      * @return FieldInterface
@@ -33,12 +35,14 @@ interface ControlFieldInterface
     /**
      * @return bool
      */
-    public function getReadOnly(): bool;
+    public function isInteractive(): bool;
 
     /**
-     * @param bool $readOnly
+     * Disables any interaction but does not control if the field is changed
+     *
+     * @param bool $value
      *
      * @return FieldInterface
      */
-    public function setReadOnly( bool $readOnly = false ): FieldInterface;
+    public function setInteractive( bool $value = false ): FieldInterface;
 }

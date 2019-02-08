@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Controls\Select as SelectControl;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Widgets\Select;
 use Arbory\Base\Html\Elements\Element;
@@ -15,22 +16,29 @@ class SelectFieldRenderer extends ControlFieldRenderer
      */
     protected $field;
 
-    /**
-     * @return \Arbory\Base\Html\Elements\Inputs\Select
-     */
-    protected function getElement()
+    public function render()
     {
-        $select = ( new Select )
-            ->options( $this->field->getOptions() )
-            ->selected( $this->field->getValue() );
+        /**
+         * @var $control SelectControl
+         */
+        $control = $this->getControl();
+        $control = $this->configureControl($control);
 
-        if( $this->field->isMultiple() )
-        {
-            $select->attributes(['multiple' => 'multiple']);
+        $control->setOptions($this->field->getOptions()->all() );
+        $control->setSelected($this->field->getValue());
 
-            $select->name( $this->field->getNameSpacedName() . '[]' );
+        $element = $control->element();
+
+        if($this->field->isMultiple()) {
+            $control->setMultiple(true);
+
+            $name =  $control->getName();
+            $element->addAttributes([
+                'multiple' => '',
+                'name' => $name . '[]'
+            ]);
         }
 
-        return $select->render();
+        return $control->render($element);
     }
 }

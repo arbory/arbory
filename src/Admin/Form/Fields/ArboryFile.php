@@ -69,7 +69,7 @@ class ArboryFile extends ControlField
      */
     protected function deleteCurrentFileIfExists()
     {
-        if ($this->isRequired()) {
+        if ($this->isRequired() || $this->isDisabled()) {
             return;
         }
 
@@ -119,6 +119,6 @@ class ArboryFile extends ControlField
      */
     public function isRequired(): bool
     {
-        return in_array('arbory_file_required', $this->getRules(), true);
+        return in_array('arbory_file_required', $this->getRules(), true) || $this->required;
     }
 }

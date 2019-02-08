@@ -31,6 +31,16 @@ class LabeledFieldStyle extends AbstractFieldStyle implements FieldStyleInterfac
             );
         }
 
+
+        if($field instanceof ControlFieldInterface) {
+            if($field->isDisabled()) {                                                          
+                $template->addAttributes(['data-disabled' => 1]);
+            }
+
+            $template->addAttributes(['data-interactive' => (int) $field->isInteractive()]);
+            $template->addAttributes(['data-required' => (int) $field->isRequired()]);
+        }
+
         $template->append($this->buildLabel($field, $inputId));
         $template->append(Html::div($this->renderField($field))->addClass('value'));
 
@@ -47,8 +57,8 @@ class LabeledFieldStyle extends AbstractFieldStyle implements FieldStyleInterfac
 
         $element->append($label);
 
-        if ( $field instanceof ControlFieldInterface && $field->getRequired() ) {
-            $label->prepend(Html::span('*')->addClass('required-form-field'));
+        if ( $field instanceof ControlFieldInterface && $field->isRequired() ) {
+            $label->prepend(Html::span('*')->addClass('required'));
         }
 
         if ( $info = $field->getInfoBlock() ) {

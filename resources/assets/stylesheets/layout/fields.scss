@@ -72,7 +72,7 @@ input.text
         }
     }
 
-    &.type-boolean .value
+    &.type-checkbox  .value
     {
         padding-top: steps(3);
 
@@ -111,6 +111,11 @@ input.text
     .label-wrap
     {
         padding: steps(0.5) 0;
+        
+        .required {
+            color: red;
+            font-weight: bold;
+        }
 
         .description
         {
@@ -189,6 +194,11 @@ input.text
                 user-select: none;
                 height: steps(3);
                 border: 1px solid $color-border-normal;
+                
+                &.disabled {
+                    cursor: not-allowed;
+                    background: rgb(235, 235, 228);
+                }
             }
 
             .items {
@@ -286,7 +296,7 @@ input.text
                 }
             }
 
-            &.type-boolean {
+            &.type-checkbox {
                 min-height: 0;
 
                 .value {

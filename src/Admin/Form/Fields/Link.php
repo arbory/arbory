@@ -39,6 +39,15 @@ class Link extends HasOne
         $fieldSet->text( 'title' );
         $fieldSet->checkbox( 'new_tab');
 
+        $fieldSet
+            ->each(function(FieldInterface $field)
+            {
+                if($field instanceof  ControlFieldInterface) {
+                    $field->setInteractive($this->isInteractive());
+                    $field->setDisabled($this->isDisabled());
+                }
+        });
+
         return $fieldSet;
     }
 

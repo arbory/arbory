@@ -13,39 +13,26 @@ use Arbory\Base\Html\Html;
 class CheckBoxFieldRenderer extends ControlFieldRenderer
 {
     /**
-     * @var string
-     */
-    protected $type = 'boolean';
-
-    /**
      * @var \Arbory\Base\Admin\Form\Fields\Checkbox
      */
     protected $field;
-
-    protected function getElement()
-    {
-        $input = parent::getElement();
-
-        $input->setType('checkbox');
-
-        if( $this->field->getValue() )
-        {
-            $input->addAttributes(['checked' => '']);
-        }
-
-        return $input;
-    }
-
     /**
      * @return Element
      */
     public function render()
     {
-        $input = parent::render();
+        $control = $this->getControl();
+        $control = $this->configureControl($control);
+
+        $element = $control->element();
+
+        $control->setChecked(
+            $this->field->getValue() == true
+        );
 
         return Html::div( [
-            $input,
-            $input->getLabel( $this->field->getLabel() )
-        ] );
+            $control->render($element),
+            Html::label($this->field->getLabel())->addAttributes(['for' => $this->field->getFieldId()])
+        ] )->addClass('value');
     }
 }

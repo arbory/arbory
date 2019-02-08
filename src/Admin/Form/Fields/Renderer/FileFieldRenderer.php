@@ -32,8 +32,6 @@ class FileFieldRenderer extends ControlFieldRenderer
      */
     public function render()
     {
-        $input = parent::render();
-
         $value = Html::div();
 
         $file = $this->getFile();
@@ -43,7 +41,9 @@ class FileFieldRenderer extends ControlFieldRenderer
             $value->append( $this->createFileDetails( $file ) );
         }
 
-        $value->append( $input );
+         if($this->field->isInteractive() && !$this->field->isDisabled()) {
+             $value->append(parent::render());
+         }
 
         return $value;
     }
@@ -54,6 +54,8 @@ class FileFieldRenderer extends ControlFieldRenderer
      */
     public function createFileDetails(ArboryFile $file): Element
     {
+        $removeInput = null;
+        $removeButton = null;
         $fileSize = (new FileSize($file))->getReadableSize();
 
         $fileDetails = Html::div()->addClass('file-details');
@@ -63,16 +65,19 @@ class FileFieldRenderer extends ControlFieldRenderer
             'title' => $file->getOriginalName(),
             'download'
         ]);
-        $removeButton =
-            Html::button()->addClass('remove fa fa-times')->addAttributes([
-                'type' => 'button',
-            ]);
 
-        $removeInput = Html::input()
-            ->setType('hidden')
-            ->setName($this->field->getNameSpacedName() . '.remove')
-            ->setValue('')
-            ->addClass('remove');
+        if($this->field->isInteractive() && !$this->field->isDisabled()) {
+            $removeButton =
+                Html::button()->addClass('remove fa fa-times')->addAttributes([
+                    'type' => 'button',
+                ]);
+
+            $removeInput = Html::input()
+                ->setType('hidden')
+                ->setName($this->field->getNameSpacedName() . '.remove')
+                ->setValue('')
+                ->addClass('remove');
+        }
 
         $fileDetails->append($downloadLink);
 

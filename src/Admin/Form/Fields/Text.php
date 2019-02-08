@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Controls\Input as InputControl;
 use Arbory\Base\Html\Elements\Element;
 
 /**
@@ -10,7 +11,7 @@ use Arbory\Base\Html\Elements\Element;
  */
 class Text extends ControlField
 {
-    protected $elementType = self::ELEMENT_TYPE_INPUT;
+    protected $control = InputControl::class;
 
     protected $classes = [
         'text'

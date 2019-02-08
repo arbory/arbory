@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
 use Arbory\Base\Admin\Form\Fields\Concerns\IsTranslatable;
 use Arbory\Base\Admin\Form\Fields\Renderer\InputGroupRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
@@ -16,9 +17,10 @@ use Illuminate\View\View;
  * Class AbstractField
  * @package Arbory\Base\Admin\Form\Fields
  */
-abstract class AbstractField implements FieldInterface
+abstract class AbstractField implements FieldInterface, ControlFieldInterface
 {
     use IsTranslatable;
+    use IsControlField;
 
     /**
      * @var string

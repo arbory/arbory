@@ -94,12 +94,16 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface,Rende
         $fieldSet = new FieldSet($fieldSet->getModel(), $namespace);
 
         $fieldSet->hidden($this->getName())
-            ->addAttributes($this->getData())
-            ->addClass('coordinates-input');
+                 ->addAttributes($this->getData())
+                 ->addClass('coordinates-input')
+                 ->setDisabled($this->isDisabled())
+                 ->setInteractive($this->isInteractive());
         $fieldSet->text("search")
                  ->setName('')
                  ->setLabel('')
-                 ->addClass('search-input');
+                 ->addClass('search-input')
+                 ->setDisabled($this->isDisabled())
+                 ->setInteractive($this->isInteractive());
 
         return $fieldSet;
     }

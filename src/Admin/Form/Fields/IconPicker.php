@@ -20,6 +20,13 @@ class IconPicker extends Select
 
     protected $rendererClass = IconPickerRenderer::class;
 
+    protected $viewboxResolver;
+
+    /**
+     * @var array
+     */
+    protected $dimensions;
+
     /**
      * @param string $name
      */
@@ -146,5 +153,45 @@ class IconPicker extends Select
         $this->options( $this->getOptions() );
 
         parent::beforeModelSave( $request );
+    }
+
+    /**
+     * @return callable|null
+     */
+    public function getViewboxResolver()
+    {
+        return $this->viewboxResolver;
+    }
+
+    /**
+     * @param mixed $viewboxResolver
+     *
+     * @return IconPicker
+     */
+    public function setViewboxResolver( callable $viewboxResolver )
+    {
+        $this->viewboxResolver = $viewboxResolver;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getDimensions(): ?array
+    {
+        return $this->dimensions;
+    }
+
+    /**
+     * @param array|null $dimensions
+     *
+     * @return IconPicker
+     */
+    public function setDimensions( ?array $dimensions )
+    {
+        $this->dimensions = $dimensions;
+
+        return $this;
     }
 }

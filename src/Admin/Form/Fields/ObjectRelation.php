@@ -375,9 +375,14 @@ class ObjectRelation extends AbstractField
             }
         }
 
-        $fieldSet->hidden( 'related_id' )->setValue( $ids )->rules( implode( '|', $this->rules ) );
-        $fieldSet->hidden( 'related_type' )->setValue( ( new \ReflectionClass( $this->relatedModelType ) )->getName
-    () );
+        $fieldSet->hidden('related_id')
+                 ->setValue($ids)->rules(implode('|', $this->rules))
+                 ->setDisabled($this->isDisabled())
+                 ->setInteractive($this->isInteractive());
+        $fieldSet->hidden('related_type')
+                 ->setValue(( new \ReflectionClass($this->relatedModelType) )->getName())
+                 ->setDisabled($this->isDisabled())
+                 ->setInteractive($this->isInteractive());
 
         return $fieldSet;
     }

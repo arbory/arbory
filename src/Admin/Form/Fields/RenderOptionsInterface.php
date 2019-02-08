@@ -35,6 +35,13 @@ interface RenderOptionsInterface
     public function setAttributes(array $attributes):RenderOptionsInterface;
 
     /**
+     * @param array $attributes
+     *
+     * @return RenderOptionsInterface
+     */
+    public function removeAttributes(array $attributes):RenderOptionsInterface;
+
+    /**
      * @return array
      */
     public function getAttributes():array;
@@ -47,11 +54,18 @@ interface RenderOptionsInterface
     public function addClass($classes);
 
     /**
-     * @param $classes
+     * @param string|array $classes
      *
      * @return RenderOptionsInterface
      */
     public function setClasses($classes):RenderOptionsInterface;
+
+    /**
+     * @param string|array $classes
+     *
+     * @return RenderOptionsInterface
+     */
+    public function removeClasses($classes):RenderOptionsInterface;
 
     /**
      * @return array

@@ -3,7 +3,6 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Renderer\ImageFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
 
 /**
  * Class ArboryImage
