@@ -8,6 +8,7 @@ use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Fields\Renderer\NestedFieldRenderer;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\Request;
 
@@ -129,7 +130,9 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
                 $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
             }
 
-            $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
+            if(! $relation instanceof BelongsToMany) {
+                $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
+            }
 
             $relatedFieldSet = $this->getRelationFieldSet(
                 $relatedModel,
@@ -140,7 +143,11 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
                 $field->beforeModelSave($request);
             }
 
-            $relatedModel->save();
+            if($relation instanceof BelongsToMany) {
+                $relation->save($relatedModel);
+            } else {
+                $relatedModel->save();
+            }
 
             foreach ($relatedFieldSet->getFields() as $field) {
                 $field->afterModelSave($request);

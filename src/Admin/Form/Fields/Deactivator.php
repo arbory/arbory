@@ -2,10 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Html\Elements\Element;
-use Carbon\Carbon;
+use Arbory\Base\Admin\Form\Controls\Checkbox as CheckboxControl;
 use Illuminate\Http\Request;
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
 
 /**
@@ -15,9 +13,9 @@ use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
 class Deactivator extends ControlField
 {
     protected $activateAtName = 'activate_at';
-
     protected $expireAtName = 'expire_at';
 
+    protected $control = CheckboxControl::class;
     protected $rendererClass = CheckBoxFieldRenderer::class;
 
     protected $style = 'basic';

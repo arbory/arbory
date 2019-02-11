@@ -49,7 +49,7 @@ return [
         'icon' => Arbory\Base\Admin\Form\Fields\IconPicker::class,
         'image' => Arbory\Base\Admin\Form\Fields\ArboryImage::class,
         'link' => Arbory\Base\Admin\Form\Fields\Link::class,
-        'map' => Arbory\Base\Admin\Form\Fields\MapCoordinates::class,
+        'mapCoordinates' => Arbory\Base\Admin\Form\Fields\MapCoordinates::class,
         'markup' => Arbory\Base\Admin\Form\Fields\CompactRichtext::class,
         'multipleSelect' => Arbory\Base\Admin\Form\Fields\MultipleSelect::class,
         'objectRelation' => Arbory\Base\Admin\Form\Fields\ObjectRelation::class,

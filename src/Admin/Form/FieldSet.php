@@ -18,7 +18,6 @@ use Waavi\Translation\Repositories\LanguageRepository;
  * @package Arbory\Base\Admin\Form
  * @method \Arbory\Base\Admin\Form\Fields\BelongsTo belongsTo( string $relationName )
  * @method \Arbory\Base\Admin\Form\Fields\BelongsToMany belongsToMany( string $relationName )
- * @method \Arbory\Base\Admin\Form\Fields\Boolean boolean( string $fieldName )
  * @method \Arbory\Base\Admin\Form\Fields\Checkbox checkbox( string $fieldName )
  * @method \Arbory\Base\Admin\Form\Fields\DateTime dateTime( string $fieldName )
  * @method \Arbory\Base\Admin\Form\Fields\ArboryFile file( string $relationName )

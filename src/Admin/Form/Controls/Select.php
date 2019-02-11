@@ -8,6 +8,7 @@ use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Html;
+use Illuminate\Database\Eloquent\Model;
 
 class Select extends AbstractControl
 {
@@ -135,14 +136,20 @@ class Select extends AbstractControl
      */
     protected function buildOptions()
     {
-        $selected = array_wrap($this->getSelected());
+        $selected = array_map(function ($value) {
+            if($value instanceof Model) {
+                return $value->getKey();
+            }
+
+            return $value;
+        }, $this->getSelected());
 
         $items = new  Content();
 
         foreach ( $this->getOptions() as $key => $value ) {
             $option = Html::option((string) $value)->setValue($key);
 
-            if ( in_array($key, $this->getSelected()) ) {
+            if ( in_array($key, $selected) ) {
                 $option->select();
             }
 
