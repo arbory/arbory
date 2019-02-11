@@ -238,11 +238,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      */
     public function render()
     {
-         $renderer = app()->makeWith($this->getRendererClass(), [
-             'field' => $this
-         ]);
-
-         return $renderer;
+            return $this->getRenderer()->render();
     }
 
     /**

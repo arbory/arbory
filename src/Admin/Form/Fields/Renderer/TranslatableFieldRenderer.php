@@ -70,10 +70,6 @@ class TranslatableFieldRenderer implements RendererInterface
 
         $block = $styleManager->render($field->getStyle() ?: $styleManager->getDefaultStyle(), $field, $options);
 
-        if($block instanceof Element) {
-            $block->attributes()->put('class', '');
-        }
-
         return $block;
     }
 

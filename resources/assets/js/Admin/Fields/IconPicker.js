@@ -58,9 +58,7 @@ export default class IconPicker {
     {
         let disabled =  jQuery(this.element).data('disabled');
         let interactive = jQuery(this.element).data('interactive') == 1;
-
-        console.log('interactyive', disabled, interactive, interactive && !disabled);
-
+        
         return interactive && !disabled;
     }
 }

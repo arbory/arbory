@@ -59,6 +59,10 @@ input.text
     position: relative;
     min-height: steps(7);
     margin-left: steps(2);
+    
+    &.i18n > .field {
+        margin-left: 0;
+    }
 
     &.has-error:not(.i18n),
     &.i18n.has-error .localization.has-error
@@ -94,13 +98,15 @@ input.text
         }
     }
 
-    &.type-richtext
+    &.type-richtext,
+    &.type-compact-richtext
     {
         width: steps(74);
     }
 
 
     &.type-richtext,
+    &.type-compact-richtext,
     &.type-textarea:not(.i18n)
     {
         float: none;
@@ -364,6 +370,10 @@ section.type-map-coordinates {
         @include reset-font;
         @include font-size-normal;
     }
+    
+    button {
+        @extend .button;
+    }
 
     .ui-corner-all
     {
@@ -403,9 +413,14 @@ section.type-map-coordinates {
         td
         {
             border: 1px solid $color-border-normal;
+            border-width: 1px 1px 1px 0;
             text-align: center;
             vertical-align: middle;
             padding: steps(0.5);
+            
+            &:last-child {
+                border-right: 0;
+            }
 
             a
             {
@@ -425,7 +440,7 @@ section.type-map-coordinates {
                 background-color: $color-background-darker;
             }
 
-            &:hover,
+            &:hover:not(.ui-datepicker-unselectable),
             &.ui-datepicker-current-day:hover
             {
                 background-color: $color-highlight-normal;
@@ -439,6 +454,17 @@ section.type-map-coordinates {
 
         }
 
+    }
+    
+    .ui-datepicker-buttonpane {
+        margin-top:  steps(0.5);
+        background: $color-background-normal;
+        border-top: 1px solid $color-border-dark;
+        border-width: 1px 1px 0 1px;
+        
+        .ui-datepicker-close {
+            float: right;
+        }
     }
 
     thead
