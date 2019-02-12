@@ -4,7 +4,6 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
 use Dimsav\Translatable\Translatable as TranslatableModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;

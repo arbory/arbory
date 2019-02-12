@@ -11,7 +11,6 @@ use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Nodes\Node;
 
 class SlugFieldRenderer implements RendererInterface
 {

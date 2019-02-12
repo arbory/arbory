@@ -7,7 +7,7 @@ namespace Arbory\Base\Admin\Form\Controls;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 
-class Textarea  extends AbstractControl
+class TextareaControl  extends AbstractControl
 {
 
     /**

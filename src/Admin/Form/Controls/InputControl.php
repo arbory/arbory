@@ -7,7 +7,7 @@ namespace Arbory\Base\Admin\Form\Controls;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 
-class Input extends AbstractControl
+class InputControl extends AbstractControl
 {
     public function element():Element
     {

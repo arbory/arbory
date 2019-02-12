@@ -4,7 +4,7 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 
-use Arbory\Base\Admin\Form\Controls\Input as InputControl;
+use Arbory\Base\Admin\Form\Controls\InputControl;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
 use Arbory\Base\Admin\Form\Fields\Renderer\ControlFieldRenderer;

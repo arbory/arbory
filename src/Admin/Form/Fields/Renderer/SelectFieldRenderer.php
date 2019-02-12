@@ -2,12 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Controls\Select as SelectControl;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Widgets\Select;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Form\Controls\SelectControl;
 
 class SelectFieldRenderer extends ControlFieldRenderer
 {

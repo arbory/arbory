@@ -10,7 +10,7 @@ use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Model;
 
-class Select extends AbstractControl
+class SelectControl extends AbstractControl
 {
     /**
      * @var bool
@@ -82,7 +82,7 @@ class Select extends AbstractControl
     /**
      * @param bool $multiple
      *
-     * @return Select
+     * @return SelectControl
      */
     public function setMultiple( bool $multiple ): self
     {
@@ -102,7 +102,7 @@ class Select extends AbstractControl
     /**
      * @param array $options
      *
-     * @return Select
+     * @return SelectControl
      */
     public function setOptions( array $options ): self
     {
@@ -122,7 +122,7 @@ class Select extends AbstractControl
     /**
      * @param mixed $selected
      *
-     * @return Select
+     * @return SelectControl
      */
     public function setSelected( $selected ): self
     {

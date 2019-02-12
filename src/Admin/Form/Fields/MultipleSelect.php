@@ -4,7 +4,6 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelatedOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\AssociatedSetRenderer;
-use Arbory\Base\Html\Elements\Element;
 
 /**
  * Class MultipleSelect

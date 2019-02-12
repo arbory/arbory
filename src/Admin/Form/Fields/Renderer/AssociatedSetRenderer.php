@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Controls\Checkbox;
+use Arbory\Base\Admin\Form\Controls\CheckboxControl;
 use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
@@ -68,7 +68,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
      */
     protected function getAssociatedItem( $name, $value, $label )
     {
-        $checkbox = new Checkbox();
+        $checkbox = new CheckboxControl();
 
         $inputName = Element::formatName($name);
 

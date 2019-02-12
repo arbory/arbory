@@ -2,8 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Controls\Input as InputControl;
-use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Controls\InputControl;
 
 /**
  * Class Text

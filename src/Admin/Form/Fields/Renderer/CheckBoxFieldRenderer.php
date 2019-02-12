@@ -3,7 +3,6 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Html;
 
 /**

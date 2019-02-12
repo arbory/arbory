@@ -6,7 +6,6 @@ use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
 use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Html\Elements\Element;
 
 class MapCoordinates extends AbstractField implements NestedFieldInterface,RenderOptionsInterface
 {

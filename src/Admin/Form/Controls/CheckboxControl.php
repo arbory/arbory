@@ -9,7 +9,7 @@ use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Elements\Inputs\Input as InputElement;
 use Arbory\Base\Html\Html;
 
-class Checkbox extends Input
+class CheckboxControl extends InputControl
 {
     protected $type = 'checkbox';
 
@@ -69,7 +69,7 @@ class Checkbox extends Input
     /**
      * @param bool $checked
      *
-     * @return Checkbox
+     * @return CheckboxControl
      */
     public function setChecked( bool $checked ): self
     {

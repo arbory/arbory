@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Controls\Textarea as TextareaControl;
+use Arbory\Base\Admin\Form\Controls\TextareaControl;
 
 /**
  * Class Textarea

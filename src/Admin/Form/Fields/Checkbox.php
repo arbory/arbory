@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Controls\Checkbox as CheckboxControl;
+use Arbory\Base\Admin\Form\Controls\CheckboxControl as CheckboxControl;
 use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
 use Illuminate\Http\Request;
 

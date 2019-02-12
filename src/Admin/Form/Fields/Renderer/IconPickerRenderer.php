@@ -11,7 +11,7 @@ use Arbory\Base\Html\HtmlString;
 class IconPickerRenderer extends SelectFieldRenderer
 {
     /**
-     * @return Element
+     * @return Content
      */
     public function render()
     {
@@ -71,7 +71,7 @@ class IconPickerRenderer extends SelectFieldRenderer
         {
             $content = $path->asXML();
         }
-        else 
+        else
         {
             return Html::div()->addClass( 'element' );
         }
@@ -94,14 +94,21 @@ class IconPickerRenderer extends SelectFieldRenderer
         return Html::div( [ $icon, Html::span( $id ) ] )->addClass( 'element' );
     }
 
-    protected function resolveViewBox(\SimpleXMLElement $iconNode, $width, $height)
+    /**
+     * @param \SimpleXMLElement $iconNode
+     * @param  int              $width
+     * @param  int              $height
+     *
+     * @return string
+     */
+    protected function resolveViewBox( \SimpleXMLElement $iconNode, $width, $height )
     {
         $resolver = $this->field->getViewboxResolver();
 
-        if($resolver) {
+        if ( $resolver ) {
             return $resolver($iconNode, $width, $height);
-        } else {
-            return sprintf( '0 0 %d %d', $width, $height );
         }
+
+        return sprintf('0 0 %d %d', $width, $height);
     }
 }

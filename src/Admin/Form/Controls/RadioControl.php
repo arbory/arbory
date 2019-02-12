@@ -4,7 +4,7 @@
 namespace Arbory\Base\Admin\Form\Controls;
 
 
-class Radio extends Checkbox
+class RadioControl extends CheckboxControl
 {
     protected $type = 'radio';
 }
