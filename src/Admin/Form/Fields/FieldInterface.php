@@ -124,14 +124,14 @@ interface FieldInterface
     /**
      * @return string|null
      */
-    public function getInfoBlock();
+    public function getTooltip();
 
     /**
      * @param string|null $content
      *
      * @return FieldInterface
      */
-    public function setInfoBlock( $content = null ): FieldInterface;
+    public function setTooltip( $content = null ): FieldInterface;
 
     /**
      * @param int $rows

@@ -61,7 +61,7 @@ class LabeledFieldStyle extends AbstractFieldStyle implements FieldStyleInterfac
             $label->prepend(Html::span('*')->addClass('required'));
         }
 
-        if ( $info = $field->getInfoBlock() ) {
+        if ( $info = $field->getTooltip() ) {
             $element->append(
                 Html::abbr(' ?')->addAttributes([ 'title' => $info ])
             );

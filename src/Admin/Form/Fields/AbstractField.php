@@ -58,9 +58,9 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     protected $renderer;
 
     /**
-     * @var Content
+     * @var mixed
      */
-    protected $infoBlock;
+    protected $tooltip;
 
     /**
      * @var int
@@ -266,9 +266,9 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return Content
      */
-    public function getInfoBlock()
+    public function getTooltip()
     {
-        return $this->infoBlock;
+        return $this->tooltip;
     }
 
     /**
@@ -276,9 +276,9 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      *
      * @return FieldInterface
      */
-    public function setInfoBlock( $content = null ): FieldInterface
+    public function setTooltip( $content = null ): FieldInterface
     {
-        $this->infoBlock = $content;
+        $this->tooltip = $content;
 
         return $this;
     }
