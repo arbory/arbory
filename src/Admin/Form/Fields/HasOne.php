@@ -20,7 +20,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
 {
     use HasRenderOptions;
 
-    protected $style = 'nested';
+    protected $style = 'section';
 
     /**
      * @return Element

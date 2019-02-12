@@ -7,11 +7,13 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Form\Fields\Slug;
+use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Nodes\Node;
 
-class SlugRenderer implements RendererInterface
+class SlugFieldRenderer implements RendererInterface
 {
     /**
      * @var Slug
@@ -58,7 +60,10 @@ class SlugRenderer implements RendererInterface
 
         $content->push(Html::div([$input, $button])->addClass('value'));
         $content->push($this->getLinkElement());
-        $content->push($this->getPreviewLinkElement());
+        
+        if (config('arbory.preview.enabled')) {
+            $content->push($this->getPreviewLinkElement());
+        }
 
         return $content;
     }
@@ -69,14 +74,14 @@ class SlugRenderer implements RendererInterface
      */
     protected function getLinkElement()
     {
-        if (! $this->hasUriToSlug()) {
+        if (! $this->field->hasUriToSlug()) {
             return null;
         }
 
         return Html::div(
             Html::link(
                 $this->getLinkValue()
-            )->addAttributes(['href' => $this->getLinkHref()])
+            )->addAttributes(['href' => $this->field->getLinkHref()])
         )->addClass('link');
     }
 
@@ -86,14 +91,14 @@ class SlugRenderer implements RendererInterface
      */
     protected function getPreviewLinkElement()
     {
-        if (! $this->hasUriToSlug() || $this->field->getModel()->isActive() || !$this->field->getValue()) {
+        if (! $this->field->hasUriToSlug() || $this->field->getModel()->isActive() || !$this->field->getValue()) {
             return null;
         }
 
         return Html::div(
             Html::link(
                 trans('arbory::fields.slug.page_preview')
-            )->addAttributes(['href' => $this->getPreviewLinkHref()])
+            )->addAttributes(['href' => $this->field->getPreviewLinkHref()])
         )->addClass('link');
     }
 
@@ -116,43 +121,6 @@ class SlugRenderer implements RendererInterface
         ];
     }
 
-    /**
-     * @return string
-     */
-    protected function getLinkHref()
-    {
-        $urlToSlug = $this->field->getUriToSlug();
-
-        if ($urlToSlug) {
-            $urlToSlug .= '/';
-        }
-
-        return url($urlToSlug . $this->field->getValue());
-    }
-
-    /**
-     * @return string
-     */
-    protected function getPreviewLinkHref()
-    {
-        $urlToSlug = $this->field->getUriToSlug();
-
-        if ($urlToSlug) {
-            $urlToSlug .= '/';
-        }
-
-        $slugHashed = 'preview-' . sha1('__cms-preview' . '/' . $urlToSlug . $this->field->getValue());
-
-        return url($slugHashed);
-    }
-
-    /**
-     * @return bool
-     */
-    protected function hasUriToSlug(): bool
-    {
-        return $this->field->getModel() instanceof Node;
-    }
 
     /**
      * @param FieldInterface $field
