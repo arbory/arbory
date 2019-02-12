@@ -4,7 +4,6 @@ namespace Arbory\Base\Admin\Form;
 
 use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Sortable;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Services\FieldSetFieldFinder;
@@ -35,7 +34,6 @@ use Waavi\Translation\Repositories\LanguageRepository;
  * @method \Arbory\Base\Admin\Form\Fields\Richtext richtext( string $fieldName )
  * @method \Arbory\Base\Admin\Form\Fields\Select select( string $fieldName )
  * @method \Arbory\Base\Admin\Form\Fields\Slug slug( string $fieldName, string $fromFieldName, string $apiUrl )
- * @method \Arbory\Base\Admin\Form\Fields\Sortable sortable( string $fieldName, \Arbory\Base\Admin\Form\Fields\HasMany $field )
  * @method \Arbory\Base\Admin\Form\Fields\Text text( string $fieldName )
  * @method \Arbory\Base\Admin\Form\Fields\Textarea textarea( string $fieldName )
  * @method \Arbory\Base\Admin\Form\Fields\Translatable translatable( FieldInterface $field )
@@ -138,11 +136,6 @@ class FieldSet extends Collection
             if( $field->getName() === $fieldName )
             {
                 $fields[] = $field;
-            }
-
-            if( $field instanceof Sortable && $field->getField()->getName() === $fieldName )
-            {
-                $fields[] = $field->getSortableField();
             }
         }
 

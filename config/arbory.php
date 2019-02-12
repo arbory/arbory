@@ -57,7 +57,6 @@ return [
         'richtext' => Arbory\Base\Admin\Form\Fields\Richtext::class,
         'select' => Arbory\Base\Admin\Form\Fields\Select::class,
         'slug' => Arbory\Base\Admin\Form\Fields\Slug::class,
-        'sortable' => Arbory\Base\Admin\Form\Fields\Sortable::class,
         'text' => Arbory\Base\Admin\Form\Fields\Text::class,
         'textarea' => Arbory\Base\Admin\Form\Fields\Textarea::class,
         'translatable' => Arbory\Base\Admin\Form\Fields\Translatable::class,
