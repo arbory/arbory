@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -22,6 +23,10 @@ class AddActivationColumnsToNodesTable extends Migration
             'activate_at' => date('Y-m-d H:i')
         ]);
 
+        if (Schema::getConnection()->getDriverName() === 'sqlsrv') {
+            $this->dropDefaultConstraintForActiveColumn();
+        }
+
         Schema::table('nodes', function (Blueprint $table) {
             $table->dropColumn('active');
         });
@@ -34,13 +39,12 @@ class AddActivationColumnsToNodesTable extends Migration
      */
     public function down()
     {
-        Schema::table('nodes', function (Blueprint $table)
-        {
+        Schema::table('nodes', function (Blueprint $table) {
             $table->tinyInteger('active')->default(0);
         });
 
-        DB::table('nodes')->where('activate_at', '<=', date('Y-m-d H:i'))->where(function ($query) {
-           $query->where('expire_at', '>', date('Y-m-d H:i'))->orWhereNull('expire_at');
+        DB::table('nodes')->where('activate_at', '<=', date('Y-m-d H:i'))->where(function (Builder $query) {
+            $query->where('expire_at', '>', date('Y-m-d H:i'))->orWhereNull('expire_at');
         })->update([
             'active' => 1
         ]);
@@ -48,5 +52,13 @@ class AddActivationColumnsToNodesTable extends Migration
         Schema::table('nodes', function (Blueprint $table) {
             $table->dropColumn(['expire_at', 'activate_at']);
         });
+    }
+
+    protected function dropDefaultConstraintForActiveColumn()
+    {
+        $defaultConstraint = DB::selectOne("SELECT OBJECT_NAME([default_object_id]) AS name FROM SYS.COLUMNS WHERE [object_id] = OBJECT_ID('[dbo].[nodes]') AND [name] = 'active'");
+        $constraint = new \Doctrine\DBAL\Schema\Index($defaultConstraint->name, ['active']);
+
+        Schema::getConnection()->getDoctrineSchemaManager()->dropConstraint($constraint, 'nodes');
     }
 }
