@@ -4,7 +4,6 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
 use Dimsav\Translatable\Translatable as TranslatableModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -15,7 +14,7 @@ use Waavi\Translation\Repositories\LanguageRepository;
  * Class Translatable
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Translatable extends AbstractField
+class Translatable extends AbstractField implements ProxyFieldInterface
 {
     /**
      * @var FieldInterface
@@ -31,6 +30,10 @@ class Translatable extends AbstractField
      * @var string
      */
     protected $currentLocale;
+
+    protected $style = 'raw';
+
+    protected $rendererClass = TranslatableFieldRenderer::class;
 
     /**
      * Translatable constructor.
@@ -69,19 +72,23 @@ class Translatable extends AbstractField
     }
 
     /**
+     * @param array $locales
+     *
+     * @return $this
+     */
+    public function setLocales( array $locales = [] )
+    {
+        $this->locales = $locales;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getCurrentLocale()
     {
         return $this->currentLocale;
-    }
-
-    /**
-     * @return Element|string
-     */
-    public function render()
-    {
-        return ( new TranslatableFieldRenderer( $this ) )->render();
     }
 
     /**
@@ -199,5 +206,13 @@ class Translatable extends AbstractField
     public function getFieldTypeName()
     {
         return $this->field->getFieldTypeName();
+    }
+
+    /**
+     * @return FieldInterface
+     */
+    public function getField(): FieldInterface
+    {
+        return $this->field;
     }
 }

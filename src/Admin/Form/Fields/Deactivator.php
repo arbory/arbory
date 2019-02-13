@@ -2,21 +2,23 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Html\Elements\Element;
-use Carbon\Carbon;
+use Arbory\Base\Admin\Form\Controls\CheckboxControl;
 use Illuminate\Http\Request;
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
 
 /**
  * Class DateTime
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Deactivator extends AbstractField
+class Deactivator extends ControlField
 {
     protected $activateAtName = 'activate_at';
-
     protected $expireAtName = 'expire_at';
+
+    protected $control = CheckboxControl::class;
+    protected $rendererClass = CheckBoxFieldRenderer::class;
+
+    protected $style = 'basic';
 
     /**
      * @param string $name
@@ -57,13 +59,5 @@ class Deactivator extends AbstractField
             $this->getModel()->setAttribute($this->getActivateAtName(), null);
             $this->getModel()->setAttribute($this->getExpireAtName(), null);
         }
-    }
-
-    /**
-     * @return Element
-     */
-    public function render()
-    {
-        return (new CheckBoxFieldRenderer($this))->render();
     }
 }

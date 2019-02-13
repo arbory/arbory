@@ -46,10 +46,10 @@ return [
         'hasMany' => Arbory\Base\Admin\Form\Fields\HasMany::class,
         'hasOne' => Arbory\Base\Admin\Form\Fields\HasOne::class,
         'hidden' => Arbory\Base\Admin\Form\Fields\Hidden::class,
-        'icon' => Arbory\Base\Admin\Form\Fields\SpriteIcon::class,
+        'icon' => Arbory\Base\Admin\Form\Fields\IconPicker::class,
         'image' => Arbory\Base\Admin\Form\Fields\ArboryImage::class,
         'link' => Arbory\Base\Admin\Form\Fields\Link::class,
-        'map' => Arbory\Base\Admin\Form\Fields\MapCoordinates::class,
+        'mapCoordinates' => Arbory\Base\Admin\Form\Fields\MapCoordinates::class,
         'markup' => Arbory\Base\Admin\Form\Fields\CompactRichtext::class,
         'multipleSelect' => Arbory\Base\Admin\Form\Fields\MultipleSelect::class,
         'objectRelation' => Arbory\Base\Admin\Form\Fields\ObjectRelation::class,
@@ -57,11 +57,20 @@ return [
         'richtext' => Arbory\Base\Admin\Form\Fields\Richtext::class,
         'select' => Arbory\Base\Admin\Form\Fields\Select::class,
         'slug' => Arbory\Base\Admin\Form\Fields\Slug::class,
-        'sortable' => Arbory\Base\Admin\Form\Fields\Sortable::class,
         'text' => Arbory\Base\Admin\Form\Fields\Text::class,
         'textarea' => Arbory\Base\Admin\Form\Fields\Textarea::class,
         'translatable' => Arbory\Base\Admin\Form\Fields\Translatable::class,
     ],
+
+    'field_styles' => [
+        'normal' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\LabeledFieldStyle::class,
+        'basic' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\BasicFieldStyle::class,
+        'raw' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\RawFieldStyle::class,
+        'nested' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\NestedFieldStyle::class,
+        'section' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\SectionFieldStyle::class,
+    ],
+
+    'default_field_style' => 'normal',
 
     'auth' => [
         'ip' => [

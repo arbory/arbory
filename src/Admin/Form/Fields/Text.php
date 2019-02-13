@@ -2,19 +2,17 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Controls\InputControl;
 
 /**
  * Class Text
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Text extends AbstractField
+class Text extends ControlField
 {
-    /**
-     * @return Element
-     */
-    public function render()
-    {
-        return ( new Renderer\InputFieldRenderer( $this ) )->render();
-    }
+    protected $control = InputControl::class;
+
+    protected $classes = [
+        'text'
+    ];
 }

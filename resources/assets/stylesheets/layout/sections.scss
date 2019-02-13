@@ -136,10 +136,6 @@ section.nested
         .button {
             float: left;
         }
-
-        .type-sortable & {
-            display: block;
-        }
     }
 
     .remove-item-box
@@ -149,7 +145,8 @@ section.nested
         top:   0;
         width: auto;
     }
+    
+    &.type-sortable .sortable-navigation {
+        display: block;
+    }
 }
-
-
-

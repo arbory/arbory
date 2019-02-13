@@ -6,8 +6,8 @@ use Closure;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Fields\Renderer\NestedFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\Request;
 
@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
  * Class HasMany
  * @package Arbory\Base\Admin\Form\Fields
  */
-class HasMany extends AbstractField
+class HasMany extends AbstractRelationField implements NestedFieldInterface
 {
     use HasRelationships;
 
@@ -28,6 +28,12 @@ class HasMany extends AbstractField
      * @var string
      */
     protected $orderBy;
+
+    protected $rendererClass = NestedFieldRenderer::class;
+
+    protected $style = 'nested';
+
+    protected $isSortable = false;
 
     /**
      * AbstractRelationField constructor.
@@ -63,14 +69,6 @@ class HasMany extends AbstractField
     public function canRemoveRelationItems()
     {
         return true;
-    }
-
-    /**
-     * @return Element|string
-     */
-    public function render()
-    {
-        return ( new NestedFieldRenderer( $this, $this->orderBy ) )->render();
     }
 
     /**
@@ -131,7 +129,9 @@ class HasMany extends AbstractField
                 $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
             }
 
-            $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
+            if(! $relation instanceof BelongsToMany) {
+                $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
+            }
 
             $relatedFieldSet = $this->getRelationFieldSet(
                 $relatedModel,
@@ -142,7 +142,11 @@ class HasMany extends AbstractField
                 $field->beforeModelSave($request);
             }
 
-            $relatedModel->save();
+            if($relation instanceof BelongsToMany) {
+                $relation->save($relatedModel);
+            } else {
+                $relatedModel->save();
+            }
 
             foreach ($relatedFieldSet->getFields() as $field) {
                 $field->afterModelSave($request);
@@ -167,17 +171,9 @@ class HasMany extends AbstractField
     /**
      * @return bool
      */
-    protected function isSortable(): bool
+    public function isSortable(): bool
     {
-        foreach( $this->fieldSet->getFields() as $field )
-        {
-            if( $field instanceof Sortable && $field->getSortableField() === $this )
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->isSortable;
     }
 
     /**
@@ -212,5 +208,25 @@ class HasMany extends AbstractField
         }
 
         return $rules;
+    }
+
+    public function getNestedFieldSet( $model )
+    {
+        return $this->getRelationFieldSet( $model, 0 );
+    }
+
+    /**
+     * Make this field sortable
+     *
+     * @param string $field
+     *
+     * @return $this
+     */
+    public function sortable( $field = 'position' )
+    {
+        $this->isSortable = true;
+        $this->setOrderBy($field);
+
+        return $this;
     }
 }

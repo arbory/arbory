@@ -2,28 +2,26 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\TextareaFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Controls\TextareaControl;
 
 /**
  * Class Textarea
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Textarea extends AbstractField
+class Textarea extends ControlField
 {
+    protected $control = TextareaControl::class;
+
+    protected $attributes = [
+        'rows' => 5,
+        'cols' => 50
+    ];
+
     /**
      * @return string
      */
     public function __toString()
     {
         return (string) $this->getValue();
-    }
-
-    /**
-     * @return Element
-     */
-    public function render()
-    {
-        return ( new TextareaFieldRenderer( $this ) )->render();
     }
 }

@@ -6,7 +6,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\IconPickerRenderer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-class SpriteIcon extends Select
+class IconPicker extends Select
 {
     /**
      * @var string
@@ -17,6 +17,15 @@ class SpriteIcon extends Select
      * @var string
      */
     protected $filter;
+
+    protected $rendererClass = IconPickerRenderer::class;
+
+    protected $viewboxResolver;
+
+    /**
+     * @var array
+     */
+    protected $dimensions;
 
     /**
      * @param string $name
@@ -30,7 +39,8 @@ class SpriteIcon extends Select
 
     /**
      * @param string $path
-     * @return SpriteIcon
+     *
+     * @return IconPicker
      */
     public function sprite( string $path ): self
     {
@@ -134,15 +144,6 @@ class SpriteIcon extends Select
     }
 
     /**
-     * @return \Arbory\Base\Html\Elements\Element
-     * @throws \InvalidArgumentException
-     */
-    public function render()
-    {
-        return ( new IconPickerRenderer( $this, $this->getOptions() ) )->render();
-    }
-
-    /**
      * @param Request $request
      * @return void
      * @throws \InvalidArgumentException
@@ -152,5 +153,45 @@ class SpriteIcon extends Select
         $this->options( $this->getOptions() );
 
         parent::beforeModelSave( $request );
+    }
+
+    /**
+     * @return callable|null
+     */
+    public function getViewboxResolver()
+    {
+        return $this->viewboxResolver;
+    }
+
+    /**
+     * @param mixed $viewboxResolver
+     *
+     * @return IconPicker
+     */
+    public function setViewboxResolver( callable $viewboxResolver )
+    {
+        $this->viewboxResolver = $viewboxResolver;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getDimensions(): ?array
+    {
+        return $this->dimensions;
+    }
+
+    /**
+     * @param array|null $dimensions
+     *
+     * @return IconPicker
+     */
+    public function setDimensions( ?array $dimensions )
+    {
+        $this->dimensions = $dimensions;
+
+        return $this;
     }
 }

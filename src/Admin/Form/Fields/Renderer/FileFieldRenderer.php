@@ -2,26 +2,21 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
 use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Html;
 
 /**
  * Class FileFieldRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class FileFieldRenderer extends InputFieldRenderer
+class FileFieldRenderer extends ControlFieldRenderer
 {
     /**
      * @var \Arbory\Base\Admin\Form\Fields\ArboryFile
      */
     protected $field;
-
-    /**
-     * @var string
-     */
-    protected $type = 'file';
 
     /**
      * @return ArboryFile
@@ -32,21 +27,10 @@ class FileFieldRenderer extends InputFieldRenderer
     }
 
     /**
-     * @return Input
-     */
-    protected function getInput()
-    {
-        return Html::input()->setType( 'file' )->setName( $this->field->getNameSpacedName() );
-    }
-
-    /**
      * @return \Arbory\Base\Html\Elements\Element
      */
     public function render()
     {
-        $input = $this->getInput();
-        $label = $input->getLabel( $this->field->getLabel() );
-
         $value = Html::div();
 
         $file = $this->getFile();
@@ -56,9 +40,11 @@ class FileFieldRenderer extends InputFieldRenderer
             $value->append( $this->createFileDetails( $file ) );
         }
 
-        $value->append( $input );
+         if($this->field->isInteractive() && !$this->field->isDisabled()) {
+             $value->append(parent::render());
+         }
 
-        return $this->buildField( $label, $value );
+        return $value;
     }
 
     /**
@@ -67,6 +53,8 @@ class FileFieldRenderer extends InputFieldRenderer
      */
     public function createFileDetails(ArboryFile $file): Element
     {
+        $removeInput = null;
+        $removeButton = null;
         $fileSize = (new FileSize($file))->getReadableSize();
 
         $fileDetails = Html::div()->addClass('file-details');
@@ -76,16 +64,19 @@ class FileFieldRenderer extends InputFieldRenderer
             'title' => $file->getOriginalName(),
             'download'
         ]);
-        $removeButton =
-            Html::button()->addClass('remove fa fa-times')->addAttributes([
-                'type' => 'button',
-            ]);
 
-        $removeInput = Html::input()
-            ->setType('hidden')
-            ->setName($this->field->getNameSpacedName() . '.remove')
-            ->setValue('')
-            ->addClass('remove');
+        if($this->field->isInteractive() && !$this->field->isDisabled()) {
+            $removeButton =
+                Html::button()->addClass('remove fa fa-times')->addAttributes([
+                    'type' => 'button',
+                ]);
+
+            $removeInput = Html::input()
+                ->setType('hidden')
+                ->setName($this->field->getNameSpacedName() . '.remove')
+                ->setValue('')
+                ->addClass('remove');
+        }
 
         $fileDetails->append($downloadLink);
 

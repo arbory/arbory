@@ -2,7 +2,10 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Slug;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptions;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -11,7 +14,7 @@ use Arbory\Base\Html\Html;
  * Class TranslatableFieldRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class TranslatableFieldRenderer
+class TranslatableFieldRenderer implements RendererInterface
 {
     /**
      * @var Translatable
@@ -29,13 +32,13 @@ class TranslatableFieldRenderer
 
     /**
      * @param $locale
-     * @return Element
+     * @return FieldInterface
      */
     protected function getLocalizedField( $locale )
     {
         $resource = $this->field->getTranslatableResource( $locale );
 
-        return $resource->getFields()->first()->render();
+        return $resource->getFields()->first();
     }
 
     /**
@@ -44,16 +47,29 @@ class TranslatableFieldRenderer
      */
     protected function getLocalizedFieldContent( $locale )
     {
-        $fieldContent = $this->getLocalizedField( $locale );
-        $fieldContent->attributes()->put( 'class', 'localization' );
-        $fieldContent->attributes()->put( 'data-locale', $locale );
+        $field = $this->getLocalizedField( $locale );
+
+
+        /**
+         * @var $styleManager StyleManager
+         */
+        $styleManager = app(StyleManager::class);
+
+
+        $options = new StyleOptions();
+
+        $options->addAttributes(
+            ['data-locale' => $locale]
+        )->addClass('localization');
 
         if( $this->field->getCurrentLocale() === $locale )
         {
-            $fieldContent->addClass( 'active' );
+            $options->addClass( 'active' );
         }
 
-        return $fieldContent;
+        $block = $styleManager->render($field->getStyle() ?: $styleManager->getDefaultStyle(), $field, $options);
+
+        return $block;
     }
 
     /**
@@ -120,5 +136,37 @@ class TranslatableFieldRenderer
         $block->append( $this->getLocalizationSwitch() );
 
         return $block;
+    }
+
+    /**
+     * @param FieldInterface $field
+     *
+     * @return mixed
+     */
+    public function setField( FieldInterface $field ): RendererInterface
+    {
+        $this->field = $field;
+
+        return $field;
+    }
+
+    /**
+     * @return FieldInterface
+     */
+    public function getField(): FieldInterface
+    {
+        return $this->field;
+    }
+
+    /**
+     * Configure the style before rendering the field
+     *
+     * @param StyleOptionsInterface $options
+     *
+     * @return StyleOptionsInterface
+     */
+    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    {
+        return $options;
     }
 }

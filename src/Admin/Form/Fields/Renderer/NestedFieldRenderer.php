@@ -2,19 +2,22 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use function foo\func;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 
 /**
  * Class NestedFieldRenderer
  * @package Arbory\Base\Admin\Form\Fields\Renderer
  */
-class NestedFieldRenderer
+class NestedFieldRenderer implements RendererInterface
 {
     /**
      * @var HasMany
@@ -28,14 +31,6 @@ class NestedFieldRenderer
     public function __construct( HasMany $field )
     {
         $this->field = $field;
-    }
-
-    /**
-     * @return Element
-     */
-    protected function getHeader()
-    {
-        return Html::header( Html::h1( $this->field->getLabel() ) );
     }
 
     /**
@@ -157,11 +152,7 @@ class NestedFieldRenderer
                 'data-index' => $index
             ] );
 
-        foreach( $fieldSet->getFields() as $field )
-        {
-            $fieldSetHtml->append( $field->render() );
-        }
-
+        $fieldSetHtml->append($fieldSet->render());
         $fieldSetHtml->append( $this->getSortableNavigation() );
 
         $fieldSetHtml->append(
@@ -186,16 +177,53 @@ class NestedFieldRenderer
      */
     public function render()
     {
-        return Html::section( [
-            $this->getHeader(),
+        return implode(' ', [
             $this->getBody(),
-            $this->getFooter(),
-        ] )
-            ->addClass( 'nested' )
-            ->addAttributes( [
-                'data-name' => $this->field->getName(),
-                'data-arbory-template' => $this->getRelationFromTemplate(),
-            ] );
+            $this->getFooter()
+        ]);
     }
 
+    /**
+     * @param FieldInterface $field
+     *
+     * @return mixed
+     */
+    public function setField( FieldInterface $field ): RendererInterface
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * @return FieldInterface
+     */
+    public function getField(): FieldInterface
+    {
+        return $this->field;
+    }
+
+    /**
+     * Configure the style before rendering the field
+     *
+     * @param StyleOptionsInterface $options
+     *
+     * @return StyleOptionsInterface
+     */
+    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    {
+        $options->addAttributes([
+            'data-arbory-template' => $this->getRelationFromTemplate()
+        ]);
+
+        if($this->field->isSortable()) {
+            $options->addAttributes(
+                ['data-sort-by' => $this->field->getOrderBy()]
+            );
+
+            $options->addClass('type-sortable');
+        }
+
+        return $options;
+    }
 }

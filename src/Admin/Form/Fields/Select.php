@@ -10,22 +10,18 @@ use Illuminate\Http\Request;
  * Class Dropdown
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Select extends AbstractField
+class Select extends ControlField
 {
     use HasRelatedOptions;
+
+    protected $control = \Arbory\Base\Admin\Form\Controls\SelectControl::class;
+
+    protected $rendererClass = SelectFieldRenderer::class;
 
     /**
      * @var bool
      */
     protected $multiple = false;
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     */
-    public function render()
-    {
-        return ( new SelectFieldRenderer( $this, $this->getOptions() ) )->render();
-    }
 
     /**
      * @param Request $request

@@ -152,10 +152,7 @@ class Builder implements Renderable
     {
         $content = Html::div()->addClass( 'body' );
 
-        foreach( $this->form->fields() as $field )
-        {
-            $content->append( $field->render() );
-        }
+        $content->append( $this->form->fields()->render() );
 
         return new Content( [
             Html::header( [

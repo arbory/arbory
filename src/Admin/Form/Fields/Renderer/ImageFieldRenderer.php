@@ -16,8 +16,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
      */
     public function render()
     {
-        $input = $this->getInput();
-        $label = $input->getLabel( $this->field->getLabel() );
+        $input = parent::render();
         $image = $this->field->getValue();
 
         $value = Html::div();
@@ -38,7 +37,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
 
         $value->append( $input );
 
-        return $this->buildField( $label, $value );
+        return $value;
     }
 
     /**

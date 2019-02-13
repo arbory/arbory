@@ -2,13 +2,16 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\ObjectRelation;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class ObjectRelationRenderer
+class ObjectRelationRenderer implements RendererInterface
 {
     /**
      * @var ObjectRelation
@@ -16,9 +19,9 @@ class ObjectRelationRenderer
     protected $field;
 
     /**
-     * @param ObjectRelation $field
+     * @param FieldInterface $field
      */
-    public function __construct( ObjectRelation $field )
+    public function __construct( FieldInterface $field )
     {
         $this->field = $field;
     }
@@ -28,19 +31,15 @@ class ObjectRelationRenderer
      */
     public function render()
     {
-        $name = $this->field->getName();
         $limit = $this->field->getLimit();
-        $label = $this->field->getLabel();
-        $relates = strtolower( class_basename( $this->field->getRelatedModelType() ) );
-        $class = 'field type-object-relation relates-' . $relates;
+
         $attributes = [
-            'data-name' => $name,
             'data-limit' => $limit
         ];
 
         $contents = Html::div( $this->getAvailableRelationElement() )->addClass( 'contents' );
         $relatedItemsElement = $this->getRelatedItemsElement();
-        $block = Html::div();
+        $block = Html::div()->addClass('object-relation');
 
         if( $this->field->hasIndentation() )
         {
@@ -56,34 +55,18 @@ class ObjectRelationRenderer
             $contents->prepend( $relatedItemsElement );
         }
 
-        foreach( $this->field->getInnerFieldSet()->getFields() as $field )
-        {
-            $block->append( $field->render() );
-        }
+        $block->append($this->field->getInnerFieldSet()->render());
 
         if( $this->field->isSingular() )
         {
             $block->append( $contents );
 
-            $field = new FieldRenderer();
-            $field->setType( 'select' );
-            $field->setName( $name );
-            $field->setLabel( $label );
-
-            $field->setValue( $block );
-
-            return $field->render()->addClass( $class . ' single' )->addAttributes( $attributes );
+            return $block->addAttributes( $attributes );
         }
 
-        if( $limit > 1 )
-        {
-            $label .= Html::strong( sprintf( ' (%s)', $limit ) );
-        }
-
-        $block->prepend( Html::div( Html::label( $label ) )->addClass( 'label-wrap' ) );
         $block->append( $contents );
 
-        return $block->addClass( $class . ' multiple' )->addAttributes( $attributes );
+        return $block->addAttributes( $attributes );
     }
 
     /**
@@ -166,5 +149,43 @@ class ObjectRelationRenderer
         }
 
         return $element;
+    }
+
+    /**
+     * @param FieldInterface $field
+     *
+     * @return mixed
+     */
+    public function setField( FieldInterface $field ): RendererInterface
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * @return FieldInterface
+     */
+    public function getField(): FieldInterface
+    {
+        return $this->field;
+    }
+
+    /**
+     * Configure the style before rendering the field
+     *
+     * @param StyleOptionsInterface $options
+     *
+     * @return StyleOptionsInterface
+     */
+    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    {
+        if(!$this->field->isInteractive() || $this->field->isDisabled()) {
+            $options->addClass('disabled');
+        } else {
+            $options->addClass('interactive');
+        }
+        
+        return $options;
     }
 }

@@ -2,6 +2,9 @@
 
 namespace Arbory\Base\Services;
 
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\FieldSetFactory;
 use Illuminate\Support\Collection;
 
 class FieldTypeRegistry
@@ -12,11 +15,17 @@ class FieldTypeRegistry
     protected $fieldTypes;
 
     /**
+     * @var
+     */
+    protected $reservedTypes = [];
+
+    /**
      * FieldTypeRegistry constructor.
      */
     public function __construct()
     {
         $this->fieldTypes = new Collection();
+        $this->reservedTypes = $this->getReservedMethods(FieldSet::class);
     }
 
     /**
@@ -26,6 +35,10 @@ class FieldTypeRegistry
      */
     public function register(string $type, string $class): self
     {
+        if(in_array(strtolower($type), $this->reservedTypes, true)) {
+            throw new \InvalidArgumentException("The name '{$type}' is already being used by FieldSet class for a method");
+        }
+
         $this->fieldTypes->put($type, $class);
 
         return $this;
@@ -40,11 +53,63 @@ class FieldTypeRegistry
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @return string|null
      */
     public function findByType($type): ?string
     {
         return $this->fieldTypes->get($type);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public function has($type): bool
+    {
+        return $this->fieldTypes->has($type);
+    }
+
+    /**
+     * Resolves a field class instance
+     *
+     * @param string $type
+     * @param array $parameters
+     *
+     * @return FieldInterface
+     */
+    public function resolve($type, array $parameters): FieldInterface
+    {
+        $fieldClass = $this->findByType($type);
+
+        if(!$fieldClass || !class_exists($fieldClass)) {
+            throw new \InvalidArgumentException("Could not resolve a field for a type {$type}");
+        }
+
+        return new $fieldClass(...$parameters);
+    }
+
+    /**
+     * Finds any accessible functions which are defined in class
+     *
+     * @param mixed $class
+     *
+     * @return array
+     * @throws \ReflectionException
+     */
+    protected function getReservedMethods($class)
+    {
+        $reflection = new \ReflectionClass($class);
+
+        $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+        $reservedMethods = [];
+
+        foreach($methods as $method) {
+            $reservedMethods[] = strtolower($method->getName());
+        }
+
+        return $reservedMethods;
     }
 }

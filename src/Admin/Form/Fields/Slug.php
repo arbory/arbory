@@ -2,9 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Widgets\Button;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\Renderer\SlugFieldRenderer;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Repositories\NodesRepository;
 
@@ -24,6 +22,8 @@ class Slug extends AbstractField
      */
     protected $fromFieldName;
 
+    protected $rendererClass =  SlugFieldRenderer::class;
+
     /**
      * @param string $name
      * @param string $fromFieldName
@@ -38,99 +38,9 @@ class Slug extends AbstractField
     }
 
     /**
-     * @return Element
-     */
-    public function render()
-    {
-        $label = Html::label($this->getLabel())->addAttributes(['for' => $this->getNameSpacedName()]);
-
-        $input = Html::input()
-            ->setName($this->getNameSpacedName())
-            ->setValue($this->getValue())
-            ->addClass('text')
-            ->addAttributes([
-                'data-generator-url' => $this->getApiUrl(),
-                'data-from-field-name' => $this->getFromFieldName(),
-                'data-node-parent-id' => $this->getParentId(),
-                'data-model-table' => $this->getModel()->getTable(),
-                'data-object-id' => $this->getModel()->getKey()
-            ]);
-
-        $button = Button::create()
-            ->type('button', 'secondary generate')
-            ->title(trans('arbory::fields.slug.suggest_slug'))
-            ->withIcon('keyboard-o')
-            ->iconOnly()
-            ->render();
-
-        $content = Html::div([
-            Html::div($label)->addClass('label-wrap'),
-            Html::div([$input, $button])->addClass('value'),
-            $this->getLinkElement(),
-        ])->addClass('field type-slug')->addAttributes(['data-name' => 'slug']);
-
-        if (config('arbory.preview.enabled')) {
-            $content->append($this->getPreviewLinkElement());
-        }
-
-        return $content;
-    }
-
-    /**
-     * @return Element|null
-     */
-    protected function getLinkElement()
-    {
-        if (! $this->hasUriToSlug()) {
-            return null;
-        }
-
-        return Html::div(
-            Html::link(
-                $this->getLinkValue()
-            )->addAttributes(['href' => $this->getLinkHref()])
-        )->addClass('link');
-    }
-
-    /**
-     * @return Element|null
-     */
-    protected function getPreviewLinkElement()
-    {
-        if (! $this->hasUriToSlug() || $this->getModel()->isActive() || !$this->getValue()) {
-            return null;
-        }
-
-        return Html::div(
-            Html::link(
-                trans('arbory::fields.slug.page_preview')
-            )->addAttributes(['href' => $this->getPreviewLinkHref()])
-        )->addClass('link');
-    }
-
-    /**
-     * @return array
-     */
-    protected function getLinkValue()
-    {
-        $urlToSlug = ltrim($this->getUriToSlug(), "/");
-        $urlToSlugElement = Html::span( $urlToSlug );
-
-        return [
-            [
-                url('/'),
-                '/',
-                $urlToSlugElement,
-                ($urlToSlug) ? '/' : ''
-            ],
-            Html::span($this->getValue())
-        ];
-    }
-
-    /**
      * @return string
      */
-    protected function getLinkHref()
+    public function getLinkHref()
     {
         $urlToSlug = $this->getUriToSlug();
 
@@ -144,7 +54,7 @@ class Slug extends AbstractField
     /**
      * @return string
      */
-    protected function getPreviewLinkHref()
+    public function getPreviewLinkHref()
     {
         $urlToSlug = $this->getUriToSlug();
 
@@ -160,7 +70,7 @@ class Slug extends AbstractField
     /**
      * @return string
      */
-    protected function getUri()
+    public function getUri()
     {
         return $this->getModel()->getUri();
     }
@@ -194,9 +104,9 @@ class Slug extends AbstractField
     /**
      * @return string
      */
-    protected function getUriToSlug()
+    public function getUriToSlug()
     {
-        if (! $this->getModel() instanceof Node) {
+        if (! $this->hasUriToSlug()) {
             return false;
         }
 
@@ -206,7 +116,7 @@ class Slug extends AbstractField
     /**
      * @return bool
      */
-    protected function hasUriToSlug(): bool
+    public function hasUriToSlug(): bool
     {
         return $this->getModel() instanceof Node;
     }
@@ -214,7 +124,7 @@ class Slug extends AbstractField
     /**
      * @return int
      */
-    protected function getParentId()
+    public function getParentId()
     {
         $model = $this->getModel();
 

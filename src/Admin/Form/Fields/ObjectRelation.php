@@ -50,6 +50,16 @@ class ObjectRelation extends AbstractField
     private $default = true;
 
     /**
+     * @var string
+     */
+    protected $rendererClass = ObjectRelationRenderer::class;
+
+    /**
+     * @var string
+     */
+    protected $groupedRendererClass = ObjectRelationGroupedRenderer::class;
+
+    /**
      * @param string $name
      * @param string|Collection $relatedModelTypeOrCollection
      * @param int $limit
@@ -77,18 +87,7 @@ class ObjectRelation extends AbstractField
         parent::__construct( $name );
     }
 
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     * @throws \ReflectionException
-     */
-    public function render()
-    {
-        $renderer = $this->isGrouped() ?
-            ObjectRelationGroupedRenderer::class :
-            ObjectRelationRenderer::class;
 
-        return ( new $renderer( $this ) )->render();
-    }
 
     /**
      * @return bool
@@ -139,6 +138,10 @@ class ObjectRelation extends AbstractField
 
         $this->groupByAttribute = $attribute;
         $this->groupByGetName = $groupName;
+
+        $this->setRendererClass(
+            $this->getGroupedRendererClass()
+        );
 
         return $this;
     }
@@ -372,8 +375,14 @@ class ObjectRelation extends AbstractField
             }
         }
 
-        $fieldSet->add( new Hidden( 'related_id' ) )->setValue( $ids )->rules( implode( '|', $this->rules ) );
-        $fieldSet->add( new Hidden( 'related_type' ) )->setValue( ( new \ReflectionClass( $this->relatedModelType ) )->getName() );
+        $fieldSet->hidden('related_id')
+                 ->setValue($ids)->rules(implode('|', $this->rules))
+                 ->setDisabled($this->isDisabled())
+                 ->setInteractive($this->isInteractive());
+        $fieldSet->hidden('related_type')
+                 ->setValue(( new \ReflectionClass($this->relatedModelType) )->getName())
+                 ->setDisabled($this->isDisabled())
+                 ->setInteractive($this->isInteractive());
 
         return $fieldSet;
     }
@@ -439,5 +448,46 @@ class ObjectRelation extends AbstractField
     private function hasDefault()
     {
         return $this->isSingular() && $this->default;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldClasses(): array
+    {
+        $classes = parent::getFieldClasses();
+
+        $relates = strtolower( class_basename( $this->getRelatedModelType() ) );
+        $class = "relates-{$relates}";
+
+        $classes[] = $class;
+
+        if($this->isSingular()) {
+            $classes[] = 'single';
+        } else {
+            $classes[] = 'multiple';
+        }
+        
+        return $classes;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGroupedRendererClass(): string
+    {
+        return $this->groupedRendererClass;
+    }
+
+    /**
+     * @param string $groupedRendererClass
+     *
+     * @return ObjectRelation
+     */
+    public function setGroupedRendererClass( string $groupedRendererClass ): self
+    {
+        $this->groupedRendererClass = $groupedRendererClass;
+
+        return $this;
     }
 }

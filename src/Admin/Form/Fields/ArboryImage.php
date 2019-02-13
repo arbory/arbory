@@ -3,7 +3,6 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Renderer\ImageFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
 
 /**
  * Class ArboryImage
@@ -11,11 +10,5 @@ use Arbory\Base\Html\Elements\Element;
  */
 final class ArboryImage extends ArboryFile
 {
-    /**
-     * @return Element
-     */
-    public function render(): Element
-    {
-        return ( new ImageFieldRenderer( $this ) )->render();
-    }
+    protected $rendererClass = ImageFieldRenderer::class;
 }

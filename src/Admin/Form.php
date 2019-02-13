@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin;
 
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Validator;
 use Arbory\Base\Admin\Traits\EventDispatcher;
@@ -52,7 +53,7 @@ class Form
     public function __construct( Model $model )
     {
         $this->model = $model;
-        $this->fields = new FieldSet( $model, 'resource' );
+        $this->fields = new FieldSet( $model, 'resource', app(StyleManager::class) );
         $this->validator = app( Validator::class );
 
         $this->registerEventListeners();
