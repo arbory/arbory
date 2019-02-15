@@ -1,0 +1,14 @@
+.field {
+    &.type-richtext,
+    &.type-compact-richtext {
+        width: calc(100% - #{$form-gutter-width});
+    }
+    
+    
+    &.type-richtext,
+    &.type-compact-richtext,
+    &.type-textarea:not(.i18n) {
+        float: none;
+        clear: both;
+    }
+}

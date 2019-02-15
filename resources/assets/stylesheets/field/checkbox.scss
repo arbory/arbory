@@ -1,0 +1,10 @@
+.field {
+    &.type-checkbox .value {
+        display: inline-block;
+        padding-top: $input-height;
+        
+        label {
+            margin-left: steps(1);
+        }
+    }
+}
