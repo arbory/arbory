@@ -87,7 +87,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
 
         return Html::div([
             $checkbox->render($checkbox->element()),
-            Html::label($label)->addAttributes([ 'for' => $this->field->getFieldId() ]),
+            Html::label($label)->addAttributes([ 'for' => $checkbox->getAttributes()['id'] ?? $this->field->getFieldId() ]),
         ])
                    ->addClass('type-associated-set-item');
     }
@@ -111,4 +111,6 @@ class AssociatedSetRenderer extends ControlFieldRenderer
 
         return $options;
     }
+
+
 }
