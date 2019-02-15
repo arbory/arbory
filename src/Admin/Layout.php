@@ -2,17 +2,22 @@
 
 namespace Arbory\Base\Admin;
 
+use Arbory\Base\Admin\Layout\AbstractLayout;
+use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Widgets\Breadcrumbs;
+use Arbory\Base\Html\Html;
 use Closure;
 use Arbory\Base\Admin\Layout\Row;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
 
 /**
  * Class Layout
  * @package Arbory\Base\Admin
  */
-class Layout implements Renderable
+class Layout extends AbstractLayout implements Renderable
 {
     /**
      * @var Collection|Row[]
@@ -22,11 +27,27 @@ class Layout implements Renderable
     protected $bodyClass;
 
     /**
+     * @var Breadcrumbs
+     */
+    protected $breadcrumbs;
+
+    /**
+     * @var LayoutInterface[]
+     */
+    protected $layouts = [];
+
+    /**
+     * @var Pipeline
+     */
+    protected $pipeline;
+
+    /**
      * Layout constructor.
      * @param Closure|null $callback
      */
     public function __construct( Closure $callback = null )
     {
+        $this->pipeline = new Pipeline(app());
         $this->rows = new Collection();
 
         if( $callback instanceof Closure )
@@ -43,6 +64,13 @@ class Layout implements Renderable
         return (string) $this->render();
     }
 
+    public function layout( LayoutInterface $layout )
+    {
+        $this->breadcrumbs = $layout->breadcrumbs($this->breadcrumbs);
+
+        return $this->row( $layout );
+    }
+
     /**
      * @param mixed $content
      * @return Layout
@@ -50,6 +78,18 @@ class Layout implements Renderable
     public function body( $content )
     {
         return $this->row( $content );
+    }
+
+    /**
+     * @param $breadcrumbs
+     *
+     * @return $this
+     */
+    public function breadcrumbs($breadcrumbs)
+    {
+        $this->breadcrumbs = $breadcrumbs;
+
+        return $this;
     }
 
     /**
@@ -91,12 +131,27 @@ class Layout implements Renderable
         return $this;
     }
 
+    public function use($layout)
+    {
+        $this->layouts[] = $layout;
+    }
+
     /**
      * @return string
      */
     public function build()
     {
-        $contents = new Content();
+        if(count($this->layouts)) {
+            $contents = $this->pipeline
+                ->via('apply')
+                ->through($this->layouts)
+                ->send(new Content)
+                ->then(function ($content) {
+                    return $content;
+                });
+        } else {
+            $contents = new Content();
+        }
 
         foreach( $this->rows as $row )
         {
@@ -117,6 +172,14 @@ class Layout implements Renderable
         ];
 
         return view( 'arbory::controllers.resource.layout', $variables )->render();
+    }
+
+    /**
+     * @return Breadcrumbs
+     */
+    public function getBreadcrumbs(): ?Breadcrumbs
+    {
+        return $this->breadcrumbs;
     }
 
 }

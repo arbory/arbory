@@ -57,6 +57,8 @@ class Form
         $this->validator = app( Validator::class );
 
         $this->registerEventListeners();
+
+
     }
 
     /**

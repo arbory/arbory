@@ -16,6 +16,10 @@ use Illuminate\Http\Response;
 
 trait Crudify
 {
+    public static $EDIT_LAYOUT = Layout::class;
+
+    protected $editLayout;
+
     /**
      * @var Module
      */
@@ -116,7 +120,8 @@ trait Crudify
     public function create()
     {
         $layout = new Layout(function (Layout $layout) {
-            $layout->body($this->buildForm($this->resource()));
+            $layout->breadcrumbs();
+            $layout->body($this->buildForm($this->resource(), $layout));
         });
 
         $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
@@ -146,15 +151,24 @@ trait Crudify
     }
 
     /**
-     * @param $resourceId
+     * @param             $resourceId
+     * @param Form\Layout $formLayout
+     *
      * @return Layout
      */
-    public function edit($resourceId)
+    public function edit($resourceId, Form\Layout $formLayout)
     {
         $resource = $this->findOrNew($resourceId);
 
-        $layout = new Layout(function (Layout $layout) use ($resource) {
-            $layout->body($this->buildForm($resource));
+        $layout = new Layout(function (Layout $layout) use ( $formLayout, $resource) {
+            $layout->use($formLayout->setForm($this->buildForm($resource)));
+            $layout->use(app(Layout\GridTemplate::class)
+                             ->setSize(9)
+                             ->column(3, 'sidebar'));
+
+            $layout->use((new Layout\BreadcrumbsLayout())
+                             ->setBreadcrumbs($this->module()->breadcrumbs())
+            );
         });
 
         $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
