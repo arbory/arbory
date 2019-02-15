@@ -27,7 +27,7 @@ input.text
 
 select
 {
-    height: steps(3);
+    height: $input-height;
     padding: steps(0.5) 0 steps(0.5) steps(1);
 
     option
@@ -39,13 +39,13 @@ select
 
 textarea
 {
-    height:  steps(10);
+    height:  $textarea-height;
     padding: steps(0.5) steps(1);
 }
 
 input.text
 {
-    height: steps(3);
+    height: $input-height;
     padding: 0 steps(1);
     -webkit-appearance: textfield;
 }
@@ -55,13 +55,14 @@ input.text
 {
     padding: steps(0.5) 0;
     float: left;
-    width: steps(36);
+    width: calc(50% - #{$form-gutter-width});
     position: relative;
     min-height: steps(7);
-    margin-left: steps(2);
+    margin: 0 $form-gutter-half;
     
     &.i18n > .field {
         margin-left: 0;
+        width: 100%;
     }
 
     &.has-error:not(.i18n),
@@ -76,9 +77,10 @@ input.text
         }
     }
 
-    &.type-checkbox  .value
+    &.type-checkbox .value
     {
-        padding-top: steps(3);
+        display: inline-block;
+        padding-top: $input-height;
 
         label
         {
@@ -101,7 +103,7 @@ input.text
     &.type-richtext,
     &.type-compact-richtext
     {
-        width: steps(74);
+        width: calc(100% - #{$form-gutter-width});
     }
 
 
@@ -198,7 +200,7 @@ input.text
 
             .selected {
                 user-select: none;
-                height: steps(3);
+                height: $select-item-height;
                 border: 1px solid $color-border-normal;
                 
                 &.disabled {
@@ -228,7 +230,7 @@ input.text
                     cursor: default;
                     position: relative;
                     list-style: none;
-                    height: steps(3);
+                    height: $select-item-height;
 
                     &:hover {
                         color: white;
@@ -274,31 +276,11 @@ input.text
         margin: 0;
 
         .field {
-            margin-left: 0;
+            margin: 0;
 
             &.type-text {
-                width: 48%;
-
                 &:not(:first-child) {
                     float: right;
-                }
-
-                .content-fields > .nested > .nested > .list > .item > .nested > & {
-                    width: 396px;
-                    float: left;
-
-                    &:not(:first-child) {
-                        margin-left: steps(2);
-                    }
-                }
-
-                section.nested section.nested & {
-                    width: 360px;
-                    float: left;
-
-                    &:not(:first-child) {
-                        margin-left: steps(2);
-                    }
                 }
             }
 
@@ -309,30 +291,6 @@ input.text
                     padding-top: 0;
                 }
             }
-        }
-    }
-}
-
-
-section.nested
-{
-    // :TODO: figure out a way to avoid having to re-specify explicit widths for nested fields
-    .field
-    {
-        width: steps(33);
-
-        &.type-richtext
-        {
-            width: steps(68);
-        }
-    }
-
-    section.nested .field
-    {
-        width: steps(30);
-        &.type-richtext
-        {
-            width: steps(62);
         }
     }
 }

@@ -61,13 +61,6 @@ section:not(.dialog) > form
     }
 }
 
-section > form,
-section > form > footer
-{
-    max-width: steps(78);
-}
-
-
 section.nested
 {
     clear: both;
@@ -88,7 +81,7 @@ section.nested
         fieldset.item
         {
             border: 1px solid $color-border-normal;
-            padding: steps(2) 0;
+            padding: steps(3) 0;
             margin: 0 0 steps(2) 0;
             position: relative;
             background: $color-background-lightest;
