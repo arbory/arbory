@@ -177,7 +177,7 @@ class NestedFieldRenderer implements RendererInterface
      */
     public function render()
     {
-        return implode(' ', [
+        return Html::div([
             $this->getBody(),
             $this->getFooter()
         ]);
