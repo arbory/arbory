@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Admin\Form;
 
-use Arbory\Base\Admin\Panels\PanelRenderer;
+use Arbory\Base\Admin\Panels\Renderer;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
@@ -74,12 +74,12 @@ class Builder implements Renderable
     }
 
     /**
-     * @return Content
+     * @return Element
      */
     public function render()
     {
         $content = Html::div()->addClass('body');
-        $content->append($this->form->fields()->render());
+        $content->append($this->getContent());
 
         return $this->form()
                     ->append($content);

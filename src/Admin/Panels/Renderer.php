@@ -8,34 +8,35 @@ use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Html\Html;
 
-class PanelRenderer
+class Renderer
 {
     public function render(PanelInterface $block)
     {
         return Html::div(
             [
                 $this->header($block),
-                Html::div($block->contents())->addClass('content')
+                Html::div($block->getContents())
+                    ->addClass('content'),
             ]
         )->addClass('panel');
     }
 
     protected function header(PanelInterface $block)
     {
-        $menu    = $block->toolbox(new ToolboxMenu(null));
-        $toolbox = new Toolbox(null, $menu);
+        $toolbox = $block->toolbox($block->getToolbox());
+        $menu    = $toolbox->getMenu();
 
         $header = Html::header(
             [
                 Html::div(
-                    $block->title()
+                    $block->getTitle()
                 )->addClass('title'),
                 Html::div(
                     [
-                        Html::div($block->buttons())->addClass('buttons'),
-                        $toolbox->render()
+                        Html::div($block->getButtons())->addClass('buttons'),
+                        $menu ? $toolbox->render() : null,
                     ]
-                )->addClass('extras')
+                )->addClass('extras'),
             ]
         );
 

@@ -3,6 +3,8 @@
 
 namespace Arbory\Base\Admin\Layout;
 
+use Arbory\Base\Html\Elements\Content;
+
 class SidebarLayout extends AbstractLayout implements LayoutInterface
 {
     /**
@@ -17,9 +19,9 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
      */
     protected $sidebar;
 
-    public function __construct(callable $contents =  null)
+    public function __construct(callable $contents = null)
     {
-//        $this->sidebar = new Slot('sidebar', $contents);
+        $this->sidebar = new Slot('sidebar', $contents);
     }
 
     function build()
@@ -27,9 +29,16 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
         $grid = new GridTemplate(new Grid());
 
         $grid->setWidth(Grid::SIZE_MAX - $this->getWidth());
-        $grid->column($this->getWidth(), $this->sidebar);
+        $grid->column($this->getWidth(), $this->sidebar->render());
 
         $this->use($grid);
+    }
+
+    public function contents($content)
+    {
+        return new Content(
+            [$content]
+        );
     }
 
     /**
@@ -58,5 +67,17 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
     public function getSidebar(): Slot
     {
         return $this->sidebar;
+    }
+
+    /**
+     * @param Slot $sidebar
+     *
+     * @return SidebarLayout
+     */
+    public function setSidebar($sidebar): SidebarLayout
+    {
+        $this->sidebar->setContents($sidebar);
+
+        return $this;
     }
 }

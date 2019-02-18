@@ -70,14 +70,36 @@ class NodesController extends Controller
      */
     protected function form(Form $form, ?Layout\PanelLayout $panels)
     {
-        $panels->panel('test', function (FieldSet $fields) {
+        $panels->panel('General information', function (FieldSet $fields) {
+            $fields->hidden('parent_id');
+            $fields->hidden('content_type');
             $fields->text('name')->rules('required');
+            $fields->slug('slug', 'name', $this->getSlugGeneratorUrl())->rules('required');
+            $fields->text('meta_title');
+            $fields->text('meta_author');
+            $fields->text('meta_keywords');
+            $fields->text('meta_description');
+            $fields->dateTime('activate_at');
+            $fields->dateTime('expire_at')->rules('nullable|after_or_equal:resource.activate_at');
+
+            if ($fields->getModel()->active) {
+                $fields->add(new Deactivator('deactivate'));
+            }
+
 
             return $fields;
         });
 
-        $panels->panel('test', function (FieldSet $fields) {
-            $fields->text('name')->rules('required');
+        $panels->panel('Content', function(FieldSet $fields) {
+            $fields->hasOne('content', function (FieldSet $fieldSet) {
+
+                $content = $fieldSet->getModel();
+
+                $class = (new \ReflectionClass($content))->getName();
+                $definition = $this->contentTypeRegister->findByModelClass($class);
+
+                $definition->getFieldSetHandler()->call($content, $fieldSet);
+            });
 
             return $fields;
         });
@@ -165,14 +187,15 @@ class NodesController extends Controller
             $node->setAttribute( $node->getParentColumnName(), $request->get( 'parent_id' ) );
         }
 
-        $layout = new Layout( function ( Layout $layout ) use ( $node )
-        {
-            $layout->body( $this->buildForm( $node ) );
-        } );
+        $layout = $this->layout('form');
+        $layout->setForm($this->buildForm($node, $layout));
 
-        $layout->bodyClass( 'controller-' . str_slug( $this->module()->name() ) . ' view-edit' );
+        $page = new Layout();
+        $page->use($layout);
+        
+        $page->bodyClass( 'controller-' . str_slug( $this->module()->name() ) . ' view-edit' );
 
-        return $layout;
+        return $page;
     }
 
     /**

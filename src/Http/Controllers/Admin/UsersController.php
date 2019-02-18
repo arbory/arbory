@@ -50,7 +50,7 @@ class UsersController extends Controller
             $fields->text('last_name');
             $fields->text('email')->rules('required|unique:admin_users,email,' . $user->getKey());
             $fields->password('password')->rules('min:6|' . ($user->exists ? 'nullable' : 'required'));
-            $fields->boolean('active')->setValue($this->getActivations()->completed($user));
+            $fields->checkbox('active')->setValue($this->getActivations()->completed($user));
             $fields->belongsToMany('roles');
         });
 

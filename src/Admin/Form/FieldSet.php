@@ -65,6 +65,11 @@ class FieldSet extends Collection
      */
     protected $defaultStyle;
 
+    /**
+     * @var Collection
+     */
+    protected $items;
+
 
     /**
      * Resource constructor.
@@ -75,6 +80,8 @@ class FieldSet extends Collection
      */
     public function __construct( Model $model, $namespace, StyleManager $styleManager = null )
     {
+        $this->items = collect();
+
         if(is_null($styleManager)) {
             $styleManager = app(StyleManager::class);
         }
@@ -84,8 +91,6 @@ class FieldSet extends Collection
         $this->fieldTypeRegister = app(FieldTypeRegistry::class);
         $this->styleManager = $styleManager;
         $this->defaultStyle = $styleManager->getDefaultStyle();
-
-        parent::__construct( [] );
     }
 
     /**
@@ -147,7 +152,7 @@ class FieldSet extends Collection
      */
     public function getFields()
     {
-        return $this;
+        return $this->items;
     }
 
     /**
@@ -190,7 +195,7 @@ class FieldSet extends Collection
     {
         $field->setFieldSet( $this );
 
-        return parent::prepend( $field, $key );
+        return $this->items->prepend( $field, $key );
     }
 
     /**
@@ -213,7 +218,7 @@ class FieldSet extends Collection
         $field->setFieldSet( $this );
 
 
-        parent::offsetSet( $key, $field );
+        $this->items->offsetSet( $key, $field );
     }
 
     /**
@@ -242,7 +247,7 @@ class FieldSet extends Collection
      */
     public function all()
     {
-        return parent::all();
+        return $this->items->all();
     }
 
     /**
@@ -279,7 +284,7 @@ class FieldSet extends Collection
             );
         }
         
-        return parent::__call($method, $parameters);
+        return $this->items->__call($method, $parameters);
     }
 
     /**

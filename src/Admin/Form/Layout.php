@@ -8,6 +8,9 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Layout\Wrappable;
+use Arbory\Base\Admin\Panels\FormPanel;
+use Arbory\Base\Admin\Panels\Renderer;
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Admin\Widgets\Button;
@@ -23,8 +26,6 @@ class Layout extends AbstractLayout implements LayoutInterface
      * @var Form
      */
     protected $form;
-
-    protected $panels;
 
     public function breadcrumbs(Breadcrumbs $breadcrumbs): Breadcrumbs
     {
@@ -83,43 +84,31 @@ class Layout extends AbstractLayout implements LayoutInterface
         return $this;
     }
 
-    public function build()
+    public function contents($content)
     {
-        $this->slot('header', [$this, 'header']);
-        $this->slot('footer', new Widgets\Controls(new Tools(), $this->url('index')));
-    }
-
-    public function setContent($content): LayoutInterface
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    public function getContent()
-    {
-        return $this->form->fields()->render();
-    }
-
-    /**
-     * Get the evaluated contents of the object.
-     *
-     * @return string                              `
-     */
-    public function render()
-    {
-        $this->build();
-
         return new Content(
             [
-                Html::section(
-                    [
-                        $this->slot('header'),
-                        $this->getContent(),
-                        $this->slot('footer'),
-                    ]
-                ),
+//                $this->header(),
+                $content ?: $this->form->fields()->render(),
+                new Widgets\Controls(new Tools(), $this->url('index'))
             ]
         );
+    }
+
+    public function build()
+    {
+        $this->use(function(Wrappable $wrappable, $next) {
+            $wrappable->wrap(function($content) {
+                $panel = new FormPanel();
+
+                $panel->setForm($this->form);
+                // Renders from fieldSet
+//                $panel->setContents($content);
+
+                return (new Renderer())->render($panel);
+            });
+
+            return $next($wrappable);
+        });
     }
 }

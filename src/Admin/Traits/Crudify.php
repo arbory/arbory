@@ -119,10 +119,11 @@ trait Crudify
      */
     public function create()
     {
-        $layout = new Layout(function (Layout $layout) {
-            $layout->breadcrumbs();
-            $layout->body($this->buildForm($this->resource(), $layout));
-        });
+        $layout = $this->layout('form');
+        $layout->setForm($this->buildForm($this->resource(), $layout));
+
+        $page = new Layout();
+        $page->use($layout);
 
         $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
 
@@ -163,43 +164,11 @@ trait Crudify
         $layout = $this->layout('form');
         $layout->setForm($this->buildForm($resource, $layout));
 
-        $page = new Layout(
-            function (Layout $page) use ($formLayout, $resource, $layout) {
-                $page->use($layout);
-
-//                $block = new SimplePanel();
-//
-//                $block->addToolbox('A link', url('/'));
-//
-//                $block->setTitle('a block title');
-//                $block->setContents('hi');
-//
-//                $block->addButton(
-//                    Button::create('Delete')
-//                          ->title('Delete')
-//                          ->withIcon('trash')
-//                );
-//
-//            $layout->use($formLayout->setForm($this->buildForm($resource)));
-////                $layout->use(
-////                    function ($content, $next) use ($resource) {
-////                        return $next($content->push($this->buildForm($resource)->render()));
-////                    }
-////                );
-//                $layout->use(
-//                    app(Layout\GridTemplate::class)
-//                        ->setWidth(8)
-//                        ->column(4, (new PanelRenderer())->render($block))
-//                );
-//
-////            $layout->use((new Layout\BreadcrumbsLayout())
-////                             ->setBreadcrumbs($this->module()->breadcrumbs())
-////            );
-            }
-        );
+        $page = new Layout();
+        $page->use($layout);
 
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
-
+        
         return $page;
     }
 
@@ -211,7 +180,7 @@ trait Crudify
     public function update(Request $request, $resourceId)
     {
         $resource = $this->findOrNew($resourceId);
-        $form = $this->buildForm($resource);
+        $form = $this->buildForm($resource, $this->layout('form'));
 
         $request->request->add(['fields' => $form->fields()]);
 

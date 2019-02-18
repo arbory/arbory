@@ -4,12 +4,13 @@
 namespace Arbory\Base\Admin\Layout;
 
 
+use Arbory\Base\Admin\Layout\Grid\Column;
 use Arbory\Base\Admin\Layout\Grid\Row;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
-class Grid  implements Renderable
+class Grid implements Renderable
 {
     const SIZE_MAX = 12;
 
@@ -25,8 +26,6 @@ class Grid  implements Renderable
 
 
     /**
-     * @param $content
-     *
      * @return Row
      */
     public function row()
@@ -42,9 +41,9 @@ class Grid  implements Renderable
      * @param int $size
      * @param     $content
      *
-     * @return \Arbory\Base\Html\Elements\Content
+     * @return Column
      */
-    public function column( $size = 1, $content )
+    public function column( $size, $content )
     {
         if(!$this->row) {
             $this->row = $this->row();
@@ -53,6 +52,9 @@ class Grid  implements Renderable
         return $this->row->column($size, $content);
     }
 
+    /**
+     * @return \Arbory\Base\Html\Elements\Element|string
+     */
     public function render()
     {
         $content = Html::div(null)->addClass('grid');

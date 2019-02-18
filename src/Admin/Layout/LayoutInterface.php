@@ -3,6 +3,7 @@
 
 namespace Arbory\Base\Admin\Layout;
 
+use Closure;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
@@ -10,10 +11,14 @@ use Illuminate\Contracts\Support\Renderable;
  *
  * @package Arbory\Base\Admin\Layout
  */
-interface LayoutInterface extends Renderable,TransformableInterface
+interface LayoutInterface extends Renderable, TransformableInterface
 {
     public function setContent($content):self;
     public function getContent();
+
+    public function setWrapper($wrapper);
+
+    public function contents($content);
 
     /**
      * @param LayoutInterface|string $layout

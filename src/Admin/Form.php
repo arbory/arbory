@@ -4,7 +4,7 @@ namespace Arbory\Base\Admin;
 
 use Arbory\Base\Admin\Panels\PanelInterface;
 use Arbory\Base\Admin\Panels\FieldSetPanel;
-use Arbory\Base\Admin\Panels\SimplePanel;
+use Arbory\Base\Admin\Panels\Panel;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Admin\Form\FieldSet;

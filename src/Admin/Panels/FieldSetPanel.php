@@ -6,7 +6,7 @@ namespace Arbory\Base\Admin\Panels;
 
 use Arbory\Base\Admin\Form\FieldSet;
 
-class FieldSetPanel extends SimplePanel
+class FieldSetPanel extends Panel
 {
     /**
      * @var FieldSet
@@ -25,7 +25,7 @@ class FieldSetPanel extends SimplePanel
         return $this;
     }
 
-    public function contents()
+    public function getContents()
     {
         return $this->fieldSet->render();
     }

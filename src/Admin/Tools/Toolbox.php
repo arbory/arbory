@@ -25,12 +25,12 @@ class Toolbox implements Renderable
     /**
      * Toolbox constructor.
      *
-     * @param string $url
+     * @param string           $url
      * @param ToolboxMenu|null $menu
      */
-    public function __construct( $url, ToolboxMenu $menu = null )
+    public function __construct($url = null, ToolboxMenu $menu = null)
     {
-        $this->url = $url;
+        $this->url  = $url;
         $this->menu = $menu;
     }
 
@@ -41,33 +41,74 @@ class Toolbox implements Renderable
     {
         $attributes = [];
 
-        if($this->url) {
+        if ($this->url) {
             $attributes['data-url'] = $this->url;
         }
 
         return Html::div(
-            Html::div( [
-                Html::button( Html::i()->addClass( 'fa fa-ellipsis-v' ) )
-                    ->addClass( 'button trigger only-icon' )
-                    ->addAttributes( [ 'type' => 'button' ] ),
-                Html::menu( [
-                    Html::i()->addClass( 'fa fa-caret-up' ),
-                    Html::ul($this->menu),
-                ] )
-                    ->addClass( 'toolbox-items' )
-                    ->addAttributes( [ 'type' => 'toolbar' ] )
-            ] )
-                ->addClass( 'toolbox' )
+            Html::div([
+                          Html::button(Html::i()->addClass('fa fa-ellipsis-v'))
+                              ->addClass('button trigger only-icon')
+                              ->addAttributes(['type' => 'button']),
+                          Html::menu([
+                                         Html::i()->addClass('fa fa-caret-up'),
+                                         Html::ul($this->menu),
+                                     ])
+                              ->addClass('toolbox-items')
+                              ->addAttributes(['type' => 'toolbar']),
+                      ])
+                ->addClass('toolbox')
                 ->addAttributes($attributes)
-        )->addClass( 'only-icon toolbox-cell' );
+        )->addClass('only-icon toolbox-cell');
+    }
+
+    /**
+     * @return ToolboxMenu|null
+     */
+    public function getMenu(): ?ToolboxMenu
+    {
+        return $this->menu;
+    }
+
+    /**
+     * @param ToolboxMenu|null $menu
+     *
+     * @return Toolbox
+     */
+    public function setMenu(?ToolboxMenu $menu): self
+    {
+        $this->menu = $menu;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return Toolbox
+     */
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
     }
 
     /**
      * @param $url
+     *
      * @return Toolbox
      */
-    public static function create( $url )
+    public static function create($url)
     {
-        return new static( $url );
+        return new static($url);
     }
 }

@@ -8,7 +8,8 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Panels\FieldSetPanel;
-use Arbory\Base\Admin\Panels\PanelRenderer;
+use Arbory\Base\Admin\Panels\Renderer;
+use Arbory\Base\Admin\Panels\Panel;
 use Arbory\Base\Html\Elements\Content;
 use Closure;
 
@@ -63,11 +64,48 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
         return $panel;
     }
 
+    public function contents($content)
+    {
+        return new Content([
+            $content
+        ]);
+    }
+
+    protected function sidebar()
+    {
+        $panel = new Panel();
+
+        $panel->setTitle('Sidebar panel');
+        $panel->setContents('Content here');
+
+        return (new Renderer())->render($panel);
+    }
+
     function build()
     {
-        $this->use(new SidebarLayout());
+        $layout = new SidebarLayout();
+        $layout->setSidebar($this->sidebar());
+
+        $form = function (Wrappable $wrappable, $next) {
+            $wrappable->wrap(function ($content) {
+                return (new Form\Builder($this->form))
+                    ->setContent($content)
+                    ->render();
+            });
+
+            return $next($wrappable);
+        };
+
+        $this->use($form);
+        $this->use((new Form\Layout())->setForm($this->form));
+        $this->use($layout);
 
         $this->setContent($this->renderPanels());
+    }
+
+    public function getContent()
+    {
+        return $this->renderPanels();
     }
 
     public function renderPanels()
@@ -76,7 +114,7 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
 
         foreach($this->panels as $panel)
         {
-            $contents->push((new PanelRenderer())->render($panel));
+            $contents->push((new Renderer())->render($panel));
         }
 
         return $contents;

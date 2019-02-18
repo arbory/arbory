@@ -10,8 +10,6 @@ use Illuminate\Pipeline\Pipeline;
 
 abstract class AbstractLayout
 {
-    static $LAYOUT_NO = 0;
-
     /**
      * @var Slot
      */
@@ -59,26 +57,50 @@ abstract class AbstractLayout
 
     abstract function build();
 
+    abstract function contents($content);
+
     public function render()
     {
-//        dump('rendering', get_class($this), $this->layouts, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
+//        dump('__rendering', get_class($this), $this->layouts, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
         $this->build();
 
         $contents = new Content();
-        if(count($this->layouts)) {
-            $scope = new LayoutContent();
 
-            $scope->setLayout($this);
+        $content = $this->transform(
+            new Wrappable()
+        )->render($this->getContent());
 
-            $scope = $this->transform($scope);
+        $contents->push($this->contents($content));
 
-
-            return $scope->getLayout()->render();
-        }
-
-        $contents->push($this->getContent());
 
         return $contents;
+    }
+
+    public function apply($layout, Closure $next, array ...$parameters)
+    {
+        // Apply self to layout
+//        dump([
+//            'self' => get_class($this)
+//        ]);
+
+        $layout->wrap(function($content) {
+//            dump('contents', get_class($this));
+            $this->setContent($content);
+            return $this->render();
+        });
+
+
+        return $next($layout);
+    }
+
+    public function content()
+    {
+
+    }
+
+    public function setWrapper($wrapper)
+    {
+        $this->wrapper = $wrapper;
     }
 
     /**
@@ -102,11 +124,15 @@ abstract class AbstractLayout
      */
     public function transform($content)
     {
-        return $this->pipeline()
-            ->send($content)
-            ->then(function($content) {
-                return $content;
-            });
+        if(count($this->layouts)) {
+            return $this->pipeline()
+                ->send($content)
+                ->then(function ($content) {
+                    return $content;
+                });
+        }
+
+        return $content;
     }
 
     public function pipeline():Pipeline
@@ -118,32 +144,9 @@ abstract class AbstractLayout
 
         return $this->pipeline
             ->via('apply')
-            ->through($this->layouts)
-            ->send($this);
+            ->through($this->layouts);
     }
 
-    public function push($content, $name = null)
-    {
-        $name = $name ?: $this->createUniqueName();
-
-        $slot = $this->slot($name, $content);
-
-        $this->content()->push($slot);
-
-        return $this;
-    }
-
-    public function prepend($content, $name = null)
-    {
-        $name = $name ?: $this->createUniqueName();
-
-
-        $slot = $this->slot($name, $content);
-
-        $this->content()->prepend($slot);
-
-        return $this;
-    }
 
     public function setContent($content): LayoutInterface
     {
@@ -155,34 +158,6 @@ abstract class AbstractLayout
     public function getContent()
     {
         return $this->content;
-    }
-
-//    public function __toString()
-//    {
-//        return  (new Content([$this->render()]));
-//    }
-
-    protected function content():Content
-    {
-        if($this->content === null)
-        {
-            $this->content = new Content();
-        }
-
-        return $this->content;
-    }
-
-    protected function createUniqueName()
-    {
-        return get_class($this) . "_" . (++self::$LAYOUT_NO);
-    }
-
-
-    public function apply(LayoutContent $content, Closure $next, array ...$parameters)
-    {
-        $content->insert($this);
-
-        return $next($content);
     }
 
 }

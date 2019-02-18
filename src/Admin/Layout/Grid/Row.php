@@ -9,8 +9,14 @@ use Arbory\Base\Html\Html;
 
 class Row
 {
+    /**
+     * @var mixed
+     */
     protected $content;
 
+    /**
+     * @var Column[]
+     */
     protected $columns = [];
 
     /**
@@ -27,7 +33,7 @@ class Row
      * @param $size
      * @param $content
      *
-     * @return Content
+     * @return Column
      */
     public function column($size,  $body )
     {
@@ -38,6 +44,9 @@ class Row
         return $content;
     }
 
+    /**
+     * @return \Arbory\Base\Html\Elements\Element
+     */
     public function render()
     {
         $content = Html::div()->addClass('row');

@@ -18,8 +18,14 @@ class GridTemplate extends AbstractLayout implements LayoutInterface
     protected $grid;
 
 
+    /**
+     * @var int
+     */
     protected $width = 12;
 
+    /**
+     * @var Content
+     */
     protected $column;
 
 
@@ -38,25 +44,14 @@ class GridTemplate extends AbstractLayout implements LayoutInterface
     public function build()
     {
         $this->column->size($this->getWidth());
-
-        static::$BUILT = true;
     }
 
-    public function setContent($content): LayoutInterface
+    public function contents($content)
     {
         $this->column->set($content);
 
-        $this->content = (string) $this->grid->render();
-
-        return $this;
+        return $this->grid->render();
     }
-
-//    public function apply(LayoutContent $content, Closure $next, array ...$parameters)
-//    {
-//        $content->insert($this->column->set($this));
-//
-//        return $next($content);
-//    }
 
 
     public function column($size, $content)

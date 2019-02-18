@@ -2,31 +2,38 @@
 namespace Arbory\Base\Admin\Panels;
 
 
-use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Widgets\Button;
 use Illuminate\Contracts\Support\Renderable;
 
 interface PanelInterface extends Renderable
 {
     /**
-     * @param ToolboxMenu $toolbox
+     * @param Toolbox $toolbox
      *
-     * @return ToolboxMenu
+     * @return Toolbox
      */
-    public function toolbox( ToolboxMenu $toolbox ): ToolboxMenu;
+    public function toolbox( Toolbox $toolbox ): Toolbox;
 
     /**
      * @return Button[]
      */
-    public function buttons();
+    public function getButtons();
 
     /**
      * @return mixed
      */
-    public function title();
+    public function getTitle();
 
     /**
      * @return mixed
      */
-    public function contents();
+    public function getContents();
+
+    /**
+     * @return mixed
+     */
+    public function getToolbox():?Toolbox;
+
+    public function build();
 }

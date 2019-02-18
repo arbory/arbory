@@ -1,27 +1,44 @@
 <?php
 namespace Arbory\Base\Admin\Panels;
 
+use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Widgets\Button;
 
-class SimplePanel implements PanelInterface
+class Panel implements PanelInterface
 {
+    /**
+     * @var mixed
+     */
     protected $contents;
+
+    /**
+     * @var string
+     */
     protected $title;
+
+    /**
+     * @var Button[]
+     */
     protected $buttons = [];
+
+    /**
+     * @var Toolbox
+     */
     protected $toolbox;
 
     public function __construct()
     {
-        $this->toolbox = new ToolboxMenu(null);
+        $this->toolbox = new Toolbox(null);
     }
 
+
     /**
-     * @param ToolboxMenu $toolbox
+     * @param Toolbox $toolbox
      *
-     * @return ToolboxMenu
+     * @return Toolbox
      */
-    public function toolbox( ToolboxMenu $toolbox ): ToolboxMenu
+    public function toolbox( Toolbox $toolbox ): Toolbox
     {
         return $this->toolbox;
     }
@@ -29,7 +46,7 @@ class SimplePanel implements PanelInterface
     /**
      * @return Button[]
      */
-    public function buttons()
+    public function getButtons()
     {
         return $this->buttons;
     }
@@ -37,7 +54,7 @@ class SimplePanel implements PanelInterface
     /**
      * @return mixed
      */
-    public function title()
+    public function getTitle()
     {
         return $this->title;
     }
@@ -45,7 +62,7 @@ class SimplePanel implements PanelInterface
     /**
      * @return mixed
      */
-    public function contents()
+    public function getContents()
     {
         return $this->contents;
     }
@@ -53,7 +70,7 @@ class SimplePanel implements PanelInterface
     /**
      * @param mixed $contents
      *
-     * @return SimplePanel
+     * @return Panel
      */
     public function setContents( $contents )
     {
@@ -65,7 +82,7 @@ class SimplePanel implements PanelInterface
     /**
      * @param mixed $title
      *
-     * @return SimplePanel
+     * @return Panel
      */
     public function setTitle( $title )
     {
@@ -77,7 +94,7 @@ class SimplePanel implements PanelInterface
     /**
      * @param mixed $buttons
      *
-     * @return SimplePanel
+     * @return Panel
      */
     public function setButtons( $buttons ): self
     {
@@ -90,15 +107,24 @@ class SimplePanel implements PanelInterface
      * @param $name
      * @param $url
      *
-     * @return SimplePanel
+     * @return Panel
      */
     public function addToolbox( $name, $url )
     {
-        $this->toolbox->add($name, $url);
+        if(! $this->toolbox->getMenu()) {
+            $this->toolbox->setMenu(new ToolboxMenu(null));
+        }
+
+        $this->toolbox->getMenu()->add($name, $url);
 
         return $this;
     }
 
+    /**
+     * @param Button $button
+     *
+     * @return $this
+     */
     public function addButton(Button $button)
     {
         $this->buttons[] = $button;
@@ -106,8 +132,33 @@ class SimplePanel implements PanelInterface
         return $this;
     }
 
+    /**
+     * Build the panel
+     */
+    public function build()
+    {
+
+    }
+
+    /**
+     * @return mixed|string
+     */
     public function render()
     {
-        return $this->contents();
+        $this->build();
+
+        return $this->getContents();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToolbox(): ?Toolbox
+    {
+        if($this->toolbox === null) {
+            $this->toolbox = new Toolbox();
+        }
+
+        return $this->toolbox;
     }
 }
