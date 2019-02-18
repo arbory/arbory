@@ -18,12 +18,20 @@ class Toolbox implements Renderable
     protected $url;
 
     /**
-     * Toolbox constructor.
-     * @param $url
+     * @var ToolboxMenu
      */
-    public function __construct( $url )
+    protected $menu;
+
+    /**
+     * Toolbox constructor.
+     *
+     * @param string $url
+     * @param ToolboxMenu|null $menu
+     */
+    public function __construct( $url, ToolboxMenu $menu = null )
     {
         $this->url = $url;
+        $this->menu = $menu;
     }
 
     /**
@@ -31,6 +39,12 @@ class Toolbox implements Renderable
      */
     public function render()
     {
+        $attributes = [];
+
+        if($this->url) {
+            $attributes['data-url'] = $this->url;
+        }
+
         return Html::div(
             Html::div( [
                 Html::button( Html::i()->addClass( 'fa fa-ellipsis-v' ) )
@@ -38,15 +52,13 @@ class Toolbox implements Renderable
                     ->addAttributes( [ 'type' => 'button' ] ),
                 Html::menu( [
                     Html::i()->addClass( 'fa fa-caret-up' ),
-                    Html::ul(),
+                    Html::ul($this->menu),
                 ] )
                     ->addClass( 'toolbox-items' )
                     ->addAttributes( [ 'type' => 'toolbar' ] )
             ] )
                 ->addClass( 'toolbox' )
-                ->addAttributes( [
-                    'data-url' => $this->url,
-                ] )
+                ->addAttributes($attributes)
         )->addClass( 'only-icon toolbox-cell' );
     }
 

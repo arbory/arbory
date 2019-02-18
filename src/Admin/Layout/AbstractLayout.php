@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Layout;
 
 
 use Arbory\Base\Html\Elements\Content;
+use Closure;
 use Illuminate\Pipeline\Pipeline;
 
 abstract class AbstractLayout
@@ -19,7 +20,7 @@ abstract class AbstractLayout
     /**
      * @var LayoutInterface[]
      */
-    protected $layouts;
+    protected $layouts = [];
 
     protected $pipeline;
 
@@ -60,25 +61,42 @@ abstract class AbstractLayout
 
     public function render()
     {
+//        dump('rendering', get_class($this), $this->layouts, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
         $this->build();
 
-        $evaluated = $this;
-        
-        $this->pipeline()->then();
+        $contents = new Content();
+        if(count($this->layouts)) {
+            $scope = new LayoutContent();
 
-//        return $this->root->render();
+            $scope->setLayout($this);
+
+            $scope = $this->transform($scope);
+
+
+            return $scope->getLayout()->render();
+        }
+
+        $contents->push($this->getContent());
+
+        return $contents;
     }
 
-    public function use(LayoutInterface $layout)
+    /**
+     * @param LayoutInterface|string $layout
+     *
+     * @return $this
+     */
+    public function use($layout)
     {
         $this->layouts[] = $layout;
 
         return $this;
     }
 
-
     /**
      * Transform the content
+     *
+     * @param $content
      *
      * @return mixed
      */
@@ -127,6 +145,23 @@ abstract class AbstractLayout
         return $this;
     }
 
+    public function setContent($content): LayoutInterface
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+//    public function __toString()
+//    {
+//        return  (new Content([$this->render()]));
+//    }
+
     protected function content():Content
     {
         if($this->content === null)
@@ -141,4 +176,13 @@ abstract class AbstractLayout
     {
         return get_class($this) . "_" . (++self::$LAYOUT_NO);
     }
+
+
+    public function apply(LayoutContent $content, Closure $next, array ...$parameters)
+    {
+        $content->insert($this);
+
+        return $next($content);
+    }
+
 }

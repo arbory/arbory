@@ -33,7 +33,7 @@ class Slot implements Renderable
      * @param      $name
      * @param null $contents
      */
-    public function __construct( $name, $contents = null )
+    public function __construct($name, $contents = null)
     {
         $this->name     = $name;
         $this->contents = $contents;
@@ -59,7 +59,7 @@ class Slot implements Renderable
      *
      * @return Slot
      */
-    public function setChild( $name, $contents )
+    public function setChild($name, $contents)
     {
         $slot = new static($name, $contents);
         $this->children->put($name, $slot);
@@ -72,14 +72,14 @@ class Slot implements Renderable
      *
      * @return Slot
      */
-    public function getChild( $name )
+    public function getChild($name)
     {
         return $this->children->get($name);
     }
 
     public function render()
     {
-        if ( is_callable($this->contents) ) {
+        if (is_callable($this->contents)) {
             $content = $this->contents;
             $content = $content();
         } else {
@@ -92,9 +92,13 @@ class Slot implements Renderable
             ]
         );
 
-        $contents = $contents->merge($this->children->map(function ( Slot $value ) {
-            return $value->render();
-        }));
+        $contents = $contents->merge(
+            $this->children->map(
+                function (Slot $value) {
+                    return $value->render();
+                }
+            )
+        );
 
         return $this->wrap ? ($this->wrap)($contents) : $contents;
     }
@@ -112,18 +116,30 @@ class Slot implements Renderable
      *
      * @return Slot
      */
-    public function setWrap( ?callable $wrap ): self
+    public function setWrap(?callable $wrap): self
     {
         $this->wrap = $wrap;
 
         return $this;
     }
 
-    public function search($name)
+    /**
+     * @return mixed
+     */
+    public function getContents()
     {
-        foreach(explode('.') as $name)
-        {
-            
-        }
+        return $this->contents;
+    }
+
+    /**
+     * @param mixed $contents
+     *
+     * @return Slot
+     */
+    public function setContents($contents)
+    {
+        $this->contents = $contents;
+
+        return $this;
     }
 }

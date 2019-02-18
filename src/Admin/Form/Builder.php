@@ -2,11 +2,8 @@
 
 namespace Arbory\Base\Admin\Form;
 
+use Arbory\Base\Admin\Panels\PanelRenderer;
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Layout\Slottable;
-use Arbory\Base\Admin\Widgets\Button;
-use Arbory\Base\Admin\Widgets\Link;
-use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -22,6 +19,11 @@ class Builder implements Renderable
      * @var Form
      */
     protected $form;
+
+    /**
+     * @var mixed
+     */
+    protected $content;
 
     /**
      * Builder constructor.
@@ -81,6 +83,24 @@ class Builder implements Renderable
 
         return $this->form()
                     ->append($content);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param mixed $content
+     */
+    public function setContent($content): self
+    {
+        $this->content = $content;
+
+        return $this;
     }
 
 }

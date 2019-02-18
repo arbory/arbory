@@ -1,13 +1,10 @@
 <?php
-
-
-namespace Arbory\Base\Admin\Blocks;
-
+namespace Arbory\Base\Admin\Panels;
 
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Widgets\Button;
 
-class SimpleBlock implements BlockInterface
+class SimplePanel implements PanelInterface
 {
     protected $contents;
     protected $title;
@@ -26,7 +23,7 @@ class SimpleBlock implements BlockInterface
      */
     public function toolbox( ToolboxMenu $toolbox ): ToolboxMenu
     {
-        // TODO: Implement toolbox() method.
+        return $this->toolbox;
     }
 
     /**
@@ -56,7 +53,7 @@ class SimpleBlock implements BlockInterface
     /**
      * @param mixed $contents
      *
-     * @return SimpleBlock
+     * @return SimplePanel
      */
     public function setContents( $contents )
     {
@@ -68,7 +65,7 @@ class SimpleBlock implements BlockInterface
     /**
      * @param mixed $title
      *
-     * @return SimpleBlock
+     * @return SimplePanel
      */
     public function setTitle( $title )
     {
@@ -80,7 +77,7 @@ class SimpleBlock implements BlockInterface
     /**
      * @param mixed $buttons
      *
-     * @return SimpleBlock
+     * @return SimplePanel
      */
     public function setButtons( $buttons ): self
     {
@@ -93,12 +90,24 @@ class SimpleBlock implements BlockInterface
      * @param $name
      * @param $url
      *
-     * @return SimpleBlock
+     * @return SimplePanel
      */
     public function addToolbox( $name, $url )
     {
         $this->toolbox->add($name, $url);
 
         return $this;
+    }
+
+    public function addButton(Button $button)
+    {
+        $this->buttons[] = $button;
+
+        return $this;
+    }
+
+    public function render()
+    {
+        return $this->contents();
     }
 }

@@ -16,10 +16,6 @@ use Illuminate\Http\Response;
 
 trait Crudify
 {
-    public static $EDIT_LAYOUT = Layout::class;
-
-    protected $editLayout;
-
     /**
      * @var Module
      */
@@ -51,7 +47,7 @@ trait Crudify
      * @param Form $form
      * @return Form
      */
-    protected function form(Form $form)
+    protected function form(Form $form, ?Layout\LayoutInterface $layout = null)
     {
         return $form;
     }
@@ -60,13 +56,17 @@ trait Crudify
      * @param Model $model
      * @return Form
      */
-    protected function buildForm(Model $model)
+    protected function buildForm(Model $model, ?Layout\LayoutInterface $layout = null)
     {
         $form = new Form($model);
         $form->setModule($this->module());
         $form->setRenderer(new Form\Builder($form));
 
-        return $this->form($form) ?: $form;
+        if($layout) {
+            $layout->setForm($form);
+        }
+
+        return $this->form($form, $layout) ?: $form;
     }
 
     /**
@@ -160,20 +160,47 @@ trait Crudify
     {
         $resource = $this->findOrNew($resourceId);
 
-        $layout = new Layout(function (Layout $layout) use ( $formLayout, $resource) {
-            $layout->use($formLayout->setForm($this->buildForm($resource)));
-            $layout->use(app(Layout\GridTemplate::class)
-                             ->setSize(9)
-                             ->column(3, 'sidebar'));
+        $layout = $this->layout('form');
+        $layout->setForm($this->buildForm($resource, $layout));
 
-            $layout->use((new Layout\BreadcrumbsLayout())
-                             ->setBreadcrumbs($this->module()->breadcrumbs())
-            );
-        });
+        $page = new Layout(
+            function (Layout $page) use ($formLayout, $resource, $layout) {
+                $page->use($layout);
 
-        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+//                $block = new SimplePanel();
+//
+//                $block->addToolbox('A link', url('/'));
+//
+//                $block->setTitle('a block title');
+//                $block->setContents('hi');
+//
+//                $block->addButton(
+//                    Button::create('Delete')
+//                          ->title('Delete')
+//                          ->withIcon('trash')
+//                );
+//
+//            $layout->use($formLayout->setForm($this->buildForm($resource)));
+////                $layout->use(
+////                    function ($content, $next) use ($resource) {
+////                        return $next($content->push($this->buildForm($resource)->render()));
+////                    }
+////                );
+//                $layout->use(
+//                    app(Layout\GridTemplate::class)
+//                        ->setWidth(8)
+//                        ->column(4, (new PanelRenderer())->render($block))
+//                );
+//
+////            $layout->use((new Layout\BreadcrumbsLayout())
+////                             ->setBreadcrumbs($this->module()->breadcrumbs())
+////            );
+            }
+        );
 
-        return $layout;
+        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+
+        return $page;
     }
 
     /**
@@ -382,5 +409,30 @@ trait Crudify
     protected function getAfterEditResponse(Request $request)
     {
         return redirect($request->has('save_and_return') ? $this->module()->url('index') : $request->url());
+    }
+
+    /**
+     * @param $component
+     *
+     * @return Layout\LayoutInterface
+     */
+    protected function layout($component)
+    {
+        $layouts =  [
+            'grid' => Layout\Grid::class,
+            'form' => \Arbory\Base\Admin\Form\Layout::class
+        ];
+
+        if(property_exists($this, 'layouts')) {
+            $layouts = $this->layouts;
+        }
+
+        $class = $layouts[$component] ?? null;
+
+        if(!class_exists($class)) {
+            throw new \RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
+        }
+
+        return app()->make($class);
     }
 }

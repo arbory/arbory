@@ -3,15 +3,22 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-
-use Arbory\Base\Admin\Widgets\Breadcrumbs;
-use Arbory\Base\Html\Elements\Content;
-use Closure;
 use Illuminate\Contracts\Support\Renderable;
 
-interface LayoutInterface extends Renderable
+/**
+ * Interface LayoutInterface
+ *
+ * @package Arbory\Base\Admin\Layout
+ */
+interface LayoutInterface extends Renderable,TransformableInterface
 {
-    public function use(LayoutInterface $layout);
+    public function setContent($content):self;
+    public function getContent();
 
-    public function apply(Content $content, Closure $next, ...$parameters);
+    /**
+     * @param LayoutInterface|string $layout
+     *
+     * @return mixed
+     */
+    public function use($layout);
 }

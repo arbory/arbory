@@ -1,13 +1,12 @@
 <?php
-
-
-namespace Arbory\Base\Admin\Blocks;
+namespace Arbory\Base\Admin\Panels;
 
 
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Widgets\Button;
+use Illuminate\Contracts\Support\Renderable;
 
-interface BlockInterface
+interface PanelInterface extends Renderable
 {
     /**
      * @param ToolboxMenu $toolbox

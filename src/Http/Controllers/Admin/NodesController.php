@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Panels\FieldSetPanel;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
@@ -31,6 +32,11 @@ class NodesController extends Controller
 {
     use Crudify;
 
+    protected $layouts = [
+        'grid' => Layout\Grid::class,
+        'form' => Layout\PanelLayout::class
+    ];
+
     protected $resource = Node::class;
 
     /**
@@ -57,11 +63,25 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Form $form
+     * @param Form               $form
+     * @param Layout\PanelLayout $panels
+     *
      * @return Form
      */
-    protected function form(Form $form)
+    protected function form(Form $form, ?Layout\PanelLayout $panels)
     {
+        $panels->panel('test', function (FieldSet $fields) {
+            $fields->text('name')->rules('required');
+
+            return $fields;
+        });
+
+        $panels->panel('test', function (FieldSet $fields) {
+            $fields->text('name')->rules('required');
+
+            return $fields;
+        });
+
 
         $form->setFields(function (FieldSet $fields) {
             $fields->hidden('parent_id');

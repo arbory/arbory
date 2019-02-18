@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
  * Class Layout
  * @package Arbory\Base\Admin
  */
-class Layout extends AbstractLayout implements Renderable
+class Layout extends AbstractLayout implements Renderable,LayoutInterface
 {
     /**
      * @var Collection|Row[]
@@ -136,29 +136,9 @@ class Layout extends AbstractLayout implements Renderable
         $this->layouts[] = $layout;
     }
 
-    /**
-     * @return string
-     */
     public function build()
     {
-        if(count($this->layouts)) {
-            $contents = $this->pipeline
-                ->via('apply')
-                ->through($this->layouts)
-                ->send(new Content)
-                ->then(function ($content) {
-                    return $content;
-                });
-        } else {
-            $contents = new Content();
-        }
 
-        foreach( $this->rows as $row )
-        {
-            $contents->push( $row->render() );
-        }
-
-        return $contents;
     }
 
     /**
@@ -167,7 +147,7 @@ class Layout extends AbstractLayout implements Renderable
     public function render()
     {
         $variables = [
-            'content' => $this->build(),
+            'content' => parent::render(),
             'bodyClass' => $this->bodyClass,
         ];
 
@@ -180,6 +160,18 @@ class Layout extends AbstractLayout implements Renderable
     public function getBreadcrumbs(): ?Breadcrumbs
     {
         return $this->breadcrumbs;
+    }
+
+    public function setContent($content): LayoutInterface
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    public function getContent()
+    {
+        return $this->content;
     }
 
 }

@@ -24,15 +24,7 @@ class Layout extends AbstractLayout implements LayoutInterface
      */
     protected $form;
 
-    /**
-     * @var Tools
-     */
-    protected $tools;
-
-    public function __construct()
-    {
-        $this->tools = new Tools();
-    }
+    protected $panels;
 
     public function breadcrumbs(Breadcrumbs $breadcrumbs): Breadcrumbs
     {
@@ -60,43 +52,13 @@ class Layout extends AbstractLayout implements LayoutInterface
             )->render();
         }
 
-        return Html::header([
-                                Html::h1($this->form->getTitle()),
-                                Html::div($toolbox)->addClass('extras toolbox-wrap'),
-                            ]);
-    }
-
-    /**
-     * @return Element
-     */
-    public function footer()
-    {
-        $primary   = $this->tools->getBlock('primary');
-        $secondary = $this->tools->getBlock('secondary');
-
-        $primary
-            ->push(Button::create('save_and_return', true)
-                       ->type('submit', 'secondary')
-                       ->withIcon('check')
-                       ->disableOnSubmit()
-                       ->title(trans('arbory::resources.save_and_return')))
-            ->push(Button::create('save', true)
-                       ->type('submit', 'primary')
-                       ->withIcon('check')
-                       ->disableOnSubmit()
-                       ->title(trans('arbory::resources.save')));
-
-        $secondary->push(
-            Link::create($this->url('index'))
-                ->asButton('secondary')
-                ->withIcon('caret-left')
-                ->title(trans('arbory::resources.back_to_list'))
+        return Html::header(
+            [
+                Html::h1($this->form->getTitle()),
+                Html::div($toolbox)->addClass('extras toolbox-wrap'),
+            ]
         );
-
-
-        return Html::footer($this->tools)->addClass('main');
     }
-
 
     /**
      * @param       $route
@@ -124,7 +86,19 @@ class Layout extends AbstractLayout implements LayoutInterface
     public function build()
     {
         $this->slot('header', [$this, 'header']);
-        $this->slot('footer', [$this, 'footer']);
+        $this->slot('footer', new Widgets\Controls(new Tools(), $this->url('index')));
+    }
+
+    public function setContent($content): LayoutInterface
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    public function getContent()
+    {
+        return $this->form->fields()->render();
     }
 
     /**
@@ -136,26 +110,16 @@ class Layout extends AbstractLayout implements LayoutInterface
     {
         $this->build();
 
-        return new Content([
-                               Html::section(
-                                   [
-                                       $this->slot('header'),
-                                       $this->form->render(),
-                                       $this->slot('footer'),
-                                   ]
-                               ),
-                           ]);
-    }
-
-    public function apply(Content $content, Closure $next, ...$parameters)
-    {
-
-
-        return $next(new Content(
-                         [
-                             $content,
-                             $this->render(),
-                         ]
-                     ));
+        return new Content(
+            [
+                Html::section(
+                    [
+                        $this->slot('header'),
+                        $this->getContent(),
+                        $this->slot('footer'),
+                    ]
+                ),
+            ]
+        );
     }
 }

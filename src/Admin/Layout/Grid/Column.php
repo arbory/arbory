@@ -36,10 +36,15 @@ class Column
         $this->content->push($content);
     }
 
+    public function set($content)
+    {
+        $this->content = new Content($content);
+    }
+
     public function render()
     {
         return Html::div(
-            new Content($this->content)
+            $this->content
         )->addClass("col-md-{$this->size}");
     }
 

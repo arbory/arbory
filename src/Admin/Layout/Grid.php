@@ -66,4 +66,9 @@ class Grid  implements Renderable
 
         return $content;
     }
+
+    public function __toString()
+    {
+        return (new Content($this->render()))->__toString();
+    }
 }

@@ -21,7 +21,7 @@ class BreadcrumbsLayout implements LayoutInterface
         // TODO: Implement use() method.
     }
 
-    public function apply(Content $content, Closure $next, ...$parameters)
+    public function apply(LayoutInterface $content, Closure $next, array ...$parameters)
     {
         $content->prepend($this->render());
 

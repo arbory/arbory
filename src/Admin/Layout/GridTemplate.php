@@ -10,14 +10,18 @@ use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
 use Closure;
 
-class GridTemplate implements LayoutInterface
+class GridTemplate extends AbstractLayout implements LayoutInterface
 {
+    /**
+     * @var Grid
+     */
     protected $grid;
 
 
-    protected $size = 12;
+    protected $width = 12;
 
     protected $column;
+
 
     /**
      * GridTemplate constructor.
@@ -28,35 +32,32 @@ class GridTemplate implements LayoutInterface
     {
         $this->grid = $grid;
 
-        $this->column = $this->grid->column($this->size, '');
+        $this->column = $this->grid->column($this->width, '');
     }
 
-    /**
-     * @param $content
-     *
-     * @return mixed
-     */
-    public function content($content)
+    public function build()
     {
-        // TODO: Implement content() method.
+        $this->column->size($this->getWidth());
+
+        static::$BUILT = true;
     }
 
-    public function use(LayoutInterface $layout)
+    public function setContent($content): LayoutInterface
     {
-        // TODO: Implement use() method.
+        $this->column->set($content);
+
+        $this->content = (string) $this->grid->render();
+
+        return $this;
     }
 
-    public function apply(Content $content, Closure $next, ...$parameters)
-    {
-        [$size] = array_replace([$this->size],$parameters);
+//    public function apply(LayoutContent $content, Closure $next, array ...$parameters)
+//    {
+//        $content->insert($this->column->set($this));
+//
+//        return $next($content);
+//    }
 
-        $this->column->size($size);
-        $this->column->push($content);
-
-        return $next(
-            new Content([$this->grid])
-        );
-    }
 
     public function column($size, $content)
     {
@@ -66,31 +67,22 @@ class GridTemplate implements LayoutInterface
     }
 
     /**
-     * Get the evaluated contents of the object.
-     *
-     * @return string
-     */
-    public function render()
-    {
-        // TODO: Implement render() method.
-    }
-
-    /**
      * @return int
      */
-    public function getSize(): int
+    public function getWidth(): int
     {
-        return $this->size;
+        return $this->width;
     }
 
     /**
-     * @param int $size
+     * @param int $width
      *
      * @return GridTemplate
      */
-    public function setSize(int $size): GridTemplate
+    public function setWidth(int $width): GridTemplate
     {
-        $this->size = $size;
+        $this->width = $width;
+
         return $this;
-}
+    }
 }
