@@ -10,7 +10,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
  * Class DateTime
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Deactivator extends ControlField
+class Deactivator extends Checkbox
 {
     protected $activateAtName = 'activate_at';
     protected $expireAtName = 'expire_at';
