@@ -34,12 +34,11 @@ abstract class AbstractLayout
      */
     public function slot($name, $content = null)
     {
-        if($this->root === null)
-        {
+        if ($this->root === null) {
             $this->root = new Slot('root');
         }
 
-        if(func_num_args() === 1) {
+        if (func_num_args() === 1) {
             return $this->root->getChild($name);
         }
 
@@ -48,7 +47,7 @@ abstract class AbstractLayout
 
     public function slots()
     {
-        if($this->root === null) {
+        if ($this->root === null) {
             return collect();
         }
 
@@ -61,36 +60,30 @@ abstract class AbstractLayout
 
     public function render()
     {
-//        dump('__rendering', get_class($this), $this->layouts, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
         $this->build();
 
         $contents = new Content();
 
         $content = $this->transform(
-            new Wrappable()
+            new Body($this)
         )->render($this->getContent());
 
         $contents->push($this->contents($content));
 
-
         return $contents;
     }
 
-    public function apply($layout, Closure $next, array ...$parameters)
+    public function apply(Body $body, Closure $next, array ...$parameters)
     {
-        // Apply self to layout
-//        dump([
-//            'self' => get_class($this)
-//        ]);
+        $body->wrap(
+            function ($content) {
+                $this->setContent($content);
 
-        $layout->wrap(function($content) {
-//            dump('contents', get_class($this));
-            $this->setContent($content);
-            return $this->render();
-        });
+                return $this->render();
+            }
+        );
 
-
-        return $next($layout);
+        return $next($body);
     }
 
     public function content()
@@ -124,21 +117,22 @@ abstract class AbstractLayout
      */
     public function transform($content)
     {
-        if(count($this->layouts)) {
+        if (count($this->layouts)) {
             return $this->pipeline()
-                ->send($content)
-                ->then(function ($content) {
-                    return $content;
-                });
+                        ->send($content)
+                        ->then(
+                            function ($content) {
+                                return $content;
+                            }
+                        );
         }
 
         return $content;
     }
 
-    public function pipeline():Pipeline
+    public function pipeline(): Pipeline
     {
-        if($this->pipeline === null)
-        {
+        if ($this->pipeline === null) {
             $this->pipeline = new Pipeline(app());
         }
 

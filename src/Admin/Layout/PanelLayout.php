@@ -7,6 +7,8 @@ namespace Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
+use Arbory\Base\Admin\Layout\Transformers\WrapTransformer;
 use Arbory\Base\Admin\Panels\FieldSetPanel;
 use Arbory\Base\Admin\Panels\Renderer;
 use Arbory\Base\Admin\Panels\Panel;
@@ -41,10 +43,9 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
     {
         $panel = new FieldSetPanel();
 
-        $panel->setTitle($name);
-
         $fields = $closure(new FieldSet($this->form->getModel(), $this->form->fields()->getNamespace()), $panel);
 
+        $panel->setTitle($name);
         $panel->setFields($fields);
 
         /**
@@ -83,29 +84,13 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
 
     function build()
     {
-        $layout = new SidebarLayout();
-        $layout->setSidebar($this->sidebar());
-
-        $form = function (Wrappable $wrappable, $next) {
-            $wrappable->wrap(function ($content) {
-                return (new Form\Builder($this->form))
-                    ->setContent($content)
-                    ->render();
-            });
-
-            return $next($wrappable);
-        };
-
-        $this->use($form);
+        $this->use(new WrapTransformer(new Form\Builder($this->form)));
         $this->use((new Form\Layout())->setForm($this->form));
-        $this->use($layout);
+        $this->use(new SidebarLayout($this->sidebar()));
 
         $this->setContent($this->renderPanels());
-    }
 
-    public function getContent()
-    {
-        return $this->renderPanels();
+//        $this->use(new AppendTransformer($this->renderPanels()));
     }
 
     public function renderPanels()

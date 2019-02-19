@@ -25,8 +25,10 @@ class FormPanel extends Panel
     {
         if ($this->form->getModel()->getKey()) {
             $toolbox = Toolbox::create(
-                $this->form->getModule()->url('dialog',
-                                              ['dialog' => 'toolbox', 'id' => $this->form->getModel()->getKey()])
+                $this->form->getModule()->url(
+                    'dialog',
+                    ['dialog' => 'toolbox', 'id' => $this->form->getModel()->getKey()]
+                )
             );
         }
 
@@ -53,5 +55,5 @@ class FormPanel extends Panel
         $this->build();
 
         return $this;
-}
+    }
 }

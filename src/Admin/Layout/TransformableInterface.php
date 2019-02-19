@@ -8,11 +8,11 @@ use Closure;
 interface TransformableInterface
 {
     /**
-     * @param Wrappable $content
-     * @param Closure   $next
-     * @param array     ...$parameters
+     * @param Body    $content
+     * @param Closure $next
+     * @param array   ...$parameters
      *
      * @return mixed
      */
-    public function apply($content, Closure $next, array ...$parameters);
+    public function apply(Body $content, Closure $next, array ...$parameters);
 }

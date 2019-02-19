@@ -24,7 +24,6 @@ class Renderer
     protected function header(PanelInterface $block)
     {
         $toolbox = $block->toolbox($block->getToolbox());
-        $menu    = $toolbox->getMenu();
 
         $header = Html::header(
             [
@@ -34,7 +33,7 @@ class Renderer
                 Html::div(
                     [
                         Html::div($block->getButtons())->addClass('buttons'),
-                        $menu ? $toolbox->render() : null,
+                        $toolbox ? $toolbox->render() : null,
                     ]
                 )->addClass('extras'),
             ]

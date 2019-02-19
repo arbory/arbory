@@ -39,8 +39,6 @@ class Content extends Collection implements Renderable
                 return $value;
             }
 
-            dump($value, debug_backtrace());
-
             throw new \LogicException("Cannot render the contents of " . gettype($value) . " {$className}");
         })->implode(PHP_EOL);
     }

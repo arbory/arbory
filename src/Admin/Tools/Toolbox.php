@@ -39,6 +39,10 @@ class Toolbox implements Renderable
      */
     public function render()
     {
+        if(!$this->url && !$this->menu) {
+            return null;
+        }
+
         $attributes = [];
 
         if ($this->url) {

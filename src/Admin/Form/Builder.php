@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form;
 
+use Arbory\Base\Admin\Layout\WrappableInterface;
 use Arbory\Base\Admin\Panels\Renderer;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Html\Elements\Content;
@@ -13,7 +14,7 @@ use Illuminate\Contracts\Support\Renderable;
  * Class Builder
  * @package Arbory\Base\Admin\Form
  */
-class Builder implements Renderable
+class Builder implements Renderable, WrappableInterface
 {
     /**
      * @var Form

@@ -19,7 +19,7 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
      */
     protected $sidebar;
 
-    public function __construct(callable $contents = null)
+    public function __construct($contents = null)
     {
         $this->sidebar = new Slot('sidebar', $contents);
     }

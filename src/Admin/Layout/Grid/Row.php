@@ -49,7 +49,7 @@ class Row
      */
     public function render()
     {
-        $content = Html::div()->addClass('row');
+        $content = Html::div()->addClass('grid-row');
 
         foreach( $this->columns as $col) {
             $content->append(

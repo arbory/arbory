@@ -8,6 +8,7 @@ use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Grid\ExportBuilder;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Module;
+use Arbory\Base\Admin\Page;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -96,13 +97,18 @@ trait Crudify
      */
     public function index()
     {
-        $layout = new Layout(function (Layout $layout) {
-            $layout->body($this->buildGrid($this->resource()));
-        });
+        $layout = $this->layout('grid');
 
-        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index');
+        $layout->setGrid($this->buildGrid($this->resource()));
 
-        return $layout;
+        $page = new Page();
+
+        $page->use($layout);
+        $page->setBreadcrumbs($this->module()->breadcrumbs());
+
+        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index');
+
+        return $page;
     }
 
     /**
@@ -125,9 +131,9 @@ trait Crudify
         $page = new Layout();
         $page->use($layout);
 
-        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
 
-        return $layout;
+        return $page;
     }
 
     /**
@@ -388,7 +394,7 @@ trait Crudify
     protected function layout($component)
     {
         $layouts =  [
-            'grid' => Layout\Grid::class,
+            'grid' => Grid\Layout::class,
             'form' => \Arbory\Base\Admin\Form\Layout::class
         ];
 

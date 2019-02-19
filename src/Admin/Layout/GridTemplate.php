@@ -24,7 +24,7 @@ class GridTemplate extends AbstractLayout implements LayoutInterface
     protected $width = 12;
 
     /**
-     * @var Content
+     * @var Body
      */
     protected $column;
 

@@ -282,10 +282,6 @@ class Builder implements Renderable
         $this->items = $this->grid->getItems();
 
         return new Content( [
-            Html::header( [
-                $this->breadcrumbs(),
-                $this->searchField(),
-            ] ),
             Html::section( [
                 $this->table(),
                 $this->footer(),

@@ -36,7 +36,7 @@ class Row implements Renderable
     }
 
     /**
-     * @return Content
+     * @return Body
      */
     public function render()
     {

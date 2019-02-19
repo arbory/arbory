@@ -8,7 +8,7 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Layout\LayoutInterface;
-use Arbory\Base\Admin\Layout\Wrappable;
+use Arbory\Base\Admin\Layout\Body;
 use Arbory\Base\Admin\Panels\FormPanel;
 use Arbory\Base\Admin\Panels\Renderer;
 use Arbory\Base\Admin\Tools\Toolbox;
@@ -97,18 +97,18 @@ class Layout extends AbstractLayout implements LayoutInterface
 
     public function build()
     {
-        $this->use(function(Wrappable $wrappable, $next) {
-            $wrappable->wrap(function($content) {
-                $panel = new FormPanel();
-
-                $panel->setForm($this->form);
-                // Renders from fieldSet
+//        $this->use(function(Body $wrappable, $next) {
+//            $wrappable->wrap(function($content) {
+//                $panel = new FormPanel();
+//
+//                $panel->setForm($this->form);
+//                // Renders from fieldSet
 //                $panel->setContents($content);
-
-                return (new Renderer())->render($panel);
-            });
-
-            return $next($wrappable);
-        });
+//
+//                return (new Renderer())->render($panel);
+//            });
+//
+//            return $next($wrappable);
+//        });
     }
 }

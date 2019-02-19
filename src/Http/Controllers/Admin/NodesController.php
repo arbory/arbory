@@ -2,19 +2,13 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Admin\Panels\FieldSetPanel;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Admin\Traits\HasActivationDates;
-use Arbory\Base\Admin\Form\Fields\DateTime;
 use Arbory\Base\Admin\Form\Fields\Deactivator;
-use Arbory\Base\Admin\Form\Fields\HasOne;
-use Arbory\Base\Admin\Form\Fields\Hidden;
-use Arbory\Base\Admin\Form\Fields\Slug;
-use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\Boolean;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Nodes\ContentTypeDefinition;
@@ -33,7 +27,7 @@ class NodesController extends Controller
     use Crudify;
 
     protected $layouts = [
-        'grid' => Layout\Grid::class,
+        'grid' => Grid\Layout::class,
         'form' => Layout\PanelLayout::class
     ];
 
