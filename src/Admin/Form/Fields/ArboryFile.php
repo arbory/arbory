@@ -6,6 +6,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\FileFieldRenderer;
 use Arbory\Base\Files\ArboryFileFactory;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Repositories\ArboryFilesRepository;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 
 /**
@@ -109,8 +110,18 @@ class ArboryFile extends ControlField
         if ($uploadedFile) {
             $this->deleteCurrentFileIfExists();
 
-            $factory = new ArboryFileFactory(new ArboryFilesRepository($this->getDisk()));
-            $factory->make($this->getModel(), $uploadedFile, $this->getName());
+            $model = $this->getModel();
+
+            /**
+             * @var $relation BelongsTo
+             */
+            $relation = $model->{$this->getName()}();
+            $modelClass = get_class($relation->getRelated());
+
+            $factory = new ArboryFileFactory(
+                new ArboryFilesRepository($this->getDisk(), $modelClass)
+            );
+            $factory->make($model, $uploadedFile, $this->getName());
         }
     }
 
