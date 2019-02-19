@@ -53,4 +53,20 @@ class Checkbox extends ControlField
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckedValue()
+    {
+        return $this->checkedValue;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUncheckedValue()
+    {
+        return $this->uncheckedValue;
+    }
 }
