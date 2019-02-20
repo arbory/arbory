@@ -13,15 +13,27 @@ use Illuminate\Contracts\Support\Renderable;
  */
 interface LayoutInterface extends Renderable, TransformableInterface
 {
-    public function setContent($content):self;
+    /**
+     * @param $content
+     *
+     * @return LayoutInterface
+     */
+    public function setContent($content): self;
+
+    /**
+     * @return mixed
+     */
     public function getContent();
 
-    public function setWrapper($wrapper);
-
+    /**
+     * @param mixed $content
+     *
+     * @return mixed
+     */
     public function contents($content);
 
     /**
-     * @param LayoutInterface|string $layout
+     * @param LayoutInterface|TransformableInterface|string $layout
      *
      * @return mixed
      */

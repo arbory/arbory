@@ -4,6 +4,7 @@
 namespace Arbory\Base\Admin;
 
 
+use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
@@ -57,6 +58,13 @@ class Page extends Layout
         return $this;
     }
 
+    /**
+     * @param mixed                $content
+     * @param LayoutInterface|null $root
+     *
+     * @return string
+     * @throws \Throwable
+     */
     public function contents($content)
     {
         $content = new Content(
@@ -76,7 +84,10 @@ class Page extends Layout
 
     protected function header()
     {
-        return Html::header($this->getBreadcrumbs());
+        return Html::header([
+            $this->getBreadcrumbs(),
+            $this->slot('header_right')
+        ]);
     }
 
 }

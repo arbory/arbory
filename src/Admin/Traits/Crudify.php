@@ -103,8 +103,8 @@ trait Crudify
 
         $page = new Page();
 
-        $page->use($layout);
         $page->setBreadcrumbs($this->module()->breadcrumbs());
+        $page->use($layout);
 
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index');
 
@@ -128,7 +128,7 @@ trait Crudify
         $layout = $this->layout('form');
         $layout->setForm($this->buildForm($this->resource(), $layout));
 
-        $page = new Layout();
+        $page = new Page();
         $page->use($layout);
 
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
@@ -170,7 +170,7 @@ trait Crudify
         $layout = $this->layout('form');
         $layout->setForm($this->buildForm($resource, $layout));
 
-        $page = new Layout();
+        $page = new Page();
         $page->use($layout);
 
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
@@ -395,7 +395,7 @@ trait Crudify
     {
         $layouts =  [
             'grid' => Grid\Layout::class,
-            'form' => \Arbory\Base\Admin\Form\Layout::class
+            'form' => Form\Layout::class
         ];
 
         if(property_exists($this, 'layouts')) {

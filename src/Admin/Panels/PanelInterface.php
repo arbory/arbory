@@ -28,7 +28,7 @@ interface PanelInterface extends Renderable
     /**
      * @return mixed
      */
-    public function getContents();
+    public function getContent();
 
     /**
      * @return mixed

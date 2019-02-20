@@ -9,6 +9,8 @@ use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Layout\Body;
+use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
+use Arbory\Base\Admin\Layout\Transformers\WrapTransformer;
 use Arbory\Base\Admin\Panels\FormPanel;
 use Arbory\Base\Admin\Panels\Renderer;
 use Arbory\Base\Admin\Tools\Toolbox;
@@ -39,28 +41,6 @@ class Layout extends AbstractLayout implements LayoutInterface
         return $breadcrumbs;
     }
 
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     */
-    public function header()
-    {
-        $toolbox = null;
-
-        if ($this->form->getModel()->getKey()) {
-            $toolbox = Toolbox::create(
-                $this->url('dialog', ['dialog' => 'toolbox', 'id' => $this->form->getModel()->getKey()])
-            )->render();
-        }
-
-        return Html::header(
-            [
-                Html::h1($this->form->getTitle()),
-                Html::div($toolbox)->addClass('extras toolbox-wrap'),
-            ]
-        );
-    }
-
     /**
      * @param       $route
      * @param array $parameters
@@ -88,27 +68,23 @@ class Layout extends AbstractLayout implements LayoutInterface
     {
         return new Content(
             [
-//                $this->header(),
                 $content ?: $this->form->fields()->render(),
-                new Widgets\Controls(new Tools(), $this->url('index'))
             ]
         );
     }
 
     public function build()
     {
-//        $this->use(function(Body $wrappable, $next) {
-//            $wrappable->wrap(function($content) {
-//                $panel = new FormPanel();
-//
-//                $panel->setForm($this->form);
-//                // Renders from fieldSet
-//                $panel->setContents($content);
-//
-//                return (new Renderer())->render($panel);
-//            });
-//
-//            return $next($wrappable);
-//        });
+        $this->use(
+            new WrapTransformer(
+                (new FormPanel())->setForm($this->form)
+            )
+        );
+
+        $this->use(
+            new AppendTransformer(
+                new Widgets\Controls(new Tools(), $this->url('index'))
+            )
+        );
     }
 }

@@ -25,7 +25,7 @@ class FieldSetPanel extends Panel
         return $this;
     }
 
-    public function getContents()
+    public function getContent()
     {
         return $this->fieldSet->render();
     }

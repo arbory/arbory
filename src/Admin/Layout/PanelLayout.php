@@ -77,18 +77,21 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
         $panel = new Panel();
 
         $panel->setTitle('Sidebar panel');
-        $panel->setContents('Content here');
+        $panel->setContent('Content here');
 
-        return (new Renderer())->render($panel);
+        return $panel->render();
     }
 
     function build()
     {
         $this->use(new WrapTransformer(new Form\Builder($this->form)));
-        $this->use((new Form\Layout())->setForm($this->form));
         $this->use(new SidebarLayout($this->sidebar()));
 
-        $this->setContent($this->renderPanels());
+        if(sizeof($this->panels) > 0) {
+            $this->setContent($this->renderPanels());
+        } else {
+            $this->use((new Form\Layout())->setForm($this->form));
+        }
 
 //        $this->use(new AppendTransformer($this->renderPanels()));
     }
@@ -99,7 +102,7 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
 
         foreach($this->panels as $panel)
         {
-            $contents->push((new Renderer())->render($panel));
+            $contents->push($panel->render());
         }
 
         return $contents;

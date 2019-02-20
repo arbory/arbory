@@ -7,35 +7,51 @@ namespace Arbory\Base\Admin\Panels;
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Html\Html;
+use Illuminate\Contracts\Support\Renderable;
 
-class Renderer
+class Renderer implements Renderable
 {
-    public function render(PanelInterface $block)
+    /**
+     * @var PanelInterface
+     */
+    protected $panel;
+
+    /**
+     * Renderer constructor.
+     *
+     * @param PanelInterface $panel
+     */
+    public function __construct(PanelInterface $panel)
+    {
+        $this->panel = $panel;
+    }
+
+    public function render()
     {
         return Html::div(
             [
-                $this->header($block),
-                Html::div($block->getContents())
+                $this->header(),
+                Html::div($this->panel->getContent())
                     ->addClass('content'),
             ]
         )->addClass('panel');
     }
 
-    protected function header(PanelInterface $block)
+    protected function header()
     {
-        $toolbox = $block->toolbox($block->getToolbox());
+        $toolbox = $this->panel->toolbox($this->panel->getToolbox());
 
         $header = Html::header(
             [
                 Html::div(
-                    $block->getTitle()
+                    $this->panel->getTitle()
                 )->addClass('title'),
                 Html::div(
                     [
-                        Html::div($block->getButtons())->addClass('buttons'),
+                        Html::div($this->panel->getButtons())->addClass('buttons'),
                         $toolbox ? $toolbox->render() : null,
                     ]
-                )->addClass('extras'),
+                )->addClass('extras toolbox-wrap'),
             ]
         );
 

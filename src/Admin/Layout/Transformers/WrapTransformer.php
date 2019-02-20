@@ -8,6 +8,7 @@ use Arbory\Base\Admin\Layout\Body;
 use Arbory\Base\Admin\Layout\WrappableInterface;
 
 /**
+ * Wraps a Transformable layout to a different layout
  *
  * Class Wrap
  *

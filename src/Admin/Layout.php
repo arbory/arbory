@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin;
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Layout\Body;
+use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
@@ -123,15 +124,15 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
 //            return $next($wrappable);
 //        });
 
-        $this->use(function(Body $wrappable, $next) {
-            $wrappable->append(new Content($this->rows->all()));
-
-            return $next($wrappable);
-        });
+        $this->use(new AppendTransformer(new Content($this->rows->all())));
     }
 
     /**
+     * @param                      $content
+     * @param LayoutInterface|null $root
+     *
      * @return string
+     * @throws \Throwable
      */
     public function contents($content)
     {

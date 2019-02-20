@@ -4,12 +4,17 @@
 namespace Arbory\Base\Admin\Layout;
 
 
+use Arbory\Base\Admin\Traits\EventDispatcher;
 use Arbory\Base\Html\Elements\Content;
 use Closure;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Collection;
 
 abstract class AbstractLayout
 {
+    use EventDispatcher;
+
+
     /**
      * @var Slot
      */
@@ -20,15 +25,24 @@ abstract class AbstractLayout
      */
     protected $layouts = [];
 
+    /**
+     * @var Pipeline
+     */
     protected $pipeline;
 
+    /**
+     * @var Collection|Slot
+     */
     protected $slots;
 
+    /**
+     * @var mixed
+     */
     protected $content;
 
     /**
-     * @param      $name
-     * @param null $content
+     * @param string $name
+     * @param mixed  $content
      *
      * @return Slot
      */
@@ -45,6 +59,11 @@ abstract class AbstractLayout
         return $this->root->setChild($name, $content);
     }
 
+    /**
+     * Returns defined slots
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function slots()
     {
         if ($this->root === null) {
@@ -54,27 +73,37 @@ abstract class AbstractLayout
         return $this->root->children();
     }
 
+    /**
+     * Executes every time before render
+     *
+     * @return mixed
+     */
     abstract function build();
 
-    abstract function contents($content);
-
+    /**
+     * Renders the layout in its transformed state
+     *
+     * @return Content
+     */
     public function render()
     {
+        // Build any
         $this->build();
 
-        $contents = new Content();
-
+        // Transforms the layout content based on the "used" layouts
         $content = $this->transform(
             new Body($this)
         )->render($this->getContent());
 
-        $contents->push($this->contents($content));
-
-        return $contents;
+        return new Content([
+            $this->contents($content, $this),
+        ]);
     }
 
     public function apply(Body $body, Closure $next, array ...$parameters)
     {
+        $this->trigger('apply', $body);
+
         $body->wrap(
             function ($content) {
                 $this->setContent($content);
@@ -86,17 +115,9 @@ abstract class AbstractLayout
         return $next($body);
     }
 
-    public function content()
-    {
-
-    }
-
-    public function setWrapper($wrapper)
-    {
-        $this->wrapper = $wrapper;
-    }
-
     /**
+     * Adds an transformer to the layout
+     *
      * @param LayoutInterface|string $layout
      *
      * @return $this
@@ -130,6 +151,11 @@ abstract class AbstractLayout
         return $content;
     }
 
+    /**
+     * Transformer pipeline
+     *
+     * @return Pipeline
+     */
     public function pipeline(): Pipeline
     {
         if ($this->pipeline === null) {
@@ -141,7 +167,13 @@ abstract class AbstractLayout
             ->through($this->layouts);
     }
 
-
+    /**
+     * Set inner content of the layout
+     *
+     * @param mixed $content
+     *
+     * @return LayoutInterface
+     */
     public function setContent($content): LayoutInterface
     {
         $this->content = $content;
@@ -149,6 +181,11 @@ abstract class AbstractLayout
         return $this;
     }
 
+    /**
+     * Returns layout content without any transformation
+     *
+     * @return mixed
+     */
     public function getContent()
     {
         return $this->content;

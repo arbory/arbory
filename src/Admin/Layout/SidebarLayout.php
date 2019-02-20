@@ -21,7 +21,7 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
 
     public function __construct($contents = null)
     {
-        $this->sidebar = new Slot('sidebar', $contents);
+        $this->sidebar = $this->slot('sidebar', $contents);
     }
 
     function build()

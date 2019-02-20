@@ -1,16 +1,21 @@
 <?php
 namespace Arbory\Base\Admin\Panels;
 
+use Arbory\Base\Admin\Layout\WrappableInterface;
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Traits\Renderable;
 use Arbory\Base\Admin\Widgets\Button;
+use Illuminate\Contracts\Support\Renderable as RenderableInterface;
 
-class Panel implements PanelInterface
+class Panel implements PanelInterface, WrappableInterface
 {
+    use Renderable;
+
     /**
      * @var mixed
      */
-    protected $contents;
+    protected $content;
 
     /**
      * @var string
@@ -27,8 +32,9 @@ class Panel implements PanelInterface
      */
     protected $toolbox;
 
-    public function __construct()
+    public function __construct(RenderableInterface $renderer = null)
     {
+        $this->renderer = $renderer ?: new Renderer($this);
         $this->toolbox = new Toolbox(null);
     }
 
@@ -62,19 +68,19 @@ class Panel implements PanelInterface
     /**
      * @return mixed
      */
-    public function getContents()
+    public function getContent()
     {
-        return $this->contents;
+        return $this->content;
     }
 
     /**
-     * @param mixed $contents
+     * @param mixed $content
      *
      * @return Panel
      */
-    public function setContents( $contents )
+    public function setContent( $content )
     {
-        $this->contents = $contents;
+        $this->content = $content;
 
         return $this;
     }
@@ -140,14 +146,11 @@ class Panel implements PanelInterface
 
     }
 
-    /**
-     * @return mixed|string
-     */
     public function render()
     {
         $this->build();
 
-        return $this->getContents();
+        return $this->renderer->render();
     }
 
     /**

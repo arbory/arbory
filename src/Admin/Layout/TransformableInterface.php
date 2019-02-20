@@ -8,6 +8,8 @@ use Closure;
 interface TransformableInterface
 {
     /**
+     * Transforms content
+     *
      * @param Body    $content
      * @param Closure $next
      * @param array   ...$parameters

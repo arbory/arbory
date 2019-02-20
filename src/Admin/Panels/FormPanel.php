@@ -6,7 +6,6 @@ namespace Arbory\Base\Admin\Panels;
 
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Tools\Toolbox;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
 
 class FormPanel extends Panel
 {
@@ -18,7 +17,7 @@ class FormPanel extends Panel
     public function build()
     {
         $this->setTitle($this->form->getTitle());
-        $this->setContents($this->form->fields()->render());
+        $this->setContent($this->form->fields()->render());
     }
 
     public function toolbox(Toolbox $toolbox): Toolbox
