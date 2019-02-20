@@ -48,6 +48,8 @@ class StyleOptions implements StyleOptionsInterface
         $this->additional = new Fluent(
             array_merge($this->additional->getAttributes(), $data)
         );
+
+        return $this;
     }
 
     /**
