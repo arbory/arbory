@@ -10,7 +10,9 @@ use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Widgets\SearchField;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Html;
+use Arbory\EcOrders\Admin\Form\Fields\ActionButtonGroup;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -67,6 +69,34 @@ class Builder implements Renderable
         }
 
         return ( new SearchField( $this->url( 'index' ) ) )->render();
+    }
+
+    protected function bulkEditing(){
+        if( !$this->grid->hasTool( 'bulk' ) )
+        {
+            return null;
+        }
+
+        $this->addBulkEditingColumnToTheGrid();
+
+        $buttons = new ActionButtonGroup();
+
+        $buttons->addButton($this->url('edit',['as' => 'mass']), 'Edit','mass-action edit');
+        $buttons->addButton($this->url('destroy', ['as' => 'mass']),'Delete', 'mass-action delete');
+
+
+        return $buttons->render();
+    }
+
+    protected function addBulkEditingColumnToTheGrid(){
+        $this->grid->column('id', trans('arbory::resources.nr'), 0)
+            ->display(function($value){
+
+                $checkbox = new CheckBox();
+                $checkbox->setValue($value);
+                $checkbox->addClass('mass-column');
+                return $checkbox;
+            });
     }
 
     /**
@@ -285,6 +315,7 @@ class Builder implements Renderable
             Html::header( [
                 $this->breadcrumbs(),
                 $this->searchField(),
+                $this->bulkEditing()
             ] ),
             Html::section( [
                 $this->table(),

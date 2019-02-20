@@ -8,6 +8,7 @@ return [
     'save_and_return' => 'Save and Return',
     'save' => 'Save',
     'back_to_list' => 'Back',
+    'nr' => 'No',
     'status' => [
         'enabled' => 'Enabled',
         'disabled' => 'Disabled'
