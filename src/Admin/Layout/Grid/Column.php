@@ -5,53 +5,128 @@ namespace Arbory\Base\Admin\Layout\Grid;
 
 
 use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 
 class Column
 {
+    const BREAKPOINT_XS = 'xs';
+    const BREAKPOINT_SM = 'sm';
+    const BREAKPOINT_MD = 'md';
+    const BREAKPOINT_LG = 'lg';
+
     /**
      * @var Content
      */
     protected $content;
 
     /**
-     * @var
+     * @var array
      */
-    protected $size;
+    protected $breakpoints  = [];
+
+    /**
+     * @var string
+     */
+    protected $format = 'col-{breakpoint}-{size}';
 
     /**
      * Row constructor.
      *
-     * @param $size
-     * @param $content
+     * @param int $size
+     * @param mixed $content
+     * @param string $breakpoint
      */
-    public function __construct($size, $content)
+    public function __construct($size, $content, $breakpoint = self::BREAKPOINT_XS)
     {
+        $breakpoint = $breakpoint ?? static::BREAKPOINT_XS;
+
         $this->content = new Content($content);
-        $this->size = $size;
+
+        $this->breakpoints = [
+            $breakpoint => $size
+        ];
     }
 
-    public function push($content)
+
+    /**
+     * Add breakpoints
+     * Expected format:
+     *  Breakpoint => Size
+     *
+     * @param array $breakpoints
+     *
+     * @return Column
+     */
+    public function breakpoints(array $breakpoints):self
+    {
+        $this->breakpoints = $breakpoints;
+
+        return $this;
+    }
+
+    /**
+     * @param $content
+     *
+     * @return Column
+     */
+    public function push($content):self
     {
         $this->content->push($content);
+
+        return $this;
     }
 
-    public function set($content)
+    /**
+     * @param $content
+     *
+     * @return Column
+     */
+    public function set($content):self
     {
         $this->content = new Content($content);
+
+        return $this;
     }
 
+    /**
+     * @return Element
+     */
     public function render()
     {
         return Html::div(
             $this->content
-        )->addClass("col-md-{$this->size}");
+        )->addClass($this->buildClasses());
     }
 
-    public function size($size)
+    /**
+     * Column size
+     *
+     * @param int    $size
+     *
+     * @param string $breakpoint
+     *
+     * @return Column
+     */
+    public function size($size, $breakpoint = self::BREAKPOINT_XS):self
     {
-        $this->size = $size;
+        $this->breakpoints[$breakpoint] = $size;
 
         return $this;
+    }
+
+    protected function buildClasses()
+    {
+        $classes = [];
+
+        foreach($this->breakpoints as $breakpoint => $size)
+        {
+            $classes[] = str_replace([
+                '{breakpoint}',
+                '{size}'
+            ], [$breakpoint, $size], $this->format);
+        }
+
+        return implode(' ', $classes);
     }
 }

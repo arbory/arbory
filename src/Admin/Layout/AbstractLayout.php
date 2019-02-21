@@ -87,7 +87,7 @@ abstract class AbstractLayout
      */
     public function render()
     {
-        // Build any
+        // Build layout
         $this->build();
 
         // Transforms the layout content based on the "used" layouts

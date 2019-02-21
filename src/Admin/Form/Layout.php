@@ -11,6 +11,7 @@ use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Layout\Body;
 use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
 use Arbory\Base\Admin\Layout\Transformers\WrapTransformer;
+use Arbory\Base\Admin\Layout\WrappableInterface;
 use Arbory\Base\Admin\Panels\FormPanel;
 use Arbory\Base\Admin\Panels\Renderer;
 use Arbory\Base\Admin\Tools\Toolbox;
@@ -66,24 +67,27 @@ class Layout extends AbstractLayout implements LayoutInterface
 
     public function contents($content)
     {
-        return new Content(
-            [
-                $content ?: $this->form->fields()->render(),
-            ]
-        );
+        /**
+         * @var $renderer WrappableInterface
+         */
+        $renderer = $this->form->getRenderer();
+
+        $renderer->setContent($content);
+
+        return $renderer;
     }
 
     public function build()
     {
         $this->use(
-            new WrapTransformer(
-                (new FormPanel())->setForm($this->form)
+            new AppendTransformer(
+                new Widgets\Controls(new Tools(), $this->url('index'))
             )
         );
 
         $this->use(
-            new AppendTransformer(
-                new Widgets\Controls(new Tools(), $this->url('index'))
+            new WrapTransformer(
+                (new FormPanel())->setForm($this->form)
             )
         );
     }

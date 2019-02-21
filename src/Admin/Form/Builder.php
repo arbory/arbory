@@ -17,6 +17,11 @@ use Illuminate\Contracts\Support\Renderable;
 class Builder implements Renderable, WrappableInterface
 {
     /**
+     * @var string
+     */
+    protected $id = 'edit-resource';
+
+    /**
      * @var Form
      */
     protected $form;
@@ -53,7 +58,7 @@ class Builder implements Renderable, WrappableInterface
     protected function form()
     {
         $form = Html::form()->addAttributes([
-            'id'                     => 'edit-resource',
+            'id'                     => $this->getId(),
             'class'                  => 'edit-resource',
             'novalidate'             => 'novalidate',
             'enctype'                => 'multipart/form-data',
@@ -80,7 +85,7 @@ class Builder implements Renderable, WrappableInterface
     public function render()
     {
         $content = Html::div()->addClass('body');
-        $content->append($this->getContent());
+        $content->append(new Content($this->getContent()));
 
         return $this->form()
                     ->append($content);
@@ -96,10 +101,32 @@ class Builder implements Renderable, WrappableInterface
 
     /**
      * @param mixed $content
+     *
+     * @return Builder
      */
     public function setContent($content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string|null $id
+     *
+     * @return Builder
+     */
+    public function setId(?string $id): self
+    {
+        $this->id = $id;
 
         return $this;
     }

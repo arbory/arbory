@@ -3,14 +3,7 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-
-use Arbory\Base\Admin\Layout;
-use Arbory\Base\Admin\Widgets\Breadcrumbs;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
-use Closure;
-
-class GridTemplate extends AbstractLayout implements LayoutInterface
+class GridLayout extends AbstractLayout implements LayoutInterface
 {
     /**
      * @var Grid
@@ -46,6 +39,9 @@ class GridTemplate extends AbstractLayout implements LayoutInterface
         $this->column->size($this->getWidth());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function contents($content)
     {
         $this->column->set($content);
@@ -53,10 +49,16 @@ class GridTemplate extends AbstractLayout implements LayoutInterface
         return $this->grid->render();
     }
 
-
-    public function column($size, $content)
+    /**
+     * @param      $size
+     * @param      $content
+     * @param null $breakpoint
+     *
+     * @return $this
+     */
+    public function addColumn($size, $content, $breakpoint = null)
     {
-        $this->grid->column($size, $content);
+        $this->grid->column($size, $content, $breakpoint);
 
         return $this;
     }
@@ -72,9 +74,9 @@ class GridTemplate extends AbstractLayout implements LayoutInterface
     /**
      * @param int $width
      *
-     * @return GridTemplate
+     * @return GridLayout
      */
-    public function setWidth(int $width): GridTemplate
+    public function setWidth(int $width): GridLayout
     {
         $this->width = $width;
 

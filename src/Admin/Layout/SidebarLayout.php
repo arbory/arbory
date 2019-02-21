@@ -26,10 +26,10 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
 
     function build()
     {
-        $grid = new GridTemplate(new Grid());
+        $grid = new GridLayout(new Grid());
 
         $grid->setWidth(Grid::SIZE_MAX - $this->getWidth());
-        $grid->column($this->getWidth(), $this->sidebar->render());
+        $grid->addColumn($this->getWidth(), $this->sidebar->render());
 
         $this->use($grid);
     }

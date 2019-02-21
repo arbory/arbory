@@ -24,6 +24,14 @@ class Grid implements Renderable
      */
     protected $row;
 
+    public function __construct(?callable $callable = null)
+    {
+        if($callable)
+        {
+            $callable($this);
+        }
+    }
+
 
     /**
      * @return Row
@@ -38,18 +46,20 @@ class Grid implements Renderable
     }
 
     /**
-     * @param int $size
-     * @param     $content
+     * @param int         $size
+     * @param mixed       $content
+     *
+     * @param string|null $breakpoint
      *
      * @return Column
      */
-    public function column( $size, $content )
+    public function column($size, $content, $breakpoint = null)
     {
-        if(!$this->row) {
+        if (! $this->row) {
             $this->row = $this->row();
         }
 
-        return $this->row->column($size, $content);
+        return $this->row->column($size, $content, $breakpoint);
     }
 
     /**
@@ -59,8 +69,7 @@ class Grid implements Renderable
     {
         $content = Html::div(null)->addClass('grid');
 
-        foreach( $this->rows as $row)
-        {
+        foreach ($this->rows as $row) {
             $content->append(
                 $row->render()
             );

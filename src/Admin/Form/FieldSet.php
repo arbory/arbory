@@ -12,6 +12,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use IteratorAggregate;
@@ -44,7 +45,7 @@ use Waavi\Translation\Repositories\LanguageRepository;
  * @method \Arbory\Base\Admin\Form\Fields\Textarea textarea(string $fieldName)
  * @method \Arbory\Base\Admin\Form\Fields\Translatable translatable(FieldInterface $field)
  */
-class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable
+class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Renderable
 {
     /**
      * @var string

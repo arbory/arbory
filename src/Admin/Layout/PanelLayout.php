@@ -7,6 +7,8 @@ namespace Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Widgets\Controls;
+use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
 use Arbory\Base\Admin\Layout\Transformers\WrapTransformer;
 use Arbory\Base\Admin\Panels\FieldSetPanel;
@@ -39,30 +41,49 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
         $this->panels = $closure($this);
     }
 
-    public function panel($name, callable $closure)
+    public function panel($name, $contents)
     {
-        $panel = new FieldSetPanel();
-
-        $fields = $closure(new FieldSet($this->form->getModel(), $this->form->fields()->getNamespace()), $panel);
+        $panel = new Panel();
 
         $panel->setTitle($name);
-        $panel->setFields($fields);
-
-        /**
-         * @var FieldInterface[] $fields
-         */
-        foreach($fields as $field)
-        {
-            $this->fields->attach($field, [
-                'panel' => $panel
-            ]);
-
-            $this->form->fields()->add($field);
-        }
+        $panel->setContent($contents);
 
         $this->panels[] = $panel;
 
         return $panel;
+    }
+
+    /**                               
+     * @param callable|null $closure
+     *
+     * @return Grid
+     */
+    public function grid(?callable $closure = null)
+    {
+        return new Grid($closure);
+    }
+
+    /**
+     * Creates a new fieldset and attaches its fields to the form
+     *
+     * @param callable $closure
+     * @param mixed    ...$parameters
+     *
+     * @return FieldSet
+     */
+    public function fields(callable $closure, ...$parameters):FieldSet
+    {
+        $fields = new FieldSet($this->form->getModel(), $this->form->fields()->getNamespace());
+        $fields = $closure($fields, ...$parameters);
+
+        foreach($fields as $field)
+        {
+            $this->fields->attach($field, $parameters);
+
+            $this->form->fields()->add($field);
+        }
+
+        return $fields;
     }
 
     public function contents($content)
@@ -89,11 +110,16 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
 
         if(sizeof($this->panels) > 0) {
             $this->setContent($this->renderPanels());
+
+
+            $this->use(
+                new AppendTransformer(
+                    new Controls(new Tools(), $this->getForm()->getModule()->url('index'))
+                )
+            );
         } else {
             $this->use((new Form\Layout())->setForm($this->form));
         }
-
-//        $this->use(new AppendTransformer($this->renderPanels()));
     }
 
     public function renderPanels()

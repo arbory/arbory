@@ -7,6 +7,7 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Grid\ExportBuilder;
 use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Module;
 use Arbory\Base\Admin\Page;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
@@ -45,19 +46,23 @@ trait Crudify
     }
 
     /**
-     * @param Form $form
+     * @param Form                 $form
+     * @param LayoutInterface|null $layout
+     *
      * @return Form
      */
-    protected function form(Form $form, ?Layout\LayoutInterface $layout = null)
+    protected function form(Form $form, ?LayoutInterface $layout = null)
     {
         return $form;
     }
 
     /**
-     * @param Model $model
+     * @param Model                       $model
+     * @param LayoutInterface|null $layout
+     *
      * @return Form
      */
-    protected function buildForm(Model $model, ?Layout\LayoutInterface $layout = null)
+    protected function buildForm(Model $model, ?LayoutInterface $layout = null)
     {
         $form = new Form($model);
         $form->setModule($this->module());
@@ -158,19 +163,19 @@ trait Crudify
     }
 
     /**
-     * @param             $resourceId
-     * @param Form\Layout $formLayout
+     * @param                      $resourceId
+     * @param Layout\LayoutManager $manager
      *
      * @return Layout
      */
-    public function edit($resourceId, Form\Layout $formLayout)
+    public function edit($resourceId, Layout\LayoutManager $manager)
     {
         $resource = $this->findOrNew($resourceId);
-
         $layout = $this->layout('form');
+        $page = $manager->make(Page::class, 'page');
+
         $layout->setForm($this->buildForm($resource, $layout));
 
-        $page = new Page();
         $page->use($layout);
 
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
@@ -186,7 +191,11 @@ trait Crudify
     public function update(Request $request, $resourceId)
     {
         $resource = $this->findOrNew($resourceId);
-        $form = $this->buildForm($resource, $this->layout('form'));
+        $layout   = $this->layout('form');
+        $form     = $this->buildForm($resource, $layout);
+
+        $layout->setForm($form);
+
 
         $request->request->add(['fields' => $form->fields()]);
 
@@ -389,7 +398,7 @@ trait Crudify
     /**
      * @param $component
      *
-     * @return Layout\LayoutInterface
+     * @return LayoutInterface
      */
     protected function layout($component)
     {

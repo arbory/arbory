@@ -30,14 +30,15 @@ class Row
     }
 
     /**
-     * @param $size
-     * @param $content
+     * @param int $size
+     * @param mixed $body
+     * @param string|null $breakpoint
      *
      * @return Column
      */
-    public function column($size,  $body )
+    public function column($size, $body, $breakpoint = null)
     {
-        $content = new Column($size, $body);
+        $content = new Column($size, $body, $breakpoint);
 
         $this->columns[] = $content;
 

@@ -5,13 +5,15 @@ namespace Arbory\Base\Admin;
 
 
 use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Layout\PageInterface;
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
 use Closure;
 
-class Page extends Layout
+class Page extends Layout implements PageInterface
 {
+    protected $view = 'arbory::controllers.resource.layout';
 
     /**
      * @var Breadcrumbs
@@ -79,7 +81,7 @@ class Page extends Layout
             'bodyClass' => $this->bodyClass,
         ];
 
-        return view('arbory::controllers.resource.layout', $variables)->render();
+        return view($this->view, $variables)->render();
     }
 
     protected function header()
@@ -88,6 +90,26 @@ class Page extends Layout
             $this->getBreadcrumbs(),
             $this->slot('header_right')
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getView(): string
+    {
+        return $this->view;
+    }
+
+    /**
+     * @param string $view
+     *
+     * @return Page
+     */
+    public function setView(string $view): self
+    {
+        $this->view = $view;
+
+        return $this;
     }
 
 }
