@@ -8,37 +8,43 @@ use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Services\FieldSetFieldFinder;
 use Arbory\Base\Services\FieldTypeRegistry;
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use IteratorAggregate;
+use Traversable;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
  * Class FieldSet
  * @package Arbory\Base\Admin\Form
- * @method \Arbory\Base\Admin\Form\Fields\BelongsTo belongsTo( string $relationName )
- * @method \Arbory\Base\Admin\Form\Fields\BelongsToMany belongsToMany( string $relationName )
- * @method \Arbory\Base\Admin\Form\Fields\Checkbox checkbox( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\DateTime dateTime( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\ArboryFile file( string $relationName )
- * @method \Arbory\Base\Admin\Form\Fields\HasMany hasMany( string $relationName, \Closure $fieldSetCallback )
- * @method \Arbory\Base\Admin\Form\Fields\HasOne hasOne( string $relationName, \Closure $fieldSetCallback )
- * @method \Arbory\Base\Admin\Form\Fields\Hidden hidden( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\IconPicker icon( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\ArboryImage image( string $relationName )
- * @method \Arbory\Base\Admin\Form\Fields\Link link( string $relationName )
- * @method \Arbory\Base\Admin\Form\Fields\MapCoordinates map( string $relationName )
- * @method \Arbory\Base\Admin\Form\Fields\CompactRichtext markup( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\MultipleSelect multipleSelect( string $relationName )
- * @method \Arbory\Base\Admin\Form\Fields\ObjectRelation objectRelation( string $relationName, $relatedModelTypeOrCollection, int $limit = 0 )
- * @method \Arbory\Base\Admin\Form\Fields\Password password( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\Richtext richtext( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\Select select( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\Slug slug( string $fieldName, string $fromFieldName, string $apiUrl )
- * @method \Arbory\Base\Admin\Form\Fields\Text text( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\Textarea textarea( string $fieldName )
- * @method \Arbory\Base\Admin\Form\Fields\Translatable translatable( FieldInterface $field )
+ * @method \Arbory\Base\Admin\Form\Fields\BelongsTo belongsTo(string $relationName)
+ * @method \Arbory\Base\Admin\Form\Fields\BelongsToMany belongsToMany(string $relationName)
+ * @method \Arbory\Base\Admin\Form\Fields\Checkbox checkbox(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\DateTime dateTime(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\ArboryFile file(string $relationName)
+ * @method \Arbory\Base\Admin\Form\Fields\HasMany hasMany(string $relationName, \Closure $fieldSetCallback)
+ * @method \Arbory\Base\Admin\Form\Fields\HasOne hasOne(string $relationName, \Closure $fieldSetCallback)
+ * @method \Arbory\Base\Admin\Form\Fields\Hidden hidden(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\IconPicker icon(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\ArboryImage image(string $relationName)
+ * @method \Arbory\Base\Admin\Form\Fields\Link link(string $relationName)
+ * @method \Arbory\Base\Admin\Form\Fields\MapCoordinates map(string $relationName)
+ * @method \Arbory\Base\Admin\Form\Fields\CompactRichtext markup(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\MultipleSelect multipleSelect(string $relationName)
+ * @method \Arbory\Base\Admin\Form\Fields\ObjectRelation objectRelation(string $relationName, $relatedModelTypeOrCollection, int $limit = 0)
+ * @method \Arbory\Base\Admin\Form\Fields\Password password(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\Richtext richtext(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\Select select(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\Slug slug(string $fieldName, string $fromFieldName, string $apiUrl)
+ * @method \Arbory\Base\Admin\Form\Fields\Text text(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\Textarea textarea(string $fieldName)
+ * @method \Arbory\Base\Admin\Form\Fields\Translatable translatable(FieldInterface $field)
  */
-class FieldSet extends Collection
+class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable
 {
     /**
      * @var string
@@ -78,73 +84,74 @@ class FieldSet extends Collection
      * @param string       $namespace
      * @param StyleManager $styleManager
      */
-    public function __construct( Model $model, $namespace, StyleManager $styleManager = null )
+    public function __construct(Model $model, $namespace, StyleManager $styleManager = null)
     {
         $this->items = collect();
 
-        if(is_null($styleManager)) {
+        if (is_null($styleManager)) {
             $styleManager = app(StyleManager::class);
         }
 
-        $this->namespace = $namespace;
-        $this->model = $model;
+        $this->namespace         = $namespace;
+        $this->model             = $model;
         $this->fieldTypeRegister = app(FieldTypeRegistry::class);
-        $this->styleManager = $styleManager;
-        $this->defaultStyle = $styleManager->getDefaultStyle();
+        $this->styleManager      = $styleManager;
+        $this->defaultStyle      = $styleManager->getDefaultStyle();
     }
 
     /**
      * @param string $inputName
+     *
      * @return AbstractField|null
      */
-    public function findFieldByInputName( string $inputName )
+    public function findFieldByInputName(string $inputName)
     {
-        $inputNameParts = explode( '.', $inputName );
-        $fields = $this->findFieldsByInputName( $inputName );
+        $inputNameParts = explode('.', $inputName);
+        $fields         = $this->findFieldsByInputName($inputName);
 
-        return array_get( $fields, end( $inputNameParts ) );
+        return array_get($fields, end($inputNameParts));
     }
 
     /**
      * @param string $inputName
+     *
      * @return array
      */
-    public function findFieldsByInputName( string $inputName )
+    public function findFieldsByInputName(string $inputName)
     {
-        return ( new FieldSetFieldFinder( app( LanguageRepository::class ), $this ) )->find( $inputName );
+        return (new FieldSetFieldFinder(app(LanguageRepository::class), $this))->find($inputName);
     }
 
     /**
      * @param string $fieldName
+     *
      * @return AbstractField|null
      */
-    public function getFieldByName( string $fieldName )
+    public function getFieldByName(string $fieldName)
     {
-        return $this->getFields()->first( function( AbstractField $field ) use ( $fieldName )
-        {
+        return $this->getFields()->first(function (AbstractField $field) use ($fieldName) {
             return $field->getName() === $fieldName;
-        } );
+        });
     }
 
     /**
      * @param string $fieldName
+     *
      * @return Collection
      */
-    public function getFieldsByName( string $fieldName )
+    public function getFieldsByName(string $fieldName)
     {
         $fields = [];
 
-        foreach( $this->getFields()->toArray() as $field )
-        {
+        foreach ($this->getFields()->toArray() as $field) {
             /** @var AbstractField $field */
 
-            if( $field->getName() === $fieldName )
-            {
+            if ($field->getName() === $fieldName) {
                 $fields[] = $field;
             }
         }
 
-        return new Collection( $fields );
+        return new Collection($fields);
     }
 
     /**
@@ -178,9 +185,8 @@ class FieldSet extends Collection
     {
         $rules = [];
 
-        foreach( $this->all() as $field )
-        {
-            $rules = array_merge( $rules, $field->getRules() );
+        foreach ($this->all() as $field) {
+            $rules = array_merge($rules, $field->getRules());
         }
 
         return $rules;
@@ -188,37 +194,41 @@ class FieldSet extends Collection
 
     /**
      * @param FieldInterface $field
-     * @param null $key
+     * @param null           $key
+     *
      * @return FieldSet|Collection
      */
-    public function prepend( $field, $key = null )
+    public function prepend($field, $key = null)
     {
-        $field->setFieldSet( $this );
+        $field->setFieldSet($this);
 
-        return $this->items->prepend( $field, $key );
+        return $this->items->prepend($field, $key);
     }
 
     /**
      * @param FieldInterface $field
+     *
      * @return FieldInterface
      */
-    public function add( FieldInterface $field )
+    public function add(FieldInterface $field)
     {
-        $this->push( $field );
+        $field->setFieldSet($this);
+
+        $this->items->push($field);
 
         return $field;
     }
 
     /**
-     * @param string $key
+     * @param string         $key
      * @param FieldInterface $field
      */
-    public function offsetSet( $key, $field )
+    public function offsetSet($key, $field)
     {
-        $field->setFieldSet( $this );
+        $field->setFieldSet($this);
 
 
-        $this->items->offsetSet( $key, $field );
+        $this->items->offsetSet($key, $field);
     }
 
     /**
@@ -231,7 +241,7 @@ class FieldSet extends Collection
         $content      = new Content();
         $styleManager = $this->getStyleManager();
 
-        foreach ( $this->all() as $field ) {
+        foreach ($this->all() as $field) {
             $style = $field->getStyle() ?: $this->defaultStyle;
 
             $content->push(
@@ -263,28 +273,11 @@ class FieldSet extends Collection
      *
      * @return FieldSet
      */
-    public function setStyleManager( StyleManager $styleManager ): self
+    public function setStyleManager(StyleManager $styleManager): self
     {
         $this->styleManager = $styleManager;
 
         return $this;
-    }
-
-    /**
-     * @param string $method
-     * @param array  $parameters
-     *
-     * @return FieldInterface|mixed
-     */
-    public function __call($method, $parameters)
-    {
-        if($this->fieldTypeRegister->has($method)) {
-            return $this->add(
-                $this->fieldTypeRegister->resolve($method, $parameters)
-            );
-        }
-        
-        return $this->items->__call($method, $parameters);
     }
 
     /**
@@ -300,10 +293,90 @@ class FieldSet extends Collection
      *
      * @return FieldSet
      */
-    public function setDefaultStyle( string $defaultStyle ): self
+    public function setDefaultStyle(string $defaultStyle): self
     {
         $this->defaultStyle = $defaultStyle;
 
         return $this;
+    }
+
+    /**
+     * Returns a iterator
+     *
+     * @return ArrayIterator|Traversable
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->all());
+    }
+
+    /**
+     * Determine if an item exists at an offset.
+     *
+     * @param  mixed  $key
+     * @return bool
+     */
+    public function offsetExists($key)
+    {
+        return array_key_exists($key, $this->all());
+    }
+
+    /**
+     * Get an item at a given offset.
+     *
+     * @param  mixed  $key
+     * @return mixed
+     */
+    public function offsetGet($key)
+    {
+        return $this->all()[$key];
+    }
+
+    /**
+     * Unset the item at a given offset.
+     *
+     * @param  string  $key
+     * @return void
+     */
+    public function offsetUnset($key)
+    {
+        unset($this->all()[$key]);
+    }
+
+    /**
+     * Counts elements
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->items->count();
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->items->toArray();
+    }
+
+    /**
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @return FieldInterface|mixed
+     */
+    public function __call($method, $parameters)
+    {
+        if ($this->fieldTypeRegister->has($method)) {
+            return $this->add(
+                $this->fieldTypeRegister->resolve($method, $parameters)
+            );
+        }
+
+        return $this->items->__call($method, $parameters);
     }
 }
