@@ -25,6 +25,8 @@ class CheckBoxFieldRenderer extends ControlFieldRenderer
 
         $element = $control->element();
 
+        $element->setValue($this->field->getCheckedValue());
+
         $control->setChecked(
             $this->field->getValue() == true
         );

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateRelationsTable extends Migration
 {
@@ -20,5 +21,10 @@ class CreateRelationsTable extends Migration
             $table->string( 'related_type' );
             $table->string( 'related_id' );
         } );
+    }
+
+    public function down()
+    {
+        Schema::drop('relations');
     }
 }

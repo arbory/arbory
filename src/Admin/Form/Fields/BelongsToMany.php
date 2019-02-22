@@ -74,7 +74,7 @@ class BelongsToMany extends AbstractField
 
         foreach( $submittedIds as $id )
         {
-            if( !in_array( $id, $existingIds, true ) )
+            if( !in_array( $id, $existingIds ) )
             {
                 $relation->attach( $id );
             }

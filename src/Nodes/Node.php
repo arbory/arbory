@@ -149,7 +149,9 @@ class Node extends \Baum\Node
         return $route ? route($routeName, $parameters, $absolute) : null;
     }
 
-
+    /**
+     * @return bool
+     */
     public function isActive()
     {
         return $this->active;

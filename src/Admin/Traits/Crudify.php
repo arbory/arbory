@@ -2,7 +2,6 @@
 
 namespace Arbory\Base\Admin\Traits;
 
-use Arbory\Base\Admin\Exports\Type\ExcelExport;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Grid\ExportBuilder;
@@ -15,9 +14,22 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Arbory\Base\Admin\Exports\DataSetExport;
+use Arbory\Base\Admin\Exports\ExportInterface;
+use Arbory\Base\Admin\Exports\Type\ExcelExport;
+use Arbory\Base\Admin\Exports\Type\JsonExport;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Crudify
 {
+    /**
+     * @var array
+     */
+    protected static $exportTypes = [
+        'xls' => ExcelExport::class,
+        'json' => JsonExport::class,
+    ];
+
     /**
      * @var Module
      */
@@ -225,10 +237,10 @@ trait Crudify
 
     /**
      * @param Request $request
-     * @param $name
+     * @param string $name
      * @return mixed
      */
-    public function dialog(Request $request, $name)
+    public function dialog(Request $request, string $name)
     {
         $method = camel_case($name) . 'Dialog';
 
@@ -244,33 +256,43 @@ trait Crudify
 
     /**
      * @param string $type
-     * @return mixed
+     * @return BinaryFileResponse
+     * @throws \Exception
      */
-    public function export($type)
+    public function export(string $type): BinaryFileResponse
     {
         $grid = $this->buildGrid($this->resource());
         $grid->setRenderer(new ExportBuilder($grid));
         $grid->paginate(false);
 
+        /** @var DataSetExport $dataSet */
         $dataSet = $grid->render();
 
-        switch ($type) {
-            case 'xls':
-                return \Excel::download(new ExcelExport($dataSet), $this->module()->name() . '.xlsx');
-                break;
+        $exporter = $this->getExporter($type, $dataSet);
 
-            case 'json':
-            default:
-                return response()->json($dataSet->getItems());
-                break;
+        return $exporter->download($this->module()->name());
+    }
+
+    /**
+     * @param string $type
+     * @param DataSetExport $dataSet
+     * @return ExportInterface
+     * @throws \Exception
+     */
+    protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
+    {
+        if (! isset(self::$exportTypes[$type])) {
+            throw new \Exception('Export Type not found - ' . $type);
         }
+
+        return new self::$exportTypes[$type]($dataSet);
     }
 
     /**
      * @param Request $request
      * @return string
      */
-    protected function toolboxDialog(Request $request)
+    protected function toolboxDialog(Request $request): string
     {
         $node = $this->findOrNew($request->get('id'));
 
@@ -312,10 +334,10 @@ trait Crudify
 
     /**
      * @param Request $request
-     * @param $name
+     * @param string $name
      * @return null
      */
-    public function api(Request $request, $name)
+    public function api(Request $request, string $name)
     {
         $method = camel_case($name) . 'Api';
 
@@ -329,11 +351,11 @@ trait Crudify
     }
 
     /**
-     * @param $route
+     * @param string $route
      * @param array $parameters
      * @return string
      */
-    public function url($route, $parameters = [])
+    public function url(string $route, $parameters = [])
     {
         return $this->module()->url($route, $parameters);
     }

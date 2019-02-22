@@ -23,6 +23,20 @@ class ExportBuilder implements Renderable
     }
 
     /**
+     * @return array
+     */
+    private function getColumns()
+    {
+        $columns = [];
+
+        foreach ($this->grid->getColumns() as $column) {
+            $columns[] = $column->getLabel();
+        }
+
+        return $columns;
+    }
+
+    /**
      * @return DataSetExport
      */
     public function render()
@@ -31,6 +45,8 @@ class ExportBuilder implements Renderable
             return $row->toArray();
         });
 
-        return new DataSetExport($items);
+        $columns = $this->getColumns();
+
+        return new DataSetExport($items, $columns);
     }
 }
