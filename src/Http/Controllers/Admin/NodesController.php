@@ -7,6 +7,7 @@ use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Layout\LayoutManager;
 use Arbory\Base\Admin\Page;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Admin\Form\Fields\Deactivator;
@@ -122,11 +123,12 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param Request       $request
+     * @param LayoutManager $manager
      *
      * @return RedirectResponse|Layout
      */
-    public function create(Request $request)
+    public function create(Request $request, LayoutManager $manager)
     {
         $contentType = $request->get('content_type');
 
@@ -145,7 +147,7 @@ class NodesController extends Controller
         $layout = $this->layout('form');
         $layout->setForm($this->buildForm($node, $layout));
 
-        $page = $this->layouts()->page(Page::class);
+        $page = $manager->page(Page::class);
         $page->use($layout);
 
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
