@@ -126,7 +126,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
             $field->setValue( $defaultResource->{$field->getName()} );
         }
 
-        $fieldSet->push( $field );
+        $fieldSet->getFields()->push( $field );
 
         return $fieldSet;
     }
