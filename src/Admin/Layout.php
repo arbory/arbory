@@ -4,11 +4,8 @@ namespace Arbory\Base\Admin;
 
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\LayoutInterface;
-use Arbory\Base\Admin\Layout\Body;
 use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
-use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
 use Closure;
 use Arbory\Base\Admin\Layout\Row;
 use Illuminate\Contracts\Support\Renderable;
@@ -61,18 +58,6 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
     }
 
     /**
-     * @param $breadcrumbs
-     *
-     * @return $this
-     */
-    public function breadcrumbs($breadcrumbs)
-    {
-        $this->breadcrumbs = $breadcrumbs;
-
-        return $this;
-    }
-
-    /**
      * @param $content
      *
      * @return $this
@@ -115,21 +100,11 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
 
     public function build()
     {
-//        $this->use(function (Wrappable $wrappable, $next) {
-//            $wrappable->prepend(
-//                Html::header([
-//                                 $this->getBreadcrumbs(),
-//                             ]));
-
-//            return $next($wrappable);
-//        });
-
         $this->use(new AppendTransformer(new Content($this->rows->all())));
     }
 
     /**
      * @param                      $content
-     * @param LayoutInterface|null $root
      *
      * @return string
      * @throws \Throwable
@@ -142,13 +117,5 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
         ];
 
         return view('arbory::controllers.resource.layout', $variables)->render();
-    }
-
-    /**
-     * @return Breadcrumbs
-     */
-    public function getBreadcrumbs(): ?Breadcrumbs
-    {
-        return $this->breadcrumbs;
     }
 }

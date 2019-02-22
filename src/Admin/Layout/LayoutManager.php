@@ -17,9 +17,9 @@ class LayoutManager
     /**
      * Current layout
      *
-     * @var LayoutInterface
+     * @var PageInterface
      */
-    protected $layout;
+    protected $page;
 
     /**
      * @var Collection
@@ -34,31 +34,38 @@ class LayoutManager
     public function __construct(Container $container)
     {
         $this->container = $container;
-
         $this->layouts = new Collection();
     }
 
     /**
-     * Assign new page layout
+     * Creates a new main page
      *
-     * @param LayoutInterface $layout
+     * @param $pageClass
      *
-     * @return LayoutInterface
+     * @return LayoutInterface|PageInterface
      */
-    public function assign(LayoutInterface $layout)
+    public function page($pageClass)
     {
-        $this->layout = $layout;
+        $this->page = $this->make($pageClass, 'page');
 
-        return $layout;
+        return $this->page;
     }
 
     /**
-     * @param string $name
-     * @param        $layoutClass
+     * @return PageInterface|null
+     */
+    public function getPage(): ?PageInterface
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param string|null $name
+     * @param string $layoutClass
      *
      * @return LayoutInterface
      */
-    public function make($layoutClass, $name = 'page'):LayoutInterface
+    public function make($layoutClass, $name = null):LayoutInterface
     {
         $layout = $this->container->make($layoutClass);
 

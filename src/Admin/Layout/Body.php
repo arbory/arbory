@@ -9,9 +9,14 @@ use Arbory\Base\Html\Elements\Content;
 class Body
 {
     /**
+     * @var PageInterface
+     */
+    protected $page;
+
+    /**
      * @var LayoutInterface
      */
-    protected $root;
+    protected $target;
 
     /**
      * @var \Closure
@@ -31,11 +36,13 @@ class Body
     /**
      * Body constructor.
      *
-     * @param LayoutInterface $root
+     * @param                 $page
+     * @param LayoutInterface $target
      */
-    public function __construct($root = null)
+    public function __construct($page, $target = null)
     {
-        $this->root = $root;
+        $this->target = $target;
+        $this->page = $page;
 
         $this->prepended = new Content();
         $this->appended  = new Content();
@@ -51,7 +58,7 @@ class Body
      *
      * @return Body
      */
-    public function wrap(callable $wrapper):self
+    public function wrap(callable $wrapper): self
     {
         $call = $this->wrapper;
 
@@ -67,7 +74,7 @@ class Body
      *
      * @return Body
      */
-    public function append($content):self
+    public function append($content): self
     {
         $this->appended->push($content);
 
@@ -79,7 +86,7 @@ class Body
      *
      * @return Body
      */
-    public function prepend($content):self
+    public function prepend($content): self
     {
         $this->prepended->push($content);
 
@@ -101,21 +108,43 @@ class Body
     }
 
     /**
+     * The target layout for this template
+     *
      * @return LayoutInterface
      */
-    public function getRoot(): LayoutInterface
+    public function getTarget(): LayoutInterface
     {
-        return $this->root;
+        return $this->target;
     }
 
     /**
-     * @param LayoutInterface $root
+     * @param LayoutInterface $target
      *
      * @return Body
      */
-    public function setRoot(LayoutInterface $root): self
+    public function setTarget(LayoutInterface $target): self
     {
-        $this->root = $root;
+        $this->target = $target;
+
+        return $this;
+    }
+
+    /**
+     * @return PageInterface|null   
+     */
+    public function getPage(): ?PageInterface
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param PageInterface $page
+     *
+     * @return Body
+     */
+    public function setPage(PageInterface $page): Body
+    {
+        $this->page = $page;
 
         return $this;
     }

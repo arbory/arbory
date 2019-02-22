@@ -9,6 +9,7 @@ use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Layout\Body;
+use Arbory\Base\Admin\Layout\PageInterface;
 use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
 use Arbory\Base\Admin\Layout\Transformers\WrapTransformer;
 use Arbory\Base\Admin\Layout\WrappableInterface;
@@ -30,8 +31,15 @@ class Layout extends AbstractLayout implements LayoutInterface
      */
     protected $form;
 
-    public function breadcrumbs(Breadcrumbs $breadcrumbs): Breadcrumbs
+    /**
+     * @var Form\Widgets\Controls
+     */
+    protected $controls;
+
+    public function breadcrumbs(): ?Breadcrumbs
     {
+        $breadcrumbs = $this->form->getModule()->breadcrumbs();
+
         $breadcrumbs->addItem(
             $this->form->getTitle(),
             $this->form->getModel()->getKey()
@@ -61,6 +69,7 @@ class Layout extends AbstractLayout implements LayoutInterface
     public function setForm(Form $form)
     {
         $this->form = $form;
+        $this->controls = new Widgets\Controls(new Tools(), $this->url('index'));
 
         return $this;
     }
@@ -77,11 +86,16 @@ class Layout extends AbstractLayout implements LayoutInterface
         return $renderer;
     }
 
+    public function applyToPage(PageInterface $page)
+    {
+        $page->setBreadcrumbs($this->breadcrumbs());
+    }
+
     public function build()
     {
         $this->use(
             new AppendTransformer(
-                new Widgets\Controls(new Tools(), $this->url('index'))
+                $this->controls
             )
         );
 
@@ -90,5 +104,25 @@ class Layout extends AbstractLayout implements LayoutInterface
                 (new FormPanel())->setForm($this->form)
             )
         );
+    }
+
+    /**
+     * @return Widgets\Controls
+     */
+    public function getControls(): Widgets\Controls
+    {
+        return $this->controls;
+    }
+
+    /**
+     * @param Widgets\Controls $controls
+     *
+     * @return Layout
+     */
+    public function setControls(Widgets\Controls $controls): self
+    {
+        $this->controls = $controls;
+
+        return $this;
     }
 }

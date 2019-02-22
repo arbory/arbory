@@ -12,6 +12,9 @@ use Illuminate\Contracts\Support\Renderable;
 
 class Controls implements Renderable
 {
+    /**
+     * @var Tools 
+     */
     protected $tools;
     /**
      * @var null
@@ -72,4 +75,24 @@ class Controls implements Renderable
     {
         return Html::footer($this->tools)->addClass('main');
     }
+
+    /**
+     * @return Tools
+     */
+    public function getTools(): Tools
+    {
+        return $this->tools;
+    }
+
+    /**
+     * @param Tools $tools
+     *
+     * @return Controls
+     */
+    public function setTools(Tools $tools): Controls
+    {
+        $this->tools = $tools;
+
+        return $this;
+}
 }

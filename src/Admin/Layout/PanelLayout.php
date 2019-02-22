@@ -5,14 +5,11 @@ namespace Arbory\Base\Admin\Layout;
 
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Widgets\Controls;
 use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
 use Arbory\Base\Admin\Layout\Transformers\WrapTransformer;
-use Arbory\Base\Admin\Panels\FieldSetPanel;
-use Arbory\Base\Admin\Panels\Renderer;
 use Arbory\Base\Admin\Panels\Panel;
 use Arbory\Base\Html\Elements\Content;
 use Closure;
@@ -36,11 +33,22 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
         $this->fields = new \SplObjectStorage();
     }
 
+    /**
+     * @param Closure $closure
+     */
     public function setPanels(Closure $closure)
     {
         $this->panels = $closure($this);
     }
 
+    /**
+     * Add a new panel
+     *
+     * @param $name
+     * @param $contents
+     *
+     * @return Panel
+     */
     public function panel($name, $contents)
     {
         $panel = new Panel();
@@ -53,7 +61,9 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
         return $panel;
     }
 
-    /**                               
+    /**
+     * Creates a new grid instance
+     *
      * @param callable|null $closure
      *
      * @return Grid
@@ -93,20 +103,9 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
         ]);
     }
 
-    protected function sidebar()
-    {
-        $panel = new Panel();
-
-        $panel->setTitle('Sidebar panel');
-        $panel->setContent('Content here');
-
-        return $panel->render();
-    }
-
     function build()
     {
         $this->use(new WrapTransformer(new Form\Builder($this->form)));
-        $this->use(new SidebarLayout($this->sidebar()));
 
         if(sizeof($this->panels) > 0) {
             $this->setContent($this->renderPanels());

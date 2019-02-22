@@ -110,19 +110,20 @@ trait Crudify
     }
 
     /**
+     * @param Layout\LayoutManager $manager
+     *
      * @return Layout
      */
-    public function index()
+    public function index(Layout\LayoutManager $manager)
     {
         $layout = $this->layout('grid');
 
         $layout->setGrid($this->buildGrid($this->resource()));
 
-        $page = new Page();
+        $page = $manager->page(Page::class);
 
         $page->setBreadcrumbs($this->module()->breadcrumbs());
         $page->use($layout);
-
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index');
 
         return $page;
@@ -138,16 +139,18 @@ trait Crudify
     }
 
     /**
+     * @param Layout\LayoutManager $manager
+     *
      * @return Layout
      */
-    public function create()
+    public function create(Layout\LayoutManager $manager)
     {
         $layout = $this->layout('form');
         $layout->setForm($this->buildForm($this->resource(), $layout));
 
-        $page = new Page();
-        $page->use($layout);
+        $page = $manager->page(Page::class);
 
+        $page->use($layout);
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
 
         return $page;
@@ -184,12 +187,11 @@ trait Crudify
     {
         $resource = $this->findOrNew($resourceId);
         $layout = $this->layout('form');
-        $page = $manager->make(Page::class, 'page');
 
         $layout->setForm($this->buildForm($resource, $layout));
-
+        
+        $page = $manager->page(Page::class);
         $page->use($layout);
-
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
         
         return $page;
@@ -418,27 +420,36 @@ trait Crudify
     }
 
     /**
-     * @param $component
+     * Creates a layout instance
+     *
+     * @param string $component
+     * @param mixed $with
      *
      * @return LayoutInterface
      */
-    protected function layout($component)
+    protected function layout($component, $with = null)
     {
-        $layouts =  [
-            'grid' => Grid\Layout::class,
-            'form' => Form\Layout::class
-        ];
-
-        if(property_exists($this, 'layouts')) {
-            $layouts = $this->layouts;
-        }
+        $layouts = $this->layouts() ?: [];
 
         $class = $layouts[$component] ?? null;
 
-        if(!class_exists($class)) {
+        if(!$class && !class_exists($class)) {
             throw new \RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
         }
 
-        return app()->make($class);
+        return $with ? app()->makeWith($class, $with) : app()->make($class);
+    }
+
+    /**
+     * Defined layouts
+     *
+     * @return array
+     */
+    public function layouts()
+    {
+        return [
+            'grid' => Grid\Layout::class,
+            'form' => Form\Layout::class
+        ];
     }
 }

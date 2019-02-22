@@ -81,6 +81,15 @@ abstract class AbstractLayout
     abstract function build();
 
     /**
+     * Executes when the layout is applied
+     *
+     * @param PageInterface $page
+     */
+    public function applyToPage(PageInterface $page)
+    {
+    }
+
+    /**
      * Renders the layout in its transformed state
      *
      * @return Content
@@ -92,11 +101,11 @@ abstract class AbstractLayout
 
         // Transforms the layout content based on the "used" layouts
         $content = $this->transform(
-            new Body($this)
+            new Body($this->manager()->getPage(), $this)
         )->render($this->getContent());
 
         return new Content([
-            $this->contents($content, $this),
+            $this->contents($content),
         ]);
     }
 
@@ -105,11 +114,13 @@ abstract class AbstractLayout
         $this->trigger('apply', $body);
 
         $body->wrap(
-            function ($content) {
+            function ($content) use ($body) {
+                $this->applyToPage($body->getPage());
                 $this->setContent($content);
 
                 return $this->render();
-            }
+            },
+            $this->manager()->getPage()
         );
 
         return $next($body);
@@ -138,7 +149,7 @@ abstract class AbstractLayout
      */
     public function transform($content)
     {
-        if (count($this->layouts)) {
+        if (count($this->getPipes())) {
             return $this->pipeline()
                         ->send($content)
                         ->then(
@@ -164,7 +175,7 @@ abstract class AbstractLayout
 
         return $this->pipeline
             ->via('apply')
-            ->through($this->layouts);
+            ->through($this->getPipes());
     }
 
     /**
@@ -191,4 +202,19 @@ abstract class AbstractLayout
         return $this->content;
     }
 
+    /**
+     * @return LayoutManager
+     */
+    public function manager():LayoutManager
+    {
+        return app(LayoutManager::class);
+    }
+
+    /**
+     * @return LayoutInterface[]
+     */
+    protected function getPipes()
+    {
+        return $this->layouts;
+    }
 }

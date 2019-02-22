@@ -6,10 +6,10 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Page;
 use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Admin\Traits\HasActivationDates;
 use Arbory\Base\Admin\Form\Fields\Deactivator;
-use Arbory\Base\Admin\Form\Fields\Boolean;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\Node;
@@ -25,11 +25,6 @@ use Illuminate\Routing\Controller;
 class NodesController extends Controller
 {
     use Crudify;
-
-    protected $layouts = [
-        'grid' => Grid\Layout::class,
-        'form' => Layout\PanelLayout::class,
-    ];
 
     protected $resource = Node::class;
 
@@ -56,48 +51,13 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Form               $form
-     * @param Layout\PanelLayout $panels
+     * @param Form            $form
+     * @param LayoutInterface $panels
      *
      * @return Form
      */
-    protected function form(Form $form, ?Layout\PanelLayout $panels)
+    protected function form(Form $form, ?LayoutInterface $panels)
     {
-        $panels->panel('General information', $panels->fields(function (FieldSet $fields) {
-            $fields->hidden('parent_id');
-            $fields->hidden('content_type');
-            $fields->text('name')->rules('required');
-            $fields->slug('slug', 'name', $this->getSlugGeneratorUrl())->rules('required');
-            $fields->text('meta_title');
-            $fields->text('meta_author');
-            $fields->text('meta_keywords');
-            $fields->text('meta_description');
-            $fields->dateTime('activate_at');
-            $fields->dateTime('expire_at')->rules('nullable|after_or_equal:resource.activate_at');
-
-            if ($fields->getModel()->active) {
-                $fields->add(new Deactivator('deactivate'));
-            }
-
-
-            return $fields;
-        }));
-
-        $panels->panel('Content', $panels->fields(function (FieldSet $fields) {
-            $fields->hasOne('content', function (FieldSet $fieldSet) {
-
-                $content = $fieldSet->getModel();
-
-                $class      = (new \ReflectionClass($content))->getName();
-                $definition = $this->contentTypeRegister->findByModelClass($class);
-
-                $definition->getFieldSetHandler()->call($content, $fieldSet);
-            });
-
-            return $fields;
-        }));
-
-
         $form->setFields(function (FieldSet $fields) {
             $fields->hidden('parent_id');
             $fields->hidden('content_type');
@@ -185,7 +145,7 @@ class NodesController extends Controller
         $layout = $this->layout('form');
         $layout->setForm($this->buildForm($node, $layout));
 
-        $page = new Layout();
+        $page = $this->layouts()->page(Page::class);
         $page->use($layout);
 
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');

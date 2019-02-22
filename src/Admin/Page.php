@@ -3,8 +3,6 @@
 
 namespace Arbory\Base\Admin;
 
-
-use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Layout\PageInterface;
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Html\Elements\Content;
@@ -49,11 +47,11 @@ class Page extends Layout implements PageInterface
     }
 
     /**
-     * @param Breadcrumbs $breadcrumbs
+     * @param Breadcrumbs|null $breadcrumbs
      *
      * @return Page
      */
-    public function setBreadcrumbs(Breadcrumbs $breadcrumbs): Page
+    public function setBreadcrumbs(?Breadcrumbs $breadcrumbs): PageInterface
     {
         $this->breadcrumbs = $breadcrumbs;
 
@@ -61,8 +59,7 @@ class Page extends Layout implements PageInterface
     }
 
     /**
-     * @param mixed                $content
-     * @param LayoutInterface|null $root
+     * @param mixed $content
      *
      * @return string
      * @throws \Throwable
@@ -72,7 +69,7 @@ class Page extends Layout implements PageInterface
         $content = new Content(
             [
                 $this->header(),
-                $content
+                $content,
             ]
         );
 
@@ -88,7 +85,7 @@ class Page extends Layout implements PageInterface
     {
         return Html::header([
             $this->getBreadcrumbs(),
-            $this->slot('header_right')
+            $this->slot('header_right'),
         ]);
     }
 
@@ -111,5 +108,4 @@ class Page extends Layout implements PageInterface
 
         return $this;
     }
-
 }
