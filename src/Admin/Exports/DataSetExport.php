@@ -4,7 +4,7 @@ namespace Arbory\Base\Admin\Exports;
 
 use Illuminate\Support\Collection;
 
-class DataSetExport extends Collection
+class DataSetExport
 {
     /**
      * @var Collection
@@ -12,12 +12,19 @@ class DataSetExport extends Collection
     protected $items;
 
     /**
+     * @var array
+     */
+    protected $columns;
+
+    /**
      * DataSetExport constructor.
      * @param Collection $items
+     * @param array      $columns
      */
-    public function __construct(Collection $items)
+    public function __construct(Collection $items, array $columns)
     {
         $this->items = $items;
+        $this->columns = $columns;
     }
 
     /**
@@ -35,6 +42,25 @@ class DataSetExport extends Collection
     public function setItems(Collection $items): DataSetExport
     {
         $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumns(): array
+    {
+        return $this->columns;
+    }
+
+    /**
+     * @param array $columns
+     * @return DataSetExport
+     */
+    public function setColumns(array $columns): DataSetExport
+    {
+        $this->columns = $columns;
 
         return $this;
     }
