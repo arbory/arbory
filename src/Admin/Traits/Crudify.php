@@ -162,7 +162,8 @@ trait Crudify
      */
     public function store(Request $request)
     {
-        $form = $this->buildForm($this->resource());
+        $layout = $this->layout('form');
+        $form = $this->buildForm($this->resource(), $layout);
 
         $request->request->add(['fields' => $form->fields()]);
 
@@ -231,8 +232,9 @@ trait Crudify
     public function destroy($resourceId)
     {
         $resource = $this->resource()->findOrFail($resourceId);
+        $layout   = $this->layout('form');
 
-        $this->buildForm($resource)->destroy();
+        $this->buildForm($resource, $layout)->destroy();
 
         return redirect($this->module()->url('index'));
     }
