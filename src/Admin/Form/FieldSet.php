@@ -301,4 +301,21 @@ class FieldSet extends Collection
 
         return $this;
     }
+
+    /**
+     * Splice a portion of the underlying collection array.
+     *
+     * @param  int  $offset
+     * @param  int|null  $length
+     * @param  mixed  $replacement
+     * @return static
+     */
+    public function splice($offset, $length = null, $replacement = [])
+    {
+        if (func_num_args() === 1) {
+            return (array_splice($this->items, $offset));
+        }
+
+        return (array_splice($this->items, $offset, $length, $replacement));
+    }
 }

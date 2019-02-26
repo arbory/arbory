@@ -44,7 +44,7 @@ class Grid
     /**
      * @var array
      */
-    protected $enabledDefaultTools = [ 'create', 'search', 'bulk' ];
+    protected $enabledDefaultTools = [ 'create', 'search' ];
 
     /**
      * @var array
@@ -211,13 +211,13 @@ class Grid
      * @param null $label
      * @return Column
      */
-    public function column( $name = null, $label = null, $position = null )
+    public function column( $name = null, $label = null, $prepend = false )
     {
         $column = new Column( $name, $label );
         $column->setGrid( $this );
 
-        if(!is_null($position)) {
-            $this->columns->put($position, $column );
+        if($prepend) {
+            $this->columns->prepend($column);
         } else {
             $this->columns->push( $column );
         }

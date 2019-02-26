@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Grid;
 
 use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Admin\Widgets\Pagination;
 use Arbory\Base\Admin\Layout\Footer;
 use Arbory\Base\Admin\Layout\Footer\Tools;
@@ -71,31 +72,42 @@ class Builder implements Renderable
         return ( new SearchField( $this->url( 'index' ) ) )->render();
     }
 
-    protected function bulkEditing(){
+    /**
+     * @return Element|null
+     */
+    protected function bulk()
+    {
         if( !$this->grid->hasTool( 'bulk' ) )
         {
             return null;
         }
 
-        $this->addBulkEditingColumnToTheGrid();
+        $this->addBulkColumn();
 
-        $buttons = new ActionButtonGroup();
+        $href = $this->url('dialog', [
+            'dialog' => 'confirm_mass_edit'
+        ]);
+        $button = new Link($href);
+        $button->withIcon('edit');
+        $button->asButton(' mass-action ajaxbox')->title(trans('arbory::resources.mass_edit'));
 
-        $buttons->addButton($this->url('edit',['as' => 'mass']), 'Edit','mass-action edit');
-        $buttons->addButton($this->url('destroy', ['as' => 'mass']),'Delete', 'mass-action delete');
-
-
-        return $buttons->render();
+        return Html::div($button->render())->addClass('mass-actions');
     }
 
-    protected function addBulkEditingColumnToTheGrid(){
-        $this->grid->column('id', trans('arbory::resources.nr'), 0)
+    /**
+     * @return Column
+     */
+    protected function addBulkColumn()
+    {
+        return $this->grid->column('id', trans( 'arbory::resources.number' ), true)
+            ->checkable(true)
             ->display(function($value){
-
-                $checkbox = new CheckBox();
+                $cellContent = Html::span();
+                $checkbox = new CheckBox($value);
                 $checkbox->setValue($value);
-                $checkbox->addClass('mass-column');
-                return $checkbox;
+                $checkbox->addClass('mass-row');
+                $checkbox->setName('ids[]');
+                return $cellContent->append($checkbox);
             });
     }
 
@@ -120,6 +132,12 @@ class Builder implements Renderable
      */
     protected function getColumnHeader( Column $column )
     {
+        if( $column->isCheckable() && $this->grid->hasTool( 'bulk' ))
+        {
+            $input = Html::label( [Html::checkbox()->setName('mass-column'),$column->getLabel()]);
+
+            return Html::th( $input )->addClass('mass-check-column');
+        }
         if( $column->isSortable() )
         {
             $link = Html::link( $column->getLabel() )
@@ -314,10 +332,10 @@ class Builder implements Renderable
         return new Content( [
             Html::header( [
                 $this->breadcrumbs(),
-                $this->searchField(),
-                $this->bulkEditing()
+                $this->searchField()
             ] ),
             Html::section( [
+                $this->bulk(),
                 $this->table(),
                 $this->footer(),
             ] )

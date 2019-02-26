@@ -57,6 +57,16 @@ class Column
     protected $searchable = true;
 
     /**
+     * @var bool
+     */
+    protected $checkable = false;
+
+    /**
+     * @var bool
+     */
+    protected $massEditable = false;
+
+    /**
      * Column constructor.
      * @param string $name
      * @param string $label
@@ -125,6 +135,28 @@ class Column
     }
 
     /**
+     * @param bool $isCheckable
+     * @return $this
+     */
+    public function checkable( $isCheckable = true )
+    {
+        $this->checkable = $isCheckable;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $isCheckable
+     * @return $this
+     */
+    public function massEditable( $massEditable = false )
+    {
+        $this->massEditable = $massEditable;
+
+        return $this;
+    }
+
+    /**
      * @param bool $isSearchable
      * @return Column
      */
@@ -141,6 +173,22 @@ class Column
     public function isSortable()
     {
         return $this->sortable && empty( $this->relationName );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMassEditable()
+    {
+        return $this->massEditable;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCheckable()
+    {
+        return $this->checkable;
     }
 
     /**

@@ -8,7 +8,10 @@ return [
     'save_and_return' => 'Save and Return',
     'save' => 'Save',
     'back_to_list' => 'Back',
-    'nr' => 'No',
+    'number' => 'No',
+    'mass_form_title' => 'Update :count items',
+    'mass_edit' => 'Mass edit',
+    'cancel'    => 'Cancel',
     'status' => [
         'enabled' => 'Enabled',
         'disabled' => 'Disabled'
