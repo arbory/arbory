@@ -29,7 +29,7 @@ jQuery(document).ready(($) => {
 
     $(document).bind('massforminit', function( e )
     {
-        var target = $(e.target);
+        let target = $(e.target);
         target = target.find('.edit-resources');
 
         target.find('input.bulk-control').on('change', function(e){

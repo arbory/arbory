@@ -35,25 +35,25 @@ module.exports = function (mix) {
         'css/controllers/'
     );
 
-    // mix.copyDirectory(
-    //     'vendor/ckeditor/ckeditor/',
-    //     'public/arbory/ckeditor/'
-    // );
-    //
-    // mix.copyDirectory(
-    //     'vendor/arbory/arbory/resources/assets/js/lib/ckeditor/plugins/',
-    //     'public/arbory/ckeditor/plugins/'
-    // );
-    //
-    // mix.copyDirectory(
-    //     'vendor/arbory/arbory/resources/assets/images/',
-    //     'public/arbory/images/'
-    // );
-    //
-    // mix.copyDirectory(
-    //     'vendor/unisharp/laravel-filemanager/public/',
-    //     'public/arbory/laravel-filemanager/'
-    // );
+    mix.copyDirectory(
+        'vendor/ckeditor/ckeditor/',
+        'public/arbory/ckeditor/'
+    );
+
+    mix.copyDirectory(
+        'vendor/arbory/arbory/resources/assets/js/lib/ckeditor/plugins/',
+        'public/arbory/ckeditor/plugins/'
+    );
+
+    mix.copyDirectory(
+        'vendor/arbory/arbory/resources/assets/images/',
+        'public/arbory/images/'
+    );
+
+    mix.copyDirectory(
+        'vendor/unisharp/laravel-filemanager/public/',
+        'public/arbory/laravel-filemanager/'
+    );
 
     mix.version();
 };

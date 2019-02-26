@@ -25,6 +25,8 @@ trait Bulk
 
     /**
      * @param Model $model
+     * @param bool $ids
+     * @param bool $withChecks
      * @return Form
      */
     protected function buildMassForm(Model $model, $ids = false, $withChecks = true)
@@ -50,6 +52,10 @@ trait Bulk
         return $form;
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function confirmMassEditDialog(Request $request)
     {
         if(!$request->has('ids')){
@@ -65,7 +71,6 @@ trait Bulk
 
     /**
      * @param Request $request
-     * @param $resourceId
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function massUpdate(Request $request)
