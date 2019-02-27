@@ -7,13 +7,16 @@ namespace Arbory\Base\Admin\Layout\Grid;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Illuminate\Contracts\Support\Renderable;
 
-class Column
+class Column implements Renderable
 {
     const BREAKPOINT_XS = 'xs';
     const BREAKPOINT_SM = 'sm';
     const BREAKPOINT_MD = 'md';
     const BREAKPOINT_LG = 'lg';
+
+    const BREAKPOINT_DEFAULT = self::BREAKPOINT_XS;
 
     /**
      * @var Content
@@ -37,11 +40,11 @@ class Column
      * @param mixed $content
      * @param string $breakpoint
      */
-    public function __construct($size, $content, $breakpoint = self::BREAKPOINT_XS)
+    public function __construct($size, $content, $breakpoint = self::BREAKPOINT_DEFAULT)
     {
         $breakpoint = $breakpoint ?? static::BREAKPOINT_XS;
 
-        $this->content = new Content($content);
+        $this->content = $content;
 
         $this->breakpoints = [
             $breakpoint => $size
@@ -94,9 +97,7 @@ class Column
      */
     public function render()
     {
-        return Html::div(
-            $this->content
-        )->addClass($this->buildClasses());
+        return Html::div()->append($this->content)->addClass($this->buildClasses());
     }
 
     /**
