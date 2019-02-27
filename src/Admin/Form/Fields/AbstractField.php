@@ -6,6 +6,7 @@ use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
 use Arbory\Base\Admin\Form\Fields\Concerns\IsTranslatable;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -28,6 +29,11 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      * @var mixed
      */
     protected $value;
+
+    /**
+     * @var mixed
+     */
+    protected $defaultValue;
 
     /**
      * @var string
@@ -126,7 +132,16 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
             $this->value = $this->getModel()->getAttribute( $this->getName() );
         }
 
+        if (($this->value === null || $this->isEmptyCollection($this->value)) && $this->getDefaultValue()) {
+            $this->value = $this->getDefaultValue();
+        }
+
         return $this->value;
+    }
+
+    private function isEmptyCollection($value)
+    {
+        return $value instanceof Collection && $value->isEmpty();
     }
 
     /**
@@ -136,6 +151,23 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     public function setValue( $value )
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    /** @return mixed */
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * @param mixed $defaultValue
+     * @return $this
+     */
+    public function setDefaultValue($defaultValue)
+    {
+        $this->defaultValue = $defaultValue;
 
         return $this;
     }
