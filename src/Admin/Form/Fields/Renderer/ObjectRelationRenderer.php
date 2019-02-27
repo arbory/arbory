@@ -111,6 +111,8 @@ class ObjectRelationRenderer implements RendererInterface
         $items = [];
         $relational = $this->field->getOptions();
 
+        $relational = $this->field->isSingular() ? $relational->prepend('', '') : $relational;
+
         foreach( $relational as $relation )
         {
             if ( $relation instanceof Model )
