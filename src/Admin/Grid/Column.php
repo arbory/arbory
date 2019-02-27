@@ -189,11 +189,13 @@ class Column
                 return $translation->getAttribute( $this->relationColumn );
             }
 
-            $relation = $model->getAttribute( $this->relationName );
+            $attribute = $model->getAttribute( $this->relationName );
 
-            return ( $relation instanceof Relation )
-                ? $relation->getAttribute( $this->relationColumn )
-                : $relation;
+            if ( $attribute instanceof Model || $attribute instanceof Relation) {
+                return $attribute->getAttribute( $this->relationColumn );
+            }
+
+            return $attribute;
         }
 
         return $model->getAttribute( $this->getName() );
