@@ -14,6 +14,6 @@ final class ArboryImage extends ArboryFile
         'type' => 'file',
         'accept' => 'image/*'
     ];
-
+    
     protected $rendererClass = ImageFieldRenderer::class;
 }

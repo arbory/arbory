@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Html;
 
@@ -65,5 +66,13 @@ final class ImageFieldRenderer extends FileFieldRenderer
             'fm' => 'jpg',
             'fit' => 'crop'
         ];
+    }
+
+    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    {
+        // Use file Javascript
+        $options->addClass('type-item type-file');
+
+        return $options;
     }
 }
