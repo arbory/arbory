@@ -16,7 +16,6 @@ final class ImageFieldRenderer extends FileFieldRenderer
      */
     public function render()
     {
-        $input = parent::render();
         $image = $this->field->getValue();
 
         $value = Html::div();
@@ -35,7 +34,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
             $value->append( $this->createFileDetails( $arboryFile ) );
         }
 
-        $value->append( $input );
+        $value->append( $this->getInput() );
 
         return $value;
     }
@@ -45,9 +44,12 @@ final class ImageFieldRenderer extends FileFieldRenderer
      */
     protected function getInput(): Input
     {
-        return parent::getInput()->addAttributes( [
-            'accept' => 'image/*'
-        ] );
+        $control = $this->getControl();
+        $control = $this->configureControl($control);
+
+        $element = $control->element();
+
+        return $control->render($element);
     }
 
 
