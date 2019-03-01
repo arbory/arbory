@@ -45,6 +45,12 @@ class Row
         return $content;
     }
 
+    public function addColumn(Column $column)
+    {   $this->columns[] = $column;
+
+        return $column;
+    }
+
     /**
      * @return \Arbory\Base\Html\Elements\Element
      */

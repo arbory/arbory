@@ -14,7 +14,7 @@ use Arbory\Base\Admin\Panels\Panel;
 use Arbory\Base\Html\Elements\Content;
 use Closure;
 
-class PanelLayout extends AbstractLayout implements LayoutInterface
+class PanelLayout extends AbstractLayout implements FormLayoutInterface
 {
     protected $panels = [];
 
@@ -84,7 +84,7 @@ class PanelLayout extends AbstractLayout implements LayoutInterface
     public function fields(callable $closure, ...$parameters):FieldSet
     {
         $fields = new FieldSet($this->form->getModel(), $this->form->fields()->getNamespace());
-        $fields = $closure($fields, ...$parameters);
+        $fields = $closure($fields, ...$parameters) ?: $fields;
 
         foreach($fields as $field)
         {

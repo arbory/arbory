@@ -7,6 +7,7 @@ namespace Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Admin\Layout\FormLayoutInterface;
 use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Layout\Body;
 use Arbory\Base\Admin\Layout\PageInterface;
@@ -24,7 +25,7 @@ use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Closure;
 
-class Layout extends AbstractLayout implements LayoutInterface
+class Layout extends AbstractLayout implements FormLayoutInterface
 {
     /**
      * @var Form
@@ -59,6 +60,14 @@ class Layout extends AbstractLayout implements LayoutInterface
     public function url($route, $parameters = [])
     {
         return $this->form->getModule()->url($route, $parameters);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getForm()
+    {
+        return $this->form;
     }
 
     /**

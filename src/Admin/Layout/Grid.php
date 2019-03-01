@@ -63,6 +63,16 @@ class Grid implements Renderable
     }
 
     /**
+     * Returns the maximum grid row size
+     *
+     * @return int
+     */
+    public function getRowSize()
+    {
+        return static::SIZE_MAX;
+    }
+
+    /**
      * @return \Arbory\Base\Html\Elements\Element|string
      */
     public function render()

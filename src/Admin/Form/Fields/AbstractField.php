@@ -60,7 +60,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     protected $tooltip;
 
     /**
-     * @var int
+     * @var mixed
      */
     protected $rows;
 
@@ -281,21 +281,22 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getRows(): int
+    public function getRows()
     {
         return $this->rows;
     }
 
     /**
-     * @param int $rows
+     * @param int   $rows
+     * @param array $breakpoints
      *
      * @return FieldInterface
      */
-    public function setRows( int $rows ): FieldInterface
+    public function setRows( int $rows, $breakpoints = [] ): FieldInterface
     {
-        $this->rows = $rows;
+        $this->rows = ['size' => $rows, 'breakpoints' => $breakpoints];
 
         return $this;
     }

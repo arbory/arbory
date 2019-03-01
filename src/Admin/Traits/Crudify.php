@@ -58,29 +58,29 @@ trait Crudify
     }
 
     /**
-     * @param Form                 $form
-     * @param LayoutInterface|null $layout
+     * @param Form                            $form
+     * @param Layout\FormLayoutInterface|null $layout
      *
      * @return Form
      */
-    protected function form(Form $form, ?LayoutInterface $layout = null)
+    protected function form(Form $form, ?Layout\FormLayoutInterface $layout = null)
     {
         return $form;
     }
 
     /**
-     * @param Model                       $model
-     * @param LayoutInterface|null $layout
+     * @param Model                           $model
+     * @param Layout\FormLayoutInterface|null $layout
      *
      * @return Form
      */
-    protected function buildForm(Model $model, ?LayoutInterface $layout = null)
+    protected function buildForm(Model $model, ?Layout\FormLayoutInterface $layout = null)
     {
         $form = new Form($model);
         $form->setModule($this->module());
         $form->setRenderer(new Form\Builder($form));
 
-        if($layout) {
+        if ($layout) {
             $layout->setForm($form);
         }
 
@@ -146,7 +146,7 @@ trait Crudify
     public function create(Layout\LayoutManager $manager)
     {
         $layout = $this->layout('form');
-        $layout->setForm($this->buildForm($this->resource(), $layout));
+        $form = $this->buildForm($this->resource(), $layout);
 
         $page = $manager->page(Page::class);
 
@@ -188,13 +188,12 @@ trait Crudify
     {
         $resource = $this->findOrNew($resourceId);
         $layout = $this->layout('form');
+        $form = $this->buildForm($resource, $layout);
 
-        $layout->setForm($this->buildForm($resource, $layout));
-        
         $page = $manager->page(Page::class);
         $page->use($layout);
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
-        
+
         return $page;
     }
 

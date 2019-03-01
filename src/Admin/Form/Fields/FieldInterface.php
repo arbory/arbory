@@ -132,16 +132,17 @@ interface FieldInterface
     public function setTooltip( $content = null ): FieldInterface;
 
     /**
-     * @param int $rows
+     * @param int   $rows
+     * @param array $breakpoints
      *
      * @return FieldInterface
      */
-    public function setRows( int $rows ): FieldInterface;
+    public function setRows( int $rows, $breakpoints = [] ): FieldInterface;
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getRows(): int;
+    public function getRows();
 
     /**
      * @return string
