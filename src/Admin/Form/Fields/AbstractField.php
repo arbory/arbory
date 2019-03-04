@@ -132,13 +132,25 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
             $this->value = $this->getModel()->getAttribute( $this->getName() );
         }
 
-        if (($this->value === null || $this->isEmptyCollection($this->value)) && $this->getDefaultValue()) {
+        if ($this->hasNoValue() && $this->getDefaultValue()) {
             $this->value = $this->getDefaultValue();
         }
 
         return $this->value;
     }
 
+    /**
+     * @return bool
+     */
+    private function hasNoValue()
+    {
+        return $this->value === null || $this->isEmptyCollection($this->value);
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     private function isEmptyCollection($value)
     {
         return $value instanceof Collection && $value->isEmpty();
@@ -155,7 +167,9 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         return $this;
     }
 
-    /** @return mixed */
+    /**
+     * @return mixed
+     */
     public function getDefaultValue()
     {
         return $this->defaultValue;

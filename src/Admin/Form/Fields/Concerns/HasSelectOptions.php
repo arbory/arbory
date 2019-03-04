@@ -10,7 +10,9 @@ use Illuminate\Support\Collection;
  */
 trait HasSelectOptions
 {
-    /** @var Collection $options */
+    /**
+     * @var Collection $options
+     */
     protected $options;
 
     /**
