@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelatedOptions;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasSelectOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\SelectFieldRenderer;
 use Illuminate\Http\Request;
 
@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
  */
 class Select extends ControlField
 {
-    use HasRelatedOptions;
+    use HasSelectOptions;
 
     protected $control = \Arbory\Base\Admin\Form\Controls\SelectControl::class;
 
@@ -42,11 +42,6 @@ class Select extends ControlField
         if( is_array( $value ) )
         {
             $value = implode( ',', $value );
-        }
-
-        if( method_exists( $this->getModel(), $this->getName() ) )
-        {
-            $property = $this->getRelation()->getForeignKey();
         }
 
         $this->getModel()->setAttribute( $property, $value );
@@ -84,8 +79,7 @@ class Select extends ControlField
 
         foreach( $input as $item )
         {
-            if( !$this->options->has( $item ) )
-            {
+            if (!empty($item) && !$this->getOptions()->has($item)) {
                 return false;
             }
         }
