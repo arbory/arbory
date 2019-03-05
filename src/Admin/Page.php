@@ -86,6 +86,7 @@ class Page extends Layout implements PageInterface
         return Html::header([
             $this->getBreadcrumbs(),
             $this->slot('header_right'),
+            $this->slot('header_right_filter'),
         ]);
     }
 
