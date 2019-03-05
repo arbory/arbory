@@ -6,6 +6,7 @@ use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Widgets\Pagination;
 use Arbory\Base\Admin\Layout\Footer;
 use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Admin\Widgets\Filter;
 use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Widgets\SearchField;
 use Arbory\Base\Html\Elements\Content;
@@ -46,6 +47,19 @@ class Builder implements Renderable
     public function grid()
     {
         return $this->grid;
+    }
+
+    /**
+     * @return |null
+     */
+    protected function filter()
+    {
+        if ( !$this->grid->hasTool( 'filter' ) )
+        {
+            return null;
+        }
+
+        return ( new Filter( 'test' ) )->render();
     }
 
     /**
@@ -264,7 +278,8 @@ class Builder implements Renderable
             Html::section( [
                 $this->table(),
                 $this->footer(),
-            ] )
+                $this->filter(),
+            ] ),
         ] );
     }
 }

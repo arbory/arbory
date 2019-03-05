@@ -1,0 +1,36 @@
+.form-filter
+{
+  position: absolute;
+  width: steps(35);
+  right: steps(-38);
+  top: -24px;
+  transition: right 0.3s ease;
+  height: 100%;
+  box-shadow: -2px 4px 8px 0 rgba(0,0,0,0.15);
+  background: white;
+
+  &.show
+  {
+    right: steps(-3);
+  }
+
+  .title-block
+  {
+    padding: 22px 20px 19px 20px;
+    background: $color-background-normal;
+    display: flex;
+    align-items: center;
+
+    .close
+    {
+      margin-left: auto;
+    }
+  }
+
+  h2
+  {
+    font-size: 16px;
+    letter-spacing: 0.9px;
+    float: left;
+  }
+}
