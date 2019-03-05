@@ -6,6 +6,7 @@ jQuery(document).ready(function()
 
     filterButton.on( 'click', function ()
     {
+        filterWindow.toggleClass( 'show' );
         contentWindow.toggleClass( 'show-filter' );
     } );
 });

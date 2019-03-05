@@ -1,17 +1,18 @@
 .form-filter
 {
-  position: absolute;
+  position: fixed;
   width: steps(35);
-  right: steps(-38);
-  top: -24px;
+  right: steps(-35);
+  top: steps(10);
   transition: right 0.3s ease;
-  height: 100%;
+  height: calc(100vh - 120px);
   box-shadow: -2px 4px 8px 0 rgba(0,0,0,0.15);
   background: white;
+  z-index: 20;
 
   &.show
   {
-    right: steps(-3);
+    right: 0;
   }
 
   .title-block
