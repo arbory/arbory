@@ -278,8 +278,8 @@ class Builder implements Renderable
             Html::section( [
                 $this->table(),
                 $this->footer(),
-                $this->filter(),
             ] ),
+            $this->filter(),
         ] );
     }
 }
