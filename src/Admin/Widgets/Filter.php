@@ -19,6 +19,7 @@ class Filter implements Renderable
             Html::h2( trans( 'arbory::filter.sort_and_filter' ) ),
             Button::create()
                 ->type('button', 'close')
+                ->withIcon( 'times' )
                 ->iconOnly()
         ] )->addClass( 'title-block' );
     }
