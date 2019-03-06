@@ -1,3 +1,5 @@
+import Navigator from "./Services/Navigator";
+
 export default class AdminPanel {
     /**
      * @param {FieldRegistry} registry
@@ -30,6 +32,7 @@ export default class AdminPanel {
             jQuery(e.editor.element.$).addClass("ckeditor-initialized");
         });
 
+        this.navigator = new Navigator();
         this.registerEventHandlers();
     }
 

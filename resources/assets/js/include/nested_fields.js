@@ -63,109 +63,131 @@ jQuery( document ).ready(function()
                         template = jQuery(target_block.data('arbory-template'));
                     }
 
-                    if (template.length !== 1)
-                    {
-                        return null;
-                    }
-
-                    var new_item = template;
-
-                    new_item.addClass('new');
-
-                    new_item.appendTo( list );
-
-                    new_item.trigger( 'nestedfieldsreindex', event_params );
-
-                    if (event_params && event_params.no_animation)
-                    {
-                        new_item.trigger( 'nestedfieldsitemadd', event_params);
-                        new_item.trigger( 'contentloaded', event_params );
-                    }
-                    else
-                    {
-                        if (new_item.is('tr, td') )
-                        {
-                            new_item.css({ opacity: 1 }).hide();
-                            new_item.fadeIn( 'normal', function()
-                            {
-                                new_item.trigger( 'nestedfieldsitemadd', event_params);
-                                new_item.trigger( 'contentloaded', event_params );
-                            });
-                        }
-                        else
-                        {
-                            new_item.css({ opacity: 0 });
-                            new_item.slideDown( 'fast', function()
-                            {
-                                new_item.css({ opacity: 1 }).hide();
-                                new_item.fadeIn( 'fast', function()
-                                {
-                                    new_item.trigger( 'nestedfieldsitemadd', event_params );
-                                    new_item.trigger( 'contentloaded', event_params );
-                                });
-                            });
-                        }
-                    }
-
+                    block.trigger('nestedfieldscreate', {
+                        target_block: target_block,
+                        original_params: event_params,
+                        template: template
+                    });
                 }
                 else if (trigger.is('.remove-nested-item'))
                 {
-                    var item = trigger.parents(item_selector).first();
-
-                    var removeItem = function( item )
-                    {
-                        item.trigger( 'contentbeforeremove', event_params );
-
-                        var parent = item.parent();
-
-                        var destroy_inputs = item.find('input.destroy');
-
-                        if (destroy_inputs.length > 0)
-                        {
-                            // mark as destroyable and hide
-                            destroy_inputs.val( true );
-
-                            item.hide();
-                        }
-                        else
-                        {
-                            item.remove();
-                        }
-
-                        target_block.trigger( 'nestedfieldsreindex', event_params );
-                        parent.trigger( 'contentremoved', event_params );
-                    };
-
-                    item.addClass( 'removed' );
-
-                    item.trigger( 'nestedfieldsitemremove', event_params );
-
-                    if (event_params && event_params.no_animation)
-                    {
-                        removeItem( item );
-                    }
-                    else
-                    {
-                        item.fadeOut( 'fast', function()
-                        {
-                            if (item.is('tr,td'))
-                            {
-                                removeItem( item );
-                            }
-                            else
-                            {
-                                item.css({ opacity: 0 }).show().slideUp( 'fast', function()
-                                {
-                                    removeItem( item );
-                                });
-                            }
-                        });
-                    }
+                    block.trigger('nestedfieldsremove', {
+                        target_block: target_block,
+                        item: trigger.parents(item_selector).first(),
+                        original_params: event_params
+                    });
                 }
 
                 return;
             });
 
+            block.on('nestedfieldscreate', function(e, params)
+            {
+                console.log('creating', params);
+
+                var target_block = params.target_block;
+                var event_params = params.original_params;
+                var template = params.template;
+
+                if (template.length !== 1)
+                {
+                    return null;
+                }
+
+                var new_item = template;
+
+                new_item.addClass('new');
+                new_item.appendTo( list );
+                new_item.trigger( 'nestedfieldsreindex', event_params );
+
+                if (event_params && event_params.no_animation)
+                {
+                    new_item.trigger( 'nestedfieldsitemadd', event_params);
+                    new_item.trigger( 'contentloaded', event_params );
+                }
+                else
+                {
+                    if (new_item.is('tr, td') )
+                    {
+                        new_item.css({ opacity: 1 }).hide();
+                        new_item.fadeIn( 'normal', function()
+                        {
+                            new_item.trigger( 'nestedfieldsitemadd', event_params);
+                            new_item.trigger( 'contentloaded', event_params );
+                        });
+                    }
+                    else
+                    {
+                        new_item.css({ opacity: 0 });
+                        new_item.slideDown( 'fast', function()
+                        {
+                            new_item.css({ opacity: 1 }).hide();
+                            new_item.fadeIn( 'fast', function()
+                            {
+                                new_item.trigger( 'nestedfieldsitemadd', event_params );
+                                new_item.trigger( 'contentloaded', event_params );
+                            });
+                        });
+                    }
+                }
+            });
+
+            block.on('nestedfieldsremove', function(e, params)
+            {
+                var target_block = params.target_block;
+                var item = params.item;
+                var event_params = params.original_params;
+
+                var removeItem = function( item )
+                {
+                    item.trigger( 'contentbeforeremove', event_params );
+
+                    var parent = item.parent();
+
+                    var destroy_inputs = item.find('input.destroy');
+
+                    if (destroy_inputs.length > 0)
+                    {
+                        // mark as destroyable and hide
+                        destroy_inputs.val( true );
+
+                        item.hide();
+                    }
+                    else
+                    {
+                        item.remove();
+                    }
+
+                    target_block.trigger( 'nestedfieldsreindex', event_params );
+                    parent.trigger( 'contentremoved', event_params );
+                };
+
+                item.addClass( 'removed' );
+
+                item.trigger( 'nestedfieldsitemremove', event_params );
+
+                if (event_params && event_params.no_animation)
+                {
+                    removeItem( item );
+                }
+                else
+                {
+                    item.fadeOut( 'fast', function()
+                    {
+                        if (item.is('tr,td'))
+                        {
+                            removeItem( item );
+                        }
+                        else
+                        {
+                            item.css({ opacity: 0 }).show().slideUp( 'fast', function()
+                            {
+                                removeItem( item );
+                            });
+                        }
+                    });
+                }
+            });
 
             block.on('nestedfieldsreindex', function()
             {

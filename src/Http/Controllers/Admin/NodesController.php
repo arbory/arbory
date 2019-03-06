@@ -2,16 +2,23 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Constructor\ConstructorLayout;
+use Arbory\Base\Admin\Constructor\Registry;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Layout\LayoutManager;
+use Arbory\Base\Admin\Navigator\Navigator;
 use Arbory\Base\Admin\Page;
+use Arbory\Base\Admin\Panels\Panel;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Admin\Form\Fields\Deactivator;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Nodes\Admin\Grid\Filter;
@@ -53,13 +60,28 @@ class NodesController extends Controller
 
     /**
      * @param Form            $form
-     * @param LayoutInterface $panels
+     * @param Layout\PanelLayout $panels
      *
      * @return Form
      */
     protected function form(Form $form, ?LayoutInterface $panels)
     {
-        $form->setFields(function (FieldSet $fields) {
+        $gridLayout = new Layout\GridLayout(new Layout\Grid());
+        $gridLayout->setWidth(9);
+
+        $closure = \Closure::fromCallable([$this, 'overview']);
+
+        $gridLayout->addColumn(3, new Layout\LazyRenderer($closure));
+
+        $constructor = new ConstructorLayout();
+        $constructor->setForm($form);
+
+
+        $panels->use(new Layout\Transformers\WrapTransformer(new Form\Builder($form)));
+        $panels->use($gridLayout);
+        $panels->use($constructor);
+
+        $panels->panel($form->getTitle(), $panels->fields(function (FieldSet $fields) use ($constructor) {
             $fields->hidden('parent_id');
             $fields->hidden('content_type');
             $fields->text('name')->rules('required');
@@ -75,7 +97,8 @@ class NodesController extends Controller
                 $fields->add(new Deactivator('deactivate'));
             }
 
-            $fields->hasOne('content', function (FieldSet $fieldSet) {
+            $fields->hasOne('content', function (FieldSet $fieldSet) use ($constructor) {
+                $fieldSet->add($constructor->getField())->setHidden(true);
 
                 $content = $fieldSet->getModel();
 
@@ -84,7 +107,7 @@ class NodesController extends Controller
 
                 $definition->getFieldSetHandler()->call($content, $fieldSet);
             });
-        });
+        }));
 
         $form->addEventListeners(['create.after'], function () use ($form) {
             $this->afterSave($form);
@@ -275,5 +298,51 @@ class NodesController extends Controller
     protected function getSlugGeneratorUrl()
     {
         return $this->url('api', 'slug_generator');
+    }
+
+    protected function layouts()
+    {
+        return [
+            'grid' => Grid\Layout::class,
+            'form' => Layout\PanelLayout::class
+        ];
+    }
+
+    protected function overview()
+    {
+        $panel = new Panel();
+
+        $panel->setTitle('Overview');
+        $panel->setContent(new Content([
+            Html::div('Status'),
+            Html::hr(),
+            Html::div($this->navigator()),
+            Html::hr(),
+            Html::div(
+                Link::create( $this->url( 'dialog', ['name' => 'constructor_types', 'field' => 'blocks'] ) )
+                    ->asButton( 'primary new-constructor-item' )
+                    ->asAjaxbox(true)
+                    ->withIcon( 'plus' )
+                    ->title( trans( 'arbory::constructor.resources.new_block' ) )
+            )
+        ]));
+
+        return $panel;
+    }
+
+    protected function navigator()
+    {
+        /** @var $navigator Navigator */
+        $navigator = app(Navigator::class);
+
+
+        return $navigator->render();
+    }
+
+    protected function constructorTypesDialog(Request $request) {
+        return view('arbory::dialogs.constructor_types', [
+            'types' => app(Registry::class)->all(),
+            'field' => $request->get('field')
+        ]);
     }
 }

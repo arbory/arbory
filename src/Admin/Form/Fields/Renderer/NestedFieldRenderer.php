@@ -3,16 +3,13 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use function foo\func;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Collection;
 
 /**
  * Class NestedFieldRenderer
@@ -26,12 +23,19 @@ class NestedFieldRenderer implements RendererInterface
     protected $field;
 
     /**
+     * @var NestedItemRenderer
+     */
+    protected  $itemRenderer;
+
+    /**
      * NestedFieldRenderer constructor.
      * @param HasMany $field
      */
     public function __construct( HasMany $field )
     {
         $this->field = $field;
+
+        $this->itemRenderer = new NestedItemRenderer();
     }
 
     /**
@@ -87,56 +91,23 @@ class NestedFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param $name
-     * @return Element
+     * @return NestedItemRenderer
      */
-    protected function getFieldSetRemoveButton( $name )
+    public function getItemRenderer(): NestedItemRenderer
     {
-        if( !$this->field->canRemoveRelationItems() )
-        {
-            return null;
-        }
-
-        $button = Button::create()
-            ->title( trans( 'arbory::fields.relation.remove' ) )
-            ->type( 'button', 'only-icon danger remove-nested-item' )
-            ->withIcon( 'trash-o' )
-            ->iconOnly();
-
-        $input = Html::input()
-            ->setType( 'hidden' )
-            ->setName( $name )
-            ->setValue( 'false' )
-            ->addClass( 'destroy' );
-
-        return Html::div( [ $button, $input ] )->addClass( 'remove-item-box' );
+        return $this->itemRenderer;
     }
 
     /**
-     * @return Element
+     * @param NestedItemRenderer $itemRenderer
+     *
+     * @return NestedFieldRenderer
      */
-    protected function getSortableNavigation()
+    public function setItemRenderer(NestedItemRenderer $itemRenderer): self
     {
-        if( !$this->field->canSortRelationItems() )
-        {
-            return null;
-        }
+        $this->itemRenderer = $itemRenderer;
 
-        $navigation = Html::div()->addClass( 'sortable-navigation' );
-
-        $navigation->append( Button::create()
-            ->title( trans( 'arbory::fields.relation.moveDown' ) )
-            ->type( 'button', 'only-icon secondary move-down' )
-            ->withIcon( 'chevron-down' )
-            ->iconOnly() );
-
-        $navigation->append( Button::create()
-            ->title( trans( 'arbory::fields.relation.moveUp' ) )
-            ->type( 'button', 'only-icon secondary move-up' )
-            ->withIcon( 'chevron-up' )
-            ->iconOnly() );
-
-        return $navigation;
+        return $this;
     }
 
     /**
@@ -146,21 +117,7 @@ class NestedFieldRenderer implements RendererInterface
      */
     protected function getRelationItemHtml( FieldSet $fieldSet, $index )
     {
-        $fieldSetHtml = Html::fieldset()
-            ->addClass( 'item type-association' )
-            ->addAttributes( [
-                'data-name' => $this->field->getName(),
-                'data-index' => $index
-            ] );
-
-        $fieldSetHtml->append($fieldSet->render());
-        $fieldSetHtml->append( $this->getSortableNavigation() );
-
-        $fieldSetHtml->append(
-            $this->getFieldSetRemoveButton( $fieldSet->getNamespace() . '._destroy' )
-        );
-
-        return $fieldSetHtml;
+        return $this->itemRenderer->__invoke($this->field, $fieldSet, $index);
     }
 
     /**

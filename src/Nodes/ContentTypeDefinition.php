@@ -22,6 +22,11 @@ class ContentTypeDefinition
     protected $fieldSetHandler;
 
     /**
+     * @var \Closure
+     */
+    protected $layoutHandler;
+
+    /**
      * @param string $model
      */
     public function __construct( string $model )
@@ -68,6 +73,14 @@ class ContentTypeDefinition
     public function setFieldSetHandler( Closure $fieldSetHandler )
     {
         $this->fieldSetHandler = $fieldSetHandler;
+    }
+
+    /**
+     * @param Closure $layoutHandler
+     */
+    public function setLayoutHandler(Closure $layoutHandler): void
+    {
+        $this->layoutHandler = $layoutHandler;
     }
 
     /**
