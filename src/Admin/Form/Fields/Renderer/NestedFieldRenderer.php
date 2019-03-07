@@ -7,6 +7,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Admin\Form\Fields\HasMany;
+use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use function foo\func;
@@ -177,7 +178,7 @@ class NestedFieldRenderer implements RendererInterface
      */
     public function render()
     {
-        return Html::div([
+        return new Content([
             $this->getBody(),
             $this->getFooter()
         ]);

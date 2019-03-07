@@ -118,6 +118,45 @@ abstract class AbstractControl implements InputControlInterface
     {
         $this->name = $name;
 
+        $this->addAttributes(['id' => $this->getInputId($name)]);
+
         return $this;
+    }
+
+
+    /**
+     * Converts dot donation name to a input name
+     *
+     * @param $namespacedName
+     *
+     * @return string
+     */
+    public function getInputName($namespacedName)
+    {
+        return Element::formatName($namespacedName);
+    }
+
+    /**
+     * Creates Input ID from input name
+     *
+     * @param $inputName
+     *
+     * @return string
+     */
+    public function getInputId($inputName)
+    {
+        return rtrim(strtr($inputName, [ '[' => '_', ']' => '']), '_');
+    }
+
+    /**
+     * @param $namespacedName
+     *
+     * @return string
+     */
+    public function getInputIdFromNamespace($namespacedName)
+    {
+        return $this->getInputId(
+            $this->getInputName($namespacedName)
+        );
     }
 }

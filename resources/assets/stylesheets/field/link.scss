@@ -1,0 +1,38 @@
+.field {
+    .link-body {
+        & > fieldset {
+            margin: 0;
+            
+            .field {
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+
+.link-body {
+    & > fieldset {
+        margin: 0;
+        
+        .field {
+            margin: 0;
+            width: calc(50% - #{$form-gutter-half});
+    
+    
+            &.type-text {
+                &:not(:first-child) {
+                    float: right;
+                }
+            }
+            
+            &.type-checkbox {
+                min-height: 0;
+                
+                .value {
+                    padding-top: 0;
+                }
+            }
+        }
+    }
+}

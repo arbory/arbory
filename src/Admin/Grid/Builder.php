@@ -49,27 +49,6 @@ class Builder implements Renderable
     }
 
     /**
-     * @return \Arbory\Base\Admin\Widgets\Breadcrumbs
-     */
-    protected function breadcrumbs()
-    {
-        return $this->grid()->getModule()->breadcrumbs();
-    }
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     */
-    protected function searchField()
-    {
-        if( !$this->grid->hasTool( 'search' ) )
-        {
-            return null;
-        }
-
-        return ( new SearchField( $this->url( 'index' ) ) )->render();
-    }
-
-    /**
      * @return \Illuminate\Support\Collection
      */
     protected function getTableColumns()
@@ -282,10 +261,6 @@ class Builder implements Renderable
         $this->items = $this->grid->getItems();
 
         return new Content( [
-            Html::header( [
-                $this->breadcrumbs(),
-                $this->searchField(),
-            ] ),
             Html::section( [
                 $this->table(),
                 $this->footer(),

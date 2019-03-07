@@ -29,7 +29,7 @@ class ToolboxMenu implements Renderable
      * Toolbox constructor.
      * @param Model $model
      */
-    public function __construct( Model $model )
+    public function __construct( ?Model $model )
     {
         $this->model = $model;
         $this->items = new Collection();

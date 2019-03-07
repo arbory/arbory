@@ -6,7 +6,9 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Grid\ExportBuilder;
 use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Module;
+use Arbory\Base\Admin\Page;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -56,25 +58,33 @@ trait Crudify
     }
 
     /**
-     * @param Form $form
+     * @param Form                            $form
+     * @param Layout\FormLayoutInterface|null $layout
+     *
      * @return Form
      */
-    protected function form(Form $form)
+    protected function form(Form $form, ?Layout\FormLayoutInterface $layout = null)
     {
         return $form;
     }
 
     /**
-     * @param Model $model
+     * @param Model                           $model
+     * @param Layout\FormLayoutInterface|null $layout
+     *
      * @return Form
      */
-    protected function buildForm(Model $model)
+    protected function buildForm(Model $model, ?Layout\FormLayoutInterface $layout = null)
     {
         $form = new Form($model);
         $form->setModule($this->module());
         $form->setRenderer(new Form\Builder($form));
 
-        return $this->form($form) ?: $form;
+        if ($layout) {
+            $layout->setForm($form);
+        }
+
+        return $this->form($form, $layout) ?: $form;
     }
 
     /**
@@ -100,17 +110,23 @@ trait Crudify
     }
 
     /**
+     * @param Layout\LayoutManager $manager
+     *
      * @return Layout
      */
-    public function index()
+    public function index(Layout\LayoutManager $manager)
     {
-        $layout = new Layout(function (Layout $layout) {
-            $layout->body($this->buildGrid($this->resource()));
-        });
+        $layout = $this->layout('grid');
 
-        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index');
+        $layout->setGrid($this->buildGrid($this->resource()));
 
-        return $layout;
+        $page = $manager->page(Page::class);
+
+        $page->setBreadcrumbs($this->module()->breadcrumbs());
+        $page->use($layout);
+        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index');
+
+        return $page;
     }
 
     /**
@@ -123,17 +139,21 @@ trait Crudify
     }
 
     /**
+     * @param Layout\LayoutManager $manager
+     *
      * @return Layout
      */
-    public function create()
+    public function create(Layout\LayoutManager $manager)
     {
-        $layout = new Layout(function (Layout $layout) {
-            $layout->body($this->buildForm($this->resource()));
-        });
+        $layout = $this->layout('form');
+        $form = $this->buildForm($this->resource(), $layout);
 
-        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+        $page = $manager->page(Page::class);
 
-        return $layout;
+        $page->use($layout);
+        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+
+        return $page;
     }
 
     /**
@@ -142,7 +162,8 @@ trait Crudify
      */
     public function store(Request $request)
     {
-        $form = $this->buildForm($this->resource());
+        $layout = $this->layout('form');
+        $form = $this->buildForm($this->resource(), $layout);
 
         $request->request->add(['fields' => $form->fields()]);
 
@@ -158,20 +179,22 @@ trait Crudify
     }
 
     /**
-     * @param $resourceId
+     * @param                      $resourceId
+     * @param Layout\LayoutManager $manager
+     *
      * @return Layout
      */
-    public function edit($resourceId)
+    public function edit($resourceId, Layout\LayoutManager $manager)
     {
         $resource = $this->findOrNew($resourceId);
+        $layout = $this->layout('form');
+        $form = $this->buildForm($resource, $layout);
 
-        $layout = new Layout(function (Layout $layout) use ($resource) {
-            $layout->body($this->buildForm($resource));
-        });
+        $page = $manager->page(Page::class);
+        $page->use($layout);
+        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
 
-        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
-
-        return $layout;
+        return $page;
     }
 
     /**
@@ -182,7 +205,11 @@ trait Crudify
     public function update(Request $request, $resourceId)
     {
         $resource = $this->findOrNew($resourceId);
-        $form = $this->buildForm($resource);
+        $layout   = $this->layout('form');
+        $form     = $this->buildForm($resource, $layout);
+
+        $layout->setForm($form);
+
 
         $request->request->add(['fields' => $form->fields()]);
 
@@ -204,8 +231,9 @@ trait Crudify
     public function destroy($resourceId)
     {
         $resource = $this->resource()->findOrFail($resourceId);
+        $layout   = $this->layout('form');
 
-        $this->buildForm($resource)->destroy();
+        $this->buildForm($resource, $layout)->destroy();
 
         return redirect($this->module()->url('index'));
     }
@@ -390,5 +418,39 @@ trait Crudify
     protected function getAfterEditResponse(Request $request)
     {
         return redirect($request->has('save_and_return') ? $this->module()->url('index') : $request->url());
+    }
+
+    /**
+     * Creates a layout instance
+     *
+     * @param string $component
+     * @param mixed $with
+     *
+     * @return LayoutInterface
+     */
+    protected function layout($component, $with = null)
+    {
+        $layouts = $this->layouts() ?: [];
+
+        $class = $layouts[$component] ?? null;
+
+        if(!$class && !class_exists($class)) {
+            throw new \RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
+        }
+
+        return $with ? app()->makeWith($class, $with) : app()->make($class);
+    }
+
+    /**
+     * Defined layouts
+     *
+     * @return array
+     */
+    public function layouts()
+    {
+        return [
+            'grid' => Grid\Layout::class,
+            'form' => Form\Layout::class
+        ];
     }
 }

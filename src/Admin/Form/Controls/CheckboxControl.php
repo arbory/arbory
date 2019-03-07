@@ -77,4 +77,6 @@ class CheckboxControl extends InputControl
 
         return $this;
     }
+
+
 }

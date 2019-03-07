@@ -3,7 +3,6 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Admin\Form\Controls\CheckboxControl;
-use Arbory\Base\Admin\Form\Fields\Checkbox;
 use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
@@ -67,35 +66,30 @@ class AssociatedSetRenderer extends ControlFieldRenderer
      *
      * @return Element
      */
-    protected function getAssociatedItem($name, $value, $label)
+    protected function getAssociatedItem( $name, $value, $label )
     {
-        $inputName = Element::formatName($name);
-        $field = new Checkbox($inputName);
+        $checkbox = new CheckboxControl();
 
-        $field->setFieldSet($this->getField()->getFieldSet());
-        /** @var CheckboxControl $checkbox */
-        $checkbox = $field->getRenderer()->getControl();
+        $inputName = Element::formatName($name);
+
 
         $checkbox->setName($inputName);
         $checkbox->setValue($value);
-        $checkbox->addAttributes([
-            'id' => $field->getFieldId()
-        ]);
 
-        if ($this->field instanceof ControlFieldInterface) {
-            $checkbox->setReadOnly(!$this->field->isInteractive());
+        if ( $this->field instanceof ControlFieldInterface ) {
+            $checkbox->setReadOnly(! $this->field->isInteractive());
             $checkbox->setDisabled($this->field->isDisabled());
         }
 
-        if (in_array($value, $this->values, true)) {
+        if ( in_array($value, $this->values, true) ) {
             $checkbox->setChecked(true);
         }
 
         return Html::div([
             $checkbox->render($checkbox->element()),
-            Html::label($label)->addAttributes(['for' => $field->getFieldId()]),
+            Html::label($label)->addAttributes([ 'for' => $checkbox->getAttributes()['id'] ?? $this->field->getFieldId() ]),
         ])
-            ->addClass('type-associated-set-item');
+                   ->addClass('type-associated-set-item');
     }
 
     /**
@@ -117,4 +111,6 @@ class AssociatedSetRenderer extends ControlFieldRenderer
 
         return $options;
     }
+
+
 }

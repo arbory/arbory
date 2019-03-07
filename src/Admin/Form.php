@@ -2,6 +2,10 @@
 
 namespace Arbory\Base\Admin;
 
+use Arbory\Base\Admin\Panels\PanelInterface;
+use Arbory\Base\Admin\Panels\FieldSetPanel;
+use Arbory\Base\Admin\Panels\Panel;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Validator;
@@ -47,13 +51,21 @@ class Form
     protected $validator;
 
     /**
-     * Form constructor.
-     * @param Model $model
+     * @var
      */
-    public function __construct( Model $model )
+    protected $namespace = 'resource';
+
+    /**
+     * Form constructor.
+     *
+     * @param Model  $model
+     * @param string $namespace
+     */
+    public function __construct( Model $model, $namespace = 'resource' )
     {
         $this->model = $model;
-        $this->fields = new FieldSet( $model, 'resource', app(StyleManager::class) );
+        $this->namespace = $namespace;
+        $this->fields = new FieldSet( $model, $this->namespace, app(StyleManager::class) );
         $this->validator = app( Validator::class );
 
         $this->registerEventListeners();
@@ -191,10 +203,18 @@ class Form
     {
         $this->trigger( 'validate.before', request() );
 
-        $this->validator->setRules($this->fields->getRules());
+        $this->validator->setRules($this->fields()->getRules());
         $this->validator->validate($this->validator->rules());
 
         return $this->validator;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
     }
 
     /**

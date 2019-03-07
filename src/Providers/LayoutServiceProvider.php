@@ -3,6 +3,7 @@
 namespace Arbory\Base\Providers;
 
 use Arbory\Base\Admin\Admin;
+use Arbory\Base\Admin\Layout\LayoutManager;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Menu\MenuFactory;
 use Arbory\Base\Menu\MenuItemFactory;
@@ -35,6 +36,8 @@ class LayoutServiceProvider extends ServiceProvider
                 'menu' => $this->buildMenu()->render(),
             ]);
         });
+
+        $this->app->singleton(LayoutManager::class);
     }
 
     /**

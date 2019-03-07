@@ -144,16 +144,17 @@ interface FieldInterface
     public function setTooltip( $content = null ): FieldInterface;
 
     /**
-     * @param int $rows
+     * @param int   $rows
+     * @param array $breakpoints
      *
      * @return FieldInterface
      */
-    public function setRows( int $rows ): FieldInterface;
+    public function setRows( int $rows, $breakpoints = [] ): FieldInterface;
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getRows(): int;
+    public function getRows();
 
     /**
      * @return string
@@ -165,7 +166,7 @@ interface FieldInterface
      *
      * @return mixed
      */
-    public function setStyle( string $style );
+    public function setStyle( string $style ):FieldInterface;
 
     /**
      * @return array
@@ -185,4 +186,16 @@ interface FieldInterface
      * @return mixed
      */
     public function beforeRender(RendererInterface $renderer);
+
+    /**
+     * @return bool
+     */
+    public function isHidden():bool;
+
+    /**
+     * @param bool $value
+     *
+     * @return FieldInterface
+     */
+    public function setHidden(bool $value):FieldInterface;
 }

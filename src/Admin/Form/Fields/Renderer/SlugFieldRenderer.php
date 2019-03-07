@@ -12,7 +12,7 @@ use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 
-class SlugFieldRenderer implements RendererInterface
+class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterface
 {
     /**
      * @var Slug
@@ -36,30 +36,31 @@ class SlugFieldRenderer implements RendererInterface
      */
     public function render()
     {
-        $input = Html::input()
-                     ->setName($this->field->getNameSpacedName())
-                     ->setValue($this->field->getValue())
-                     ->addClass('text')
-                     ->addAttributes([
-                         'data-generator-url' => $this->field->getApiUrl(),
-                         'data-from-field-name' => $this->field->getFromFieldName(),
-                         'data-node-parent-id' => $this->field->getParentId(),
-                         'data-model-table' => $this->field->getModel()->getTable(),
-                         'data-object-id' => $this->field->getModel()->getKey()
-                     ]);
+        $control = $this->getControl();
+        $control = $this->configureControl($control);
+
+
+        $control->addAttributes([
+                                    'data-generator-url'   => $this->field->getApiUrl(),
+                                    'data-from-field-name' => $this->field->getFromFieldName(),
+                                    'data-node-parent-id'  => $this->field->getParentId(),
+                                    'data-model-table'     => $this->field->getModel()->getTable(),
+                                    'data-object-id'       => $this->field->getModel()->getKey(),
+                                ]);
+
 
         $button = Button::create()
-                        ->type('button', 'secondary generate')
-                        ->title(trans('arbory::fields.slug.suggest_slug'))
-                        ->withIcon('keyboard-o')
-                        ->iconOnly()
-                        ->render();
+            ->type('button', 'secondary generate')
+            ->title(trans('arbory::fields.slug.suggest_slug'))
+            ->withIcon('keyboard-o')
+            ->iconOnly()
+            ->render();
 
         $content = new Content();
 
-        $content->push(Html::div([$input, $button])->addClass('value'));
+        $content->push(Html::div([$control->render($control->element()), $button])->addClass('value'));
         $content->push($this->getLinkElement());
-        
+
         if (config('arbory.preview.enabled')) {
             $content->push($this->getPreviewLinkElement());
         }
@@ -73,7 +74,7 @@ class SlugFieldRenderer implements RendererInterface
      */
     protected function getLinkElement()
     {
-        if (! $this->field->hasUriToSlug()) {
+        if (!$this->field->hasUriToSlug()) {
             return null;
         }
 
@@ -90,7 +91,7 @@ class SlugFieldRenderer implements RendererInterface
      */
     protected function getPreviewLinkElement()
     {
-        if (! $this->field->hasUriToSlug() || $this->field->getModel()->isActive() || !$this->field->getValue()) {
+        if (!$this->field->hasUriToSlug() || $this->field->getModel()->isActive() || !$this->field->getValue()) {
             return null;
         }
 
@@ -106,17 +107,17 @@ class SlugFieldRenderer implements RendererInterface
      */
     protected function getLinkValue()
     {
-        $urlToSlug = ltrim($this->field->getUriToSlug(), "/");
-        $urlToSlugElement = Html::span( $urlToSlug );
+        $urlToSlug        = ltrim($this->field->getUriToSlug(), "/");
+        $urlToSlugElement = Html::span($urlToSlug);
 
         return [
             [
                 url('/'),
                 '/',
                 $urlToSlugElement,
-                ($urlToSlug) ? '/' : ''
+                ($urlToSlug) ? '/' : '',
             ],
-            Html::span($this->field->getValue())
+            Html::span($this->field->getValue()),
         ];
     }
 
@@ -126,7 +127,7 @@ class SlugFieldRenderer implements RendererInterface
      *
      * @return mixed
      */
-    public function setField( FieldInterface $field ): RendererInterface
+    public function setField(FieldInterface $field): RendererInterface
     {
         $this->field = $field;
     }
@@ -146,7 +147,7 @@ class SlugFieldRenderer implements RendererInterface
      *
      * @return StyleOptionsInterface
      */
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         return $options;
     }

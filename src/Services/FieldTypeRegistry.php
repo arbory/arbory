@@ -84,7 +84,7 @@ class FieldTypeRegistry
         $fieldClass = $this->findByType($type);
 
         if(!$fieldClass || !class_exists($fieldClass)) {
-            throw new \InvalidArgumentException("Could not resolve a field for a type {$type}");
+            throw new \InvalidArgumentException("Could not resolve a field for a type '{$type}'");
         }
 
         return new $fieldClass(...$parameters);
