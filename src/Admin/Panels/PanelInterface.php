@@ -2,11 +2,12 @@
 namespace Arbory\Base\Admin\Panels;
 
 
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Widgets\Button;
 use Illuminate\Contracts\Support\Renderable;
 
-interface PanelInterface extends Renderable
+interface PanelInterface extends Renderable, RenderOptionsInterface
 {
     /**
      * @param Toolbox $toolbox
