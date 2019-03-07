@@ -2,5 +2,13 @@
 
 return [
     'search' => 'Search',
-    'filter' => 'Filter and sort'
+    'filter' => 'Filter and sort',
+    'date_range' => [
+        'from' => ':action from',
+        'to' => ':action until'
+    ],
+    'range' => [
+        'from' => 'From',
+        'to' => 'To',
+    ],
 ];

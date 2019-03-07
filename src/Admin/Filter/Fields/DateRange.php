@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Filter\Fields;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\DateTime;
 
 use Illuminate\Http\Request;
 
@@ -20,8 +21,14 @@ class DateRange
     public function render()
     {
         return new Content([Html::div( [
-            Html::h3( ['select'] ),
-            Html::select(),
-        ] )->addClass( 'select' )]);
+            Html::div( [
+                Html::h4( trans('arbory::filter.date_range.from') ),
+                Html::input()->addClass( 'hasDatepicker' )
+            ] )->addClass( 'column' ),
+            Html::div( [
+                Html::h4( trans('arbory::filter.date_range.to') ),
+                Html::input()->addClass( 'hasDatepicker' )
+            ] )->addClass( 'column' ),
+        ] )->addClass( 'date-range' )]);
     }
 }

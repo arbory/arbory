@@ -6,7 +6,7 @@
   top: steps(10);
   transition: right 0.3s ease;
   height: calc(100vh - 120px);
-  box-shadow: -2px 4px 8px 0 rgba(0,0,0,0.15);
+  box-shadow: -2px 4px 8px 0 $color-shadow-lightest;
   background: white;
   z-index: 20;
 
@@ -37,7 +37,7 @@
 
   .accordion
   {
-    border-bottom: 1px solid #EDEFF5;
+    border-bottom: 1px solid $color-border-light;
     padding: 0 20px;
     .accordion__heading
     {
@@ -70,17 +70,18 @@
         {
           height: 40px;
           width: 100%;
-          border: 1px solid #DADDE5;
+          border: 1px solid $color-border-normal;
           border-radius: 3px;
         }
       }
 
-      .multiselect{
+      .multiselect
+      {
         label
         {
           display: block;
           margin-bottom: 10px;
-          color: #282828;
+          color: $color-background-inverted-normal;
           font-size: 14px;
           letter-spacing: 0.79px;
           line-height: 16px;
@@ -88,6 +89,35 @@
           &:last-child
           {
             margin-bottom: 0;
+          }
+        }
+      }
+
+      .date-range
+      {
+        display: flex;
+        .column
+        {
+          width: calc(50% - 10px);
+          margin-right: 20px;
+
+          &:last-child
+          {
+            margin-right: 0;
+          }
+
+          h4
+          {
+            font-size: 14px;
+            letter-spacing: 0.79px;
+            line-height: 16px;
+            opacity: 0.6;
+            color: $color-background-inverted-normal;
+            padding-bottom: steps(0.5);
+          }
+
+          input{
+            width: 100%;
           }
         }
       }
