@@ -32,6 +32,7 @@ export default class Sortable {
         ));
 
         container.on('click', '.sortable-navigation .button', event => this.manualSort(event));
+        container.on('click', '.sortable-navigation.button', event => this.manualSort(event));
         container.on('DOMNodeInserted DOMNodeRemoved', () => this.handleUpdate());
     }
 
@@ -44,7 +45,7 @@ export default class Sortable {
     }
 
     manualSort(event) {
-        const itemSelector = 'fieldset.item';
+        const itemSelector = '.item';
         let target = jQuery(event.target);
         let button = target.is('button') ? target : target.closest('button');
         let item = button.closest(itemSelector);
