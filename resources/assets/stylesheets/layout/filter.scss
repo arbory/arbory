@@ -75,7 +75,8 @@
         }
       }
 
-      .multiselect
+      .multiselect,
+      .checkbox
       {
         label
         {
@@ -93,7 +94,8 @@
         }
       }
 
-      .date-range
+      .date-range,
+      .range
       {
         display: flex;
         .column
