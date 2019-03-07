@@ -34,4 +34,63 @@
     letter-spacing: 0.9px;
     float: left;
   }
+
+  .accordion
+  {
+    border-bottom: 1px solid #EDEFF5;
+    padding: 0 20px;
+    .accordion__heading
+    {
+      position: relative;
+      padding: 20px 0;
+
+      h3
+      {
+        color: #282828;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.79px;
+        line-height: 16px;
+      }
+
+      .button{
+        position: absolute;
+        right: 20px;
+        top: 10px;
+      }
+    }
+
+    .accordion__body
+    {
+      margin-bottom: 20px;
+
+      .select
+      {
+        select
+        {
+          height: 40px;
+          width: 100%;
+          border: 1px solid #DADDE5;
+          border-radius: 3px;
+        }
+      }
+
+      .multiselect{
+        label
+        {
+          display: block;
+          margin-bottom: 10px;
+          color: #282828;
+          font-size: 14px;
+          letter-spacing: 0.79px;
+          line-height: 16px;
+
+          &:last-child
+          {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
 }
