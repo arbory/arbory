@@ -81,6 +81,17 @@ class Button implements Renderable
     }
 
     /**
+     * @param $name
+     * @return Button
+     */
+    public function withoutBackground()
+    {
+        $this->element->addClass( 'without-background' );
+
+        return $this;
+    }
+
+    /**
      * @param $inputType
      * @param null $visualType
      * @return Button
