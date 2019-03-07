@@ -20,8 +20,16 @@ class Range
     public function render()
     {
         return new Content([Html::div( [
-            Html::h3( ['select'] ),
-            Html::select(),
-        ] )->addClass( 'select' )]);
+            Html::div( [
+                Html::h4( trans('arbory::filter.range.from') ),
+                Html::input()
+                    ->setType( 'number' )
+            ] )->addClass( 'column' ),
+            Html::div( [
+                Html::h4( trans('arbory::filter.range.to') ),
+                Html::input()
+                    ->setType( 'number' )
+            ] )->addClass( 'column' ),
+        ] )->addClass( 'range' )]);
     }
 }
