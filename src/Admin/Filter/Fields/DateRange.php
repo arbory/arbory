@@ -23,11 +23,13 @@ class DateRange
         return new Content([Html::div( [
             Html::div( [
                 Html::h4( trans('arbory::filter.date_range.from') ),
-                Html::input()->addClass( 'hasDatepicker' )
+                Html::input()
+                    ->setType( 'date' )
             ] )->addClass( 'column' ),
             Html::div( [
                 Html::h4( trans('arbory::filter.date_range.to') ),
-                Html::input()->addClass( 'hasDatepicker' )
+                Html::input()
+                    ->setType( 'date' )
             ] )->addClass( 'column' ),
         ] )->addClass( 'date-range' )]);
     }
