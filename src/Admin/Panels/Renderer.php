@@ -28,13 +28,19 @@ class Renderer implements Renderable
 
     public function render()
     {
-        return Html::div(
+        $wrapper = $this->panel->getWrapper();
+
+        $element = Html::div(
             [
                 $this->header(),
                 Html::div($this->panel->getContent())
                     ->addClass('content'),
             ]
-        )->addClass('panel');
+        )->addClass('panel')
+                   ->addClass(implode(' ', $this->panel->getClasses()))
+                   ->addAttributes($this->panel->getAttributes());
+
+        return $wrapper ? $wrapper($element) : $element;
     }
 
     protected function header()
