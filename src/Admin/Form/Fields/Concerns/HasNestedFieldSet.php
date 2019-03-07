@@ -25,7 +25,7 @@ trait HasNestedFieldSet
     /**
      * @param $model
      *
-     * @return FieldSet|FieldInterface
+     * @return FieldSet|FieldInterface[]
      */
     public function getNestedFieldSet( $model )
     {
