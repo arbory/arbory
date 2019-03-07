@@ -54,6 +54,12 @@ input[type="submit"]
         }
     }
 
+    &.without-background
+    {
+        background: none;
+        color: $color-highlight-normal;
+    }
+
     &.danger
     {
         &:hover,
