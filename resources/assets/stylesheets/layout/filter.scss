@@ -39,6 +39,7 @@
   {
     border-bottom: 1px solid $color-border-light;
     padding: 0 20px;
+
     .accordion__heading
     {
       position: relative;
@@ -55,7 +56,7 @@
 
       .button{
         position: absolute;
-        right: 20px;
+        right: 0;
         top: 10px;
       }
     }
