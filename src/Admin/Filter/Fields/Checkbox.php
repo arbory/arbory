@@ -19,9 +19,13 @@ class Checkbox
 
     public function render()
     {
-        return new Content([Html::div( [
-            Html::h3( ['select'] ),
-            Html::select(),
-        ] )->addClass( 'select' )]);
+        return new Content([
+            Html::div( [
+                Html::label( [
+                    Html::input( 'hello world' )
+                        ->setType( 'checkbox' )
+                ] ),
+            ] )->addClass( 'checkbox' )
+        ]);
     }
 }
