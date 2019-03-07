@@ -83,7 +83,13 @@ class FieldSetRenderer implements FieldSetRendererInterface
         $currentRow = $grid->row();
 
         foreach ( $this->fieldSet->all() as $field ) {
+            if($field->isHidden()) continue;
+
             $rendered = $this->renderField($field);
+
+            if(blank($rendered)) {
+                continue;
+            }
 
             $rows = $field->getRows() ?? [
                 'size'        => $grid->getRowSize(),
@@ -114,6 +120,8 @@ class FieldSetRenderer implements FieldSetRendererInterface
      */
     protected function renderField( FieldInterface $field )
     {
+        if($field->isHidden()) return null;
+
         $style = $field->getStyle() ?: $this->getDefaultStyle();
 
         $rendered = $this->styleManager->render($style, $field);

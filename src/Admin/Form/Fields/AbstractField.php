@@ -70,6 +70,11 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     protected $style;
 
     /**
+     * @var bool
+     */
+    protected $hidden = false;
+
+    /**
      * AbstractField constructor.
      * @param string $name
      */
@@ -384,5 +389,25 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     public function beforeRender( RendererInterface $renderer )
     {
 
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHidden(): bool
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @param bool $hidden
+     *
+     * @return FieldInterface
+     */
+    public function setHidden(bool $hidden): FieldInterface
+    {
+        $this->hidden = $hidden;
+
+        return $this;
     }
 }
