@@ -45,11 +45,6 @@ class ObjectRelation extends AbstractField
     private $groupByGetName;
 
     /**
-     * @var bool
-     */
-    private $default = true;
-
-    /**
      * @var string
      */
     protected $rendererClass = ObjectRelationRenderer::class;
@@ -112,17 +107,6 @@ class ObjectRelation extends AbstractField
     public function setIndentAttribute( string $indentAttribute = null )
     {
         $this->indentAttribute = $indentAttribute;
-
-        return $this;
-    }
-
-    /**
-     * @param Model|bool $default
-     * @return self
-     */
-    public function default( $default )
-    {
-        $this->default = $default;
 
         return $this;
     }
@@ -305,11 +289,6 @@ class ObjectRelation extends AbstractField
     {
         $values = collect();
 
-        if ( $this->hasDefault() )
-        {
-            $values->push( null );
-        }
-
         $values = $values->merge($this->options ?: $this->relatedModelType::all()->mapWithKeys( function( $item )
         {
             return [ $item->getKey() => $item ];
@@ -440,14 +419,6 @@ class ObjectRelation extends AbstractField
     public function isGrouped()
     {
         return (bool) $this->groupByAttribute;
-    }
-
-    /**
-     * @return bool
-     */
-    private function hasDefault()
-    {
-        return $this->isSingular() && $this->default;
     }
 
     /**
