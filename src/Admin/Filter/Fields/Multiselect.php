@@ -22,16 +22,20 @@ class Multiselect
         return new Content([
             Html::div( [
                 Html::label( [
-                    Html::checkbox( 'hello world' )
+                    Html::input( 'hello world' )
+                        ->setType( 'checkbox' )
                 ] ),
                 Html::label( [
-                    Html::checkbox( 'hello world' )
+                    Html::input( 'hello world' )
+                    ->setType( 'checkbox' )
                 ] ),
                 Html::label( [
-                    Html::checkbox( 'hello world' )
+                    Html::input( 'hello world' )
+                    ->setType( 'checkbox' )
                 ] ),
                 Html::label( [
-                    Html::checkbox( 'hello world' )
+                    Html::input( 'hello world' )
+                    ->setType( 'checkbox' )
                 ] ),
         ] )->addClass( 'multiselect' )
         ]);
