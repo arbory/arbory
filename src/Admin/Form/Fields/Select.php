@@ -109,7 +109,20 @@ class Select extends ControlField
     {
         $value = parent::getValue();
 
-        return $this->isMultiple() ? explode( ',', $value ) : $value;
+
+        if($this->isMultiple()) {
+            if($value instanceof Collection) {
+                return $value->all();
+            }
+
+            if(is_string($value)) {
+                $value = explode(',', $value);
+            }
+
+            return array_wrap($value);
+        }
+
+        return $value;
     }
 
     /**
