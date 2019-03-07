@@ -2,9 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasSelectOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\SelectFieldRenderer;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 /**
  * Class Dropdown
@@ -13,6 +16,7 @@ use Illuminate\Http\Request;
 class Select extends ControlField
 {
     use HasSelectOptions;
+    use HasRelationships;
 
     protected $control = \Arbory\Base\Admin\Form\Controls\SelectControl::class;
 
@@ -22,6 +26,11 @@ class Select extends ControlField
      * @var bool
      */
     protected $multiple = false;
+
+    /**
+     * @var string
+     */
+    protected $optionTitleKey;
 
     /**
      * @param Request $request
@@ -42,6 +51,12 @@ class Select extends ControlField
         if( is_array( $value ) )
         {
             $value = implode( ',', $value );
+        }
+
+        // Use relation foreign key when name matches relationships
+        if( $this->isRelationship() )
+        {
+            $property = $this->getRelation()->getForeignKey();
         }
 
         $this->getModel()->setAttribute( $property, $value );
@@ -95,5 +110,55 @@ class Select extends ControlField
         $value = parent::getValue();
 
         return $this->isMultiple() ? explode( ',', $value ) : $value;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getOptions(): Collection
+    {
+        if($this->options === null && $this->isRelationship()) {
+            return $this->getRelatedItems()->mapWithKeys(
+                function(Model $model) {
+                    $value = $this->getOptionTitleKey() ? $model->getAttribute($this->getOptionTitleKey()) : (string)
+                    $model;
+
+                    return [
+                        $model->getKey() => $value
+                    ];
+                }
+            );
+        }
+
+        return $this->options;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRelationship()
+    {
+        return method_exists( $this->getModel(), $this->getName() ) ;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOptionTitleKey()
+    {
+        return $this->optionTitleKey;
+    }
+
+
+    /**
+     * @param $optionTitleKey
+     *
+     * @return $this
+     */
+    public function setOptionTitleKey( $optionTitleKey )
+    {
+        $this->optionTitleKey = $optionTitleKey;
+
+        return $this;
     }
 }
