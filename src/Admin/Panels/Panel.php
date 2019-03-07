@@ -3,16 +3,13 @@ namespace Arbory\Base\Admin\Panels;
 
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Layout\WrappableInterface;
-use Arbory\Base\Admin\Navigator\Item;
-use Arbory\Base\Admin\Navigator\NavigableInterface;
-use Arbory\Base\Admin\Navigator\Navigator;
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Traits\Renderable;
 use Arbory\Base\Admin\Widgets\Button;
 use Illuminate\Contracts\Support\Renderable as RenderableInterface;
 
-class Panel implements PanelInterface, WrappableInterface, NavigableInterface
+class Panel implements PanelInterface, WrappableInterface
 {
     use Renderable;
     use HasRenderOptions;
@@ -172,28 +169,8 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
         return $this->toolbox;
     }
 
-    public function navigator(Navigator $navigator)
-    {
-
-    }
-
     public function __toString()
     {
         return (string) $this->render();
-    }
-
-    public function isNavigable(): bool
-    {
-        return $this->navigable;
-    }
-
-    /**
-     * @param bool $navigable
-     */
-    public function setNavigable(bool $navigable): self
-    {
-        $this->navigable = $navigable;
-
-        return $this;
     }
 }
