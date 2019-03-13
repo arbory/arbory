@@ -435,7 +435,7 @@ trait Crudify
         return redirect($request->has('save_and_return') ? $this->module()->url('index') : $url);
     }
 
-        /**
+    /**
      * Creates a layout instance
      *
      * @param string $component
