@@ -2,16 +2,16 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Admin\Filter\Fields\Checkbox;
-use Arbory\Base\Admin\Filter\Fields\DateRange;
-use Arbory\Base\Admin\Filter\Fields\Multiselect;
-use Arbory\Base\Admin\Filter\Fields\Range;
+use Arbory\Base\Admin\Filter\Type\Checkbox;
+use Arbory\Base\Admin\Filter\Type\DateRange;
+use Arbory\Base\Admin\Filter\Type\Multiselect;
+use Arbory\Base\Admin\Filter\Type\Range;
+use Arbory\Base\Admin\Filter\Type\Select;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Widgets\Button;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Admin\Filter\Fields\Select;
 
 class Filter implements Renderable
 {
