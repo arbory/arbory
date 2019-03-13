@@ -57,6 +57,11 @@ class Column
     protected $searchable = true;
 
     /**
+     * @var bool
+     */
+    protected $hasFilter = false;
+
+    /**
      * Column constructor.
      * @param string $name
      * @param string $label
@@ -131,6 +136,23 @@ class Column
     public function searchable( $isSearchable = true )
     {
         $this->searchable = $isSearchable;
+
+        return $this;
+    }
+
+    /**
+     * @param $type
+     * @param bool $hasFilter
+     * @return $this
+     */
+    public function hasFilter( $type, $hasFilter = true )
+    {
+        $this->hasFilter = $hasFilter;
+
+        if ( $hasFilter == true )
+        {
+            $this->filterType = $type;
+        }
 
         return $this;
     }
