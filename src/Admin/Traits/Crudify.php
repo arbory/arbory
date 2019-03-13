@@ -175,7 +175,7 @@ trait Crudify
 
         $form->store($request);
 
-        return $this->getAfterEditResponse($request);
+        return $this->getAfterCreateResponse($request, $form->getModel());
     }
 
     /**
@@ -221,7 +221,7 @@ trait Crudify
 
         $form->update($request);
 
-        return $this->getAfterEditResponse($request);
+        return $this->getAfterEditResponse($request, $form->getModel());
     }
 
     /**
@@ -413,14 +413,29 @@ trait Crudify
 
     /**
      * @param Request $request
+     * @param Model $model
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    protected function getAfterEditResponse(Request $request)
+    protected function getAfterEditResponse(Request $request, $model)
     {
         return redirect($request->has('save_and_return') ? $this->module()->url('index') : $request->url());
     }
 
     /**
+     * @param Request $request
+     * @param Model $model
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    protected function getAfterCreateResponse(Request $request, $model)
+    {
+        $url = $this->url('edit', $model);
+
+        return redirect($request->has('save_and_return') ? $this->module()->url('index') : $url);
+    }
+
+        /**
      * Creates a layout instance
      *
      * @param string $component
