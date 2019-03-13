@@ -1,10 +1,10 @@
 <?php
 
-namespace Arbory\Base\Admin\Filter\Fields;
+namespace Arbory\Base\Admin\Filter\Type;
+
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form\Fields\DateTime;
-
 use Illuminate\Http\Request;
 
 /**
