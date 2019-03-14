@@ -6,7 +6,7 @@ use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Widgets\Button;
 use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Grid\Column;
 
 class Filter
 {
@@ -37,21 +37,21 @@ class Filter
      */
     protected function addFields()
     {
-        $fieldCollection = [];
-
         foreach ( $this->columns as $column ) {
             if ( $column->getFilterStatus() ) {
-                $type = $column->filterType;
 
-                if ( !empty($type->options) ){
+                if ( !empty($column->filterType->options) ){
                     $content = $column->filterType->options;
                 }else{
                     $content = null;
                 }
 
-                $name = $column->getLabel();
-
-                $fieldCollection[] = $this->addField( $column->filterType, $name, $content );
+                $fieldCollection[] = $this->addField(
+                    $column->getGrid()->getModel()->getTable(),
+                    $column->filterType,
+                    $column->getLabel(),
+                    $content
+                );
             }
         }
 
@@ -59,13 +59,16 @@ class Filter
     }
 
     /**
+     * @param $table
      * @param $type
-     * @param $column
+     * @param $name
+     * @param $content
+     * @return Content
      */
-    protected function addField( $type, $name, $content )
+    protected function addField( $table, $type, $name, $content )
     {
         if ( $content ){
-            $field = new $type($content);
+            $field = new $type($content, $table);
         }else{
             $field = new $type();
         }

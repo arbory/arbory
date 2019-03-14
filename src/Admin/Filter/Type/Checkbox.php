@@ -2,15 +2,16 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
 use Illuminate\Http\Request;
 
 /**
- * Class Dropdown
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Checkbox
+ * @package Arbory\Base\Admin\Filter\Type
  */
-class Checkbox
+class Checkbox extends Type
 {
     public function __toString()
     {

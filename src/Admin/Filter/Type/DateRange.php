@@ -2,16 +2,17 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form\Fields\DateTime;
 use Illuminate\Http\Request;
 
 /**
- * Class Dropdown
- * @package Arbory\Base\Admin\Form\Fields
+ * Class DateRange
+ * @package Arbory\Base\Admin\Filter\Type
  */
-class DateRange
+class DateRange extends Type
 {
     public function __toString()
     {

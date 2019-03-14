@@ -2,15 +2,16 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
 use Illuminate\Http\Request;
 
 /**
- * Class Dropdown
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Select
+ * @package Arbory\Base\Admin\Filter\Type
  */
-class Select
+class Select extends Type
 {
     /**
      * Filter constructor.
@@ -18,14 +19,6 @@ class Select
      */
     function __construct( $options ) {
         $this->options = $options;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->render();
     }
 
     /**
@@ -39,7 +32,7 @@ class Select
      * @param mixed $options
      */
     protected function htmlOptions() {
-        $options = [];
+        $options[] = Html::option()->addAttributes( [ 'selected' ] );
 
         foreach ( $this->options as $key => $value ) {
             $options[] = Html::option( [ $value ] )->addAttributes( [ 'value' => $key ] );
