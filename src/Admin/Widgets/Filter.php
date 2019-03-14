@@ -2,19 +2,22 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Admin\Filter\Type\Checkbox;
-use Arbory\Base\Admin\Filter\Type\DateRange;
-use Arbory\Base\Admin\Filter\Type\Multiselect;
-use Arbory\Base\Admin\Filter\Type\Range;
-use Arbory\Base\Admin\Filter\Type\Select;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Widgets\Button;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Admin\Grid;
 
-class Filter implements Renderable
+class Filter
 {
+    /**
+     * Filter constructor.
+     * @param $columns
+     */
+    function __construct( $columns ) {
+        $this->columns = $columns;
+    }
+
     /**
      * @return mixed
      */
@@ -30,33 +33,41 @@ class Filter implements Renderable
     }
 
     /**
+     * @return array
+     */
+    protected function addFields()
+    {
+        $fieldCollection = [];
+
+        foreach ( $this->columns as $column ) {
+            if ( $column->getFilterStatus() ) {
+                $type = $column->filterType;
+
+                if ( !empty($type->options) ){
+                    $content = $column->filterType->options;
+                }else{
+                    $content = null;
+                }
+
+                $name = $column->getLabel();
+
+                $fieldCollection[] = $this->addField( $column->filterType, $name, $content );
+            }
+        }
+
+        return $fieldCollection;
+    }
+
+    /**
      * @param $type
      * @param $column
      */
-    protected function addField( $type, $column, $name = '' )
+    protected function addField( $type, $name, $content )
     {
-        if ( empty( $name ) )
-        {
-            $name = $column;
-        }
-
-        switch ( $type )
-        {
-            case 'select' :
-                $field = new Select();
-                break;
-            case 'multiselect' :
-                $field = new Multiselect();
-                break;
-            case 'range' :
-                $field = new Range();
-                break;
-            case 'dateRange' :
-                $field = new DateRange();
-                break;
-            case 'checkbox' :
-                $field = new Checkbox();
-                break;
+        if ( $content ){
+            $field = new $type($content);
+        }else{
+            $field = new $type();
         }
 
         return new Content( [
@@ -84,14 +95,8 @@ class Filter implements Renderable
         return new Content( [
             Html::aside( [
                 $this->filterHeader(),
-                $this->addField('select', 'column_select', 'Select' ),
-                $this->addField('multiselect', 'column_multiselect', 'Multiselect' ),
-                $this->addField('range', 'column_range', 'Range integer' ),
-                $this->addField('dateRange', 'column_date-range', 'Date range' ),
-                $this->addField('checkbox', 'column_checkbox', 'Checkbox' )
+                $this->addFields(),
             ] )->addClass( 'form-filter' )
         ] );
-
-
     }
 }

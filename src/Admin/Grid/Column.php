@@ -97,6 +97,13 @@ class Column
     }
 
     /**
+     * @return bool
+     */
+    public function getFilterStatus() {
+        return $this->hasFilter;
+    }
+
+    /**
      * @param Grid $grid
      * @return Column
      */
@@ -149,8 +156,7 @@ class Column
     {
         $this->hasFilter = $hasFilter;
 
-        if ( $hasFilter == true )
-        {
+        if ( $this->hasFilter === true ) {
             $this->filterType = $type;
         }
 

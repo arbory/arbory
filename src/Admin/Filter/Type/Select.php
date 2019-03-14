@@ -12,15 +12,51 @@ use Illuminate\Http\Request;
  */
 class Select
 {
+    /**
+     * Filter constructor.
+     * @param $columns
+     */
+    function __construct( $options ) {
+        $this->options = $options;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string) $this->render();
     }
 
-    public function render()
+    /**
+     * @return null
+     */
+    protected function getOptions() {
+        return $this->options;
+    }
+
+    /**
+     * @param mixed $options
+     */
+    protected function htmlOptions() {
+        $options = [];
+
+        foreach ( $this->options as $key => $value ) {
+            $options[] = Html::option( [ $value ] )->addAttributes( [ 'value' => $key ] );
+        }
+
+        return $options;
+    }
+
+    /**
+     * @return Content
+     */
+    protected function render()
     {
         return new Content([Html::div( [
-            Html::select(),
+            Html::select( [
+                $this->htmlOptions(),
+            ] ),
         ] )->addClass( 'select' )]);
     }
 }

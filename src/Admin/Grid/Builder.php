@@ -59,7 +59,7 @@ class Builder implements Renderable
             return null;
         }
 
-        return ( new Filter( 'test' ) )->render();
+        return ( new Filter( $this->grid()->getColumns() ) )->render();
     }
 
     /**
