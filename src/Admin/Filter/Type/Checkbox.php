@@ -12,14 +12,16 @@ use Arbory\Base\Html\Html;
  */
 class Checkbox extends Type
 {
-    
+    function __construct( $content = null ){
+        $this->content = $content;
+    }
 
     public function render()
     {
         return new Content([
             Html::div( [
                 Html::label( [
-                    Html::input()
+                    Html::input( $this->content )
                         ->setType( 'checkbox' )
                 ] ),
             ] )->addClass( 'checkbox' )

@@ -65,6 +65,7 @@ class Filter implements Renderable
     protected function addField( $type, $name, $content )
     {
         if ( !is_null($content) ) {
+
             $field = new $type( $content );
         } else {
             $field = new $type();
