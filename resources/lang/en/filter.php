@@ -11,4 +11,5 @@ return [
         'from' => 'From',
         'to' => 'To',
     ],
+    'enabled' => 'Enabled',
 ];

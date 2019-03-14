@@ -14,7 +14,6 @@ class Filter implements Renderable
      * @param Grid $grid
      */
     function __construct( Grid $grid ) {
-        $this->model = $grid->getModel();
         $this->columns = $grid->getColumns();
     }
 
@@ -40,8 +39,8 @@ class Filter implements Renderable
         foreach ( $this->columns as $column ) {
             if ( $column->getFilterStatus() ) {
 
-                if ( !empty($column->filterType->options) ) {
-                    $content = $column->filterType->options;
+                if ( !empty($column->filterType->content) ) {
+                    $content = $column->filterType->content;
                 } else {
                     $content = null;
                 }
@@ -58,7 +57,6 @@ class Filter implements Renderable
     }
 
     /**
-     * @param $table
      * @param $type
      * @param $name
      * @param $content
@@ -66,12 +64,11 @@ class Filter implements Renderable
      */
     protected function addField( $type, $name, $content )
     {
-        if ( $content ) {
+        if ( !is_null($content) ) {
             $field = new $type( $content );
         } else {
-            $field = new $type( );
+            $field = new $type();
         }
-
         return new Content( [
             Html::div( [
                 Html::div( [

@@ -14,10 +14,10 @@ class Select extends Type
 {
     /**
      * Filter constructor.
-     * @param null $options
+     * @param null $content
      */
-    function __construct( $options = null ) {
-        $this->options = $options;
+    function __construct( $content ) {
+        $this->content = $content;
     }
 
     /**
@@ -26,7 +26,7 @@ class Select extends Type
     protected function getOptionList() {
         $options[] = Html::option()->addAttributes( [ 'selected' ] );
 
-        foreach ( $this->options as $key => $value ) {
+        foreach ( $this->content as $key => $value ) {
             $options[] = Html::option( [ $value ] )->addAttributes( [ 'value' => $key ] );
         }
 
