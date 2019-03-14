@@ -5,7 +5,6 @@ namespace Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
-use Illuminate\Http\Request;
 
 /**
  * Class Range
@@ -13,15 +12,6 @@ use Illuminate\Http\Request;
  */
 class Range extends Type
 {
-    function __construct() {
-//        $this->table = $table;
-    }
-
-    public function __toString()
-    {
-        return (string) $this->render();
-    }
-
     public function render()
     {
         return new Content([Html::div( [

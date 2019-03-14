@@ -2,20 +2,20 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
+use Arbory\Base\Admin\Grid;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Admin\Widgets\Button;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Renderable;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Admin\Grid\Column;
 
-class Filter
+class Filter implements Renderable
 {
     /**
      * Filter constructor.
-     * @param $columns
+     * @param Grid $grid
      */
-    function __construct( $columns ) {
-        $this->columns = $columns;
+    function __construct( Grid $grid ) {
+        $this->model = $grid->getModel();
+        $this->columns = $grid->getColumns();
     }
 
     /**
@@ -40,14 +40,13 @@ class Filter
         foreach ( $this->columns as $column ) {
             if ( $column->getFilterStatus() ) {
 
-                if ( !empty($column->filterType->options) ){
+                if ( !empty($column->filterType->options) ) {
                     $content = $column->filterType->options;
-                }else{
+                } else {
                     $content = null;
                 }
 
                 $fieldCollection[] = $this->addField(
-                    $column->getGrid()->getModel()->getTable(),
                     $column->filterType,
                     $column->getLabel(),
                     $content
@@ -65,12 +64,12 @@ class Filter
      * @param $content
      * @return Content
      */
-    protected function addField( $table, $type, $name, $content )
+    protected function addField( $type, $name, $content )
     {
-        if ( $content ){
-            $field = new $type($content, $table);
-        }else{
-            $field = new $type();
+        if ( $content ) {
+            $field = new $type( $content );
+        } else {
+            $field = new $type( );
         }
 
         return new Content( [

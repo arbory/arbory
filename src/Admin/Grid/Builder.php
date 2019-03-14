@@ -50,7 +50,7 @@ class Builder implements Renderable
     }
 
     /**
-     * @return |null
+     * @return Content|string|null
      */
     protected function filter()
     {
@@ -59,7 +59,7 @@ class Builder implements Renderable
             return null;
         }
 
-        return ( new Filter( $this->grid()->getColumns() ) )->render();
+        return ( new Filter( $this->grid() ) )->render();
     }
 
     /**

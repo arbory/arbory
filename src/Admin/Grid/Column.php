@@ -104,14 +104,6 @@ class Column
     }
 
     /**
-     * @return Grid
-     */
-    public function getGrid(): Grid
-    {
-        return $this->grid;
-    }
-
-    /**
      * @param Grid $grid
      * @return Column
      */

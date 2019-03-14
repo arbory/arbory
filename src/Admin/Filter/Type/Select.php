@@ -5,7 +5,6 @@ namespace Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
-use Illuminate\Http\Request;
 
 /**
  * Class Select
@@ -15,23 +14,16 @@ class Select extends Type
 {
     /**
      * Filter constructor.
-     * @param $columns
+     * @param null $options
      */
-    function __construct( $options ) {
+    function __construct( $options = null ) {
         $this->options = $options;
     }
 
     /**
-     * @return null
+     * @return array
      */
-    protected function getOptions() {
-        return $this->options;
-    }
-
-    /**
-     * @param mixed $options
-     */
-    protected function htmlOptions() {
+    protected function getOptionList() {
         $options[] = Html::option()->addAttributes( [ 'selected' ] );
 
         foreach ( $this->options as $key => $value ) {
@@ -44,11 +36,11 @@ class Select extends Type
     /**
      * @return Content
      */
-    protected function render()
+    public function render()
     {
         return new Content([Html::div( [
             Html::select( [
-                $this->htmlOptions(),
+                $this->getOptionList(),
             ] ),
         ] )->addClass( 'select' )]);
     }
