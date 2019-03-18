@@ -16,12 +16,12 @@ class DateRange extends Type
     {
         return new Content([Html::div( [
             Html::div( [
-                Html::h4( trans('arbory::filter.date_range.from') ),
+                Html::h4( trans('arbory::filter.date.from') ),
                 Html::input()
                     ->setType( 'date' )
             ] )->addClass( 'column' ),
             Html::div( [
-                Html::h4( trans('arbory::filter.date_range.to') ),
+                Html::h4( trans('arbory::filter.date.to') ),
                 Html::input()
                     ->setType( 'date' )
             ] )->addClass( 'column' ),

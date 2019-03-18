@@ -3,7 +3,7 @@
 return [
     'search' => 'Search',
     'filter' => 'Filter and sort',
-    'date_range' => [
+    'date' => [
         'from' => ':action from',
         'to' => ':action until'
     ],
