@@ -14,6 +14,7 @@ class Filter implements Renderable
      * @param Grid $grid
      */
     function __construct( Grid $grid ) {
+        $this->action = $grid->getModule()->url('index');
         $this->columns = $grid->getColumns();
     }
 
@@ -71,7 +72,7 @@ class Filter implements Renderable
             $field = new $type();
         }
         return new Content( [
-            Html::div( [
+            Html::fieldset( [
                 Html::div( [
                     Html::h3( $name ),
                     Button::create()
@@ -89,7 +90,7 @@ class Filter implements Renderable
 
     protected function filterButton() {
         return Button::create()
-            ->type('button', 'full-width' )
+            ->type('submit', 'full-width' )
             ->title(trans('arbory::filter.apply'));
     }
 
@@ -99,11 +100,12 @@ class Filter implements Renderable
     public function render()
     {
         return new Content( [
-            Html::aside( [
+            Html::form( [
                 $this->filterHeader(),
                 $this->addFields(),
                 $this->filterButton(),
             ] )->addClass( 'form-filter' )
+               ->addAttributes( [ 'action' => $this->action ] )
         ] );
     }
 }

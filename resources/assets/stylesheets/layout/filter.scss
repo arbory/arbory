@@ -39,6 +39,12 @@
   {
     border-bottom: 1px solid $color-border-light;
     padding: 0 20px;
+    margin: 0;
+
+    &:after
+    {
+      content: none;
+    }
 
     .accordion__heading
     {
