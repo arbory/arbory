@@ -87,6 +87,12 @@ class Filter implements Renderable
         ] );
     }
 
+    protected function filterButton() {
+        return Button::create()
+            ->type('button', 'full-width' )
+            ->title(trans('arbory::filter.apply'));
+    }
+
     /**
      * @return Content|string
      */
@@ -96,6 +102,7 @@ class Filter implements Renderable
             Html::aside( [
                 $this->filterHeader(),
                 $this->addFields(),
+                $this->filterButton(),
             ] )->addClass( 'form-filter' )
         ] );
     }

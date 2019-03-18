@@ -12,4 +12,5 @@ return [
         'to' => 'To',
     ],
     'enabled' => 'Enabled',
+    'apply' => 'Apply'
 ];
