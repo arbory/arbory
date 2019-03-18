@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Admin\Grid\Column;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
@@ -16,8 +17,9 @@ class Select extends Type
      * Filter constructor.
      * @param null $content
      */
-    function __construct( $content ) {
+    function __construct( $content = null, Column $column = null ) {
         $this->content = $content;
+        $this->column = $column;
     }
 
     /**
@@ -41,7 +43,7 @@ class Select extends Type
         return new Content([Html::div( [
             Html::select( [
                 $this->getOptionList(),
-            ] ),
+            ] )->setName( $this->column->getName() ),
         ] )->addClass( 'select' )]);
     }
 }

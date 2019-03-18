@@ -76,6 +76,11 @@ class Filter implements FilterInterface
         $this->query->orderBy($column->getName(), $orderDirection);
     }
 
+    protected function filter(Collection $columns)
+    {
+        dd($this);
+    }
+
     /**
      * @param $phrase
      * @param Collection|Column[] $columns

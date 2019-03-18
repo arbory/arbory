@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Admin\Grid\Column;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
@@ -16,8 +17,9 @@ class Multiselect extends Type
      * Filter constructor.
      * @param null $content
      */
-    function __construct( $content ) {
+    function __construct( $content = null, Column $column = null ) {
         $this->content = $content;
+        $this->column = $column;
     }
 
     /**
@@ -30,6 +32,7 @@ class Multiselect extends Type
                 Html::input( $value )
                     ->setType( 'checkbox' )
                     ->addAttributes( [ 'value' => $key ] )
+                    ->setName( $this->column->getName() . '[]' )
             ] );
         }
 

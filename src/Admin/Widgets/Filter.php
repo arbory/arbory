@@ -47,8 +47,7 @@ class Filter implements Renderable
                 }
 
                 $fieldCollection[] = $this->addField(
-                    $column->filterType,
-                    $column->getLabel(),
+                    $column,
                     $content
                 );
             }
@@ -63,18 +62,20 @@ class Filter implements Renderable
      * @param $content
      * @return Content
      */
-    protected function addField( $type, $name, $content )
+    protected function addField( $column, $content )
     {
+        $type = $column->filterType;
+
         if ( !is_null($content) ) {
 
-            $field = new $type( $content );
+            $field = new $type( $content, $column );
         } else {
-            $field = new $type();
+            $field = new $type( $column );
         }
         return new Content( [
-            Html::fieldset( [
+            Html::div( [
                 Html::div( [
-                    Html::h3( $name ),
+                    Html::h3( $column->getLabel() ),
                     Button::create()
                     ->withIcon( 'minus' )
                     ->iconOnly()
@@ -106,6 +107,7 @@ class Filter implements Renderable
                 $this->filterButton(),
             ] )->addClass( 'form-filter' )
                ->addAttributes( [ 'action' => $this->action ] )
+               ->addAttributes( [ 'method' => 'get' ] )
         ] );
     }
 }
