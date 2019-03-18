@@ -12,26 +12,39 @@ use Arbory\Base\Html\Html;
  */
 class Multiselect extends Type
 {
+    /**
+     * Filter constructor.
+     * @param null $content
+     */
+    function __construct( $content ) {
+        $this->content = $content;
+    }
+
+    /**
+     * @return array
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     */
+    protected function getCheckboxList() {
+        foreach ( $this->content as $key => $value ) {
+            $options[] = Html::label( [
+                Html::input( $value )
+                    ->setType( 'checkbox' )
+                    ->addAttributes( [ 'value' => $key ] )
+            ] );
+        }
+
+        return $options;
+    }
+
+    /**
+     * @return Content
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     */
     public function render()
     {
         return new Content([
             Html::div( [
-                Html::label( [
-                    Html::input( 'hello world' )
-                        ->setType( 'checkbox' )
-                ] ),
-                Html::label( [
-                    Html::input( 'hello world' )
-                    ->setType( 'checkbox' )
-                ] ),
-                Html::label( [
-                    Html::input( 'hello world' )
-                    ->setType( 'checkbox' )
-                ] ),
-                Html::label( [
-                    Html::input( 'hello world' )
-                    ->setType( 'checkbox' )
-                ] ),
+                $this->getCheckboxList(),
         ] )->addClass( 'multiselect' )
         ]);
     }
