@@ -23,6 +23,7 @@ class Checkbox extends Type
                 Html::label( [
                     Html::input( $this->content )
                         ->setType( 'checkbox' )
+                        ->addAttributes( [ 'value' => 1 ] )
                 ] ),
             ] )->addClass( 'checkbox' )
         ]);
