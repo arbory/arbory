@@ -97,57 +97,61 @@ trait Bulk
     }
 
     /**
-     * @param $form
+     * @param Form $form
      */
-    protected function addCheckboxesToEachInput($form){
+    protected function addCheckboxesToEachInput(Form $form){
         //change original
         $originalFields = $form->fields();
 
         //iterate clone
         $clonedFields = clone $originalFields;
 
+        $items = $originalFields->getFields();
+
         //count when iput added only, cache adjunctions in collection
         $counter = 0;
 
-        $clonedFields->each(function($field, $key) use ($originalFields, &$counter){
+        foreach($clonedFields->getIterator() as $key => $field) {
             $type = $field->getFieldTypeName();
             if($type != 'type-hidden'){
                 $checkbox = new Form\Fields\Checkbox($field->getName().'_control');
                 $checkbox->addAttributes(['data-target' => $field->getName()]);
                 $checkbox->addClass('bulk-control');
                 $checkbox->setFieldSet($originalFields);
+                $checkbox->setLabel(trans('arbory::resources.check_to_change', ['input' => $field->getLabel()]));
                 //Empty checkboxes
                 if($type != 'type-checkbox')
-                    $originalFields[$key+$counter]->rules('required_with:resource.'.$field->getName().'_control');
-                $originalFields[$key+$counter]->addAttributes(['disabled' => 'disabled']);
+                    $originalFields->offsetGet($key+$counter)->rules('required_with:resource.'.$field->getName().'_control');
+                $originalFields->offsetGet($key+$counter)->addAttributes(['disabled' => 'disabled']);
                 //Add ckeckbox before input
-                $originalFields->splice($key+$counter, 0, [$checkbox]);
+                $items->splice($key+$counter, 0, [$checkbox]);
                 $counter++;
             }
-        });
+        };
 
     }
 
     /**
      * @param $form
      */
-    protected function preprocessMassUpdate($form)
+    protected function preprocessMassUpdate(Form $form)
     {
         $request = request();
 
         //change original
-        $originalFields = $form->fields();
+        $originalFields = $form->fields()->getFields();
 
         //iterate clone
-        $clonedFields = clone $originalFields;
-
-        $clonedFields->each(function($field, $key) use ($originalFields, $request){
+        $clonedFields = clone $originalFields->getIterator();
+        foreach ($clonedFields as $key => $field){
+            $name = $field->getName();
+            $nameSpace = $form->getNamespace();
+            $fieldName = $nameSpace.'.'.$name.'_control';
             if($field->getFieldTypeName() != 'type-hidden' &&
-                !$request->has($originalFields->getNamespace().'.'.$field->getName().'_control')) {
+                !$request->has($fieldName)) {
                 $originalFields->forget($key);
             }
-        });
-
+        }
     }
 
     /**

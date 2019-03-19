@@ -8,9 +8,10 @@ return [
     'save_and_return' => 'Save and Return',
     'save' => 'Save',
     'back_to_list' => 'Back',
-    'number' => 'No',
+    'nr' => 'No',
     'mass_form_title' => 'Update :count items',
     'mass_edit' => 'Mass edit',
+    'check_to_change' => 'Check to save ":input" field',
     'cancel'    => 'Cancel',
     'status' => [
         'enabled' => 'Enabled',

@@ -2,12 +2,13 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use App\Models\Product;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Widgets\Pagination;
 use Arbory\Base\Admin\Layout\Footer;
 use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Widgets\Link;
-use Arbory\Base\Admin\Widgets\SearchField;
+use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -68,6 +69,22 @@ class Builder implements Renderable
         $button->asButton(' mass-action ajaxbox')->title(trans('arbory::resources.mass_edit'));
 
         return Html::div($button->render())->addClass('mass-actions');
+    }
+
+    /**
+     * @return Column
+     */
+    protected function addBulkColumn(){
+        return $this->grid->column('id', trans('arbory::resources.nr'), 1)
+            ->checkable(true)
+            ->display(function($value, Column $column){
+                $cellContent = Html::span();
+                $checkbox = new CheckBox($value);
+                $checkbox->setValue($value);
+                $checkbox->addClass('mass-row');
+                $checkbox->setName('ids[]');
+                return $cellContent->append($checkbox);
+            });
     }
 
     /**
