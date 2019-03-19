@@ -19,7 +19,7 @@ class SelectFieldRenderer extends ControlFieldRenderer
         $control = $this->getControl();
         $control = $this->configureControl($control);
 
-        $control->setOptions($this->field->getOptions()->all());
+        $control->setOptions($this->field->getOptions()->prepend('', '')->all());
         $control->setSelected($this->field->getValue());
 
         $element = $control->element();

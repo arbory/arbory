@@ -30,10 +30,11 @@ interface StyleOptionsInterface extends RenderOptionsInterface
 
     /**
      * @param mixed $rows
+     * @param array $breakpoints
      *
      * @return StyleOptionsInterface
      */
-    public function setRows( $rows ):StyleOptionsInterface;
+    public function setRows( int $rows, array $breakpoints = [] ):StyleOptionsInterface;
 
     /**
      * @return mixed

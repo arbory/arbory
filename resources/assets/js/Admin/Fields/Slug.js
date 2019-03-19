@@ -142,7 +142,7 @@ export default class Slug {
             selector = '.localization';
             attributes += '[data-locale=' + this.getFieldLocale() + ']';
         }
-        return this.getForm().find(selector + attributes);
+        return this.getGroup().find(selector + attributes);
     }
 
     /**
@@ -155,7 +155,7 @@ export default class Slug {
     /**
      * @return {jQuery}
      */
-    getForm() {
-        return this.getField().closest('form');
+    getGroup() {
+        return this.getField().closest('fieldset.item,.body');
     }
 }

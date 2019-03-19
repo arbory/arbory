@@ -10,7 +10,7 @@ use Arbory\Base\Repositories\NodesRepository;
  * Class Slug
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Slug extends AbstractField
+class Slug extends Text
 {
     /**
      * @var string

@@ -3,7 +3,6 @@
 namespace Arbory\Base\Admin\Grid;
 
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Admin\Widgets\Pagination;
 use Arbory\Base\Admin\Layout\Footer;
 use Arbory\Base\Admin\Layout\Footer\Tools;
@@ -11,9 +10,7 @@ use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Widgets\SearchField;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Html;
-use Arbory\EcOrders\Admin\Form\Fields\ActionButtonGroup;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -52,27 +49,6 @@ class Builder implements Renderable
     }
 
     /**
-     * @return \Arbory\Base\Admin\Widgets\Breadcrumbs
-     */
-    protected function breadcrumbs()
-    {
-        return $this->grid()->getModule()->breadcrumbs();
-    }
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     */
-    protected function searchField()
-    {
-        if( !$this->grid->hasTool( 'search' ) )
-        {
-            return null;
-        }
-
-        return ( new SearchField( $this->url( 'index' ) ) )->render();
-    }
-
-    /**
      * @return Element|null
      */
     protected function bulk()
@@ -92,23 +68,6 @@ class Builder implements Renderable
         $button->asButton(' mass-action ajaxbox')->title(trans('arbory::resources.mass_edit'));
 
         return Html::div($button->render())->addClass('mass-actions');
-    }
-
-    /**
-     * @return Column
-     */
-    protected function addBulkColumn()
-    {
-        return $this->grid->column('id', trans( 'arbory::resources.number' ), true)
-            ->checkable(true)
-            ->display(function($value){
-                $cellContent = Html::span();
-                $checkbox = new CheckBox($value);
-                $checkbox->setValue($value);
-                $checkbox->addClass('mass-row');
-                $checkbox->setName('ids[]');
-                return $cellContent->append($checkbox);
-            });
     }
 
     /**
@@ -330,10 +289,6 @@ class Builder implements Renderable
         $this->items = $this->grid->getItems();
 
         return new Content( [
-            Html::header( [
-                $this->breadcrumbs(),
-                $this->searchField()
-            ] ),
             Html::section( [
                 $this->bulk(),
                 $this->table(),

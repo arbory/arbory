@@ -1,5 +1,6 @@
 @import 'layout/base';
 @import 'layout/main';
+@import "layout/grid";
 
 @import 'layout/deprecated';
 
@@ -22,6 +23,7 @@
 @import 'layout/forms';
 @import 'layout/fields';
 @import 'layout/localization';
+@import "layout/panels";
 
 @import 'layout/notifications';
 @import 'layout/tables';

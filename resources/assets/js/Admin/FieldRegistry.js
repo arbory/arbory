@@ -51,7 +51,7 @@ export let FIELD_TYPE_DEFINITIONS = [
     }
 ];
 
-class Definition {
+export class Definition {
     /**
      * @param {Object} data
      */
@@ -123,6 +123,20 @@ class FieldRegistry {
      */
     get definitions() {
         return this._definitions;
+    }
+
+    /**
+     * @param value {Array<Definition>}
+     */
+    set definitions(value) {
+        this._definitions = value;
+    }
+
+    /**
+     * @param {Array} definition
+     */
+    addDefinition(definition) {
+        this._definitions.push(new Definition(definition));
     }
 
     /**

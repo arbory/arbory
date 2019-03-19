@@ -48,6 +48,8 @@ class StyleOptions implements StyleOptionsInterface
         $this->additional = new Fluent(
             array_merge($this->additional->getAttributes(), $data)
         );
+
+        return $this;
     }
 
     /**
@@ -67,13 +69,14 @@ class StyleOptions implements StyleOptionsInterface
     }
 
     /**
-     * @param mixed $rows
+     * @param int   $rows
+     * @param array $breakpoints
      *
-     * @return StyleOptions
+     * @return StyleOptionsInterface
      */
-    public function setRows( $rows ): StyleOptionsInterface
+    public function setRows( int $rows, array $breakpoints = [] ): StyleOptionsInterface
     {
-        $this->rows = $rows;
+        $this->rows = ['size' => $rows, 'breakpoints' => $breakpoints];
 
         return $this;
     }

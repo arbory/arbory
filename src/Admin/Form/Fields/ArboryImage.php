@@ -10,5 +10,10 @@ use Arbory\Base\Admin\Form\Fields\Renderer\ImageFieldRenderer;
  */
 final class ArboryImage extends ArboryFile
 {
+    protected $attributes = [
+        'type' => 'file',
+        'accept' => 'image/*'
+    ];
+    
     protected $rendererClass = ImageFieldRenderer::class;
 }

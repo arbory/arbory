@@ -58,14 +58,6 @@ class ArboryFile extends ControlField
     }
 
     /**
-     * @return Element
-     */
-    public function render()
-    {
-        return (new FileFieldRenderer($this))->render();
-    }
-
-    /**
      * @return void
      */
     protected function deleteCurrentFileIfExists()

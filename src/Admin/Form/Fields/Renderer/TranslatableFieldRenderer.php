@@ -48,15 +48,9 @@ class TranslatableFieldRenderer implements RendererInterface
     protected function getLocalizedFieldContent( $locale )
     {
         $field = $this->getLocalizedField( $locale );
-
-
-        /**
-         * @var $styleManager StyleManager
-         */
-        $styleManager = app(StyleManager::class);
-
-
-        $options = new StyleOptions();
+        
+        $styleManager = $this->field->getFieldSet()->getStyleManager();
+        $options = $styleManager->newOptions();
 
         $options->addAttributes(
             ['data-locale' => $locale]
@@ -66,7 +60,7 @@ class TranslatableFieldRenderer implements RendererInterface
         {
             $options->addClass( 'active' );
         }
-
+        
         $block = $styleManager->render($field->getStyle() ?: $styleManager->getDefaultStyle(), $field, $options);
 
         return $block;
