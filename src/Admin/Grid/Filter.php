@@ -99,7 +99,7 @@ class Filter implements FilterInterface
             }
 
             $columnName = self::getColumnName( $getKey, $column );
-
+            
             if ( !is_array($getValue) ) {
                 $this->query->where($columnName, $column->getFilterType()->getAction(), $getValue);
             } elseif ( is_array( $getValue ) && is_array($column->getFilterType()->getAction()) ) {
@@ -120,8 +120,6 @@ class Filter implements FilterInterface
 
             }
         }
-
-        dump('query',$this->query->toSql());
     }
 
     /**

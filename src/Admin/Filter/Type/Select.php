@@ -16,7 +16,7 @@ class Select extends Type
     /**
      * @var array
      */
-    protected $action = ['='];
+    protected $action = '=';
 
     function __construct( $content = null, $column = null ) {
         $this->content = $content;
