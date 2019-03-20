@@ -14,10 +14,11 @@ use Arbory\Base\Html\Html;
 class Select extends Type
 {
     /**
-     * Filter constructor.
-     * @param null $content
+     * @var array
      */
-    function __construct( $content = null, Column $column = null ) {
+    protected $action = ['='];
+
+    function __construct( $content = null, $column = null ) {
         $this->content = $content;
         $this->column = $column;
     }

@@ -78,7 +78,50 @@ class Filter implements FilterInterface
 
     protected function filter(Collection $columns)
     {
-        dd($this);
+        $filterParameters = self::removeNonFilterParameters($this->request->all());
+
+        foreach ($filterParameters as $getKey => $getValue ) {
+
+            if (!$getValue) {
+                continue;
+            }
+
+            $column = $columns->filter(function (Column $column) use ($getKey) {
+                return $column->getName() === $getKey;
+            })->first();
+
+            if (!$column) {
+                continue;
+            }
+
+            if (!$column->getHasFilter()) {
+                continue;
+            }
+
+            $columnName = self::getColumnName( $getKey, $column );
+
+            if ( !is_array($getValue) ) {
+                $this->query->where($columnName, $column->getFilterType()->getAction(), $getValue);
+            } elseif ( is_array( $getValue ) && is_array($column->getFilterType()->getAction()) ) {
+                foreach (array_combine( $column->getFilterType()->getAction(), $getValue ) as $action => $value ) {
+                    $this->query->where($columnName, $action, $value);
+                }
+            } elseif ( is_array( $getValue ) ){
+                $this->query->where(function ($query) use ($columnName, $column, $getValue)
+                {
+                    foreach ($getValue as $value)
+                    {
+                        $query->orWhere($columnName, $column->getFilterType()->getAction(), $value);
+                    }
+                });
+            } else {
+
+                dd($getValue);
+
+            }
+        }
+
+        dump('query',$this->query->toSql());
     }
 
     /**
@@ -149,6 +192,8 @@ class Filter implements FilterInterface
             $this->search( $this->request->get( 'search' ), $columns );
         }
 
+        $this->filter( $columns );
+
         $this->order( $columns );
 
         return $this->loadItems();
@@ -200,5 +245,38 @@ class Filter implements FilterInterface
     public function setPerPage( int $perPage )
     {
         $this->perPage = $perPage;
+    }
+
+    /**
+     * @return Model
+     */
+    public function getColumnName( $getColumn, $column ) {
+        if ($column->getFilterType()->column) {
+            return $column->getFilterType()->column;
+        } else {
+            return $getColumn;
+        }
+    }
+
+    private function removeNonFilterParameters( $parameters ) {
+        unset($parameters['_order_by']);
+        unset($parameters['_order']);
+
+        return self::recursiveArrayFilter($parameters);
+    }
+
+    private function recursiveArrayFilter( array $array ) {
+
+        foreach ( $array as $key => &$value ) {
+
+            if ( is_array( $value ) ) {
+                $value = self::recursiveArrayFilter( $value );
+            }
+
+        }
+
+        $array = array_filter( $array );
+
+        return $array;
     }
 }

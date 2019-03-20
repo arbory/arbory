@@ -13,6 +13,11 @@ use Arbory\Base\Html\Html;
  */
 class DateRange extends Type
 {
+    /**
+     * @var array
+     */
+    protected $action = ['>=', '<='];
+
     function __construct( Column $column = null ){
         $this->column = $column;
     }
@@ -24,13 +29,13 @@ class DateRange extends Type
                 Html::h4( trans('arbory::filter.date.from') ),
                 Html::input()
                     ->setType( 'date' )
-                    ->setName( $this->column->getName() . '_min' )
+                    ->setName( $this->column->getName() . '[min]' )
             ] )->addClass( 'column' ),
             Html::div( [
                 Html::h4( trans('arbory::filter.date.to') ),
                 Html::input()
                     ->setType( 'date' )
-                    ->setName( $this->column->getName() . '_max' )
+                    ->setName( $this->column->getName() . '[max]' )
             ] )->addClass( 'column' ),
         ] )->addClass( 'date-range' )]);
     }

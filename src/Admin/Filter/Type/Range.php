@@ -13,7 +13,12 @@ use Arbory\Base\Html\Html;
  */
 class Range extends Type
 {
-    function __construct( Column $column = null ){
+    /**
+     * @var array
+     */
+    protected $action = ['>=', '<='];
+
+    function __construct( $column = null ){
         $this->column = $column;
     }
 
@@ -24,13 +29,15 @@ class Range extends Type
                 Html::h4( trans('arbory::filter.range.from') ),
                 Html::input()
                     ->setType( 'number' )
-                    ->setName( $this->column->getName() . '_min' )
+                    ->setName( $this->column->getName() . '[min]' )
+                    ->addAttributes([ 'step' => '.01'])
             ] )->addClass( 'column' ),
             Html::div( [
                 Html::h4( trans('arbory::filter.range.to') ),
                 Html::input()
                     ->setType( 'number' )
-                    ->setName( $this->column->getName() . '_max' )
+                    ->setName( $this->column->getName() . '[max]' )
+                    ->addAttributes([ 'step' => '.01'])
             ] )->addClass( 'column' ),
         ] )->addClass( 'range' )]);
     }

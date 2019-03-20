@@ -13,9 +13,19 @@ use Arbory\Base\Html\Html;
  */
 class Checkbox extends Type
 {
-    function __construct( $content = null, Column $column = null ){
+    protected $action = '=';
+
+    function __construct( $content = null, $column = null ){
         $this->content = $content;
         $this->column = $column;
+    }
+
+    /**
+     * @return null
+     */
+    public function getColumn()
+    {
+        return $this->column;
     }
 
     public function render()

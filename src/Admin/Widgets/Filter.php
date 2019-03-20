@@ -38,10 +38,10 @@ class Filter implements Renderable
     protected function addFields()
     {
         foreach ( $this->columns as $column ) {
-            if ( $column->getFilterStatus() ) {
+            if ( $column->getHasFilter() ) {
 
-                if ( !empty($column->filterType->content) ) {
-                    $content = $column->filterType->content;
+                if ( !empty($column->getFilterType()->content) ) {
+                    $content = $column->getFilterType()->content;
                 } else {
                     $content = null;
                 }
@@ -64,7 +64,7 @@ class Filter implements Renderable
      */
     protected function addField( $column, $content )
     {
-        $type = $column->filterType;
+        $type = $column->getFilterType();
 
         if ( !is_null($content) ) {
 

@@ -62,6 +62,11 @@ class Column
     protected $hasFilter = false;
 
     /**
+     * @var
+     */
+    protected $filterType;
+
+    /**
      * Column constructor.
      * @param string $name
      * @param string $label
@@ -88,6 +93,18 @@ class Column
         return $this->name;
     }
 
+    public function getFilterType() {
+        return $this->filterType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasFilter(): bool
+    {
+        return $this->hasFilter;
+    }
+
     /**
      * @return string
      */
@@ -97,10 +114,11 @@ class Column
     }
 
     /**
-     * @return bool
+     * @return Grid
      */
-    public function getFilterStatus() {
-        return $this->hasFilter;
+    public function getGrid(): Grid
+    {
+        return $this->grid;
     }
 
     /**

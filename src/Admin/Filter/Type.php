@@ -4,6 +4,16 @@ namespace Arbory\Base\Admin\Filter;
 
 class Type
 {
+    protected $action;
+
+    /**
+     * @return array
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+
     /**
      * @return string
      */

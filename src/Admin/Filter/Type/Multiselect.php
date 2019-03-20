@@ -13,6 +13,8 @@ use Arbory\Base\Html\Html;
  */
 class Multiselect extends Type
 {
+    protected $action = '=';
+
     /**
      * Filter constructor.
      * @param null $content
