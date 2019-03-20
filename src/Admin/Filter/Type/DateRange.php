@@ -2,7 +2,6 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
-use Arbory\Base\Admin\Grid\Column;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
@@ -18,7 +17,7 @@ class DateRange extends Type
      */
     protected $action = ['>=', '<='];
 
-    function __construct( Column $column = null ){
+    function __construct( $column = null ){
         $this->column = $column;
     }
 
