@@ -31,7 +31,7 @@ class IconPickerRenderer extends SelectFieldRenderer
         $field = $this->field;
         $items = Html::ul()->addClass( 'items' );
 
-        foreach( $field->getOptions() as $option )
+        foreach( $field->getOptions()->prepend('', '') as $option )
         {
             $items->append( Html::li( $this->getSvgIconElement( $option ) ) );
         }

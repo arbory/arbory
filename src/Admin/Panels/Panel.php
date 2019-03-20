@@ -1,6 +1,7 @@
 <?php
 namespace Arbory\Base\Admin\Panels;
 
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Layout\WrappableInterface;
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\Support\Renderable as RenderableInterface;
 class Panel implements PanelInterface, WrappableInterface
 {
     use Renderable;
+    use HasRenderOptions;
 
     /**
      * @var mixed
@@ -31,6 +33,8 @@ class Panel implements PanelInterface, WrappableInterface
      * @var Toolbox
      */
     protected $toolbox;
+
+    protected $navigable = true;
 
     public function __construct(RenderableInterface $renderer = null)
     {
@@ -163,5 +167,10 @@ class Panel implements PanelInterface, WrappableInterface
         }
 
         return $this->toolbox;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->render();
     }
 }

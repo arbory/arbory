@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelatedOptions;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasSelectOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\AssociatedSetRenderer;
 
 /**
@@ -13,5 +13,5 @@ class MultipleSelect extends AbstractField
 {
     protected $rendererClass = AssociatedSetRenderer::class;
 
-    use HasRelatedOptions;
+    use HasSelectOptions;
 }

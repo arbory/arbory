@@ -41,6 +41,18 @@ interface FieldInterface
     public function setValue( $value );
 
     /**
+     * @return mixed
+     */
+    public function getDefaultValue();
+
+    /**
+     * @param $defaultValue string
+     * @return $this
+     */
+    public function setDefaultValue($defaultValue);
+
+
+    /**
      * @return string
      */
     public function getLabel();
@@ -154,7 +166,7 @@ interface FieldInterface
      *
      * @return mixed
      */
-    public function setStyle( string $style );
+    public function setStyle( string $style ):FieldInterface;
 
     /**
      * @return array
@@ -174,4 +186,16 @@ interface FieldInterface
      * @return mixed
      */
     public function beforeRender(RendererInterface $renderer);
+
+    /**
+     * @return bool
+     */
+    public function isHidden():bool;
+
+    /**
+     * @param bool $value
+     *
+     * @return FieldInterface
+     */
+    public function setHidden(bool $value):FieldInterface;
 }

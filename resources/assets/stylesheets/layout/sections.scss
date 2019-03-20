@@ -119,7 +119,7 @@ section.nested
 
     }
 
-    .sortable-navigation {
+    .sortable-navigation:not(.button) {
         position: absolute;
         right: steps(3);
         top: 0;
@@ -139,7 +139,7 @@ section.nested
         width: auto;
     }
     
-    &.type-sortable .sortable-navigation {
+    &.type-sortable .sortable-navigation:not(.button) {
         display: block;
     }
 }

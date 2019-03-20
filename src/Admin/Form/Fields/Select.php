@@ -2,9 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelatedOptions;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasSelectOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\SelectFieldRenderer;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 /**
  * Class Dropdown
@@ -12,7 +15,8 @@ use Illuminate\Http\Request;
  */
 class Select extends ControlField
 {
-    use HasRelatedOptions;
+    use HasSelectOptions;
+    use HasRelationships;
 
     protected $control = \Arbory\Base\Admin\Form\Controls\SelectControl::class;
 
@@ -22,6 +26,11 @@ class Select extends ControlField
      * @var bool
      */
     protected $multiple = false;
+
+    /**
+     * @var string
+     */
+    protected $optionTitleKey;
 
     /**
      * @param Request $request
@@ -44,7 +53,8 @@ class Select extends ControlField
             $value = implode( ',', $value );
         }
 
-        if( method_exists( $this->getModel(), $this->getName() ) )
+        // Use relation foreign key when name matches relationships
+        if( $this->isRelationship() )
         {
             $property = $this->getRelation()->getForeignKey();
         }
@@ -84,8 +94,7 @@ class Select extends ControlField
 
         foreach( $input as $item )
         {
-            if( !$this->options->has( $item ) )
-            {
+            if (!empty($item) && !$this->getOptions()->has($item)) {
                 return false;
             }
         }
@@ -100,6 +109,69 @@ class Select extends ControlField
     {
         $value = parent::getValue();
 
-        return $this->isMultiple() ? explode( ',', $value ) : $value;
+
+        if($this->isMultiple()) {
+            if($value instanceof Collection) {
+                return $value->all();
+            }
+
+            if(is_string($value)) {
+                $value = explode(',', $value);
+            }
+
+            return array_wrap($value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getOptions(): Collection
+    {
+        if($this->options === null && $this->isRelationship()) {
+            return $this->getRelatedItems()->mapWithKeys(
+                function(Model $model) {
+                    $value = $this->getOptionTitleKey() ? $model->getAttribute($this->getOptionTitleKey()) : (string)
+                    $model;
+
+                    return [
+                        $model->getKey() => $value
+                    ];
+                }
+            );
+        }
+
+        return $this->options;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRelationship()
+    {
+        return method_exists( $this->getModel(), $this->getName() ) ;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOptionTitleKey()
+    {
+        return $this->optionTitleKey;
+    }
+
+
+    /**
+     * @param $optionTitleKey
+     *
+     * @return $this
+     */
+    public function setOptionTitleKey( $optionTitleKey )
+    {
+        $this->optionTitleKey = $optionTitleKey;
+
+        return $this;
     }
 }

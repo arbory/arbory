@@ -92,6 +92,21 @@ class Button implements Renderable
     }
 
     /**
+     * @param bool $cache
+     *
+     * @return $this
+     */
+    public function asAjaxbox($cache = false) {
+        $this->element->addClass('ajaxbox');
+
+        if($cache) {
+            $this->element->addAttributes(['data-cache' => 1]);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param $inputType
      * @param null $visualType
      * @return Button
