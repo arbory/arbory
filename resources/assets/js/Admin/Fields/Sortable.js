@@ -1,6 +1,7 @@
 
 export const CONFIG_JQUERY_SORTABLE = {
     items: '> .item',
+    cancelExtend: 'label, a, img, .cke'
 };
 
 export default class Sortable {
@@ -30,6 +31,8 @@ export default class Sortable {
         this.sortable = jQuery(this.container).sortable(Object.assign(
             handlers, this.config.vendor
         ));
+
+        this.extendCancelOption();
 
         container.on('click', '.sortable-navigation .button', event => this.manualSort(event));
         container.on('DOMNodeInserted DOMNodeRemoved', () => this.handleUpdate());
@@ -83,5 +86,18 @@ export default class Sortable {
 
     getSortByName() {
         return jQuery(this.element).data('sortBy');
+    }
+
+    extendCancelOption() {
+        let cancel = this.sortable.sortable('option', 'cancel');
+        let cancelExtend = this.config.vendor.cancelExtend;
+
+        if (!cancel || !cancelExtend) {
+            return;
+        }
+
+        let extendedCancel = `${cancel}, ${cancelExtend}`;
+
+        this.sortable.sortable('option', 'cancel', extendedCancel);
     }
 }
