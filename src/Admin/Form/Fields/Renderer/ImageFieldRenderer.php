@@ -1,4 +1,4 @@
-<?php declare( strict_types=1 );
+<?php declare(strict_types=1);
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
@@ -23,8 +23,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
 
         $arboryFile = $this->getFile();
 
-        if( $arboryFile )
-        {
+        if ($arboryFile) {
             $value->append(
                 Html::image()
                     ->addAttributes([
@@ -32,10 +31,10 @@ final class ImageFieldRenderer extends FileFieldRenderer
                     ])
                     ->addClass('thumbnail')
             );
-            $value->append( $this->createFileDetails( $arboryFile ) );
+            $value->append($this->createFileDetails($arboryFile));
         }
 
-        $value->append( $this->getInput() );
+        $value->append($this->getInput());
 
         return $value;
     }
@@ -68,7 +67,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
         ];
     }
 
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         // Use file Javascript
         $options->addClass('type-item type-file');

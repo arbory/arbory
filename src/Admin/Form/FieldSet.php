@@ -37,7 +37,7 @@ use Waavi\Translation\Repositories\LanguageRepository;
  * @method \Arbory\Base\Admin\Form\Fields\MapCoordinates mapCoordinates(string $relationName)
  * @method \Arbory\Base\Admin\Form\Fields\CompactRichtext markup(string $fieldName)
  * @method \Arbory\Base\Admin\Form\Fields\MultipleSelect multipleSelect(string $relationName)
- * @method \Arbory\Base\Admin\Form\Fields\ObjectRelation objectRelation(string $relationName, $relatedModelTypeOrCollection, int $limit = 0)
+ * @method \Arbory\Base\Admin\Form\Fields\ObjectRelation objectRelation(string $relation, $relatedModel, $limit = 0)
  * @method \Arbory\Base\Admin\Form\Fields\Password password(string $fieldName)
  * @method \Arbory\Base\Admin\Form\Fields\Richtext richtext(string $fieldName)
  * @method \Arbory\Base\Admin\Form\Fields\Select select(string $fieldName)
@@ -87,24 +87,24 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * Resource constructor.
      *
-     * @param Model        $model
-     * @param string       $namespace
+     * @param Model $model
+     * @param string $namespace
      * @param StyleManager $styleManager
      */
-    public function __construct( Model $model, $namespace, StyleManager $styleManager = null )
+    public function __construct(Model $model, $namespace, StyleManager $styleManager = null)
     {
         $this->items = collect();
 
-        if ( is_null($styleManager) ) {
+        if (is_null($styleManager)) {
             $styleManager = app(StyleManager::class);
         }
 
-        $this->namespace         = $namespace;
-        $this->model             = $model;
+        $this->namespace = $namespace;
+        $this->model = $model;
         $this->fieldTypeRegister = app(FieldTypeRegistry::class);
-        $this->styleManager      = $styleManager;
-        $this->defaultStyle      = $styleManager->getDefaultStyle();
-        $this->renderer          = new FieldSetRenderer($this, $styleManager);
+        $this->styleManager = $styleManager;
+        $this->defaultStyle = $styleManager->getDefaultStyle();
+        $this->renderer = new FieldSetRenderer($this, $styleManager);
     }
 
     /**
@@ -112,10 +112,10 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return AbstractField|null
      */
-    public function findFieldByInputName( string $inputName )
+    public function findFieldByInputName(string $inputName)
     {
         $inputNameParts = explode('.', $inputName);
-        $fields         = $this->findFieldsByInputName($inputName);
+        $fields = $this->findFieldsByInputName($inputName);
 
         return array_get($fields, end($inputNameParts));
     }
@@ -125,9 +125,9 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return array
      */
-    public function findFieldsByInputName( string $inputName )
+    public function findFieldsByInputName(string $inputName)
     {
-        return ( new FieldSetFieldFinder(app(LanguageRepository::class), $this) )->find($inputName);
+        return (new FieldSetFieldFinder(app(LanguageRepository::class), $this))->find($inputName);
     }
 
     /**
@@ -135,9 +135,9 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return AbstractField|null
      */
-    public function getFieldByName( string $fieldName )
+    public function getFieldByName(string $fieldName)
     {
-        return $this->getFields()->first(function ( AbstractField $field ) use ( $fieldName ) {
+        return $this->getFields()->first(function (AbstractField $field) use ($fieldName) {
             return $field->getName() === $fieldName;
         });
     }
@@ -147,14 +147,14 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return Collection
      */
-    public function getFieldsByName( string $fieldName )
+    public function getFieldsByName(string $fieldName)
     {
         $fields = [];
 
-        foreach ( $this->getFields()->toArray() as $field ) {
+        foreach ($this->getFields()->toArray() as $field) {
             /** @var AbstractField $field */
 
-            if ( $field->getName() === $fieldName ) {
+            if ($field->getName() === $fieldName) {
                 $fields[] = $field;
             }
         }
@@ -193,7 +193,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     {
         $rules = [];
 
-        foreach ( $this->all() as $field ) {
+        foreach ($this->all() as $field) {
             $rules = array_merge($rules, $field->getRules());
         }
 
@@ -202,11 +202,11 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
     /**
      * @param FieldInterface $field
-     * @param null           $key
+     * @param null $key
      *
      * @return FieldSet|Collection
      */
-    public function prepend( $field, $key = null )
+    public function prepend($field, $key = null)
     {
         $field->setFieldSet($this);
 
@@ -218,7 +218,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return FieldInterface
      */
-    public function add( FieldInterface $field )
+    public function add(FieldInterface $field)
     {
         $field->setFieldSet($this);
 
@@ -228,10 +228,10 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string         $key
+     * @param string $key
      * @param FieldInterface $field
      */
-    public function offsetSet( $key, $field )
+    public function offsetSet($key, $field)
     {
         $field->setFieldSet($this);
 
@@ -270,7 +270,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return FieldSet
      */
-    public function setStyleManager( StyleManager $styleManager ): self
+    public function setStyleManager(StyleManager $styleManager): self
     {
         $this->styleManager = $styleManager;
 
@@ -290,7 +290,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return FieldSet
      */
-    public function setDefaultStyle( string $defaultStyle ): self
+    public function setDefaultStyle(string $defaultStyle): self
     {
         $this->defaultStyle = $defaultStyle;
 
@@ -314,7 +314,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return bool
      */
-    public function offsetExists( $key )
+    public function offsetExists($key)
     {
         return array_key_exists($key, $this->all());
     }
@@ -326,9 +326,9 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return mixed
      */
-    public function offsetGet( $key )
+    public function offsetGet($key)
     {
-        return $this->all()[ $key ];
+        return $this->all()[$key];
     }
 
     /**
@@ -338,9 +338,9 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return void
      */
-    public function offsetUnset( $key )
+    public function offsetUnset($key)
     {
-        unset($this->all()[ $key ]);
+        unset($this->all()[$key]);
     }
 
     /**
@@ -376,7 +376,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return FieldSet
      */
-    public function setRenderer( FieldSetRendererInterface $renderer ): self
+    public function setRenderer(FieldSetRendererInterface $renderer): self
     {
         $this->renderer = $renderer;
 
@@ -385,13 +385,13 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
     /**
      * @param string $method
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return FieldInterface|mixed
      */
-    public function __call( $method, $parameters )
+    public function __call($method, $parameters)
     {
-        if ( $this->fieldTypeRegister->has($method) ) {
+        if ($this->fieldTypeRegister->has($method)) {
             return $this->add(
                 $this->fieldTypeRegister->resolve($method, $parameters)
             );

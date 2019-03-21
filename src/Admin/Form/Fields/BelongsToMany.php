@@ -15,11 +15,11 @@ class BelongsToMany extends AbstractField
     use HasRelationships;
 
     protected $rendererClass = AssociatedSetRenderer::class;
-    
+
     /**
      * @return bool
      */
-    public function isSortable(  )
+    public function isSortable()
     {
         return false;
     }
@@ -36,7 +36,7 @@ class BelongsToMany extends AbstractField
     {
         $relatedModel = $this->getRelatedModel();
 
-        return parent::getValue()->pluck( $relatedModel->getKeyName() )->all();
+        return parent::getValue()->pluck($relatedModel->getKeyName())->all();
     }
 
     public function getOptions()
@@ -47,36 +47,31 @@ class BelongsToMany extends AbstractField
     /**
      * @param Request $request
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
-
     }
 
     /**
      * @param Request $request
      */
-    public function afterModelSave( Request $request )
+    public function afterModelSave(Request $request)
     {
         $relation = $this->getRelation();
 
-        $submittedIds = $request->input( $this->getNameSpacedName(), [] );
-        $existingIds = $this->getModel()->getAttribute( $this->getName() )
-            ->pluck( $this->getRelatedModel()->getKeyName() )
+        $submittedIds = $request->input($this->getNameSpacedName(), []);
+        $existingIds = $this->getModel()->getAttribute($this->getName())
+            ->pluck($this->getRelatedModel()->getKeyName())
             ->toArray();
 
-        foreach( $existingIds as $id )
-        {
-            if( !in_array( $id, $submittedIds ) )
-            {
-                $relation->detach( $id );
+        foreach ($existingIds as $id) {
+            if (!in_array($id, $submittedIds)) {
+                $relation->detach($id);
             }
         }
 
-        foreach( $submittedIds as $id )
-        {
-            if( !in_array( $id, $existingIds ) )
-            {
-                $relation->attach( $id );
+        foreach ($submittedIds as $id) {
+            if (!in_array($id, $existingIds)) {
+                $relation->attach($id);
             }
         }
     }

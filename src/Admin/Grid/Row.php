@@ -31,7 +31,7 @@ class Row implements Renderable
      * @param Grid $grid
      * @param Model $model
      */
-    public function __construct( Grid $grid, Model $model )
+    public function __construct(Grid $grid, Model $model)
     {
         $this->grid = $grid;
         $this->model = $model;
@@ -42,7 +42,7 @@ class Row implements Renderable
      */
     public function __toString()
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
@@ -65,16 +65,16 @@ class Row implements Renderable
         $cells->push(
             Html::td(
                 Toolbox::create(
-                    $this->grid->getModule()->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $this->model->getKey() ] )
+                    $this->grid->getModule()->url('dialog', ['dialog' => 'toolbox', 'id' => $this->model->getKey()])
                 )->render()
-            )->addClass( 'only-icon toolbox-cell' )
+            )->addClass('only-icon toolbox-cell')
         );
 
-        return Html::tr( $cells->toArray() )
-            ->addAttributes( [
+        return Html::tr($cells->toArray())
+            ->addAttributes([
                 'data-id' => $this->model->getKey(),
-            ] )
-            ->addClass( 'row' );
+            ])
+            ->addClass('row');
     }
 
     /**
@@ -82,9 +82,9 @@ class Row implements Renderable
      */
     public function toArray(): array
     {
-        return $this->getCells()->mapWithKeys( function( Cell $cell ) {
-            return [ $cell->getColumn()->getName() => strip_tags( $cell ) ];
-        } )->toArray();
+        return $this->getCells()->mapWithKeys(function (Cell $cell) {
+            return [$cell->getColumn()->getName() => strip_tags($cell)];
+        })->toArray();
     }
 
     /**

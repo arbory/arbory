@@ -41,11 +41,10 @@ trait HasActivationDates
     public function scopeActive(Builder $query)
     {
         $table = $this->getTable();
-        $now   = date('Y-m-d H:i:s');
+        $now = date('Y-m-d H:i:s');
 
         return $query->where($table . '.activate_at', '<=', $now)
-            ->where(function (Builder $query) use ($table, $now)
-            {
+            ->where(function (Builder $query) use ($table, $now) {
                 return $query->where($table . '.expire_at', '>=', $now)
                     ->orWhereNull($table . '.expire_at');
             });
@@ -66,5 +65,4 @@ trait HasActivationDates
     {
         return !is_null($this->activate_at) && $this->activate_at->isPast();
     }
-
 }

@@ -17,7 +17,7 @@ class Link extends HasOne
     /**
      * @param string $name
      */
-    public function __construct( string $name )
+    public function __construct(string $name)
     {
         $this->wrapper = function ($content) {
             $div = Html::div()->addClass('link-body');
@@ -29,23 +29,22 @@ class Link extends HasOne
             return $div;
         };
 
-        parent::__construct( $name, null );
+        parent::__construct($name, null);
     }
 
-    public function configureFieldSet( FieldSet $fieldSet )
+    public function configureFieldSet(FieldSet $fieldSet)
     {
-        $fieldSet->text( 'href' );
-        $fieldSet->text( 'title' );
-        $fieldSet->checkbox( 'new_tab');
+        $fieldSet->text('href');
+        $fieldSet->text('title');
+        $fieldSet->checkbox('new_tab');
 
         $fieldSet
-            ->each(function(FieldInterface $field)
-            {
-                if($field instanceof  ControlFieldInterface) {
+            ->each(function (FieldInterface $field) {
+                if ($field instanceof ControlFieldInterface) {
                     $field->setInteractive($this->isInteractive());
                     $field->setDisabled($this->isDisabled());
                 }
-        });
+            });
 
         return $fieldSet;
     }
@@ -61,7 +60,7 @@ class Link extends HasOne
     /**
      * @param mixed $urlRules
      */
-    public function setUrlRules( $urlRules ): void
+    public function setUrlRules($urlRules): void
     {
         $this->urlRules = $urlRules;
     }

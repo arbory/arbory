@@ -3,14 +3,13 @@
 
 namespace Arbory\Base\Admin\Form\Controls;
 
-
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Html\Elements\Element;
 
 abstract class AbstractControl implements InputControlInterface
 {
     use HasRenderOptions;
-    
+
     protected $value;
 
     protected $readOnly = false;
@@ -21,7 +20,7 @@ abstract class AbstractControl implements InputControlInterface
      */
     protected $name;
 
-    abstract public function element():Element;
+    abstract public function element(): Element;
 
     /**
      * @return Element
@@ -40,15 +39,15 @@ abstract class AbstractControl implements InputControlInterface
             implode(' ', $this->getClasses())
         );
 
-        if($this->isReadOnly()) {
+        if ($this->isReadOnly()) {
             $element->addAttributes(
                 ['readonly' => '']
             );
         }
 
-        if($this->isDisabled()) {
+        if ($this->isDisabled()) {
             $element->addAttributes(
-                [ 'disabled' => '']
+                ['disabled' => '']
             );
         }
 
@@ -62,7 +61,7 @@ abstract class AbstractControl implements InputControlInterface
      *
      * @return InputControlInterface
      */
-    public function setValue( $value ): InputControlInterface
+    public function setValue($value): InputControlInterface
     {
         $this->value = $value;
 
@@ -77,26 +76,26 @@ abstract class AbstractControl implements InputControlInterface
         return $this->value;
     }
 
-    public function setDisabled( bool $value ): InputControlInterface
+    public function setDisabled(bool $value): InputControlInterface
     {
         $this->disabled = $value;
 
         return $this;
     }
 
-    public function isDisabled():bool
+    public function isDisabled(): bool
     {
         return $this->disabled;
     }
 
-    public function setReadOnly( bool $value ): InputControlInterface
+    public function setReadOnly(bool $value): InputControlInterface
     {
         $this->readOnly = $value;
 
         return $this;
     }
 
-    public function isReadOnly():bool
+    public function isReadOnly(): bool
     {
         return $this->readOnly;
     }
@@ -114,7 +113,7 @@ abstract class AbstractControl implements InputControlInterface
      *
      * @return InputControlInterface
      */
-    public function setName( ?string $name ): InputControlInterface
+    public function setName(?string $name): InputControlInterface
     {
         $this->name = $name;
 
@@ -145,7 +144,7 @@ abstract class AbstractControl implements InputControlInterface
      */
     public function getInputId($inputName)
     {
-        return rtrim(strtr($inputName, [ '[' => '_', ']' => '']), '_');
+        return rtrim(strtr($inputName, ['[' => '_', ']' => '']), '_');
     }
 
     /**

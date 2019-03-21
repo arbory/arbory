@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-
 /**
  * A Block of content which is wrapped
  *
@@ -13,6 +12,7 @@ namespace Arbory\Base\Admin\Layout;
 interface WrappableInterface
 {
     public function setContent($content);
+
     public function getContent();
 
     public function render();

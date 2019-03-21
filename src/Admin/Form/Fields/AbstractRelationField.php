@@ -18,22 +18,22 @@ abstract class AbstractRelationField extends AbstractField implements NestedFiel
      * @param string $name
      * @param callable $fieldSetCallback
      */
-    public function __construct( $name, callable $fieldSetCallback = null )
+    public function __construct($name, callable $fieldSetCallback = null)
     {
-        parent::__construct( $name );
+        parent::__construct($name);
 
         $this->fieldSetCallback = $fieldSetCallback;
     }
-    
-    public function configureFieldSet( FieldSet $fieldSet )
+
+    public function configureFieldSet(FieldSet $fieldSet)
     {
-        if(! is_callable($this->getFieldSetCallback())) {
+        if (!is_callable($this->getFieldSetCallback())) {
             return $fieldSet;
         }
 
         $result = $this->getFieldSetCallback()($fieldSet);
 
-        if($result instanceof FieldSet) {
+        if ($result instanceof FieldSet) {
             return $result;
         }
 

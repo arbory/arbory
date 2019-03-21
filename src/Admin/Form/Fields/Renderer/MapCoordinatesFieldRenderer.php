@@ -23,7 +23,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     /**
      * @param MapCoordinates $field
      */
-    public function __construct( MapCoordinates $field )
+    public function __construct(MapCoordinates $field)
     {
         $this->field = $field;
     }
@@ -34,7 +34,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     public function render()
     {
         $value = $this->field->getValue();
-        $body  = Html::div();
+        $body = Html::div();
 
         $body->append(Html::div()->addClass('canvas'));
 
@@ -50,7 +50,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
      *
      * @return mixed
      */
-    public function setField( FieldInterface $field ): RendererInterface
+    public function setField(FieldInterface $field): RendererInterface
     {
         $this->field = $field;
 
@@ -72,7 +72,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
      *
      * @return StyleOptionsInterface
      */
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         return $options;
     }

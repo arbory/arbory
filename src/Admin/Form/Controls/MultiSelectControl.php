@@ -3,8 +3,7 @@
 
 namespace Arbory\Base\Admin\Form\Controls;
 
-
-class MultiSelectControl  extends SelectControl
+class MultiSelectControl extends SelectControl
 {
     protected $multiple = true;
 }

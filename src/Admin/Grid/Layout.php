@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\Body;

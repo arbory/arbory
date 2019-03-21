@@ -29,8 +29,8 @@ final class FileSizeTest extends TestCase
      */
     protected function setUp()
     {
-        $this->file = Mockery::mock( ArboryFile::class );
-        $this->fileSize = new FileSize( $this->file );
+        $this->file = Mockery::mock(ArboryFile::class);
+        $this->fileSize = new FileSize($this->file);
     }
 
     /**
@@ -50,8 +50,8 @@ final class FileSizeTest extends TestCase
         $expectedFileSize = 1234560;
 
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $this->file->shouldReceive( 'getSize' )->andReturn( $expectedFileSize );
-        $this->assertEquals( $this->fileSize->getSizeInBytes(), $expectedFileSize );
+        $this->file->shouldReceive('getSize')->andReturn($expectedFileSize);
+        $this->assertEquals($this->fileSize->getSizeInBytes(), $expectedFileSize);
     }
 
     /**
@@ -60,12 +60,12 @@ final class FileSizeTest extends TestCase
      */
     public function itShouldConvertSizeInBytesToReadableValue()
     {
-        $this->assertSizeGetsConvertedToReadableValue( 123, '0.12 KB' );
-        $this->assertSizeGetsConvertedToReadableValue( 3189, '3.19 KB' );
-        $this->assertSizeGetsConvertedToReadableValue( 40960, '40.96 KB' );
-        $this->assertSizeGetsConvertedToReadableValue( 590123, '0.59 MB' );
-        $this->assertSizeGetsConvertedToReadableValue( 42590123, '42.59 MB' );
-        $this->assertSizeGetsConvertedToReadableValue( 1042590123, '1042.59 MB' );
+        $this->assertSizeGetsConvertedToReadableValue(123, '0.12 KB');
+        $this->assertSizeGetsConvertedToReadableValue(3189, '3.19 KB');
+        $this->assertSizeGetsConvertedToReadableValue(40960, '40.96 KB');
+        $this->assertSizeGetsConvertedToReadableValue(590123, '0.59 MB');
+        $this->assertSizeGetsConvertedToReadableValue(42590123, '42.59 MB');
+        $this->assertSizeGetsConvertedToReadableValue(1042590123, '1042.59 MB');
     }
 
     /**
@@ -73,10 +73,10 @@ final class FileSizeTest extends TestCase
      * @param string $expectedValue
      * @return void
      */
-    private function assertSizeGetsConvertedToReadableValue( int $sizeInBytes, string $expectedValue )
+    private function assertSizeGetsConvertedToReadableValue(int $sizeInBytes, string $expectedValue)
     {
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $this->file->shouldReceive( 'getSize' )->once()->andReturn( $sizeInBytes );
-        $this->assertEquals( $expectedValue, $this->fileSize->getReadableSize() );
+        $this->file->shouldReceive('getSize')->once()->andReturn($sizeInBytes);
+        $this->assertEquals($expectedValue, $this->fileSize->getReadableSize());
     }
 }

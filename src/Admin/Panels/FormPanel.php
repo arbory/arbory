@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Panels;
 
-
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Tools\Toolbox;
 

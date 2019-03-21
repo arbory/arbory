@@ -40,9 +40,9 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
      * @param string $name
      * @param Closure $fieldSetCallback
      */
-    public function __construct( $name, Closure $fieldSetCallback )
+    public function __construct($name, Closure $fieldSetCallback)
     {
-        parent::__construct( $name );
+        parent::__construct($name);
 
         $this->fieldSetCallback = $fieldSetCallback;
     }
@@ -76,22 +76,21 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
      * @param Model $model
      * @return FieldSet
      */
-    public function getRelationFieldSet( $model, $index )
+    public function getRelationFieldSet($model, $index)
     {
-        $fieldSet = new FieldSet( $model, $this->getNameSpacedName() . '.' . $index );
+        $fieldSet = new FieldSet($model, $this->getNameSpacedName() . '.' . $index);
         $fieldSetCallback = $this->fieldSetCallback;
-        $fieldSetCallback( $fieldSet );
+        $fieldSetCallback($fieldSet);
 
         $fieldSet->prepend(
-            ( new Hidden( $model->getKeyName() ) )
-                ->setValue( $model->getKey() )
+            (new Hidden($model->getKeyName()))
+                ->setValue($model->getKey())
         );
 
-        if( $this->isSortable() && $this->getOrderBy() )
-        {
+        if ($this->isSortable() && $this->getOrderBy()) {
             $fieldSet->prepend(
-                ( new Hidden( $this->getOrderBy() ) )
-                    ->setValue( $model->{$this->getOrderBy()} )
+                (new Hidden($this->getOrderBy()))
+                    ->setValue($model->{$this->getOrderBy()})
             );
         }
 
@@ -101,9 +100,8 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
     /**
      * @param Request $request
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
-
     }
 
     /**
@@ -129,7 +127,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
                 $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
             }
 
-            if(! $relation instanceof BelongsToMany) {
+            if (!$relation instanceof BelongsToMany) {
                 $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
             }
 
@@ -142,7 +140,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
                 $field->beforeModelSave($request);
             }
 
-            if($relation instanceof BelongsToMany) {
+            if ($relation instanceof BelongsToMany) {
                 $relation->save($relatedModel);
             } else {
                 $relatedModel->save();
@@ -159,13 +157,13 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
      * @param $variables
      * @return Model
      */
-    private function findRelatedModel( $variables )
+    private function findRelatedModel($variables)
     {
         $relation = $this->getRelation();
 
-        $relatedModelId = array_get( $variables, $relation->getRelated()->getKeyName() );
+        $relatedModelId = array_get($variables, $relation->getRelated()->getKeyName());
 
-        return $relation->getRelated()->findOrNew( $relatedModelId );
+        return $relation->getRelated()->findOrNew($relatedModelId);
     }
 
     /**
@@ -188,7 +186,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
      * @param string $orderBy
      * @return $this
      */
-    public function setOrderBy( string $orderBy )
+    public function setOrderBy(string $orderBy)
     {
         $this->orderBy = $orderBy;
 
@@ -202,17 +200,16 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
     {
         $rules = [];
 
-        foreach( $this->getRelationFieldSet( $this->getRelatedModel(), '*' )->getFields() as $field )
-        {
-            $rules = array_merge( $rules, $field->getRules() );
+        foreach ($this->getRelationFieldSet($this->getRelatedModel(), '*')->getFields() as $field) {
+            $rules = array_merge($rules, $field->getRules());
         }
 
         return $rules;
     }
 
-    public function getNestedFieldSet( $model )
+    public function getNestedFieldSet($model)
     {
-        return $this->getRelationFieldSet( $model, 0 );
+        return $this->getRelationFieldSet($model, 0);
     }
 
     /**
@@ -222,7 +219,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
      *
      * @return $this
      */
-    public function sortable( $field = 'position' )
+    public function sortable($field = 'position')
     {
         $this->isSortable = true;
         $this->setOrderBy($field);

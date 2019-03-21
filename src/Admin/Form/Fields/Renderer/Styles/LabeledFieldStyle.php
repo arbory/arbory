@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
-
 use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
@@ -16,14 +15,14 @@ class LabeledFieldStyle extends AbstractFieldStyle implements FieldStyleInterfac
     {
         $field = $renderer->getField();
 
-        $inputId  = $field->getFieldId();
+        $inputId = $field->getFieldId();
         $template = Html::div()->addClass('field');
         $template->addClass(implode(' ', $field->getFieldClasses()));
 
         $template->addAttributes($options->getAttributes());
         $template->addClass(implode(' ', $options->getClasses()));
 
-        if ( $name = $field->getName() ) {
+        if ($name = $field->getName()) {
             $template->addAttributes(
                 [
                     'data-name' => $name,
@@ -32,13 +31,13 @@ class LabeledFieldStyle extends AbstractFieldStyle implements FieldStyleInterfac
         }
 
 
-        if($field instanceof ControlFieldInterface) {
-            if($field->isDisabled()) {                                                          
+        if ($field instanceof ControlFieldInterface) {
+            if ($field->isDisabled()) {
                 $template->addAttributes(['data-disabled' => 1]);
             }
 
-            $template->addAttributes(['data-interactive' => (int) $field->isInteractive()]);
-            $template->addAttributes(['data-required' => (int) $field->isRequired()]);
+            $template->addAttributes(['data-interactive' => (int)$field->isInteractive()]);
+            $template->addAttributes(['data-required' => (int)$field->isRequired()]);
         }
 
         $template->append($this->buildLabel($field, $inputId));
@@ -48,22 +47,22 @@ class LabeledFieldStyle extends AbstractFieldStyle implements FieldStyleInterfac
         return $template;
     }
 
-    protected function buildLabel( FieldInterface $field, $inputId )
+    protected function buildLabel(FieldInterface $field, $inputId)
     {
         $element = Html::div()->addClass('label-wrap');
 
         $label = Html::label($field->getLabel())
-                     ->addAttributes([ 'for' => $inputId ]);
+            ->addAttributes(['for' => $inputId]);
 
         $element->append($label);
 
-        if ( $field instanceof ControlFieldInterface && $field->isRequired() ) {
+        if ($field instanceof ControlFieldInterface && $field->isRequired()) {
             $label->prepend(Html::span('*')->addClass('required'));
         }
 
-        if ( $info = $field->getTooltip() ) {
+        if ($info = $field->getTooltip()) {
             $element->append(
-                Html::abbr(' ?')->addAttributes([ 'title' => $info ])
+                Html::abbr(' ?')->addAttributes(['title' => $info])
             );
         }
 

@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Layout\Transformers;
 
-
 use Arbory\Base\Admin\Layout\Body;
 
 class AppendTransformer

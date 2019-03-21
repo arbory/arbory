@@ -26,7 +26,7 @@ class Role extends EloquentRole
      */
     public function __toString()
     {
-        return (string) $this->getName();
+        return (string)$this->getName();
     }
 
     /**
@@ -44,6 +44,6 @@ class Role extends EloquentRole
      */
     public function users()
     {
-        return $this->belongsToMany( static::$usersModel, 'admin_role_users', 'role_id', 'user_id' )->withTimestamps();
+        return $this->belongsToMany(static::$usersModel, 'admin_role_users', 'role_id', 'user_id')->withTimestamps();
     }
 }

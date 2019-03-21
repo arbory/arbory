@@ -39,11 +39,7 @@ class FieldSetFieldFinder
      * @param FieldSet $fieldSet
      * @param AbstractField|null $initialField
      */
-    public function __construct(
-        LanguageRepository $languageRepository,
-        FieldSet $fieldSet,
-        $initialField = null
-    )
+    public function __construct(LanguageRepository $languageRepository, FieldSet $fieldSet, $initialField = null)
     {
         $this->languageRepository = $languageRepository;
         $this->fieldSet = $fieldSet;
@@ -54,16 +50,14 @@ class FieldSetFieldFinder
      * @param string $attribute
      * @return bool
      */
-    public function contains( string $attribute ): bool
+    public function contains(string $attribute): bool
     {
-        $names = $this->getActualFieldNames( $attribute );
+        $names = $this->getActualFieldNames($attribute);
 
-        $found = $this->find( $attribute );
+        $found = $this->find($attribute);
 
-        foreach( $names as $name )
-        {
-            if( !array_key_exists( $name, $found ) )
-            {
+        foreach ($names as $name) {
+            if (!array_key_exists($name, $found)) {
                 return false;
             }
         }
@@ -75,7 +69,7 @@ class FieldSetFieldFinder
      * @param string $attribute
      * @return array
      */
-    public function find( string $attribute )
+    public function find(string $attribute)
     {
         /**
          * @var FieldSet $previousFieldSet
@@ -84,19 +78,16 @@ class FieldSetFieldFinder
         $previousFieldSet = $this->fieldSet;
         $previousField = $this->initialField;
         $fields = [];
-        $inputNameParts = explode( '.', $attribute );
+        $inputNameParts = explode('.', $attribute);
 
-        if( $this->initialField )
-        {
-            $fields = [ $this->initialField->getName() => $this->initialField ];
+        if ($this->initialField) {
+            $fields = [$this->initialField->getName() => $this->initialField];
         }
 
-        foreach( $inputNameParts as $index => $fieldName )
-        {
+        foreach ($inputNameParts as $index => $fieldName) {
             $field = null;
 
-            if ( !$previousFieldSet )
-            {
+            if (!$previousFieldSet) {
                 break;
             }
 
@@ -104,44 +95,35 @@ class FieldSetFieldFinder
              * @var FieldSet $previousFieldSet
              * @var Collection $matchingFields
              */
-            $matchingFields = $previousFieldSet->getFieldsByName( $fieldName );
+            $matchingFields = $previousFieldSet->getFieldsByName($fieldName);
 
-            if( $matchingFields->count() > 0 )
-            {
-                if( $matchingFields->count() === 1 )
-                {
-                    $field = $matchingFields->get( 0 );
-                }
-                else
-                {
-                    $field = $this->resolveMultipleFields(
-                        $matchingFields,
-                        substr( $attribute, strpos( $attribute, $fieldName ) + strlen( $fieldName ) + 1, strlen( $attribute ) )
-                    );
+            if ($matchingFields->count() > 0) {
+                if ($matchingFields->count() === 1) {
+                    $field = $matchingFields->get(0);
+                } else {
+                    $start = strpos($attribute, $fieldName) + strlen($fieldName) + 1;
+                    $attributeKey = substr($attribute, $start, strlen($attribute));
+
+                    $field = $this->resolveMultipleFields($matchingFields, $attributeKey);
                 }
             }
 
-            if( !$field && $previousField )
-            {
-                $previousFieldSet = $this->resolveFieldSet( $previousField, $fieldName );
-            }
-            else
-            {
-                if ( $field instanceof Link )
-                {
-                    $previousFieldSet = $field->getRelationFieldSet( $previousField->getModel() );
+            if (!$field && $previousField) {
+                $previousFieldSet = $this->resolveFieldSet($previousField, $fieldName);
+            } else {
+                if ($field instanceof Link) {
+                    $previousFieldSet = $field->getRelationFieldSet($previousField->getModel());
                 }
             }
 
-            if( $field )
-            {
+            if ($field) {
                 $previousField = $field;
 
-                $resolvedFieldSet = $this->resolveFieldSet( $previousField, $fieldName );
+                $resolvedFieldSet = $this->resolveFieldSet($previousField, $fieldName);
 
                 $previousFieldSet = $resolvedFieldSet ?? $previousFieldSet;
 
-                $fields[ $fieldName ] = $field;
+                $fields[$fieldName] = $field;
             }
         }
 
@@ -152,19 +134,16 @@ class FieldSetFieldFinder
      * @param string $attribute
      * @return array
      */
-    protected function getActualFieldNames( $attribute )
+    protected function getActualFieldNames($attribute)
     {
-        $parts = explode( '.', $attribute );
-        $locales = $this->languageRepository->all()->map( function( Language $language )
-        {
+        $parts = explode('.', $attribute);
+        $locales = $this->languageRepository->all()->map(function (Language $language) {
             return $language->locale;
-        } )->toArray();
+        })->toArray();
 
-        foreach( $parts as $index => $part )
-        {
-            if( is_numeric( $part ) || in_array( $part, $locales, false ) )
-            {
-                unset( $parts[ $index ] );
+        foreach ($parts as $index => $part) {
+            if (is_numeric($part) || in_array($part, $locales, false)) {
+                unset($parts[$index]);
             }
         }
 
@@ -176,29 +155,26 @@ class FieldSetFieldFinder
      * @param string $attribute
      * @return AbstractField|null
      */
-    protected function resolveMultipleFields( $fields, $attribute )
+    protected function resolveMultipleFields($fields, $attribute)
     {
         $matching = null;
 
-        foreach( $fields->all() as $field )
-        {
+        foreach ($fields->all() as $field) {
             /** @var AbstractField $field */
-            $nameParts = explode( '.', $attribute );
-            $fieldName = reset( $nameParts ) ;
+            $nameParts = explode('.', $attribute);
+            $fieldName = reset($nameParts);
 
-            $fieldSet = $this->resolveFieldSet( $field, $fieldName );
+            $fieldSet = $this->resolveFieldSet($field, $fieldName);
 
-            if ( !$fieldSet )
-            {
+            if (!$fieldSet) {
                 continue;
             }
 
-            $finder = new self( $this->languageRepository, $fieldSet, $field );
+            $finder = new self($this->languageRepository, $fieldSet, $field);
 
-            array_shift( $nameParts );
+            array_shift($nameParts);
 
-            if( $finder->contains( implode( '.', $nameParts ) ) )
-            {
+            if ($finder->contains(implode('.', $nameParts))) {
                 $matching = $field;
                 break;
             }
@@ -212,19 +188,16 @@ class FieldSetFieldFinder
      * @param string $fieldName
      * @return FieldSet|null
      */
-    protected function resolveFieldSet( AbstractField $field, string $fieldName )
+    protected function resolveFieldSet(AbstractField $field, string $fieldName)
     {
-        if( $field instanceof HasMany )
-        {
+        if ($field instanceof HasMany) {
             /** @var HasMany $field */
             $nested = $field->getValue();
 
-            if( $nested )
-            {
-                $resource = method_exists( $nested, 'getModel' ) ? $nested->getModel() : $nested->get( $fieldName );
+            if ($nested) {
+                $resource = method_exists($nested, 'getModel') ? $nested->getModel() : $nested->get($fieldName);
 
-                if( !$resource )
-                {
+                if (!$resource) {
                     return null;
                 }
 
@@ -232,29 +205,23 @@ class FieldSetFieldFinder
                  * @var Collection $nested
                  * @var FieldSet $fieldSet
                  */
-                return $field->getRelationFieldSet( $resource, $fieldName );
+                return $field->getRelationFieldSet($resource, $fieldName);
             }
-        }
-        elseif( $field instanceof HasOne )
-        {
-            if( $field->getValue() )
-            {
-                return $field->getRelationFieldSet( $field->getValue() );
+        } elseif ($field instanceof HasOne) {
+            if ($field->getValue()) {
+                return $field->getRelationFieldSet($field->getValue());
             }
 
-            return new FieldSet( $field->getRelatedModel(), $field->getNameSpacedName() );
-        }
-        elseif( $field instanceof Translatable )
-        {
+            return new FieldSet($field->getRelatedModel(), $field->getNameSpacedName());
+        } elseif ($field instanceof Translatable) {
             /** @var Translatable $field */
 
-            if( !in_array( $fieldName, $field->getLocales(), true ) )
-            {
+            if (!in_array($fieldName, $field->getLocales(), true)) {
                 return null;
             }
 
             return $field->getLocaleFieldSet(
-                $field->getModel()->translateOrNew( $fieldName ),
+                $field->getModel()->translateOrNew($fieldName),
                 $fieldName
             );
         }

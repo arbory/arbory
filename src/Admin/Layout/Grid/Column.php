@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Layout\Grid;
 
-
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -26,7 +25,7 @@ class Column implements Renderable
     /**
      * @var array
      */
-    protected $breakpoints  = [];
+    protected $breakpoints = [];
 
     /**
      * @var string
@@ -61,7 +60,7 @@ class Column implements Renderable
      *
      * @return Column
      */
-    public function breakpoints(array $breakpoints):self
+    public function breakpoints(array $breakpoints): self
     {
         $this->breakpoints = $breakpoints;
 
@@ -73,7 +72,7 @@ class Column implements Renderable
      *
      * @return Column
      */
-    public function push($content):self
+    public function push($content): self
     {
         $this->content->push($content);
 
@@ -85,7 +84,7 @@ class Column implements Renderable
      *
      * @return Column
      */
-    public function set($content):self
+    public function set($content): self
     {
         $this->content = new Content($content);
 
@@ -103,13 +102,13 @@ class Column implements Renderable
     /**
      * Column size
      *
-     * @param int    $size
+     * @param int $size
      *
      * @param string $breakpoint
      *
      * @return Column
      */
-    public function size($size, $breakpoint = self::BREAKPOINT_XS):self
+    public function size($size, $breakpoint = self::BREAKPOINT_XS): self
     {
         $this->breakpoints[$breakpoint] = $size;
 
@@ -120,8 +119,7 @@ class Column implements Renderable
     {
         $classes = [];
 
-        foreach($this->breakpoints as $breakpoint => $size)
-        {
+        foreach ($this->breakpoints as $breakpoint => $size) {
             $classes[] = str_replace([
                 '{breakpoint}',
                 '{size}'

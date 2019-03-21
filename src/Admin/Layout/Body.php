@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-
 use Arbory\Base\Html\Elements\Content;
 
 class Body
@@ -45,8 +44,8 @@ class Body
         $this->page = $page;
 
         $this->prepended = new Content();
-        $this->appended  = new Content();
-        $this->wrapper   = function ($content) {
+        $this->appended = new Content();
+        $this->wrapper = function ($content) {
             return $content;
         };
     }
@@ -130,7 +129,7 @@ class Body
     }
 
     /**
-     * @return PageInterface|null   
+     * @return PageInterface|null
      */
     public function getPage(): ?PageInterface
     {

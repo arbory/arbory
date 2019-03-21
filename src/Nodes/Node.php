@@ -137,14 +137,14 @@ class Node extends \Baum\Node
     /**
      * @param       $name
      * @param array $parameters
-     * @param bool  $absolute
+     * @param bool $absolute
      * @return string|null
      */
     public function getUrl($name, array $parameters = [], $absolute = true)
     {
-        $routes    = app('routes');
+        $routes = app('routes');
         $routeName = 'node.' . $this->getKey() . '.' . $name;
-        $route     = $routes->getByName($routeName);
+        $route = $routes->getByName($routeName);
 
         return $route ? route($routeName, $parameters, $absolute) : null;
     }

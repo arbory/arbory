@@ -22,21 +22,19 @@ class ExceptionReply extends Reply
      * @var string $url
      * @return JsonResponse|RedirectResponse
      */
-    public function dispatch( $url = '/' )
+    public function dispatch($url = '/')
     {
-        $request = app( 'request' );
+        $request = app('request');
 
-        if( $request->ajax() || $request->wantsJson() )
-        {
-            return new JsonResponse( $this->toArray(), $this->statusCode );
+        if ($request->ajax() || $request->wantsJson()) {
+            return new JsonResponse($this->toArray(), $this->statusCode);
         }
 
-        if( $this->has( 'message' ) )
-        {
-            session()->flash( 'error', $this->message );
+        if ($this->has('message')) {
+            session()->flash('error', $this->message);
         }
 
-        return redirect()->to( $this->determineRedirectUrl() )->withInput( $request->input() );
+        return redirect()->to($this->determineRedirectUrl())->withInput($request->input());
     }
 
     /**
@@ -44,11 +42,10 @@ class ExceptionReply extends Reply
      */
     protected function determineRedirectUrl()
     {
-        if( $this->redirectUrl )
-        {
+        if ($this->redirectUrl) {
             return $this->redirectUrl;
         }
 
-        return app( UrlGenerator::class )->previous();
+        return app(UrlGenerator::class)->previous();
     }
 }

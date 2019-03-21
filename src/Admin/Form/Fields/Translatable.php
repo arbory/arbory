@@ -39,20 +39,19 @@ class Translatable extends AbstractField implements ProxyFieldInterface
      * Translatable constructor.
      * @param FieldInterface $field
      */
-    public function __construct( FieldInterface $field )
+    public function __construct(FieldInterface $field)
     {
         /** @var LanguageRepository $languages */
-        $languages = \App::make( LanguageRepository::class );
-        
+        $languages = \App::make(LanguageRepository::class);
+
         $this->field = $field;
         $this->currentLocale = \App::getLocale();
 
-        $this->locales = $languages->all()->map( function( Language $language )
-        {
+        $this->locales = $languages->all()->map(function (Language $language) {
             return $language->locale;
-        } )->toArray();
+        })->toArray();
 
-        parent::__construct( 'translations' );
+        parent::__construct('translations');
     }
 
     /**
@@ -76,7 +75,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
      *
      * @return $this
      */
-    public function setLocales( array $locales = [] )
+    public function setLocales(array $locales = [])
     {
         $this->locales = $locales;
 
@@ -95,10 +94,10 @@ class Translatable extends AbstractField implements ProxyFieldInterface
      * @param $locale
      * @return FieldSet
      */
-    public function getTranslatableResource( $locale )
+    public function getTranslatableResource($locale)
     {
         return $this->getLocaleFieldSet(
-            $this->getModel()->translateOrNew( $locale ),
+            $this->getModel()->translateOrNew($locale),
             $locale
         );
     }
@@ -108,7 +107,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
      * @param $locale
      * @return FieldSet
      */
-    public function getLocaleFieldSet( $model, $locale )
+    public function getLocaleFieldSet($model, $locale)
     {
         $fieldSet = new FieldSet(
             $model,
@@ -116,17 +115,16 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         );
 
         $field = clone $this->field;
-        $field->setFieldSet( $fieldSet );
-        $field->rules( implode( '|', $this->rules ) );
+        $field->setFieldSet($fieldSet);
+        $field->rules(implode('|', $this->rules));
 
-        $defaultResource = $this->getDefaultResourceForLocale( $locale );
+        $defaultResource = $this->getDefaultResourceForLocale($locale);
 
-        if( $defaultResource && !$field->getValue() )
-        {
-            $field->setValue( $defaultResource->{$field->getName()} );
+        if ($defaultResource && !$field->getValue()) {
+            $field->setValue($defaultResource->{$field->getName()});
         }
 
-        $fieldSet->getFields()->push( $field );
+        $fieldSet->getFields()->push($field);
 
         return $fieldSet;
     }
@@ -137,16 +135,13 @@ class Translatable extends AbstractField implements ProxyFieldInterface
      * @param $locale
      * @return Model|null
      */
-    public function getDefaultResourceForLocale( $locale )
+    public function getDefaultResourceForLocale($locale)
     {
         $resource = null;
 
-        if( $this->getValue() && !$this->getValue()->isEmpty() )
-        {
-            foreach( $this->getValue() as $index => $item )
-            {
-                if( $item->{$this->getModel()->getLocaleKey()} === $locale )
-                {
+        if ($this->getValue() && !$this->getValue()->isEmpty()) {
+            foreach ($this->getValue() as $index => $item) {
+                if ($item->{$this->getModel()->getLocaleKey()} === $locale) {
                     $resource = $item;
                 }
             }
@@ -158,13 +153,11 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     /**
      * @param Request $request
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
-        foreach( $this->locales as $locale )
-        {
-            foreach( $this->getTranslatableResource( $locale )->getFields() as $field )
-            {
-                $field->beforeModelSave( $request );
+        foreach ($this->locales as $locale) {
+            foreach ($this->getTranslatableResource($locale)->getFields() as $field) {
+                $field->beforeModelSave($request);
             }
         }
     }
@@ -172,13 +165,11 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     /**
      * @param Request $request
      */
-    public function afterModelSave( Request $request )
+    public function afterModelSave(Request $request)
     {
-        foreach( $this->locales as $locale )
-        {
-            foreach( $this->getTranslatableResource( $locale )->getFields() as $field )
-            {
-                $field->afterModelSave( $request );
+        foreach ($this->locales as $locale) {
+            foreach ($this->getTranslatableResource($locale)->getFields() as $field) {
+                $field->afterModelSave($request);
             }
         }
     }
@@ -192,9 +183,8 @@ class Translatable extends AbstractField implements ProxyFieldInterface
 
         $translationsClass = $this->getModel()->getTranslationModelName();
 
-        foreach( $this->getLocaleFieldSet( new $translationsClass, '*' )->getFields() as $field )
-        {
-            $rules = array_merge( $rules, $field->getRules() );
+        foreach ($this->getLocaleFieldSet(new $translationsClass, '*')->getFields() as $field) {
+            $rules = array_merge($rules, $field->getRules());
         }
 
         return $rules;

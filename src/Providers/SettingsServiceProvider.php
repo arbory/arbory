@@ -13,15 +13,13 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton( SettingRegistry::class, function()
-        {
+        $this->app->singleton(SettingRegistry::class, function () {
             return new SettingRegistry();
-        } );
+        });
 
-        $this->app->singleton( 'arbory_settings', function()
-        {
-            return new Settings( $this->app[ SettingRegistry::class ] );
-        } );
+        $this->app->singleton('arbory_settings', function () {
+            return new Settings($this->app[SettingRegistry::class]);
+        });
     }
 
     /**
@@ -31,14 +29,12 @@ class SettingsServiceProvider extends ServiceProvider
     {
         $paths = [
             __DIR__ . '/../../config/settings.php',
-            config_path( 'settings.php' )
+            config_path('settings.php')
         ];
 
-        foreach( $paths as $path )
-        {
-            if( file_exists( $path ) )
-            {
-                $this->app[ SettingRegistry::class ]->importFromConfig( include $path );
+        foreach ($paths as $path) {
+            if (file_exists($path)) {
+                $this->app[SettingRegistry::class]->importFromConfig(include $path);
             }
         }
     }

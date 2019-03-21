@@ -20,11 +20,10 @@ class FormBuilderServiceProvider extends ServiceProvider
             return $registry;
         });
 
-        $this->app->singleton(StyleManager::class, function ( $app ) {
+        $this->app->singleton(StyleManager::class, function ($app) {
             $defaultStyle = config('arbory.default_field_style');
 
-            return new StyleManager($app, (array) config('arbory.field_styles'), $defaultStyle);
-
+            return new StyleManager($app, (array)config('arbory.field_styles'), $defaultStyle);
         });
     }
 }

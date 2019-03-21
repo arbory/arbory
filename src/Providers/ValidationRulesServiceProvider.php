@@ -121,7 +121,9 @@ class ValidationRulesServiceProvider extends ServiceProvider
                 $checkByAttribute = str_replace($attributeLocale, $checkLocale, $attribute);
                 $field = $fieldSet->findFieldByInputName($checkByAttribute);
 
-                if ($request->input($checkByAttribute) || ($field->getValue() && $request->input($checkByAttribute) !== null)) {
+                $valueNotNull = ($field->getValue() && $request->input($checkByAttribute) !== null);
+
+                if ($request->input($checkByAttribute) || $valueNotNull) {
                     return true;
                 }
             }

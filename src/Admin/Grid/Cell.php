@@ -80,5 +80,4 @@ class Cell implements Renderable
     {
         return Html::td($this->getColumn()->callDisplayCallback($this->getModel()));
     }
-
 }

@@ -338,11 +338,13 @@ class AuthServiceProvider extends ServiceProvider
         $config = $this->app['config']->get('arbory.auth');
 
         $this->sweep(
-            $this->app['sentinel.activations'], $config['activations']['lottery']
+            $this->app['sentinel.activations'],
+            $config['activations']['lottery']
         );
 
         $this->sweep(
-            $this->app['sentinel.reminders'], $config['reminders']['lottery']
+            $this->app['sentinel.reminders'],
+            $config['reminders']['lottery']
         );
     }
 

@@ -19,7 +19,7 @@ class ResourceRoutes
      * ResourceRoutes constructor.
      * @param Module $module
      */
-    public function __construct( Module $module )
+    public function __construct(Module $module)
     {
         $this->module = $module;
     }
@@ -29,8 +29,8 @@ class ResourceRoutes
      * @param array $parameters
      * @return string
      */
-    public function getUrl( $name, $parameters = [] )
+    public function getUrl($name, $parameters = [])
     {
-        return route( config( 'arbory.uri' ) . '.' . $this->module->name() . '.' . $name, $parameters );
+        return route(config('arbory.uri') . '.' . $this->module->name() . '.' . $name, $parameters);
     }
 }

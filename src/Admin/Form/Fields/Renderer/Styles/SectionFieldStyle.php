@@ -19,23 +19,23 @@ class SectionFieldStyle extends AbstractFieldStyle implements FieldStyleInterfac
         $section = Html::div([
             $this->renderField($field),
         ])
-           ->addClass('section content-fields')
-           ->addClass(implode(' ', $field->getFieldClasses()))
-           ->addAttributes([
-               'data-name' => $field->getName(),
-           ]);
+            ->addClass('section content-fields')
+            ->addClass(implode(' ', $field->getFieldClasses()))
+            ->addAttributes([
+                'data-name' => $field->getName(),
+            ]);
 
         $section->addAttributes($options->getAttributes());
         $section->addClass(implode(' ', $options->getClasses()));
 
 
-        if($field instanceof ControlFieldInterface) {
-            if($field->isDisabled()) {
+        if ($field instanceof ControlFieldInterface) {
+            if ($field->isDisabled()) {
                 $section->addAttributes(['data-disabled' => 1]);
             }
 
-            $section->addAttributes(['data-interactive' => (int) $field->isInteractive()]);
-            $section->addAttributes(['data-required' => (int) $field->isRequired()]);
+            $section->addAttributes(['data-interactive' => (int)$field->isInteractive()]);
+            $section->addAttributes(['data-required' => (int)$field->isRequired()]);
         }
 
         return $section;

@@ -10,9 +10,9 @@ interface TransformableInterface
     /**
      * Transforms content
      *
-     * @param Body    $content
+     * @param Body $content
      * @param Closure $next
-     * @param array   ...$parameters
+     * @param array ...$parameters
      *
      * @return mixed
      */

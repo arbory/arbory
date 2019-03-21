@@ -35,14 +35,13 @@ class FileFieldRenderer extends ControlFieldRenderer
 
         $file = $this->getFile();
 
-        if( $file )
-        {
-            $value->append( $this->createFileDetails( $file ) );
+        if ($file) {
+            $value->append($this->createFileDetails($file));
         }
 
-         if($this->field->isInteractive() && !$this->field->isDisabled()) {
-             $value->append(parent::render());
-         }
+        if ($this->field->isInteractive() && !$this->field->isDisabled()) {
+            $value->append(parent::render());
+        }
 
         return $value;
     }
@@ -65,7 +64,7 @@ class FileFieldRenderer extends ControlFieldRenderer
             'download'
         ]);
 
-        if($this->field->isInteractive() && !$this->field->isDisabled()) {
+        if ($this->field->isInteractive() && !$this->field->isDisabled()) {
             $removeButton =
                 Html::button()->addClass('remove fa fa-times')->addAttributes([
                     'type' => 'button',

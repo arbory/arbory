@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Concerns;
 
-
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 
 trait IsControlField
@@ -36,7 +35,7 @@ trait IsControlField
      *
      * @return FieldInterface
      */
-    public function setDisabled( bool $disabled = false ): FieldInterface
+    public function setDisabled(bool $disabled = false): FieldInterface
     {
         $this->disabled = $disabled;
 
@@ -56,7 +55,7 @@ trait IsControlField
      *
      * @return FieldInterface
      */
-    public function setInteractive( bool $interactive = false ): FieldInterface
+    public function setInteractive(bool $interactive = false): FieldInterface
     {
         $this->interactive = $interactive;
 
@@ -76,7 +75,7 @@ trait IsControlField
      *
      * @return FieldInterface
      */
-    public function setRequired( bool $required = false ): FieldInterface
+    public function setRequired(bool $required = false): FieldInterface
     {
         $this->required = $required;
 

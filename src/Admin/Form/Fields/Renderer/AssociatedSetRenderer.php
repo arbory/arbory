@@ -31,10 +31,10 @@ class AssociatedSetRenderer extends ControlFieldRenderer
      *
      * @param FieldInterface $field
      */
-    public function __construct( FieldInterface $field )
+    public function __construct(FieldInterface $field)
     {
-        $this->field  = $field;
-        $this->values = (array) $field->getValue();
+        $this->field = $field;
+        $this->values = (array)$field->getValue();
     }
 
     /**
@@ -46,7 +46,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
 
         $index = 0;
 
-        foreach ( $this->field->getOptions() as $value => $label ) {
+        foreach ($this->field->getOptions() as $value => $label) {
             $content[] = $this->getAssociatedItem(
                 $this->field->getNameSpacedName() . '.' . $index,
                 $value,
@@ -66,7 +66,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
      *
      * @return Element
      */
-    protected function getAssociatedItem( $name, $value, $label )
+    protected function getAssociatedItem($name, $value, $label)
     {
         $checkbox = new CheckboxControl();
 
@@ -76,20 +76,22 @@ class AssociatedSetRenderer extends ControlFieldRenderer
         $checkbox->setName($inputName);
         $checkbox->setValue($value);
 
-        if ( $this->field instanceof ControlFieldInterface ) {
-            $checkbox->setReadOnly(! $this->field->isInteractive());
+        if ($this->field instanceof ControlFieldInterface) {
+            $checkbox->setReadOnly(!$this->field->isInteractive());
             $checkbox->setDisabled($this->field->isDisabled());
         }
 
-        if ( in_array($value, $this->values, true) ) {
+        if (in_array($value, $this->values, true)) {
             $checkbox->setChecked(true);
         }
 
         return Html::div([
             $checkbox->render($checkbox->element()),
-            Html::label($label)->addAttributes([ 'for' => $checkbox->getAttributes()['id'] ?? $this->field->getFieldId() ]),
+            Html::label($label)->addAttributes([
+                'for' => $checkbox->getAttributes()['id'] ?? $this->field->getFieldId()
+            ]),
         ])
-                   ->addClass('type-associated-set-item');
+            ->addClass('type-associated-set-item');
     }
 
     /**
@@ -105,12 +107,10 @@ class AssociatedSetRenderer extends ControlFieldRenderer
      *
      * @return StyleOptionsInterface
      */
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         $options->addClass('type-associated-set');
 
         return $options;
     }
-
-
 }

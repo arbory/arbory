@@ -19,7 +19,7 @@ class DataSetExport
     /**
      * DataSetExport constructor.
      * @param Collection $items
-     * @param array      $columns
+     * @param array $columns
      */
     public function __construct(Collection $items, array $columns)
     {

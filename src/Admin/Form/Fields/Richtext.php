@@ -38,7 +38,7 @@ class Richtext extends Textarea
      *
      * @return Richtext
      */
-    public function setAttachmentsUploadUrl( $attachmentsUploadUrl ): Richtext
+    public function setAttachmentsUploadUrl($attachmentsUploadUrl): Richtext
     {
         $this->attachmentsUploadUrl = $attachmentsUploadUrl;
 
@@ -58,7 +58,7 @@ class Richtext extends Textarea
      *
      * @return Richtext
      */
-    public function setCompact( bool $isCompact ): Richtext
+    public function setCompact(bool $isCompact): Richtext
     {
         $this->isCompact = $isCompact;
 

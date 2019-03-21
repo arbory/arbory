@@ -28,10 +28,10 @@ class ToolboxMenuItem
      * @param string $title
      * @param string $url
      */
-    public function __construct( $title, $url )
+    public function __construct($title, $url)
     {
-        $this->setTitle( $title );
-        $this->setUrl( $url );
+        $this->setTitle($title);
+        $this->setUrl($url);
     }
 
     /**
@@ -46,7 +46,7 @@ class ToolboxMenuItem
      * @param $title
      * @return $this
      */
-    public function setTitle( $title )
+    public function setTitle($title)
     {
         $this->title = $title;
 
@@ -65,7 +65,7 @@ class ToolboxMenuItem
      * @param $url
      * @return $this
      */
-    public function setUrl( $url )
+    public function setUrl($url)
     {
         $this->url = $url;
 
@@ -77,7 +77,7 @@ class ToolboxMenuItem
      */
     public function getClass()
     {
-        return implode( ' ', $this->classes );
+        return implode(' ', $this->classes);
     }
 
     /**

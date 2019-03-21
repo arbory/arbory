@@ -16,16 +16,16 @@ interface FilterInterface
      * FilterInterface constructor.
      * @param Model $model
      */
-    public function __construct( Model $model );
+    public function __construct(Model $model);
 
     /**
      * @param Collection $columns
      * @return Paginator
      */
-    public function execute( Collection $columns );
+    public function execute(Collection $columns);
 
     /**
      * @param $relationName
      */
-    public function withRelation( $relationName );
+    public function withRelation($relationName);
 }

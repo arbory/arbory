@@ -58,7 +58,7 @@ trait Crudify
     }
 
     /**
-     * @param Form                            $form
+     * @param Form $form
      * @param Layout\FormLayoutInterface|null $layout
      *
      * @return Form
@@ -69,7 +69,7 @@ trait Crudify
     }
 
     /**
-     * @param Model                           $model
+     * @param Model $model
      * @param Layout\FormLayoutInterface|null $layout
      *
      * @return Form
@@ -205,8 +205,8 @@ trait Crudify
     public function update(Request $request, $resourceId)
     {
         $resource = $this->findOrNew($resourceId);
-        $layout   = $this->layout('form');
-        $form     = $this->buildForm($resource, $layout);
+        $layout = $this->layout('form');
+        $form = $this->buildForm($resource, $layout);
 
         $layout->setForm($form);
 
@@ -231,7 +231,7 @@ trait Crudify
     public function destroy($resourceId)
     {
         $resource = $this->resource()->findOrFail($resourceId);
-        $layout   = $this->layout('form');
+        $layout = $this->layout('form');
 
         $this->buildForm($resource, $layout)->destroy();
 
@@ -284,7 +284,7 @@ trait Crudify
      */
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
-        if (! isset(self::$exportTypes[$type])) {
+        if (!isset(self::$exportTypes[$type])) {
             throw new \Exception('Export Type not found - ' . $type);
         }
 
@@ -314,7 +314,8 @@ trait Crudify
         $model = $tools->model();
 
         $tools->add('edit', $this->url('edit', $model->getKey()));
-        $tools->add('delete',
+        $tools->add(
+            'delete',
             $this->url('dialog', ['dialog' => 'confirm_delete', 'id' => $model->getKey()])
         )->dialog()->danger();
     }
@@ -449,7 +450,7 @@ trait Crudify
 
         $class = $layouts[$component] ?? null;
 
-        if(!$class && !class_exists($class)) {
+        if (!$class && !class_exists($class)) {
             throw new \RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
         }
 

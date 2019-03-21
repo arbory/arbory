@@ -11,14 +11,14 @@ class ArboryFilePage extends Model implements PageInterface
     /**
      * @var array
      */
-    protected $fillable = [ 'arbory_file' ];
+    protected $fillable = ['arbory_file'];
 
     /**
      * @param FieldSet $fieldSet
      * @return void
      */
-    public function prepareFieldSet( FieldSet $fieldSet )
+    public function prepareFieldSet(FieldSet $fieldSet)
     {
-        $fieldSet->add( new ArboryFile( 'arbory_file' ) );
+        $fieldSet->add(new ArboryFile('arbory_file'));
     }
 }

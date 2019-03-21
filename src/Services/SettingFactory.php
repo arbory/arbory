@@ -15,9 +15,7 @@ class SettingFactory
     /**
      * @param SettingRegistry $settingRegistry
      */
-    public function __construct(
-        SettingRegistry $settingRegistry
-    )
+    public function __construct(SettingRegistry $settingRegistry)
     {
         $this->settingRegistry = $settingRegistry;
     }
@@ -26,19 +24,18 @@ class SettingFactory
      * @param string $key
      * @return Setting
      */
-    public function build( string $key ): Setting
+    public function build(string $key): Setting
     {
-        $definition = $this->settingRegistry->find( $key );
+        $definition = $this->settingRegistry->find($key);
 
-        if( !$definition )
-        {
+        if (!$definition) {
             return null;
         }
 
-        return new Setting( [
+        return new Setting([
             'name' => $key,
             'value' => $definition->getValue(),
             'type' => $definition->getType()
-        ] );
+        ]);
     }
 }

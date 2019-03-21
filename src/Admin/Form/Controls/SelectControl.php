@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Form\Controls;
 
-
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Elements\Inputs\Input;
@@ -36,14 +35,14 @@ class SelectControl extends AbstractControl
 
         $select = $this->applyAttributesAndClasses($select);
 
-        if ( $this->isReadOnly() ) {
-            $select->addAttributes([ 'disabled' => '' ]);
+        if ($this->isReadOnly()) {
+            $select->addAttributes(['disabled' => '']);
         }
 
         return $select;
     }
 
-    public function render( Element $control )
+    public function render(Element $control)
     {
         $content = new Content();
 
@@ -51,11 +50,11 @@ class SelectControl extends AbstractControl
 
         $values = array_wrap($this->getValue());
 
-        if ( $this->isReadOnly() ) {
-            foreach ( $values as $value ) {
-                $name = $this->getName() . ( $this->isMultiple() ? '[]' : '' );
+        if ($this->isReadOnly()) {
+            foreach ($values as $value) {
+                $name = $this->getName() . ($this->isMultiple() ? '[]' : '');
 
-                $input = ( new Input() )
+                $input = (new Input())
                     ->setType('hidden')
                     ->setValue($value)
                     ->setName($name);
@@ -84,7 +83,7 @@ class SelectControl extends AbstractControl
      *
      * @return SelectControl
      */
-    public function setMultiple( bool $multiple ): self
+    public function setMultiple(bool $multiple): self
     {
         $this->multiple = $multiple;
 
@@ -104,7 +103,7 @@ class SelectControl extends AbstractControl
      *
      * @return SelectControl
      */
-    public function setOptions( array $options ): self
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 
@@ -124,7 +123,7 @@ class SelectControl extends AbstractControl
      *
      * @return SelectControl
      */
-    public function setSelected( $selected ): self
+    public function setSelected($selected): self
     {
         $this->selected = array_wrap($selected);
 
@@ -137,7 +136,7 @@ class SelectControl extends AbstractControl
     protected function buildOptions()
     {
         $selected = array_map(function ($value) {
-            if($value instanceof Model) {
+            if ($value instanceof Model) {
                 return $value->getKey();
             }
 
@@ -146,10 +145,10 @@ class SelectControl extends AbstractControl
 
         $items = new  Content();
 
-        foreach ( $this->getOptions() as $key => $value ) {
-            $option = Html::option((string) $value)->setValue($key);
+        foreach ($this->getOptions() as $key => $value) {
+            $option = Html::option((string)$value)->setValue($key);
 
-            if ( in_array($key, $selected) ) {
+            if (in_array($key, $selected)) {
                 $option->select();
             }
 

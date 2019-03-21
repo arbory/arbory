@@ -1,4 +1,5 @@
 <?php
+
 namespace Arbory\Base\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,9 +24,8 @@ class TranslationStoreRequest extends FormRequest
         ];
 
         /* @var $languageRepository LanguageRepository */
-        $languageRepository = app( LanguageRepository::class );
-        foreach( $languageRepository->all() as $language )
-        {
+        $languageRepository = app(LanguageRepository::class);
+        foreach ($languageRepository->all() as $language) {
             $rules['text_' . $language->locale] = 'required|';
         }
 

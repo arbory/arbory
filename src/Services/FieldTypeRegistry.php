@@ -35,8 +35,9 @@ class FieldTypeRegistry
      */
     public function register(string $type, string $class): self
     {
-        if(in_array(strtolower($type), $this->reservedTypes, true)) {
-            throw new \InvalidArgumentException("The name '{$type}' is already being used by FieldSet class for a method");
+        if (in_array(strtolower($type), $this->reservedTypes, true)) {
+            $message = 'The name ' . $type . ' is already being used by FieldSet class for a method';
+            throw new \InvalidArgumentException($message);
         }
 
         $this->fieldTypes->put($type, $class);
@@ -83,7 +84,7 @@ class FieldTypeRegistry
     {
         $fieldClass = $this->findByType($type);
 
-        if(!$fieldClass || !class_exists($fieldClass)) {
+        if (!$fieldClass || !class_exists($fieldClass)) {
             throw new \InvalidArgumentException("Could not resolve a field for a type '{$type}'");
         }
 
@@ -106,7 +107,7 @@ class FieldTypeRegistry
 
         $reservedMethods = [];
 
-        foreach($methods as $method) {
+        foreach ($methods as $method) {
             $reservedMethods[] = strtolower($method->getName());
         }
 

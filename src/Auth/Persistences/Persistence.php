@@ -20,5 +20,4 @@ class Persistence extends EloquentPersistence
      * @var string
      */
     protected static $usersModel = User::class;
-
 }

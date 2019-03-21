@@ -59,29 +59,25 @@ class ObjectRelation extends AbstractField
      * @param string|Collection $relatedModelTypeOrCollection
      * @param int $limit
      */
-    public function __construct( $name, $relatedModelTypeOrCollection, $limit = 0 )
+    public function __construct($name, $relatedModelTypeOrCollection, $limit = 0)
     {
         $this->relatedModelType = $relatedModelTypeOrCollection;
         $this->limit = $limit;
 
-        if( $relatedModelTypeOrCollection instanceof Collection )
-        {
+        if ($relatedModelTypeOrCollection instanceof Collection) {
             $this->options = $relatedModelTypeOrCollection;
 
-            if( !$relatedModelTypeOrCollection->isEmpty() )
-            {
-                $this->relatedModelType = ( new \ReflectionClass( $relatedModelTypeOrCollection->first() ) )->getName();
+            if (!$relatedModelTypeOrCollection->isEmpty()) {
+                $this->relatedModelType = (new \ReflectionClass($relatedModelTypeOrCollection->first()))->getName();
             }
         }
 
-        if( $this->relatedModelType === Node::class )
-        {
+        if ($this->relatedModelType === Node::class) {
             $this->indentAttribute = 'depth';
         }
 
-        parent::__construct( $name );
+        parent::__construct($name);
     }
-
 
 
     /**
@@ -89,7 +85,7 @@ class ObjectRelation extends AbstractField
      */
     public function hasIndentation()
     {
-        return (bool) $this->getIndentAttribute();
+        return (bool)$this->getIndentAttribute();
     }
 
     /**
@@ -104,7 +100,7 @@ class ObjectRelation extends AbstractField
      * @param string $indentAttribute
      * @return self
      */
-    public function setIndentAttribute( string $indentAttribute = null )
+    public function setIndentAttribute(string $indentAttribute = null)
     {
         $this->indentAttribute = $indentAttribute;
 
@@ -116,9 +112,9 @@ class ObjectRelation extends AbstractField
      * @param Closure $groupName
      * @return self
      */
-    public function groupBy( string $attribute, Closure $groupName = null )
+    public function groupBy(string $attribute, Closure $groupName = null)
     {
-        $this->setIndentAttribute( null );
+        $this->setIndentAttribute(null);
 
         $this->groupByAttribute = $attribute;
         $this->groupByGetName = $groupName;
@@ -135,9 +131,8 @@ class ObjectRelation extends AbstractField
      */
     public function getValue()
     {
-        if( !$this->value )
-        {
-            $relation = $this->getModel()->morphMany( Relation::class, 'owner' )->where( 'name', $this->getName() );
+        if (!$this->value) {
+            $relation = $this->getModel()->morphMany(Relation::class, 'owner')->where('name', $this->getName());
 
             $this->value = $this->isSingular() ? $relation->first() : $relation->get();
         }
@@ -149,9 +144,9 @@ class ObjectRelation extends AbstractField
      * @param Request $request
      * @return void
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
-        $request->except( $this->getNameSpacedName() );
+        $request->except($this->getNameSpacedName());
     }
 
     /**
@@ -160,29 +155,25 @@ class ObjectRelation extends AbstractField
      * @throws \Exception
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function afterModelSave( Request $request )
+    public function afterModelSave(Request $request)
     {
-        $attributes = $request->input( $this->getNameSpacedName() );
-        $relationIds = explode( ',', array_get( $attributes, 'related_id' ) );
+        $attributes = $request->input($this->getNameSpacedName());
+        $relationIds = explode(',', array_get($attributes, 'related_id'));
         $value = $this->getValue();
 
-        if( $this->isSingular() )
-        {
-            $id = reset( $relationIds );
+        if ($this->isSingular()) {
+            $id = reset($relationIds);
 
-            if( !$id && $value instanceof Model )
-            {
+            if (!$id && $value instanceof Model) {
                 $this->deleteOldRelations();
 
                 return;
             }
 
-            $this->saveOne( $id );
-        }
-        else
-        {
-            $this->saveMany( $relationIds );
-            $this->deleteOldRelations( $relationIds );
+            $this->saveOne($id);
+        } else {
+            $this->saveMany($relationIds);
+            $this->deleteOldRelations($relationIds);
         }
     }
 
@@ -191,23 +182,22 @@ class ObjectRelation extends AbstractField
      * @return void
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    protected function saveOne( $relationId )
+    protected function saveOne($relationId)
     {
-        if( !$relationId )
-        {
+        if (!$relationId) {
             return;
         }
 
-        $relation = Relation::firstOrNew( [
+        $relation = Relation::firstOrNew([
             'name' => $this->getName(),
             'owner_id' => $this->getOwnerId(),
             'owner_type' => $this->getOwnerType()
-        ] );
+        ]);
 
-        $relation->fill( [
+        $relation->fill([
             'related_id' => $relationId,
             'related_type' => $this->getRelatedModelType()
-        ] );
+        ]);
 
         $relation->save();
     }
@@ -216,22 +206,20 @@ class ObjectRelation extends AbstractField
      * @param int[] $relationIds
      * @return void
      */
-    protected function saveMany( $relationIds )
+    protected function saveMany($relationIds)
     {
-        foreach( $relationIds as $id )
-        {
-            if( !$id )
-            {
+        foreach ($relationIds as $id) {
+            if (!$id) {
                 continue;
             }
 
-            $relation = Relation::firstOrNew( [
+            $relation = Relation::firstOrNew([
                 'name' => $this->getName(),
                 'owner_id' => $this->getOwnerId(),
                 'owner_type' => $this->getOwnerType(),
                 'related_id' => $id,
                 'related_type' => $this->getRelatedModelType()
-            ] );
+            ]);
 
             $relation->save();
         }
@@ -242,19 +230,16 @@ class ObjectRelation extends AbstractField
      * @return void
      * @throws \Exception
      */
-    protected function deleteOldRelations( $updatedRelationIds = [] )
+    protected function deleteOldRelations($updatedRelationIds = [])
     {
         $relations = $this->getValue();
 
-        if ($this->isSingular())
-        {
-            $relations = [ $relations ];
+        if ($this->isSingular()) {
+            $relations = [$relations];
         }
 
-        foreach( $relations as $relation )
-        {
-            if( !in_array( $relation->related_id, $updatedRelationIds ) )
-            {
+        foreach ($relations as $relation) {
+            if (!in_array($relation->related_id, $updatedRelationIds)) {
                 $relation->delete();
             }
         }
@@ -264,22 +249,20 @@ class ObjectRelation extends AbstractField
      * @param Model $model
      * @return bool
      */
-    public function hasRelationWith( Model $model ): bool
+    public function hasRelationWith(Model $model): bool
     {
         $key = $model->getKey();
         $value = $this->getValue();
 
-        if( !$value )
-        {
+        if (!$value) {
             return false;
         }
 
-        if( $this->isSingular() )
-        {
+        if ($this->isSingular()) {
             return $value->related_id === $key;
         }
 
-        return $value->contains( 'related_id', $key );
+        return $value->contains('related_id', $key);
     }
 
     /**
@@ -289,18 +272,17 @@ class ObjectRelation extends AbstractField
     {
         $values = collect();
 
-        $values = $values->merge($this->options ?: $this->relatedModelType::all()->mapWithKeys( function( $item )
-        {
-            return [ $item->getKey() => $item ];
-        } ) );
+        $values = $values->merge($this->options ?: $this->relatedModelType::all()->mapWithKeys(function ($item) {
+            return [$item->getKey() => $item];
+        }));
 
-        return $this->groupByAttribute ? $values->groupBy( $this->groupByAttribute ) : $values;
+        return $this->groupByAttribute ? $values->groupBy($this->groupByAttribute) : $values;
     }
 
     /**
      * @param Collection $options
      */
-    public function setOptions( Collection $options )
+    public function setOptions(Collection $options)
     {
         $this->options = $options;
     }
@@ -334,34 +316,29 @@ class ObjectRelation extends AbstractField
      */
     public function getInnerFieldSet()
     {
-        $fieldSet = new FieldSet( $this->getModel(), $this->getNameSpacedName() );
+        $fieldSet = new FieldSet($this->getModel(), $this->getNameSpacedName());
 
         $value = $this->getValue();
         $ids = null;
 
-        if( $value )
-        {
-            if( $this->isSingular() )
-            {
+        if ($value) {
+            if ($this->isSingular()) {
                 $ids = $value->related_id;
-            }
-            else
-            {
-                $ids = $value->map( function( $item )
-                {
+            } else {
+                $ids = $value->map(function ($item) {
                     return $item->related_id;
-                } )->implode( ',' );
+                })->implode(',');
             }
         }
 
         $fieldSet->hidden('related_id')
-                 ->setValue($ids)->rules(implode('|', $this->rules))
-                 ->setDisabled($this->isDisabled())
-                 ->setInteractive($this->isInteractive());
+            ->setValue($ids)->rules(implode('|', $this->rules))
+            ->setDisabled($this->isDisabled())
+            ->setInteractive($this->isInteractive());
         $fieldSet->hidden('related_type')
-                 ->setValue(( new \ReflectionClass($this->relatedModelType) )->getName())
-                 ->setDisabled($this->isDisabled())
-                 ->setInteractive($this->isInteractive());
+            ->setValue((new \ReflectionClass($this->relatedModelType))->getName())
+            ->setDisabled($this->isDisabled())
+            ->setInteractive($this->isInteractive());
 
         return $fieldSet;
     }
@@ -379,12 +356,9 @@ class ObjectRelation extends AbstractField
      */
     protected function getOwnerType()
     {
-        try
-        {
-            return ( new \ReflectionClass( $this->getModel() ) )->getName();
-        }
-        catch( \ReflectionException $e )
-        {
+        try {
+            return (new \ReflectionClass($this->getModel()))->getName();
+        } catch (\ReflectionException $e) {
             return null;
         }
     }
@@ -418,7 +392,7 @@ class ObjectRelation extends AbstractField
      */
     public function isGrouped()
     {
-        return (bool) $this->groupByAttribute;
+        return (bool)$this->groupByAttribute;
     }
 
     /**
@@ -428,17 +402,17 @@ class ObjectRelation extends AbstractField
     {
         $classes = parent::getFieldClasses();
 
-        $relates = strtolower( class_basename( $this->getRelatedModelType() ) );
+        $relates = strtolower(class_basename($this->getRelatedModelType()));
         $class = "relates-{$relates}";
 
         $classes[] = $class;
 
-        if($this->isSingular()) {
+        if ($this->isSingular()) {
             $classes[] = 'single';
         } else {
             $classes[] = 'multiple';
         }
-        
+
         return $classes;
     }
 
@@ -455,7 +429,7 @@ class ObjectRelation extends AbstractField
      *
      * @return ObjectRelation
      */
-    public function setGroupedRendererClass( string $groupedRendererClass ): self
+    public function setGroupedRendererClass(string $groupedRendererClass): self
     {
         $this->groupedRendererClass = $groupedRendererClass;
 

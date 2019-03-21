@@ -40,6 +40,6 @@ trait HasRelationships
      */
     public function getRelatedItems()
     {
-        return $this->getRelatedModel()->all()->keyBy( $this->getRelatedModel()->getKeyName() );
+        return $this->getRelatedModel()->all()->keyBy($this->getRelatedModel()->getKeyName());
     }
 }

@@ -40,19 +40,19 @@ class NodesController extends Controller
     protected $contentTypeRegister;
 
     /**
-     * @param Container           $container
+     * @param Container $container
      * @param ContentTypeRegister $contentTypeRegister
      */
     public function __construct(
         Container $container,
         ContentTypeRegister $contentTypeRegister
     ) {
-        $this->container           = $container;
+        $this->container = $container;
         $this->contentTypeRegister = $contentTypeRegister;
     }
 
     /**
-     * @param Form            $form
+     * @param Form $form
      * @param LayoutInterface $panels
      *
      * @return Form
@@ -79,7 +79,7 @@ class NodesController extends Controller
 
                 $content = $fieldSet->getModel();
 
-                $class      = (new \ReflectionClass($content))->getName();
+                $class = (new \ReflectionClass($content))->getName();
                 $definition = $this->contentTypeRegister->findByModelClass($class);
 
                 $definition->getFieldSetHandler()->call($content, $fieldSet);
@@ -116,14 +116,18 @@ class NodesController extends Controller
     {
         $node = $tools->model();
 
-        $tools->add('add_child',
-            $this->url('dialog', ['dialog' => 'content_types', 'parent_id' => $node->getKey()]))->dialog();
-        $tools->add('delete',
-            $this->url('dialog', ['dialog' => 'confirm_delete', 'id' => $node->getKey()]))->danger()->dialog();
+        $tools->add(
+            'add_child',
+            $this->url('dialog', ['dialog' => 'content_types', 'parent_id' => $node->getKey()])
+        )->dialog();
+        $tools->add(
+            'delete',
+            $this->url('dialog', ['dialog' => 'confirm_delete', 'id' => $node->getKey()])
+        )->danger()->dialog();
     }
 
     /**
-     * @param Request       $request
+     * @param Request $request
      * @param LayoutManager $manager
      *
      * @return RedirectResponse|Layout
@@ -132,7 +136,7 @@ class NodesController extends Controller
     {
         $contentType = $request->get('content_type');
 
-        if (! $this->contentTypeRegister->isValidContentType($contentType)) {
+        if (!$this->contentTypeRegister->isValidContentType($contentType)) {
             return redirect($this->url('index'))->withErrors('Undefined content type "' . $contentType . '"');
         }
 
@@ -201,9 +205,9 @@ class NodesController extends Controller
         $types = $contentTypes->sort()->map(function (ContentTypeDefinition $definition, string $type) use ($request) {
             return [
                 'title' => $definition->getName(),
-                'url'   => $this->url('create', [
+                'url' => $this->url('create', [
                     'content_type' => $type,
-                    'parent_id'    => $request->get('parent_id'),
+                    'parent_id' => $request->get('parent_id'),
                 ]),
             ];
         });
@@ -220,11 +224,11 @@ class NodesController extends Controller
     {
         /**
          * @var NodesRepository $nodes
-         * @var Node            $node
+         * @var Node $node
          */
-        $nodes     = new NodesRepository;
-        $node      = $nodes->findOneBy('id', $request->input('id'));
-        $toLeftId  = $request->input('toLeftId');
+        $nodes = new NodesRepository;
+        $node = $nodes->findOneBy('id', $request->input('id'));
+        $toLeftId = $request->input('toLeftId');
         $toRightId = $request->input('toRightId');
 
         if ($toLeftId) {
@@ -247,12 +251,12 @@ class NodesController extends Controller
 
         if ($request->has('parent_id')) {
             $reservedSlugs = $this->resource()
-                                  ->where([
-                                      ['parent_id', $request->get('parent_id')],
-                                      ['id', '<>', $request->get('object_id')],
-                                  ])
-                                  ->pluck('slug')
-                                  ->toArray();
+                ->where([
+                    ['parent_id', $request->get('parent_id')],
+                    ['id', '<>', $request->get('object_id')],
+                ])
+                ->pluck('slug')
+                ->toArray();
         }
 
         $from = $request->get('from');

@@ -13,6 +13,6 @@ class Abr extends Element
      */
     public function __toString()
     {
-        return (string) $this->tag( 'abr', $this->content );
+        return (string)$this->tag('abr', $this->content);
     }
 }

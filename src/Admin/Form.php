@@ -58,15 +58,15 @@ class Form
     /**
      * Form constructor.
      *
-     * @param Model  $model
+     * @param Model $model
      * @param string $namespace
      */
-    public function __construct( Model $model, $namespace = 'resource' )
+    public function __construct(Model $model, $namespace = 'resource')
     {
         $this->model = $model;
         $this->namespace = $namespace;
-        $this->fields = new FieldSet( $model, $this->namespace, app(StyleManager::class) );
-        $this->validator = app( Validator::class );
+        $this->fields = new FieldSet($model, $this->namespace, app(StyleManager::class));
+        $this->validator = app(Validator::class);
 
         $this->registerEventListeners();
     }
@@ -75,7 +75,7 @@ class Form
      * @param $title
      * @return Form
      */
-    public function title( $title )
+    public function title($title)
     {
         $this->title = $title;
 
@@ -87,11 +87,10 @@ class Form
      */
     public function getTitle()
     {
-        if( $this->title === null )
-        {
-            $this->title = ( $this->model->getKey() )
-                ? (string) $this->model
-                : trans( 'arbory::resources.create_new' );
+        if ($this->title === null) {
+            $this->title = ($this->model->getKey())
+                ? (string)$this->model
+                : trans('arbory::resources.create_new');
         }
 
         return $this->title;
@@ -154,13 +153,13 @@ class Form
     /**
      * @param Request $request
      */
-    public function store( Request $request )
+    public function store(Request $request)
     {
-        $this->trigger( 'create.before', $request );
+        $this->trigger('create.before', $request);
 
         $this->model->save();
 
-        $this->trigger( 'create.after', $request );
+        $this->trigger('create.after', $request);
 
         $this->model->push();
     }
@@ -168,13 +167,13 @@ class Form
     /**
      * @param Request $request
      */
-    public function update( Request $request )
+    public function update(Request $request)
     {
-        $this->trigger( 'update.before', $request );
+        $this->trigger('update.before', $request);
 
         $this->model->save();
 
-        $this->trigger( 'update.after', $request );
+        $this->trigger('update.after', $request);
 
         $this->model->push();
     }
@@ -184,16 +183,15 @@ class Form
      */
     public function destroy()
     {
-        $this->trigger( 'delete.before', $this );
+        $this->trigger('delete.before', $this);
 
         $this->model->delete();
 
-        $this->model->morphMany( Relation::class, 'related' )->get()->each( function( Relation $relation )
-        {
+        $this->model->morphMany(Relation::class, 'related')->get()->each(function (Relation $relation) {
             $relation->delete();
         });
 
-        $this->trigger( 'delete.after', $this );
+        $this->trigger('delete.after', $this);
     }
 
     /**
@@ -201,7 +199,7 @@ class Form
      */
     public function validate()
     {
-        $this->trigger( 'validate.before', request() );
+        $this->trigger('validate.before', request());
 
         $this->validator->setRules($this->fields()->getRules());
         $this->validator->validate($this->validator->rules());
@@ -222,22 +220,20 @@ class Form
      */
     protected function registerEventListeners()
     {
-        $this->addEventListeners( [ 'create.before', 'update.before' ],
-            function ( $request )
-            {
-                foreach( $this->fields() as $field )
-                {
-                    $field->beforeModelSave( $request );
+        $this->addEventListeners(
+            ['create.before', 'update.before'],
+            function ($request) {
+                foreach ($this->fields() as $field) {
+                    $field->beforeModelSave($request);
                 }
             }
         );
 
-        $this->addEventListeners( [ 'create.after', 'update.after' ],
-            function ( $request )
-            {
-                foreach( $this->fields() as $field )
-                {
-                    $field->afterModelSave( $request );
+        $this->addEventListeners(
+            ['create.after', 'update.after'],
+            function ($request) {
+                foreach ($this->fields() as $field) {
+                    $field->afterModelSave($request);
                 }
             }
         );

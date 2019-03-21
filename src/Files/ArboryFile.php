@@ -46,7 +46,7 @@ class ArboryFile extends Model
      */
     public function __toString()
     {
-        return (string) $this->original_name;
+        return (string)$this->original_name;
     }
 
     /**
@@ -54,7 +54,7 @@ class ArboryFile extends Model
      */
     public function getUrl()
     {
-        return Storage::disk( $this->getDisk() )->url( $this->getLocalName() );
+        return Storage::disk($this->getDisk())->url($this->getLocalName());
     }
 
     /**
@@ -62,7 +62,7 @@ class ArboryFile extends Model
      */
     public function getExtension()
     {
-        return pathinfo( $this->getOriginalName(), PATHINFO_EXTENSION );
+        return pathinfo($this->getOriginalName(), PATHINFO_EXTENSION);
     }
 
     /**

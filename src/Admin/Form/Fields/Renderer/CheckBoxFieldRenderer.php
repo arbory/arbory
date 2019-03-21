@@ -15,6 +15,7 @@ class CheckBoxFieldRenderer extends ControlFieldRenderer
      * @var \Arbory\Base\Admin\Form\Fields\Checkbox
      */
     protected $field;
+
     /**
      * @return Element
      */
@@ -31,9 +32,9 @@ class CheckBoxFieldRenderer extends ControlFieldRenderer
             $this->field->getValue() == true
         );
 
-        return Html::div( [
+        return Html::div([
             $control->render($element),
             Html::label($this->field->getLabel())->addAttributes(['for' => $this->field->getFieldId()])
-        ] )->addClass('value');
+        ])->addClass('value');
     }
 }

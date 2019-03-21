@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Form;
 
-
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\Footer\Tools;

@@ -29,12 +29,12 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         $item = $this->getValue() ?: $this->getRelatedModel();
 
         $block = Html::div()
-                     ->addClass( 'section content-fields' )
-                     ->addAttributes($this->getAttributes())
-                     ->addClass(implode(' ', $this->getClasses()));
+            ->addClass('section content-fields')
+            ->addAttributes($this->getAttributes())
+            ->addClass(implode(' ', $this->getClasses()));
 
         $block->append(
-            $this->getRelationFieldSet( $item )->render()
+            $this->getRelationFieldSet($item)->render()
         );
 
         return $block;
@@ -44,12 +44,12 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
      * @param Model $relatedModel
      * @return FieldSet
      */
-    public function getRelationFieldSet( Model $relatedModel )
+    public function getRelationFieldSet(Model $relatedModel)
     {
         $fieldSet = $this->getNestedFieldSet($relatedModel);
 
-        $fieldSet->hidden( $relatedModel->getKeyName() )
-                 ->setValue( $relatedModel->getKey() );
+        $fieldSet->hidden($relatedModel->getKeyName())
+            ->setValue($relatedModel->getKey());
 
         return $fieldSet;
     }
@@ -57,50 +57,48 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
     /**
      * @param Request $request
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
-
     }
 
     /**
      * @param Request $request
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function afterModelSave( Request $request )
+    public function afterModelSave(Request $request)
     {
         $relatedModel = $this->getValue() ?: $this->getRelatedModel();
         $relation = $this->getRelation();
 
         foreach ($this->getRelationFieldSet($relatedModel)->getFields() as $field) {
-            $field->beforeModelSave( $request );
+            $field->beforeModelSave($request);
         }
 
         if ($relation instanceof MorphOne) {
             $polymorphicFields = [
-                $relation->getMorphType() => get_class( $relation->getParent() ),
+                $relation->getMorphType() => get_class($relation->getParent()),
                 $relation->getForeignKeyName() => $relation->getParent()->{$relatedModel->getKeyName()}
             ];
             $relatedModel->fill($polymorphicFields)->save();
-
         } elseif ($relation instanceof MorphTo) {
             $relatedModel->save();
 
-            $this->getModel()->fill( [
-                $relation->getMorphType() => get_class( $relatedModel ),
+            $this->getModel()->fill([
+                $relation->getMorphType() => get_class($relatedModel),
                 $relation->getForeignKey() => $relatedModel->{$relatedModel->getKeyName()},
-            ] )->save();
-        }  elseif ($relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo) {
+            ])->save();
+        } elseif ($relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo) {
             $relatedModel->save();
 
-            $this->getModel()->setAttribute( $relation->getForeignKey(), $relatedModel->getKey() );
+            $this->getModel()->setAttribute($relation->getForeignKey(), $relatedModel->getKey());
             $this->getModel()->save();
         } elseif ($relation instanceof \Illuminate\Database\Eloquent\Relations\HasOne) {
             $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
             $relatedModel->save();
         }
 
-        foreach ($this->getRelationFieldSet( $relatedModel )->getFields() as $field) {
-            $field->afterModelSave( $request );
+        foreach ($this->getRelationFieldSet($relatedModel)->getFields() as $field) {
+            $field->afterModelSave($request);
         }
     }
 
@@ -113,23 +111,21 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
 
         $relation = $this->getRelation();
 
-        if( $relation instanceof MorphTo )
-        {
+        if ($relation instanceof MorphTo) {
             $model = clone $this->fieldSet->getModel();
 
-            $model->setAttribute( $relation->getMorphType(), request()->input( $this->getFieldSet()->getNamespace() . '.' . $relation->getMorphType() ) );
-            $model->setAttribute( $relation->getForeignKey(), 0 );
+            $morphType = request()->input($this->getFieldSet()->getNamespace() . '.' . $relation->getMorphType());
+
+            $model->setAttribute($relation->getMorphType(), $morphType);
+            $model->setAttribute($relation->getForeignKey(), 0);
 
             $relatedModel = $model->{$this->getName()}()->getRelated();
-        }
-        else
-        {
+        } else {
             $relatedModel = $this->getValue() ?: $this->getRelatedModel();
         }
 
-        foreach( $this->getRelationFieldSet( $relatedModel )->getFields() as $field )
-        {
-            $rules = array_merge( $rules, $field->getRules() );
+        foreach ($this->getRelationFieldSet($relatedModel)->getFields() as $field) {
+            $rules = array_merge($rules, $field->getRules());
         }
 
         return $rules;

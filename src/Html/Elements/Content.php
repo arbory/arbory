@@ -20,22 +20,22 @@ class Content extends Collection implements Renderable
      */
     public function render()
     {
-        return $this->map(function ( $value ) {
+        return $this->map(function ($value) {
             $className = null;
 
-            if ( $value instanceof Renderable ) {
-                return (string) $value->render();
+            if ($value instanceof Renderable) {
+                return (string)$value->render();
             }
 
-            if ( is_object($value) ) {
-                if ( method_exists($value, '__toString') ) {
-                    return (string) $value;
+            if (is_object($value)) {
+                if (method_exists($value, '__toString')) {
+                    return (string)$value;
                 }
 
                 $className = get_class($value);
             }
 
-            if ( is_scalar($value) || is_null($value) ) {
+            if (is_scalar($value) || is_null($value)) {
                 return $value;
             }
 

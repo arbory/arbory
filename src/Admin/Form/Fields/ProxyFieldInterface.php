@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-
 interface ProxyFieldInterface
 {
     /**

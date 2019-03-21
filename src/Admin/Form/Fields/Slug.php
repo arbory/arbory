@@ -22,7 +22,7 @@ class Slug extends Text
      */
     protected $fromFieldName;
 
-    protected $rendererClass =  SlugFieldRenderer::class;
+    protected $rendererClass = SlugFieldRenderer::class;
 
     /**
      * @param string $name
@@ -98,7 +98,7 @@ class Slug extends Text
         $repository = new NodesRepository;
         $parentNode = $repository->find($this->getParentId());
 
-        return $parentNode ? $parentNode->getUri() : (string) null;
+        return $parentNode ? $parentNode->getUri() : (string)null;
     }
 
     /**
@@ -106,7 +106,7 @@ class Slug extends Text
      */
     public function getUriToSlug()
     {
-        if (! $this->hasUriToSlug()) {
+        if (!$this->hasUriToSlug()) {
             return false;
         }
 

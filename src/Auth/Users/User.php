@@ -82,7 +82,6 @@ class User extends EloquentUser
      */
     public function roles()
     {
-        return $this->belongsToMany( static::$rolesModel, 'admin_role_users', 'user_id', 'role_id' )->withTimestamps();
+        return $this->belongsToMany(static::$rolesModel, 'admin_role_users', 'user_id', 'role_id')->withTimestamps();
     }
-
 }

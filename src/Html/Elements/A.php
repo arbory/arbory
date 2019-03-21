@@ -13,8 +13,8 @@ class A extends Element
      */
     public function __toString()
     {
-        $tag = $this->tag( 'a', $this->content );
+        $tag = $this->tag('a', $this->content);
 
-        return (string) $tag;
+        return (string)$tag;
     }
 }

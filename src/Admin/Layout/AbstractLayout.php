@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-
 use Arbory\Base\Admin\Traits\EventDispatcher;
 use Arbory\Base\Html\Elements\Content;
 use Closure;
@@ -42,7 +41,7 @@ abstract class AbstractLayout
 
     /**
      * @param string $name
-     * @param mixed  $content
+     * @param mixed $content
      *
      * @return Slot
      */
@@ -78,7 +77,7 @@ abstract class AbstractLayout
      *
      * @return mixed
      */
-    abstract function build();
+    abstract public function build();
 
     /**
      * Executes when the layout is applied
@@ -109,6 +108,12 @@ abstract class AbstractLayout
         ]);
     }
 
+    /**
+     * @param Body $body
+     * @param Closure $next
+     * @param array ...$parameters
+     * @return mixed
+     */
     public function apply(Body $body, Closure $next, array ...$parameters)
     {
         $this->trigger('apply', $body);
@@ -151,12 +156,12 @@ abstract class AbstractLayout
     {
         if (count($this->getPipes())) {
             return $this->pipeline()
-                        ->send($content)
-                        ->then(
-                            function ($content) {
-                                return $content;
-                            }
-                        );
+                ->send($content)
+                ->then(
+                    function ($content) {
+                        return $content;
+                    }
+                );
         }
 
         return $content;
@@ -205,7 +210,7 @@ abstract class AbstractLayout
     /**
      * @return LayoutManager
      */
-    public function manager():LayoutManager
+    public function manager(): LayoutManager
     {
         return app(LayoutManager::class);
     }

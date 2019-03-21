@@ -31,11 +31,11 @@ class Checkbox extends ControlField
     /**
      * @param Request $request
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
-        $value = $request->has( $this->getNameSpacedName() ) ? $this->checkedValue : $this->uncheckedValue;
+        $value = $request->has($this->getNameSpacedName()) ? $this->checkedValue : $this->uncheckedValue;
 
-        $this->getModel()->setAttribute( $this->getName(), $value );
+        $this->getModel()->setAttribute($this->getName(), $value);
     }
 
     /**
@@ -48,7 +48,7 @@ class Checkbox extends ControlField
      */
     public function values($checkedValue = true, $uncheckedValue = false)
     {
-        $this->checkedValue   = $checkedValue;
+        $this->checkedValue = $checkedValue;
         $this->uncheckedValue = $uncheckedValue;
 
         return $this;

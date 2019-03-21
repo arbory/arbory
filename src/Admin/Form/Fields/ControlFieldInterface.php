@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-
 interface ControlFieldInterface
 {
     /**
@@ -16,7 +15,7 @@ interface ControlFieldInterface
      *
      * @return mixed
      */
-    public function setRequired( bool $required = false ): FieldInterface;
+    public function setRequired(bool $required = false): FieldInterface;
 
     /**
      * @return bool
@@ -30,7 +29,7 @@ interface ControlFieldInterface
      *
      * @return FieldInterface
      */
-    public function setDisabled( bool $disabled = false ): FieldInterface;
+    public function setDisabled(bool $disabled = false): FieldInterface;
 
     /**
      * @return bool
@@ -44,5 +43,5 @@ interface ControlFieldInterface
      *
      * @return FieldInterface
      */
-    public function setInteractive( bool $value = false ): FieldInterface;
+    public function setInteractive(bool $value = false): FieldInterface;
 }

@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
@@ -29,7 +28,7 @@ class GenericRenderer implements RendererInterface
      *
      * @return mixed
      */
-    public function setField( FieldInterface $field ): RendererInterface
+    public function setField(FieldInterface $field): RendererInterface
     {
         $this->field = $field;
 
@@ -51,7 +50,7 @@ class GenericRenderer implements RendererInterface
      *
      * @return StyleOptionsInterface
      */
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         return $options;
     }

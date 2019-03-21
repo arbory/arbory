@@ -45,16 +45,16 @@ class Select implements Renderable
      */
     public function __toString()
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
      * @param $name
      * @return self
      */
-    public function name( $name )
+    public function name($name)
     {
-        $this->element->setName( $name );
+        $this->element->setName($name);
 
         return $this;
     }
@@ -63,7 +63,7 @@ class Select implements Renderable
      * @param $options
      * @return self
      */
-    public function options( $options )
+    public function options($options)
     {
         $this->options = $options;
 
@@ -74,9 +74,9 @@ class Select implements Renderable
      * @param mixed $value
      * @return self
      */
-    public function selected( $value )
+    public function selected($value)
     {
-        $this->selected = (array) $value;
+        $this->selected = (array)$value;
 
         return $this;
     }
@@ -85,7 +85,7 @@ class Select implements Renderable
      * @param array $attributes
      * @return self
      */
-    public function attributes( array $attributes )
+    public function attributes(array $attributes)
     {
         $this->attributes = $attributes;
 
@@ -97,19 +97,17 @@ class Select implements Renderable
      */
     public function render()
     {
-        foreach( $this->options as $key => $title )
-        {
-            $option = Html::option( (string) $title )->setValue( $key );
+        foreach ($this->options as $key => $title) {
+            $option = Html::option((string)$title)->setValue($key);
 
-            if( in_array( $key, $this->selected ) )
-            {
+            if (in_array($key, $this->selected)) {
                 $option->select();
             }
 
-            $this->element->append( $option );
+            $this->element->append($option);
         }
 
-        $this->element->addAttributes( $this->attributes );
+        $this->element->addAttributes($this->attributes);
 
         return $this->element;
     }

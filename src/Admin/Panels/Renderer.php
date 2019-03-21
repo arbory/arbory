@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Panels;
 
-
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Html\Html;
@@ -37,8 +36,8 @@ class Renderer implements Renderable
                     ->addClass('content'),
             ]
         )->addClass('panel')
-                   ->addClass(implode(' ', $this->panel->getClasses()))
-                   ->addAttributes($this->panel->getAttributes());
+            ->addClass(implode(' ', $this->panel->getClasses()))
+            ->addAttributes($this->panel->getAttributes());
 
         return $wrapper ? $wrapper($element) : $element;
     }

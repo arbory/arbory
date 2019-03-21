@@ -21,10 +21,10 @@ class Row implements Renderable
      * Row constructor.
      * @param null $content
      */
-    public function __construct( $content = null )
+    public function __construct($content = null)
     {
         $this->content = new Collection();
-        $this->content->push( $content );
+        $this->content->push($content);
     }
 
     /**
@@ -32,7 +32,7 @@ class Row implements Renderable
      */
     public function __toString()
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
@@ -42,9 +42,8 @@ class Row implements Renderable
     {
         $content = new Content();
 
-        foreach( $this->content as $item )
-        {
-            $content->prepend( $item->render() );
+        foreach ($this->content as $item) {
+            $content->prepend($item->render());
         }
 
         return $content;

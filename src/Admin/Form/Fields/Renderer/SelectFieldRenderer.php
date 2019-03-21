@@ -24,10 +24,10 @@ class SelectFieldRenderer extends ControlFieldRenderer
 
         $element = $control->element();
 
-        if($this->field->isMultiple()) {
+        if ($this->field->isMultiple()) {
             $control->setMultiple(true);
 
-            $name =  $control->getName();
+            $name = $control->getName();
             $element->addAttributes([
                 'multiple' => '',
                 'name' => $name . '[]'

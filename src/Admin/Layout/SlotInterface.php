@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-
 interface SlotInterface
 {
     /**

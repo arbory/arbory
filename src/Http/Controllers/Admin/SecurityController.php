@@ -28,9 +28,9 @@ class SecurityController extends BaseController
     /**
      * @param SecurityStrategy $security
      */
-    public function __construct( SecurityStrategy $security )
+    public function __construct(SecurityStrategy $security)
     {
-        $this->middleware( 'arbory.admin_quest', [ 'except' => 'postLogout' ] );
+        $this->middleware('arbory.admin_quest', ['except' => 'postLogout']);
 
         $this->security = $security;
     }
@@ -39,11 +39,11 @@ class SecurityController extends BaseController
      * @param Request $request
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function getLogin( Request $request )
+    public function getLogin(Request $request)
     {
         return view(
             'arbory::layout.login',
-            [ 'input' => $request ]
+            ['input' => $request]
         );
     }
 
@@ -51,23 +51,22 @@ class SecurityController extends BaseController
      * @param LoginRequest $request
      * @return RedirectResponse|Response|Redirect
      */
-    public function postLogin( LoginRequest $request )
+    public function postLogin(LoginRequest $request)
     {
-        $credentials = array_only( $request->get( 'user' ), [ 'email', 'password' ] );
-        $remember = (bool) $request->get( 'remember', false );
+        $credentials = array_only($request->get('user'), ['email', 'password']);
+        $remember = (bool)$request->get('remember', false);
 
-        $result = $this->security->authenticate( $credentials, $remember );
+        $result = $this->security->authenticate($credentials, $remember);
 
-        if( $result->isSuccess() )
-        {
-            return $result->dispatch( session()->pull( 'url.intended', route( 'admin.login.form' ) ) );
+        if ($result->isSuccess()) {
+            return $result->dispatch(session()->pull('url.intended', route('admin.login.form')));
         }
 
-        return redirect( route( 'admin.login.form' ) )
+        return redirect(route('admin.login.form'))
             ->withInput()
-            ->withErrors( [
+            ->withErrors([
                 'user.email' => $result->getMessage()
-            ] );
+            ]);
     }
 
     /**
@@ -75,8 +74,8 @@ class SecurityController extends BaseController
      */
     public function postLogout()
     {
-        $this->security->logout( null, null );
+        $this->security->logout(null, null);
 
-        return redirect( route( 'admin.login.form' ) );
+        return redirect(route('admin.login.form'));
     }
 }

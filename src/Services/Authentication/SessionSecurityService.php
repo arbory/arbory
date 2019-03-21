@@ -18,7 +18,7 @@ class SessionSecurityService implements SecurityStrategy
     /**
      * @param Sentinel $sentinel
      */
-    public function __construct( Sentinel $sentinel )
+    public function __construct(Sentinel $sentinel)
     {
         $this->sentinel = $sentinel;
     }
@@ -29,16 +29,15 @@ class SessionSecurityService implements SecurityStrategy
      * @param boolean $login
      * @return Reply
      */
-    public function authenticate( array $credentials, $remember = false, $login = true ): Reply
+    public function authenticate(array $credentials, $remember = false, $login = true): Reply
     {
-        $user = $this->sentinel->authenticate( $credentials, $remember, $login );
+        $user = $this->sentinel->authenticate($credentials, $remember, $login);
 
-        if( $user )
-        {
-            return new SuccessReply( trans( 'auth.success' ) );
+        if ($user) {
+            return new SuccessReply(trans('auth.success'));
         }
 
-        return new FailureReply( trans( 'auth.failed' ) );
+        return new FailureReply(trans('auth.failed'));
     }
 
     /**
@@ -46,15 +45,14 @@ class SessionSecurityService implements SecurityStrategy
      * @param boolean $everywhere
      * @return Reply
      */
-    public function logout( UserInterface $user = null, $everywhere = false ): Reply
+    public function logout(UserInterface $user = null, $everywhere = false): Reply
     {
-        $this->sentinel->logout( $user, $everywhere );
+        $this->sentinel->logout($user, $everywhere);
 
-        if( !$this->sentinel->check() )
-        {
-            return new SuccessReply( trans( 'auth.user_logout' ) );
+        if (!$this->sentinel->check()) {
+            return new SuccessReply(trans('auth.user_logout'));
         }
 
-        return new FailureReply( trans( 'auth.generic_problem' ) );
+        return new FailureReply(trans('auth.generic_problem'));
     }
 }

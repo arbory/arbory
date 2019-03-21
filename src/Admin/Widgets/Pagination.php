@@ -23,7 +23,7 @@ class Pagination implements Renderable
      * Pagination constructor.
      * @param LengthAwarePaginator $paginator
      */
-    public function __construct( LengthAwarePaginator $paginator )
+    public function __construct(LengthAwarePaginator $paginator)
     {
         $this->paginator = $paginator;
     }
@@ -33,7 +33,7 @@ class Pagination implements Renderable
      */
     public function __toString()
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
@@ -43,11 +43,11 @@ class Pagination implements Renderable
      */
     public function render()
     {
-        return Html::div( [
+        return Html::div([
             $this->getPreviousPageButton(),
             $this->getPagesSelect(),
             $this->getNextPageButton(),
-        ] )->addClass( 'pagination' );
+        ])->addClass('pagination');
     }
 
     /**
@@ -55,13 +55,13 @@ class Pagination implements Renderable
      */
     protected function getPreviousPageButton()
     {
-        $previousPage = ( $this->paginator->currentPage() > 1 )
-            ? Html::link()->addAttributes( [ 'href' => $this->paginator->url( $this->paginator->currentPage() - 1 ) ] )
-            : Html::button()->addAttributes( [ 'type' => 'button', 'disabled' => 'disabled' ] );
+        $previousPage = ($this->paginator->currentPage() > 1)
+            ? Html::link()->addAttributes(['href' => $this->paginator->url($this->paginator->currentPage() - 1)])
+            : Html::button()->addAttributes(['type' => 'button', 'disabled' => 'disabled']);
 
-        $previousPage->append( Html::i()->addClass( 'fa fa-chevron-left' ) );
-        $previousPage->addClass( 'button only-icon secondary previous' );
-        $previousPage->addAttributes( [ 'title' => trans( 'arbory::pagination.previous_page' ) ] );
+        $previousPage->append(Html::i()->addClass('fa fa-chevron-left'));
+        $previousPage->addClass('button only-icon secondary previous');
+        $previousPage->addAttributes(['title' => trans('arbory::pagination.previous_page')]);
 
         return $previousPage;
     }
@@ -71,23 +71,21 @@ class Pagination implements Renderable
      */
     protected function getPagesSelect()
     {
-        $select = Html::select()->setName( 'page' );
+        $select = Html::select()->setName('page');
 
-        for( $i = 1; $i <= $this->paginator->lastPage(); $i++ )
-        {
-            $pageStart = ( $i - 1 ) * $this->paginator->perPage() + 1;
-            $pageEnd = ( $this->paginator->lastPage() === $i )
+        for ($i = 1; $i <= $this->paginator->lastPage(); $i++) {
+            $pageStart = ($i - 1) * $this->paginator->perPage() + 1;
+            $pageEnd = ($this->paginator->lastPage() === $i)
                 ? $this->paginator->total()
                 : $i * $this->paginator->perPage();
 
-            $option = Html::option( $pageStart . ' - ' . $pageEnd )->setValue( $i );
+            $option = Html::option($pageStart . ' - ' . $pageEnd)->setValue($i);
 
-            if( $this->paginator->currentPage() === $i )
-            {
+            if ($this->paginator->currentPage() === $i) {
                 $option->select();
             }
 
-            $select->append( $option );
+            $select->append($option);
         }
 
         return $select;
@@ -99,12 +97,12 @@ class Pagination implements Renderable
     protected function getNextPageButton()
     {
         $nextPage = $this->paginator->hasMorePages()
-            ? Html::link()->addAttributes( [ 'href' => $this->paginator->url( $this->paginator->currentPage() + 1 ) ] )
-            : Html::button()->addAttributes( [ 'type' => 'button', 'disabled' => 'disabled' ] );
+            ? Html::link()->addAttributes(['href' => $this->paginator->url($this->paginator->currentPage() + 1)])
+            : Html::button()->addAttributes(['type' => 'button', 'disabled' => 'disabled']);
 
-        $nextPage->append( Html::i()->addClass( 'fa fa-chevron-right' ) );
-        $nextPage->addClass( 'button only-icon secondary next' );
-        $nextPage->addAttributes( [ 'title' => trans( 'arbory::pagination.next_page' ) ] );
+        $nextPage->append(Html::i()->addClass('fa fa-chevron-right'));
+        $nextPage->addClass('button only-icon secondary next');
+        $nextPage->addAttributes(['title' => trans('arbory::pagination.next_page')]);
 
         return $nextPage;
     }

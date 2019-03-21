@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-
 use Arbory\Base\Admin\Layout\Grid\Column;
 use Arbory\Base\Admin\Layout\Grid\Row;
 use Arbory\Base\Html\Elements\Content;
@@ -26,8 +25,7 @@ class Grid implements Renderable
 
     public function __construct(?callable $callable = null)
     {
-        if($callable)
-        {
+        if ($callable) {
             $callable($this);
         }
     }
@@ -46,8 +44,8 @@ class Grid implements Renderable
     }
 
     /**
-     * @param int         $size
-     * @param mixed       $content
+     * @param int $size
+     * @param mixed $content
      *
      * @param string|null $breakpoint
      *
@@ -55,7 +53,7 @@ class Grid implements Renderable
      */
     public function column($size, $content, $breakpoint = null)
     {
-        if (! $this->row) {
+        if (!$this->row) {
             $this->row = $this->row();
         }
 

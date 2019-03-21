@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Form\Fields\Slug;
@@ -41,12 +40,12 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
 
 
         $control->addAttributes([
-                                    'data-generator-url'   => $this->field->getApiUrl(),
-                                    'data-from-field-name' => $this->field->getFromFieldName(),
-                                    'data-node-parent-id'  => $this->field->getParentId(),
-                                    'data-model-table'     => $this->field->getModel()->getTable(),
-                                    'data-object-id'       => $this->field->getModel()->getKey(),
-                                ]);
+            'data-generator-url' => $this->field->getApiUrl(),
+            'data-from-field-name' => $this->field->getFromFieldName(),
+            'data-node-parent-id' => $this->field->getParentId(),
+            'data-model-table' => $this->field->getModel()->getTable(),
+            'data-object-id' => $this->field->getModel()->getKey(),
+        ]);
 
 
         $button = Button::create()
@@ -107,7 +106,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
      */
     protected function getLinkValue()
     {
-        $urlToSlug        = ltrim($this->field->getUriToSlug(), "/");
+        $urlToSlug = ltrim($this->field->getUriToSlug(), "/");
         $urlToSlugElement = Html::span($urlToSlug);
 
         return [

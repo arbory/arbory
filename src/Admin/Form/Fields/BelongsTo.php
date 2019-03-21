@@ -21,7 +21,7 @@ class BelongsTo extends Select
     public function getValue()
     {
         $foreignKey = $this->getRelation()->getForeignKey();
-        $value = $this->getModel()->getAttribute( $foreignKey );
+        $value = $this->getModel()->getAttribute($foreignKey);
 
         return $value ?? $this->getDefaultValue();
     }
@@ -29,7 +29,7 @@ class BelongsTo extends Select
     /**
      * @return \Illuminate\Database\Eloquent\Collection|Model[]
      */
-    public function getOptions():Collection
+    public function getOptions(): Collection
     {
         return $this->getRelatedItems();
     }
@@ -37,11 +37,11 @@ class BelongsTo extends Select
     /**
      * @param Request $request
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
         $this->getModel()->setAttribute(
             $this->getRelation()->getForeignKey(),
-            $request->input( $this->getNameSpacedName() )
+            $request->input($this->getNameSpacedName())
         );
     }
 }

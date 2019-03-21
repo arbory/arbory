@@ -74,7 +74,7 @@ class Page extends Layout implements PageInterface
         );
 
         $variables = [
-            'content'   => $content,
+            'content' => $content,
             'bodyClass' => $this->bodyClass,
         ];
 

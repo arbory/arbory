@@ -37,8 +37,7 @@ class SettingsController extends Controller
      */
     public function __construct(
         SettingRegistry $settingRegistry
-    )
-    {
+    ) {
         $this->settingRegistry = $settingRegistry;
         $this->settingRegistry->importFromDatabase();
     }
@@ -109,7 +108,7 @@ class SettingsController extends Controller
      * @param SettingDefinition $definition
      * @return Form\Fields\AbstractField|Translatable
      */
-    protected function getField( Form\FieldSet $fields, SettingDefinition $definition )
+    protected function getField(Form\FieldSet $fields, SettingDefinition $definition)
     {
         /**
          * @var Form\Fields\AbstractField $field
@@ -117,35 +116,30 @@ class SettingsController extends Controller
          */
         $type = $definition->getType();
 
-        if( $type === Translatable::class )
-        {
-            $inner = array_get( $definition->getConfigEntry(), 'value' );
-            $innerType = $inner[ 'type' ] ?? Text::class;
-            $innerField = new $innerType( 'value' );
+        if ($type === Translatable::class) {
+            $inner = array_get($definition->getConfigEntry(), 'value');
+            $innerType = $inner['type'] ?? Text::class;
+            $innerField = new $innerType('value');
 
-            $field = new Translatable( $innerField );
-            $field->setFieldSet( $fields );
+            $field = new Translatable($innerField);
+            $field->setFieldSet($fields);
 
-            if( !$field->getValue() || $field->getValue()->isEmpty() )
-            {
-                $localized = array_get( $inner, 'value', [] );
+            if (!$field->getValue() || $field->getValue()->isEmpty()) {
+                $localized = array_get($inner, 'value', []);
                 $fieldValue = new Collection();
 
-                foreach( $localized as $locale => $value )
-                {
-                    $fieldValue->push( new SettingTranslation( [
+                foreach ($localized as $locale => $value) {
+                    $fieldValue->push(new SettingTranslation([
                         'locale' => $locale,
                         'value' => $value
-                    ] ) );
+                    ]));
                 }
 
-                $field->setValue( $fieldValue );
+                $field->setValue($fieldValue);
             }
-        }
-        else
-        {
-            $field = new $type( 'value' );
-            $field->setValue( $definition->getValue() );
+        } else {
+            $field = new $type('value');
+            $field->setValue($definition->getValue());
         }
 
         return $field;
@@ -157,12 +151,11 @@ class SettingsController extends Controller
     protected function getSettings()
     {
         /** @var SettingFactory $factory */
-        $factory = \App::make( SettingFactory::class );
+        $factory = \App::make(SettingFactory::class);
         $result = [];
 
-        foreach( $this->settingRegistry->getSettings()->keys() as $key )
-        {
-            $result[ $key ] = $factory->build( $key );
+        foreach ($this->settingRegistry->getSettings()->keys() as $key) {
+            $result[$key] = $factory->build($key);
         }
 
         return $result;
@@ -171,10 +164,10 @@ class SettingsController extends Controller
     /**
      * @param \Arbory\Base\Admin\Tools\ToolboxMenu $tools
      */
-    protected function toolbox( ToolboxMenu $tools )
+    protected function toolbox(ToolboxMenu $tools)
     {
         $model = $tools->model();
 
-        $tools->add( 'edit', $this->url( 'edit', $model->getKey() ) );
+        $tools->add('edit', $this->url('edit', $model->getKey()));
     }
 }

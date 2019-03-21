@@ -8,6 +8,6 @@ class NodeCollection extends \Baum\Extensions\Eloquent\Collection
     {
         $dict = $this->getDictionary();
 
-        return new static( $this->hierarchical( $dict ) );
+        return new static($this->hierarchical($dict));
     }
 }

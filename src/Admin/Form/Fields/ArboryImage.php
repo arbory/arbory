@@ -1,4 +1,4 @@
-<?php declare( strict_types=1 );
+<?php declare(strict_types=1);
 
 namespace Arbory\Base\Admin\Form\Fields;
 
@@ -14,6 +14,6 @@ final class ArboryImage extends ArboryFile
         'type' => 'file',
         'accept' => 'image/*'
     ];
-    
+
     protected $rendererClass = ImageFieldRenderer::class;
 }

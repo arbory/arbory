@@ -30,11 +30,11 @@ class IconPicker extends Select
     /**
      * @param string $name
      */
-    public function __construct( $name )
+    public function __construct($name)
     {
-        $this->spritePath = config( 'arbory.fields.sprite_icon.path' );
+        $this->spritePath = config('arbory.fields.sprite_icon.path');
 
-        parent::__construct( $name );
+        parent::__construct($name);
     }
 
     /**
@@ -42,7 +42,7 @@ class IconPicker extends Select
      *
      * @return IconPicker
      */
-    public function sprite( string $path ): self
+    public function sprite(string $path): self
     {
         $this->spritePath = $path;
 
@@ -52,7 +52,7 @@ class IconPicker extends Select
     /**
      * @return $this
      */
-    public function filter( string $filter )
+    public function filter(string $filter)
     {
         $this->filter = $filter;
 
@@ -65,35 +65,30 @@ class IconPicker extends Select
      */
     public function getOptions(): Collection
     {
-        return $this->getIconIds()->mapWithKeys( function( $iconId )
-        {
-            return [ $iconId => $iconId ];
-        } );
+        return $this->getIconIds()->mapWithKeys(function ($iconId) {
+            return [$iconId => $iconId];
+        });
     }
 
     /**
      * @param string $iconId
      * @return null|\SimpleXMLElement
      */
-    public function getIconContent( $iconId )
+    public function getIconContent($iconId)
     {
-        $xml = simplexml_load_string( file_get_contents( $this->spritePath ) );
+        $xml = simplexml_load_string(file_get_contents($this->spritePath));
 
-        foreach( $xml->children()->symbol as $node )
-        {
+        foreach ($xml->children()->symbol as $node) {
             /** @var \SimpleXMLElement $node */
             $id = null;
 
-            foreach( $node->attributes() as $attributeName => $attributeValue )
-            {
-                if( $attributeName === 'id' )
-                {
-                    $id = (string) $attributeValue;
+            foreach ($node->attributes() as $attributeName => $attributeValue) {
+                if ($attributeName === 'id') {
+                    $id = (string)$attributeValue;
                 }
             }
 
-            if( $id === $iconId )
-            {
+            if ($id === $iconId) {
                 return $node;
             }
         }
@@ -109,34 +104,29 @@ class IconPicker extends Select
     {
         $ids = new Collection();
 
-        if( !file_exists( $this->spritePath ) )
-        {
-            throw new \InvalidArgumentException( sprintf( 'Provided sprite-sheet [%s] doesn\'t exist', $this->spritePath ) );
+        if (!file_exists($this->spritePath)) {
+            $message = sprintf('Provided sprite-sheet [%s] doesn\'t exist', $this->spritePath);
+            throw new \InvalidArgumentException($message);
         }
 
-        $xml = simplexml_load_string( file_get_contents( $this->spritePath ) );
+        $xml = simplexml_load_string(file_get_contents($this->spritePath));
 
-        foreach( $xml->children()->symbol as $node )
-        {
+        foreach ($xml->children()->symbol as $node) {
             /** @var \SimpleXMLElement $node */
             $id = null;
 
-            foreach( $node->attributes() as $attributeName => $attributeValue )
-            {
-                if( $attributeName === 'id' )
-                {
-                    $id = (string) $attributeValue;
+            foreach ($node->attributes() as $attributeName => $attributeValue) {
+                if ($attributeName === 'id') {
+                    $id = (string)$attributeValue;
                 }
             }
 
-            if( $this->filter && !str_contains($id, $this->filter) )
-            {
+            if ($this->filter && !str_contains($id, $this->filter)) {
                 continue;
             }
 
-            if( $id )
-            {
-                $ids->push( $id );
+            if ($id) {
+                $ids->push($id);
             }
         }
 
@@ -148,11 +138,11 @@ class IconPicker extends Select
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
-        $this->options( $this->getOptions() );
+        $this->options($this->getOptions());
 
-        parent::beforeModelSave( $request );
+        parent::beforeModelSave($request);
     }
 
     /**
@@ -168,7 +158,7 @@ class IconPicker extends Select
      *
      * @return IconPicker
      */
-    public function setViewboxResolver( callable $viewboxResolver )
+    public function setViewboxResolver(callable $viewboxResolver)
     {
         $this->viewboxResolver = $viewboxResolver;
 
@@ -188,7 +178,7 @@ class IconPicker extends Select
      *
      * @return IconPicker
      */
-    public function setDimensions( ?array $dimensions )
+    public function setDimensions(?array $dimensions)
     {
         $this->dimensions = $dimensions;
 

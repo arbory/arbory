@@ -23,6 +23,6 @@ class SettingTranslation extends Model
      */
     public function setting()
     {
-        return $this->belongsTo( Setting::class, 'setting_name' );
+        return $this->belongsTo(Setting::class, 'setting_name');
     }
 }

@@ -1,6 +1,6 @@
 <?php
-namespace Arbory\Base\Admin\Panels;
 
+namespace Arbory\Base\Admin\Panels;
 
 use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Admin\Tools\Toolbox;
@@ -14,7 +14,7 @@ interface PanelInterface extends Renderable, RenderOptionsInterface
      *
      * @return Toolbox
      */
-    public function toolbox( Toolbox $toolbox ): Toolbox;
+    public function toolbox(Toolbox $toolbox): Toolbox;
 
     /**
      * @return Button[]
@@ -34,7 +34,7 @@ interface PanelInterface extends Renderable, RenderOptionsInterface
     /**
      * @return mixed
      */
-    public function getToolbox():?Toolbox;
+    public function getToolbox(): ?Toolbox;
 
     public function build();
 }

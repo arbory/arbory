@@ -12,7 +12,7 @@ class ResourcesRepository extends AbstractModelsRepository
      * ResourcesRepository constructor.
      * @param $class
      */
-    public function __construct( $class )
+    public function __construct($class)
     {
         $this->modelClass = $class;
 

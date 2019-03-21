@@ -26,7 +26,7 @@ class SearchField implements Renderable
      * SearchField constructor.
      * @param $action
      */
-    public function __construct( $action )
+    public function __construct($action)
     {
         $this->action = $action;
         $this->name = 'search';
@@ -37,14 +37,14 @@ class SearchField implements Renderable
      */
     public function __toString()
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
      * @param $name
      * @return SearchField
      */
-    public function setName( $name )
+    public function setName($name)
     {
         $this->name = $name;
 
@@ -55,11 +55,11 @@ class SearchField implements Renderable
      * @param $content
      * @return Element
      */
-    protected function createForm( $content )
+    protected function createForm($content)
     {
-        return Html::form( $content )
-            ->addClass( 'search has-text-search' )
-            ->addAttributes( [ 'action' => $this->action ] );
+        return Html::form($content)
+            ->addClass('search has-text-search')
+            ->addAttributes(['action' => $this->action]);
     }
 
     /**
@@ -68,26 +68,26 @@ class SearchField implements Renderable
     public function render()
     {
         $searchInput = Html::input()
-            ->setName( $this->name )
-            ->setType( 'search' )
-            ->addClass( 'text' )
-            ->addAttributes( [ 'autofocus' => 'autofocus' ] )
-            ->setValue( request()->get( $this->name ) );
+            ->setName($this->name)
+            ->setType('search')
+            ->addClass('text')
+            ->addAttributes(['autofocus' => 'autofocus'])
+            ->setValue(request()->get($this->name));
 
-        $submitButton = Html::button( Html::i()->addClass( 'fa fa-search' ) )
-            ->addClass( 'button only-icon' )
-            ->addAttributes( [
+        $submitButton = Html::button(Html::i()->addClass('fa fa-search'))
+            ->addClass('button only-icon')
+            ->addAttributes([
                 'type' => 'submit',
-                'title' => trans( 'arbory::filter.search' ),
+                'title' => trans('arbory::filter.search'),
                 'autocomplete' => 'off',
-            ] );
+            ]);
 
         return $this->createForm(
             Html::div(
-                Html::div( [ $searchInput, $submitButton ] )
-                    ->addClass( 'search-field' )
-                    ->addAttributes( [ 'data-name' => 'search' ] )
-            )->addClass( 'text-search' )
+                Html::div([$searchInput, $submitButton])
+                    ->addClass('search-field')
+                    ->addAttributes(['data-name' => 'search'])
+            )->addClass('text-search')
         );
     }
 }

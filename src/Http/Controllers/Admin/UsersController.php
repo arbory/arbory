@@ -133,6 +133,4 @@ class UsersController extends Controller
     {
         return $this->admin->sentinel()->getActivationRepository();
     }
-
 }
-

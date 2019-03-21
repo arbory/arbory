@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
@@ -35,7 +34,7 @@ class Slot implements Renderable
      */
     public function __construct($name, $contents = null)
     {
-        $this->name     = $name;
+        $this->name = $name;
         $this->contents = $contents;
         $this->children = collect();
     }

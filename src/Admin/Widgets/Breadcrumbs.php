@@ -23,7 +23,7 @@ class Breadcrumbs implements Renderable
     public function __construct()
     {
         $this->items = new Collection();
-        $this->addItem( trans( 'arbory::breadcrumbs.home' ), route( 'admin.dashboard.index' ) );
+        $this->addItem(trans('arbory::breadcrumbs.home'), route('admin.dashboard.index'));
     }
 
     /**
@@ -31,7 +31,7 @@ class Breadcrumbs implements Renderable
      */
     public function __toString()
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
@@ -39,12 +39,12 @@ class Breadcrumbs implements Renderable
      * @param $url
      * @return Breadcrumbs
      */
-    public function addItem( $title, $url )
+    public function addItem($title, $url)
     {
-        $this->items->push( [
+        $this->items->push([
             'title' => $title,
             'url' => $url
-        ] );
+        ]);
 
         return $this;
     }
@@ -56,25 +56,23 @@ class Breadcrumbs implements Renderable
     {
         $total = $this->items->count();
 
-        $list = $this->items->map( function ( array $item, $key ) use ( $total )
-        {
+        $list = $this->items->map(function (array $item, $key) use ($total) {
             $listItem = Html::li(
-                Html::link( $item['title'] )
-                    ->addAttributes( [
+                Html::link($item['title'])
+                    ->addAttributes([
                         'href' => $item['url']
-                    ] )
+                    ])
             );
 
-            if( $key !== $total - 1 )
-            {
-                $listItem->append( Html::i()->addClass( 'fa fa-small fa-chevron-right' ) );
+            if ($key !== $total - 1) {
+                $listItem->append(Html::i()->addClass('fa fa-small fa-chevron-right'));
             }
 
             return $listItem;
-        } );
+        });
 
         return Html::nav(
-            Html::ul( $list->toArray() )->addClass( 'block breadcrumbs' )
+            Html::ul($list->toArray())->addClass('block breadcrumbs')
         );
     }
 }

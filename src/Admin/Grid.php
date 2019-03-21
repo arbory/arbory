@@ -44,7 +44,7 @@ class Grid
     /**
      * @var array
      */
-    protected $enabledDefaultTools = [ 'create', 'search' ];
+    protected $enabledDefaultTools = ['create', 'search'];
 
     /**
      * @var array
@@ -70,7 +70,7 @@ class Grid
      * @param Model $model
      * @param Closure $layout
      */
-    public function __construct( Model $model )
+    public function __construct(Model $model)
     {
         $this->model = $model;
         $this->columns = new Collection();
@@ -84,14 +84,14 @@ class Grid
      */
     public function __toString()
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
      * @param Closure $constructor
      * @return $this
      */
-    public function setColumns( Closure $constructor ): self
+    public function setColumns(Closure $constructor): self
     {
         $constructor($this);
 
@@ -103,14 +103,14 @@ class Grid
      */
     protected function setupFilter()
     {
-        $this->setFilter( new Filter( $this->model ) );
+        $this->setFilter(new Filter($this->model));
     }
 
     /**
      * @param FilterInterface $filter
      * @return Grid
      */
-    public function setFilter( FilterInterface $filter )
+    public function setFilter(FilterInterface $filter)
     {
         $this->filter = $filter;
 
@@ -130,9 +130,9 @@ class Grid
      * @param string|null $side
      * @return void
      */
-    public function addTool( RenderableInterface $tool, string $side = null )
+    public function addTool(RenderableInterface $tool, string $side = null)
     {
-        $this->tools[] = [ $tool, $side ?: self::FOOTER_SIDE_SECONDARY ];
+        $this->tools[] = [$tool, $side ?: self::FOOTER_SIDE_SECONDARY];
     }
 
     /**
@@ -147,7 +147,7 @@ class Grid
      * @param string[] $tools
      * @return Grid
      */
-    public function tools( array $tools )
+    public function tools(array $tools)
     {
         $this->enabledDefaultTools = $tools;
 
@@ -158,11 +158,10 @@ class Grid
      * @param array|Collection $items
      * @return Grid
      */
-    public function items( $items )
+    public function items($items)
     {
-        if( is_array( $items ) )
-        {
-            $items = new Collection( $items );
+        if (is_array($items)) {
+            $items = new Collection($items);
         }
 
         $this->items = $items;
@@ -183,7 +182,7 @@ class Grid
      * @param bool $paginate
      * @return Grid
      */
-    public function paginate( bool $paginate = true )
+    public function paginate(bool $paginate = true)
     {
         $this->paginated = $paginate;
 
@@ -211,19 +210,18 @@ class Grid
      * @param null $label
      * @return Column
      */
-    public function column( $name = null, $label = null )
+    public function column($name = null, $label = null)
     {
-        $column = new Column( $name, $label );
-        $column->setGrid( $this );
+        $column = new Column($name, $label);
+        $column->setGrid($this);
 
-        $this->columns->push( $column );
+        $this->columns->push($column);
 
-        if( strpos( $name, '.' ) !== false )
-        {
-            list( $relationName, $relationColumn ) = explode( '.', $name );
+        if (strpos($name, '.') !== false) {
+            list($relationName, $relationColumn) = explode('.', $name);
 
-            $this->filter->withRelation( $relationName );
-            $column->setRelation( $relationName, $relationColumn );
+            $this->filter->withRelation($relationName);
+            $column->setRelation($relationName, $relationColumn);
         }
 
         return $column;
@@ -232,25 +230,23 @@ class Grid
     /**
      * @param Collection|LengthAwarePaginator $items
      */
-    protected function buildRows( $items )
+    protected function buildRows($items)
     {
-        if( $items instanceof LengthAwarePaginator )
-        {
-            $items = new Collection( $items->items() );
+        if ($items instanceof LengthAwarePaginator) {
+            $items = new Collection($items->items());
         }
 
-        $this->rows = $items->map( function( $model )
-        {
-            return new Row( $this, $model );
-        } );
+        $this->rows = $items->map(function ($model) {
+            return new Row($this, $model);
+        });
     }
 
     /**
      * @param Closure $callback
      */
-    public function filter( Closure $callback )
+    public function filter(Closure $callback)
     {
-        call_user_func( $callback, $this->filter );
+        call_user_func($callback, $this->filter);
     }
 
     /**
@@ -258,12 +254,11 @@ class Grid
      */
     protected function fetchData()
     {
-        if( method_exists( $this->filter, 'setPaginated' ) )
-        {
-            $this->filter->setPaginated( $this->paginated );
+        if (method_exists($this->filter, 'setPaginated')) {
+            $this->filter->setPaginated($this->paginated);
         }
 
-        return $this->filter->execute( $this->getColumns() );
+        return $this->filter->execute($this->getColumns());
     }
 
     /**
@@ -271,7 +266,7 @@ class Grid
      */
     public function render()
     {
-        $this->buildRows( $this->getItems() );
+        $this->buildRows($this->getItems());
 
         return $this->renderer->render();
     }
@@ -297,16 +292,16 @@ class Grid
      */
     public function hasTools(): bool
     {
-        return !empty( $this->enabledDefaultTools );
+        return !empty($this->enabledDefaultTools);
     }
 
     /**
      * @param string $tool
      * @return bool
      */
-    public function hasTool( string $tool ): bool
+    public function hasTool(string $tool): bool
     {
-        return in_array( $tool, $this->enabledDefaultTools, false );
+        return in_array($tool, $this->enabledDefaultTools, false);
     }
 
     /**
@@ -316,16 +311,14 @@ class Grid
     {
         $items = $this->fetchData();
 
-        $this->buildRows( $items );
+        $this->buildRows($items);
 
-        $columns = $this->columns->map( function( Column $column )
-        {
-            return (string) $column;
-        } )->toArray();
+        $columns = $this->columns->map(function (Column $column) {
+            return (string)$column;
+        })->toArray();
 
-        return $this->rows->map( function( Row $row ) use ( $columns )
-        {
-            return array_combine( $columns, $row->toArray() );
-        } )->toArray();
+        return $this->rows->map(function (Row $row) use ($columns) {
+            return array_combine($columns, $row->toArray());
+        })->toArray();
     }
 }

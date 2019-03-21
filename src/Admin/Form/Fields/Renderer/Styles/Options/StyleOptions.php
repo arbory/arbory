@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options;
 
-
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Illuminate\Support\Fluent;
 
@@ -31,7 +30,7 @@ class StyleOptions implements StyleOptionsInterface
      *
      * @return StyleOptionsInterface
      */
-    public function setAdditional( array $data ): StyleOptionsInterface
+    public function setAdditional(array $data): StyleOptionsInterface
     {
         $this->additional = new Fluent($data);
 
@@ -43,7 +42,7 @@ class StyleOptions implements StyleOptionsInterface
      *
      * @return StyleOptionsInterface
      */
-    public function addAdditional( array $data ): StyleOptionsInterface
+    public function addAdditional(array $data): StyleOptionsInterface
     {
         $this->additional = new Fluent(
             array_merge($this->additional->getAttributes(), $data)
@@ -69,12 +68,12 @@ class StyleOptions implements StyleOptionsInterface
     }
 
     /**
-     * @param int   $rows
+     * @param int $rows
      * @param array $breakpoints
      *
      * @return StyleOptionsInterface
      */
-    public function setRows( int $rows, array $breakpoints = [] ): StyleOptionsInterface
+    public function setRows(int $rows, array $breakpoints = []): StyleOptionsInterface
     {
         $this->rows = ['size' => $rows, 'breakpoints' => $breakpoints];
 

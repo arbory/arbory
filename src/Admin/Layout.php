@@ -112,7 +112,7 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
     public function contents($content)
     {
         $variables = [
-            'content'   => $content,
+            'content' => $content,
             'bodyClass' => $this->bodyClass,
         ];
 

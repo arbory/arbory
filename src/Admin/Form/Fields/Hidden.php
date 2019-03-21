@@ -16,7 +16,7 @@ class Hidden extends ControlField
         'type' => 'hidden'
     ];
 
-    public function beforeRender( RendererInterface $renderer )
+    public function beforeRender(RendererInterface $renderer)
     {
         $this->addAttributes([
             'data-name' => $this->getName()

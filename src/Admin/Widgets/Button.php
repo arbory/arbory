@@ -41,12 +41,12 @@ class Button implements Renderable
      * @param string|null $name
      * @param null $value
      */
-    public function __construct( string $name = null, $value = null )
+    public function __construct(string $name = null, $value = null)
     {
         $this->name = $name;
         $this->value = $value;
         $this->element = Html::button();
-        $this->element->addClass( 'button ' );
+        $this->element->addClass('button ');
     }
 
     /**
@@ -54,14 +54,14 @@ class Button implements Renderable
      */
     public function __toString()
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
      * @param $title
      * @return Button
      */
-    public function title( $title )
+    public function title($title)
     {
         $this->title = $title;
 
@@ -72,10 +72,10 @@ class Button implements Renderable
      * @param $name
      * @return Button
      */
-    public function withIcon( $name )
+    public function withIcon($name)
     {
-        $this->element->addClass( 'with-icon' );
-        $this->element->append( Html::i()->addClass( 'fa fa-' . $name ) );
+        $this->element->addClass('with-icon');
+        $this->element->append(Html::i()->addClass('fa fa-' . $name));
 
         return $this;
     }
@@ -85,10 +85,11 @@ class Button implements Renderable
      *
      * @return $this
      */
-    public function asAjaxbox($cache = false) {
+    public function asAjaxbox($cache = false)
+    {
         $this->element->addClass('ajaxbox');
 
-        if($cache) {
+        if ($cache) {
             $this->element->addAttributes(['data-cache' => 1]);
         }
 
@@ -100,16 +101,15 @@ class Button implements Renderable
      * @param null $visualType
      * @return Button
      */
-    public function type( $inputType, $visualType = null )
+    public function type($inputType, $visualType = null)
     {
-        $attributes = [ 'type' => $inputType ];
-        $attributes += array_filter( [ 'name' => $this->name, 'value' => $this->value ] );
+        $attributes = ['type' => $inputType];
+        $attributes += array_filter(['name' => $this->name, 'value' => $this->value]);
 
-        $this->element->addAttributes( $attributes );
+        $this->element->addAttributes($attributes);
 
-        if( $visualType )
-        {
-            $this->element->addClass( $visualType );
+        if ($visualType) {
+            $this->element->addClass($visualType);
         }
 
         return $this;
@@ -130,7 +130,7 @@ class Button implements Renderable
      */
     public function disableOnSubmit()
     {
-        $this->element->addAttributes( [ 'data-disable' => 'true' ] );
+        $this->element->addAttributes(['data-disable' => 'true']);
 
         return $this;
     }
@@ -140,15 +140,12 @@ class Button implements Renderable
      */
     public function render()
     {
-        $this->element->addAttributes( [ 'title' => $this->title ] );
+        $this->element->addAttributes(['title' => $this->title]);
 
-        if( $this->iconOnly )
-        {
-            $this->element->addClass( 'only-icon' );
-        }
-        else
-        {
-            $this->element->append( $this->title  );
+        if ($this->iconOnly) {
+            $this->element->addClass('only-icon');
+        } else {
+            $this->element->append($this->title);
         }
 
         return $this->element;
@@ -159,8 +156,8 @@ class Button implements Renderable
      * @param null $value
      * @return Button
      */
-    public static function create( string $name = null, $value = null )
+    public static function create(string $name = null, $value = null)
     {
-        return new static( $name, $value );
+        return new static($name, $value);
     }
 }

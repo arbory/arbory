@@ -81,8 +81,7 @@ class Settings
      */
     public function all(): Collection
     {
-        return $this->settingRegistry->getSettings()->mapWithKeys(function (SettingDefinition $definition)
-        {
+        return $this->settingRegistry->getSettings()->mapWithKeys(function (SettingDefinition $definition) {
             return [$definition->getKey() => $definition->getValue()];
         });
     }

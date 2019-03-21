@@ -3,7 +3,6 @@
 
 namespace Arbory\Base\Admin\Layout\Transformers;
 
-
 use Arbory\Base\Admin\Layout\Body;
 use Arbory\Base\Admin\Layout\WrappableInterface;
 use Arbory\Base\Html\Elements\Content;
@@ -34,7 +33,7 @@ class WrapTransformer
 
     public function __invoke(Body $body, callable $next)
     {
-        $body->wrap(function($content) {
+        $body->wrap(function ($content) {
             $this->wrappable->setContent($content);
 
             return $this->wrappable->render();
