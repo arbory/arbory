@@ -37,6 +37,8 @@ class Filter implements Renderable
      */
     protected function addFields()
     {
+        $fieldCollection = null;
+
         foreach ( $this->columns as $column ) {
             if ( $column->getHasFilter() ) {
 
