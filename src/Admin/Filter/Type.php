@@ -20,4 +20,40 @@ class Type
     public function __toString() {
         return (string) $this->render();
     }
+
+    public function getCheckboxStatus() {
+        if ($this->request->has($this->column->getName())) {
+            return 'checked';
+        }
+
+        return;
+    }
+
+    public function getRangeValue( $valueSide ) {
+        $name = $this->column->getName();
+        if ($this->request->has( $name )) {
+            $value = $this->request->get($name);
+            if ($value[$valueSide]) {
+                return  'value="' . $value[$valueSide] . '"';
+            }
+        }
+
+        return;
+    }
+
+    public function getCheckboxStatusFromArray( $value ) {
+
+        if ($this->request->has($this->column->getName())) {
+            $array = $this->request->get($this->column->getName());
+
+            foreach ($array as $item) {
+                if ($item === $value) {
+                    return 'checked';
+                }
+            }
+        }
+
+        return;
+
+    }
 }

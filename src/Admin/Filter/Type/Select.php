@@ -20,16 +20,22 @@ class Select extends Type
     function __construct( $content = null, $column = null ) {
         $this->content = $content;
         $this->column = $column;
+        $this->request = request();
     }
 
     /**
      * @return array
      */
     protected function getOptionList() {
-        $options[] = Html::option()->addAttributes( [ 'selected' ] );
+        if ($this->request->has($this->column->getName())) {
+            $options[] = Html::option();
+        } else {
+            $options[] = Html::option()->addAttributes( [ 'selected' ] );
+        }
 
         foreach ( $this->content as $key => $value ) {
-            $options[] = Html::option( [ $value ] )->addAttributes( [ 'value' => $key ] );
+            $options[] = Html::option( [ $value ] )
+                            ->addAttributes( [ 'value' => $key ] );
         }
 
         return $options;

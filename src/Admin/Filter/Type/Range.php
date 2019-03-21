@@ -19,6 +19,7 @@ class Range extends Type
 
     function __construct( $column = null ){
         $this->column = $column;
+        $this->request = request();
     }
 
     public function render()
@@ -30,6 +31,7 @@ class Range extends Type
                     ->setType( 'number' )
                     ->setName( $this->column->getName() . '[min]' )
                     ->addAttributes([ 'step' => '.01'])
+                    ->addAttributes([ $this->getRangeValue('min') ])
             ] )->addClass( 'column' ),
             Html::div( [
                 Html::h4( trans('arbory::filter.range.to') ),
@@ -37,6 +39,7 @@ class Range extends Type
                     ->setType( 'number' )
                     ->setName( $this->column->getName() . '[max]' )
                     ->addAttributes([ 'step' => '.01'])
+                    ->addAttributes([ $this->getRangeValue('max') ])
             ] )->addClass( 'column' ),
         ] )->addClass( 'range' )]);
     }

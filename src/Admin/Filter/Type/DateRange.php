@@ -19,6 +19,7 @@ class DateRange extends Type
 
     function __construct( $column = null ){
         $this->column = $column;
+        $this->request = request();
     }
 
     public function render()
@@ -29,12 +30,14 @@ class DateRange extends Type
                 Html::input()
                     ->setType( 'date' )
                     ->setName( $this->column->getName() . '[min]' )
+                    ->addAttributes([ $this->getRangeValue('min') ])
             ] )->addClass( 'column' ),
             Html::div( [
                 Html::h4( trans('arbory::filter.date.to') ),
                 Html::input()
                     ->setType( 'date' )
                     ->setName( $this->column->getName() . '[max]' )
+                    ->addAttributes([ $this->getRangeValue('max') ])
             ] )->addClass( 'column' ),
         ] )->addClass( 'date-range' )]);
     }

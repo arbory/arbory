@@ -21,6 +21,7 @@ class Multiselect extends Type
     function __construct( $content = null, $column = null ) {
         $this->content = $content;
         $this->column = $column;
+        $this->request = request();
     }
 
     /**
@@ -30,9 +31,10 @@ class Multiselect extends Type
     protected function getCheckboxList() {
         foreach ( $this->content as $key => $value ) {
             $options[] = Html::label( [
-                Html::input( $value )
+                Html::input( $key )
                     ->setType( 'checkbox' )
-                    ->addAttributes( [ 'value' => $key ] )
+                    ->addAttributes( [ 'value' => $value ] )
+                    ->addAttributes( [ $this->getCheckboxStatusFromArray( $value ) ] )
                     ->setName( $this->column->getName() . '[]' )
             ] );
         }

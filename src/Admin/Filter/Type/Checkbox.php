@@ -17,6 +17,7 @@ class Checkbox extends Type
     function __construct( $content = null, $column = null ){
         $this->content = $content;
         $this->column = $column;
+        $this->request = request();
     }
 
     /**
@@ -35,6 +36,7 @@ class Checkbox extends Type
                     Html::input( $this->content )
                         ->setType( 'checkbox' )
                         ->addAttributes( [ 'value' => 1 ] )
+                        ->addAttributes( [ $this->getCheckboxStatus() ] )
                         ->setName( $this->column->getName() )
                 ] ),
             ] )->addClass( 'checkbox' )
