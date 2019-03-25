@@ -41,6 +41,18 @@ interface FieldInterface
     public function setValue( $value );
 
     /**
+     * @return mixed
+     */
+    public function getDefaultValue();
+
+    /**
+     * @param $defaultValue string
+     * @return $this
+     */
+    public function setDefaultValue($defaultValue);
+
+
+    /**
      * @return string
      */
     public function getLabel();

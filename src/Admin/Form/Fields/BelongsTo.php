@@ -21,7 +21,9 @@ class BelongsTo extends Select
     public function getValue()
     {
         $foreignKey = $this->getRelation()->getForeignKey();
-        return $this->getModel()->getAttribute( $foreignKey );
+        $value = $this->getModel()->getAttribute( $foreignKey );
+
+        return $value ?? $this->getDefaultValue();
     }
 
     /**
