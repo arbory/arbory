@@ -52,7 +52,7 @@ class Builder implements Renderable
     /**
      * @return Element|null
      */
-    protected function bulkEdit()
+    protected function bulkEdit() : ?Element
     {
         if (!$this->grid->hasTool('bulk-edit')) {
             return null;
@@ -73,7 +73,7 @@ class Builder implements Renderable
     /**
      * @return Column
      */
-    protected function addBulkColumn()
+    protected function addBulkColumn() : Column
     {
         return $this->grid->prependColumn('id', trans('arbory::resources.nr'), 1)
             ->checkable(true)
