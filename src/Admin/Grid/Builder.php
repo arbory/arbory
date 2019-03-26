@@ -82,7 +82,7 @@ class Builder implements Renderable
                 $checkbox = new CheckBox($value);
                 $checkbox->setValue($value);
                 $checkbox->addClass('js-bulk-edit-row-checkbox');
-                $checkbox->setName('ids[]');
+                $checkbox->setName('bulk_edit_item_ids[]');
                 return $cellContent->append($checkbox);
             });
     }

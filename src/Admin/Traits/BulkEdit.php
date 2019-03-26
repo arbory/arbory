@@ -3,12 +3,8 @@
 namespace Arbory\Base\Admin\Traits;
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Layout;
-use Arbory\Base\Admin\Module;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 trait BulkEdit
@@ -25,33 +21,36 @@ trait BulkEdit
 
     /**
      * @param Model $model
-     * @param bool $ids
-     * @param bool $withChecks
      * @return Form
      */
     protected function buildBulkEditForm(Model $model): Form
     {
-        $ids = request('ids');
         $form = new Form($model);
         $form->setAction($this->url('bulkupdate', $model->getKey()));
         $form->setModule($this->module());
         $form->setRenderer(new Form\BulkEditFormBuilder($form));
-        if ($ids) {
-            $form->title(trans('arbory::resources.bulk_edit_form_title', ['count' => count($ids)]));
-            $form->setFields(function (Form\FieldSet $fieldSet) use ($ids) {
-                $fieldSet->hidden('ids')->setValue(implode(',', $ids));
-            });
-        }
         $this->bulkEditForm($form);
-
-        if ($ids) {
-            $this->addCheckboxesToEachInput($form);
-        } else {
-            $this->preprocessBulkUpdate($form);
-        }
 
         return $form;
     }
+
+    /**
+     * @param Form $form
+     * @return Form
+     */
+    protected function additionalFormControls(Form $form): Form
+    {
+        $bulkEditItemIds = request('bulk_edit_item_ids');
+        $form->title(trans('arbory::resources.bulk_edit_form_title', ['count' => count($bulkEditItemIds)]));
+        $form->setFields(function (Form\FieldSet $fieldSet) use ($bulkEditItemIds) {
+            $fieldSet->hidden('bulk_edit_item_ids')->setValue(implode(',', $bulkEditItemIds));
+        });
+
+        $this->addCheckboxesToEachInput($form);
+
+        return $form;
+    }
+
 
     /**
      * @param Request $request
@@ -59,14 +58,17 @@ trait BulkEdit
      */
     protected function confirmBulkEditDialog(Request $request): View
     {
-        if (!$request->has('ids')) {
+        if (!$request->has('bulk_edit_item_ids')) {
             return view('arbory::dialogs.form_mass_empty');
         }
+        $form = $this->buildBulkEditForm($this->resource());
+        $this->additionalFormControls($form);
+
         return view('arbory::dialogs.form_mass_edit', [
             'formTarget' => $this->url('index'),
             'objectName' => $this->resource,
-            'form' => $this->buildBulkEditForm($this->resource())->render(),
-            'ids' => ''
+            'form' => $form->render(),
+            'bulk_edit_item_ids' => ''
         ]);
     }
 
@@ -76,11 +78,12 @@ trait BulkEdit
      */
     public function bulkUpdate(Request $request)
     {
-        $ids = $request->input('resource.ids');
+        $bulEditItemIds = $request->input('resource.bulk_edit_item_ids');
 
-        foreach (explode(',', $ids) as $id) {
+        foreach (explode(',', $bulEditItemIds) as $id) {
             $resource = $this->resource()->find($id);
             $form = $this->buildBulkEditForm($resource);
+            $this->prepareBulkFields($form);
             $form->update($request);
         }
 
@@ -89,8 +92,9 @@ trait BulkEdit
 
     /**
      * @param Form $form
+     * @return Form
      */
-    protected function addCheckboxesToEachInput(Form $form)
+    protected function addCheckboxesToEachInput(Form $form): Form
     {
         $fieldSet = $form->fields();
         $items = $fieldSet->getFields();
@@ -99,7 +103,7 @@ trait BulkEdit
         $counter = 0;
 
         foreach ($fieldSet->getIterator() as $key => $field) {
-            if ($field->getName() == 'ids')
+            if ($field->getName() == 'bulk_edit_item_ids')
                 continue;
 
             $checkbox = $this->getInputControlCheckbox($field->getName(), $field->getLabel());
@@ -112,6 +116,8 @@ trait BulkEdit
             $items->splice($key + $counter, 0, [$checkbox]);
             $counter++;
         };
+
+        return $form;
     }
 
     /**
@@ -130,9 +136,10 @@ trait BulkEdit
     }
 
     /**
-     * @param $form
+     * @param Form $form
+     * @return Form
      */
-    protected function preprocessBulkUpdate(Form $form)
+    protected function prepareBulkFields(Form $form): Form
     {
         //change original
         $fieldSet = $form->fields();
@@ -142,11 +149,13 @@ trait BulkEdit
             $name = $field->getName();
             $nameSpace = $form->getNamespace();
             $fieldName = $nameSpace . '.' . $name . '_control';
-            if ($field->getName() != 'ids' &&
+            if ($field->getName() != 'bulk_edit_item_ids' &&
                 !request()->has($fieldName)) {
                 $items->forget($key);
             }
         }
+
+        return $form;
     }
 
     /**

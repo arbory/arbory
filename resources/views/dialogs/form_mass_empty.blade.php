@@ -13,7 +13,7 @@
 <footer>
     <div class="tools">
         <div class="primary">
-            <a class="button with-icon primary" title="No" data-type="cancel">
+            <a class="button with-icon primary" title="@lang('Ok')" data-type="cancel">
                 <i class="fa fa-check"></i>@lang('Ok')
             </a>
         </div>
