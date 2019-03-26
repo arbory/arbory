@@ -122,9 +122,13 @@ trait Crudify
 
         $page = $manager->page(Page::class);
 
+        $grid = $layout->getGrid();
+
+        $bulkEditClass = $grid->hasTool('bulk-edit') ? ' bulk-edit-grid' : '';
+
         $page->setBreadcrumbs($this->module()->breadcrumbs());
         $page->use($layout);
-        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index');
+        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index' . $bulkEditClass);
 
         return $page;
     }

@@ -44,9 +44,9 @@ class ModuleRoutesRegistry
 
         $router->resource( $slug, '\\' . $class );
 
-        $router->post($slug . '/massupdate', [
-            'as' => $slug . '.massupdate',
-            'uses' => '\\' . $class . '@massUpdate'
+        $router->post($slug . '/bulkupdate', [
+            'as' => $slug . '.bulkupdate',
+            'uses' => '\\' . $class . '@bulkUpdate'
         ]);
 
         $router->get( $slug . '/dialog/{dialog}', [

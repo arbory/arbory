@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form;
 
 use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Layout\WrappableInterface;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Tools\Toolbox;
@@ -12,10 +13,10 @@ use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class MassFormBuilder
+ * Class BulkEditFormBuilder
  * @package Arbory\Base\Admin\Form
  */
-class MassFormBuilder implements Renderable
+class BulkEditFormBuilder extends Builder
 {
 
     /**
@@ -27,7 +28,7 @@ class MassFormBuilder implements Renderable
      * Builder constructor.
      * @param Form $form
      */
-    public function __construct( Form $form )
+    public function __construct(Form $form)
     {
         $this->form = $form;
     }
@@ -37,19 +38,19 @@ class MassFormBuilder implements Renderable
      * @param array $parameters
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url($route, $parameters = [])
     {
-        return $this->form->getModule()->url( $route, $parameters );
+        return $this->form->getModule()->url($route, $parameters);
     }
 
     /**
-     * @return \Arbory\Base\Html\Elements\Element
+     * @return Element
      */
     protected function header()
     {
-        return Html::header( [
-            Html::h1( $this->form->getTitle())
-        ] );
+        return Html::header([
+            Html::h1($this->form->getTitle())
+        ]);
     }
 
     /**
@@ -57,7 +58,7 @@ class MassFormBuilder implements Renderable
      */
     protected function form()
     {
-        $form = Html::form()->addAttributes( [
+        $form = Html::form()->addAttributes([
             'id' => 'edit-resources',
             'class' => 'edit-resources',
             'novalidate' => 'novalidate',
@@ -68,63 +69,64 @@ class MassFormBuilder implements Renderable
             'data-remote' => 'true',
             'data-remote-validation' => 'true',
             'data-type' => 'json',
-        ] );
+        ]);
 
-        $form->append( csrf_field() );
+        $form->append(csrf_field());
 
-        $form->append( Html::input()->setName( '_method' )->setType( 'hidden' )->setValue( 'POST' ) );
+        $form->append(Html::input()->setName('_method')->setType('hidden')->setValue('POST'));
 
         return $form;
     }
 
+    /**
+     * @return Element
+     */
     protected function footer()
     {
-        $primary = Html::div()->addClass( 'primary' );
+        $primary = Html::div()->addClass('primary');
 
         $primary->append(
             Html::link()
                 ->addClass('button secondary with-icon')
-                ->addAttributes(['data-type'=> 'cancel'])
+                ->addAttributes(['data-type' => 'cancel'])
                 ->append(Html::i()->addClass('fa fa-ban'))
-                ->append(trans( 'arbory::resources.cancel' ))
+                ->append(trans('arbory::resources.cancel'))
         );
 
         $primary->append(
-            Button::create( 'save', true )
-                ->type( 'submit', 'primary' )
-                ->withIcon( 'check' )
+            Button::create('save', true)
+                ->type('submit', 'primary')
+                ->withIcon('check')
                 ->disableOnSubmit()
-                ->title( trans( 'arbory::resources.save' ) )
+                ->title(trans('arbory::resources.save'))
         );
 
 
-        $footerTools = Html::div( [
+        $footerTools = Html::div([
             $primary
-        ] )->addClass( 'tools' );
+        ])->addClass('tools');
 
-        return Html::footer( $footerTools );
+        return Html::footer($footerTools);
     }
 
 
-
     /**
-     * @return Content
+     * @return Content|Element
      */
     public function render()
     {
-        $content = Html::div()->addClass( 'body' );
+        $content = Html::div()->addClass('body');
 
-        //$this->addCheckboxesToEachInput();
-        $content->append( $this->form->fields()->render() );
+        $content->append($this->form->fields()->render());
 
-        return new Content( [
+        return new Content([
             Html::section(
                 $this->form()
-                    ->append( $this->header() )
-                    ->append( $content )
-                    ->append( $this->footer() )
+                    ->append($this->header())
+                    ->append($content)
+                    ->append($this->footer())
             )
-        ] );
+        ]);
     }
 
 }

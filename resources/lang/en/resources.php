@@ -9,8 +9,8 @@ return [
     'save' => 'Save',
     'back_to_list' => 'Back',
     'nr' => 'No',
-    'mass_form_title' => 'Update :count items',
-    'mass_edit' => 'Mass edit',
+    'bulk_edit_form_title' => 'Update :count items',
+    'bulk_edit' => 'Mass edit',
     'check_to_change' => 'Check to save ":input" field',
     'cancel'    => 'Cancel',
     'status' => [

@@ -1,44 +1,60 @@
 
-const COOKIE_NAME_NODES = 'mass';
+const COOKIE_NAME_NODES = 'bulk';
 
 jQuery(document).ready(($) => {
-    let massActions = $('a.mass-action');
-    const url = massActions.attr('href');
 
+    let bulkGrid = $('.bulk-edit-grid'),
+        bulkActions,
+        bulkEditRows,
+        bulkEditHeader,
+        bulkUrl;
 
-    function performAction() {
-        $(this).attr('href', getUrlwithIds)
+    function modifyUrl() {
+        bulkActions.attr('href', getUrlwithIds)
     }
 
     function getUrlwithIds(){
-        let ids = $( "input.mass-row:checked" ).serializeArray();
-        return url + ( url.indexOf('?') >= 0 ? '&' : '?' ) + $.param(ids);
+        let ids = bulkEditRows.filter(':checked').serializeArray();
+        return bulkUrl + ( bulkUrl.indexOf('?') >= 0 ? '&' : '?' ) + $.param(ids);
     }
 
     function allChecked() {
-        $( "input.mass-row").prop("checked", this.checked);
+        bulkEditRows.prop("checked", this.checked);
+        modifyUrl();
     }
 
-    massActions.on('click', performAction);
+    function updateSelectors(){
+        bulkActions = $('.js-bulk-edit-button', bulkGrid);
+        bulkUrl = bulkActions.attr('href');
+        bulkEditRows = $('.js-bulk-edit-row-checkbox', bulkGrid);
+        bulkEditHeader = $('.js-bulk-edit-header-checkbox', bulkGrid);
+    }
 
-    massActions.ready(() => {
-        $('input[name="mass-column"]').on('change', allChecked);
+    function prepareFormEvents(target){
+        target.find('input.bulk-control').on('change', function(e){
+            target.find('[name="resource['+$(this).attr('data-target')+']"]').prop("disabled", !this.checked);
+        });
+    }
+
+    function prepareGridEvents(){
+        bulkEditRows.on('change', modifyUrl);
+        bulkEditHeader.on('change', allChecked);
+    }
+
+    $('body').on('contentloaded', function(e, event_params) {
+
+        if(bulkGrid.length){
+            updateSelectors();
+            prepareGridEvents();
+        }
+        $(e.target).trigger('bulkforminit', event_params);
     });
 
-    $('body').on('contentloaded', function(e, event_params) {$(e.target).trigger('massforminit', event_params);});
-
-    $(document).bind('massforminit', function( e )
+    $(document).bind('bulkforminit', function( e )
     {
         let target = $(e.target);
         target = target.find('.edit-resources');
-
-        target.find('input.bulk-control').on('change', function(e){
-            if($(this).prop('checked')){
-                target.find('[name="resource['+$(this).attr('data-target')+']"]').prop("disabled", false);
-            } else {
-                target.find('[name="resource['+$(this).attr('data-target')+']"]').prop("disabled", true);
-
-            }
-        });
+        prepareFormEvents(target);
     });
+
 });
