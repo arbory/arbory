@@ -164,6 +164,6 @@ trait BulkEdit
      */
     protected function getAfterBulkEditResponse(Request $request)
     {
-        return redirect($this->module()->url('index'));
+        return redirect()->back();
     }
 }

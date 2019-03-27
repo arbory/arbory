@@ -67,11 +67,6 @@ jQuery(document).ready(($) => {
      * Init grid events and try to init bulk form
      */
     $('body').on('contentloaded', function (e, event_params) {
-
-        if (bulkGrid.length) {
-            updateSelectors();
-            prepareGridEvents();
-        }
         $(e.target).trigger('bulkforminit', event_params);
     });
 
@@ -80,6 +75,11 @@ jQuery(document).ready(($) => {
      */
     $(document).bind('bulkforminit', function (e) {
         let target = $(e.target);
+
+        if (bulkGrid.length) {
+            updateSelectors();
+            prepareGridEvents();
+        }
         target = target.find('.edit-resources');
         prepareFormEvents(target);
     });
