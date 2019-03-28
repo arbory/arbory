@@ -43,7 +43,7 @@ class Filter implements FilterInterface
      * Filter constructor.
      * @param Model $model
      */
-    public function __construct( Model $model )
+    public function __construct(Model $model)
     {
         $this->model = $model;
         $this->query = $model->newQuery();
@@ -76,11 +76,14 @@ class Filter implements FilterInterface
         $this->query->orderBy($column->getName(), $orderDirection);
     }
 
+    /**
+     * @param Collection $columns
+     */
     protected function filter(Collection $columns)
     {
         $filterParameters = self::removeNonFilterParameters($this->request->all());
 
-        foreach ($filterParameters as $getKey => $getValue ) {
+        foreach ($filterParameters as $getKey => $getValue) {
 
             if (!$getValue) {
                 continue;
@@ -90,27 +93,21 @@ class Filter implements FilterInterface
                 return $column->getName() === $getKey;
             })->first();
 
-            if (!$column) {
+            if (!$column || !$column->getHasFilter()) {
                 continue;
             }
 
-            if (!$column->getHasFilter()) {
-                continue;
-            }
+            $columnName = self::getColumnName($getKey, $column);
 
-            $columnName = self::getColumnName( $getKey, $column );
-
-            if ( !is_array($getValue) ) {
+            if (!is_array($getValue)) {
                 $this->query->where($columnName, $column->getFilterType()->getAction(), $getValue);
-            } elseif ( is_array( $getValue ) && is_array($column->getFilterType()->getAction()) ) {
-                foreach (array_combine( $column->getFilterType()->getAction(), $getValue ) as $action => $value ) {
+            } elseif (is_array($getValue) && is_array($column->getFilterType()->getAction())) {
+                foreach (array_combine($column->getFilterType()->getAction(), $getValue) as $action => $value) {
                     $this->query->where($columnName, $action, $value);
                 }
-            } elseif ( is_array( $getValue ) ){
-                $this->query->where(function ($query) use ($columnName, $column, $getValue)
-                {
-                    foreach ($getValue as $value)
-                    {
+            } elseif (is_array($getValue)) {
+                $this->query->where(function ($query) use ($columnName, $column, $getValue) {
+                    foreach ($getValue as $value) {
                         $query->orWhere($columnName, $column->getFilterType()->getAction(), $value);
                     }
                 });
@@ -126,24 +123,20 @@ class Filter implements FilterInterface
      * @param $phrase
      * @param Collection|Column[] $columns
      */
-    protected function search( $phrase, $columns )
+    protected function search($phrase, $columns)
     {
-        $keywords = explode( ' ', $phrase );
+        $keywords = explode(' ', $phrase);
 
-        foreach( $keywords as $string )
-        {
-            $this->query->where( function ( QueryBuilder $query ) use ( $string, $columns )
-            {
-                foreach( $columns as $column )
-                {
-                    if( !$column->isSearchable() )
-                    {
+        foreach ($keywords as $string) {
+            $this->query->where(function (QueryBuilder $query) use ($string, $columns) {
+                foreach ($columns as $column) {
+                    if (!$column->isSearchable()) {
                         continue;
                     }
 
-                    $column->searchConditions( $query, $string );
+                    $column->searchConditions($query, $string);
                 }
-            } );
+            });
         }
     }
 
@@ -154,25 +147,23 @@ class Filter implements FilterInterface
     {
         $result = $this->query;
 
-        if (! $this->isPaginated()) {
+        if (!$this->isPaginated()) {
             return $result->get();
         }
 
         /** @var LengthAwarePaginator $result */
-        $result = $this->query->paginate( $this->getPerPage() );
+        $result = $this->query->paginate($this->getPerPage());
 
-        if( $this->request->has( 'search' ) )
-        {
+        if ($this->request->has('search')) {
             $result->appends([
-                'search' => $this->request->get( 'search' ),
+                'search' => $this->request->get('search'),
             ]);
         }
 
-        if( $this->request->has( '_order_by' ) && $this->request->has( '_order' ) )
-        {
+        if ($this->request->has('_order_by') && $this->request->has('_order')) {
             $result->appends([
-                '_order_by' => $this->request->get( '_order_by' ),
-                '_order' => $this->request->get( '_order' ),
+                '_order_by' => $this->request->get('_order_by'),
+                '_order' => $this->request->get('_order'),
             ]);
         }
 
@@ -183,16 +174,15 @@ class Filter implements FilterInterface
      * @param Collection|Column[] $columns
      * @return Collection|LengthAwarePaginator
      */
-    public function execute( Collection $columns )
+    public function execute(Collection $columns)
     {
-        if( $this->request->has( 'search' ) )
-        {
-            $this->search( $this->request->get( 'search' ), $columns );
+        if ($this->request->has('search')) {
+            $this->search($this->request->get('search'), $columns);
         }
 
-        $this->filter( $columns );
+        $this->filter($columns);
 
-        $this->order( $columns );
+        $this->order($columns);
 
         return $this->loadItems();
     }
@@ -200,9 +190,9 @@ class Filter implements FilterInterface
     /**
      * @param $relationName
      */
-    public function withRelation( $relationName )
+    public function withRelation($relationName)
     {
-        $this->query->with( $relationName );
+        $this->query->with($relationName);
     }
 
     /**
@@ -224,7 +214,7 @@ class Filter implements FilterInterface
     /**
      * @param bool $paginated
      */
-    public function setPaginated( bool $paginated )
+    public function setPaginated(bool $paginated)
     {
         $this->paginated = $paginated;
     }
@@ -240,7 +230,7 @@ class Filter implements FilterInterface
     /**
      * @param int $perPage
      */
-    public function setPerPage( int $perPage )
+    public function setPerPage(int $perPage)
     {
         $this->perPage = $perPage;
     }
@@ -248,33 +238,39 @@ class Filter implements FilterInterface
     /**
      * @return Model
      */
-    public function getColumnName( $getColumn, $column ) {
+    public function getColumnName($getColumn, $column)
+    {
         if ($column->getFilterType()->column) {
             return $column->getFilterType()->column;
-        } else {
-            return $getColumn;
         }
+
+        return $getColumn;
     }
 
-    private function removeNonFilterParameters( $parameters ) {
+    /**
+     * @param $parameters
+     * @return array
+     */
+    private function removeNonFilterParameters($parameters)
+    {
         unset($parameters['_order_by']);
         unset($parameters['_order']);
 
         return self::recursiveArrayFilter($parameters);
     }
 
-    private function recursiveArrayFilter( array $array ) {
-
-        foreach ( $array as $key => &$value ) {
-
-            if ( is_array( $value ) ) {
-                $value = self::recursiveArrayFilter( $value );
+    /**
+     * @param array $filterParameters
+     * @return array
+     */
+    private function recursiveArrayFilter(array $filterParameters)
+    {
+        foreach ($filterParameters as $getKey => &$getValue) {
+            if (is_array($getValue)) {
+                $getValue = self::recursiveArrayFilter($getValue);
             }
-
         }
 
-        $array = array_filter( $array );
-
-        return $array;
+        return array_filter($filterParameters);
     }
 }

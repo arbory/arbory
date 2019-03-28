@@ -166,17 +166,13 @@ class Column
     }
 
     /**
-     * @param $type
-     * @param bool $hasFilter
+     * @param null $type
      * @return $this
      */
-    public function hasFilter( $type, $hasFilter = true )
+    public function setFilter($type = null)
     {
-        $this->hasFilter = $hasFilter;
-
-        if ( $this->hasFilter === true ) {
-            $this->filterType = $type;
-        }
+        $this->filterType = $type;
+        $this->hasFilter = $type !== null;
 
         return $this;
     }

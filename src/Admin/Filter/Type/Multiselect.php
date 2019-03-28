@@ -12,13 +12,17 @@ use Arbory\Base\Html\Html;
  */
 class Multiselect extends Type
 {
+    /**
+     * @var string
+     */
     protected $action = '=';
 
     /**
      * Filter constructor.
      * @param null $content
      */
-    function __construct( $content = null, $column = null ) {
+    function __construct($content = null, $column = null)
+    {
         $this->content = $content;
         $this->column = $column;
         $this->request = request();
@@ -28,15 +32,16 @@ class Multiselect extends Type
      * @return array
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
-    protected function getCheckboxList() {
-        foreach ( $this->content as $key => $value ) {
-            $options[] = Html::label( [
-                Html::input( $key )
-                    ->setType( 'checkbox' )
-                    ->addAttributes( [ 'value' => $value ] )
-                    ->addAttributes( [ $this->getCheckboxStatusFromArray( $value ) ] )
-                    ->setName( $this->column->getName() . '[]' )
-            ] );
+    protected function getCheckboxList()
+    {
+        foreach ($this->content as $key => $value) {
+            $options[] = Html::label([
+                Html::input($key)
+                    ->setType('checkbox')
+                    ->addAttributes(['value' => $value])
+                    ->addAttributes([$this->getCheckboxStatusFromArray($value)])
+                    ->setName($this->column->getName() . '[]'),
+            ]);
         }
 
         return $options;
@@ -49,9 +54,9 @@ class Multiselect extends Type
     public function render()
     {
         return new Content([
-            Html::div( [
+            Html::div([
                 $this->getCheckboxList(),
-        ] )->addClass( 'multiselect' )
+            ])->addClass('multiselect'),
         ]);
     }
 }

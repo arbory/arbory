@@ -17,28 +17,39 @@ class DateRange extends Type
      */
     protected $action = ['>=', '<='];
 
-    function __construct( $column = null ){
+    /**
+     * DateRange constructor.
+     * @param null $column
+     */
+    function __construct($column = null)
+    {
         $this->column = $column;
         $this->request = request();
     }
 
+    /**
+     * @return Content
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     */
     public function render()
     {
-        return new Content([Html::div( [
-            Html::div( [
-                Html::h4( trans('arbory::filter.date.from') ),
-                Html::input()
-                    ->setType( 'date' )
-                    ->setName( $this->column->getName() . '[min]' )
-                    ->addAttributes([ $this->getRangeValue('min') ])
-            ] )->addClass( 'column' ),
-            Html::div( [
-                Html::h4( trans('arbory::filter.date.to') ),
-                Html::input()
-                    ->setType( 'date' )
-                    ->setName( $this->column->getName() . '[max]' )
-                    ->addAttributes([ $this->getRangeValue('max') ])
-            ] )->addClass( 'column' ),
-        ] )->addClass( 'date-range' )]);
+        return new Content([
+            Html::div([
+                Html::div([
+                    Html::h4(trans('arbory::filter.date.from')),
+                    Html::input()
+                        ->setType('date')
+                        ->setName($this->column->getName() . '[min]')
+                        ->addAttributes([$this->getRangeValue('min')]),
+                ])->addClass('column'),
+                Html::div([
+                    Html::h4(trans('arbory::filter.date.to')),
+                    Html::input()
+                        ->setType('date')
+                        ->setName($this->column->getName() . '[max]')
+                        ->addAttributes([$this->getRangeValue('max')]),
+                ])->addClass('column'),
+            ])->addClass('date-range'),
+        ]);
     }
 }

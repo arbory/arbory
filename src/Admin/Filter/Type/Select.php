@@ -17,7 +17,13 @@ class Select extends Type
      */
     protected $action = '=';
 
-    function __construct( $content = null, $column = null ) {
+    /**
+     * Select constructor.
+     * @param null $content
+     * @param null $column
+     */
+    function __construct($content = null, $column = null)
+    {
         $this->content = $content;
         $this->column = $column;
         $this->request = request();
@@ -26,16 +32,19 @@ class Select extends Type
     /**
      * @return array
      */
-    protected function getOptionList() {
+    protected function getOptionList()
+    {
+        $defaultOption = Html::option();
+
         if ($this->request->has($this->column->getName())) {
-            $options[] = Html::option();
-        } else {
-            $options[] = Html::option()->addAttributes( [ 'selected' ] );
+            $defaultOption->addAttributes(['selected']);
         }
 
-        foreach ( $this->content as $key => $value ) {
-            $options[] = Html::option( [ $value ] )
-                            ->addAttributes( [ 'value' => $key ] );
+        $options[] = $defaultOption;
+
+        foreach ($this->content as $key => $value) {
+            $options[] = Html::option([$value])
+                ->addAttributes(['value' => $key]);
         }
 
         return $options;
@@ -46,10 +55,12 @@ class Select extends Type
      */
     public function render()
     {
-        return new Content([Html::div( [
-            Html::select( [
-                $this->getOptionList(),
-            ] )->setName( $this->column->getName() ),
-        ] )->addClass( 'select' )]);
+        return new Content([
+            Html::div([
+                Html::select([
+                    $this->getOptionList(),
+                ])->setName($this->column->getName()),
+            ])->addClass('select'),
+        ]);
     }
 }

@@ -2,8 +2,15 @@
 
 namespace Arbory\Base\Admin\Filter;
 
+/**
+ * Class Type
+ * @package Arbory\Base\Admin\Filter
+ */
 class Type
 {
+    /**
+     * @var
+     */
     protected $action;
 
     /**
@@ -17,32 +24,49 @@ class Type
     /**
      * @return string
      */
-    public function __toString() {
-        return (string) $this->render();
+    public function __toString()
+    {
+        return (string)$this->render();
     }
 
-    public function getCheckboxStatus() {
+    /**
+     * @return string|null
+     */
+    public function getCheckboxStatus()
+    {
         if ($this->request->has($this->column->getName())) {
             return 'checked';
         }
 
-        return;
+        return null;
     }
 
-    public function getRangeValue( $valueSide ) {
+    /**
+     * @param $valueSide
+     * @return string|null
+     */
+    public function getRangeValue($valueSide)
+    {
         $name = $this->column->getName();
-        if ($this->request->has( $name )) {
-            $value = $this->request->get($name);
-            if ($value[$valueSide]) {
-                return  'value="' . $value[$valueSide] . '"';
-            }
+        if (!$this->request->has($name)) {
+            return null;
         }
 
-        return;
+        $value = $this->request->get($name);
+
+        if ($value[$valueSide]) {
+            return 'value="' . $value[$valueSide] . '"';
+        }
+
+        return null;
     }
 
-    public function getCheckboxStatusFromArray( $value ) {
-
+    /**
+     * @param $value
+     * @return string|null
+     */
+    public function getCheckboxStatusFromArray($value)
+    {
         if ($this->request->has($this->column->getName())) {
             $array = $this->request->get($this->column->getName());
 
@@ -53,7 +77,6 @@ class Type
             }
         }
 
-        return;
-
+        return null;
     }
 }

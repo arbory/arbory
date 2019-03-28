@@ -12,9 +12,18 @@ use Arbory\Base\Html\Html;
  */
 class Checkbox extends Type
 {
+    /**
+     * @var string
+     */
     protected $action = '=';
 
-    function __construct( $content = null, $column = null ){
+    /**
+     * Checkbox constructor.
+     * @param null $content
+     * @param null $column
+     */
+    function __construct($content = null, $column = null)
+    {
         $this->content = $content;
         $this->column = $column;
         $this->request = request();
@@ -28,18 +37,22 @@ class Checkbox extends Type
         return $this->column;
     }
 
+    /**
+     * @return Content
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     */
     public function render()
     {
         return new Content([
-            Html::div( [
-                Html::label( [
-                    Html::input( $this->content )
-                        ->setType( 'checkbox' )
-                        ->addAttributes( [ 'value' => 1 ] )
-                        ->addAttributes( [ $this->getCheckboxStatus() ] )
-                        ->setName( $this->column->getName() )
-                ] ),
-            ] )->addClass( 'checkbox' )
+            Html::div([
+                Html::label([
+                    Html::input($this->content)
+                        ->setType('checkbox')
+                        ->addAttributes(['value' => 1])
+                        ->addAttributes([$this->getCheckboxStatus()])
+                        ->setName($this->column->getName()),
+                ]),
+            ])->addClass('checkbox'),
         ]);
     }
 }

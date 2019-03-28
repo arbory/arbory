@@ -22,6 +22,10 @@ class Range extends Type
         $this->request = request();
     }
 
+    /**
+     * @return Content
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     */
     public function render()
     {
         return new Content([Html::div( [
