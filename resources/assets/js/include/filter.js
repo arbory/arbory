@@ -1,31 +1,16 @@
 jQuery(document).ready(function()
 {
-    var filterButton = $(".button.filter.trigger"),
+    var filterOpenButton = $(".button.filter.trigger"),
         filterCloseButton = $(".button.close"),
         filterWindow = $(".form-filter"),
-        contentWindow = $("#main section"),
-        filterField = $(".accordion__heading");
+        contentWindow = $("#main section");
 
-    filterButton.on("click", function()
-    {
+    function openCloseFilter() {
         filterWindow.toggleClass("show");
         contentWindow.toggleClass("show-filter");
+    }
+
+    filterOpenButton.add(filterCloseButton).on("click", function () {
+        openCloseFilter();
     } );
-
-    filterCloseButton.on("click", function()
-    {
-        filterWindow.removeClass("show");
-        contentWindow.removeClass("show-filter");
-    } );
-
-    filterField.on( "click", function(event)
-    {
-        var accordion = $( event.target ).closest(".accordion"),
-            accordionContent = $( accordion ).children(".accordion__body"),
-            accordionToggle = $( accordion ).find(".button i");
-
-        accordionContent.slideToggle( 150 );
-        accordionToggle.toggleClass("fa-minus");
-        accordionToggle.toggleClass("fa-plus");
-    });
 });

@@ -82,10 +82,10 @@ class Filter implements Renderable
                         ->withIcon('minus')
                         ->iconOnly()
                         ->withoutBackground(),
-                ])->addClass('accordion__heading'),
+                ])->addClass('heading'),
                 Html::div([
                     $field,
-                ])->addClass('accordion__body'),
+                ])->addClass('body'),
             ])->addClass('accordion'),
 
         ]);
