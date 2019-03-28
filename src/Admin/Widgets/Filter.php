@@ -27,7 +27,7 @@ class Filter implements Renderable
         return Html::div([
             Html::h2(trans('arbory::filter.sort_and_filter')),
             Button::create()
-                ->type('button', 'close')
+                ->type('button', 'filter-container close')
                 ->withIcon('times')
                 ->iconOnly(),
         ])->addClass('title-block');

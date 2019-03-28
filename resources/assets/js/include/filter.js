@@ -1,9 +1,9 @@
 jQuery(document).ready(function()
 {
     var filterOpenButton = $(".button.filter.trigger"),
-        filterCloseButton = $(".button.close"),
+        filterCloseButton = $(".button.filter-container.close"),
         filterWindow = $(".form-filter"),
-        contentWindow = $("#main section");
+        contentWindow = $("#main > .content");
 
     function openCloseFilter() {
         filterWindow.toggleClass("show");
