@@ -2,13 +2,14 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use App\Models\Product;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Widgets\Pagination;
 use Arbory\Base\Admin\Layout\Footer;
 use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Widgets\Filter;
 use Arbory\Base\Admin\Widgets\Link;
-use Arbory\Base\Admin\Widgets\SearchField;
+use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -36,7 +37,7 @@ class Builder implements Renderable
      * Builder constructor.
      * @param Grid $grid
      */
-    public function __construct( Grid $grid )
+    public function __construct(Grid $grid)
     {
         $this->grid = $grid;
     }
@@ -47,6 +48,44 @@ class Builder implements Renderable
     public function grid()
     {
         return $this->grid;
+    }
+
+    /**
+     * @return Element|null
+     */
+    protected function bulkEdit() : ?Element
+    {
+        if (!$this->grid->hasTool('bulk-edit')) {
+            return null;
+        }
+
+        $this->addBulkColumn();
+
+        $href = $this->url('dialog', [
+            'dialog' => 'confirm_bulk_edit'
+        ]);
+        $button = new Link($href);
+        $button->withIcon('edit');
+        $button->asButton('bulk-action js-bulk-edit-button ajaxbox')->title(trans('arbory::resources.bulk_edit'));
+
+        return Html::div($button->render())->addClass('bulk-actions');
+    }
+
+    /**
+     * @return Column
+     */
+    protected function addBulkColumn() : Column
+    {
+        return $this->grid->prependColumn('id', trans('arbory::resources.nr'), 1)
+            ->checkable(true)
+            ->display(function ($value, Column $column) {
+                $cellContent = Html::span();
+                $checkbox = new CheckBox($value);
+                $checkbox->setValue($value);
+                $checkbox->addClass('js-bulk-edit-row-checkbox');
+                $checkbox->setName('bulk_edit_item_ids[]');
+                return $cellContent->append($checkbox);
+            });
     }
 
     /**
@@ -67,12 +106,11 @@ class Builder implements Renderable
      */
     protected function getTableColumns()
     {
-        $tableColumns = $this->grid()->getColumns()->map( function( Column $column )
-        {
-            return $this->getColumnHeader( $column );
-        } );
+        $tableColumns = $this->grid()->getColumns()->map(function (Column $column) {
+            return $this->getColumnHeader($column);
+        });
 
-        $tableColumns->push( Html::th( Html::span( ' ' ) ) );
+        $tableColumns->push(Html::th(Html::span(' ')));
 
         return $tableColumns;
     }
@@ -81,37 +119,41 @@ class Builder implements Renderable
      * @param Column $column
      * @return Element
      */
-    protected function getColumnHeader( Column $column )
+    protected function getColumnHeader(Column $column)
     {
-        if( $column->isSortable() )
-        {
-            $link = Html::link( $column->getLabel() )
-                ->addAttributes( [
-                    'href' => $this->getColumnOrderUrl( $column->getName() )
-                ] );
+        if ($column->isCheckable() && $this->grid->hasTool('bulk-edit')) {
+            $input = Html::label([Html::checkbox()->addClass('js-bulk-edit-header-checkbox')
+                ->setName('bulk-edit-column'), $column->getLabel()]);
 
-            if( request( '_order_by' ) === $column->getName() )
-            {
-                $link->append( $this->getOrderByIcon() );
+            return Html::th($input)->addClass('bulk-check-column');
+        }
+        if ($column->isSortable()) {
+            $link = Html::link($column->getLabel())
+                ->addAttributes([
+                    'href' => $this->getColumnOrderUrl($column->getName())
+                ]);
+
+            if (request('_order_by') === $column->getName()) {
+                $link->append($this->getOrderByIcon());
             }
 
-            return Html::th( $link );
+            return Html::th($link);
         }
 
-        return Html::th( Html::span( $column->getLabel() ) );
+        return Html::th(Html::span($column->getLabel()));
     }
 
     /**
      * @param $column
      * @return string
      */
-    protected function getColumnOrderUrl( $column )
+    protected function getColumnOrderUrl($column)
     {
-        return $this->grid->getModule()->url( 'index', array_filter( [
-            'search' => request( 'search' ),
+        return $this->grid->getModule()->url('index', array_filter([
+            'search' => request('search'),
             '_order_by' => $column,
-            '_order' => request( '_order' ) === 'ASC' ? 'DESC' : 'ASC',
-        ] ) );
+            '_order' => request('_order') === 'ASC' ? 'DESC' : 'ASC',
+        ]));
     }
 
     /**
@@ -120,9 +162,9 @@ class Builder implements Renderable
     protected function getOrderByIcon()
     {
         return Html::i()
-            ->addClass( 'fa' )
+            ->addClass('fa')
             ->addClass(
-                ( request( '_order' ) === 'DESC' )
+                (request('_order') === 'DESC')
                     ? 'fa-sort-up'
                     : 'fa-sort-down'
             );
@@ -133,14 +175,13 @@ class Builder implements Renderable
      */
     protected function tableHeader(): Element
     {
-        $header = Html::header( [
-            Html::h1( trans( 'arbory::resources.all_resources' ) ),
-        ] );
+        $header = Html::header([
+            Html::h1(trans('arbory::resources.all_resources')),
+        ]);
 
-        if( $this->grid->isPaginated() )
-        {
-            $header->append( Html::span( trans( 'arbory::pagination.items_found', [ 'total' => $this->items->total() ] ) )
-                ->addClass( 'extras totals only-text' ) );
+        if ($this->grid->isPaginated()) {
+            $header->append(Html::span(trans('arbory::pagination.items_found', ['total' => $this->items->total()]))
+                ->addClass('extras totals only-text'));
         }
 
         return $header;
@@ -151,22 +192,21 @@ class Builder implements Renderable
      */
     protected function table()
     {
-        return new Content( [
+        return new Content([
             $this->tableHeader(),
             Html::div(
-                Html::table( [
+                Html::table([
                     Html::thead(
-                        Html::tr( $this->getTableColumns()->toArray() )
+                        Html::tr($this->getTableColumns()->toArray())
                     ),
                     Html::tbody(
-                        $this->grid()->getRows()->map( function( Row $row )
-                        {
+                        $this->grid()->getRows()->map(function (Row $row) {
                             return $row->render();
-                        } )->toArray()
-                    )->addClass( 'tbody' ),
-                ] )->addClass( 'table' )
-            )->addClass( 'body' )
-        ] );
+                        })->toArray()
+                    )->addClass('tbody'),
+                ])->addClass('table')
+            )->addClass('body')
+        ]);
     }
 
     /**
@@ -174,16 +214,15 @@ class Builder implements Renderable
      */
     protected function createButton()
     {
-        if( !$this->grid->hasTool( 'create' ) )
-        {
+        if (!$this->grid->hasTool('create')) {
             return null;
         }
 
         return
-            Link::create( $this->url( 'create' ) )
-            ->asButton( 'primary' )
-            ->withIcon( 'plus' )
-            ->title( trans( 'arbory::resources.create_new' ) );
+            Link::create($this->url('create'))
+                ->asButton('primary')
+                ->withIcon('plus')
+                ->title(trans('arbory::resources.create_new'));
     }
 
     /**
@@ -216,15 +255,14 @@ class Builder implements Renderable
     {
         $tools = new Tools();
 
-        $tools->getBlock( 'secondary' )->push( $this->exportOptions() );
-        $tools->getBlock( 'primary' )->push( $this->createButton() );
-        
-        $this->addCustomToolsToFooterToolset( $tools );
+        $tools->getBlock('secondary')->push($this->exportOptions());
+        $tools->getBlock('primary')->push($this->createButton());
 
-        if ( $this->grid->isPaginated() && $this->items->hasPages() )
-        {
-            $pagination = ( new Pagination( $this->items ) )->render();
-            $tools->getBlock( $pagination->attributes()->get( 'class' ) )->push( $pagination->content() );
+        $this->addCustomToolsToFooterToolset($tools);
+
+        if ($this->grid->isPaginated() && $this->items->hasPages()) {
+            $pagination = (new Pagination($this->items))->render();
+            $tools->getBlock($pagination->attributes()->get('class'))->push($pagination->content());
         }
 
         return $tools;
@@ -234,11 +272,10 @@ class Builder implements Renderable
      * @param Tools $toolset
      * @return void
      */
-    protected function addCustomToolsToFooterToolset( Tools $toolset )
+    protected function addCustomToolsToFooterToolset(Tools $toolset)
     {
-        foreach( $this->grid->getTools() as list( $tool, $location ) )
-        {
-            $toolset->getBlock( $location )->push( $tool->render() );
+        foreach ($this->grid->getTools() as list($tool, $location)) {
+            $toolset->getBlock($location)->push($tool->render());
         }
     }
 
@@ -247,11 +284,10 @@ class Builder implements Renderable
      */
     protected function footer()
     {
-        $footer = new Footer( 'main' );
+        $footer = new Footer('main');
 
-        if ( $this->grid->hasTools() )
-        {
-            $footer->getRows()->prepend( $this->footerTools() );
+        if ($this->grid->hasTools()) {
+            $footer->getRows()->prepend($this->footerTools());
         }
 
         return $footer->render();
@@ -262,9 +298,9 @@ class Builder implements Renderable
      * @param array $parameters
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url($route, $parameters = [])
     {
-        return $this->grid()->getModule()->url( $route, $parameters );
+        return $this->grid()->getModule()->url($route, $parameters);
     }
 
     /**
@@ -274,8 +310,9 @@ class Builder implements Renderable
     {
         $this->items = $this->grid->getItems();
 
-        return new Content( [
-            Html::section( [
+        return new Content([
+            Html::section([
+                $this->bulkEdit(),
                 $this->table(),
                 $this->footer(),
             ] )->addClass('content'),

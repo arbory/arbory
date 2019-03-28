@@ -219,20 +219,64 @@ class Grid
      * @param null $label
      * @return Column
      */
-    public function column( $name = null, $label = null )
+    public function column($name = null, $label = null) : Column
     {
-        $column = new Column( $name, $label );
-        $column->setGrid( $this );
+        return $this->appendColumn($name, $label);
+    }
 
-        $this->columns->push( $column );
+    /**
+     * @param null $name
+     * @param null $label
+     * @return Column
+     */
+    public function appendColumn($name = null, $label = null) : Column
+    {
+        $column = $this->createColumn($name, $label);
+        $this->columns->push($column);
+        $this->setColumnRelation($column, $name);
 
-        if( strpos( $name, '.' ) !== false )
-        {
-            list( $relationName, $relationColumn ) = explode( '.', $name );
+        return $column;
+    }
+    /**
+     * @param null $name
+     * @param null $label
+     * @return Column
+     */
+    public function prependColumn($name = null, $label = null) : Column
+    {
+        $column = $this->createColumn($name, $label);
+        $this->columns->prepend($column);
+        $this->setColumnRelation($column, $name);
 
-            $this->filter->withRelation( $relationName );
-            $column->setRelation( $relationName, $relationColumn );
+        return $column;
+    }
+
+    /**
+     * @param $column
+     * @param $name
+     * @return mixed
+     */
+    protected function setColumnRelation($column, $name) : Column
+    {
+        if (strpos($name, '.') !== false) {
+            list($relationName, $relationColumn) = explode('.', $name);
+
+            $this->filter->withRelation($relationName);
+            $column->setRelation($relationName, $relationColumn);
         }
+
+        return $column;
+    }
+
+    /**
+     * @param null $name
+     * @param null $label
+     * @return Column
+     */
+    protected function createColumn($name = null, $label = null) : Column
+    {
+        $column = new Column($name, $label);
+        $column->setGrid($this);
 
         return $column;
     }
