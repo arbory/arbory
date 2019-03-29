@@ -1,0 +1,13 @@
+<?php
+
+use Arbory\Base\Pages\TextPage;
+
+Page::register( TextPage::class )
+    ->fields( function( Arbory\Base\Admin\Form\FieldSet $fieldSet )
+    {
+        $fieldSet->richtext('html');
+    } )
+    ->routes( function()
+    {
+        // ...
+    } );
