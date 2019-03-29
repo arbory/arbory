@@ -33,6 +33,8 @@ class ContentTypeDefinition
     {
         $this->model = $model;
         $this->name = $this->makeNameFromType( $model );
+
+        $this->layoutHandler = function () {};
     }
 
     /**
@@ -81,6 +83,14 @@ class ContentTypeDefinition
     public function setLayoutHandler(Closure $layoutHandler): void
     {
         $this->layoutHandler = $layoutHandler;
+    }
+
+    /**
+     * @return Closure
+     */
+    public function getLayoutHandler(): Closure
+    {
+        return $this->layoutHandler;
     }
 
     /**

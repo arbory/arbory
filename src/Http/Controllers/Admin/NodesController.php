@@ -29,6 +29,7 @@ use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class NodesController extends Controller
 {
@@ -60,28 +61,19 @@ class NodesController extends Controller
 
     /**
      * @param Form            $form
-     * @param Layout\PanelLayout $panels
+     * @param LayoutInterface $layout
      *
      * @return Form
      */
-    protected function form(Form $form, ?LayoutInterface $panels)
+    protected function form(Form $form, ?LayoutInterface $layout)
     {
-        $gridLayout = new Layout\GridLayout(new Layout\Grid());
-        $gridLayout->setWidth(9);
+        $definition = $this->resolveContentDefinition($form);
 
-        $closure = \Closure::fromCallable([$this, 'overview']);
+        $definition->getLayoutHandler()->call($this, $form, $layout);
 
-        $gridLayout->addColumn(3, new Layout\LazyRenderer($closure));
-
-        $constructor = new ConstructorLayout();
-        $constructor->setForm($form);
-
-
-        $panels->use(new Layout\Transformers\WrapTransformer(new Form\Builder($form)));
-        $panels->use($gridLayout);
-        $panels->use($constructor);
-
-        $panels->panel($form->getTitle(), $panels->fields(function (FieldSet $fields) use ($constructor) {
+        $form->setFields(function (FieldSet $fields) use (
+            $layout,
+            $definition) {
             $fields->hidden('parent_id');
             $fields->hidden('content_type');
             $fields->text('name')->rules('required');
@@ -97,17 +89,8 @@ class NodesController extends Controller
                 $fields->add(new Deactivator('deactivate'));
             }
 
-            $fields->hasOne('content', function (FieldSet $fieldSet) use ($constructor) {
-                $fieldSet->add($constructor->getField())->setHidden(true);
-
-                $content = $fieldSet->getModel();
-
-                $class      = (new \ReflectionClass($content))->getName();
-                $definition = $this->contentTypeRegister->findByModelClass($class);
-
-                $definition->getFieldSetHandler()->call($content, $fieldSet);
-            });
-        }));
+            $fields->hasOne('content', $this->contentResolver($definition, $layout));
+        });
 
         $form->addEventListeners(['create.after'], function () use ($form) {
             $this->afterSave($form);
@@ -170,12 +153,9 @@ class NodesController extends Controller
         $layout = $this->layout('form');
         $layout->setForm($this->buildForm($node, $layout));
 
-        $page = $manager->page(Page::class);
-        $page->use($layout);
-
-        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
-
-        return $page;
+        return $manager->page(Page::class)
+                       ->use($layout)
+                       ->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
     }
 
     /**
@@ -300,49 +280,51 @@ class NodesController extends Controller
         return $this->url('api', 'slug_generator');
     }
 
-    protected function layouts()
-    {
-        return [
-            'grid' => Grid\Layout::class,
-            'form' => Layout\PanelLayout::class
-        ];
-    }
-
-    protected function overview()
-    {
-        $panel = new Panel();
-
-        $panel->setTitle('Overview');
-        $panel->setContent(new Content([
-            Html::div('Status'),
-            Html::hr(),
-            Html::div($this->navigator()),
-            Html::hr(),
-            Html::div(
-                Link::create( $this->url( 'dialog', ['name' => 'constructor_types', 'field' => 'blocks'] ) )
-                    ->asButton( 'primary new-constructor-item' )
-                    ->asAjaxbox(true)
-                    ->withIcon( 'plus' )
-                    ->title( trans( 'arbory::constructor.resources.new_block' ) )
-            )
-        ]));
-
-        return $panel;
-    }
-
-    protected function navigator()
-    {
-        /** @var $navigator Navigator */
-        $navigator = app(Navigator::class);
-
-
-        return $navigator->render();
-    }
-
     protected function constructorTypesDialog(Request $request) {
         return view('arbory::dialogs.constructor_types', [
             'types' => app(Registry::class)->all(),
             'field' => $request->get('field')
         ]);
     }
+
+    /**
+     * Creates a closure for content field
+     *
+     * @param ContentTypeDefinition $definition
+     * @param LayoutInterface|null  $layout
+     *
+     * @return \Closure
+     */
+    protected function contentResolver(ContentTypeDefinition $definition, ?LayoutInterface $layout) {
+        return function (FieldSet $fieldSet) use ($layout, $definition) {
+            $content = $fieldSet->getModel();
+
+            $definition->getFieldSetHandler()->call($content, $fieldSet, $layout);
+        };
+    }
+
+    /**
+     * Resolves content type based on the current model & form data
+     *
+     * @param Form $form
+     *
+     * @return ContentTypeDefinition
+     */
+    protected function resolveContentDefinition( Form $form ): ContentTypeDefinition
+    {
+        $model       = $form->getModel();
+        $morphType   = $model->content()->getMorphType();
+        // Find content type from model
+        $attribute   = $model->getAttribute($morphType);
+
+        // Find it from request otherwise 
+        if($attribute === null) {
+            $attribute = \request()->input("{$form->getNamespace()}.{$morphType}");
+        }
+
+        $class       = ( new \ReflectionClass($attribute) )->getName();
+        $definition  = $this->contentTypeRegister->findByModelClass($class);
+
+        return $definition;
+}
 }
