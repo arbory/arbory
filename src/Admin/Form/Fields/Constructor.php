@@ -116,7 +116,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
         $fieldSet->hidden($model->getKeyName())
                  ->setValue($model->getKey());
 
-        $fieldSet->hidden('name')
+        $fieldSet->hidden(static::BLOCK_NAME)
                  ->setValue($blockName);
 
         $fieldSet->hidden($model->content()->getMorphType())
@@ -170,9 +170,9 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
             $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
             $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
 
-            $blockName     = array_get($item, 'name');
-            $block         = $this->resolveBlockByName($blockName);
+            $blockName     = array_get($item, static::BLOCK_NAME);
             $blockResource = array_get($item, $relatedModel->content()->getMorphType());
+            $block         = $this->resolveBlockByName($blockName);
 
             if (!$block) {
                 throw new \LogicException("Unknown block '{$blockName}'");
@@ -188,7 +188,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
             );
 
             foreach($relatedFieldSet->getFields() as $field) {
-                if($field instanceof HasOne && $field->getName() === 'content') {
+                if( $this->isContentField($field) ) {
                     $block->beforeModelSave($request, $field);
                 } else {
                     $field->beforeModelSave($request);
@@ -198,7 +198,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
             $relatedModel->save();
 
             foreach($relatedFieldSet->getFields() as $field) {
-                if($field instanceof HasOne && $field->getName() === 'content') {
+                if( $this->isContentField($field) ) {
                     $block->afterModelSave($request, $field);
                 } else {
                     $field->afterModelSave($request);
@@ -257,20 +257,52 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
     {
         $rules = [];
 
-        $types = $this->getTypes();
+        $items = (array)request()->input($this->getNameSpacedName(), []);
 
-        foreach ($types as $name => $object) {
-            /**
-             * @var $related ConstructorBlock
-             */
-            $related = $this->getRelatedModel();
-            $related->name = $object->name();
+        foreach ($items as $index => $item) {
+            $relatedModel = $this->findRelatedModel($item);
 
-            foreach ($this->getRelationFieldSet($related, '*')->getFields() as $field) {
+            if (filter_var(array_get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
+                $relatedModel->delete();
+
+                $relatedModel->content()->delete();
+
+                continue;
+            }
+
+            $relation = $this->getRelation();
+
+            if (!$relation instanceof MorphMany) {
+                throw new \LogicException("Unknown relation used");
+            }
+
+            $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
+            $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
+            $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
+
+            $blockName     = array_get($item, static::BLOCK_NAME);
+            $blockResource = array_get($item, $relatedModel->content()->getMorphType());
+            $block         = $this->resolveBlockByName($blockName);
+
+            if (!$block) {
+                throw new \LogicException("Unknown block '{$blockName}'");
+            }
+
+            if ($blockResource !== $block->resource()) {
+                throw new \LogicException("Invalid resource for '{$blockName}'");
+            }
+
+            $relatedFieldSet = $this->getRelationFieldSet(
+                $relatedModel,
+                $index
+            );
+
+            foreach($relatedFieldSet->getFields() as $field) {
                 $rules = array_merge($rules, $field->getRules());
+
             }
         }
-
+        
         return $rules;
     }
 
@@ -326,4 +358,14 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
 
         return $this;
     }
+
+    /**
+     * @param FieldInterface $field
+     *
+     * @return bool
+     */
+    protected function isContentField( FieldInterface $field ): bool
+    {
+        return $field instanceof HasOne && $field->getName() === 'content';
+}
 }

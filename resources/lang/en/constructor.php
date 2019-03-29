@@ -1,11 +1,5 @@
 <?php
 
 return  [
-    'resources' => [
-        'new_block' => 'Add new content block'
-    ],
-
-    'dialog' => [
-        'title' => 'Select block type'
-    ]
+    'new_block_btn' => 'Add new content block',
 ];

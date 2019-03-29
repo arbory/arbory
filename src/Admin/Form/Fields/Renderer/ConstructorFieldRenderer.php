@@ -41,7 +41,7 @@ class ConstructorFieldRenderer implements RendererInterface
     {
         $orderBy       = $this->field->getOrderBy();
         $relationItems = [];
-
+        
         if ($orderBy) {
             $this->field->setValue(
                 $this->field->getValue()->sortBy(
@@ -51,6 +51,7 @@ class ConstructorFieldRenderer implements RendererInterface
                 )
             );
         }
+
 
         foreach ($this->field->getValue() as $index => $item) {
             $block = $this->field->resolveBlockByName($item->name);

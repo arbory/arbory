@@ -7,8 +7,15 @@ namespace Arbory\Base\Admin\Constructor;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\FormLayoutInterface;
+use Arbory\Base\Admin\Layout\Grid;
+use Arbory\Base\Admin\Layout\GridLayout;
 use Arbory\Base\Admin\Layout\LazyRenderer;
 use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
+use Arbory\Base\Admin\Navigator\Navigator;
+use Arbory\Base\Admin\Panels\Panel;
+use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Services\FieldTypeRegistry;
 
 class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
@@ -46,6 +53,8 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 
     /**
      * @param Form $form
+     *
+     * @return FormLayoutInterface
      */
     public function setForm(Form $form): FormLayoutInterface
     {
@@ -61,21 +70,12 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
      */
     function build()
     {
-        // Add the field to the form
-        $this->getForm()->fields()->add($this->getField());
+        $gridLayout = new GridLayout(new Grid());
+        $gridLayout->setWidth(9);
+        $gridLayout->addColumn(3, new LazyRenderer([$this, 'overview']));
+        $gridLayout->use(new AppendTransformer(new LazyRenderer([$this, 'renderField'])));
 
-        $this->use(new AppendTransformer(new LazyRenderer(function () {
-            $constructor = $this->getField();
-
-            if(!$constructor->getFieldSet()) {
-                return;
-            }
-
-            $styleManager = $constructor->getFieldSet()->getStyleManager();
-            $opts = $styleManager->newOptions();
-
-            return $styleManager->render('nested', $constructor, $opts);
-        })));
+        $this->use($gridLayout);
     }
 
     /**
@@ -94,18 +94,68 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     public function getField(): Form\Fields\Constructor
     {
         if($this->field === null) {
-            /**
-             * @var $registry FieldTypeRegistry
-             */
-            $registry = app(FieldTypeRegistry::class);
+            $field = $this->form->fields()->findFieldByInputName($this->name);
 
-            $this->field = $registry->resolve("constructor", [$this->name]);
-            $this->field->sortable();
+            if($field === null) {
+                throw new \RuntimeException("Constructor field must be present in constructor layout");
+            }
+            
+            if($field) {
+                $this->field = $field;
+            } else {
+                /**
+                 * @var $registry FieldTypeRegistry
+                 */
+                $registry = app(FieldTypeRegistry::class);
 
-            $this->field->setHidden(true);
-            $this->field->setLabel('');
+                $this->field = $registry->resolve("constructor", [ $this->name ]);
+            }
         }
+
+        $this->field->sortable();
+
+        $this->field->setHidden(true);
+        $this->field->setLabel('');
+
 
         return $this->field;
     }
+
+    public function overview()
+    {
+        $panel = new Panel();
+
+        $panel->setTitle('Overview');
+        $panel->setContent(new Content([
+            Html::div(
+                Link::create( $this->getForm()->getModule()->url( 'dialog', ['name' => 'constructor_types', 'field' =>
+                            'blocks']
+                ) )
+                    ->asButton( 'primary new-constructor-item' )
+                    ->asAjaxbox(true)
+                    ->withIcon( 'plus' )
+                    ->title( trans( 'arbory::constructor.new_block_btn' ) )
+            )->addClass('constructor-button-wrapper')
+        ]))->addClass('overview-panel');
+
+        return $panel;
+    }
+
+    /**
+     * @return \Closure
+     */
+    public function renderField()
+    {
+        $constructor = $this->getField();
+
+        if ( ! $constructor->getFieldSet() ) {
+            return;
+        }
+
+        $styleManager = $constructor->getFieldSet()->getStyleManager();
+        $opts         = $styleManager->newOptions();
+
+        return $styleManager->render('nested', $constructor, $opts);
+    }
+
 }
