@@ -10,14 +10,10 @@ use Arbory\Base\Services\AssetPipeline;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-// TODO: Modes - allow sort,delete/update on save
-// TODO: Grouping in some form
-// TODO: Allow to apply custom events? beforeSave,after
 interface BlockInterface
 {
     /**
-     * Before block save lifecycle event
-     * Note: Gets called for every block
+     * Handles all before save events for any fields, overwriting it means you'll have to call beforeSave for $field
      *
      * @param Request $request
      * @param HasOne  $field
@@ -27,8 +23,7 @@ interface BlockInterface
     public function beforeModelSave(Request $request, HasOne $field);
 
     /**
-     * After block save lifecycle event
-     * Note: Gets called for every block
+     * Handles all after save events for any fields, overwriting it means you'll have to call afterSave for $field
      *
      * @param Request $request
      * @param HasOne  $field

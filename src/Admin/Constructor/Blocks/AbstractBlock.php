@@ -38,6 +38,5 @@ abstract class AbstractBlock
     public function afterModelSave(Request $request, HasOne $field)
     {
         $field->afterModelSave($request);
-
     }
 }

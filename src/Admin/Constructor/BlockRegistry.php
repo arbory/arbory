@@ -7,7 +7,7 @@ namespace Arbory\Base\Admin\Constructor;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Collection;
 
-class Registry
+class BlockRegistry
 {
     /**
      * @var Collection
@@ -30,30 +30,39 @@ class Registry
         $this->blocks = new Collection();
 
         foreach($blocks as $block) {
-            $this->add($block);
+            $this->register($block);
         }
     }
 
-    public function findByResource($resource):?array {
-
+    /**
+     * @param string $resource
+     * @return BlockInterface|null
+     */
+    public function findByResource(string $resource):?BlockInterface {
+        return $this->blocks->first(function(BlockInterface $block) use ($resource) {
+            return $block->resource() === $resource;
+        });
     }
 
-    public function add($block):self
+    /**
+     * @param string $block
+     * @return BlockRegistry
+     */
+    public function register(string $block):self
     {
         $value = $this->container->make($block);
+
         $this->blocks->put($value->name(), $value);
 
         return $this;
     }
 
     /**
-     * TODO: Maybe allow aliasing?
-     *
-     * @param $block
+     * @param string $block
      *
      * @return BlockInterface|null
      */
-    public function resolve($block):?BlockInterface
+    public function resolve(string $block):?BlockInterface
     {
         return $this->blocks->get($block);
     }

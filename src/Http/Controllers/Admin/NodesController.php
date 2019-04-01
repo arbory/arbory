@@ -3,7 +3,7 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Constructor\ConstructorLayout;
-use Arbory\Base\Admin\Constructor\Registry;
+use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
@@ -153,9 +153,11 @@ class NodesController extends Controller
         $layout = $this->layout('form');
         $layout->setForm($this->buildForm($node, $layout));
 
-        return $manager->page(Page::class)
-                       ->use($layout)
-                       ->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+        $page = $manager->page(Page::class);
+        $page->use($layout);
+        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+
+        return $page;
     }
 
     /**
@@ -282,7 +284,7 @@ class NodesController extends Controller
 
     protected function constructorTypesDialog(Request $request) {
         return view('arbory::dialogs.constructor_types', [
-            'types' => app(Registry::class)->all(),
+            'types' => app(BlockRegistry::class)->all(),
             'field' => $request->get('field')
         ]);
     }

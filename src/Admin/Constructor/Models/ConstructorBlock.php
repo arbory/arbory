@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class ConstructorBlock extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = 'constructor_blocks';
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name',
         'content_type',
@@ -15,11 +21,17 @@ class ConstructorBlock extends Model
         'position'
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function owner()
     {
         return $this->morphTo();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function content()
     {
         return $this->morphTo();

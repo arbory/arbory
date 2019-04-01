@@ -4,7 +4,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Constructor\BlockInterface;
 use Arbory\Base\Admin\Constructor\Models\ConstructorBlock;
-use Arbory\Base\Admin\Constructor\Registry;
+use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
 use Closure;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 /**
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Constructor extends AbstractRelationField implements NestedFieldInterface
+class Constructor extends AbstractRelationField implements NestedFieldInterface, RepeatableNestedFieldInterface
 {
     const BLOCK_NAME = 'name';
     const BLOCK_CONTENT = 'content';
@@ -39,7 +39,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
     protected $isSortable = false;
 
     /**
-     * @var Registry
+     * @var BlockRegistry
      */
     protected $registry;
 
@@ -47,11 +47,11 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
      * AbstractRelationField constructor.
      *
      * @param string        $name
-     * @param Registry|null $registry
+     * @param BlockRegistry|null $registry
      */
-    public function __construct($name, ?Registry $registry = null)
+    public function __construct($name, ?BlockRegistry $registry = null)
     {
-        $this->registry = $registry ?: app(Registry::class);
+        $this->registry = $registry ?: app(BlockRegistry::class);
 
         parent::__construct($name);
     }
@@ -65,7 +65,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
     }
 
     /**
-     * @return Registry|\Illuminate\Foundation\Application|mixed
+     * @return BlockRegistry|\Illuminate\Foundation\Application|mixed
      */
     public function getRegistry()
     {
@@ -102,7 +102,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
      *
      * @return FieldSet
      */
-    public function getRelationFieldSet(ConstructorBlock $model, $index)
+    public function getRelationFieldSet($model, $index)
     {
         $blockName  = $model->name;
         $block = $this->resolveBlockByName($blockName);
@@ -154,7 +154,6 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
 
             if (filter_var(array_get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
                 $relatedModel->delete();
-
                 $relatedModel->content()->delete();
 
                 continue;
@@ -367,5 +366,5 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface
     protected function isContentField( FieldInterface $field ): bool
     {
         return $field instanceof HasOne && $field->getName() === 'content';
-}
+    }
 }

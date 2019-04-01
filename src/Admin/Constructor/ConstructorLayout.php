@@ -20,7 +20,14 @@ use Arbory\Base\Services\FieldTypeRegistry;
 
 class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 {
-    /** @var Form */
+    /**
+     * @var string
+     */
+    protected $modalUrl;
+
+    /**
+     * @var Form
+     */
     protected $form;
 
     /**
@@ -36,7 +43,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     /**
      * ConstructorLayout constructor.
      *
-     * @param string      $name
+     * @param string $name
      */
     public function __construct($name = 'blocks')
     {
@@ -93,14 +100,14 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
      */
     public function getField(): Form\Fields\Constructor
     {
-        if($this->field === null) {
+        if ($this->field === null) {
             $field = $this->form->fields()->findFieldByInputName($this->name);
 
-            if($field === null) {
+            if ($field === null) {
                 throw new \RuntimeException("Constructor field must be present in constructor layout");
             }
-            
-            if($field) {
+
+            if ($field) {
                 $this->field = $field;
             } else {
                 /**
@@ -108,7 +115,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
                  */
                 $registry = app(FieldTypeRegistry::class);
 
-                $this->field = $registry->resolve("constructor", [ $this->name ]);
+                $this->field = $registry->resolve("constructor", [$this->name]);
             }
         }
 
@@ -117,10 +124,12 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         $this->field->setHidden(true);
         $this->field->setLabel('');
 
-
         return $this->field;
     }
 
+    /**
+     * @return Panel
+     */
     public function overview()
     {
         $panel = new Panel();
@@ -128,13 +137,11 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         $panel->setTitle('Overview');
         $panel->setContent(new Content([
             Html::div(
-                Link::create( $this->getForm()->getModule()->url( 'dialog', ['name' => 'constructor_types', 'field' =>
-                            'blocks']
-                ) )
-                    ->asButton( 'primary new-constructor-item' )
+                Link::create($this->getModalUrl())
+                    ->asButton('primary new-constructor-item')
                     ->asAjaxbox(true)
-                    ->withIcon( 'plus' )
-                    ->title( trans( 'arbory::constructor.new_block_btn' ) )
+                    ->withIcon('plus')
+                    ->title(trans('arbory::constructor.new_block_btn'))
             )->addClass('constructor-button-wrapper')
         ]))->addClass('overview-panel');
 
@@ -148,14 +155,40 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     {
         $constructor = $this->getField();
 
-        if ( ! $constructor->getFieldSet() ) {
+        if (!$constructor->getFieldSet()) {
             return;
         }
 
         $styleManager = $constructor->getFieldSet()->getStyleManager();
-        $opts         = $styleManager->newOptions();
+        $opts = $styleManager->newOptions();
 
         return $styleManager->render('nested', $constructor, $opts);
     }
 
+    /**
+     * @return string
+     */
+    public function getModalUrl()
+    {
+        if ($this->modalUrl) {
+            return $this->modalUrl;
+        }
+
+        return $this->getForm()->getModule()->url('dialog', [
+                'name' => 'constructor_types',
+                'field' => $this->name
+            ]
+        );
+    }
+
+    /**
+     * @param $url
+     * @return ConstructorLayout
+     */
+    public function setModalUrl($url):self
+    {
+        $this->modalUrl = $url;
+
+        return $this;
+    }
 }

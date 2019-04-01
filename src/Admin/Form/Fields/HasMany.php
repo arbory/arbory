@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
  * Class HasMany
  * @package Arbory\Base\Admin\Form\Fields
  */
-class HasMany extends AbstractRelationField implements NestedFieldInterface
+class HasMany extends AbstractRelationField implements NestedFieldInterface, RepeatableNestedFieldInterface
 {
     use HasRelationships;
 
