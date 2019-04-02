@@ -20,6 +20,7 @@ class Multiselect extends Type
     /**
      * Filter constructor.
      * @param null $content
+     * @param null $column
      */
     function __construct($content = null, $column = null)
     {
@@ -36,10 +37,10 @@ class Multiselect extends Type
     {
         foreach ($this->content as $key => $value) {
             $options[] = Html::label([
-                Html::input($key)
+                Html::input($value)
                     ->setType('checkbox')
-                    ->addAttributes(['value' => $value])
-                    ->addAttributes([$this->getCheckboxStatusFromArray($value)])
+                    ->addAttributes(['value' => $key])
+                    ->addAttributes([$this->getCheckboxStatusFromArray($key)])
                     ->setName($this->column->getName() . '[]'),
             ]);
         }
