@@ -17,8 +17,6 @@ interface BlockInterface
      *
      * @param Request $request
      * @param HasOne  $field
-     *
-     * @return mixed
      */
     public function beforeModelSave(Request $request, HasOne $field);
 
@@ -27,22 +25,20 @@ interface BlockInterface
      *
      * @param Request $request
      * @param HasOne  $field
-     *
-     * @return mixed
      */
     public function afterModelSave(Request $request, HasOne $field);
 
     /**
      * Human readable title for field
      *
-     * @return mixed
+     * @return string
      */
     public function title();
 
     /**
      * Unique name for this field
      *
-     * @return mixed
+     * @return string
      */
     public function name();
 
@@ -57,15 +53,11 @@ interface BlockInterface
      * Defined fields for this block
      *
      * @param FieldSet $fields
-     *
-     * @return mixed
      */
     public function fields(FieldSet $fields);
 
     /**
      * @param AssetPipeline $pipeline
-     *
-     * @return mixed
      */
     public function assets(AssetPipeline $pipeline);
 }

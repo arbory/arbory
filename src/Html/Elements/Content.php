@@ -30,19 +30,17 @@ class Content extends Collection implements Renderable
         return $this->map([$this, 'evaluate'])->implode(PHP_EOL);
     }
 
+    /**
+     * @param $value
+     *
+     * @return string
+     */
     public function evaluate($value) {
         $className = null;
 
         if(is_object($value)) {
             $className = get_class($value);
 
-            // TODO: Better position and detection
-            if($value instanceof NavigableInterface) {
-//                dump("Navigable");
-                $value->navigator(app(Navigator::class));
-            }
-
-            // TODO: Check if this affects performance in a noticeable way
             foreach($this->handlers as $class => $name) {
                 if(!$value instanceof $class) {
                     continue;
@@ -65,6 +63,11 @@ class Content extends Collection implements Renderable
         throw new \LogicException("Cannot render the contents of " . gettype($value) . " {$className}");
     }
 
+    /**
+     * @param  Renderable  $value
+     *
+     * @return string
+     */
     protected function renderable(Renderable $value)
     {
         return (string) $value->render();

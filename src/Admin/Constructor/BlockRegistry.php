@@ -21,30 +21,33 @@ class BlockRegistry
     /**
      * Registry constructor.
      *
-     * @param Container $container
-     * @param array     $blocks
+     * @param  Container  $container
+     * @param  array  $blocks
      */
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->blocks = new Collection();
+        $this->blocks    = new Collection();
     }
 
     /**
-     * @param string $resource
+     * @param  string  $resource
+     *
      * @return BlockInterface|null
      */
-    public function findByResource(string $resource):?BlockInterface {
-        return $this->blocks->first(function(BlockInterface $block) use ($resource) {
+    public function findByResource(string $resource): ?BlockInterface
+    {
+        return $this->blocks->first(function (BlockInterface $block) use ($resource) {
             return $block->resource() === $resource;
         });
     }
 
     /**
-     * @param string $block
+     * @param  string  $block
+     *
      * @return BlockRegistry
      */
-    public function register(string $block):self
+    public function register(string $block): self
     {
         $value = $this->container->make($block);
 
@@ -54,11 +57,11 @@ class BlockRegistry
     }
 
     /**
-     * @param string $block
+     * @param  string  $block
      *
      * @return BlockInterface|null
      */
-    public function resolve(string $block):?BlockInterface
+    public function resolve(string $block): ?BlockInterface
     {
         return $this->blocks->get($block);
     }
@@ -66,7 +69,7 @@ class BlockRegistry
     /**
      * @return Collection|BlockInterface[]
      */
-    public function all():Collection
+    public function all(): Collection
     {
         return $this->blocks;
     }

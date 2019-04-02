@@ -11,11 +11,17 @@ use Arbory\Base\Services\AssetPipeline;
 
 class TextBlock extends AbstractBlock implements BlockInterface
 {
+    /**
+     * @return string
+     */
     public function name()
     {
         return 'text_block';
     }
 
+    /**
+     * @return string
+     */
     public function resource(): string
     {
         return TextBlockModel::class;

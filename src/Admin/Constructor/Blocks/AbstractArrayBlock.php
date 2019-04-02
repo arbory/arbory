@@ -18,12 +18,12 @@ abstract class AbstractArrayBlock extends AbstractBlock
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     abstract public function name();
 
     /**
-     * @return mixed
+     * @return string
      */
     abstract public function title();
 

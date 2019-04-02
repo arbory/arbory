@@ -25,7 +25,7 @@
                         class="button with-icon secondary"
                         title="@lang('arbory::dialog.constructor_types.cancel')"
                         data-type="cancel"
-                        href="/admin/nodes"
+                        href=""
                 ><i class="fa fa-ban"></i>@lang('arbory::dialog.constructor_types.cancel')</a>
             </div>
             <div class="secondary">
