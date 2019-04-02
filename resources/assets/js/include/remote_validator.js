@@ -427,7 +427,7 @@ jQuery(function(){
         // validation initalized finished, add data attribute for it (used by automatized test, etc)
         form.attr("data-remote-validation-initialized", true);
 
-        jQuery('.main .primary .button[name=save], .main .primary .button[name=save_and_return]').click(event => {
+        jQuery('.main .primary .button[name=save], .main .primary .button[name=save_and_return], .edit-resources .primary .button[name=save]').click(event => {
             event.preventDefault();
 
             form.trigger('beforevalidation');

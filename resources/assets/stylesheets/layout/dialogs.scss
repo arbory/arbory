@@ -9,6 +9,10 @@
     background-color: $color-background-lightest;
     color: $color-text-normal;
 
+    &.lg {
+        width: steps(33 * 2);
+    }
+
     main &
     {
         margin-top: steps(4);
