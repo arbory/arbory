@@ -2,10 +2,13 @@ jQuery(document).ready(function () {
     jQuery('body').on('click', '.constructor-dialog .js-select-block', function (e) {
         e.preventDefault();
 
-        var name = jQuery(e.target).data('name');
-        var field = jQuery(e.target).data('field');
+        const target = jQuery(e.target);
 
-        var constructor = jQuery('.type-constructor[data-name="' + field + '"]');
+        const name = target.data('name');
+        const field = target.data('field');
+
+        const constructor = jQuery('body').find(`.type-constructor[data-namespaced-name="${field}"]`);
+
         var templates = constructor.data('templates');
 
         if(name in templates) {

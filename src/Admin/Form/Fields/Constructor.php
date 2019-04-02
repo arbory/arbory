@@ -5,7 +5,11 @@ namespace Arbory\Base\Admin\Form\Fields;
 use Arbory\Base\Admin\Constructor\BlockInterface;
 use Arbory\Base\Admin\Constructor\Models\ConstructorBlock;
 use Arbory\Base\Admin\Constructor\BlockRegistry;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\PaneledItemRenderer;
 use Closure;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\FieldSet;
@@ -19,23 +23,32 @@ use Illuminate\Http\Request;
 /**
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Constructor extends AbstractRelationField implements NestedFieldInterface, RepeatableNestedFieldInterface
+class Constructor extends AbstractRelationField implements NestedFieldInterface, RepeatableNestedFieldInterface, RenderOptionsInterface
 {
+    use HasRenderOptions;
+    use HasRelationships;
+
     const BLOCK_NAME = 'name';
     const BLOCK_CONTENT = 'content';
-
-
-    use HasRelationships;
 
     /**
      * @var string
      */
     protected $orderBy;
 
+    /**
+     * @var string
+     */
     protected $rendererClass = ConstructorFieldRenderer::class;
 
+    /**
+     * @var string
+     */
     protected $style = 'nested';
 
+    /**
+     * @var bool
+     */
     protected $isSortable = false;
 
     /**
@@ -44,14 +57,25 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
     protected $registry;
 
     /**
+     * @var ItemInterface
+     */
+    protected $itemRenderer;
+
+    /**
+     * @var bool
+     */
+    protected $allowToAdd = true;
+
+    /**
      * AbstractRelationField constructor.
      *
      * @param string        $name
-     * @param BlockRegistry|null $registry
+     * @param BlockRegistry $registry
      */
-    public function __construct($name, ?BlockRegistry $registry = null)
+    public function __construct($name, BlockRegistry $registry)
     {
-        $this->registry = $registry ?: app(BlockRegistry::class);
+        $this->registry = $registry;
+        $this->itemRenderer = new NestedItemRenderer();
 
         parent::__construct($name);
     }
@@ -77,7 +101,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
      */
     public function canAddRelationItem()
     {
-        return true;
+        return $this->allowToAdd;
     }
 
     /**
@@ -150,7 +174,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
         $items = (array)$request->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
-            $relatedModel = $this->findRelatedModel($item);
+            $relatedModel = $this->createRelatedModelFromRequest($item);
 
             if (filter_var(array_get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
                 $relatedModel->delete();
@@ -159,27 +183,8 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
                 continue;
             }
 
-            $relation = $this->getRelation();
-
-            if (!$relation instanceof MorphMany) {
-                throw new \LogicException("Unknown relation used");
-            }
-
-            $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
-            $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
-            $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
-
-            $blockName     = array_get($item, static::BLOCK_NAME);
-            $blockResource = array_get($item, $relatedModel->content()->getMorphType());
-            $block         = $this->resolveBlockByName($blockName);
-
-            if (!$block) {
-                throw new \LogicException("Unknown block '{$blockName}'");
-            }
-
-            if ($blockResource !== $block->resource()) {
-                throw new \LogicException("Invalid resource for '{$blockName}'");
-            }
+            $this->verifyBlockFromRequest($item, $relatedModel);
+            $block = $this->resolveBlockByName(array_get($item, static::BLOCK_NAME));
 
             $relatedFieldSet = $this->getRelationFieldSet(
                 $relatedModel,
@@ -259,37 +264,9 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
         $items = (array)request()->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
-            $relatedModel = $this->findRelatedModel($item);
-
-            if (filter_var(array_get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
-                $relatedModel->delete();
-
-                $relatedModel->content()->delete();
-
-                continue;
-            }
-
-            $relation = $this->getRelation();
-
-            if (!$relation instanceof MorphMany) {
-                throw new \LogicException("Unknown relation used");
-            }
-
-            $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
-            $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
-            $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
-
-            $blockName     = array_get($item, static::BLOCK_NAME);
-            $blockResource = array_get($item, $relatedModel->content()->getMorphType());
-            $block         = $this->resolveBlockByName($blockName);
-
-            if (!$block) {
-                throw new \LogicException("Unknown block '{$blockName}'");
-            }
-
-            if ($blockResource !== $block->resource()) {
-                throw new \LogicException("Invalid resource for '{$blockName}'");
-            }
+            $relatedModel = $this->createRelatedModelFromRequest($item);
+            
+            $this->verifyBlockFromRequest($item, $relatedModel);
 
             $relatedFieldSet = $this->getRelationFieldSet(
                 $relatedModel,
@@ -298,7 +275,6 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
 
             foreach($relatedFieldSet->getFields() as $field) {
                 $rules = array_merge($rules, $field->getRules());
-
             }
         }
         
@@ -366,5 +342,94 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
     protected function isContentField( FieldInterface $field ): bool
     {
         return $field instanceof HasOne && $field->getName() === 'content';
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return bool
+     */
+    protected function verifyBlockFromRequest(array $item, Model $model)
+    {
+        $blockName     = array_get($item, static::BLOCK_NAME);
+        $blockResource = array_get($item, $model->content()->getMorphType());
+        $block         = $this->resolveBlockByName($blockName);
+
+        if (!$block) {
+            throw new \LogicException("Unknown block '{$blockName}'");
+        }
+
+        if ($blockResource !== $block->resource()) {
+            throw new \LogicException("Invalid resource for '{$blockName}'");
+        }
+
+        return true;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return ConstructorBlock
+     */
+    protected function createRelatedModelFromRequest(array $item):Model
+    {
+        $relation = $this->getRelation();
+        $relatedModel = $this->findRelatedModel($item);
+
+        if (!$relation instanceof MorphMany) {
+            throw new \LogicException("Unknown relation used");
+        }
+
+        $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
+        $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
+        $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
+
+        return $relatedModel;
+    }
+
+    /**
+     * @return ItemInterface
+     */
+    public function getItemRenderer(): ItemInterface
+    {
+        return $this->itemRenderer;
+    }
+
+    /**
+     * @param ItemInterface $itemRenderer
+     *
+     * @return Constructor
+     */
+    public function setItemRenderer( ItemInterface $itemRenderer ): Constructor
+    {
+        $this->itemRenderer = $itemRenderer;
+
+        return $this;
+    }
+
+    /**
+     * @return Renderer\RendererInterface|mixed
+     */
+    public function newRenderer()
+    {
+        return app()->makeWith(
+            $this->rendererClass,
+            [
+                'field' => $this,
+                'itemRenderer' => $this->itemRenderer
+            ]
+        );
+    }
+
+    /**
+     * @param bool $allowToAdd
+     *
+     * @return Constructor
+     */
+    public function setAllowToAdd( bool $allowToAdd ): Constructor
+    {
+        $this->allowToAdd = $allowToAdd;
+
+        return $this;
     }
 }

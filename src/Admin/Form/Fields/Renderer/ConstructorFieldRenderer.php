@@ -5,6 +5,8 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 use Arbory\Base\Admin\Constructor\BlockInterface;
 use Arbory\Base\Admin\Form\Fields\Constructor;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\PaneledItemRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Navigator\Navigator;
@@ -23,15 +25,21 @@ class ConstructorFieldRenderer implements RendererInterface
      * @var Constructor
      */
     protected $field;
+    /**
+     * @var PaneledItemRenderer
+     */
+    protected $itemRenderer;
 
     /**
      * NestedFieldRenderer constructor.
      *
-     * @param Constructor $field
+     * @param Constructor   $field
+     * @param ItemInterface $itemRenderer
      */
-    public function __construct(Constructor $field)
+    public function __construct(Constructor $field, ItemInterface $itemRenderer)
     {
         $this->field = $field;
+        $this->itemRenderer = $itemRenderer;
     }
 
     /**
@@ -112,68 +120,6 @@ class ConstructorFieldRenderer implements RendererInterface
 
 
     /**
-     * @param Panel   $panel
-     * @param Content $content
-     * @param         $name
-     *
-     * @return Element|null
-     * @throws \Arbory\Base\Exceptions\BadMethodCallException
-     */
-    protected function addRemoveButton(Panel $panel, Content $content, $name)
-    {
-        if (!$this->field->canRemoveRelationItems()) {
-            return null;
-        }
-
-        $button = Button::create()
-                        ->title(trans('arbory::fields.relation.remove'))
-                        ->type('button', 'only-icon danger remove-nested-item')
-                        ->withIcon('trash-o')
-                        ->iconOnly();
-
-        $input = Html::input()
-                     ->setType('hidden')
-                     ->setName($name)
-                     ->setValue('false')
-                     ->addClass('destroy');
-
-        $panel->addButton($button);
-
-        $content->push($input);
-
-        return $content;
-    }
-
-    /**
-     * @param Panel $panel
-     *
-     * @return Element
-     */
-    protected function addSortableNavigation(Panel $panel)
-    {
-        if (!$this->field->canSortRelationItems()) {
-            return null;
-        }
-
-        $panel->addButton(
-            Button::create()
-                  ->title(trans('arbory::fields.relation.moveDown'))
-                  ->type('button', 'only-icon secondary sortable-navigation move-down')
-                  ->withIcon('chevron-down')
-                  ->iconOnly()
-        );
-
-        $panel->addButton(
-            Button::create()
-                  ->title(trans('arbory::fields.relation.moveUp'))
-                  ->type('button', 'only-icon secondary sortable-navigation move-up')
-                  ->withIcon('chevron-up')
-                  ->iconOnly()
-        );
-    }
-
-
-    /**
      * @param BlockInterface $block
      * @param FieldSet       $fieldSet
      * @param                $index
@@ -183,35 +129,9 @@ class ConstructorFieldRenderer implements RendererInterface
      */
     protected function getRelationItemHtml(BlockInterface $block, FieldSet $fieldSet, $index)
     {
-        $panel = new Panel();
-        $panel->setTitle($block->title());
-        $panel->addClass('item type-association')
-              ->addAttributes(
-                  [
-                      'data-title' => $block->title(),
-                      'data-name'  => $this->field->getName(),
-                      'data-index' => $index
-                  ]
-              );
-
-        $panel->setNavigable(!in_array($index, ['*', '_template_'], true));
-
-        if($panel->isNavigable()) {
-            $item = app(Navigator::class)->addItem($panel, $block->title());
-
-            $panel->addAttributes(['data-reference' => $item->getReference()]);
-        }
-
-        $content = new Content([
-            $fieldSet->render()
+        return $this->itemRenderer->__invoke($this->field, $fieldSet, $index, [
+            'title' => $block->title()
         ]);
-
-        $this->addSortableNavigation($panel);
-        $this->addRemoveButton($panel, $content, $fieldSet->getNamespace() . '._destroy');
-
-        $panel->setContent($content);
-
-        return $panel->render();
     }
 
     /**
@@ -222,7 +142,7 @@ class ConstructorFieldRenderer implements RendererInterface
         return new Content(
             [
                 $this->getBody(),
-//            $this->getFooter()
+                $this->getFooter()
             ]
         );
     }
@@ -256,7 +176,10 @@ class ConstructorFieldRenderer implements RendererInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
-//        $options->addClass('polymorphic');
+        $options->addAttributes($this->field->getAttributes());
+        $options->addClass(implode(" ", $this->field->getClasses()));
+
+        $options->addClass('polymorphic');
 
         $templates = collect();
 
@@ -268,7 +191,8 @@ class ConstructorFieldRenderer implements RendererInterface
 
         $options->addAttributes(
             [
-                'data-templates' => json_encode($templates->all())
+                'data-templates' => json_encode($templates->all()),
+                'data-namespaced-name' => $this->field->getNameSpacedName()
             ]
         );
 

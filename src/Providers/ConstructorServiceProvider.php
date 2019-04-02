@@ -12,14 +12,18 @@ use Illuminate\Support\ServiceProvider;
 
 class ConstructorServiceProvider extends ServiceProvider
 {
+    /**
+     * 
+     */
     public function boot()
     {
         $this->app->singleton(Navigator::class);
         $this->app->singleton(BlockRegistry::class, function () {
-            return new BlockRegistry($this->app, [
-                TextBlock::class,
-                DoubleTextBlock::class
-            ]);
+            $registry = new BlockRegistry($this->app);
+
+            $registry->register(TextBlock::class);
+
+            return $registry;
         });
     }
 }

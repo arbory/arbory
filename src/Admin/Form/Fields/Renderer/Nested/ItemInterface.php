@@ -11,5 +11,13 @@ use Illuminate\Contracts\Support\Renderable;
 
 interface ItemInterface extends RenderOptionsInterface
 {
-    public function __invoke(FieldInterface $field, FieldSet $fieldSet, $index = null);
+    /**
+     * @param FieldInterface $field
+     * @param FieldSet       $fieldSet
+     * @param null           $index
+     * @param mixed          $parameters
+     *
+     * @return mixed
+     */
+    public function __invoke(FieldInterface $field, FieldSet $fieldSet, $index = null, array $parameters = []);
 }

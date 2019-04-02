@@ -68,17 +68,6 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
         $panel->setTitle($title);
         $panel->setContent($contents);
 
-        /**
-         * @var $navigator Navigator
-         */
-        $navigator = app(Navigator::class);
-
-        if($contents instanceof FieldSet) {
-            $item = $navigator->addItem($panel, $title);
-
-            // Add navigable from fields, etc
-        }
-
         $this->panels[] = $panel;
 
         return $panel;
@@ -129,17 +118,17 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
     function build()
     {
         // TODO: Options - 1. Remove builder from the layout, add an option disable it from transformers
-//        $this->use(new WrapTransformer(new Form\Builder($this->form)));
 
         if(sizeof($this->panels) > 0) {
             $this->setContent($this->renderPanels());
 
-
+            $this->use(new WrapTransformer($this->form->getRenderer()));
             $this->use(
                 new AppendTransformer(
                     new Controls(new Tools(), $this->getForm()->getModule()->url('index'))
                 )
             );
+
         } else {
             $this->use((new Form\Layout())->setForm($this->form));
         }

@@ -24,14 +24,10 @@ class BlockRegistry
      * @param Container $container
      * @param array     $blocks
      */
-    public function __construct(Container $container, array $blocks)
+    public function __construct(Container $container)
     {
         $this->container = $container;
         $this->blocks = new Collection();
-
-        foreach($blocks as $block) {
-            $this->register($block);
-        }
     }
 
     /**

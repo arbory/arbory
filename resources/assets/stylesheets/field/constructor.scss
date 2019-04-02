@@ -1,15 +1,21 @@
 .type-constructor {
-  padding: 0 !important;
+  &.in-layout {
+    padding: 0 !important;
+  }
 
   .body {
     .item {
       position: relative;
     }
   }
+  
+  .template-types {
+    margin-top: steps(2);
+  }
 }
 
 .constructor-button-wrapper {
-  padding: 12px 20px;
+  padding: steps(1) steps(2);
   
   .button {
     width: 100%;

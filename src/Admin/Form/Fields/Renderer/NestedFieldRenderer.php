@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Form\FieldSet;
@@ -23,19 +24,20 @@ class NestedFieldRenderer implements RendererInterface
     protected $field;
 
     /**
-     * @var NestedItemRenderer
+     * @var ItemInterface
      */
     protected  $itemRenderer;
 
     /**
      * NestedFieldRenderer constructor.
-     * @param HasMany $field
+     *
+     * @param HasMany       $field
+     * @param ItemInterface $itemRenderer
      */
-    public function __construct( HasMany $field )
+    public function __construct( HasMany $field, ItemInterface $itemRenderer )
     {
         $this->field = $field;
-
-        $this->itemRenderer = new NestedItemRenderer();
+        $this->itemRenderer = $itemRenderer;
     }
 
     /**

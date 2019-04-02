@@ -41,6 +41,11 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     protected $name;
 
     /**
+     * @var callable
+     */
+    protected $fieldConfigurator;
+
+    /**
      * ConstructorLayout constructor.
      *
      * @param string $name
@@ -48,6 +53,16 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     public function __construct($name = 'blocks')
     {
         $this->name = $name;
+
+        $this->fieldConfigurator = function() {
+            $this->field->setItemRenderer(new Form\Fields\Renderer\Nested\PaneledItemRenderer);
+            $this->field->addClass('in-layout');
+            $this->field->sortable();
+
+            $this->field->setHidden(true);
+            $this->field->setLabel('');
+            $this->field->setAllowToAdd(false);
+        };
     }
 
     /**
@@ -119,10 +134,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
             }
         }
 
-        $this->field->sortable();
-
-        $this->field->setHidden(true);
-        $this->field->setLabel('');
+        call_user_func($this->fieldConfigurator);
 
         return $this->field;
     }
@@ -176,7 +188,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 
         return $this->getForm()->getModule()->url('dialog', [
                 'name' => 'constructor_types',
-                'field' => $this->name
+                'field' =>$this->field->getNameSpacedName()
             ]
         );
     }

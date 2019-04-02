@@ -10,6 +10,12 @@ use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
+/**
+ * HasOne for json data fields
+ *
+ * Class VirtualHasOne
+ * @package Arbory\Base\Admin\Form\Fields
+ */
 class VirtualHasOne extends HasOne
 {
 

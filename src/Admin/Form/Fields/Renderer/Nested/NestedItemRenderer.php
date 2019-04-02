@@ -14,8 +14,18 @@ class NestedItemRenderer implements ItemInterface
 {
     use HasRenderOptions;
 
-    public function __invoke(FieldInterface $field, FieldSet $fieldSet, $index = null)
+    /**
+     * @param FieldInterface $field
+     * @param FieldSet       $fieldSet
+     * @param null           $index
+     * @param array          $parameters
+     *
+     * @return \Arbory\Base\Html\Elements\Element|mixed
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     */
+    public function __invoke(FieldInterface $field, FieldSet $fieldSet, $index = null, array $parameters = [])
     {
+        $title = $parameters['title'] ?? null;
         $classes = implode(' ', $this->getClasses());
 
         $fieldSetHtml = Html::fieldset()
@@ -26,6 +36,11 @@ class NestedItemRenderer implements ItemInterface
                                 'data-name' => $field->getName(),
                                 'data-index' => $index
                             ] );
+
+        if($title) {
+            $fieldSetHtml->addClass('with-title');
+            $fieldSetHtml->append(Html::header($title));
+        }
 
         $fieldSetHtml->append($fieldSet->render());
         $fieldSetHtml->append( $this->getSortableNavigation($field) );
