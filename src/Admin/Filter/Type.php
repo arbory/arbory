@@ -42,6 +42,15 @@ class Type
     }
 
     /**
+     * @return bool|string
+     */
+    public function getColumnName()
+    {
+        return substr($this->column->getName(), 0, strpos($this->column->getName(), "."));
+
+    }
+
+    /**
      * @param $valueSide
      * @return string|null
      */
@@ -65,13 +74,13 @@ class Type
      * @param $value
      * @return string|null
      */
-    public function getCheckboxStatusFromArray($value)
+    public function getCheckboxStatusFromArray($key)
     {
-        if ($this->request->has($this->column->getName())) {
-            $array = $this->request->get($this->column->getName());
+        if ($this->request->has($this->getColumnName())) {
+            $array = $this->request->get($this->getColumnName());
 
             foreach ($array as $item) {
-                if ($item === $value) {
+                if ($item == $key) {
                     return 'checked';
                 }
             }

@@ -21,11 +21,13 @@ class Multiselect extends Type
      * Filter constructor.
      * @param null $content
      * @param null $column
+     * @param null $relation
      */
-    function __construct($content = null, $column = null)
+    function __construct($content = null, $column = null, $relation = null)
     {
         $this->content = $content;
         $this->column = $column;
+        $this->relation = $relation;
         $this->request = request();
     }
 
@@ -41,7 +43,7 @@ class Multiselect extends Type
                     ->setType('checkbox')
                     ->addAttributes(['value' => $key])
                     ->addAttributes([$this->getCheckboxStatusFromArray($key)])
-                    ->setName($this->column->getName() . '[]'),
+                    ->setName($this->getColumnName() . '[]'),
             ]);
         }
 
