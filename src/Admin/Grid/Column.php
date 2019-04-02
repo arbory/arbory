@@ -113,6 +113,22 @@ class Column
     /**
      * @return string
      */
+    public function getRelationName()
+    {
+        return $this->relationName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelationColumn()
+    {
+        return $this->relationColumn;
+    }
+
+    /**
+     * @return string
+     */
     public function getLabel()
     {
         return $this->label ?: $this->name;
