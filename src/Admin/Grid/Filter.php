@@ -111,10 +111,6 @@ class Filter implements FilterInterface
                         $query->orWhere($columnName, $column->getFilterType()->getAction(), $value);
                     }
                 });
-            } else {
-
-                dd($getValue);
-
             }
         }
     }
