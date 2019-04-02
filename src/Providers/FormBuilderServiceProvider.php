@@ -10,8 +10,8 @@ class FormBuilderServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->app->singleton(FieldTypeRegistry::class, function () {
-            $registry = new FieldTypeRegistry();
+        $this->app->singleton(FieldTypeRegistry::class, function ($app) {
+            $registry = new FieldTypeRegistry($app);
 
             foreach ((array)config('arbory.field_types') as $type => $class) {
                 $registry->register($type, $class);
