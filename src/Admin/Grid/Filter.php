@@ -103,39 +103,10 @@ class Filter implements FilterInterface
             $filterAction = $this->getFilterTypeAction($column);
 
             if (is_null($column->getRelationName())) {
-
-                if (!is_array($getValue)) {
-                    $this->query->where($columnName, $this->getFilterTypeAction($column), $getValue);
-                } elseif (is_array($getValue) && is_array($column->getFilterType()->getAction())) {
-                    foreach (array_combine($this->getFilterTypeAction($column), $getValue) as $action => $value) {
-                        $this->query->where($columnName, $action, $value);
-                    }
-                } elseif (is_array($getValue)) {
-                    $this->query->where(function ($query) use ($columnName, $column, $getValue) {
-                        foreach ($getValue as $value) {
-                            $query->orWhere($columnName, $this->getFilterTypeAction($column), $value);
-                        }
-                    });
-                }
+                $this->query->setQueryWithoutRelation($columnName, $filterAction, $getValue);
             } else {
                 $relationColumn = $column->getRelationColumn();
-                if (!is_array($getValue)) {
-                    $this->query->whereHas($column->getRelationName(), function ($query) use ($relationColumn, $filterAction, $getValue) {
-                        $query->where('id', $filterAction, $getValue);
-                    });
-                } elseif (is_array($getValue) && is_array($filterAction)) {
-                    foreach (array_combine($filterAction, $getValue) as $action => $value) {
-                        $this->query->whereHas($column->getRelationName(), function ($query) use ($relationColumn, $action, $value) {
-                            $query->where($relationColumn, $action, $value);
-                        });
-                    }
-                } elseif (is_array($getValue)) {
-                    $this->query->whereHas($column->getRelationName(), function ($query) use ($relationColumn, $filterAction, $getValue) {
-                        foreach ($getValue as $value) {
-                            $query->orWhere('id', $filterAction, $value);
-                        }
-                    });
-                }
+                $this->query->setQueryWithRelation($relationColumn, $filterAction, $getValue);
             }
         }
 
@@ -264,6 +235,46 @@ class Filter implements FilterInterface
     public function setPerPage(int $perPage)
     {
         $this->perPage = $perPage;
+    }
+
+    public function setQueryWithoutRelation($columnName, $filterAction, $getValue) {
+        if (!is_array($getValue)) {
+            $this->query->where($columnName, $filterAction, $getValue);
+        } elseif (is_array($getValue) && is_array($filterAction)) {
+            foreach (array_combine($filterAction, $getValue) as $action => $value) {
+                $this->query->where($columnName, $action, $value);
+            }
+        } elseif (is_array($getValue)) {
+            $this->query->where(function ($query) use ($columnName, $filterAction, $getValue) {
+                foreach ($getValue as $value) {
+                    $query->orWhere($columnName, $filterAction, $value);
+                }
+            });
+        }
+    }
+
+    /**
+     * @return Model
+     */
+    public function setQueryWithRelation($relationColumn, $filterAction, $getValue)
+    {
+        if (!is_array($getValue)) {
+            $this->query->whereHas($relationColumn->getRelationName(), function ($query) use ($relationColumn, $filterAction, $getValue) {
+                $query->where('id', $filterAction, $getValue);
+            });
+        } elseif (is_array($getValue) && is_array($filterAction)) {
+            foreach (array_combine($filterAction, $getValue) as $action => $value) {
+                $this->query->whereHas($relationColumn->getRelationName(), function ($query) use ($relationColumn, $action, $value) {
+                    $query->where($relationColumn, $action, $value);
+                });
+            }
+        } elseif (is_array($getValue)) {
+            $this->query->whereHas($relationColumn->getRelationName(), function ($query) use ($relationColumn, $filterAction, $getValue) {
+                foreach ($getValue as $value) {
+                    $query->orWhere('id', $filterAction, $value);
+                }
+            });
+        }
     }
 
     /**
