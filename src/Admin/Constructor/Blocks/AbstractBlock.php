@@ -16,8 +16,8 @@ abstract class AbstractBlock
      * Before block save lifecycle event
      * Note: Gets called for every block
      *
-     * @param Request $request
-     * @param HasOne  $field
+     * @param  Request  $request
+     * @param  HasOne  $field
      *
      * @return void
      */
@@ -30,8 +30,8 @@ abstract class AbstractBlock
      * After block save lifecycle event
      * Note: Gets called for every block
      *
-     * @param Request $request
-     * @param HasOne  $field
+     * @param  Request  $request
+     * @param  HasOne  $field
      *
      * @return void
      */

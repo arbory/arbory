@@ -18,7 +18,7 @@ class ConstructorBlock extends Model
         'name',
         'content_type',
         'content_id',
-        'position'
+        'position',
     ];
 
     /**

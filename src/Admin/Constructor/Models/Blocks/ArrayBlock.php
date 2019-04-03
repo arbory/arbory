@@ -10,6 +10,6 @@ use Illuminate\Support\Fluent;
 class ArrayBlock extends Model
 {
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
     ];
 }

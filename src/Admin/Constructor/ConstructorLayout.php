@@ -48,13 +48,13 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     /**
      * ConstructorLayout constructor.
      *
-     * @param string $name
+     * @param  string  $name
      */
     public function __construct($name = 'blocks')
     {
         $this->name = $name;
 
-        $this->fieldConfigurator = function() {
+        $this->fieldConfigurator = function () {
             $this->field->setItemRenderer(new Form\Fields\Renderer\Nested\PaneledItemRenderer);
             $this->field->addClass('in-layout');
             $this->field->sortable();
@@ -74,7 +74,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      *
      * @return FormLayoutInterface
      */
@@ -101,7 +101,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param mixed $content
+     * @param  mixed  $content
      *
      * @return mixed
      */
@@ -154,7 +154,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
                     ->asAjaxbox(true)
                     ->withIcon('plus')
                     ->title(trans('arbory::constructor.new_block_btn'))
-            )->addClass('constructor-button-wrapper')
+            )->addClass('constructor-button-wrapper'),
         ]))->addClass('overview-panel');
 
         return $panel;
@@ -167,12 +167,12 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     {
         $constructor = $this->getField();
 
-        if (!$constructor->getFieldSet()) {
+        if (! $constructor->getFieldSet()) {
             return;
         }
 
         $styleManager = $constructor->getFieldSet()->getStyleManager();
-        $opts = $styleManager->newOptions();
+        $opts         = $styleManager->newOptions();
 
         return $styleManager->render('nested', $constructor, $opts);
     }
@@ -187,17 +187,18 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         }
 
         return $this->getForm()->getModule()->url('dialog', [
-                'name' => 'constructor_types',
-                'field' =>$this->field->getNameSpacedName()
+                'name'  => 'constructor_types',
+                'field' => $this->field->getNameSpacedName(),
             ]
         );
     }
 
     /**
      * @param $url
+     *
      * @return ConstructorLayout
      */
-    public function setModalUrl($url):self
+    public function setModalUrl($url): self
     {
         $this->modalUrl = $url;
 

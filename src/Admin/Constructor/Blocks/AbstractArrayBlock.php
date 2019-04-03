@@ -12,7 +12,7 @@ abstract class AbstractArrayBlock extends AbstractBlock
     /**
      * @return string
      */
-    public function resource():string
+    public function resource(): string
     {
         return ArrayBlock::class;
     }

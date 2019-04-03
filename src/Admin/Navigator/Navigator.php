@@ -27,13 +27,13 @@ class Navigator implements Renderable
     }
 
     /**
-     * @param NavigableInterface $navigable
+     * @param  NavigableInterface  $navigable
      * @param                    $title
-     * @param null               $anchor
+     * @param  null  $anchor
      *
      * @return Item
      */
-    public function addItem(NavigableInterface $navigable, $title, $anchor = null):Item
+    public function addItem(NavigableInterface $navigable, $title, $anchor = null): Item
     {
         $item = new Item($navigable, $title, $anchor);
         $this->add($item);
@@ -58,7 +58,7 @@ class Navigator implements Renderable
     {
         $list = Html::ul()->addClass('navigator');
 
-        foreach($this->getItems() as $item) {
+        foreach ($this->getItems() as $item) {
             $list->append($item->render());
         }
 

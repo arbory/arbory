@@ -61,7 +61,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param string $title
+     * @param  string  $title
      *
      * @return Item
      */
@@ -81,7 +81,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param string $anchor
+     * @param  string  $anchor
      *
      * @return Item
      */
@@ -101,7 +101,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param Collection|Item[] $children
+     * @param  Collection|Item[]  $children
      */
     public function setChildren(Collection $children): self
     {
@@ -119,7 +119,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param NavigableInterface $navigable
+     * @param  NavigableInterface  $navigable
      *
      * @return Item
      */
@@ -142,7 +142,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
         return Html::li(
             Html::link($this->title)->addAttributes(
                 [
-                    'data-anchor' => $this->getAnchor()
+                    'data-anchor' => $this->getAnchor(),
                 ]
             )
         )->append(
@@ -153,7 +153,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
             )->addClass('children')
         )->addAttributes(
             [
-                'data-reference' => $this->getReference()
+                'data-reference' => $this->getReference(),
             ]
         );
     }
@@ -169,7 +169,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     /**
      * Convert the object to its JSON representation.
      *
-     * @param  int $options
+     * @param  int  $options
      *
      * @return string
      */
@@ -186,11 +186,11 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     public function toArray()
     {
         return [
-            'title' => $this->getTitle(),
-            'anchor' => $this->getAnchor(),
-            'order' => $this->getOrder(),
+            'title'     => $this->getTitle(),
+            'anchor'    => $this->getAnchor(),
+            'order'     => $this->getOrder(),
             'reference' => $this->getReference(),
-            'children' => $this->children->toArray()
+            'children'  => $this->children->toArray(),
         ];
     }
 
@@ -216,7 +216,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param int $order
+     * @param  int  $order
      *
      * @return Item
      */
