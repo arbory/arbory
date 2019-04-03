@@ -13,16 +13,14 @@ class CreateConstructorBlocksTable extends Migration
      */
     public function up()
     {
-        Schema::create(
-            'constructor_blocks', function (Blueprint $table) {
+        Schema::create('constructor_blocks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->index();
             $table->morphs('owner');
             $table->nullableMorphs('content');
             $table->smallInteger('position')->nullable()->unsigned();
             $table->timestamps();
-        }
-        );
+        });
     }
 
     /**

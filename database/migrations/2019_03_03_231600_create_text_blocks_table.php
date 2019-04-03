@@ -16,7 +16,7 @@ class CreateTextBlocksTable extends Migration
         Schema::create('text_blocks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->texT('content');
+            $table->text('content');
             $table->timestamps();
         });
     }

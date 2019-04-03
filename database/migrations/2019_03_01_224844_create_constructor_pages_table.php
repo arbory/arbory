@@ -13,12 +13,10 @@ class CreateConstructorPagesTable extends Migration
      */
     public function up()
     {
-        Schema::create(
-            'constructor_pages', function (Blueprint $table) {
+        Schema::create('constructor_pages', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-        }
-        );
+        });
     }
 
     /**

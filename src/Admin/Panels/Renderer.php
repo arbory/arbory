@@ -19,7 +19,7 @@ class Renderer implements Renderable
     /**
      * Renderer constructor.
      *
-     * @param PanelInterface $panel
+     * @param  PanelInterface  $panel
      */
     public function __construct(PanelInterface $panel)
     {
@@ -37,8 +37,8 @@ class Renderer implements Renderable
                     ->addClass('content'),
             ]
         )->addClass('panel')
-                   ->addClass(implode(' ', $this->panel->getClasses()))
-                   ->addAttributes($this->panel->getAttributes());
+                       ->addClass(implode(' ', $this->panel->getClasses()))
+                       ->addAttributes($this->panel->getAttributes());
 
         return $wrapper ? $wrapper($element) : $element;
     }

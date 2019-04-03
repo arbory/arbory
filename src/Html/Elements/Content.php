@@ -11,7 +11,7 @@ use Illuminate\Support\Traits\Macroable;
 class Content extends Collection implements Renderable
 {
     protected $handlers = [
-        Renderable::class => 'renderable'
+        Renderable::class => 'renderable',
     ];
 
     /**
@@ -35,14 +35,15 @@ class Content extends Collection implements Renderable
      *
      * @return string
      */
-    public function evaluate($value) {
+    public function evaluate($value)
+    {
         $className = null;
 
-        if(is_object($value)) {
+        if (is_object($value)) {
             $className = get_class($value);
 
-            foreach($this->handlers as $class => $name) {
-                if(!$value instanceof $class) {
+            foreach ($this->handlers as $class => $name) {
+                if (! $value instanceof $class) {
                     continue;
                 }
 
@@ -51,16 +52,16 @@ class Content extends Collection implements Renderable
                 return $this->{$method}($value);
             }
 
-            if ( method_exists($value, '__toString') ) {
+            if (method_exists($value, '__toString')) {
                 return (string) $value;
             }
         }
 
-        if ( is_scalar($value) || is_null($value) ) {
+        if (is_scalar($value) || is_null($value)) {
             return $value;
         }
 
-        throw new \LogicException("Cannot render the contents of " . gettype($value) . " {$className}");
+        throw new \LogicException("Cannot render the contents of ".gettype($value)." {$className}");
     }
 
     /**

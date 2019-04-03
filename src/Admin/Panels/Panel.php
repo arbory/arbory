@@ -1,4 +1,5 @@
 <?php
+
 namespace Arbory\Base\Admin\Panels;
 
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
@@ -42,16 +43,16 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     public function __construct(RenderableInterface $renderer = null)
     {
         $this->renderer = $renderer ?: new Renderer($this);
-        $this->toolbox = new Toolbox(null);
+        $this->toolbox  = new Toolbox(null);
     }
 
 
     /**
-     * @param Toolbox $toolbox
+     * @param  Toolbox  $toolbox
      *
      * @return Toolbox
      */
-    public function toolbox( Toolbox $toolbox ): Toolbox
+    public function toolbox(Toolbox $toolbox): Toolbox
     {
         return $this->toolbox;
     }
@@ -81,11 +82,11 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * @param mixed $content
+     * @param  mixed  $content
      *
      * @return Panel
      */
-    public function setContent( $content )
+    public function setContent($content)
     {
         $this->content = $content;
 
@@ -93,11 +94,11 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * @param mixed $title
+     * @param  mixed  $title
      *
      * @return Panel
      */
-    public function setTitle( $title )
+    public function setTitle($title)
     {
         $this->title = $title;
 
@@ -105,11 +106,11 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * @param mixed $buttons
+     * @param  mixed  $buttons
      *
      * @return Panel
      */
-    public function setButtons( $buttons ): self
+    public function setButtons($buttons): self
     {
         $this->buttons = $buttons;
 
@@ -122,9 +123,9 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
      *
      * @return Panel
      */
-    public function addToolbox( $name, $url )
+    public function addToolbox($name, $url)
     {
-        if(! $this->toolbox->getMenu()) {
+        if (! $this->toolbox->getMenu()) {
             $this->toolbox->setMenu(new ToolboxMenu(null));
         }
 
@@ -134,7 +135,7 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * @param Button $button
+     * @param  Button  $button
      *
      * @return $this
      */
@@ -165,30 +166,43 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
      */
     public function getToolbox(): ?Toolbox
     {
-        if($this->toolbox === null) {
+        if ($this->toolbox === null) {
             $this->toolbox = new Toolbox();
         }
 
         return $this->toolbox;
     }
 
+    /**
+     * @param  Navigator  $navigator
+     *
+     * @return void
+     */
     public function navigator(Navigator $navigator)
     {
 
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string) $this->render();
     }
 
+    /**
+     * @return bool
+     */
     public function isNavigable(): bool
     {
         return $this->navigable;
     }
 
     /**
-     * @param bool $navigable
+     * @param  bool  $navigable
+     *
+     * @return Panel
      */
     public function setNavigable(bool $navigable): self
     {
