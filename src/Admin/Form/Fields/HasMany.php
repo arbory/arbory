@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 use Closure;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\FieldSet;
@@ -15,7 +17,7 @@ use Illuminate\Http\Request;
  * Class HasMany
  * @package Arbory\Base\Admin\Form\Fields
  */
-class HasMany extends AbstractRelationField implements NestedFieldInterface
+class HasMany extends AbstractRelationField implements NestedFieldInterface, RepeatableNestedFieldInterface
 {
     use HasRelationships;
 
@@ -29,11 +31,26 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
      */
     protected $orderBy;
 
+    /**
+     * @var string
+     */
     protected $rendererClass = NestedFieldRenderer::class;
 
+    /**
+     * @var string
+     */
     protected $style = 'nested';
 
+    /**
+     * @var bool
+     */
     protected $isSortable = false;
+
+
+    /**
+     * @var ItemInterface
+     */
+    protected $itemRenderer;
 
     /**
      * AbstractRelationField constructor.
@@ -45,6 +62,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
         parent::__construct( $name );
 
         $this->fieldSetCallback = $fieldSetCallback;
+        $this->itemRenderer = new NestedItemRenderer();
     }
 
     /**
@@ -226,6 +244,40 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
     {
         $this->isSortable = true;
         $this->setOrderBy($field);
+
+        return $this;
+    }
+
+    /**
+     * @return Renderer\RendererInterface|mixed
+     */
+    public function newRenderer()
+    {
+        return app()->makeWith(
+            $this->rendererClass,
+            [
+                'field' => $this,
+                'itemRenderer' => $this->itemRenderer
+            ]
+        );
+    }
+
+    /**
+     * @return ItemInterface
+     */
+    public function getItemRenderer(): ItemInterface
+    {
+        return $this->itemRenderer;
+    }
+
+    /**
+     * @param ItemInterface $itemRenderer
+     *
+     * @return HasMany
+     */
+    private function setItemRenderer( ItemInterface $itemRenderer ): HasMany
+    {
+        $this->itemRenderer = $itemRenderer;
 
         return $this;
     }

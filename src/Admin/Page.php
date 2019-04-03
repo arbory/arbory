@@ -11,6 +11,10 @@ use Closure;
 
 class Page extends Layout implements PageInterface
 {
+    const SLOTS = [
+        'header_right'
+    ];
+
     protected $view = 'arbory::controllers.resource.layout';
 
     /**

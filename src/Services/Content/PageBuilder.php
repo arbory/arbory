@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Services\Content;
 
+use Arbory\Base\Admin\Layout\LayoutInterface;
 use Closure;
 use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\ContentTypeRegister;
@@ -82,6 +83,18 @@ class PageBuilder
     public function fields( Closure $fieldSet )
     {
         $this->definition->setFieldSetHandler( $fieldSet );
+
+        return $this;
+    }
+
+    /**
+     * @param Closure $layout
+     *
+     * @return $this
+     */
+    public function layout( Closure $layout )
+    {
+        $this->definition->setLayoutHandler($layout);
 
         return $this;
     }

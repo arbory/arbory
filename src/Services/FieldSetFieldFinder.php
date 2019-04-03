@@ -6,6 +6,8 @@ use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Admin\Form\Fields\HasOne;
 use Arbory\Base\Admin\Form\Fields\Link;
+use Arbory\Base\Admin\Form\Fields\NestedFieldInterface;
+use Arbory\Base\Admin\Form\Fields\RepeatableNestedFieldInterface;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Form\FieldSet;
 use Illuminate\Support\Collection;
@@ -138,7 +140,6 @@ class FieldSetFieldFinder
                 $previousField = $field;
 
                 $resolvedFieldSet = $this->resolveFieldSet( $previousField, $fieldName );
-
                 $previousFieldSet = $resolvedFieldSet ?? $previousFieldSet;
 
                 $fields[ $fieldName ] = $field;
@@ -214,7 +215,7 @@ class FieldSetFieldFinder
      */
     protected function resolveFieldSet( AbstractField $field, string $fieldName )
     {
-        if( $field instanceof HasMany )
+        if( $field instanceof RepeatableNestedFieldInterface )
         {
             /** @var HasMany $field */
             $nested = $field->getValue();
@@ -235,14 +236,14 @@ class FieldSetFieldFinder
                 return $field->getRelationFieldSet( $resource, $fieldName );
             }
         }
-        elseif( $field instanceof HasOne )
+        elseif( $field instanceof NestedFieldInterface )
         {
             if( $field->getValue() )
             {
-                return $field->getRelationFieldSet( $field->getValue() );
+                return $field->getNestedFieldSet( $field->getValue() );
             }
 
-            return new FieldSet( $field->getRelatedModel(), $field->getNameSpacedName() );
+            return $field->getNestedFieldSet( $field->getRelatedModel() );
         }
         elseif( $field instanceof Translatable )
         {

@@ -13,7 +13,7 @@ class FieldSetPanel extends Panel
      */
     protected $fieldSet;
 
-    public function fields():FieldSet
+    public function fields(): FieldSet
     {
         return $this->fieldSet;
     }

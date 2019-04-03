@@ -14,6 +14,10 @@ abstract class AbstractLayout
 {
     use EventDispatcher;
 
+    const EVENT_APPLY  = 'apply';
+    const EVENT_RENDER = 'render';
+    
+    const SLOTS = [];
 
     /**
      * @var Slot
@@ -133,11 +137,13 @@ abstract class AbstractLayout
      *
      * @return $this
      */
-    public function use($layout)
+    public function use($layout): LayoutResolver
     {
+        $resolver = new LayoutResolver(app(), $layout);
+
         $this->layouts[] = $layout;
 
-        return $this;
+        return $resolver;
     }
 
     /**
@@ -203,18 +209,18 @@ abstract class AbstractLayout
     }
 
     /**
-     * @return LayoutManager
+     * @return LayoutInterface[]
      */
-    public function manager():LayoutManager
+    protected function getPipes(): array
     {
-        return app(LayoutManager::class);
+        return $this->layouts;
     }
 
     /**
-     * @return LayoutInterface[]
+     * @return LayoutManager
      */
-    protected function getPipes()
+    public function manager(): LayoutManager
     {
-        return $this->layouts;
+        return app(LayoutManager::class);
     }
 }

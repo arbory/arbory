@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form;
 
+use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
@@ -45,6 +46,7 @@ use Waavi\Translation\Repositories\LanguageRepository;
  * @method \Arbory\Base\Admin\Form\Fields\Text text(string $fieldName)
  * @method \Arbory\Base\Admin\Form\Fields\Textarea textarea(string $fieldName)
  * @method \Arbory\Base\Admin\Form\Fields\Translatable translatable(FieldInterface $field)
+ * @method \Arbory\Base\Admin\Form\Fields\Constructor constructor( string $fieldName, ?BlockRegistry $registry = null)
  */
 class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Renderable
 {

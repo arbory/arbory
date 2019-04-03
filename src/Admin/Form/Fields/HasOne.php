@@ -117,7 +117,15 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         {
             $model = clone $this->fieldSet->getModel();
 
-            $model->setAttribute( $relation->getMorphType(), request()->input( $this->getFieldSet()->getNamespace() . '.' . $relation->getMorphType() ) );
+            $str = $this->getFieldSet()->getNamespace() . '.' . $relation->getMorphType();
+            $value = request()->input($str);
+
+            // For deeply nested items if the key contains '*', request->input returns an array
+            if(is_array($value)) {
+                $value = head($value);
+            }
+
+            $model->setAttribute( $relation->getMorphType(), $value);
             $model->setAttribute( $relation->getForeignKey(), 0 );
 
             $relatedModel = $model->{$this->getName()}()->getRelated();

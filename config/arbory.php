@@ -60,6 +60,7 @@ return [
         'text' => Arbory\Base\Admin\Form\Fields\Text::class,
         'textarea' => Arbory\Base\Admin\Form\Fields\Textarea::class,
         'translatable' => Arbory\Base\Admin\Form\Fields\Translatable::class,
+        'constructor' => Arbory\Base\Admin\Form\Fields\Constructor::class,
     ],
 
     'field_styles' => [
