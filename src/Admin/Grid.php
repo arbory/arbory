@@ -44,7 +44,7 @@ class Grid
     /**
      * @var array
      */
-    protected $enabledDefaultTools = [ 'create', 'search', 'filter' ];
+    protected $enabledDefaultTools = [ 'create', 'search' ];
 
     /**
      * @var array
