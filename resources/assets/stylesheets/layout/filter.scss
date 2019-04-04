@@ -9,6 +9,7 @@
   box-shadow: -2px 4px 8px 0 $color-shadow-lightest;
   background: white;
   z-index: 20;
+  overflow-y: auto;
 
   &.show
   {
