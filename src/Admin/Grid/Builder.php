@@ -91,9 +91,8 @@ class Builder implements Renderable
     /**
      * @return Content|string|null
      */
-    protected function filter()
-    {
-        if (!$this->grid->hasTool( 'filter' )) {
+    protected function filter() {
+        if (!$this->grid->hasTool('filter')) {
             return null;
         }
 
