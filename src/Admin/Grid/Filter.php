@@ -84,12 +84,9 @@ class Filter implements FilterInterface
         $filterParameters = self::removeNonFilterParameters($this->request->all());
 
         foreach ($filterParameters as $getKey => $getValue) {
-
             if (!$getValue) {
                 continue;
             }
-
-//            dd($columns);
 
             $column = $columns->filter(function (Column $column) use ($getKey) {
                 return $column->getName() === $getKey || $column->getRelationName() === $getKey;
@@ -103,14 +100,13 @@ class Filter implements FilterInterface
             $filterAction = $this->getFilterTypeAction($column);
 
             if (is_null($column->getRelationName())) {
-                $this->query->setQueryWithoutRelation($columnName, $filterAction, $getValue);
+                $this->setQueryWithoutRelation($columnName, $filterAction, $getValue);
             } else {
+                $relationName = $column->getRelationName();
                 $relationColumn = $column->getRelationColumn();
-                $this->query->setQueryWithRelation($relationColumn, $filterAction, $getValue);
+                $this->setQueryWithRelation($relationName, $relationColumn, $filterAction, $getValue);
             }
         }
-
-        dd($this->query->toSql());
     }
 
     /**
@@ -237,6 +233,11 @@ class Filter implements FilterInterface
         $this->perPage = $perPage;
     }
 
+    /**
+     * @param $columnName
+     * @param $filterAction
+     * @param $getValue
+     */
     public function setQueryWithoutRelation($columnName, $filterAction, $getValue) {
         if (!is_array($getValue)) {
             $this->query->where($columnName, $filterAction, $getValue);
@@ -254,25 +255,26 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @return Model
+     * @param $relationName
+     * @param $relationColumn
+     * @param $filterAction
+     * @param $getValue
      */
-    public function setQueryWithRelation($relationColumn, $filterAction, $getValue)
+    public function setQueryWithRelation($relationName, $relationColumn, $filterAction, $getValue)
     {
         if (!is_array($getValue)) {
-            $this->query->whereHas($relationColumn->getRelationName(), function ($query) use ($relationColumn, $filterAction, $getValue) {
-                $query->where('id', $filterAction, $getValue);
+            $this->query->whereHas($relationName, function ($query) use ($relationColumn, $filterAction, $getValue) {
+                $query->where($relationColumn, $filterAction, $getValue);
             });
         } elseif (is_array($getValue) && is_array($filterAction)) {
             foreach (array_combine($filterAction, $getValue) as $action => $value) {
-                $this->query->whereHas($relationColumn->getRelationName(), function ($query) use ($relationColumn, $action, $value) {
+                $this->query->whereHas($relationName, function ($query) use ($relationColumn, $action, $value) {
                     $query->where($relationColumn, $action, $value);
                 });
             }
         } elseif (is_array($getValue)) {
-            $this->query->whereHas($relationColumn->getRelationName(), function ($query) use ($relationColumn, $filterAction, $getValue) {
-                foreach ($getValue as $value) {
-                    $query->orWhere('id', $filterAction, $value);
-                }
+            $this->query->whereHas($relationName, function ($query) use ($relationColumn, $getValue) {
+                $query->whereIn('id', $getValue);
             });
         }
     }
