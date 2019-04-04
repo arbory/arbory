@@ -81,18 +81,28 @@ section.nested
         fieldset.item
         {
             border: 1px solid $color-border-normal;
-            padding: steps(3) 0;
             margin: 0 0 steps(2) 0;
+            padding-bottom: steps(3);
             position: relative;
             background: $color-background-lightest;
             @include clear-inside;
+    
+            &:not(.with-title) {
+                padding-top: steps(3);
+            }
+            
+            > header {
+                @include heading-text;
+                padding-left: steps(2);
+                line-height: steps(3);
+            }
         }
 
         .link-body > fieldset {
-            border: none ;
-            margin-bottom: 0 ;
-            padding-top: 0 ;
-            padding-bottom: 0 ;
+            border: none;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
         }
 
         .item.template

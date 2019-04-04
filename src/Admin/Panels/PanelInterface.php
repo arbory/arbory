@@ -1,4 +1,5 @@
 <?php
+
 namespace Arbory\Base\Admin\Panels;
 
 
@@ -10,11 +11,11 @@ use Illuminate\Contracts\Support\Renderable;
 interface PanelInterface extends Renderable, RenderOptionsInterface
 {
     /**
-     * @param Toolbox $toolbox
+     * @param  Toolbox  $toolbox
      *
      * @return Toolbox
      */
-    public function toolbox( Toolbox $toolbox ): Toolbox;
+    public function toolbox(Toolbox $toolbox): Toolbox;
 
     /**
      * @return Button[]
@@ -34,7 +35,7 @@ interface PanelInterface extends Renderable, RenderOptionsInterface
     /**
      * @return mixed
      */
-    public function getToolbox():?Toolbox;
+    public function getToolbox(): ?Toolbox;
 
     public function build();
 }

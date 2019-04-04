@@ -12,8 +12,26 @@ namespace Arbory\Base\Admin\Layout;
  */
 interface WrappableInterface
 {
+    /**
+     * Set the inner content
+     *
+     * @param $content
+     *
+     * @return mixed
+     */
     public function setContent($content);
+
+    /**
+     * Returns inner content
+     *
+     * @return mixed
+     */
     public function getContent();
 
+    /**
+     * Renders wrapped content
+     *
+     * @return mixed
+     */
     public function render();
 }
