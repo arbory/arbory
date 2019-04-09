@@ -22,11 +22,6 @@ class Range extends Type
         '<='
     ];
 
-    function __construct( $column = null ){
-        $this->column = $column;
-        $this->request = request();
-    }
-
     /**
      * @return Content
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
@@ -38,7 +33,7 @@ class Range extends Type
                 Html::h4( trans('arbory::filter.range.from') ),
                 Html::input()
                     ->setType( 'number' )
-                    ->setName( $this->column->getName() . '[min]' )
+                    ->setName( $this->column . '[min]' )
                     ->addAttributes([ 'step' => self::STEP])
                     ->addAttributes([ $this->getRangeValue('min') ])
             ] )->addClass( 'column' ),
@@ -46,8 +41,8 @@ class Range extends Type
                 Html::h4( trans('arbory::filter.range.to') ),
                 Html::input()
                     ->setType( 'number' )
-                    ->setName( $this->column->getName() . '[max]' )
-                    ->addAttributes([ 'step' => '.01'])
+                    ->setName( $this->column . '[max]' )
+                    ->addAttributes([ 'step' => self::STEP])
                     ->addAttributes([ $this->getRangeValue('max') ])
             ] )->addClass( 'column' ),
         ] )->addClass( 'range' )]);

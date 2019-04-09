@@ -18,26 +18,6 @@ class Checkbox extends Type
     protected $action = '=';
 
     /**
-     * Checkbox constructor.
-     * @param null $content
-     * @param null $column
-     */
-    function __construct($content = null, $column = null)
-    {
-        $this->content = $content;
-        $this->column = $column;
-        $this->request = request();
-    }
-
-    /**
-     * @return null
-     */
-    public function getColumn()
-    {
-        return $this->column;
-    }
-
-    /**
      * @return Content
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
@@ -50,7 +30,7 @@ class Checkbox extends Type
                         ->setType('checkbox')
                         ->addAttributes(['value' => 1])
                         ->addAttributes([$this->getCheckboxStatus()])
-                        ->setName($this->column->getName()),
+                        ->setName($this->column),
                 ]),
             ])->addClass('checkbox'),
         ]);

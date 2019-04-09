@@ -45,8 +45,8 @@ class Filter implements Renderable
                 continue;
             }
 
-            if (!empty($column->getFilterType()->content)) {
-                $content = $column->getFilterType()->content;
+            if (!empty($column->getFilterType()->getContent())) {
+                $content = $column->getFilterType()->getContent();
             } else {
                 $content = null;
             }
@@ -92,7 +92,7 @@ class Filter implements Renderable
      */
     protected function createField($type, $column, $content)
     {
-        return is_null($content) ? new $type($column) : new $type($content, $column);
+        return is_null($content) ? new $type(null, $column) : new $type($content, $column);
     }
 
 

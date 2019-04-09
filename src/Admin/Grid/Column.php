@@ -322,7 +322,7 @@ class Column
      * @return string
      */
     public function getFilterRelationColumn() {
-        return is_null($this->getFilterType()->column) ? $this->getRelationColumn() : $this->getFilterType()->column;
+        return is_null($this->getFilterType()->getColumn()) ? $this->getRelationColumn() : $this->getFilterType()->getColumn();
     }
 
     /**

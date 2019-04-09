@@ -17,19 +17,7 @@ class Multiselect extends Type
      */
     protected $action = '=';
 
-    /**
-     * Filter constructor.
-     * @param null $content
-     * @param null $column
-     * @param null $relation
-     */
-    function __construct($content = null, $column = null, $relation = null)
-    {
-        $this->content = $content;
-        $this->column = $column;
-        $this->relation = $relation;
-        $this->request = request();
-    }
+
 
     /**
      * @return array
@@ -37,17 +25,21 @@ class Multiselect extends Type
      */
     protected function getCheckboxList()
     {
-        foreach ($this->content as $key => $value) {
-            $options[] = Html::label([
-                Html::input($value)
-                    ->setType('checkbox')
-                    ->addAttributes(['value' => $key])
-                    ->addAttributes([$this->getCheckboxStatusFromArray($key)])
-                    ->setName($this->getColumnName() . '[]'),
-            ]);
+        if (!is_null($this->content)) {
+            foreach ($this->content as $key => $value) {
+                $options[] = Html::label([
+                    Html::input($value)
+                        ->setType('checkbox')
+                        ->addAttributes(['value' => $key])
+                        ->addAttributes([$this->getCheckboxStatusFromArray($key)])
+                        ->setName($this->getColumnFromArrayString() . '[]'),
+                ]);
+            }
+
+            return $options;
         }
 
-        return $options;
+        return null;
     }
 
     /**

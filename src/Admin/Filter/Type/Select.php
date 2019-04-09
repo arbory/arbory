@@ -8,6 +8,7 @@ use Arbory\Base\Html\Html;
 
 /**
  * Class Select
+ * @property mixed selected
  * @package Arbory\Base\Admin\Filter\Type
  */
 class Select extends Type
@@ -17,16 +18,10 @@ class Select extends Type
      */
     protected $action = '=';
 
-    /**
-     * Select constructor.
-     * @param null $content
-     * @param null $column
-     */
-    function __construct($content = null, $column = null)
+    public function __construct($content = null, ?string $column = null)
     {
-        $this->content = $content;
-        $this->column = $column;
-        $this->request = request();
+        parent::__construct($content, $column);
+        $this->selected = $this->getSelectedValue();
     }
 
     /**
@@ -34,17 +29,21 @@ class Select extends Type
      */
     protected function getOptionList()
     {
-        $defaultOption = Html::option();
+        $options[] = Html::option();
 
-        if ($this->request->has($this->column->getName())) {
-            $defaultOption->addAttributes(['selected']);
-        }
+        if (!is_null($this->content)) {
+            foreach ($this->content as $key => $value) {
 
-        $options[] = $defaultOption;
+                if ($key == $this->selected) {
+                    $options[] = Html::option([$value])
+                        ->addAttributes(['value' => $key, 'selected']);
 
-        foreach ($this->content as $key => $value) {
-            $options[] = Html::option([$value])
-                ->addAttributes(['value' => $key]);
+                    continue;
+                }
+
+                $options[] = Html::option([$value])
+                    ->addAttributes(['value' => $key]);
+            }
         }
 
         return $options;
@@ -59,8 +58,13 @@ class Select extends Type
             Html::div([
                 Html::select([
                     $this->getOptionList(),
-                ])->setName($this->column->getName()),
+                ])->setName($this->getColumnFromArrayString()),
             ])->addClass('select'),
         ]);
+    }
+
+    public function getSelectedValue()
+    {
+        return $this->request->get($this->getColumnFromArrayString());
     }
 }

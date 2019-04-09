@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Filter;
 
+use Illuminate\Http\Request;
+
 /**
  * Class Type
  * @package Arbory\Base\Admin\Filter
@@ -9,16 +11,64 @@ namespace Arbory\Base\Admin\Filter;
 class Type
 {
     /**
-     * @var
+     * @var string|array
      */
     protected $action;
 
     /**
-     * @return array
+     * @var Request
      */
-    public function getAction()
+    protected $request;
+
+    /**
+     * @var array
+     */
+    protected $content;
+
+    /**
+     * @var string
+     */
+    protected $column;
+
+    /**
+     * Type constructor.
+     * @param mixed|null $content
+     * @param string|null $column
+     */
+    public function __construct($content = null, string $column = null )
     {
-        return $this->action;
+        $this->content = $content;
+        $this->column = $column;
+        $this->request = request();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAction() : array
+    {
+        return array_wrap($this->action);
+    }
+
+    /**
+     * @return string
+     */
+    public function getColumn(): string
+    {
+        return $this->column;
+    }
+
+    public function getColumnFromArrayString() : string
+    {
+        return substr($this->column, 0, strpos($this->column, '.'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
     /**
@@ -34,20 +84,11 @@ class Type
      */
     public function getCheckboxStatus()
     {
-        if ($this->request->has($this->column->getName())) {
+        if ($this->request->has($this->column)) {
             return 'checked';
         }
 
         return null;
-    }
-
-    /**
-     * @return bool|string
-     */
-    public function getColumnName()
-    {
-        return substr($this->column->getName(), 0, strpos($this->column->getName(), '.'));
-
     }
 
     /**
@@ -56,12 +97,11 @@ class Type
      */
     public function getRangeValue($valueSide)
     {
-        $name = $this->column->getName();
-        if (!$this->request->has($name)) {
+        if (!$this->request->has($this->column)) {
             return null;
         }
 
-        $value = $this->request->get($name);
+        $value = $this->request->get($this->column);
 
         if ($value[$valueSide]) {
             return 'value="' . $value[$valueSide] . '"';
@@ -71,13 +111,13 @@ class Type
     }
 
     /**
-     * @param $value
+     * @param $key
      * @return string|null
      */
     public function getCheckboxStatusFromArray($key)
     {
-        if ($this->request->has($this->getColumnName())) {
-            $array = $this->request->get($this->getColumnName());
+        if ($this->request->has($this->column)) {
+            $array = $this->request->get($this->column);
 
             foreach ($array as $item) {
                 if ($item == $key) {
