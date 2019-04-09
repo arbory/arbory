@@ -12,10 +12,15 @@ use Arbory\Base\Html\Html;
  */
 class Range extends Type
 {
+    const STEP = '.01';
+
     /**
      * @var array
      */
-    protected $action = ['>=', '<='];
+    protected $action = [
+        '>=',
+        '<='
+    ];
 
     function __construct( $column = null ){
         $this->column = $column;
@@ -34,7 +39,7 @@ class Range extends Type
                 Html::input()
                     ->setType( 'number' )
                     ->setName( $this->column->getName() . '[min]' )
-                    ->addAttributes([ 'step' => '.01'])
+                    ->addAttributes([ 'step' => self::STEP])
                     ->addAttributes([ $this->getRangeValue('min') ])
             ] )->addClass( 'column' ),
             Html::div( [

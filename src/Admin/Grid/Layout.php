@@ -66,7 +66,7 @@ class Layout extends AbstractLayout implements LayoutInterface
         }
 
         return Button::create()
-            ->type('button', 'filter trigger')
+            ->type('button', 'filter js-filter-trigger')
             ->withIcon( 'filter' )
             ->title( trans( 'arbory::filter.filter' ) );
     }

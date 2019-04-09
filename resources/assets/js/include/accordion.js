@@ -1,6 +1,5 @@
-jQuery(document).ready(function()
-{
-    $('.js-accordion-heading').on('click', function(event) {
+jQuery(document).ready(function() {
+    $('.js-accordion-trigger').on('click', function(event) {
         event.preventDefault();
 
         const animationSpeed = 150;

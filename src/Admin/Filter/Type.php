@@ -46,7 +46,7 @@ class Type
      */
     public function getColumnName()
     {
-        return substr($this->column->getName(), 0, strpos($this->column->getName(), "."));
+        return substr($this->column->getName(), 0, strpos($this->column->getName(), '.'));
 
     }
 

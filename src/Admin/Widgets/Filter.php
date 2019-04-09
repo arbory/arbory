@@ -27,7 +27,7 @@ class Filter implements Renderable
         return Html::div([
             Html::h2(trans('arbory::filter.sort_and_filter')),
             Button::create()
-                ->type('button', 'filter-container close')
+                ->type('button', 'js-filter-trigger')
                 ->withIcon('times')
                 ->iconOnly(),
         ])->addClass('title-block');
@@ -67,13 +67,6 @@ class Filter implements Renderable
      */
     protected function addField($column, $content)
     {
-        $type = $column->getFilterType();
-
-        if (!is_null($content)) {
-            $field = new $type($content, $column);
-        } else {
-            $field = new $type($column);
-        }
         return new Content([
             Html::div([
                 Html::div([
@@ -82,14 +75,26 @@ class Filter implements Renderable
                         ->withIcon('minus')
                         ->iconOnly()
                         ->withoutBackground(),
-                ])->addClass('js-accordion-heading heading'),
+                ])->addClass('js-accordion-trigger heading'),
                 Html::div([
-                    $field,
+                    self::createField($column->getFilterType(), $column, $content),
                 ])->addClass('body'),
             ])->addClass('accordion'),
 
         ]);
     }
+
+    /**
+     * @param $type
+     * @param $column
+     * @param $content
+     * @return mixed
+     */
+    protected function createField($type, $column, $content)
+    {
+        return is_null($content) ? new $type($column) : new $type($content, $column);
+    }
+
 
     /**
      * @return Button
