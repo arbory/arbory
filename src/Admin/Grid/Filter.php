@@ -96,16 +96,7 @@ class Filter implements FilterInterface
                 continue;
             }
 
-            $columnName = self::getColumnName($getKey, $column);
-            $filterAction = $this->getFilterTypeAction($column);
-
-            if (is_null($column->getRelationName())) {
-                $this->setQueryWithoutRelation($columnName, $filterAction, $getValue);
-            } else {
-                $relationName = $column->getRelationName();
-                $relationColumn = $column->getRelationColumn();
-                $this->setQueryWithRelation($relationName, $relationColumn, $filterAction, $getValue);
-            }
+            $this->createQuery($column, $getValue, $getKey);
         }
     }
 
@@ -191,6 +182,17 @@ class Filter implements FilterInterface
     public function getQuery(): QueryBuilder
     {
         return $this->query;
+    }
+
+    public function createQuery($column, $value, $key)
+    {
+        $filterAction = $this->getFilterTypeAction($column);
+
+        if (is_null($column->getRelationName())) {
+            $this->setQueryWithoutRelation($column->getColumnName($key), $filterAction, $value);
+        } else {
+            $this->setQueryWithRelation($column->getRelationName(), $column->getRelationColumn(), $filterAction, $value);
+        }
     }
 
     /**
@@ -280,12 +282,13 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @return Model
+     * @param $getColumn
+     * @return mixed
      */
-    public function getColumnName($getColumn, $column)
+    public function getColumnName($getColumn)
     {
-        if ($column->getFilterType()->column) {
-            return $column->getFilterType()->column;
+        if ($this->getFilterType()->column) {
+            return $this->getFilterType()->column;
         }
 
         return $getColumn;
