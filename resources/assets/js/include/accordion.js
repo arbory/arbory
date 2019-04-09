@@ -1,15 +1,16 @@
 jQuery(document).ready(function()
 {
-    $(".accordion .heading").on( "click", function(event)
-    {
+    $('.js-accordion-heading').on('click', function(event) {
         event.preventDefault();
-        
-        var accordion = $( event.target ).closest(".accordion"),
-            accordionContent = $( accordion ).children(".body"),
-            accordionToggle = $( accordion ).find(".button i");
 
-        accordionContent.slideToggle( 150 );
-        accordionToggle.toggleClass("fa-minus");
-        accordionToggle.toggleClass("fa-plus");
+        const animationSpeed = 150;
+        
+        var accordion = $(event.target).closest('.accordion');
+        var accordionContent = $(accordion).children('.body');
+        var accordionToggle = $(accordion).find('.fa');
+
+        accordionContent.slideToggle(animationSpeed);
+        accordionToggle.toggleClass('fa-minus');
+        accordionToggle.toggleClass('fa-plus');
     });
 });
