@@ -189,9 +189,9 @@ class Filter implements FilterInterface
         $filterAction = $this->getFilterTypeAction($column);
 
         if (is_null($column->getRelationName())) {
-            $this->setQueryWithoutRelation($column->getColumnName($key), $filterAction, $value);
+            $this->createQueryWithoutRelation($column->getColumnName($key), $filterAction, $value);
         } else {
-            $this->setQueryWithRelation($column->getRelationName(), $column->getRelationColumn(), $filterAction, $value);
+            $this->createQueryWithRelation($column, $filterAction, $value);
         }
     }
 
@@ -237,46 +237,34 @@ class Filter implements FilterInterface
 
     /**
      * @param $columnName
-     * @param $filterAction
-     * @param $getValue
+     * @param $actions
+     * @param $values
      */
-    public function setQueryWithoutRelation($columnName, $filterAction, $getValue) {
-        if (!is_array($getValue)) {
-            $this->query->where($columnName, $filterAction, $getValue);
-        } elseif (is_array($getValue) && is_array($filterAction)) {
-            foreach (array_combine($filterAction, $getValue) as $action => $value) {
-                $this->query->where($columnName, $action, $value);
-            }
-        } elseif (is_array($getValue)) {
-            $this->query->where(function ($query) use ($columnName, $filterAction, $getValue) {
-                foreach ($getValue as $value) {
-                    $query->orWhere($columnName, $filterAction, $value);
-                }
-            });
+    public function createQueryWithoutRelation($columnName, $actions, $values)
+    {
+        $actions = array_wrap($actions);
+        $values = array_wrap($values);
+
+        foreach (array_combine($actions, $values) as $action => $value) {
+            $this->query->where($columnName, $action, $value);
         }
     }
 
     /**
-     * @param $relationName
-     * @param $relationColumn
-     * @param $filterAction
-     * @param $getValue
+     * @param $column
+     * @param $actions
+     * @param $values
      */
-    public function setQueryWithRelation($relationName, $relationColumn, $filterAction, $getValue)
+    public function createQueryWithRelation($column, $actions, $values)
     {
-        if (!is_array($getValue)) {
-            $this->query->whereHas($relationName, function ($query) use ($relationColumn, $filterAction, $getValue) {
-                $query->where($relationColumn, $filterAction, $getValue);
-            });
-        } elseif (is_array($getValue) && is_array($filterAction)) {
-            foreach (array_combine($filterAction, $getValue) as $action => $value) {
-                $this->query->whereHas($relationName, function ($query) use ($relationColumn, $action, $value) {
-                    $query->where($relationColumn, $action, $value);
-                });
-            }
-        } elseif (is_array($getValue)) {
-            $this->query->whereHas($relationName, function ($query) use ($relationColumn, $getValue) {
-                $query->whereIn('id', $getValue);
+        $actions = array_wrap($actions);
+        $values = array_wrap($values);
+
+        $actionsAndValues = self::arrayCombine($actions, $values);
+
+        foreach ($actionsAndValues as $action => $value) {
+            $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
+                $query->where($column->getFilterRelationColumn(), $action, $value);
             });
         }
     }
@@ -319,5 +307,31 @@ class Filter implements FilterInterface
         }
 
         return array_filter($filterParameters);
+    }
+
+    /**
+     * @param $actions
+     * @param $values
+     * @return array|false
+     */
+    public static function arrayCombine($actions, $values)
+    {
+        return count($values) === 1 ? array_combine($actions, $values) : self::arrayCombineUnequal($actions, $values);
+    }
+
+    /**
+     * @param $actions
+     * @param $values
+     * @return array|false
+     */
+    public static function arrayCombineUnequal($actions, $values)
+    {
+        $action = $actions[0];
+
+        for ($actionNumber = 1; $actionNumber < count($values); $actionNumber++) {
+            array_push($actions, $action);
+        }
+
+        return array_combine($actions, $values);
     }
 }

@@ -317,4 +317,11 @@ class Column
         $this->relationName = $relationName;
         $this->relationColumn = $relationColumn;
     }
+
+    /**
+     * @return string
+     */
+    public function getFilterRelationColumn() {
+        return is_null($this->getFilterType()->column) ? $this->getRelationColumn() : $this->getFilterType()->column;
+    }
 }
