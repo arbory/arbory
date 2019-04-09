@@ -33,7 +33,7 @@ class Range extends Type
                 Html::h4( trans('arbory::filter.range.from') ),
                 Html::input()
                     ->setType( 'number' )
-                    ->setName( $this->column . '[min]' )
+                    ->setName( $this->getColumn() . '[min]' )
                     ->addAttributes([ 'step' => self::STEP])
                     ->addAttributes([ $this->getRangeValue('min') ])
             ] )->addClass( 'column' ),
@@ -41,7 +41,7 @@ class Range extends Type
                 Html::h4( trans('arbory::filter.range.to') ),
                 Html::input()
                     ->setType( 'number' )
-                    ->setName( $this->column . '[max]' )
+                    ->setName( $this->getColumn() . '[max]' )
                     ->addAttributes([ 'step' => self::STEP])
                     ->addAttributes([ $this->getRangeValue('max') ])
             ] )->addClass( 'column' ),

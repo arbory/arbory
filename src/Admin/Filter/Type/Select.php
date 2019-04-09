@@ -33,16 +33,9 @@ class Select extends Type
 
         if (!is_null($this->content)) {
             foreach ($this->content as $key => $value) {
-
-                if ($key == $this->selected) {
-                    $options[] = Html::option([$value])
-                        ->addAttributes(['value' => $key, 'selected']);
-
-                    continue;
-                }
-
                 $options[] = Html::option([$value])
-                    ->addAttributes(['value' => $key]);
+                    ->addAttributes(['value' => $key])
+                    ->addAttributes([$this->getSelectStatus($key)]);
             }
         }
 

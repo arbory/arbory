@@ -331,8 +331,8 @@ class Column
      */
     public function getFilterColumnName($getColumn)
     {
-        if ($this->getFilterType()->column) {
-            return $this->getFilterType()->column;
+        if ($this->getFilterType()->getColumn()) {
+            return $this->getFilterType()->getColumn();
         }
 
         return $getColumn;

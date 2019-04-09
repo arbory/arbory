@@ -116,13 +116,28 @@ class Type
      */
     public function getCheckboxStatusFromArray($key)
     {
-        if ($this->request->has($this->column)) {
-            $array = $this->request->get($this->column);
+        if ($this->request->has($this->getColumnFromArrayString())) {
+            $array = $this->request->get($this->getColumnFromArrayString());
 
             foreach ($array as $item) {
                 if ($item == $key) {
                     return 'checked';
                 }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $key
+     * @return string|null
+     */
+    public function getSelectStatus($key)
+    {
+        if ($this->request->has($this->getColumnFromArrayString())) {
+            if ($this->request->get($this->getColumnFromArrayString()) == $key) {
+                return 'selected';
             }
         }
 
