@@ -260,13 +260,19 @@ class Filter implements FilterInterface
         $actions = array_wrap($actions);
         $values = array_wrap($values);
 
-        $combinedActionsValues = self::arrayCombine($actions, $values);
+        if (count($actions) === count($values)) {
+            foreach (array_combine($values, $actions) as $value => $action) {
+                $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
+                    $query->where($column->getFilterRelationColumn(), $action, $value);
+                });
+            }
 
-        foreach ($combinedActionsValues as $action => $value) {
-            $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
-                $query->where($column->getFilterRelationColumn(), $action, $value);
-            });
+            return;
         }
+
+        $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $values) {
+            $query->whereIn($column->getFilterRelationColumn(), $values);
+        });
     }
 
     /**
