@@ -189,7 +189,7 @@ class Filter implements FilterInterface
         $filterAction = $this->getFilterTypeAction($column);
 
         if (is_null($column->getRelationName())) {
-            $this->createQueryWithoutRelation($column->getColumnName($key), $filterAction, $value);
+            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $filterAction, $value);
         } else {
             $this->createQueryWithRelation($column, $filterAction, $value);
         }
@@ -245,7 +245,7 @@ class Filter implements FilterInterface
         $actions = array_wrap($actions);
         $values = array_wrap($values);
 
-        foreach (array_combine($values, $actions) as $action => $value) {
+        foreach (array_combine($values, $actions) as $value => $action) {
             $this->query->where($columnName, $action, $value);
         }
     }
@@ -273,19 +273,6 @@ class Filter implements FilterInterface
         $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $values) {
             $query->whereIn($column->getFilterRelationColumn(), $values);
         });
-    }
-
-    /**
-     * @param $getColumn
-     * @return mixed
-     */
-    public function getColumnName($getColumn)
-    {
-        if ($this->getFilterType()->column) {
-            return $this->getFilterType()->column;
-        }
-
-        return $getColumn;
     }
 
     /**

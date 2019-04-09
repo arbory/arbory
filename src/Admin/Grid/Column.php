@@ -324,4 +324,17 @@ class Column
     public function getFilterRelationColumn() {
         return is_null($this->getFilterType()->column) ? $this->getRelationColumn() : $this->getFilterType()->column;
     }
+
+    /**
+     * @param $getColumn
+     * @return mixed
+     */
+    public function getFilterColumnName($getColumn)
+    {
+        if ($this->getFilterType()->column) {
+            return $this->getFilterType()->column;
+        }
+
+        return $getColumn;
+    }
 }
