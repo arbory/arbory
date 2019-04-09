@@ -245,7 +245,7 @@ class Filter implements FilterInterface
         $actions = array_wrap($actions);
         $values = array_wrap($values);
 
-        foreach (array_combine($actions, $values) as $action => $value) {
+        foreach (array_combine($values, $actions) as $action => $value) {
             $this->query->where($columnName, $action, $value);
         }
     }
@@ -260,9 +260,9 @@ class Filter implements FilterInterface
         $actions = array_wrap($actions);
         $values = array_wrap($values);
 
-        $actionsAndValues = self::arrayCombine($actions, $values);
+        $combinedActionsValues = self::arrayCombine($actions, $values);
 
-        foreach ($actionsAndValues as $action => $value) {
+        foreach ($combinedActionsValues as $action => $value) {
             $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
                 $query->where($column->getFilterRelationColumn(), $action, $value);
             });
@@ -316,7 +316,7 @@ class Filter implements FilterInterface
      */
     public static function arrayCombine($actions, $values)
     {
-        return count($values) === 1 ? array_combine($actions, $values) : self::arrayCombineUnequal($actions, $values);
+        return count($values) === 1 ? array_combine($values, $actions) : self::arrayCombineUnequal($actions, $values);
     }
 
     /**
@@ -332,6 +332,6 @@ class Filter implements FilterInterface
             array_push($actions, $action);
         }
 
-        return array_combine($actions, $values);
+        return array_combine($values, $actions);
     }
 }
