@@ -67,7 +67,9 @@ class Type
      */
     public function getColumnFromArrayString(): string
     {
-        return substr($this->column, 0, strpos($this->column, '.'));
+        return strpos($this->column, '.')
+            ? substr($this->column, 0, strpos($this->column, '.'))
+            : $this->column;
     }
 
     /**
