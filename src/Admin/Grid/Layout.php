@@ -9,6 +9,7 @@ use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\Body;
 use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
+use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Admin\Widgets\SearchField;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
@@ -55,6 +56,22 @@ class Layout extends AbstractLayout implements LayoutInterface
     }
 
     /**
+     * @return Button|null
+     */
+    protected function filterButton()
+    {
+        if ( !$this->grid->hasTool( 'filter' ) )
+        {
+            return null;
+        }
+
+        return Button::create()
+            ->type('button', 'filter js-filter-trigger')
+            ->withIcon( 'filter' )
+            ->title( trans( 'arbory::filter.filter' ) );
+    }
+
+    /**
      * @return \Arbory\Base\Html\Elements\Element
      */
     protected function searchField()
@@ -88,6 +105,7 @@ class Layout extends AbstractLayout implements LayoutInterface
      */
     protected function addSlots(Body $body)
     {
+        $body->getTarget()->slot('header_right_filter', $this->filterButton());
         $body->getTarget()->slot('header_right', $this->searchField());
     }
 }

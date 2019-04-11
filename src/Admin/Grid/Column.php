@@ -59,6 +59,16 @@ class Column
     /**
      * @var bool
      */
+    protected $hasFilter = false;
+
+    /**
+     * @var
+     */
+    protected $filterType;
+
+    /**
+     * @var bool
+     */
     protected $checkable = false;
 
     /**
@@ -88,12 +98,48 @@ class Column
         return $this->name;
     }
 
+    public function getFilterType() {
+        return $this->filterType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasFilter(): bool
+    {
+        return $this->hasFilter;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelationName()
+    {
+        return $this->relationName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelationColumn()
+    {
+        return $this->relationColumn;
+    }
+
     /**
      * @return string
      */
     public function getLabel()
     {
         return $this->label ?: $this->name;
+    }
+
+    /**
+     * @return Grid
+     */
+    public function getGrid(): Grid
+    {
+        return $this->grid;
     }
 
     /**
@@ -147,6 +193,18 @@ class Column
     public function searchable( $isSearchable = true )
     {
         $this->searchable = $isSearchable;
+
+        return $this;
+    }
+
+    /**
+     * @param null $type
+     * @return $this
+     */
+    public function setFilter($type = null)
+    {
+        $this->filterType = $type;
+        $this->hasFilter = $type !== null;
 
         return $this;
     }
@@ -258,5 +316,25 @@ class Column
     {
         $this->relationName = $relationName;
         $this->relationColumn = $relationColumn;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilterRelationColumn(): string
+    {
+        $columnName = $this->getFilterType()->getColumn();
+        return is_null($columnName) ? $this->getRelationColumn() : $columnName;
+    }
+
+    /**
+     * @param string $column
+     * @return string
+     */
+    public function getFilterColumnName(string $column): string
+    {
+        $columnInFilter = $this->getFilterType()->getColumn();
+
+        return $columnInFilter ? $columnInFilter : $column;
     }
 }

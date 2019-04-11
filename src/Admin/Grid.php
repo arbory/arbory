@@ -126,6 +126,14 @@ class Grid
     }
 
     /**
+     * @return Model
+     */
+    public function getModel(): Model
+    {
+        return $this->model;
+    }
+
+    /**
      * @param RenderableInterface $tool
      * @param string|null $side
      * @return void

@@ -7,6 +7,7 @@ use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Widgets\Pagination;
 use Arbory\Base\Admin\Layout\Footer;
 use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Admin\Widgets\Filter;
 use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Elements\Content;
@@ -85,6 +86,17 @@ class Builder implements Renderable
                 $checkbox->setName('bulk_edit_item_ids[]');
                 return $cellContent->append($checkbox);
             });
+    }
+
+    /**
+     * @return Content|string|null
+     */
+    protected function filter() {
+        if (!$this->grid->hasTool('filter')) {
+            return null;
+        }
+
+        return (new Filter($this->grid()))->render();
     }
 
     /**
@@ -301,7 +313,8 @@ class Builder implements Renderable
                 $this->bulkEdit(),
                 $this->table(),
                 $this->footer(),
-            ])
-        ]);
+            ] )->addClass('content'),
+            $this->filter(),
+        ] );
     }
 }
