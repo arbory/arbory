@@ -4,6 +4,7 @@ namespace Arbory\Base\Admin\Widgets;
 
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
@@ -20,9 +21,9 @@ class Filter implements Renderable
     }
 
     /**
-     * @return mixed
+     * @return Element
      */
-    protected function filterHeader()
+    protected function filterHeader(): Element
     {
         return Html::div([
             Html::h2(trans('arbory::filter.sort_and_filter')),
@@ -34,9 +35,9 @@ class Filter implements Renderable
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    protected function addFields()
+    protected function addFields():? array
     {
         $fieldCollection = null;
 
@@ -45,11 +46,7 @@ class Filter implements Renderable
                 continue;
             }
 
-            if (!empty($column->getFilterType()->getContent())) {
-                $content = $column->getFilterType()->getContent();
-            } else {
-                $content = null;
-            }
+            $content = $column->getFilterType()->getContent();
 
             $fieldCollection[] = $this->addField(
                 $column,
@@ -61,11 +58,11 @@ class Filter implements Renderable
     }
 
     /**
-     * @param $column
-     * @param $content
+     * @param object $column
+     * @param null|object $content
      * @return Content
      */
-    protected function addField($column, $content)
+    protected function addField($column, $content = null): Content
     {
         return new Content([
             Html::div([
@@ -85,12 +82,12 @@ class Filter implements Renderable
     }
 
     /**
-     * @param $type
-     * @param $column
-     * @param $content
-     * @return mixed
+     * @param object $type
+     * @param object $column
+     * @param null|object $content
+     * @return object
      */
-    protected function createField($type, $column, $content)
+    protected function createField($type, $column, $content = null)
     {
         return is_null($content) ? new $type(null, $column) : new $type($content, $column);
     }
@@ -99,7 +96,7 @@ class Filter implements Renderable
     /**
      * @return Button
      */
-    protected function filterButton()
+    protected function filterButton(): Button
     {
         return Button::create()
             ->type('submit', 'full-width')

@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
  */
 class Type
 {
+    const CHECKED = 'checked';
+
+    const SELECTED = 'selected';
+
     /**
      * @var string|array
      */
@@ -35,7 +39,7 @@ class Type
      * @param mixed|null $content
      * @param string|null $column
      */
-    public function __construct($content = null, string $column = null )
+    public function __construct($content = null, string $column = null)
     {
         $this->content = $content;
         $this->column = $column;
@@ -58,7 +62,10 @@ class Type
         return $this->column;
     }
 
-    public function getColumnFromArrayString() : string
+    /**
+     * @return string
+     */
+    public function getColumnFromArrayString(): string
     {
         return substr($this->column, 0, strpos($this->column, '.'));
     }
@@ -82,65 +89,53 @@ class Type
     /**
      * @return string|null
      */
-    public function getCheckboxStatus()
+    public function getCheckboxStatus():? string
     {
+        $status = null;
+
         if ($this->request->has($this->column)) {
-            return 'checked';
+            $status = self::CHECKED;
         }
 
-        return null;
+        return $status;
     }
 
     /**
-     * @param $valueSide
+     * @param string $range
      * @return string|null
      */
-    public function getRangeValue($valueSide)
+    public function getRangeValue(string $range):? string
     {
-        if (!$this->request->has($this->column)) {
+        $value = $this->request->get($this->column);
+
+        if (!$value) {
             return null;
         }
 
-        $value = $this->request->get($this->column);
-
-        if ($value[$valueSide]) {
-            return 'value="' . $value[$valueSide] . '"';
-        }
-
-        return null;
+        return $value[$range] ?? null;
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return string|null
      */
-    public function getCheckboxStatusFromArray($key)
+    public function getCheckboxStatusFromArray(string $key):? string
     {
-        if ($this->request->has($this->getColumnFromArrayString())) {
-            $array = $this->request->get($this->getColumnFromArrayString());
+        $checkboxes = $this->request->get($this->getColumnFromArrayString(), []);
 
-            foreach ($array as $item) {
-                if ($item == $key) {
-                    return 'checked';
-                }
-            }
-        }
-
-        return null;
+        return in_array($key, $checkboxes) ? self::CHECKED : null;
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return string|null
      */
-    public function getSelectStatus($key)
+    public function getSelectStatus(string $key):? string
     {
-        if ($this->request->has($this->getColumnFromArrayString())) {
-            if ($this->request->get($this->getColumnFromArrayString()) == $key) {
-                return 'selected';
-            }
-        }
+        $columnKey = $this->request->get($this->getColumnFromArrayString());
 
-        return null;
+        return $columnKey && $columnKey === $key
+            ? self::SELECTED
+            : null;
     }
 }

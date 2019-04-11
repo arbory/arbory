@@ -17,21 +17,19 @@ class Multiselect extends Type
      */
     protected $action = '=';
 
-
-
     /**
-     * @return array
+     * @return array|null
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
-    protected function getCheckboxList()
+    protected function getCheckboxList():? array
     {
-        if (!is_null($this->content)) {
-            foreach ($this->content as $key => $value) {
+        $content = $this->content;
+        if (!is_null($content)) {
+            foreach ($content as $key => $value) {
                 $options[] = Html::label([
                     Html::input($value)
                         ->setType('checkbox')
-                        ->addAttributes(['value' => $key])
-                        ->addAttributes([$this->getCheckboxStatusFromArray($key)])
+                        ->addAttributes(['value' => $key, $this->getCheckboxStatusFromArray($key)])
                         ->setName($this->getColumnFromArrayString() . '[]'),
                 ]);
             }

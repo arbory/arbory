@@ -34,16 +34,14 @@ class Range extends Type
                 Html::input()
                     ->setType( 'number' )
                     ->setName( $this->getColumn() . '[min]' )
-                    ->addAttributes([ 'step' => self::STEP])
-                    ->addAttributes([ $this->getRangeValue('min') ])
+                    ->addAttributes([ 'step' => self::STEP, 'value' => $this->getRangeValue('min')])
             ] )->addClass( 'column' ),
             Html::div( [
                 Html::h4( trans('arbory::filter.range.to') ),
                 Html::input()
                     ->setType( 'number' )
                     ->setName( $this->getColumn() . '[max]' )
-                    ->addAttributes([ 'step' => self::STEP])
-                    ->addAttributes([ $this->getRangeValue('max') ])
+                    ->addAttributes([ 'step' => self::STEP, 'value' => $this->getRangeValue('max')])
             ] )->addClass( 'column' ),
         ] )->addClass( 'range' )]);
     }

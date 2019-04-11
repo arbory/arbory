@@ -321,20 +321,20 @@ class Column
     /**
      * @return string
      */
-    public function getFilterRelationColumn() {
-        return is_null($this->getFilterType()->getColumn()) ? $this->getRelationColumn() : $this->getFilterType()->getColumn();
+    public function getFilterRelationColumn(): string
+    {
+        $columnName = $this->getFilterType()->getColumn();
+        return is_null($columnName) ? $this->getRelationColumn() : $columnName;
     }
 
     /**
-     * @param $getColumn
-     * @return mixed
+     * @param string $column
+     * @return string
      */
-    public function getFilterColumnName($getColumn)
+    public function getFilterColumnName(string $column): string
     {
-        if ($this->getFilterType()->getColumn()) {
-            return $this->getFilterType()->getColumn();
-        }
+        $columnInFilter = $this->getFilterType()->getColumn();
 
-        return $getColumn;
+        return $columnInFilter ? $columnInFilter : $column;
     }
 }

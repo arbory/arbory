@@ -27,15 +27,16 @@ class Select extends Type
     /**
      * @return array
      */
-    protected function getOptionList()
+    protected function getOptionList(): array 
     {
         $options[] = Html::option();
 
-        if (!is_null($this->content)) {
-            foreach ($this->content as $key => $value) {
+        $content = $this->content;
+
+        if (!is_null($content)) {
+            foreach ($content as $key => $value) {
                 $options[] = Html::option([$value])
-                    ->addAttributes(['value' => $key])
-                    ->addAttributes([$this->getSelectStatus($key)]);
+                    ->addAttributes(['value' => $key, $this->getSelectStatus($key)]);
             }
         }
 

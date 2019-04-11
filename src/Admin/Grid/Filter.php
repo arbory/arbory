@@ -79,7 +79,7 @@ class Filter implements FilterInterface
     /**
      * @param Collection $columns
      */
-    protected function filter(Collection $columns)
+    protected function filter(Collection $columns): void
     {
         $filterParameters = self::removeNonFilterParameters($this->request->all());
 
@@ -184,14 +184,19 @@ class Filter implements FilterInterface
         return $this->query;
     }
 
-    public function createQuery($column, $value, $key)
+    /**
+     * @param $column
+     * @param $value
+     * @param $key
+     */
+    public function createQuery($column, $value, $key): void
     {
-        $filterAction = $this->getFilterTypeAction($column);
+        $actions = $this->getFilterTypeAction($column);
 
         if (is_null($column->getRelationName())) {
-            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $filterAction, $value);
+            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $actions, $value);
         } else {
-            $this->createQueryWithRelation($column, $filterAction, $value);
+            $this->createQueryWithRelation($column, $actions, $value);
         }
     }
 
@@ -221,9 +226,10 @@ class Filter implements FilterInterface
 
     /**
      * @param $column
-     * @return mixed
+     * @return array
      */
-    public function getFilterTypeAction($column) {
+    public function getFilterTypeAction($column): array
+    {
         return $column->getFilterType()->getAction();
     }
 
@@ -240,7 +246,7 @@ class Filter implements FilterInterface
      * @param $actions
      * @param $values
      */
-    public function createQueryWithoutRelation($columnName, $actions, $values)
+    public function createQueryWithoutRelation($columnName, $actions, $values): void
     {
         $actions = array_wrap($actions);
         $values = array_wrap($values);
@@ -255,7 +261,7 @@ class Filter implements FilterInterface
      * @param $actions
      * @param $values
      */
-    public function createQueryWithRelation($column, $actions, $values)
+    public function createQueryWithRelation($column, $actions, $values): void
     {
         $actions = array_wrap($actions);
         $values = array_wrap($values);
@@ -276,10 +282,10 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $parameters
+     * @param array $parameters
      * @return array
      */
-    private function removeNonFilterParameters($parameters)
+    private function removeNonFilterParameters(array $parameters): array
     {
         unset($parameters['_order_by']);
         unset($parameters['_order']);
@@ -291,7 +297,7 @@ class Filter implements FilterInterface
      * @param array $filterParameters
      * @return array
      */
-    private function recursiveArrayFilter(array $filterParameters)
+    private function recursiveArrayFilter(array $filterParameters): array
     {
         foreach ($filterParameters as $getKey => &$getValue) {
             if (is_array($getValue)) {
@@ -300,31 +306,5 @@ class Filter implements FilterInterface
         }
 
         return array_filter($filterParameters);
-    }
-
-    /**
-     * @param $actions
-     * @param $values
-     * @return array|false
-     */
-    public static function arrayCombine($actions, $values)
-    {
-        return count($values) === 1 ? array_combine($values, $actions) : self::arrayCombineUnequal($actions, $values);
-    }
-
-    /**
-     * @param $actions
-     * @param $values
-     * @return array|false
-     */
-    public static function arrayCombineUnequal($actions, $values)
-    {
-        $action = $actions[0];
-
-        for ($actionNumber = 1; $actionNumber < count($values); $actionNumber++) {
-            array_push($actions, $action);
-        }
-
-        return array_combine($values, $actions);
     }
 }
