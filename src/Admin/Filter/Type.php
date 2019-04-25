@@ -136,7 +136,7 @@ class Type
     {
         $columnKey = $this->request->get($this->getColumnFromArrayString());
 
-        return $columnKey && $columnKey === $key
+        return $columnKey === $key
             ? self::SELECTED
             : null;
     }

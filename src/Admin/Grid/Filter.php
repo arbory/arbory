@@ -84,7 +84,7 @@ class Filter implements FilterInterface
         $filterParameters = self::removeNonFilterParameters($this->request->all());
 
         foreach ($filterParameters as $getKey => $getValue) {
-            if (!$getValue) {
+            if (!$getValue && $getValue !== '0') {
                 continue;
             }
 
@@ -191,12 +191,14 @@ class Filter implements FilterInterface
      */
     public function createQuery($column, $value, $key): void
     {
+
+        $filterNull = $this->getNullChecking($column);
         $actions = $this->getFilterTypeAction($column);
 
         if (is_null($column->getRelationName())) {
-            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $actions, $value);
+            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $actions, $value, $filterNull);
         } else {
-            $this->createQueryWithRelation($column, $actions, $value);
+            $this->createQueryWithRelation($column, $actions, $value, $filterNull);
         }
     }
 
@@ -234,6 +236,21 @@ class Filter implements FilterInterface
     }
 
     /**
+     * @param $column
+     * @return bool
+     */
+    public function getNullChecking($column): bool
+    {
+        $filterNull = false;
+
+        if (isset($column->getFilterType()->filterNull)) {
+            $filterNull = $column->getFilterType()->filterNull;
+        }
+
+        return $filterNull;
+    }
+
+    /**
      * @param int $perPage
      */
     public function setPerPage(int $perPage)
@@ -245,14 +262,19 @@ class Filter implements FilterInterface
      * @param $columnName
      * @param $actions
      * @param $values
+     * @param bool $filterNull
      */
-    public function createQueryWithoutRelation($columnName, $actions, $values): void
+    public function createQueryWithoutRelation($columnName, $actions, $values, $filterNull = false): void
     {
         $actions = array_wrap($actions);
         $values = array_wrap($values);
 
         foreach (array_combine($values, $actions) as $value => $action) {
-            $this->query->where($columnName, $action, $value);
+            if ($filterNull) {
+                self::valueExistence($value, $columnName);
+            } else {
+                $this->query->where($columnName, $action, $value);
+            }
         }
     }
 
@@ -260,16 +282,22 @@ class Filter implements FilterInterface
      * @param $column
      * @param $actions
      * @param $values
+     * @param bool $filterNull
      */
-    public function createQueryWithRelation($column, $actions, $values): void
+    public function createQueryWithRelation($column, $actions, $values, $filterNull = false): void
     {
         $actions = array_wrap($actions);
         $values = array_wrap($values);
 
         if (count($actions) === count($values)) {
             foreach (array_combine($values, $actions) as $value => $action) {
-                $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
-                    $query->where($column->getFilterRelationColumn(), $action, $value);
+                $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value, $filterNull) {
+                    if ($filterNull) {
+                        $query->valueExistence($value, $column->getFilterRelationColumn());
+                    } else {
+                        $query->where($column->getFilterRelationColumn(), $action, $value);
+                    }
+
                 });
             }
 
@@ -305,6 +333,21 @@ class Filter implements FilterInterface
             }
         }
 
-        return array_filter($filterParameters);
+        return array_filter($filterParameters, function ($value){
+            return (($value !== NULL && $value !== FALSE && !empty($value)) || $value === "0");
+        });
+    }
+
+    /**
+     * @param $value
+     * @param $columnName
+     */
+    protected function valueExistence($value, $columnName): void
+    {
+        if ($value === 0) {
+            $this->query->whereNull($columnName);
+        } else {
+            $this->query->whereNotNull($columnName);
+        }
     }
 }
