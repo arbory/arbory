@@ -67,9 +67,14 @@ class Type
      */
     public function getColumnFromArrayString(): string
     {
-        return strpos($this->column, '.')
-            ? substr($this->column, 0, strpos($this->column, '.'))
-            : $this->column;
+        $columnName = $this->column;
+
+        if (strpos($columnName, '.')) {
+            $dotPosition = strpos($columnName, '.');
+            $columnName = substr($columnName, 0, $dotPosition);
+        }
+
+        return $columnName;
     }
 
     /**
