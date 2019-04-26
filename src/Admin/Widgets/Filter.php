@@ -64,18 +64,20 @@ class Filter implements Renderable
      */
     protected function addField($column, $content = null): Content
     {
+        $filterType = $column->getFilterType();
+
         return new Content([
             Html::div([
                 Html::div([
                     Html::h3($column->getLabel()),
                     Button::create()
-                        ->withIcon('minus')
+                        ->withIcon($filterType->getAccordionLabelIcon())
                         ->iconOnly()
                         ->withoutBackground(),
                 ])->addClass('js-accordion-trigger heading'),
                 Html::div([
-                    self::createField($column->getFilterType(), $column, $content),
-                ])->addClass('body'),
+                    self::createField($filterType, $column, $content),
+                ])->addClass($filterType->getAccordionBodyClass()),
             ])->addClass('accordion'),
 
         ]);

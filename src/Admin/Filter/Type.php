@@ -35,15 +35,22 @@ class Type
     protected $column;
 
     /**
+     * @var bool
+     */
+    protected $openByDefault;
+
+    /**
      * Type constructor.
      * @param mixed|null $content
      * @param string|null $column
+     * @param bool $accordionOpen
      */
-    public function __construct($content = null, string $column = null)
+    public function __construct($content = null, string $column = null, bool $accordionOpen = false)
     {
         $this->content = $content;
         $this->column = $column;
         $this->request = request();
+        $this->openByDefault = $accordionOpen;
     }
 
     /**
@@ -60,6 +67,14 @@ class Type
     public function getColumn(): string
     {
         return $this->column;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpenByDefault(): bool
+    {
+        return $this->openByDefault;
     }
 
     /**
@@ -91,6 +106,22 @@ class Type
     public function __toString()
     {
         return (string)$this->render();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAccordionBodyClass():? string
+    {
+        return $this->isOpenByDefault() ? 'body' : 'body closed';
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAccordionLabelIcon():? string
+    {
+        return $this->isOpenByDefault() ? 'minus' : 'plus';
     }
 
     /**
