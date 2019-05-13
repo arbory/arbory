@@ -15,7 +15,7 @@
         }
     ],
         "replace": {
-        "arbory/arbory":"1.0"
+        "arbory/arbory":"1.0.x-dev"
     },
     "require": {
         "php": "^7.1",
