@@ -68,7 +68,8 @@ export default class Sortable {
 
     setLocationInput(item, locationIndex) {
         // Expects that the position input is always a direct descendant of the fieldset.item entry
-        let positionInput = item.find(`> input[data-name="${this.getSortByName()}"]`).first();
+        let sortByName = this.getSortByName();
+        let positionInput = item.find(`> input[data-name="${sortByName}"]`).first();
 
         if(positionInput.length) {
             positionInput.val(locationIndex);
