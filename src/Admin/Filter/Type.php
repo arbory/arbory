@@ -14,6 +14,14 @@ class Type
 
     const SELECTED = 'selected';
 
+    const ACCORDION_OPEN_CLASS = 'body';
+
+    const ACCORDION_CLOSE_CLASS = 'body closed';
+
+    const ACCORDION_OPEN_ICON = 'plus';
+
+    const ACCORDION_CLOSE_ICON = 'minus';
+
     /**
      * @var string|array
      */
@@ -82,14 +90,7 @@ class Type
      */
     public function getColumnFromArrayString(): string
     {
-        $columnName = $this->column;
-
-        if (strpos($columnName, '.')) {
-            $dotPosition = strpos($columnName, '.');
-            $columnName = substr($columnName, 0, $dotPosition);
-        }
-
-        return $columnName;
+        return explode('.', $this->column)[0];
     }
 
     /**
@@ -113,7 +114,7 @@ class Type
      */
     public function getAccordionBodyClass():? string
     {
-        return $this->isOpenByDefault() ? 'body' : 'body closed';
+        return $this->isOpenByDefault() ? self::ACCORDION_OPEN_CLASS : self::ACCORDION_CLOSE_CLASS;
     }
 
     /**
@@ -121,7 +122,7 @@ class Type
      */
     public function getAccordionLabelIcon():? string
     {
-        return $this->isOpenByDefault() ? 'minus' : 'plus';
+        return $this->isOpenByDefault() ? self::ACCORDION_OPEN_ICON : self::ACCORDION_CLOSE_ICON;
     }
 
     /**
