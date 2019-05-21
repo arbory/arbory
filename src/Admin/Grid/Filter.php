@@ -253,7 +253,8 @@ class Filter implements FilterInterface
         $values = array_wrap($values);
 
         if (count($actions) === count($values)) {
-            foreach (array_combine($values, $actions) as $value => $action) {
+            foreach (array_combine($actions, $values) as $action => $value) {
+
                 if ($this->isNullCheckingEnabled($column)) {
                     self::whereValueExists($value, $column->getFilterColumnName($key));
                 } else {
@@ -278,7 +279,7 @@ class Filter implements FilterInterface
         $values = array_wrap($values);
 
         if (count($actions) === count($values)) {
-            foreach (array_combine($values, $actions) as $value => $action) {
+            foreach (array_combine($actions, $values) as $action => $value) {
                 $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
                     if ($this->isNullCheckingEnabled($column)) {
                         $query->whereValueExists($value, $column->getFilterRelationColumn());
