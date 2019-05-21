@@ -192,7 +192,7 @@ class Filter implements FilterInterface
     public function createQuery($column, $value, $key): void
     {
 
-        $filterNull = $this->getNullChecking($column);
+        $filterNull = $this->isNullCheckingEnabled($column);
         $actions = $this->getFilterTypeAction($column);
 
         if (is_null($column->getRelationName())) {
@@ -239,15 +239,13 @@ class Filter implements FilterInterface
      * @param $column
      * @return bool
      */
-    public function getNullChecking($column): bool
+    public function isNullCheckingEnabled($column): bool
     {
-        $filterNull = false;
-
         if (isset($column->getFilterType()->filterNull)) {
-            $filterNull = $column->getFilterType()->filterNull;
+            return $column->getFilterType()->filterNull;
         }
 
-        return $filterNull;
+        return false;
     }
 
     /**
@@ -271,7 +269,7 @@ class Filter implements FilterInterface
 
         foreach (array_combine($values, $actions) as $value => $action) {
             if ($filterNull) {
-                self::valueExistence($value, $columnName);
+                self::whereValueExists($value, $columnName);
             } else {
                 $this->query->where($columnName, $action, $value);
             }
@@ -293,7 +291,7 @@ class Filter implements FilterInterface
             foreach (array_combine($values, $actions) as $value => $action) {
                 $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value, $filterNull) {
                     if ($filterNull) {
-                        $query->valueExistence($value, $column->getFilterRelationColumn());
+                        $query->whereValueExists($value, $column->getFilterRelationColumn());
                     } else {
                         $query->where($column->getFilterRelationColumn(), $action, $value);
                     }
@@ -342,7 +340,7 @@ class Filter implements FilterInterface
      * @param $value
      * @param $columnName
      */
-    protected function valueExistence($value, $columnName): void
+    protected function whereValueExists($value, $columnName): void
     {
         if ($value === 0) {
             $this->query->whereNull($columnName);
