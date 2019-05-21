@@ -191,14 +191,12 @@ class Filter implements FilterInterface
      */
     public function createQuery($column, $value, $key): void
     {
-
-        $filterNull = $this->isNullCheckingEnabled($column);
         $actions = $this->getFilterTypeAction($column);
 
         if (is_null($column->getRelationName())) {
-            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $actions, $value, $filterNull);
+            $this->createQueryWithoutRelation($column, $key, $actions, $value);
         } else {
-            $this->createQueryWithRelation($column, $actions, $value, $filterNull);
+            $this->createQueryWithRelation($column, $actions, $value);
         }
     }
 
@@ -249,16 +247,16 @@ class Filter implements FilterInterface
      * @param $values
      * @param bool $filterNull
      */
-    public function createQueryWithoutRelation($columnName, $actions, $values, $filterNull = false): void
+    public function createQueryWithoutRelation($column, $key, $actions, $values): void
     {
         $actions = array_wrap($actions);
         $values = array_wrap($values);
 
         foreach (array_combine($values, $actions) as $value => $action) {
-            if ($filterNull) {
-                self::whereValueExists($value, $columnName);
+            if ($this->isNullCheckingEnabled($column)) {
+                self::whereValueExists($value, $column->getFilterColumnName($key));
             } else {
-                $this->query->where($columnName, $action, $value);
+                $this->query->where($column->getFilterColumnName($key), $action, $value);
             }
         }
     }
@@ -267,17 +265,16 @@ class Filter implements FilterInterface
      * @param $column
      * @param $actions
      * @param $values
-     * @param bool $filterNull
      */
-    public function createQueryWithRelation($column, $actions, $values, $filterNull = false): void
+    public function createQueryWithRelation($column, $actions, $values): void
     {
         $actions = array_wrap($actions);
         $values = array_wrap($values);
 
         if (count($actions) === count($values)) {
             foreach (array_combine($values, $actions) as $value => $action) {
-                $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value, $filterNull) {
-                    if ($filterNull) {
+                $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
+                    if ($this->isNullCheckingEnabled($column)) {
                         $query->whereValueExists($value, $column->getFilterRelationColumn());
                     } else {
                         $query->where($column->getFilterRelationColumn(), $action, $value);
