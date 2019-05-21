@@ -236,19 +236,6 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $column
-     * @return bool
-     */
-    public function isNullCheckingEnabled($column): bool
-    {
-        if (isset($column->getFilterType()->filterNull)) {
-            return $column->getFilterType()->filterNull;
-        }
-
-        return false;
-    }
-
-    /**
      * @param int $perPage
      */
     public function setPerPage(int $perPage)
@@ -308,6 +295,19 @@ class Filter implements FilterInterface
     }
 
     /**
+     * @param $value
+     * @param $columnName
+     */
+    protected function whereValueExists($value, $columnName): void
+    {
+        if ($value === 0) {
+            $this->query->whereNull($columnName);
+        } else {
+            $this->query->whereNotNull($columnName);
+        }
+    }
+
+    /**
      * @param array $parameters
      * @return array
      */
@@ -337,15 +337,15 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $value
-     * @param $columnName
+     * @param $column
+     * @return bool
      */
-    protected function whereValueExists($value, $columnName): void
+    private function isNullCheckingEnabled($column): bool
     {
-        if ($value === 0) {
-            $this->query->whereNull($columnName);
-        } else {
-            $this->query->whereNotNull($columnName);
+        if (isset($column->getFilterType()->filterNull)) {
+            return $column->getFilterType()->filterNull;
         }
+
+        return false;
     }
 }
