@@ -242,10 +242,10 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $columnName
+     * @param $column
+     * @param $key
      * @param $actions
      * @param $values
-     * @param bool $filterNull
      */
     public function createQueryWithoutRelation($column, $key, $actions, $values): void
     {
