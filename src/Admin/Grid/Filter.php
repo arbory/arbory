@@ -252,13 +252,19 @@ class Filter implements FilterInterface
         $actions = array_wrap($actions);
         $values = array_wrap($values);
 
-        foreach (array_combine($values, $actions) as $value => $action) {
-            if ($this->isNullCheckingEnabled($column)) {
-                self::whereValueExists($value, $column->getFilterColumnName($key));
-            } else {
-                $this->query->where($column->getFilterColumnName($key), $action, $value);
+        if (count($actions) === count($values)) {
+            foreach (array_combine($values, $actions) as $value => $action) {
+                if ($this->isNullCheckingEnabled($column)) {
+                    self::whereValueExists($value, $column->getFilterColumnName($key));
+                } else {
+                    $this->query->where($column->getFilterColumnName($key), $action, $value);
+                }
             }
+
+            return;
         }
+
+        $this->query->whereIn($column->getFilterColumnName($key), $values);
     }
 
     /**
@@ -279,7 +285,6 @@ class Filter implements FilterInterface
                     } else {
                         $query->where($column->getFilterRelationColumn(), $action, $value);
                     }
-
                 });
             }
 
