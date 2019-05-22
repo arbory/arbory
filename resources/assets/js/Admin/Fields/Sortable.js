@@ -31,7 +31,7 @@ export default class Sortable {
             handlers, this.config.vendor
         ));
 
-        container.on('click', '.sortable-navigation .button', event => this.manualSort(event));
+        container.on('click', '> .item  > .sortable-navigation .button', event => this.manualSort(event));
         container.on('DOMNodeInserted DOMNodeRemoved', () => this.handleUpdate());
     }
 
