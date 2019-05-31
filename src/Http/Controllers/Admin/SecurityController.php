@@ -2,10 +2,12 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Auth\Users\User;
 use Arbory\Base\Http\Requests\LoginRequest;
 use Arbory\Base\Services\Authentication\SecurityStrategy;
 use Arbory\Base\Services\AuthReply\Reply;
 use Arbory\Base\Services\SecurityService;
+use Sentinel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -55,8 +57,12 @@ class SecurityController extends BaseController
     {
         $credentials = array_only( $request->get( 'user' ), [ 'email', 'password' ] );
         $remember = (bool) $request->get( 'remember', false );
-
-        $result = $this->security->authenticate( $credentials, $remember );
+        
+        $user = Sentinel::findByCredentials(array_merge($credentials,[
+            'provider' => User::PROVIDER
+        ]));
+        
+        $result = $this->security->authenticate( $user, $remember );
 
         if( $result->isSuccess() )
         {

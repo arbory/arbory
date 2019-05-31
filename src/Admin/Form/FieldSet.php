@@ -184,7 +184,7 @@ class FieldSet extends Collection
      * @param FieldInterface $field
      * @return FieldInterface
      */
-    public function add( FieldInterface $field )
+    public function add( $field )
     {
         $this->push( $field );
 

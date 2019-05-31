@@ -15,6 +15,8 @@ use Arbory\Base\Auth\Throttling\Throttle;
  */
 class User extends EloquentUser
 {
+    public const PROVIDER = 'database';
+    
     /**
      * @var string
      */
@@ -45,6 +47,19 @@ class User extends EloquentUser
      */
     protected static $throttlingModel = Throttle::class;
 
+    /**
+     * User constructor.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        
+        $this->fillable[] = 'provider';
+        $this->loginNames[] = 'provider';
+    }
+    
     /**
      * @return string
      */

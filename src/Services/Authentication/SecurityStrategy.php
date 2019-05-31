@@ -8,12 +8,12 @@ use Cartalyst\Sentinel\Users\UserInterface;
 interface SecurityStrategy
 {
     /**
-     * @param array $credentials
+     * @param \Cartalyst\Sentinel\Users\UserInterface|array|null  $credentials
      * @param bool $remember
      * @param bool $login
      * @return Reply
      */
-    public function authenticate( array $credentials, $remember = false, $login = true ): Reply;
+    public function authenticate( $credentials, $remember = false, $login = true ): Reply;
 
     /**
      * @param UserInterface|null $user

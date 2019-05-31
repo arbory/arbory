@@ -63,6 +63,10 @@ class UsersController extends Controller
         $model = $form->getModel();
 
         $form->addEventListener('create.before', function () use ($model) {
+            if (empty($model->provider)) {
+                $model->provider = User::PROVIDER;
+            }
+            
             unset($model->active);
         });
 
