@@ -64,7 +64,7 @@ class SecurityController extends BaseController
         $this->validateLogin($request);
         $remember = (bool) $request->get( 'remember', false );
         
-        $result = $this->security->authenticate( $this->attemptLogin($request), $remember );
+        $result = $this->security->authenticate( $this->findAuthUser($request), $remember );
 
         if( $result->isSuccess() )
         {
@@ -103,7 +103,7 @@ class SecurityController extends BaseController
      *
      * @return \Cartalyst\Sentinel\Users\UserInterface|array|null
      */
-    protected function attemptLogin( Request $request )
+    protected function findAuthUser( Request $request )
     {
         $credentials = Arr::only( $request->get( 'user' ), [ 'email', 'password' ] );
     
