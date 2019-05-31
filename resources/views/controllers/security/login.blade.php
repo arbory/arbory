@@ -6,7 +6,7 @@
         <div class="field @if($errors->has('user.email'))has-error @endif">
             <label for="email">{{ trans('arbory::security.email') }}</label>
             <input autofocus="autofocus" id="email" class="text" type="email"
-                   value="{{$input->old('user.email')}}" name="user[email]">
+                   value="{{ $input->old('user.email') }}" name="user[email]">
         </div>
         <div class="field @if($errors->has('user.password'))has-error @endif">
             <label for="password">{{ trans('arbory::security.password') }}</label>
@@ -14,7 +14,7 @@
         </div>
         <div class="field">
             <label>
-                <input type="checkbox" name="remember" value="1" {{$input->old('remember') ? 'checked' : ''}} />
+                <input type="checkbox" name="remember" value="1" {{ $input->old('remember') ? 'checked' : '' }} />
                 {{ trans('arbory::security.remember') }}
             </label>
         </div>
