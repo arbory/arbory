@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Arbory</title>
+        <title>{{ config('arbory.title', 'Arbory') }}</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link href="{{ mix('/css/application.css', 'arbory') }}" media="all" rel="stylesheet"/>
