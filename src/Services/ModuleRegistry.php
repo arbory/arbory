@@ -5,6 +5,7 @@ namespace Arbory\Base\Services;
 use Arbory\Base\Admin\Admin;
 use Arbory\Base\Admin\Module;
 use Illuminate\Support\Collection;
+use Arbory\Base\Services\ModulePermissions\ModulePermissionsRegistry;
 
 /**
  * Class ModuleRegistryService
@@ -45,7 +46,8 @@ class ModuleRegistry
         }
 
         $config = new ModuleConfiguration( $controllerClass );
-        $module = new Module( $this->admin, $config );
+        $permissions = new ModulePermissionsRegistry($controllerClass, $this->admin->sentinel());
+        $module = new Module( $this->admin, $config, $permissions );
 
         $this->admin->routes()->register( $module, $routes );
 
@@ -70,6 +72,14 @@ class ModuleRegistry
     public function findModuleByController( $instance )
     {
         return $this->findModuleByControllerClass( get_class( $instance ) );
+    }
+
+    /**
+     * @return Collection
+     */
+    public function all(): Collection
+    {
+        return $this->modules;
     }
 
     /**

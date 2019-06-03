@@ -223,6 +223,11 @@ input.text
         }
     }
 
+    &.type-serializable-checkbox-group {
+        width: calc(100% - #{steps(4)});
+        margin-right: steps(2);
+    }
+
     &[data-name="file"] {
         word-wrap: break-word;
     }

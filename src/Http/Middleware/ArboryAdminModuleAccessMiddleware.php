@@ -44,8 +44,7 @@ class ArboryAdminModuleAccessMiddleware
             throw new \RuntimeException( 'Could not find target module for route controller' );
         }
 
-        if( !$targetModule->isAuthorized() )
-        {
+        if(!$targetModule->isRequestAuthorized($request)) {
             return $this->denied( $request );
         }
 

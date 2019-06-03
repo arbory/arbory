@@ -8,6 +8,7 @@ use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Admin\Module;
+use Arbory\Base\Services\ModulePermissions\ModulePermission;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
@@ -47,20 +48,10 @@ class RolesController extends Controller
     {
         $form->setFields(function (Form\FieldSet $fields) {
             $fields->text('name')->rules('required');
-            $fields->multipleSelect('permissions')->options($this->getPermissionOptions());
+            $this->addPermissionOptions($fields);
         });
 
         $model = $form->getModel();
-
-        $form->addEventListener('validate.before', function (Request $request) {
-            $resource = $request->input('resource');
-
-            if (array_get($resource, 'permissions')) {
-                return;
-            }
-
-            $request->merge(['resource' => array_merge($resource, ['permissions' => []])]);
-        });
 
         $form->addEventListener('create.before', function () use ($model) {
             $model->slug = str_slug($model->name);
@@ -82,12 +73,44 @@ class RolesController extends Controller
     }
 
     /**
-     * @return Collection
+     * @param Form\FieldSet $fields
      */
-    protected function getPermissionOptions()
+    protected function addPermissionOptions(Form\FieldSet $fields)
     {
-        return $this->admin->modules()->mapWithKeys(function (Module $value) {
-            return [$value->getControllerClass() => (string)$value];
-        })->sort();
+        /** @var Role $role */
+        $role = $fields->getModel();
+
+        $serializableGroup = new Form\Fields\GroupedSerializableMultiselect('permissions');
+        $checkedValues = [];
+
+        /** @var Module $module */
+        foreach ($this->admin->modules()->all() as $key => $module) {
+            $permissionsOptions = $this->getPermissionOptions($module, $role, $checkedValues);
+            $serializableGroup->addValueGroup($module->name(), $permissionsOptions);
+        }
+
+        $serializableGroup->setValue($checkedValues);
+        $fields->add($serializableGroup);
+    }
+
+    /**
+     * @param Module $module
+     * @param Role $role
+     * @param array $checkedValues
+     * @return array
+     */
+    protected function getPermissionOptions(Module $module, Role $role, array &$checkedValues): array
+    {
+        $permissionsOptions = $module->getPermissions($role);
+        $permissionsOptions = $permissionsOptions->mapWithKeys(function (ModulePermission $permission) use (&$checkedValues, $module) {
+            $permissionValue = $module->getControllerClass() . '.' . $permission->getName();
+            if ($permission->isAllowed()) {
+                $checkedValues[] = $permissionValue;
+            }
+
+            return [$permissionValue => $permission->getTranslation()];
+        });
+
+        return $permissionsOptions->toArray();
     }
 }
