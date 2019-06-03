@@ -42,7 +42,7 @@ class SecurityController extends BaseController
     public function getLogin( Request $request )
     {
         return view(
-            'arbory::layout.login',
+            'arbory::controllers.security.login',
             [ 'input' => $request ]
         );
     }

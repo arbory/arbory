@@ -20,7 +20,18 @@ class LoginRequest extends FormRequest
             'user.password' => 'required'
         ];
     }
-
+    
+    /**
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'user.email' => trans('arbory::security.email'),
+            'user.password' => trans('arbory::security.password'),
+        ];
+    }
+    
     /**
      * @return bool
      */
