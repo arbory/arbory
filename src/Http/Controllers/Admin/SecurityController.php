@@ -101,7 +101,7 @@ class SecurityController extends BaseController
     /**
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Cartalyst\Sentinel\Users\UserInterface|array|null
+     * @return \Cartalyst\Sentinel\Users\UserInterface
      */
     protected function findAuthUser( Request $request )
     {

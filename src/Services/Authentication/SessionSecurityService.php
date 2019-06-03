@@ -24,12 +24,12 @@ class SessionSecurityService implements SecurityStrategy
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @param bool $remember
      * @param bool $login
      * @return Reply
      */
-    public function authenticateUser( UserInterface $user, bool $remember = false, bool $login = true ): Reply
+    public function authenticateUser( ?UserInterface $user, bool $remember = false, bool $login = true ): Reply
     {
         return $this->authenticate( $user, $remember, $login );
     }
@@ -53,11 +53,14 @@ class SessionSecurityService implements SecurityStrategy
      */
     private function authenticate( $credentials, $remember = false, $login = true ): Reply
     {
-        $user = $this->sentinel->authenticate( $credentials, $remember, $login );
-
-        if( $user )
+        if ($credentials)
         {
-            return new SuccessReply( trans( 'auth.success' ) );
+            $user = $this->sentinel->authenticate( $credentials, $remember, $login );
+    
+            if ($user)
+            {
+                return new SuccessReply(trans('auth.success'));
+            }
         }
 
         return new FailureReply( trans( 'auth.failed' ) );
