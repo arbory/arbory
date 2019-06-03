@@ -64,7 +64,7 @@ class SecurityController extends BaseController
         $this->validateLogin($request);
         $remember = (bool) $request->get( 'remember', false );
         
-        $result = $this->security->authenticate( $this->findAuthUser($request), $remember );
+        $result = $this->security->authenticateUser( $this->findAuthUser($request), $remember );
 
         if( $result->isSuccess() )
         {

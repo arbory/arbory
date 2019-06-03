@@ -24,21 +24,40 @@ class SessionSecurityService implements SecurityStrategy
     }
 
     /**
-     * @param \Cartalyst\Sentinel\Users\UserInterface|array|null  $credentials
+     * @param UserInterface $user
+     * @param bool $remember
+     * @param bool $login
+     * @return Reply
+     */
+    public function authenticateUser( UserInterface $user, bool $remember = false, bool $login = true ): Reply
+    {
+        return $this->authenticate( $user, $remember, $login );
+    }
+    
+    /**
+     * @param array $credentials
+     * @param bool $remember
+     * @param bool $login
+     * @return Reply
+     */
+    public function authenticateWithCredentials( array $credentials, bool $remember = false, bool $login = true ): Reply
+    {
+        return $this->authenticate( $credentials, $remember, $login );
+    }
+
+    /**
+     * @param \Cartalyst\Sentinel\Users\UserInterface|array  $credentials
      * @param boolean $remember
      * @param boolean $login
      * @return Reply
      */
-    public function authenticate( $credentials, $remember = false, $login = true ): Reply
+    private function authenticate( $credentials, $remember = false, $login = true ): Reply
     {
-        if ($credentials)
+        $user = $this->sentinel->authenticate( $credentials, $remember, $login );
+
+        if( $user )
         {
-            $user = $this->sentinel->authenticate( $credentials, $remember, $login );
-    
-            if( $user )
-            {
-                return new SuccessReply( trans( 'auth.success' ) );
-            }
+            return new SuccessReply( trans( 'auth.success' ) );
         }
 
         return new FailureReply( trans( 'auth.failed' ) );
