@@ -13,18 +13,34 @@ class UpdatePermissionsStructure extends Migration
     public function up()
     {
         foreach (Role::get() as $role) {
-            $newPermissions = [];
-            foreach ($role->getPermissions() as $controllerClass) {
-                $splitPermissions = collect(ModulePermissionsRegistry::DEFAULT_PERMISSIONS)
-                    ->mapWithKeys(function ($permission) use ($controllerClass) {
-                        return [$controllerClass . '.' . $permission => true];
-                    })->toArray();
-
-                $newPermissions = array_merge($newPermissions, $splitPermissions);
-            }
-
-            $role->setPermissions($newPermissions);
+            $role->setPermissions($this->transformPermissions($role));
             $role->save();
         }
+    }
+
+    /**
+     * @param Role $role
+     * @return array
+     */
+    private function transformPermissions(Role $role): array
+    {
+        $newPermissions = [];
+        foreach ($role->getPermissions() as $controllerClass) {
+            $newPermissions = array_merge($newPermissions, $this->getSplitControllerPermissions($controllerClass));
+        }
+
+        return $newPermissions;
+    }
+
+    /**
+     * @param string $controllerClass
+     * @return array
+     */
+    private function getSplitControllerPermissions(string $controllerClass): array
+    {
+        return collect(ModulePermissionsRegistry::DEFAULT_PERMISSIONS)
+            ->mapWithKeys(function ($permission) use ($controllerClass) {
+                return [$controllerClass . '.' . $permission => true];
+            })->toArray();
     }
 }

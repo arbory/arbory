@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 use Arbory\Base\Admin\Form\Fields\Renderer\GroupedSerializableMultiselectRenderer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Input;
 use Arbory\Base\Html\Elements\Element;
 
 class GroupedSerializableMultiselect extends AbstractField
@@ -15,7 +16,7 @@ class GroupedSerializableMultiselect extends AbstractField
     private $valueGroups;
 
     /**
-     * SerializableCheckboxGroup constructor.
+     * GroupedSerializableMultiselect constructor.
      * @param $name
      */
     public function __construct($name)
@@ -29,19 +30,7 @@ class GroupedSerializableMultiselect extends AbstractField
      */
     public function beforeModelSave(Request $request)
     {
-        $values = [];
-        foreach ($this->valueGroups as $groupName => $options) {
-            foreach (array_keys($options) as $optionName) {
-                $inputName = $this->getNameSpacedName() . '.' . $optionName;
-                $value = $request->input($inputName, false);
-
-                if ($value) {
-                    $values[$optionName] = true;
-                }
-            }
-        }
-
-        $this->getModel()->{$this->getName()} = $values;
+        $this->getModel()->{$this->getName()} = $this->collectValues();
     }
 
     /**
@@ -78,5 +67,43 @@ class GroupedSerializableMultiselect extends AbstractField
         $selected = $this->getValue();
 
         return array_search($option, $selected) !== false;
+    }
+
+    /**
+     * @return array
+     */
+    protected function collectValues(): array
+    {
+        $values = [];
+        foreach ($this->getValueGroups() as $groupName => $options) {
+            $values = array_merge($values, $this->getValueGroupValues($options));
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
+    protected function getValueGroupValues(array $options): array
+    {
+        $values = [];
+        foreach (array_keys($options) as $optionName) {
+            if (Input::get($this->getOptionFieldName($optionName), false)) {
+                $values[$optionName] = true;
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param string $optionName
+     * @return string
+     */
+    protected function getOptionFieldName(string $optionName): string
+    {
+        return $this->getNameSpacedName() . '.' . $optionName;
     }
 }
