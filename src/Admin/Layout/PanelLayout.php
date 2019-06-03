@@ -9,10 +9,11 @@ use Arbory\Base\Admin\Form\Widgets\Controls;
 use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
 use Arbory\Base\Admin\Layout\Transformers\WrapTransformer;
+use Arbory\Base\Admin\Navigator\Navigator;
 use Arbory\Base\Admin\Panels\Panel;
 use Arbory\Base\Html\Elements\Content;
-use Illuminate\Support\Arr;
 use Closure;
+use Illuminate\Support\Collection;
 
 class PanelLayout extends AbstractLayout implements FormLayoutInterface
 {
@@ -28,9 +29,19 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
      */
     protected $form;
 
+    protected $append;
+
     public function __construct()
     {
         $this->fields = new \SplObjectStorage();
+        $this->append = new Content();
+    }
+
+    public function append($content)
+    {
+        $this->append->push($content);
+
+        return $this;
     }
 
     /**
@@ -44,16 +55,16 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
     /**
      * Add a new panel
      *
-     * @param $name
+     * @param $title
      * @param $contents
      *
      * @return Panel
      */
-    public function panel($name, $contents)
+    public function panel($title, $contents)
     {
         $panel = new Panel();
 
-        $panel->setTitle($name);
+        $panel->setTitle($title);
         $panel->setContent($contents);
 
         $this->panels[] = $panel;
@@ -77,11 +88,11 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
      * Creates a new fieldset and attaches its fields to the form
      *
      * @param callable $closure
-     * @param mixed ...$parameters
+     * @param mixed    ...$parameters
      *
      * @return FieldSet
      */
-    public function fields(callable $closure, ...$parameters): FieldSet
+    public function fields(callable $closure, ...$parameters):FieldSet
     {
         $fields = new FieldSet($this->form->getModel(), $this->form->fields()->getNamespace());
         $fields = $closure($fields, ...$parameters) ?: $fields;
@@ -95,35 +106,29 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
         return $fields;
     }
 
-    /**
-     * @param mixed $content
-     * @return Content
-     */
     public function contents($content)
     {
-        return new Content(Arr::wrap($content));
+        return new Content([
+            $content
+        ]);
     }
 
-    /**
-     * @return void
-     */
     public function build()
     {
-        $this->use(new WrapTransformer(new Form\Builder($this->form)));
+        // TODO: Options - 1. Remove builder from the layout, add an option disable it from transformers
 
         if (sizeof($this->panels) > 0) {
             $this->setContent($this->renderPanels());
 
+            $this->use(new WrapTransformer($this->form->getRenderer()));
             $this->use(
                 new AppendTransformer(
                     new Controls(new Tools(), $this->getForm()->getModule()->url('index'))
                 )
             );
-
-            return;
+        } else {
+            $this->use((new Form\Layout())->setForm($this->form));
         }
-
-        $this->use((new Form\Layout())->setForm($this->form));
     }
 
     public function renderPanels()

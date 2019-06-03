@@ -40,8 +40,20 @@ abstract class AbstractRelationField extends AbstractField implements NestedFiel
         return $fieldSet;
     }
 
-    protected function getFieldSetCallback()
+    public function getFieldSetCallback()
     {
         return $this->fieldSetCallback;
+    }
+
+    /**
+     * @param callable $fieldSetCallback
+     *
+     * @return AbstractRelationField
+     */
+    public function setFieldSetCallback(callable $fieldSetCallback): AbstractRelationField
+    {
+        $this->fieldSetCallback = $fieldSetCallback;
+
+        return $this;
     }
 }

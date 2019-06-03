@@ -13,6 +13,10 @@ abstract class AbstractLayout
 {
     use EventDispatcher;
 
+    const EVENT_APPLY  = 'apply';
+    const EVENT_RENDER = 'render';
+    
+    const SLOTS = [];
 
     /**
      * @var Slot
@@ -41,7 +45,7 @@ abstract class AbstractLayout
 
     /**
      * @param string $name
-     * @param mixed $content
+     * @param mixed  $content
      *
      * @return Slot
      */
@@ -108,12 +112,6 @@ abstract class AbstractLayout
         ]);
     }
 
-    /**
-     * @param Body $body
-     * @param Closure $next
-     * @param array ...$parameters
-     * @return mixed
-     */
     public function apply(Body $body, Closure $next, array ...$parameters)
     {
         $this->trigger('apply', $body);
@@ -138,11 +136,13 @@ abstract class AbstractLayout
      *
      * @return $this
      */
-    public function use($layout)
+    public function use($layout): LayoutResolver
     {
+        $resolver = new LayoutResolver(app(), $layout);
+
         $this->layouts[] = $layout;
 
-        return $this;
+        return $resolver;
     }
 
     /**
@@ -156,12 +156,12 @@ abstract class AbstractLayout
     {
         if (count($this->getPipes())) {
             return $this->pipeline()
-                ->send($content)
-                ->then(
-                    function ($content) {
-                        return $content;
-                    }
-                );
+                        ->send($content)
+                        ->then(
+                            function ($content) {
+                                return $content;
+                            }
+                        );
         }
 
         return $content;
@@ -208,18 +208,18 @@ abstract class AbstractLayout
     }
 
     /**
+     * @return LayoutInterface[]
+     */
+    protected function getPipes(): array
+    {
+        return $this->layouts;
+    }
+
+    /**
      * @return LayoutManager
      */
     public function manager(): LayoutManager
     {
         return app(LayoutManager::class);
-    }
-
-    /**
-     * @return LayoutInterface[]
-     */
-    protected function getPipes()
-    {
-        return $this->layouts;
     }
 }

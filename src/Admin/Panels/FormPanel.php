@@ -42,7 +42,7 @@ class FormPanel extends Panel
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      *
      * @return FormPanel
      */

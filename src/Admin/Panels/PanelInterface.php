@@ -10,7 +10,7 @@ use Illuminate\Contracts\Support\Renderable;
 interface PanelInterface extends Renderable, RenderOptionsInterface
 {
     /**
-     * @param Toolbox $toolbox
+     * @param  Toolbox  $toolbox
      *
      * @return Toolbox
      */

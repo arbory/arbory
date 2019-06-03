@@ -36,5 +36,4 @@ class CreateTranslationsTable extends Migration
     {
         Schema::drop('translator_translations');
     }
-
 }

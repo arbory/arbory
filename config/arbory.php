@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title' => 'Arbory',
     'uri' => 'admin',
 
     'locales' => [
@@ -32,7 +33,7 @@ return [
             ]
         ],
         'sprite_icon' => [
-            'path' => base_path( 'resources/assets/svg/icons.svg' ),
+            'path' => base_path('resources/assets/svg/icons.svg'),
         ],
     ],
 
@@ -60,6 +61,7 @@ return [
         'text' => Arbory\Base\Admin\Form\Fields\Text::class,
         'textarea' => Arbory\Base\Admin\Form\Fields\Textarea::class,
         'translatable' => Arbory\Base\Admin\Form\Fields\Translatable::class,
+        'constructor' => Arbory\Base\Admin\Form\Fields\Constructor::class,
     ],
 
     'field_styles' => [

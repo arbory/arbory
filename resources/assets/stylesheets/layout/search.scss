@@ -1,6 +1,8 @@
 form.search
 {
     text-align: right;
+    float: right;
+    display: inline-block;
 
     &.has-extra-search:not(.has-text-search)
     {

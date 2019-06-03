@@ -5,9 +5,9 @@ jQuery( document ).ready(function()
     jQuery(document).bind('nestedfieldsinit', function( e )
     {
         var target = jQuery(e.target);
-        if (!target.is('section.nested'))
+        if (!target.is('.nested'))
         {
-            target = target.find('section.nested');
+            target = target.find('.nested');
         }
 
         target.each(function()
@@ -44,7 +44,7 @@ jQuery( document ).ready(function()
                     return;
                 }
 
-                var target_block = trigger.parents('section.nested').first();
+                var target_block = trigger.parents('.nested').first();
 
                 if (target_block.attr('data-name') !== block_name)
                 {
@@ -83,11 +83,14 @@ jQuery( document ).ready(function()
 
             block.on('nestedfieldscreate', function(e, params)
             {
-                console.log('creating', params);
-
                 var target_block = params.target_block;
                 var event_params = params.original_params;
                 var template = params.template;
+
+                if (target_block.attr('data-name') !== block_name)
+                {
+                    return;   // only react to own clicks
+                }
 
                 if (template.length !== 1)
                 {
@@ -137,6 +140,11 @@ jQuery( document ).ready(function()
                 var target_block = params.target_block;
                 var item = params.item;
                 var event_params = params.original_params;
+
+                if (target_block.attr('data-name') !== block_name)
+                {
+                    return;   // only react to own clicks
+                }
 
                 var removeItem = function( item )
                 {

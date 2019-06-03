@@ -30,7 +30,7 @@ class SecurityController extends BaseController
      */
     public function __construct(SecurityStrategy $security)
     {
-        $this->middleware('arbory.admin_quest', ['except' => 'postLogout']);
+        $this->middleware('arbory.admin_quest', [ 'except' => 'postLogout' ]);
 
         $this->security = $security;
     }
@@ -42,8 +42,8 @@ class SecurityController extends BaseController
     public function getLogin(Request $request)
     {
         return view(
-            'arbory::layout.login',
-            ['input' => $request]
+            'arbory::controllers.security.login',
+            [ 'input' => $request ]
         );
     }
 
@@ -53,8 +53,8 @@ class SecurityController extends BaseController
      */
     public function postLogin(LoginRequest $request)
     {
-        $credentials = array_only($request->get('user'), ['email', 'password']);
-        $remember = (bool)$request->get('remember', false);
+        $credentials = array_only($request->get('user'), [ 'email', 'password' ]);
+        $remember = (bool) $request->get('remember', false);
 
         $result = $this->security->authenticate($credentials, $remember);
 

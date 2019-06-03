@@ -10,10 +10,9 @@ class ModifyColumnsInLinksTable extends Migration
      */
     public function up()
     {
-        Schema::table( 'links', function( Blueprint $table )
-        {
-            $table->string( 'title' )->nullable()->change();
-            $table->text( 'href' )->nullable()->change();
-        } );
+        Schema::table('links', function (Blueprint $table) {
+            $table->string('title')->nullable()->change();
+            $table->text('href')->nullable()->change();
+        });
     }
 }

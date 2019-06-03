@@ -11,6 +11,10 @@ use Closure;
 
 class Page extends Layout implements PageInterface
 {
+    const SLOTS = [
+        'header_right'
+    ];
+
     protected $view = 'arbory::controllers.resource.layout';
 
     /**
@@ -86,6 +90,7 @@ class Page extends Layout implements PageInterface
         return Html::header([
             $this->getBreadcrumbs(),
             $this->slot('header_right'),
+            $this->slot('header_right_filter'),
         ]);
     }
 

@@ -11,7 +11,6 @@ use Arbory\Base\Html\Html;
 
 class SectionFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
 {
-
     public function render(RendererInterface $renderer, StyleOptionsInterface $options)
     {
         $field = $renderer->getField();

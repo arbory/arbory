@@ -44,7 +44,7 @@ class Grid
     /**
      * @var array
      */
-    protected $enabledDefaultTools = ['create', 'search'];
+    protected $enabledDefaultTools = [ 'create', 'search' ];
 
     /**
      * @var array
@@ -84,7 +84,7 @@ class Grid
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -126,13 +126,21 @@ class Grid
     }
 
     /**
+     * @return Model
+     */
+    public function getModel(): Model
+    {
+        return $this->model;
+    }
+
+    /**
      * @param RenderableInterface $tool
      * @param string|null $side
      * @return void
      */
     public function addTool(RenderableInterface $tool, string $side = null)
     {
-        $this->tools[] = [$tool, $side ?: self::FOOTER_SIDE_SECONDARY];
+        $this->tools[] = [ $tool, $side ?: self::FOOTER_SIDE_SECONDARY ];
     }
 
     /**
@@ -210,19 +218,64 @@ class Grid
      * @param null $label
      * @return Column
      */
-    public function column($name = null, $label = null)
+    public function column($name = null, $label = null) : Column
     {
-        $column = new Column($name, $label);
-        $column->setGrid($this);
+        return $this->appendColumn($name, $label);
+    }
 
+    /**
+     * @param null $name
+     * @param null $label
+     * @return Column
+     */
+    public function appendColumn($name = null, $label = null) : Column
+    {
+        $column = $this->createColumn($name, $label);
         $this->columns->push($column);
+        $this->setColumnRelation($column, $name);
 
+        return $column;
+    }
+    /**
+     * @param null $name
+     * @param null $label
+     * @return Column
+     */
+    public function prependColumn($name = null, $label = null) : Column
+    {
+        $column = $this->createColumn($name, $label);
+        $this->columns->prepend($column);
+        $this->setColumnRelation($column, $name);
+
+        return $column;
+    }
+
+    /**
+     * @param $column
+     * @param $name
+     * @return mixed
+     */
+    protected function setColumnRelation($column, $name) : Column
+    {
         if (strpos($name, '.') !== false) {
             list($relationName, $relationColumn) = explode('.', $name);
 
             $this->filter->withRelation($relationName);
             $column->setRelation($relationName, $relationColumn);
         }
+
+        return $column;
+    }
+
+    /**
+     * @param null $name
+     * @param null $label
+     * @return Column
+     */
+    protected function createColumn($name = null, $label = null) : Column
+    {
+        $column = new Column($name, $label);
+        $column->setGrid($this);
 
         return $column;
     }
@@ -314,7 +367,7 @@ class Grid
         $this->buildRows($items);
 
         $columns = $this->columns->map(function (Column $column) {
-            return (string)$column;
+            return (string) $column;
         })->toArray();
 
         return $this->rows->map(function (Row $row) use ($columns) {

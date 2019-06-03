@@ -8,5 +8,4 @@ namespace Arbory\Base\Exceptions;
  */
 class BadMethodCallException extends \Exception
 {
-
 }

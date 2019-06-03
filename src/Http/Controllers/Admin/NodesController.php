@@ -2,16 +2,23 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Constructor\ConstructorLayout;
+use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Layout\LayoutManager;
+use Arbory\Base\Admin\Navigator\Navigator;
 use Arbory\Base\Admin\Page;
+use Arbory\Base\Admin\Panels\Panel;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Admin\Form\Fields\Deactivator;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Nodes\Admin\Grid\Filter;
@@ -22,6 +29,7 @@ use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class NodesController extends Controller
 {
@@ -40,26 +48,32 @@ class NodesController extends Controller
     protected $contentTypeRegister;
 
     /**
-     * @param Container $container
+     * @param Container           $container
      * @param ContentTypeRegister $contentTypeRegister
      */
     public function __construct(
         Container $container,
         ContentTypeRegister $contentTypeRegister
     ) {
-        $this->container = $container;
+        $this->container           = $container;
         $this->contentTypeRegister = $contentTypeRegister;
     }
 
     /**
-     * @param Form $form
-     * @param LayoutInterface $panels
+     * @param Form            $form
+     * @param LayoutInterface $layout
      *
      * @return Form
      */
-    protected function form(Form $form, ?LayoutInterface $panels)
+    protected function form(Form $form, ?LayoutInterface $layout)
     {
-        $form->setFields(function (FieldSet $fields) {
+        $definition = $this->resolveContentDefinition($form);
+
+        $definition->getLayoutHandler()->call($this, $form, $layout);
+
+        $form->setFields(function (FieldSet $fields) use (
+            $layout,
+            $definition) {
             $fields->hidden('parent_id');
             $fields->hidden('content_type');
             $fields->text('name')->rules('required');
@@ -75,15 +89,7 @@ class NodesController extends Controller
                 $fields->add(new Deactivator('deactivate'));
             }
 
-            $fields->hasOne('content', function (FieldSet $fieldSet) {
-
-                $content = $fieldSet->getModel();
-
-                $class = (new \ReflectionClass($content))->getName();
-                $definition = $this->contentTypeRegister->findByModelClass($class);
-
-                $definition->getFieldSetHandler()->call($content, $fieldSet);
-            });
+            $fields->hasOne('content', $this->contentResolver($definition, $layout));
         });
 
         $form->addEventListeners(['create.after'], function () use ($form) {
@@ -127,7 +133,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param Request       $request
      * @param LayoutManager $manager
      *
      * @return RedirectResponse|Layout
@@ -136,7 +142,7 @@ class NodesController extends Controller
     {
         $contentType = $request->get('content_type');
 
-        if (!$this->contentTypeRegister->isValidContentType($contentType)) {
+        if (! $this->contentTypeRegister->isValidContentType($contentType)) {
             return redirect($this->url('index'))->withErrors('Undefined content type "' . $contentType . '"');
         }
 
@@ -153,7 +159,6 @@ class NodesController extends Controller
 
         $page = $manager->page(Page::class);
         $page->use($layout);
-
         $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
 
         return $page;
@@ -205,9 +210,9 @@ class NodesController extends Controller
         $types = $contentTypes->sort()->map(function (ContentTypeDefinition $definition, string $type) use ($request) {
             return [
                 'title' => $definition->getName(),
-                'url' => $this->url('create', [
+                'url'   => $this->url('create', [
                     'content_type' => $type,
-                    'parent_id' => $request->get('parent_id'),
+                    'parent_id'    => $request->get('parent_id'),
                 ]),
             ];
         });
@@ -224,11 +229,11 @@ class NodesController extends Controller
     {
         /**
          * @var NodesRepository $nodes
-         * @var Node $node
+         * @var Node            $node
          */
-        $nodes = new NodesRepository;
-        $node = $nodes->findOneBy('id', $request->input('id'));
-        $toLeftId = $request->input('toLeftId');
+        $nodes     = new NodesRepository;
+        $node      = $nodes->findOneBy('id', $request->input('id'));
+        $toLeftId  = $request->input('toLeftId');
         $toRightId = $request->input('toRightId');
 
         if ($toLeftId) {
@@ -251,12 +256,12 @@ class NodesController extends Controller
 
         if ($request->has('parent_id')) {
             $reservedSlugs = $this->resource()
-                ->where([
-                    ['parent_id', $request->get('parent_id')],
-                    ['id', '<>', $request->get('object_id')],
-                ])
-                ->pluck('slug')
-                ->toArray();
+                                  ->where([
+                                      ['parent_id', $request->get('parent_id')],
+                                      ['id', '<>', $request->get('object_id')],
+                                  ])
+                                  ->pluck('slug')
+                                  ->toArray();
         }
 
         $from = $request->get('from');
@@ -279,5 +284,55 @@ class NodesController extends Controller
     protected function getSlugGeneratorUrl()
     {
         return $this->url('api', 'slug_generator');
+    }
+
+    protected function constructorTypesDialog(Request $request)
+    {
+        return view('arbory::dialogs.constructor_types', [
+            'types' => app(BlockRegistry::class)->all(),
+            'field' => $request->get('field')
+        ]);
+    }
+
+    /**
+     * Creates a closure for content field
+     *
+     * @param ContentTypeDefinition $definition
+     * @param LayoutInterface|null  $layout
+     *
+     * @return \Closure
+     */
+    protected function contentResolver(ContentTypeDefinition $definition, ?LayoutInterface $layout)
+    {
+        return function (FieldSet $fieldSet) use ($layout, $definition) {
+            $content = $fieldSet->getModel();
+
+            $definition->getFieldSetHandler()->call($content, $fieldSet, $layout);
+        };
+    }
+
+    /**
+     * Resolves content type based on the current model & form data
+     *
+     * @param Form $form
+     *
+     * @return ContentTypeDefinition
+     */
+    protected function resolveContentDefinition(Form $form): ContentTypeDefinition
+    {
+        $model       = $form->getModel();
+        $morphType   = $model->content()->getMorphType();
+        // Find content type from model
+        $attribute   = $model->getAttribute($morphType);
+
+        // Find it from request otherwise
+        if ($attribute === null) {
+            $attribute = \request()->input("{$form->getNamespace()}.{$morphType}");
+        }
+
+        $class       = ( new \ReflectionClass($attribute) )->getName();
+        $definition  = $this->contentTypeRegister->findByModelClass($class);
+
+        return $definition;
     }
 }

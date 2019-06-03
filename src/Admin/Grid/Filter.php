@@ -77,6 +77,30 @@ class Filter implements FilterInterface
     }
 
     /**
+     * @param Collection $columns
+     */
+    protected function filter(Collection $columns): void
+    {
+        $filterParameters = self::removeNonFilterParameters($this->request->all());
+
+        foreach ($filterParameters as $getKey => $getValue) {
+            if (!$getValue) {
+                continue;
+            }
+
+            $column = $columns->filter(function (Column $column) use ($getKey) {
+                return $column->getName() === $getKey || $column->getRelationName() === $getKey;
+            })->first();
+
+            if (!$column || !$column->getHasFilter()) {
+                continue;
+            }
+
+            $this->createQuery($column, $getValue, $getKey);
+        }
+    }
+
+    /**
      * @param $phrase
      * @param Collection|Column[] $columns
      */
@@ -137,6 +161,8 @@ class Filter implements FilterInterface
             $this->search($this->request->get('search'), $columns);
         }
 
+        $this->filter($columns);
+
         $this->order($columns);
 
         return $this->loadItems();
@@ -156,6 +182,22 @@ class Filter implements FilterInterface
     public function getQuery(): QueryBuilder
     {
         return $this->query;
+    }
+
+    /**
+     * @param $column
+     * @param $value
+     * @param $key
+     */
+    public function createQuery($column, $value, $key): void
+    {
+        $actions = $this->getFilterTypeAction($column);
+
+        if (is_null($column->getRelationName())) {
+            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $actions, $value);
+        } else {
+            $this->createQueryWithRelation($column, $actions, $value);
+        }
     }
 
     /**
@@ -183,10 +225,86 @@ class Filter implements FilterInterface
     }
 
     /**
+     * @param $column
+     * @return array
+     */
+    public function getFilterTypeAction($column): array
+    {
+        return $column->getFilterType()->getAction();
+    }
+
+    /**
      * @param int $perPage
      */
     public function setPerPage(int $perPage)
     {
         $this->perPage = $perPage;
+    }
+
+    /**
+     * @param $columnName
+     * @param $actions
+     * @param $values
+     */
+    public function createQueryWithoutRelation($columnName, $actions, $values): void
+    {
+        $actions = array_wrap($actions);
+        $values = array_wrap($values);
+
+        foreach (array_combine($values, $actions) as $value => $action) {
+            $this->query->where($columnName, $action, $value);
+        }
+    }
+
+    /**
+     * @param $column
+     * @param $actions
+     * @param $values
+     */
+    public function createQueryWithRelation($column, $actions, $values): void
+    {
+        $actions = array_wrap($actions);
+        $values = array_wrap($values);
+
+        if (count($actions) === count($values)) {
+            foreach (array_combine($values, $actions) as $value => $action) {
+                $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
+                    $query->where($column->getFilterRelationColumn(), $action, $value);
+                });
+            }
+
+            return;
+        }
+
+        $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $values) {
+            $query->whereIn($column->getFilterRelationColumn(), $values);
+        });
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    private function removeNonFilterParameters(array $parameters): array
+    {
+        unset($parameters['_order_by']);
+        unset($parameters['_order']);
+
+        return self::recursiveArrayFilter($parameters);
+    }
+
+    /**
+     * @param array $filterParameters
+     * @return array
+     */
+    private function recursiveArrayFilter(array $filterParameters): array
+    {
+        foreach ($filterParameters as $getKey => &$getValue) {
+            if (is_array($getValue)) {
+                $getValue = self::recursiveArrayFilter($getValue);
+            }
+        }
+
+        return array_filter($filterParameters);
     }
 }

@@ -4,8 +4,9 @@ namespace Arbory\Base\Services;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Form\FieldSetFactory;
+use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
+use ReflectionClass;
 
 class FieldTypeRegistry
 {
@@ -18,14 +19,23 @@ class FieldTypeRegistry
      * @var
      */
     protected $reservedTypes = [];
+    /**
+     * @var Container
+     */
+    protected $app;
 
     /**
      * FieldTypeRegistry constructor.
+     *
+     * @param Container $app
+     *
+     * @throws \ReflectionException
      */
-    public function __construct()
+    public function __construct(Container $app)
     {
         $this->fieldTypes = new Collection();
         $this->reservedTypes = $this->getReservedMethods(FieldSet::class);
+        $this->app = $app;
     }
 
     /**
@@ -88,7 +98,7 @@ class FieldTypeRegistry
             throw new \InvalidArgumentException("Could not resolve a field for a type '{$type}'");
         }
 
-        return new $fieldClass(...$parameters);
+        return $this->app->make($fieldClass, $this->bindParametersByIndex($fieldClass, $parameters));
     }
 
     /**
@@ -101,7 +111,7 @@ class FieldTypeRegistry
      */
     protected function getReservedMethods($class)
     {
-        $reflection = new \ReflectionClass($class);
+        $reflection = new ReflectionClass($class);
 
         $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
 
@@ -112,5 +122,31 @@ class FieldTypeRegistry
         }
 
         return $reservedMethods;
+    }
+
+    /**
+     * Builds an dictionary of parameters by name for an class from index based parameter list
+     *
+     * @param string $class
+     * @param array  $parameters
+     *
+     * @return array
+     * @throws \ReflectionException
+     */
+    protected function bindParametersByIndex(string $class, array $parameters)
+    {
+        $reflection = new ReflectionClass($class);
+        $constructor = $reflection->getConstructor();
+        $reflectionParameters = $constructor->getParameters();
+
+        $out = [];
+
+        foreach ($parameters as $key => $parameter) {
+            $reflectionParameter = $reflectionParameters[$key];
+
+            $out[$reflectionParameter->getName()] = $parameter;
+        }
+
+        return $out;
     }
 }

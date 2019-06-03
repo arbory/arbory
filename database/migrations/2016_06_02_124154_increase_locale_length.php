@@ -54,5 +54,4 @@ class IncreaseLocaleLength extends Migration
             $table->unique(['locale', 'namespace', 'group', 'item']);
         });
     }
-
 }

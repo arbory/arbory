@@ -49,7 +49,7 @@ class ArboryServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->publishes([
-            __DIR__ . '/../../stubs/settings.stub' => config_path('settings.php')
+            __DIR__ . '/../../stubs/pages.stub' => base_path('/routes/pages.php')
         ], 'config');
 
         $this->publishes([

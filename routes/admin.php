@@ -41,5 +41,3 @@ Route::group(['middleware' => 'arbory.admin_auth'], function () {
         'uses' => 'Admin\UploadController@upload'
     ]);
 });
-
-

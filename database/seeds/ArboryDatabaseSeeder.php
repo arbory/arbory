@@ -19,8 +19,7 @@ class ArboryDatabaseSeeder extends Seeder
     public function __construct(
         LanguageRepository $languageRepository,
         DatabaseManager $databaseManager
-    )
-    {
+    ) {
         $this->languageRepository = $languageRepository;
         $this->databaseManager = $databaseManager;
     }
@@ -40,12 +39,11 @@ class ArboryDatabaseSeeder extends Seeder
      */
     protected function seedLocales()
     {
-        if( $this->languageRepository->getModel()->all()->isEmpty() )
-        {
-            $this->languageRepository->create( [
+        if ($this->languageRepository->getModel()->all()->isEmpty()) {
+            $this->languageRepository->create([
                 'locale' => 'en',
                 'name' => 'English'
-            ] );
+            ]);
         }
     }
 }
