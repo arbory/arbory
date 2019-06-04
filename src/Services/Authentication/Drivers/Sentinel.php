@@ -11,6 +11,8 @@ use Illuminate\Support\Arr;
 
 class Sentinel implements AuthenticationMethod
 {
+    protected const LOGIN_VIEW = 'arbory::controllers.security.login';
+    
     /**
      * @var SentinelService
      */
@@ -19,7 +21,7 @@ class Sentinel implements AuthenticationMethod
     /**
      * @param SentinelService $sentinel
      */
-    public function __construct( SentinelService $sentinel )
+    public function __construct(SentinelService $sentinel)
     {
         $this->sentinel = $sentinel;
     }
@@ -30,9 +32,9 @@ class Sentinel implements AuthenticationMethod
      * @param bool $login
      * @return bool
      */
-    public function authenticate( array $credentials, $remember = false, $login = true ): bool
+    public function authenticate(array $credentials, $remember = false, $login = true): bool
     {
-        $user = $this->sentinel->authenticate(Arr::get($credentials, 'user', []), $remember, $login );
+        $user = $this->sentinel->authenticate(Arr::get($credentials, 'user', []), $remember, $login);
         return $user !== false;
     }
 
@@ -41,7 +43,7 @@ class Sentinel implements AuthenticationMethod
      * @param boolean $everywhere
      * @return bool
      */
-    public function logout( UserInterface $user = null, $everywhere = false ): bool
+    public function logout(UserInterface $user = null, $everywhere = false): bool
     {
         return $this->sentinel->logout($user, $everywhere) ? true : false;
     }
@@ -52,5 +54,13 @@ class Sentinel implements AuthenticationMethod
     public function getFormRequest(): FormRequest
     {
         return new LoginRequest();
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLoginView(): string
+    {
+        return static::LOGIN_VIEW;
     }
 }
