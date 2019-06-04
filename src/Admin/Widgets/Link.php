@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Link
- * @package Arbory\Base\Admin\Widgets
+ * Class Link.
  */
 class Link implements Renderable
 {
@@ -31,7 +30,7 @@ class Link implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -52,7 +51,7 @@ class Link implements Renderable
      */
     public function asButton($type = null)
     {
-        $this->element->addClass('button ' . $type);
+        $this->element->addClass('button '.$type);
 
         return $this;
     }
@@ -80,7 +79,7 @@ class Link implements Renderable
     public function withIcon($name)
     {
         $this->element->addClass('with-icon');
-        $this->element->append(Html::i()->addClass('fa fa-' . $name));
+        $this->element->append(Html::i()->addClass('fa fa-'.$name));
 
         return $this;
     }

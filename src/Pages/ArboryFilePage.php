@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Pages;
 
-use Arbory\Base\Admin\Form\Fields\ArboryFile;
 use Arbory\Base\Admin\Form\FieldSet;
 use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Form\Fields\ArboryFile;
 
 class ArboryFilePage extends Model implements PageInterface
 {

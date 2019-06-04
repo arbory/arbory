@@ -1,12 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Controls;
 
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Elements\Inputs\Input as InputElement;
-use Arbory\Base\Html\Html;
 
 class CheckboxControl extends InputControl
 {
@@ -27,7 +25,6 @@ class CheckboxControl extends InputControl
     {
         $control->setType($this->type);
         $input = parent::render($control);
-
 
         $content = new Content();
 

@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Illuminate\Contracts\Support\Renderable;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Illuminate\Contracts\Support\Renderable;
 
 interface RendererInterface extends Renderable
 {
@@ -14,7 +13,7 @@ interface RendererInterface extends Renderable
      *
      * @return mixed
      */
-    public function setField(FieldInterface $field): RendererInterface;
+    public function setField(FieldInterface $field): self;
 
     /**
      * @return FieldInterface
@@ -22,7 +21,7 @@ interface RendererInterface extends Renderable
     public function getField(): FieldInterface;
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *

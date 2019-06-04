@@ -2,14 +2,13 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use Arbory\Base\Html\Elements\Element;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Footer
- * @package Arbory\Base\Admin\Layout
+ * Class Footer.
  */
 class Footer implements Renderable
 {
@@ -38,7 +37,7 @@ class Footer implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**

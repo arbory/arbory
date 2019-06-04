@@ -3,8 +3,7 @@
 namespace Arbory\Base\Admin\Tools;
 
 /**
- * Class AbstractAction
- * @package Arbory\Base\Admin\Form\Fields\ToolboxActions
+ * Class AbstractAction.
  */
 class ToolboxMenuItem
 {

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait HasActivationDates
 {
-
     /**
      * @param $value
      * @return Carbon|null
@@ -31,7 +30,7 @@ trait HasActivationDates
      */
     public function getActiveAttribute()
     {
-        return $this->hasActivated() && !$this->hasExpired();
+        return $this->hasActivated() && ! $this->hasExpired();
     }
 
     /**
@@ -43,10 +42,10 @@ trait HasActivationDates
         $table = $this->getTable();
         $now = date('Y-m-d H:i:s');
 
-        return $query->where($table . '.activate_at', '<=', $now)
+        return $query->where($table.'.activate_at', '<=', $now)
             ->where(function (Builder $query) use ($table, $now) {
-                return $query->where($table . '.expire_at', '>=', $now)
-                    ->orWhereNull($table . '.expire_at');
+                return $query->where($table.'.expire_at', '>=', $now)
+                    ->orWhereNull($table.'.expire_at');
             });
     }
 
@@ -55,7 +54,7 @@ trait HasActivationDates
      */
     public function hasExpired()
     {
-        return !is_null($this->expire_at) && $this->expire_at->isPast();
+        return ! is_null($this->expire_at) && $this->expire_at->isPast();
     }
 
     /**
@@ -63,6 +62,6 @@ trait HasActivationDates
      */
     public function hasActivated()
     {
-        return !is_null($this->activate_at) && $this->activate_at->isPast();
+        return ! is_null($this->activate_at) && $this->activate_at->isPast();
     }
 }

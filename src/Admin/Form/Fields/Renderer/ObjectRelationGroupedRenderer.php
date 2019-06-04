@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
 
 class ObjectRelationGroupedRenderer extends ObjectRelationRenderer
@@ -32,7 +32,7 @@ class ObjectRelationGroupedRenderer extends ObjectRelationRenderer
             foreach ($group as $relation) {
                 $name = $this->getGroupName($relation);
 
-                if (!array_key_exists($name, $items)) {
+                if (! array_key_exists($name, $items)) {
                     $items[$name] = Html::div(Html::strong($name)->addClass('title'))->addClass('group');
                 }
 

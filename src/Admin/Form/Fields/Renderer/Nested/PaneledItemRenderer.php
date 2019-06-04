@@ -1,17 +1,15 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Nested;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
-use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Panels\Panel;
+use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 
 class PaneledItemRenderer implements ItemInterface
 {
@@ -19,7 +17,7 @@ class PaneledItemRenderer implements ItemInterface
 
     public function __invoke(FieldInterface $field, FieldSet $fieldSet, $index = null, array $parameters = [])
     {
-        $title = $parameters['title'] ?? "";
+        $title = $parameters['title'] ?? '';
 
         $panel = new Panel();
         $panel->setTitle($title);
@@ -28,22 +26,21 @@ class PaneledItemRenderer implements ItemInterface
                   [
                       'data-title' => $title,
                       'data-name'  => $field->getName(),
-                      'data-index' => $index
+                      'data-index' => $index,
                   ]
               );
 
         $content = new Content([
-            $fieldSet->render()
+            $fieldSet->render(),
         ]);
 
         $this->addSortableNavigation($field, $panel);
-        $this->addRemoveButton($field, $panel, $content, $fieldSet->getNamespace() . '._destroy');
+        $this->addRemoveButton($field, $panel, $content, $fieldSet->getNamespace().'._destroy');
 
         $panel->setContent($content);
 
         return $panel->render();
     }
-
 
     /**
      * @param FieldInterface $field
@@ -56,8 +53,8 @@ class PaneledItemRenderer implements ItemInterface
      */
     protected function addRemoveButton(FieldInterface $field, Panel $panel, Content $content, $name)
     {
-        if (!$field->canRemoveRelationItems()) {
-            return null;
+        if (! $field->canRemoveRelationItems()) {
+            return;
         }
 
         $button = Button::create()
@@ -87,8 +84,8 @@ class PaneledItemRenderer implements ItemInterface
      */
     protected function addSortableNavigation(FieldInterface $field, Panel $panel)
     {
-        if (!$field->canSortRelationItems()) {
-            return null;
+        if (! $field->canSortRelationItems()) {
+            return;
         }
 
         $panel->addButton(

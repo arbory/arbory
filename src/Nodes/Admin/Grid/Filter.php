@@ -2,12 +2,11 @@
 
 namespace Arbory\Base\Nodes\Admin\Grid;
 
-use Arbory\Base\Admin\Grid\FilterInterface;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Arbory\Base\Admin\Grid\FilterInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Filter implements FilterInterface
 {

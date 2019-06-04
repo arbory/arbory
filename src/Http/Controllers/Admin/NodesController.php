@@ -2,34 +2,28 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Admin\Constructor\ConstructorLayout;
-use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Layout;
-use Arbory\Base\Admin\Layout\LayoutInterface;
-use Arbory\Base\Admin\Layout\LayoutManager;
-use Arbory\Base\Admin\Navigator\Navigator;
 use Arbory\Base\Admin\Page;
-use Arbory\Base\Admin\Panels\Panel;
-use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Admin\Form\Fields\Deactivator;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
-use Arbory\Base\Admin\Widgets\Link;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
-use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\Node;
+use Illuminate\Http\Request;
+use Arbory\Base\Admin\Layout;
+use Illuminate\Routing\Controller;
+use Illuminate\Container\Container;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Traits\Crudify;
+use Illuminate\Http\RedirectResponse;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Nodes\Admin\Grid\Filter;
 use Arbory\Base\Nodes\Admin\Grid\Renderer;
 use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Admin\Layout\LayoutManager;
+use Arbory\Base\Nodes\ContentTypeDefinition;
+use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Repositories\NodesRepository;
-use Illuminate\Container\Container;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Arbory\Base\Admin\Form\Fields\Deactivator;
+use Arbory\Base\Admin\Constructor\BlockRegistry;
 
 class NodesController extends Controller
 {
@@ -55,7 +49,7 @@ class NodesController extends Controller
         Container $container,
         ContentTypeRegister $contentTypeRegister
     ) {
-        $this->container           = $container;
+        $this->container = $container;
         $this->contentTypeRegister = $contentTypeRegister;
     }
 
@@ -141,7 +135,7 @@ class NodesController extends Controller
         $contentType = $request->get('content_type');
 
         if (! $this->contentTypeRegister->isValidContentType($contentType)) {
-            return redirect($this->url('index'))->withErrors('Undefined content type "' . $contentType . '"');
+            return redirect($this->url('index'))->withErrors('Undefined content type "'.$contentType.'"');
         }
 
         $node = $this->resource();
@@ -157,7 +151,7 @@ class NodesController extends Controller
 
         $page = $manager->page(Page::class);
         $page->use($layout);
-        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+        $page->bodyClass('controller-'.str_slug($this->module()->name()).' view-edit');
 
         return $page;
     }
@@ -168,7 +162,7 @@ class NodesController extends Controller
     protected function afterSave(Form $form)
     {
         /**
-         * @var $node Node
+         * @var Node
          */
         $node = $form->getModel();
 
@@ -226,12 +220,12 @@ class NodesController extends Controller
     protected function nodeRepositionApi(Request $request)
     {
         /**
-         * @var NodesRepository $nodes
+         * @var NodesRepository
          * @var Node            $node
          */
-        $nodes     = new NodesRepository;
-        $node      = $nodes->findOneBy('id', $request->input('id'));
-        $toLeftId  = $request->input('toLeftId');
+        $nodes = new NodesRepository;
+        $node = $nodes->findOneBy('id', $request->input('id'));
+        $toLeftId = $request->input('toLeftId');
         $toRightId = $request->input('toRightId');
 
         if ($toLeftId) {
@@ -266,11 +260,11 @@ class NodesController extends Controller
         $slug = str_slug($from);
 
         if (in_array($slug, $reservedSlugs, true) && $request->has('id')) {
-            $slug = str_slug($request->get('id') . '-' . $from);
+            $slug = str_slug($request->get('id').'-'.$from);
         }
 
         if (in_array($slug, $reservedSlugs, true)) {
-            $slug = str_slug($from . '-' . random_int(0, 9999));
+            $slug = str_slug($from.'-'.random_int(0, 9999));
         }
 
         return $slug;
@@ -288,12 +282,12 @@ class NodesController extends Controller
     {
         return view('arbory::dialogs.constructor_types', [
             'types' => app(BlockRegistry::class)->all(),
-            'field' => $request->get('field')
+            'field' => $request->get('field'),
         ]);
     }
 
     /**
-     * Creates a closure for content field
+     * Creates a closure for content field.
      *
      * @param ContentTypeDefinition $definition
      * @param LayoutInterface|null  $layout
@@ -310,7 +304,7 @@ class NodesController extends Controller
     }
 
     /**
-     * Resolves content type based on the current model & form data
+     * Resolves content type based on the current model & form data.
      *
      * @param Form $form
      *
@@ -318,18 +312,18 @@ class NodesController extends Controller
      */
     protected function resolveContentDefinition(Form $form): ContentTypeDefinition
     {
-        $model       = $form->getModel();
-        $morphType   = $model->content()->getMorphType();
+        $model = $form->getModel();
+        $morphType = $model->content()->getMorphType();
         // Find content type from model
-        $attribute   = $model->getAttribute($morphType);
+        $attribute = $model->getAttribute($morphType);
 
         // Find it from request otherwise
         if ($attribute === null) {
             $attribute = \request()->input("{$form->getNamespace()}.{$morphType}");
         }
 
-        $class       = ( new \ReflectionClass($attribute) )->getName();
-        $definition  = $this->contentTypeRegister->findByModelClass($class);
+        $class = ( new \ReflectionClass($attribute) )->getName();
+        $definition = $this->contentTypeRegister->findByModelClass($class);
 
         return $definition;
     }

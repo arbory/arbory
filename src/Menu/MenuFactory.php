@@ -25,7 +25,7 @@ class MenuFactory
     public function build(array $items)
     {
         foreach ($items as $key => &$item) {
-            $title = !is_numeric($key) ? $key : null;
+            $title = ! is_numeric($key) ? $key : null;
             $item = $this->menuItemFactory->build($item, $title);
         }
 

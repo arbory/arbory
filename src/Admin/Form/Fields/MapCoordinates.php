@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
 use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
+use Arbory\Base\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
 
 class MapCoordinates extends AbstractField implements NestedFieldInterface, RenderOptionsInterface
 {
@@ -48,7 +48,7 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface, Rend
         return [
             'data-zoom' => $this->zoom,
             'data-latitude' => $this->latitude,
-            'data-longitude' => $this->longitude
+            'data-longitude' => $this->longitude,
         ];
     }
 
@@ -97,7 +97,7 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface, Rend
             ->addClass('coordinates-input')
             ->setDisabled($this->isDisabled())
             ->setInteractive($this->isInteractive());
-        $fieldSet->text("search")
+        $fieldSet->text('search')
             ->setName('')
             ->setLabel('')
             ->addClass('search-input')

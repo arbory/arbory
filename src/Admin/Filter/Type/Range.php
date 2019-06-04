@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
 
 /**
- * Class Range
- * @package Arbory\Base\Admin\Filter\Type
+ * Class Range.
  */
 class Range extends Type
 {
@@ -19,7 +18,7 @@ class Range extends Type
      */
     protected $action = [
         '>=',
-        '<='
+        '<=',
     ];
 
     /**
@@ -33,15 +32,15 @@ class Range extends Type
                 Html::h4(trans('arbory::filter.range.from')),
                 Html::input()
                     ->setType('number')
-                    ->setName($this->getColumn() . '[min]')
-                    ->addAttributes([ 'step' => self::STEP, 'value' => $this->getRangeValue('min')])
+                    ->setName($this->getColumn().'[min]')
+                    ->addAttributes(['step' => self::STEP, 'value' => $this->getRangeValue('min')]),
             ])->addClass('column'),
             Html::div([
                 Html::h4(trans('arbory::filter.range.to')),
                 Html::input()
                     ->setType('number')
-                    ->setName($this->getColumn() . '[max]')
-                    ->addAttributes([ 'step' => self::STEP, 'value' => $this->getRangeValue('max')])
+                    ->setName($this->getColumn().'[max]')
+                    ->addAttributes(['step' => self::STEP, 'value' => $this->getRangeValue('max')]),
             ])->addClass('column'),
         ])->addClass('range')]);
     }

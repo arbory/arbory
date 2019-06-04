@@ -2,16 +2,15 @@
 
 namespace Arbory\Base\Http\Middleware;
 
-use Cartalyst\Sentinel\Roles\RoleInterface;
 use Closure;
+use Sentinel;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Sentinel;
+use Cartalyst\Sentinel\Roles\RoleInterface;
 
 /**
- * Class SentinelUserInRole
- * @package Arbory\Base\Http\Middleware
+ * Class SentinelUserInRole.
  */
 class ArboryAdminInRoleMiddleware
 {
@@ -37,12 +36,12 @@ class ArboryAdminInRoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        if (!$this->sentinel->check()) {
+        if (! $this->sentinel->check()) {
             return $this->denied($request);
         }
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        if (!$this->sentinel->inRole($role)) {
+        /* @noinspection PhpUndefinedMethodInspection */
+        if (! $this->sentinel->inRole($role)) {
             return $this->denied($request);
         }
 

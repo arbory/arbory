@@ -15,7 +15,7 @@ class SettingTranslation extends Model
      * @var array
      */
     protected $fillable = [
-        'setting_name', 'value', 'locale'
+        'setting_name', 'value', 'locale',
     ];
 
     /**

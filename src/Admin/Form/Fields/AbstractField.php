@@ -2,18 +2,17 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
 use Arbory\Base\Admin\Form\Fields\Concerns\IsTranslatable;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 /**
- * Class AbstractField
- * @package Arbory\Base\Admin\Form\Fields
+ * Class AbstractField.
  */
 abstract class AbstractField implements FieldInterface, ControlFieldInterface
 {
@@ -115,7 +114,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     {
         return implode('.', [
             $this->getFieldSet()->getNamespace(),
-            $this->getName()
+            $this->getName(),
         ]);
     }
 
@@ -124,7 +123,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      */
     public function getFieldTypeName()
     {
-        return 'type-' . camel_case(class_basename(static::class));
+        return 'type-'.camel_case(class_basename(static::class));
     }
 
     /**
@@ -384,7 +383,6 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      */
     public function getFieldId()
     {
-        return null;
     }
 
     /**
@@ -419,7 +417,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         return app()->makeWith(
             $this->rendererClass,
             [
-                'field' => $this
+                'field' => $this,
             ]
         );
     }

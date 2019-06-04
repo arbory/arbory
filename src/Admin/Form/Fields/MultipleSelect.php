@@ -6,8 +6,7 @@ use Arbory\Base\Admin\Form\Fields\Concerns\HasSelectOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\AssociatedSetRenderer;
 
 /**
- * Class MultipleSelect
- * @package Arbory\Base\Admin\Form\Fields\
+ * Class MultipleSelect.
  */
 class MultipleSelect extends AbstractField
 {

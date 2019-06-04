@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
+use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Collection;
 
 class Slot implements Renderable
 {

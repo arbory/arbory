@@ -24,7 +24,7 @@ class Input extends AbstractInputField
         'month',
         'week',
         'range',
-        'time'
+        'time',
     ];
 
     public function __construct($content = null)
@@ -36,8 +36,8 @@ class Input extends AbstractInputField
 
     public function setType($type)
     {
-        if (!in_array($type, static::$types, true)) {
-            throw new BadMethodCallException('Input type "' . $type . '" is not allowed');
+        if (! in_array($type, static::$types, true)) {
+            throw new BadMethodCallException('Input type "'.$type.'" is not allowed');
         }
 
         $this->attributes()->put('type', $type);

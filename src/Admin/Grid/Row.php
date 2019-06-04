@@ -2,17 +2,16 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
+use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Row
- * @package Arbory\Base\Admin\Grid
+ * Class Row.
  */
 class Row implements Renderable
 {
@@ -42,7 +41,7 @@ class Row implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**

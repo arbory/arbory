@@ -2,14 +2,14 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
-use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Html\Html;
-use Arbory\Base\Support\Translate\Language;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Support\Translate\Language;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 class LanguageController extends Controller
@@ -145,7 +145,7 @@ class LanguageController extends Controller
         return view('arbory::dialogs.confirm_disable', [
             'form_target' => $this->url('disable', [$resourceId]),
             'list_url' => $this->url('index'),
-            'object_name' => (string)$model,
+            'object_name' => (string) $model,
         ]);
     }
 
@@ -161,7 +161,7 @@ class LanguageController extends Controller
         return view('arbory::dialogs.confirm_restore', [
             'form_target' => $this->url('restore', [$resourceId]),
             'list_url' => $this->url('index'),
-            'object_name' => (string)$model,
+            'object_name' => (string) $model,
         ]);
     }
 }

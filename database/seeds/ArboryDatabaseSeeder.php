@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\DatabaseManager;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 class ArboryDatabaseSeeder extends Seeder
@@ -42,7 +42,7 @@ class ArboryDatabaseSeeder extends Seeder
         if ($this->languageRepository->getModel()->all()->isEmpty()) {
             $this->languageRepository->create([
                 'locale' => 'en',
-                'name' => 'English'
+                'name' => 'English',
             ]);
         }
     }

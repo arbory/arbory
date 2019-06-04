@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Navigator;
 
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Renderable;
 
 class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
 {
@@ -37,15 +36,15 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     protected $reference;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $order;
 
     public function __construct(NavigableInterface $navigable, $title, $anchor = null)
     {
         $this->navigable = $navigable;
-        $this->title     = $title;
-        $this->anchor    = $anchor;
+        $this->title = $title;
+        $this->anchor = $anchor;
         $this->reference = str_random(16);
 
         $this->children = collect();
@@ -194,7 +193,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * Specify data which should be serialized to JSON
+     * Specify data which should be serialized to JSON.
      *
      * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,

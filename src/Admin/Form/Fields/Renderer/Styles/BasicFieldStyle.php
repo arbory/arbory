@@ -2,11 +2,10 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Html\Html;
 
 class BasicFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
 {
@@ -20,11 +19,10 @@ class BasicFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
         $template->addAttributes($options->getAttributes());
         $template->addClass(implode(' ', $options->getClasses()));
 
-
         if ($name = $field->getName()) {
             $template->addAttributes(
                 [
-                    'data-name' => $name
+                    'data-name' => $name,
                 ]
             );
         }
@@ -34,8 +32,8 @@ class BasicFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
                 $template->addAttributes(['data-disabled' => 1]);
             }
 
-            $template->addAttributes(['data-interactive' => (int)$field->isInteractive()]);
-            $template->addAttributes(['data-required' => (int)$field->isRequired()]);
+            $template->addAttributes(['data-interactive' => (int) $field->isInteractive()]);
+            $template->addAttributes(['data-required' => (int) $field->isRequired()]);
         }
 
         $template->append($this->renderField($field));
@@ -45,7 +43,6 @@ class BasicFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
                 Html::abbr(' ?')->addAttributes(['title' => $info])
             );
         }
-
 
         return $template;
     }

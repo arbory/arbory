@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class SearchField
- * @package Arbory\Base\Admin\Widgets
+ * Class SearchField.
  */
 class SearchField implements Renderable
 {
@@ -37,7 +36,7 @@ class SearchField implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**

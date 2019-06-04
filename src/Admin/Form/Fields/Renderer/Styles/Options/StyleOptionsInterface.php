@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options;
 
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Illuminate\Support\Fluent;
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 
 interface StyleOptionsInterface extends RenderOptionsInterface
 {
@@ -13,14 +12,14 @@ interface StyleOptionsInterface extends RenderOptionsInterface
      *
      * @return StyleOptionsInterface
      */
-    public function setAdditional(array $data): StyleOptionsInterface;
+    public function setAdditional(array $data): self;
 
     /**
      * @param array $data
      *
      * @return StyleOptionsInterface
      */
-    public function addAdditional(array $data): StyleOptionsInterface;
+    public function addAdditional(array $data): self;
 
     /**
      * @return Fluent
@@ -33,7 +32,7 @@ interface StyleOptionsInterface extends RenderOptionsInterface
      *
      * @return StyleOptionsInterface
      */
-    public function setRows(int $rows, array $breakpoints = []): StyleOptionsInterface;
+    public function setRows(int $rows, array $breakpoints = []): self;
 
     /**
      * @return mixed

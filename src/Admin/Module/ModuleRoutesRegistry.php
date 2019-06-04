@@ -7,8 +7,7 @@ use Arbory\Base\Admin\Module;
 use Illuminate\Routing\Router;
 
 /**
- * Class ModuleRoutesRegistry
- * @package Arbory\Base\Admin\Module
+ * Class ModuleRoutesRegistry.
  */
 class ModuleRoutesRegistry
 {
@@ -28,39 +27,39 @@ class ModuleRoutesRegistry
         $slug = $module->name();
 
         /**
-         * @var $router Router
+         * @var Router
          */
         $router = app('router');
 
         if ($callback !== null) {
             $attributes = [
-                'as' => $slug . '.',
+                'as' => $slug.'.',
                 'prefix' => $slug,
             ];
 
             $router->group($attributes, $callback);
         }
 
-        $router->resource($slug, '\\' . $class);
+        $router->resource($slug, '\\'.$class);
 
-        $router->post($slug . '/bulkupdate', [
-            'as' => $slug . '.bulkupdate',
-            'uses' => '\\' . $class . '@bulkUpdate'
+        $router->post($slug.'/bulkupdate', [
+            'as' => $slug.'.bulkupdate',
+            'uses' => '\\'.$class.'@bulkUpdate',
         ]);
 
-        $router->get($slug . '/dialog/{dialog}', [
-            'as' => $slug . '.dialog',
-            'uses' => '\\' . $class . '@dialog'
+        $router->get($slug.'/dialog/{dialog}', [
+            'as' => $slug.'.dialog',
+            'uses' => '\\'.$class.'@dialog',
         ]);
 
-        $router->any($slug . '/api/{api}', [
-            'as' => $slug . '.api',
-            'uses' => '\\' . $class . '@api'
+        $router->any($slug.'/api/{api}', [
+            'as' => $slug.'.api',
+            'uses' => '\\'.$class.'@api',
         ]);
 
-        $router->get($slug . '/export/{as}', [
-            'as' => $slug . '.export',
-            'uses' => '\\' . $class . '@export'
+        $router->get($slug.'/export/{as}', [
+            'as' => $slug.'.export',
+            'uses' => '\\'.$class.'@export',
         ]);
 
         $this->routes[$module->name()] = new ResourceRoutes($module);

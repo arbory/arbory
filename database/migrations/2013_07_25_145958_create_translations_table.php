@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateTranslationsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *

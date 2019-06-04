@@ -2,17 +2,12 @@
 
 namespace Arbory\Base\Admin;
 
-use Closure;
-use Arbory\Base\Admin\Module\ResourceRoutes;
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
-use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Admin\Module\ResourceRoutes;
 use Arbory\Base\Services\ModuleConfiguration;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 /**
- * Class Module
- * @package Arbory\Base\Services
+ * Class Module.
  */
 class Module
 {
@@ -35,9 +30,7 @@ class Module
      */
     protected $routes;
 
-
     protected $breadcrumbs;
-
 
     /**
      * @param Admin $admin

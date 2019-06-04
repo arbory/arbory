@@ -11,7 +11,7 @@ class Redirect extends Model
      */
     protected $fillable = [
         'from_url',
-        'to_url'
+        'to_url',
     ];
 
     /**
@@ -19,6 +19,6 @@ class Redirect extends Model
      */
     public function __toString()
     {
-        return (string)$this->to_url;
+        return (string) $this->to_url;
     }
 }

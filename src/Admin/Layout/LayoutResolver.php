@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
 use Illuminate\Contracts\Container\Container;
@@ -44,7 +43,7 @@ class LayoutResolver
      */
     public function __construct(Container $container, $layout)
     {
-        $this->container   = $container;
+        $this->container = $container;
 
         if ($layout instanceof LayoutInterface) {
             $this->instance = $layout;
@@ -72,7 +71,7 @@ class LayoutResolver
      *
      * @return LayoutResolver
      */
-    public function with($layout): LayoutResolver
+    public function with($layout): self
     {
         $resolver = new self($this->container, $layout);
 
@@ -86,7 +85,7 @@ class LayoutResolver
         $className = $this->layoutClass;
         $allowedSlots = $className::SLOTS;
 
-        if (!in_array($name, $allowedSlots, true)) {
+        if (! in_array($name, $allowedSlots, true)) {
             throw new \RuntimeException("Slot '{$name}' does not exist in layout '{$className}'");
         }
 
@@ -108,7 +107,6 @@ class LayoutResolver
     }
 
     /**
-     *
      * @return LayoutInterface
      */
     public function resolve():LayoutInterface

@@ -5,8 +5,7 @@ namespace Arbory\Base\Admin\Module;
 use Arbory\Base\Admin\Module;
 
 /**
- * Class ResourceRoutes
- * @package Arbory\Base\Admin\Module
+ * Class ResourceRoutes.
  */
 class ResourceRoutes
 {
@@ -31,6 +30,6 @@ class ResourceRoutes
      */
     public function getUrl($name, $parameters = [])
     {
-        return route(config('arbory.uri') . '.' . $this->module->name() . '.' . $name, $parameters);
+        return route(config('arbory.uri').'.'.$this->module->name().'.'.$name, $parameters);
     }
 }

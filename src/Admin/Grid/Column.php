@@ -3,16 +3,15 @@
 namespace Arbory\Base\Admin\Grid;
 
 use Closure;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
 /**
- * Class Column
- * @package Arbory\Base\Admin\Grid
+ * Class Column.
  */
 class Column
 {
@@ -87,7 +86,7 @@ class Column
      */
     public function __toString()
     {
-        return (string)$this->getName();
+        return (string) $this->getName();
     }
 
     /**
@@ -260,8 +259,8 @@ class Column
             if ($this->relationName === 'translations') {
                 $translation = $model->getTranslation(null, true);
 
-                if (!$translation) {
-                    return null;
+                if (! $translation) {
+                    return;
                 }
 
                 return $translation->getAttribute($this->relationColumn);
@@ -288,11 +287,11 @@ class Column
         $value = $this->getValue($model);
 
         if ($this->displayer === null) {
-            $value = (string)$value;
+            $value = (string) $value;
 
             if ($this->grid->hasTool('create')) {
                 return Html::link($value)->addAttributes([
-                    'href' => $this->grid->getModule()->url('edit', [$model->getKey()])
+                    'href' => $this->grid->getModule()->url('edit', [$model->getKey()]),
                 ]);
             }
 
@@ -318,6 +317,7 @@ class Column
     public function getFilterRelationColumn(): string
     {
         $columnName = $this->getFilterType()->getColumn();
+
         return is_null($columnName) ? $this->getRelationColumn() : $columnName;
     }
 

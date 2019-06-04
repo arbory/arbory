@@ -15,5 +15,5 @@ return [
         'title' => 'Add a new block',
         'select_content_type' => 'Select content type of new block',
         'cancel' => 'Cancel',
-    ]
+    ],
 ];

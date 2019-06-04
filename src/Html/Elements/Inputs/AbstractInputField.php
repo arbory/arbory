@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Html\Elements\Inputs;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 
 abstract class AbstractInputField extends Element
 {

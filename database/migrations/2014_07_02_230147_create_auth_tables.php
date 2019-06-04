@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateAuthTables
+ * Class CreateAuthTables.
  */
 class CreateAuthTables extends Migration
 {
@@ -64,7 +64,7 @@ class CreateAuthTables extends Migration
             $table->nullableTimestamps();
 
             $table->engine = 'InnoDB';
-            $table->primary([ 'user_id', 'role_id' ]);
+            $table->primary(['user_id', 'role_id']);
         });
 
         Schema::create('admin_throttle', function (Blueprint $table) {

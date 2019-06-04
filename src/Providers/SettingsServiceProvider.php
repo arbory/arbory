@@ -9,7 +9,7 @@ use Arbory\Base\Services\SettingRegistry;
 class SettingsServiceProvider extends ServiceProvider
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -23,13 +23,13 @@ class SettingsServiceProvider extends ServiceProvider
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function boot()
     {
         $paths = [
-            __DIR__ . '/../../config/settings.php',
-            config_path('settings.php')
+            __DIR__.'/../../config/settings.php',
+            config_path('settings.php'),
         ];
 
         foreach ($paths as $path) {

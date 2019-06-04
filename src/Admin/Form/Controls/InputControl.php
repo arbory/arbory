@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Controls;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 
 class InputControl extends AbstractControl
 {

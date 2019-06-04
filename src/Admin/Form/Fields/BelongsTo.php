@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
-use Arbory\Base\Admin\Form\Fields\Renderer\SelectFieldRenderer;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
+use Arbory\Base\Admin\Form\Fields\Renderer\SelectFieldRenderer;
 
 /**
- * Class BelongsTo
- * @package Arbory\Base\Admin\Form\Fields
+ * Class BelongsTo.
  */
 class BelongsTo extends Select
 {

@@ -31,7 +31,7 @@ abstract class Reply implements Jsonable, Arrayable
     protected $success = false;
 
     /**
-     * @var Exception|Null
+     * @var Exception|null
      */
     protected $exception = null;
 
@@ -53,7 +53,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @var string $url
+     * @var string
      * @return Response|Redirect
      */
     abstract public function dispatch($url = '/');
@@ -71,7 +71,7 @@ abstract class Reply implements Jsonable, Arrayable
      */
     public function hasMessage()
     {
-        return !empty($this->message);
+        return ! empty($this->message);
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class Reply implements Jsonable, Arrayable
      */
     public function hasPayload()
     {
-        return !empty($this->payload);
+        return ! empty($this->payload);
     }
 
     /**
@@ -171,7 +171,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @param integer $options
+     * @param int $options
      * @return string
      */
     public function toJson($options = 0)
@@ -200,8 +200,6 @@ abstract class Reply implements Jsonable, Arrayable
         if (array_key_exists($key, $this->payload)) {
             return $this->payload[$key];
         }
-
-        return null;
     }
 
     /**

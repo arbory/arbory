@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
 
 /**
- * Class Checkbox
- * @package Arbory\Base\Admin\Filter\Type
+ * Class Checkbox.
  */
 class Checkbox extends Type
 {

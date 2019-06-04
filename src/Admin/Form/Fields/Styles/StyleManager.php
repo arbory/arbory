@@ -1,14 +1,13 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Styles;
 
+use Illuminate\Foundation\Application;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\GenericRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\FieldStyleInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Illuminate\Foundation\Application;
 
 class StyleManager
 {

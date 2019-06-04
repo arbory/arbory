@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Constructor\Blocks;
 
 interface ArrayBlockInterface

@@ -2,21 +2,21 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\Text;
-use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Settings\Setting;
-use Arbory\Base\Admin\Settings\SettingDefinition;
-use Arbory\Base\Admin\Settings\SettingTranslation;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
-use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Services\SettingFactory;
-use Arbory\Base\Services\SettingRegistry;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Files\ArboryFile;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Settings\Setting;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Services\SettingFactory;
+use Arbory\Base\Services\SettingRegistry;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Settings\SettingDefinition;
+use Arbory\Base\Admin\Settings\SettingTranslation;
 
 class SettingsController extends Controller
 {
@@ -74,21 +74,21 @@ class SettingsController extends Controller
                     /** @var ArboryFile $file */
                     $file = $setting->file;
 
-                    if (!$file) {
-                        return null;
+                    if (! $file) {
+                        return;
                     }
 
                     if ($definition->isImage()) {
                         return $container->append(Html::image()->addAttributes([
                             'src' => $file->getUrl(),
                             'width' => 64,
-                            'height' => 64
+                            'height' => 64,
                         ]));
                     }
 
                     return $container->append(
                         Html::link($file->getOriginalName())->addAttributes([
-                            'href' => $file->getUrl()
+                            'href' => $file->getUrl(),
                         ])
                     );
                 }
@@ -111,7 +111,7 @@ class SettingsController extends Controller
     protected function getField(Form\FieldSet $fields, SettingDefinition $definition)
     {
         /**
-         * @var Form\Fields\AbstractField $field
+         * @var Form\Fields\AbstractField
          * @var Form\Fields\AbstractField $innerField
          */
         $type = $definition->getType();
@@ -124,14 +124,14 @@ class SettingsController extends Controller
             $field = new Translatable($innerField);
             $field->setFieldSet($fields);
 
-            if (!$field->getValue() || $field->getValue()->isEmpty()) {
+            if (! $field->getValue() || $field->getValue()->isEmpty()) {
                 $localized = array_get($inner, 'value', []);
                 $fieldValue = new Collection();
 
                 foreach ($localized as $locale => $value) {
                     $fieldValue->push(new SettingTranslation([
                         'locale' => $locale,
-                        'value' => $value
+                        'value' => $value,
                     ]));
                 }
 

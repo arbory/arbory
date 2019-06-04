@@ -1,14 +1,13 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Controls\InputControlInterface;
-use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
+use Arbory\Base\Admin\Form\Controls\InputControlInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 class ControlFieldRenderer implements RendererInterface
 {
@@ -46,7 +45,6 @@ class ControlFieldRenderer implements RendererInterface
             $this->field->getAttributes()
         );
 
-
         if ($this->field->getFieldId()) {
             $control->addAttributes(
                 ['id' => $this->field->getFieldId()]
@@ -54,7 +52,7 @@ class ControlFieldRenderer implements RendererInterface
         }
 
         $control->addClass(
-            implode(" ", $this->field->getClasses())
+            implode(' ', $this->field->getClasses())
         );
 
         if ($this->field->getName()) {
@@ -64,7 +62,7 @@ class ControlFieldRenderer implements RendererInterface
         }
 
         $control->setValue($this->field->getValue());
-        $control->setReadOnly(!$this->field->isInteractive());
+        $control->setReadOnly(! $this->field->isInteractive());
         $control->setDisabled($this->field->isDisabled());
 
         return $control;

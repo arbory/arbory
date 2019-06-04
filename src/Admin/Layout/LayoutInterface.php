@@ -1,15 +1,11 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
-use Closure;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Interface LayoutInterface
- *
- * @package Arbory\Base\Admin\Layout
+ * Interface LayoutInterface.
  */
 interface LayoutInterface extends Renderable, TransformableInterface
 {

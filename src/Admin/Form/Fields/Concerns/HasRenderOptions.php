@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Concerns;
 
 use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 
 trait HasRenderOptions
 {
-
     /**
      * @var callable|null
      */
@@ -62,14 +60,13 @@ trait HasRenderOptions
     }
 
     /**
-     *
      * @param string|array $classes
      *
      * @return mixed
      */
     public function addClass($classes): RenderOptionsInterface
     {
-        $classes = explode(" ", $classes);
+        $classes = explode(' ', $classes);
 
         $this->classes = array_unique(
             array_merge(
@@ -103,7 +100,7 @@ trait HasRenderOptions
         $classes = array_wrap($classes);
 
         $this->classes = array_filter($this->classes, function ($value) use ($classes) {
-            return !in_array($value, $classes, true);
+            return ! in_array($value, $classes, true);
         });
 
         return $this;

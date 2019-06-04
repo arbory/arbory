@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Constructor\Blocks;
 
 use Arbory\Base\Admin\Constructor\Models\Blocks\ArrayBlock;

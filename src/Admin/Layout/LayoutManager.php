@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Container\Container;
 
 class LayoutManager
 {
@@ -14,7 +13,7 @@ class LayoutManager
     protected $container;
 
     /**
-     * Current layout
+     * Current layout.
      *
      * @var PageInterface
      */
@@ -37,7 +36,7 @@ class LayoutManager
     }
 
     /**
-     * Creates a new main page
+     * Creates a new main page.
      *
      * @param $pageClass
      *

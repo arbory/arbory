@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Exports\Type;
 
-use Arbory\Base\Admin\Exports\ExportInterface;
-use Arbory\Base\Admin\Exports\DataSetExport;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Facades\Excel;
+use Arbory\Base\Admin\Exports\DataSetExport;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Arbory\Base\Admin\Exports\ExportInterface;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelExport implements FromCollection, WithHeadings, ExportInterface
@@ -50,6 +50,6 @@ class ExcelExport implements FromCollection, WithHeadings, ExportInterface
      */
     public function download(string $fileName): BinaryFileResponse
     {
-        return Excel::download($this, $fileName . '.' . self::EXTENSION);
+        return Excel::download($this, $fileName.'.'.self::EXTENSION);
     }
 }

@@ -17,27 +17,27 @@ Route::group(['middleware' => 'arbory.admin_auth'], function () {
 
         Route::get('translations/edit/{namespace}/{group}/{item}', [
             'as' => 'translations.edit',
-            'uses' => 'Admin\TranslationsController@edit'
+            'uses' => 'Admin\TranslationsController@edit',
         ]);
 
         Route::post('translations/update', [
             'as' => 'translations.update',
-            'uses' => 'Admin\TranslationsController@store'
+            'uses' => 'Admin\TranslationsController@store',
         ]);
 
         Route::post('language/{language}/disable', [
             'as' => 'language.disable',
-            'uses' => 'Admin\LanguageController@disable'
+            'uses' => 'Admin\LanguageController@disable',
         ]);
 
         Route::post('language/{language}/restore', [
             'as' => 'language.restore',
-            'uses' => 'Admin\LanguageController@restore'
+            'uses' => 'Admin\LanguageController@restore',
         ]);
     });
 
     Route::post('file-manager/upload', [
         'as' => 'filemanager.upload',
-        'uses' => 'Admin\UploadController@upload'
+        'uses' => 'Admin\UploadController@upload',
     ]);
 });

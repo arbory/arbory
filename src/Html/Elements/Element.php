@@ -3,13 +3,12 @@
 namespace Arbory\Base\Html\Elements;
 
 /**
- * Class Element
- * @package Arbory\Base\Html\Elements
+ * Class Element.
  */
 class Element
 {
     const FIELD_NAME_MULTIPLE_ENDINGS = [
-        '[]', '[ ]'
+        '[]', '[ ]',
     ];
 
     /**
@@ -159,9 +158,9 @@ class Element
         $inputName = array_pull($nameParts, 0);
 
         if (count($nameParts) > 0) {
-            $inputName .= '[' . implode('][', $nameParts) . ']';
+            $inputName .= '['.implode('][', $nameParts).']';
         }
 
-        return $inputName . ($multiple ? '[]' : '');
+        return $inputName.($multiple ? '[]' : '');
     }
 }

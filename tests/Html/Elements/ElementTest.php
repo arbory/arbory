@@ -2,8 +2,8 @@
 
 namespace Tests\Html\Elements;
 
-use Arbory\Base\Html\Elements\Element;
 use PHPUnit\Framework\TestCase;
+use Arbory\Base\Html\Elements\Element;
 
 final class ElementTest extends TestCase
 {
@@ -28,7 +28,7 @@ final class ElementTest extends TestCase
             'data-length' => '10',
         ];
     }
-    
+
     /**
      * @test
      * @return void
@@ -51,7 +51,7 @@ final class ElementTest extends TestCase
     {
         $existingElement = $this->getElement();
         $newElement = $this->getElement();
-        $element = $this->getElement([ $existingElement ]);
+        $element = $this->getElement([$existingElement]);
 
         $element->append($newElement);
 
@@ -70,7 +70,7 @@ final class ElementTest extends TestCase
     {
         $existingElement = $this->getElement();
         $newElement = $this->getElement();
-        $element = $this->getElement([ $existingElement ]);
+        $element = $this->getElement([$existingElement]);
 
         $element->prepend($newElement);
 
@@ -101,7 +101,7 @@ final class ElementTest extends TestCase
     public function itShouldFormatNameWithMultipleValues()
     {
         foreach (Element::FIELD_NAME_MULTIPLE_ENDINGS as $ending) {
-            $this->assertEquals('resources[field_name][]', Element::formatName('resources.field_name' . $ending));
+            $this->assertEquals('resources[field_name][]', Element::formatName('resources.field_name'.$ending));
         }
     }
 

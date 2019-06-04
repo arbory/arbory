@@ -2,21 +2,20 @@
 
 namespace Arbory\Base\Admin;
 
+use Closure;
+use Arbory\Base\Admin\Grid\Row;
 use Arbory\Base\Admin\Grid\Column;
 use Arbory\Base\Admin\Grid\Filter;
-use Arbory\Base\Admin\Grid\FilterInterface;
-use Arbory\Base\Admin\Grid\Row;
-use Arbory\Base\Admin\Traits\Renderable;
-use Arbory\Base\Html\Elements\Content;
-use Closure;
-use Illuminate\Contracts\Support\Renderable as RenderableInterface;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Arbory\Base\Html\Elements\Content;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Traits\Renderable;
+use Arbory\Base\Admin\Grid\FilterInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Support\Renderable as RenderableInterface;
 
 /**
- * Class Grid
- * @package Arbory\Base\Admin
+ * Class Grid.
  */
 class Grid
 {
@@ -44,7 +43,7 @@ class Grid
     /**
      * @var array
      */
-    protected $enabledDefaultTools = [ 'create', 'search' ];
+    protected $enabledDefaultTools = ['create', 'search'];
 
     /**
      * @var array
@@ -140,7 +139,7 @@ class Grid
      */
     public function addTool(RenderableInterface $tool, string $side = null)
     {
-        $this->tools[] = [ $tool, $side ?: self::FOOTER_SIDE_SECONDARY ];
+        $this->tools[] = [$tool, $side ?: self::FOOTER_SIDE_SECONDARY];
     }
 
     /**
@@ -236,6 +235,7 @@ class Grid
 
         return $column;
     }
+
     /**
      * @param null $name
      * @param null $label
@@ -258,7 +258,7 @@ class Grid
     protected function setColumnRelation($column, $name) : Column
     {
         if (strpos($name, '.') !== false) {
-            list($relationName, $relationColumn) = explode('.', $name);
+            [$relationName, $relationColumn] = explode('.', $name);
 
             $this->filter->withRelation($relationName);
             $column->setRelation($relationName, $relationColumn);
@@ -345,7 +345,7 @@ class Grid
      */
     public function hasTools(): bool
     {
-        return !empty($this->enabledDefaultTools);
+        return ! empty($this->enabledDefaultTools);
     }
 
     /**

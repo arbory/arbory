@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Controls\InputControl;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
-use Arbory\Base\Admin\Form\Fields\Renderer\ControlFieldRenderer;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Controls\InputControl;
+use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
+use Arbory\Base\Admin\Form\Fields\Renderer\ControlFieldRenderer;
 
 class ControlField extends AbstractField implements ControlFieldInterface, RenderOptionsInterface
 {
@@ -27,9 +26,8 @@ class ControlField extends AbstractField implements ControlFieldInterface, Rende
         ) : null;
     }
 
-
     /**
-     * Converts dot donation name to a input name
+     * Converts dot donation name to a input name.
      *
      * @param $namespacedName
      *
@@ -41,7 +39,7 @@ class ControlField extends AbstractField implements ControlFieldInterface, Rende
     }
 
     /**
-     * Creates Input ID from input name
+     * Creates Input ID from input name.
      *
      * @param $inputName
      *

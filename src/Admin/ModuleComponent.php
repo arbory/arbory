@@ -3,8 +3,7 @@
 namespace Arbory\Base\Admin;
 
 /**
- * Class ModuleComponent
- * @package Arbory\Base\Admin
+ * Class ModuleComponent.
  */
 trait ModuleComponent
 {

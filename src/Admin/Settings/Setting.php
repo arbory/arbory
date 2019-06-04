@@ -3,9 +3,9 @@
 namespace Arbory\Base\Admin\Settings;
 
 use Arbory\Base\Files\ArboryFile;
+use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Services\SettingRegistry;
 use Arbory\Base\Support\Translate\Translatable;
-use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
@@ -35,14 +35,14 @@ class Setting extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'value', 'type'
+        'name', 'value', 'type',
     ];
 
     /**
      * @var array
      */
     protected $translatedAttributes = [
-        'value'
+        'value',
     ];
 
     /**
@@ -50,7 +50,7 @@ class Setting extends Model
      */
     public function __toString()
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 
     /**
@@ -135,12 +135,12 @@ class Setting extends Model
     {
         $settingName = $settingName ?? $this->name;
 
-        if (!$settingName) {
+        if (! $settingName) {
             return false;
         }
 
         /**
-         * @var SettingRegistry $registry
+         * @var SettingRegistry
          * @var SettingDefinition $definition
          */
         $registry = app(SettingRegistry::class);
@@ -155,7 +155,7 @@ class Setting extends Model
     public function getDefinition()
     {
         /**
-         * @var SettingRegistry $registry
+         * @var SettingRegistry
          * @var SettingDefinition $definition
          */
         $registry = app(SettingRegistry::class);

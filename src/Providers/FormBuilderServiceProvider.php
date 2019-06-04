@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Providers;
 
-use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
-use Arbory\Base\Services\FieldTypeRegistry;
 use Illuminate\Support\ServiceProvider;
+use Arbory\Base\Services\FieldTypeRegistry;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 
 class FormBuilderServiceProvider extends ServiceProvider
 {
@@ -13,7 +13,7 @@ class FormBuilderServiceProvider extends ServiceProvider
         $this->app->singleton(FieldTypeRegistry::class, function ($app) {
             $registry = new FieldTypeRegistry($app);
 
-            foreach ((array)config('arbory.field_types') as $type => $class) {
+            foreach ((array) config('arbory.field_types') as $type => $class) {
                 $registry->register($type, $class);
             }
 
@@ -23,7 +23,7 @@ class FormBuilderServiceProvider extends ServiceProvider
         $this->app->singleton(StyleManager::class, function ($app) {
             $defaultStyle = config('arbory.default_field_style');
 
-            return new StyleManager($app, (array)config('arbory.field_styles'), $defaultStyle);
+            return new StyleManager($app, (array) config('arbory.field_styles'), $defaultStyle);
         });
     }
 }

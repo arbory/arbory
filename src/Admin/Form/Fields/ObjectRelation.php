@@ -2,15 +2,15 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationGroupedRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationRenderer;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Content\Relation;
-use Arbory\Base\Nodes\Node;
 use Closure;
-use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Nodes\Node;
 use Illuminate\Http\Request;
+use Arbory\Base\Content\Relation;
 use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationGroupedRenderer;
 
 class ObjectRelation extends AbstractField
 {
@@ -67,7 +67,7 @@ class ObjectRelation extends AbstractField
         if ($relatedModelTypeOrCollection instanceof Collection) {
             $this->options = $relatedModelTypeOrCollection;
 
-            if (!$relatedModelTypeOrCollection->isEmpty()) {
+            if (! $relatedModelTypeOrCollection->isEmpty()) {
                 $this->relatedModelType = (new \ReflectionClass($relatedModelTypeOrCollection->first()))->getName();
             }
         }
@@ -79,13 +79,12 @@ class ObjectRelation extends AbstractField
         parent::__construct($name);
     }
 
-
     /**
      * @return bool
      */
     public function hasIndentation()
     {
-        return (bool)$this->getIndentAttribute();
+        return (bool) $this->getIndentAttribute();
     }
 
     /**
@@ -131,7 +130,7 @@ class ObjectRelation extends AbstractField
      */
     public function getValue()
     {
-        if (!$this->value) {
+        if (! $this->value) {
             $relation = $this->getModel()->morphMany(Relation::class, 'owner')->where('name', $this->getName());
 
             $this->value = $this->isSingular() ? $relation->first() : $relation->get();
@@ -164,7 +163,7 @@ class ObjectRelation extends AbstractField
         if ($this->isSingular()) {
             $id = reset($relationIds);
 
-            if (!$id && $value instanceof Model) {
+            if (! $id && $value instanceof Model) {
                 $this->deleteOldRelations();
 
                 return;
@@ -184,19 +183,19 @@ class ObjectRelation extends AbstractField
      */
     protected function saveOne($relationId)
     {
-        if (!$relationId) {
+        if (! $relationId) {
             return;
         }
 
         $relation = Relation::firstOrNew([
             'name' => $this->getName(),
             'owner_id' => $this->getOwnerId(),
-            'owner_type' => $this->getOwnerType()
+            'owner_type' => $this->getOwnerType(),
         ]);
 
         $relation->fill([
             'related_id' => $relationId,
-            'related_type' => $this->getRelatedModelType()
+            'related_type' => $this->getRelatedModelType(),
         ]);
 
         $relation->save();
@@ -209,7 +208,7 @@ class ObjectRelation extends AbstractField
     protected function saveMany($relationIds)
     {
         foreach ($relationIds as $id) {
-            if (!$id) {
+            if (! $id) {
                 continue;
             }
 
@@ -218,7 +217,7 @@ class ObjectRelation extends AbstractField
                 'owner_id' => $this->getOwnerId(),
                 'owner_type' => $this->getOwnerType(),
                 'related_id' => $id,
-                'related_type' => $this->getRelatedModelType()
+                'related_type' => $this->getRelatedModelType(),
             ]);
 
             $relation->save();
@@ -239,7 +238,7 @@ class ObjectRelation extends AbstractField
         }
 
         foreach ($relations as $relation) {
-            if (!in_array($relation->related_id, $updatedRelationIds)) {
+            if (! in_array($relation->related_id, $updatedRelationIds)) {
                 $relation->delete();
             }
         }
@@ -254,7 +253,7 @@ class ObjectRelation extends AbstractField
         $key = $model->getKey();
         $value = $this->getValue();
 
-        if (!$value) {
+        if (! $value) {
             return false;
         }
 
@@ -359,7 +358,7 @@ class ObjectRelation extends AbstractField
         try {
             return (new \ReflectionClass($this->getModel()))->getName();
         } catch (\ReflectionException $e) {
-            return null;
+            return;
         }
     }
 
@@ -392,7 +391,7 @@ class ObjectRelation extends AbstractField
      */
     public function isGrouped()
     {
-        return (bool)$this->groupByAttribute;
+        return (bool) $this->groupByAttribute;
     }
 
     /**

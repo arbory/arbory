@@ -2,16 +2,15 @@
 
 namespace Arbory\Base\Http\Middleware;
 
-use Cartalyst\Sentinel\Sentinel;
 use Closure;
+use Illuminate\Http\Request;
+use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Class ArboryAdminGuestMiddleware
- * @package Arbory\Base\Http\Middleware
+ * Class ArboryAdminGuestMiddleware.
  */
 class ArboryAdminGuestMiddleware
 {
@@ -48,7 +47,7 @@ class ArboryAdminGuestMiddleware
                     return $module->isAuthorized();
                 });
 
-                if (!$firstAvailableModule) {
+                if (! $firstAvailableModule) {
                     throw new AccessDeniedHttpException();
                 }
 

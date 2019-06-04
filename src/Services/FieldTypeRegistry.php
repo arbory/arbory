@@ -2,11 +2,11 @@
 
 namespace Arbory\Base\Services;
 
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Container\Container;
-use Illuminate\Support\Collection;
 use ReflectionClass;
+use Illuminate\Support\Collection;
+use Illuminate\Container\Container;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
 
 class FieldTypeRegistry
 {
@@ -46,7 +46,7 @@ class FieldTypeRegistry
     public function register(string $type, string $class): self
     {
         if (in_array(strtolower($type), $this->reservedTypes, true)) {
-            $message = 'The name ' . $type . ' is already being used by FieldSet class for a method';
+            $message = 'The name '.$type.' is already being used by FieldSet class for a method';
             throw new \InvalidArgumentException($message);
         }
 
@@ -83,7 +83,7 @@ class FieldTypeRegistry
     }
 
     /**
-     * Resolves a field class instance
+     * Resolves a field class instance.
      *
      * @param string $type
      * @param array $parameters
@@ -94,7 +94,7 @@ class FieldTypeRegistry
     {
         $fieldClass = $this->findByType($type);
 
-        if (!$fieldClass || !class_exists($fieldClass)) {
+        if (! $fieldClass || ! class_exists($fieldClass)) {
             throw new \InvalidArgumentException("Could not resolve a field for a type '{$type}'");
         }
 
@@ -102,7 +102,7 @@ class FieldTypeRegistry
     }
 
     /**
-     * Finds any accessible functions which are defined in class
+     * Finds any accessible functions which are defined in class.
      *
      * @param mixed $class
      *
@@ -125,7 +125,7 @@ class FieldTypeRegistry
     }
 
     /**
-     * Builds an dictionary of parameters by name for an class from index based parameter list
+     * Builds an dictionary of parameters by name for an class from index based parameter list.
      *
      * @param string $class
      * @param array  $parameters
