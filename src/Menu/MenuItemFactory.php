@@ -45,7 +45,7 @@ class MenuItemFactory
         } else {
             $module = $this->admin->modules()->findModuleByControllerClass($definition);
 
-            if (!$module) {
+            if (! $module) {
                 throw new \DomainException(sprintf('No controller found for [%s] module ', $definition));
             }
 
@@ -66,7 +66,7 @@ class MenuItemFactory
         $name = is_array($definition) ? $definition[0] : $definition;
         $name = str_replace('Controller', '', class_basename($name));
         $name = snake_case($name);
-        $key = 'arbory::modules.' . $name;
+        $key = 'arbory::modules.'.$name;
 
         $translated = trans($key);
 

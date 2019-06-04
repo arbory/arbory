@@ -14,7 +14,7 @@ class Relation extends Model
         'owner_id',
         'owner_type',
         'related_id',
-        'related_type'
+        'related_type',
     ];
 
     /**
@@ -22,7 +22,7 @@ class Relation extends Model
      */
     public function __toString()
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 
     /**

@@ -2,23 +2,18 @@
 
 namespace Arbory\Base\Admin\Form;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Layout\WrappableInterface;
-use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Admin\Widgets\Link;
-use Arbory\Base\Admin\Tools\Toolbox;
+use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class BulkEditFormBuilder
- * @package Arbory\Base\Admin\Form
+ * Class BulkEditFormBuilder.
  */
 class BulkEditFormBuilder extends Builder
 {
-
     /**
      * @var Form
      */
@@ -49,7 +44,7 @@ class BulkEditFormBuilder extends Builder
     protected function header()
     {
         return Html::header([
-            Html::h1($this->form->getTitle())
+            Html::h1($this->form->getTitle()),
         ]);
     }
 
@@ -101,14 +96,12 @@ class BulkEditFormBuilder extends Builder
                 ->title(trans('arbory::resources.save'))
         );
 
-
         $footerTools = Html::div([
-            $primary
+            $primary,
         ])->addClass('tools');
 
         return Html::footer($footerTools);
     }
-
 
     /**
      * @return Content|Element
@@ -125,7 +118,7 @@ class BulkEditFormBuilder extends Builder
                     ->append($this->header())
                     ->append($content)
                     ->append($this->footer())
-            )
+            ),
         ]);
     }
 }

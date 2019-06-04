@@ -2,17 +2,16 @@
 
 namespace Arbory\Base\Console\Commands;
 
+use ArboryDatabaseSeeder;
 use Illuminate\Console\Command;
-use Illuminate\Database\DatabaseManager;
+use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\ConfirmableTrait;
-use Illuminate\Database\Seeder;
-use ArboryDatabaseSeeder;
+use Illuminate\Database\DatabaseManager;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * Class SeedCommand
- * @package Arbory\Base\Console\Commands
+ * Class SeedCommand.
  */
 class SeedCommand extends Command
 {
@@ -49,7 +48,7 @@ class SeedCommand extends Command
      */
     public function handle()
     {
-        if (!$this->confirmToProceed()) {
+        if (! $this->confirmToProceed()) {
             return;
         }
 
@@ -93,7 +92,7 @@ class SeedCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL, '
                 The class name of the root seeder',
-                ArboryDatabaseSeeder::class
+                ArboryDatabaseSeeder::class,
             ],
 
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to seed'],

@@ -2,16 +2,13 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\FileFieldRenderer;
+use Illuminate\Http\Request;
 use Arbory\Base\Files\ArboryFileFactory;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Repositories\ArboryFilesRepository;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Http\Request;
 
 /**
- * Class ArboryFile
- * @package Arbory\Base\Admin\Form\Fields
+ * Class ArboryFile.
  * @method \Arbory\Base\Files\ArboryFile getModel
  */
 class ArboryFile extends ControlField
@@ -19,7 +16,7 @@ class ArboryFile extends ControlField
     protected $elementType = 'input';
 
     protected $attributes = [
-        'type' => 'file'
+        'type' => 'file',
     ];
 
     /**
@@ -105,7 +102,7 @@ class ArboryFile extends ControlField
             $model = $this->getModel();
 
             /**
-             * @var $relation BelongsTo
+             * @var BelongsTo
              */
             $relation = $model->{$this->getName()}();
             $modelClass = get_class($relation->getRelated());

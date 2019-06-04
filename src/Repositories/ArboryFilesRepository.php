@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Repositories;
 
-use Arbory\Base\Files\ArboryFile;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
-use RuntimeException;
 use Storage;
+use RuntimeException;
+use Arbory\Base\Files\ArboryFile;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ArboryFilesRepository
- * @package Arbory\Base\Repositories
+ * Class ArboryFilesRepository.
  */
 class ArboryFilesRepository extends AbstractModelsRepository
 {
@@ -47,7 +46,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
      */
     public function getDisk()
     {
-        if (!$this->disk) {
+        if (! $this->disk) {
             $this->disk = Storage::disk($this->diskName);
         }
 
@@ -62,11 +61,11 @@ class ArboryFilesRepository extends AbstractModelsRepository
      */
     public function createFromUploadedFile(UploadedFile $file, Model $owner)
     {
-        if (!$file->getRealPath()) {
+        if (! $file->getRealPath()) {
             throw new RuntimeException('Uploaded file does not have real path');
         }
 
-        if (!$file->getSize()) {
+        if (! $file->getSize()) {
             throw new RuntimeException(sprintf(
                 'The uploaded file size must be between 1 and %d (see "upload_max_filesize" in "php.ini") bytes',
                 UploadedFile::getMaxFilesize()
@@ -75,8 +74,8 @@ class ArboryFilesRepository extends AbstractModelsRepository
 
         $localFileName = $this->getLocalFilenameForUploadedFile($file);
 
-        if (!$this->getDisk()->put($localFileName, file_get_contents($file->getRealPath()))) {
-            throw new RuntimeException('Could not store local file "' . $localFileName . '"');
+        if (! $this->getDisk()->put($localFileName, file_get_contents($file->getRealPath()))) {
+            throw new RuntimeException('Could not store local file "'.$localFileName.'"');
         }
 
         $modelClass = $this->modelClass;
@@ -86,8 +85,8 @@ class ArboryFilesRepository extends AbstractModelsRepository
         );
 
         /* @var $arboryFile ArboryFile */
-        if (!$arboryFile->save()) {
-            throw new RuntimeException('Could not save "' . $modelClass . '" to database');
+        if (! $arboryFile->save()) {
+            throw new RuntimeException('Could not save "'.$modelClass.'" to database');
         }
 
         return $arboryFile;
@@ -104,8 +103,8 @@ class ArboryFilesRepository extends AbstractModelsRepository
     {
         $localFileName = $this->getLocalFilenameForBlob($fileContents);
 
-        if (!$this->getDisk()->put($localFileName, $fileContents)) {
-            throw new RuntimeException('Could not store local file "' . $localFileName . '"');
+        if (! $this->getDisk()->put($localFileName, $fileContents)) {
+            throw new RuntimeException('Could not store local file "'.$localFileName.'"');
         }
 
         $modelClass = $this->modelClass;
@@ -114,8 +113,8 @@ class ArboryFilesRepository extends AbstractModelsRepository
         );
 
         /* @var $arboryFile ArboryFile */
-        if (!$arboryFile->save()) {
-            throw new RuntimeException('Could not save "' . $modelClass . '" to database');
+        if (! $arboryFile->save()) {
+            throw new RuntimeException('Could not save "'.$modelClass.'" to database');
         }
 
         return $arboryFile;
@@ -131,10 +130,10 @@ class ArboryFilesRepository extends AbstractModelsRepository
 
         while ($uploadsDisk->exists($fileName)) {
             $fileNameParts = pathinfo($fileName);
-            $fileName = $fileNameParts['filename'] . '-' . str_random(10);
+            $fileName = $fileNameParts['filename'].'-'.str_random(10);
 
             if (($extension = array_get($fileNameParts, 'extension', false))) {
-                $fileName .= '.' . $extension;
+                $fileName .= '.'.$extension;
             }
         }
 
@@ -157,7 +156,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
             'local_name' => $localFileName,
             'size' => $file->getClientSize(),
             'owner_id' => $owner->getKey(),
-            'owner_type' => $owner->getMorphClass()
+            'owner_type' => $owner->getMorphClass(),
         ];
     }
 
@@ -176,7 +175,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
             'local_name' => $localFileName,
             'size' => strlen($fileContents),
             'owner_id' => $owner->getKey(),
-            'owner_type' => $owner->getMorphClass()
+            'owner_type' => $owner->getMorphClass(),
         ];
     }
 
@@ -195,7 +194,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
      */
     protected function getLocalFilenameForUploadedFile(UploadedFile $file): string
     {
-        return $this->getFreeFileName(sha1_file($file->getRealPath()) . '.' . $file->getClientOriginalExtension());
+        return $this->getFreeFileName(sha1_file($file->getRealPath()).'.'.$file->getClientOriginalExtension());
     }
 
     /**

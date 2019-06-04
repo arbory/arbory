@@ -1,15 +1,14 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
-use Arbory\Base\Html\Elements\Content;
 use Illuminate\Support\Arr;
+use Arbory\Base\Html\Elements\Content;
 
 class SidebarLayout extends AbstractLayout implements LayoutInterface
 {
     /**
-     * Sidebar width
+     * Sidebar width.
      *
      * @var int
      */
@@ -80,7 +79,7 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
      *
      * @return SidebarLayout
      */
-    public function setSidebar($sidebar): SidebarLayout
+    public function setSidebar($sidebar): self
     {
         $this->sidebar->setContents($sidebar);
 

@@ -1,21 +1,19 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Constructor;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Layout\AbstractLayout;
-use Arbory\Base\Admin\Layout\FormLayoutInterface;
 use Arbory\Base\Admin\Layout\Grid;
-use Arbory\Base\Admin\Layout\GridLayout;
-use Arbory\Base\Admin\Layout\LazyRenderer;
-use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
-use Arbory\Base\Admin\Navigator\Navigator;
 use Arbory\Base\Admin\Panels\Panel;
 use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Layout\GridLayout;
+use Arbory\Base\Admin\Layout\LazyRenderer;
 use Arbory\Base\Services\FieldTypeRegistry;
+use Arbory\Base\Admin\Layout\AbstractLayout;
+use Arbory\Base\Admin\Layout\FormLayoutInterface;
+use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
 
 class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 {
@@ -85,7 +83,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * Executes every time before render
+     * Executes every time before render.
      *
      * @return mixed
      */
@@ -118,18 +116,18 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
             $field = $this->form->fields()->findFieldByInputName($this->name);
 
             if ($field === null) {
-                throw new \RuntimeException("Constructor field must be present in constructor layout");
+                throw new \RuntimeException('Constructor field must be present in constructor layout');
             }
 
             if ($field) {
                 $this->field = $field;
             } else {
                 /**
-                 * @var $registry FieldTypeRegistry
+                 * @var FieldTypeRegistry
                  */
                 $registry = app(FieldTypeRegistry::class);
 
-                $this->field = $registry->resolve("constructor", [$this->name]);
+                $this->field = $registry->resolve('constructor', [$this->name]);
             }
         }
 
@@ -171,7 +169,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         }
 
         $styleManager = $constructor->getFieldSet()->getStyleManager();
-        $opts         = $styleManager->newOptions();
+        $opts = $styleManager->newOptions();
 
         return $styleManager->render('nested', $constructor, $opts);
     }

@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Admin\Settings;
 
+use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\ArboryFile;
 use Arbory\Base\Admin\Form\Fields\ArboryImage;
-use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 
 class SettingDefinition
@@ -54,7 +54,6 @@ class SettingDefinition
         $this->configEntry = $configEntry;
         $this->model = $databaseEntry;
     }
-
 
     /**
      * @return void
@@ -158,7 +157,7 @@ class SettingDefinition
     {
         return in_array($this->getType(), [
             ArboryFile::class,
-            ArboryImage::class
+            ArboryImage::class,
         ], true);
     }
 
@@ -186,7 +185,7 @@ class SettingDefinition
         return [
             'name' => $this->key,
             'value' => $this->value,
-            'type' => $this->type
+            'type' => $this->type,
         ];
     }
 }

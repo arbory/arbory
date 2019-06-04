@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Navigator;
 
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Renderable;
 
 class Navigator implements Renderable
 {

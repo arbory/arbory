@@ -2,14 +2,13 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
 
 /**
- * Class Select
+ * Class Select.
  * @property mixed selected
- * @package Arbory\Base\Admin\Filter\Type
  */
 class Select extends Type
 {
@@ -33,7 +32,7 @@ class Select extends Type
 
         $content = $this->content;
 
-        if (!is_null($content)) {
+        if (! is_null($content)) {
             foreach ($content as $key => $value) {
                 $options[] = Html::option([$value])
                     ->addAttributes(['value' => $key, $this->getSelectStatus($key)]);

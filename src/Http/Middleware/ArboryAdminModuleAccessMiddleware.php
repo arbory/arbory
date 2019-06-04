@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Http\Middleware;
 
-use Cartalyst\Sentinel\Sentinel;
 use Closure;
+use Illuminate\Http\Request;
+use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 /**
- * Class ArboryAdminModuleAccessMiddleware
- * @package Arbory\Base\Http\Middleware
+ * Class ArboryAdminModuleAccessMiddleware.
  */
 class ArboryAdminModuleAccessMiddleware
 {
@@ -39,11 +38,11 @@ class ArboryAdminModuleAccessMiddleware
     {
         $targetModule = $this->resolveTargetModule($request);
 
-        if (!$targetModule) {
+        if (! $targetModule) {
             throw new \RuntimeException('Could not find target module for route controller');
         }
 
-        if (!$targetModule->isAuthorized()) {
+        if (! $targetModule->isAuthorized()) {
             return $this->denied($request);
         }
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
@@ -44,7 +43,7 @@ class GenericRenderer implements RendererInterface
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *

@@ -2,10 +2,9 @@
 
 namespace Arbory\Base\Services\Content;
 
-use Arbory\Base\Admin\Layout\LayoutInterface;
 use Closure;
-use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 
 class PageBuilder

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
 use Arbory\Base\Admin\Layout\Grid\Column;
@@ -11,7 +10,6 @@ class GridLayout extends AbstractLayout implements LayoutInterface
      * @var Grid
      */
     protected $grid;
-
 
     /**
      * @var int
@@ -27,7 +25,6 @@ class GridLayout extends AbstractLayout implements LayoutInterface
      * @var Column
      */
     protected $column;
-
 
     /**
      * GridTemplate constructor.
@@ -94,7 +91,7 @@ class GridLayout extends AbstractLayout implements LayoutInterface
      *
      * @return GridLayout
      */
-    public function setWidth(int $width, ?array $breakpoints = null): GridLayout
+    public function setWidth(int $width, ?array $breakpoints = null): self
     {
         $this->width = $width;
         $this->breakpoints = array_merge(
@@ -118,7 +115,7 @@ class GridLayout extends AbstractLayout implements LayoutInterface
      *
      * @return GridLayout
      */
-    public function setBreakpoints(array $breakpoints): GridLayout
+    public function setBreakpoints(array $breakpoints): self
     {
         $this->breakpoints = $breakpoints;
 

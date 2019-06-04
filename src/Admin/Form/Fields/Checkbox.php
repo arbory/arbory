@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Controls\CheckboxControl as CheckboxControl;
-use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
+use Arbory\Base\Admin\Form\Controls\CheckboxControl as CheckboxControl;
 
 /**
- * Class Checkbox
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Checkbox.
  */
 class Checkbox extends ControlField
 {
@@ -39,7 +38,7 @@ class Checkbox extends ControlField
     }
 
     /**
-     * Use custom checked/unchecked values
+     * Use custom checked/unchecked values.
      *
      * @param mixed $checkedValue
      * @param mixed $uncheckedValue

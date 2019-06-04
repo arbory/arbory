@@ -5,8 +5,7 @@ namespace Arbory\Base\Admin\Form;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class Validator
- * @package Arbory\Base\Admin\Form
+ * Class Validator.
  */
 class Validator extends FormRequest
 {
@@ -52,7 +51,7 @@ class Validator extends FormRequest
 
         foreach (array_dot($input) as $namespace => $value) {
             if (ends_with($namespace, '._destroy') && $value === 'true') {
-                $destroyed[] = substr($namespace, 0, strrpos($namespace, "."));
+                $destroyed[] = substr($namespace, 0, strrpos($namespace, '.'));
             }
         }
 

@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Controls;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Elements\Inputs\Input;
-use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Html\Elements\Inputs\Input;
 
 class SelectControl extends AbstractControl
 {
@@ -52,7 +51,7 @@ class SelectControl extends AbstractControl
 
         if ($this->isReadOnly()) {
             foreach ($values as $value) {
-                $name = $this->getName() . ($this->isMultiple() ? '[]' : '');
+                $name = $this->getName().($this->isMultiple() ? '[]' : '');
 
                 $input = (new Input())
                     ->setType('hidden')
@@ -146,7 +145,7 @@ class SelectControl extends AbstractControl
         $items = new  Content();
 
         foreach ($this->getOptions() as $key => $value) {
-            $option = Html::option((string)$value)->setValue($key);
+            $option = Html::option((string) $value)->setValue($key);
 
             if (in_array($key, $selected)) {
                 $option->select();

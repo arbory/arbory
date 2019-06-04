@@ -1,18 +1,17 @@
 <?php
 
-
 namespace Arbory\Base\Admin;
 
-use Arbory\Base\Admin\Layout\PageInterface;
-use Arbory\Base\Admin\Widgets\Breadcrumbs;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
 use Closure;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Admin\Widgets\Breadcrumbs;
+use Arbory\Base\Admin\Layout\PageInterface;
 
 class Page extends Layout implements PageInterface
 {
     const SLOTS = [
-        'header_right'
+        'header_right',
     ];
 
     protected $view = 'arbory::controllers.resource.layout';

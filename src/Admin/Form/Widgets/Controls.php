@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Widgets;
 
-use Arbory\Base\Admin\Layout\Footer\Tools;
-use Arbory\Base\Admin\Widgets\Button;
-use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Admin\Layout\Footer\Tools;
 use Illuminate\Contracts\Support\Renderable;
 
 class Controls implements Renderable
@@ -88,7 +87,7 @@ class Controls implements Renderable
      *
      * @return Controls
      */
-    public function setTools(Tools $tools): Controls
+    public function setTools(Tools $tools): self
     {
         $this->tools = $tools;
 

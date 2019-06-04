@@ -2,14 +2,12 @@
 
 namespace Arbory\Base\Repositories;
 
+use Settings;
 use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
-use Settings;
 
 /**
- * Class NodesRepository
- * @package Arbory\Base\Repositories
+ * Class NodesRepository.
  */
 class NodesRepository extends AbstractModelsRepository
 {
@@ -89,8 +87,8 @@ class NodesRepository extends AbstractModelsRepository
             $query = $this->newQuery()->where('depth', $depth)->where('slug', $part);
 
             if ($node instanceof Node) {
-                $query->whereBetween($node->getLeftColumnName(), array($node->getLeft() + 1, $node->getRight() - 1));
-                $query->whereBetween($node->getRightColumnName(), array($node->getLeft() + 1, $node->getRight() - 1));
+                $query->whereBetween($node->getLeftColumnName(), [$node->getLeft() + 1, $node->getRight() - 1]);
+                $query->whereBetween($node->getRightColumnName(), [$node->getLeft() + 1, $node->getRight() - 1]);
             }
 
             $nodes = $query->get();

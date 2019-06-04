@@ -5,8 +5,7 @@ namespace Arbory\Base\Nodes;
 use Illuminate\Support\Collection;
 
 /**
- * Class ContentTypesRepository
- * @package Arbory\Base\Nodes
+ * Class ContentTypesRepository.
  */
 class ContentTypeRegister
 {

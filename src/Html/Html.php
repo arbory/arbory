@@ -3,15 +3,14 @@
 namespace Arbory\Base\Html;
 
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Elements\Inputs\Option;
 use Arbory\Base\Html\Elements\Inputs\Select;
+use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Elements\Inputs\Textarea;
 
 /**
- * Class Html
- * @package Arbory\Base\Html
+ * Class Html.
  *
  * @method static Element   title($content = null)
  * @method static Element   meta()

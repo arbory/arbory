@@ -2,28 +2,25 @@
 
 namespace Arbory\Base\Admin\Form;
 
+use Countable;
+use ArrayAccess;
+use Traversable;
+use ArrayIterator;
+use IteratorAggregate;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Services\FieldTypeRegistry;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Services\FieldSetFieldFinder;
 use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
-use Arbory\Base\Admin\Layout\Grid;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Services\FieldSetFieldFinder;
-use Arbory\Base\Services\FieldTypeRegistry;
-use ArrayAccess;
-use ArrayIterator;
-use Countable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use IteratorAggregate;
-use Traversable;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
- * Class FieldSet
- * @package Arbory\Base\Admin\Form
+ * Class FieldSet.
  * @method \Arbory\Base\Admin\Form\Fields\BelongsTo belongsTo(string $relationName)
  * @method \Arbory\Base\Admin\Form\Fields\BelongsToMany belongsToMany(string $relationName)
  * @method \Arbory\Base\Admin\Form\Fields\Checkbox checkbox(string $fieldName)
@@ -84,7 +81,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      * @var Collection
      */
     protected $items;
-
 
     /**
      * Resource constructor.
@@ -155,7 +151,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
         foreach ($this->getFields()->toArray() as $field) {
             /** @var AbstractField $field */
-
             if ($field->getName() === $fieldName) {
                 $fields[] = $field;
             }
@@ -188,9 +183,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         return $this->model;
     }
 
-    /**
-     *
-     */
     public function getRules()
     {
         $rules = [];
@@ -237,12 +229,11 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     {
         $field->setFieldSet($this);
 
-
         $this->items->offsetSet($key, $field);
     }
 
     /**
-     * Renders fieldSet with defined renderer
+     * Renders fieldSet with defined renderer.
      *
      * @return mixed
      */
@@ -300,7 +291,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * Returns a iterator
+     * Returns a iterator.
      *
      * @return ArrayIterator|Traversable
      */
@@ -346,7 +337,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * Counts elements
+     * Counts elements.
      *
      * @return int
      */

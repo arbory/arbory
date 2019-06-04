@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
 
 /**
- * Class DateRange
- * @package Arbory\Base\Admin\Filter\Type
+ * Class DateRange.
  */
 class DateRange extends Type
 {
@@ -17,7 +16,7 @@ class DateRange extends Type
      */
     protected $action = [
         '>=',
-        '<='
+        '<=',
     ];
 
     /**
@@ -32,14 +31,14 @@ class DateRange extends Type
                     Html::h4(trans('arbory::filter.date.from')),
                     Html::input()
                         ->setType('date')
-                        ->setName($this->column . '[min]')
+                        ->setName($this->column.'[min]')
                         ->addAttributes([$this->getRangeValue('min')]),
                 ])->addClass('column'),
                 Html::div([
                     Html::h4(trans('arbory::filter.date.to')),
                     Html::input()
                         ->setType('date')
-                        ->setName($this->column . '[max]')
+                        ->setName($this->column.'[max]')
                         ->addAttributes([$this->getRangeValue('max')]),
                 ])->addClass('column'),
             ])->addClass('date-range'),

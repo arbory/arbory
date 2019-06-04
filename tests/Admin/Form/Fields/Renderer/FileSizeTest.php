@@ -1,16 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
-use Arbory\Base\Files\ArboryFile;
 use Mockery;
 use Mockery\Mock;
 use PHPUnit\Framework\TestCase;
+use Arbory\Base\Files\ArboryFile;
+use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
 
 /**
- * Class FileSizeTest
- * @package Tests\Admin\Form\Fields\Renderer
+ * Class FileSizeTest.
  */
 final class FileSizeTest extends TestCase
 {
@@ -49,7 +50,7 @@ final class FileSizeTest extends TestCase
     {
         $expectedFileSize = 1234560;
 
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        /* @noinspection PhpMethodParametersCountMismatchInspection */
         $this->file->shouldReceive('getSize')->andReturn($expectedFileSize);
         $this->assertEquals($this->fileSize->getSizeInBytes(), $expectedFileSize);
     }
@@ -75,7 +76,7 @@ final class FileSizeTest extends TestCase
      */
     private function assertSizeGetsConvertedToReadableValue(int $sizeInBytes, string $expectedValue)
     {
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        /* @noinspection PhpMethodParametersCountMismatchInspection */
         $this->file->shouldReceive('getSize')->once()->andReturn($sizeInBytes);
         $this->assertEquals($expectedValue, $this->fileSize->getReadableSize());
     }

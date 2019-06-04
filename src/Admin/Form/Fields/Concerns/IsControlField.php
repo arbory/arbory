@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Concerns;
 
 use Arbory\Base\Admin\Form\Fields\FieldInterface;

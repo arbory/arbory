@@ -2,23 +2,20 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Constructor\BlockInterface;
-use Arbory\Base\Admin\Constructor\Models\ConstructorBlock;
-use Arbory\Base\Admin\Constructor\BlockRegistry;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 use Closure;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
+use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
 use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Constructor\BlockRegistry;
+use Arbory\Base\Admin\Constructor\BlockInterface;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Http\Request;
+use Arbory\Base\Admin\Constructor\Models\ConstructorBlock;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 
-/**
- * @package Arbory\Base\Admin\Form\Fields
- */
 class Constructor extends AbstractRelationField implements
     NestedFieldInterface,
     RepeatableNestedFieldInterface,
@@ -127,14 +124,14 @@ class Constructor extends AbstractRelationField implements
      */
     public function getRelationFieldSet($model, $index)
     {
-        $blockName  = $model->name;
+        $blockName = $model->name;
         $block = $this->resolveBlockByName($blockName);
 
         if ($block === null) {
             throw new \LogicException("Block '{$blockName}' not found");
         }
 
-        $fieldSet = new FieldSet($model, $this->getNameSpacedName() . '.' . $index);
+        $fieldSet = new FieldSet($model, $this->getNameSpacedName().'.'.$index);
 
         $fieldSet->hidden($model->getKeyName())
                  ->setValue($model->getKey());
@@ -170,7 +167,7 @@ class Constructor extends AbstractRelationField implements
      */
     public function afterModelSave(Request $request)
     {
-        $items = (array)$request->input($this->getNameSpacedName(), []);
+        $items = (array) $request->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
             $relatedModel = $this->createRelatedModelFromRequest($item);
@@ -209,7 +206,6 @@ class Constructor extends AbstractRelationField implements
             }
         }
     }
-
 
     /**
      * @param $variables
@@ -260,11 +256,11 @@ class Constructor extends AbstractRelationField implements
     {
         $rules = [];
 
-        $items = (array)request()->input($this->getNameSpacedName(), []);
+        $items = (array) request()->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
             $relatedModel = $this->createRelatedModelFromRequest($item);
-            
+
             $this->verifyBlockFromRequest($item, $relatedModel);
 
             $relatedFieldSet = $this->getRelationFieldSet(
@@ -276,7 +272,7 @@ class Constructor extends AbstractRelationField implements
                 $rules = array_merge($rules, $field->getRules());
             }
         }
-        
+
         return $rules;
     }
 
@@ -319,7 +315,7 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * Make this field sortable
+     * Make this field sortable.
      *
      * @param string $field
      *
@@ -350,11 +346,11 @@ class Constructor extends AbstractRelationField implements
      */
     protected function verifyBlockFromRequest(array $item, Model $model)
     {
-        $blockName     = array_get($item, static::BLOCK_NAME);
+        $blockName = array_get($item, static::BLOCK_NAME);
         $blockResource = array_get($item, $model->content()->getMorphType());
-        $block         = $this->resolveBlockByName($blockName);
+        $block = $this->resolveBlockByName($blockName);
 
-        if (!$block) {
+        if (! $block) {
             throw new \LogicException("Unknown block '{$blockName}'");
         }
 
@@ -375,8 +371,8 @@ class Constructor extends AbstractRelationField implements
         $relation = $this->getRelation();
         $relatedModel = $this->findRelatedModel($item);
 
-        if (!$relation instanceof MorphMany) {
-            throw new \LogicException("Unknown relation used");
+        if (! $relation instanceof MorphMany) {
+            throw new \LogicException('Unknown relation used');
         }
 
         $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
@@ -399,7 +395,7 @@ class Constructor extends AbstractRelationField implements
      *
      * @return Constructor
      */
-    public function setItemRenderer(ItemInterface $itemRenderer): Constructor
+    public function setItemRenderer(ItemInterface $itemRenderer): self
     {
         $this->itemRenderer = $itemRenderer;
 
@@ -415,7 +411,7 @@ class Constructor extends AbstractRelationField implements
             $this->rendererClass,
             [
                 'field' => $this,
-                'itemRenderer' => $this->itemRenderer
+                'itemRenderer' => $this->itemRenderer,
             ]
         );
     }
@@ -425,7 +421,7 @@ class Constructor extends AbstractRelationField implements
      *
      * @return Constructor
      */
-    public function setAllowToAdd(bool $allowToAdd): Constructor
+    public function setAllowToAdd(bool $allowToAdd): self
     {
         $this->allowToAdd = $allowToAdd;
 

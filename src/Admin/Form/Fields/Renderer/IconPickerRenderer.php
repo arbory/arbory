@@ -2,11 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\IconPicker;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\HtmlString;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\IconPicker;
 
 class IconPickerRenderer extends SelectFieldRenderer
 {
@@ -39,7 +39,7 @@ class IconPickerRenderer extends SelectFieldRenderer
             Html::div(
                 $this->getSvgIconElement($field->getValue())
             )->addClass('selected'),
-            $items
+            $items,
         ])->addClass('contents');
     }
 
@@ -49,7 +49,7 @@ class IconPickerRenderer extends SelectFieldRenderer
      */
     protected function getSvgIconElement($id)
     {
-        if (!$id) {
+        if (! $id) {
             return Html::svg();
         }
 
@@ -57,7 +57,7 @@ class IconPickerRenderer extends SelectFieldRenderer
         $field = $this->field;
         $iconNode = $field->getIconContent($id);
 
-        if (!$iconNode) {
+        if (! $iconNode) {
             return Html::div()->addClass('element');
         }
 
@@ -74,8 +74,8 @@ class IconPickerRenderer extends SelectFieldRenderer
 
         $dimensions = $this->field->getDimensions();
 
-        $width = $dimensions ? $dimensions[0] : (int)$attributes->width;
-        $height = $dimensions ? $dimensions[1] : (int)$attributes->height;
+        $width = $dimensions ? $dimensions[0] : (int) $attributes->width;
+        $height = $dimensions ? $dimensions[1] : (int) $attributes->height;
 
         $icon = Html::span(Html::svg(new HtmlString($content))
             ->addAttributes([

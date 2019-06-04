@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields;
 
 interface ControlFieldInterface
@@ -23,7 +22,7 @@ interface ControlFieldInterface
     public function isDisabled(): bool;
 
     /**
-     * Disable any interaction and does not send any input back to the server
+     * Disable any interaction and does not send any input back to the server.
      *
      * @param bool $disabled
      *
@@ -37,7 +36,7 @@ interface ControlFieldInterface
     public function isInteractive(): bool;
 
     /**
-     * Disables any interaction but does not control if the field is changed
+     * Disables any interaction but does not control if the field is changed.
      *
      * @param bool $value
      *

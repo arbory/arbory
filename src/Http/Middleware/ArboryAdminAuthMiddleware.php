@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Http\Middleware;
 
-use Cartalyst\Sentinel\Sentinel;
 use Closure;
+use Illuminate\Http\Request;
+use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 /**
- * Class ArboryAdminAuthMiddleware
- * @package Arbory\Base\Http\Middleware
+ * Class ArboryAdminAuthMiddleware.
  */
 class ArboryAdminAuthMiddleware
 {
@@ -37,7 +36,7 @@ class ArboryAdminAuthMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->sentinel->check()) {
+        if (! $this->sentinel->check()) {
             return $this->denied($request);
         }
 

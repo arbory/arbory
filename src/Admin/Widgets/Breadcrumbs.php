@@ -3,12 +3,11 @@
 namespace Arbory\Base\Admin\Widgets;
 
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Breadcrumbs
- * @package Arbory\Base\Admin\Widgets
+ * Class Breadcrumbs.
  */
 class Breadcrumbs implements Renderable
 {
@@ -31,7 +30,7 @@ class Breadcrumbs implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -43,7 +42,7 @@ class Breadcrumbs implements Renderable
     {
         $this->items->push([
             'title' => $title,
-            'url' => $url
+            'url' => $url,
         ]);
 
         return $this;
@@ -60,7 +59,7 @@ class Breadcrumbs implements Renderable
             $listItem = Html::li(
                 Html::link($item['title'])
                     ->addAttributes([
-                        'href' => $item['url']
+                        'href' => $item['url'],
                     ])
             );
 

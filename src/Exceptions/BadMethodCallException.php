@@ -3,8 +3,7 @@
 namespace Arbory\Base\Exceptions;
 
 /**
- * Class BadMethodCallException
- * @package Arbory\Base\Exceptions
+ * Class BadMethodCallException.
  */
 class BadMethodCallException extends \Exception
 {

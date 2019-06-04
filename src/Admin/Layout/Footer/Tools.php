@@ -3,12 +3,11 @@
 namespace Arbory\Base\Admin\Layout\Footer;
 
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Tools
- * @package Arbory\Base\Admin\Layout\Footer
+ * Class Tools.
  */
 class Tools implements Renderable
 {
@@ -39,7 +38,7 @@ class Tools implements Renderable
      */
     public function getBlock($name)
     {
-        if (!$this->blocks()->has($name)) {
+        if (! $this->blocks()->has($name)) {
             $this->blocks()->put($name, new Collection());
         }
 

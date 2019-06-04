@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Pagination\Paginator;
 
 /**
- * Interface FilterInterface
- * @package Arbory\Base\Admin\Grid
+ * Interface FilterInterface.
  */
 interface FilterInterface
 {

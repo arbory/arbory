@@ -2,14 +2,13 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\ObjectRelation;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class ObjectRelationRenderer implements RendererInterface
 {
@@ -34,7 +33,7 @@ class ObjectRelationRenderer implements RendererInterface
         $limit = $this->field->getLimit();
 
         $attributes = [
-            'data-limit' => $limit
+            'data-limit' => $limit,
         ];
 
         $contents = Html::div($this->getAvailableRelationElement())->addClass('contents');
@@ -125,7 +124,7 @@ class ObjectRelationRenderer implements RendererInterface
     {
         $element = Html::div(
             Html::span(
-                (string)$value
+                (string) $value
             )->addClass('title')
         )->addClass('item');
 
@@ -133,7 +132,7 @@ class ObjectRelationRenderer implements RendererInterface
             $element->addAttributes([
                 'data-key' => $value->getKey(),
                 'data-level' => $value->getAttributeValue($this->field->getIndentAttribute()),
-                'data-inactive' => $isRelated && $this->field->hasIndentation() ? 'true' : 'false'
+                'data-inactive' => $isRelated && $this->field->hasIndentation() ? 'true' : 'false',
             ]);
         }
 
@@ -161,7 +160,7 @@ class ObjectRelationRenderer implements RendererInterface
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *
@@ -169,7 +168,7 @@ class ObjectRelationRenderer implements RendererInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
-        if (!$this->field->isInteractive() || $this->field->isDisabled()) {
+        if (! $this->field->isInteractive() || $this->field->isDisabled()) {
             $options->addClass('disabled');
         } else {
             $options->addClass('interactive');

@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Menu;
 
-use Arbory\Base\Html\Elements;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements;
 use Illuminate\Support\Collection;
 
 class Menu
@@ -51,12 +51,12 @@ class Menu
             $name = snake_case($item->getTitle());
             $collapsed = $this->getMenuItemCookie($name);
 
-            if (!$this->hasMenuItemCookie($name)) {
+            if (! $this->hasMenuItemCookie($name)) {
                 $collapsed = true;
             }
 
             /** @var AbstractItem $item */
-            if (!$item) {
+            if (! $item) {
                 continue;
             }
 
@@ -78,7 +78,7 @@ class Menu
      */
     protected function getMenuCookie()
     {
-        return (array)json_decode(array_get($_COOKIE, self::COOKIE_NAME_MENU));
+        return (array) json_decode(array_get($_COOKIE, self::COOKIE_NAME_MENU));
     }
 
     /**

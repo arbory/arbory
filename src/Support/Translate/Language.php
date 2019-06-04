@@ -9,6 +9,6 @@ class Language extends \Waavi\Translation\Models\Language
      */
     public function __toString(): string
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 }

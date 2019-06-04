@@ -5,22 +5,20 @@ namespace Arbory\Base\Admin\Form\Fields;
 use Illuminate\Http\Request;
 
 /**
- * Class Password
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Password.
  */
 class Password extends ControlField
 {
     protected $classes = [
-        'text'
+        'text',
     ];
 
     protected $attributes = [
-        'type' => 'password'
+        'type' => 'password',
     ];
 
     public function getValue()
     {
-        return null;
     }
 
     /**

@@ -2,14 +2,13 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 use Exception;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class ExceptionMessage
- * @package Arbory\Base\Admin\Widgets
+ * Class ExceptionMessage.
  */
 class ExceptionMessage implements Renderable
 {

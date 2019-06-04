@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Files;
 
+use Storage;
 use Alsofronie\Uuid\UuidModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Storage;
 
 /**
  * @property string id
@@ -33,7 +33,7 @@ class ArboryFile extends Model
         'original_name',
         'local_name',
         'sha1',
-        'size'
+        'size',
     ];
 
     /**
@@ -46,7 +46,7 @@ class ArboryFile extends Model
      */
     public function __toString()
     {
-        return (string)$this->original_name;
+        return (string) $this->original_name;
     }
 
     /**

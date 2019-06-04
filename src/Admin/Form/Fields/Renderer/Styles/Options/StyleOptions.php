@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Illuminate\Support\Fluent;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 
 class StyleOptions implements StyleOptionsInterface
 {

@@ -14,15 +14,15 @@ class FileManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $fileManagerFileSource = __DIR__ . '/../../../../unisharp/laravel-filemanager/src/lang';
+        $fileManagerFileSource = __DIR__.'/../../../../unisharp/laravel-filemanager/src/lang';
         $fileManagerFileDest = base_path('resources/lang/vendor/laravel-filemanager');
 
         $this->publishes([
-            $fileManagerFileSource => $fileManagerFileDest
+            $fileManagerFileSource => $fileManagerFileDest,
         ], 'file_manager');
 
         $this->publishes([
-            __DIR__ . '/../../config/lfm.php' => config_path('lfm.php'),
+            __DIR__.'/../../config/lfm.php' => config_path('lfm.php'),
         ], 'file_manager');
 
         $this->registerServiceProviders();

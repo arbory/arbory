@@ -2,23 +2,19 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Constructor\BlockInterface;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Panels\Panel;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Form\Fields\Constructor;
+use Arbory\Base\Admin\Constructor\BlockInterface;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\PaneledItemRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Navigator\Navigator;
-use Arbory\Base\Admin\Panels\Panel;
-use Arbory\Base\Admin\Widgets\Button;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 
-/**
- * @package Arbory\Base\Admin\Form\Fields\Renderer
- */
 class ConstructorFieldRenderer implements RendererInterface
 {
     /**
@@ -47,9 +43,9 @@ class ConstructorFieldRenderer implements RendererInterface
      */
     protected function getBody()
     {
-        $orderBy       = $this->field->getOrderBy();
+        $orderBy = $this->field->getOrderBy();
         $relationItems = [];
-        
+
         if ($orderBy) {
             $this->field->setValue(
                 $this->field->getValue()->sortBy(
@@ -59,7 +55,6 @@ class ConstructorFieldRenderer implements RendererInterface
                 )
             );
         }
-
 
         foreach ($this->field->getValue() as $index => $item) {
             $block = $this->field->resolveBlockByName($item->name);
@@ -79,8 +74,8 @@ class ConstructorFieldRenderer implements RendererInterface
      */
     protected function getFooter()
     {
-        if (!$this->field->canAddRelationItem()) {
-            return null;
+        if (! $this->field->canAddRelationItem()) {
+            return;
         }
 
         $title = trans('arbory::fields.has_many.add_item', ['name' => $this->field->getName()]);
@@ -95,7 +90,7 @@ class ConstructorFieldRenderer implements RendererInterface
             $select->append(
                 Html::option($object->name())->setValue($type)->addAttributes(
                     [
-                        'data-template' => $this->getRelationItemHtml($object, $fieldSet, '_template_')
+                        'data-template' => $this->getRelationItemHtml($object, $fieldSet, '_template_'),
                     ]
                 )
             );
@@ -118,7 +113,6 @@ class ConstructorFieldRenderer implements RendererInterface
         )->append($select);
     }
 
-
     /**
      * @param BlockInterface $block
      * @param FieldSet       $fieldSet
@@ -130,7 +124,7 @@ class ConstructorFieldRenderer implements RendererInterface
     protected function getRelationItemHtml(BlockInterface $block, FieldSet $fieldSet, $index)
     {
         return $this->itemRenderer->__invoke($this->field, $fieldSet, $index, [
-            'title' => $block->title()
+            'title' => $block->title(),
         ]);
     }
 
@@ -142,7 +136,7 @@ class ConstructorFieldRenderer implements RendererInterface
         return new Content(
             [
                 $this->getBody(),
-                $this->getFooter()
+                $this->getFooter(),
             ]
         );
     }
@@ -168,7 +162,7 @@ class ConstructorFieldRenderer implements RendererInterface
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *
@@ -177,7 +171,7 @@ class ConstructorFieldRenderer implements RendererInterface
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         $options->addAttributes($this->field->getAttributes());
-        $options->addClass(implode(" ", $this->field->getClasses()));
+        $options->addClass(implode(' ', $this->field->getClasses()));
 
         $options->addClass('polymorphic');
 
@@ -186,13 +180,13 @@ class ConstructorFieldRenderer implements RendererInterface
         foreach ($this->field->getTypes() as $type => $object) {
             $fieldSet = $this->field->getRelationFieldSet($this->field->buildFromBlock($object), '_template_');
 
-            $templates[$object->name()] = (string)$this->getRelationItemHtml($object, $fieldSet, '_template_');
+            $templates[$object->name()] = (string) $this->getRelationItemHtml($object, $fieldSet, '_template_');
         }
 
         $options->addAttributes(
             [
                 'data-templates' => json_encode($templates->all()),
-                'data-namespaced-name' => $this->field->getNameSpacedName()
+                'data-namespaced-name' => $this->field->getNameSpacedName(),
             ]
         );
 

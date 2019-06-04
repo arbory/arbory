@@ -2,14 +2,13 @@
 
 namespace Arbory\Base\Admin\Traits;
 
-use Arbory\Base\Admin\Form;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Arbory\Base\Admin\Form;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 
 trait BulkEdit
 {
-
     /**
      * @param Form $form
      * @return Form
@@ -51,14 +50,13 @@ trait BulkEdit
         return $form;
     }
 
-
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     protected function confirmBulkEditDialog(Request $request): View
     {
-        if (!$request->has('bulk_edit_item_ids')) {
+        if (! $request->has('bulk_edit_item_ids')) {
             return view('arbory::dialogs.form_mass_empty');
         }
         $form = $this->buildBulkEditForm($this->resource());
@@ -68,7 +66,7 @@ trait BulkEdit
             'formTarget' => $this->url('index'),
             'objectName' => $this->resource,
             'form' => $form->render(),
-            'bulk_edit_item_ids' => ''
+            'bulk_edit_item_ids' => '',
         ]);
     }
 
@@ -116,7 +114,7 @@ trait BulkEdit
             //Add ckeckbox before input
             $items->splice($key + $counter, 0, [$checkbox]);
             $counter++;
-        };
+        }
 
         return $form;
     }
@@ -128,7 +126,7 @@ trait BulkEdit
      */
     protected function getInputControlCheckbox($fieldName, $fieldLabel): Form\Fields\Checkbox
     {
-        $checkbox = new Form\Fields\Checkbox($fieldName . '_control');
+        $checkbox = new Form\Fields\Checkbox($fieldName.'_control');
         $checkbox->addAttributes(['data-target' => $fieldName])
             ->addClass('bulk-control')
             ->setLabel(trans('arbory::resources.check_to_change', ['input' => $fieldLabel]));
@@ -149,9 +147,9 @@ trait BulkEdit
         foreach ($fieldSet->getIterator() as $key => $field) {
             $name = $field->getName();
             $nameSpace = $form->getNamespace();
-            $fieldName = $nameSpace . '.' . $name . '_control';
+            $fieldName = $nameSpace.'.'.$name.'_control';
             if ($field->getName() != 'bulk_edit_item_ids' &&
-                !request()->has($fieldName)) {
+                ! request()->has($fieldName)) {
                 $items->forget($key);
             }
         }

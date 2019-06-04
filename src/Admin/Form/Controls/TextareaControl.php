@@ -1,14 +1,12 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Controls;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 
 class TextareaControl extends AbstractControl
 {
-
     /**
      * @return Element
      */
@@ -22,7 +20,6 @@ class TextareaControl extends AbstractControl
 
         return $textarea;
     }
-
 
     /**
      * @return Element

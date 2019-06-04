@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Layout;
 
+use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Collection;
 
 /**
- * Class Row
- * @package Arbory\Base\Admin\Layout
+ * Class Row.
  */
 class Row implements Renderable
 {
@@ -32,7 +31,7 @@ class Row implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**

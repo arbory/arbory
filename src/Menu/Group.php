@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Menu;
 
-use Arbory\Base\Html\Elements;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements;
 use Illuminate\Support\Collection;
 
 class Group extends AbstractItem
@@ -53,7 +53,7 @@ class Group extends AbstractItem
                         Html::span(Html::button(Html::i()->addClass('fa fa-chevron-up'))
                             ->addAttributes(['type' => 'button']))
                             ->addClass('collapser'),
-                    ])->addClass('trigger ' . ($this->isActive() ? 'active' : ''))
+                    ])->addClass('trigger '.($this->isActive() ? 'active' : ''))
                 )
                 ->append($ul);
     }
@@ -63,7 +63,7 @@ class Group extends AbstractItem
      */
     public function isActive(): bool
     {
-        return (bool)$this->getChildren()->first(function (Item $item) {
+        return (bool) $this->getChildren()->first(function (Item $item) {
             return $item->isActive();
         });
     }

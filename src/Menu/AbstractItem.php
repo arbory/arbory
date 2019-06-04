@@ -28,7 +28,7 @@ abstract class AbstractItem
     abstract public function render(Element $parentElement): Element;
 
     /**
-     * @return boolean
+     * @return bool
      */
     abstract public function isAccessible(): bool;
 

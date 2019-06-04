@@ -5,8 +5,7 @@ namespace Arbory\Base\Auth\Throttling;
 use Cartalyst\Sentinel\Throttling\EloquentThrottle;
 
 /**
- * Class Throttle
- * @package Arbory\Base\Auth\Throttling
+ * Class Throttle.
  */
 class Throttle extends EloquentThrottle
 {

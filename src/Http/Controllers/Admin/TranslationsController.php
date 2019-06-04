@@ -2,30 +2,27 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Admin\Widgets\Breadcrumbs;
-use Arbory\Base\Admin\Widgets\SearchField;
+use Illuminate\View\View;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Http\Requests\TranslationStoreRequest;
-use Arbory\Base\Menu\Menu;
-use Arbory\Base\Services\ModuleRegistry;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Query\JoinClause;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
-use Illuminate\View\View;
-use Waavi\Translation\Cache\CacheRepositoryInterface;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Query\Builder;
 use Waavi\Translation\Models\Language;
+use Illuminate\Database\Query\JoinClause;
 use Waavi\Translation\Models\Translation;
+use Arbory\Base\Admin\Widgets\Breadcrumbs;
+use Arbory\Base\Admin\Widgets\SearchField;
+use Waavi\Translation\Cache\CacheRepositoryInterface;
+use Arbory\Base\Http\Requests\TranslationStoreRequest;
 use Waavi\Translation\Repositories\LanguageRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Waavi\Translation\Repositories\TranslationRepository;
 
 /**
- * Class TranslationsController
- * @package Arbory\Base\Http\Controllers\Admin
+ * Class TranslationsController.
  */
 class TranslationsController extends Controller
 {
@@ -45,6 +42,7 @@ class TranslationsController extends Controller
     protected $request;
 
     /** @noinspection PhpMissingParentConstructorInspection */
+
     /**
      * @param TranslationRepository $translationRepository
      * @param LanguageRepository $languagesRepository
@@ -71,7 +69,7 @@ class TranslationsController extends Controller
         /* @var $allItems Builder */
         $allItems = Translation::distinct()->select('item', 'group', 'namespace');
 
-        $translationsQuery = \DB::table(\DB::raw('(' . $allItems->toSql() . ') as d1'));
+        $translationsQuery = \DB::table(\DB::raw('('.$allItems->toSql().') as d1'));
 
         $translationsQuery->addSelect('d1.*');
 
@@ -80,19 +78,19 @@ class TranslationsController extends Controller
         foreach ($languages as $language) {
             $locale = $language->locale;
 
-            $joinAlias = 'l_' . $locale;
+            $joinAlias = 'l_'.$locale;
 
-            $translationsQuery->addSelect($joinAlias . '.text AS ' . $locale . '_text');
-            $translationsQuery->addSelect($joinAlias . '.locked AS ' . $locale . '_locked');
-            $translationsQuery->addSelect($joinAlias . '.unstable AS ' . $locale . '_unstable');
+            $translationsQuery->addSelect($joinAlias.'.text AS '.$locale.'_text');
+            $translationsQuery->addSelect($joinAlias.'.locked AS '.$locale.'_locked');
+            $translationsQuery->addSelect($joinAlias.'.unstable AS '.$locale.'_unstable');
 
             $translationsQuery->leftJoin(
-                $translationsTableName . ' as l_' . $locale,
+                $translationsTableName.' as l_'.$locale,
                 function (JoinClause $join) use ($joinAlias, $locale) {
                     $join
-                        ->on($joinAlias . '.group', '=', 'd1.group')
-                        ->on($joinAlias . '.item', '=', 'd1.item')
-                        ->on($joinAlias . '.locale', '=', \DB::raw('\'' . $locale . '\''));
+                        ->on($joinAlias.'.group', '=', 'd1.group')
+                        ->on($joinAlias.'.item', '=', 'd1.item')
+                        ->on($joinAlias.'.locale', '=', \DB::raw('\''.$locale.'\''));
                 }
             );
         }
@@ -100,12 +98,12 @@ class TranslationsController extends Controller
         $searchString = $request->get('search');
 
         if ($searchString) {
-            $translationsQuery->where('d1.group', 'LIKE', '%' . $searchString . '%');
-            $translationsQuery->orWhere('d1.namespace', 'LIKE', '%' . $searchString . '%');
-            $translationsQuery->orWhere('d1.item', 'LIKE', '%' . $searchString . '%');
+            $translationsQuery->where('d1.group', 'LIKE', '%'.$searchString.'%');
+            $translationsQuery->orWhere('d1.namespace', 'LIKE', '%'.$searchString.'%');
+            $translationsQuery->orWhere('d1.item', 'LIKE', '%'.$searchString.'%');
 
             foreach ($languages as $language) {
-                $translationsQuery->orWhere('l_' . $language->locale . '.text', 'LIKE', '%' . $searchString . '%');
+                $translationsQuery->orWhere('l_'.$language->locale.'.text', 'LIKE', '%'.$searchString.'%');
             }
         }
 
@@ -124,7 +122,7 @@ class TranslationsController extends Controller
                     $resultHtml = sprintf($format, htmlentities($searchString));
 
                     return str_replace($searchString, $resultHtml, htmlentities($text));
-                }
+                },
             ]
         );
     }
@@ -139,7 +137,7 @@ class TranslationsController extends Controller
     public function edit(Request $request, $namespace, $group, $item)
     {
         $group = str_replace('.', '/', $group);
-        $translationKey = $namespace . '::' . $group . '.' . $item;
+        $translationKey = $namespace.'::'.$group.'.'.$item;
         $this->request = $request;
 
         /* @var $languages Language[] */
@@ -157,13 +155,13 @@ class TranslationsController extends Controller
                 $item
             );
 
-            if (!$translation) {
+            if (! $translation) {
                 $translation = new Translation([
                     'locale' => $locale,
                     'namespace' => $namespace,
                     'group' => $group,
                     'item' => $item,
-                    'text' => $translationKey
+                    'text' => $translationKey,
                 ]);
                 $translation->save();
             }
@@ -182,7 +180,7 @@ class TranslationsController extends Controller
                 'item' => $item,
                 'translations' => $translations,
                 'back_to_index_url' => route('admin.translations.index', $this->getContext()),
-                'update_url' => route('admin.translations.update', $this->getContext())
+                'update_url' => route('admin.translations.update', $this->getContext()),
             ]
         );
     }
@@ -212,10 +210,10 @@ class TranslationsController extends Controller
                 $request->get('item')
             );
 
-            /** @noinspection PhpUndefinedFieldInspection */
+            /* @noinspection PhpUndefinedFieldInspection */
             $this->translationsRepository->updateAndLock(
                 $translation->id,
-                $request->get('text_' . $locale)
+                $request->get('text_'.$locale)
             );
 
             $cache->flush($locale, $request->get('group'), $request->get('namespace'));
@@ -263,7 +261,7 @@ class TranslationsController extends Controller
                 'group' => str_replace('/', '.', $item->group),
                 'item' => $item->item,
                 'page' => $paginator->currentPage(),
-                'search' => $this->request->get('search')
+                'search' => $this->request->get('search'),
             ]
         );
     }

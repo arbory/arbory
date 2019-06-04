@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
 
 abstract class AbstractRelationField extends AbstractField implements NestedFieldInterface
 {
@@ -27,7 +27,7 @@ abstract class AbstractRelationField extends AbstractField implements NestedFiel
 
     public function configureFieldSet(FieldSet $fieldSet)
     {
-        if (!is_callable($this->getFieldSetCallback())) {
+        if (! is_callable($this->getFieldSetCallback())) {
             return $fieldSet;
         }
 
@@ -50,7 +50,7 @@ abstract class AbstractRelationField extends AbstractField implements NestedFiel
      *
      * @return AbstractRelationField
      */
-    public function setFieldSetCallback(callable $fieldSetCallback): AbstractRelationField
+    public function setFieldSetCallback(callable $fieldSetCallback): self
     {
         $this->fieldSetCallback = $fieldSetCallback;
 

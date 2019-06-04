@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Nested;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Widgets\Button;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 
 class NestedItemRenderer implements ItemInterface
 {
@@ -33,7 +32,7 @@ class NestedItemRenderer implements ItemInterface
                             ->addAttributes($this->getAttributes())
                             ->addAttributes([
                                 'data-name' => $field->getName(),
-                                'data-index' => $index
+                                'data-index' => $index,
                             ]);
 
         if ($title) {
@@ -45,7 +44,7 @@ class NestedItemRenderer implements ItemInterface
         $fieldSetHtml->append($this->getSortableNavigation($field));
 
         $fieldSetHtml->append(
-            $this->getFieldSetRemoveButton($field, $fieldSet->getNamespace() . '._destroy')
+            $this->getFieldSetRemoveButton($field, $fieldSet->getNamespace().'._destroy')
         );
 
         return $fieldSetHtml;
@@ -58,8 +57,8 @@ class NestedItemRenderer implements ItemInterface
      */
     protected function getSortableNavigation($field)
     {
-        if (!$field->canSortRelationItems()) {
-            return null;
+        if (! $field->canSortRelationItems()) {
+            return;
         }
 
         $navigation = Html::div()->addClass('sortable-navigation');
@@ -88,8 +87,8 @@ class NestedItemRenderer implements ItemInterface
      */
     protected function getFieldSetRemoveButton(FieldInterface $field, $name)
     {
-        if (!$field->canRemoveRelationItems()) {
-            return null;
+        if (! $field->canRemoveRelationItems()) {
+            return;
         }
         $button = Button::create()
                         ->title(trans('arbory::fields.relation.remove'))
@@ -103,6 +102,6 @@ class NestedItemRenderer implements ItemInterface
                      ->setValue('false')
                      ->addClass('destroy');
 
-        return Html::div([ $button, $input ])->addClass('remove-item-box');
+        return Html::div([$button, $input])->addClass('remove-item-box');
     }
 }

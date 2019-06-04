@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
 class Filter implements Renderable
@@ -42,7 +42,7 @@ class Filter implements Renderable
         $fieldCollection = null;
 
         foreach ($this->columns as $column) {
-            if (!$column->getHasFilter()) {
+            if (! $column->getHasFilter()) {
                 continue;
             }
 
@@ -91,7 +91,6 @@ class Filter implements Renderable
     {
         return is_null($content) ? new $type(null, $column) : new $type($content, $column);
     }
-
 
     /**
      * @return Button

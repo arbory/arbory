@@ -1,18 +1,14 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout\Transformers;
 
 use Arbory\Base\Admin\Layout\Body;
 use Arbory\Base\Admin\Layout\WrappableInterface;
-use Arbory\Base\Html\Elements\Content;
 
 /**
- * Wraps a Transformable layout to a different layout
+ * Wraps a Transformable layout to a different layout.
  *
  * Class Wrap
- *
- * @package Arbory\Base\Admin\Layout\Transformers
  */
 class WrapTransformer
 {

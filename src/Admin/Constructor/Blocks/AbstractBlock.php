@@ -1,19 +1,15 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Constructor\Blocks;
 
-use Arbory\Base\Admin\Form\Fields\HasOne;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\Fields\HasOne;
 
 abstract class AbstractBlock
 {
-
     /**
      * Before block save lifecycle event
-     * Note: Gets called for every block
+     * Note: Gets called for every block.
      *
      * @param  Request  $request
      * @param  HasOne  $field
@@ -27,7 +23,7 @@ abstract class AbstractBlock
 
     /**
      * After block save lifecycle event
-     * Note: Gets called for every block
+     * Note: Gets called for every block.
      *
      * @param  Request  $request
      * @param  HasOne  $field

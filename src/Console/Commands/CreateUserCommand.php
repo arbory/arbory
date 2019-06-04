@@ -2,17 +2,16 @@
 
 namespace Arbory\Base\Console\Commands;
 
+use InvalidArgumentException;
+use Illuminate\Console\Command;
 use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Auth\Users\User;
-use Cartalyst\Sentinel\Roles\RoleInterface;
 use Cartalyst\Sentinel\Sentinel;
+use Cartalyst\Sentinel\Roles\RoleInterface;
 use Cartalyst\Sentinel\Users\UserInterface;
-use Illuminate\Console\Command;
-use InvalidArgumentException;
 
 /**
- * Class CreateUserCommand
- * @package Arbory\Base\Console\Commands
+ * Class CreateUserCommand.
  */
 class CreateUserCommand extends Command
 {
@@ -25,7 +24,6 @@ class CreateUserCommand extends Command
      * @var string
      */
     protected $description = 'Create a new Arbory admin user';
-
 
     /**
      * @var Sentinel
@@ -65,14 +63,14 @@ class CreateUserCommand extends Command
             $password = $this->secret('What is the password?');
 
             if ($this->loginExists($login)) {
-                $this->error('User with login "' . $login . '" already exists');
+                $this->error('User with login "'.$login.'" already exists');
                 continue;
             }
 
             try {
                 $user = $users->create([
                     'email' => $login,
-                    'password' => $password
+                    'password' => $password,
                 ]);
 
                 $this->activateUser($user);
@@ -84,7 +82,7 @@ class CreateUserCommand extends Command
         $role = $this->getUserRole();
         $role->users()->attach($user);
 
-        $this->info('User ' . $user->getUserLogin() . ' created.');
+        $this->info('User '.$user->getUserLogin().' created.');
 
         return $user;
     }
@@ -98,7 +96,7 @@ class CreateUserCommand extends Command
         $users = $this->sentinel->getUserRepository();
 
         return $users->where([
-            $users->getUserLoginName() => $login
+            $users->getUserLoginName() => $login,
         ])->exists();
     }
 
@@ -122,7 +120,7 @@ class CreateUserCommand extends Command
         $repository = $this->sentinel->getRoleRepository();
         $roles = $repository->all();
 
-        if (!$roles->count()) {
+        if (! $roles->count()) {
             return $this->createNewRole();
         }
 
@@ -146,11 +144,11 @@ class CreateUserCommand extends Command
             'permissions' => array_flatten(
                 array_merge(
                     [
-                        \Arbory\Base\Http\Controllers\Admin\DashboardController::class
+                        \Arbory\Base\Http\Controllers\Admin\DashboardController::class,
                     ],
                     config('arbory.menu')
                 )
-            )
+            ),
         ]);
     }
 

@@ -1,12 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arbory\Base\Admin\Form\Fields\Helpers;
 
 use Arbory\Base\Files\ArboryFile;
 
 /**
- * Class FileSize
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class FileSize.
  */
 final class FileSize
 {
@@ -19,7 +20,7 @@ final class FileSize
     const UNITS = [
         self::UNIT_BYTE,
         self::UNIT_KILOBYTE,
-        self::UNIT_MEGABYTE
+        self::UNIT_MEGABYTE,
     ];
 
     /**
@@ -50,9 +51,9 @@ final class FileSize
     public function getReadableSize(): string
     {
         $sizeInBytes = $this->getSizeInBytes();
-        $sizeLength = mb_strlen((string)$sizeInBytes);
+        $sizeLength = mb_strlen((string) $sizeInBytes);
 
-        $unitIndex = (int)floor($sizeLength / self::CLOSEST_UNIT_DIGIT_COUNT_DIFF);
+        $unitIndex = (int) floor($sizeLength / self::CLOSEST_UNIT_DIGIT_COUNT_DIFF);
         $availableUnits = self::UNITS;
         $closestUnit = $availableUnits[$unitIndex] ?? end($availableUnits);
 

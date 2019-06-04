@@ -2,19 +2,18 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Form\Fields\HasMany;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 
 /**
- * Class NestedFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class NestedFieldRenderer.
  */
 class NestedFieldRenderer implements RendererInterface
 {
@@ -69,11 +68,11 @@ class NestedFieldRenderer implements RendererInterface
      */
     protected function getFooter()
     {
-        if (!$this->field->canAddRelationItem()) {
-            return null;
+        if (! $this->field->canAddRelationItem()) {
+            return;
         }
 
-        $title = trans('arbory::fields.has_many.add_item', [ 'name' => $this->field->getName() ]);
+        $title = trans('arbory::fields.has_many.add_item', ['name' => $this->field->getName()]);
 
         return Html::footer(
             Html::button([
@@ -135,7 +134,7 @@ class NestedFieldRenderer implements RendererInterface
     {
         return new Content([
             $this->getBody(),
-            $this->getFooter()
+            $this->getFooter(),
         ]);
     }
 
@@ -160,7 +159,7 @@ class NestedFieldRenderer implements RendererInterface
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *
@@ -169,7 +168,7 @@ class NestedFieldRenderer implements RendererInterface
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         $options->addAttributes([
-            'data-arbory-template' => $this->getRelationFromTemplate()
+            'data-arbory-template' => $this->getRelationFromTemplate(),
         ]);
 
         if ($this->field->isSortable()) {

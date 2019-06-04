@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-use Arbory\Base\Html\Elements\Content;
 use Closure;
+use Arbory\Base\Html\Elements\Content;
 
 interface TransformableInterface
 {
     /**
-     * Transforms content
+     * Transforms content.
      *
      * @param Body $content
      * @param Closure $next

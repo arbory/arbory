@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Filter\Type;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Filter\Type;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
 
 /**
- * Class Multiselect
- * @package Arbory\Base\Admin\Filter\Type
+ * Class Multiselect.
  */
 class Multiselect extends Type
 {
@@ -24,13 +23,13 @@ class Multiselect extends Type
     protected function getCheckboxList():? array
     {
         $content = $this->content;
-        if (!is_null($content)) {
+        if (! is_null($content)) {
             foreach ($content as $key => $value) {
                 $options[] = Html::label([
                     Html::input($value)
                         ->setType('checkbox')
                         ->addAttributes(['value' => $key, $this->getCheckboxStatusFromArray($key)])
-                        ->setName($this->getColumnFromArrayString() . '[]'),
+                        ->setName($this->getColumnFromArrayString().'[]'),
                 ]);
             }
 

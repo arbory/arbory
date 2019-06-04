@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Panels;
 
 use Arbory\Base\Admin\Form\FieldSet;

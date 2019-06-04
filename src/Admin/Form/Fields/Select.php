@@ -2,16 +2,15 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasSelectOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\SelectFieldRenderer;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 /**
- * Class Dropdown
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Dropdown.
  */
 class Select extends ControlField
 {
@@ -43,7 +42,7 @@ class Select extends ControlField
             ? $request->input($this->getNameSpacedName())
             : null;
 
-        if (!$this->containsValidValues($value)) {
+        if (! $this->containsValidValues($value)) {
             throw new \RuntimeException(sprintf('Bad select field value for "%s"', $this->getName()));
         }
 
@@ -84,12 +83,12 @@ class Select extends ControlField
      */
     public function containsValidValues($input): bool
     {
-        if (!is_array($input)) {
+        if (! is_array($input)) {
             $input = [$input];
         }
 
         foreach ($input as $item) {
-            if (!empty($item) && !$this->getOptions()->has($item)) {
+            if (! empty($item) && ! $this->getOptions()->has($item)) {
                 return false;
             }
         }
@@ -103,7 +102,6 @@ class Select extends ControlField
     public function getValue()
     {
         $value = parent::getValue();
-
 
         if ($this->isMultiple()) {
             if ($value instanceof Collection) {
@@ -132,7 +130,7 @@ class Select extends ControlField
                     $model;
 
                     return [
-                        $model->getKey() => $value
+                        $model->getKey() => $value,
                     ];
                 }
             );
@@ -156,7 +154,6 @@ class Select extends ControlField
     {
         return $this->optionTitleKey;
     }
-
 
     /**
      * @param $optionTitleKey

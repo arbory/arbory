@@ -1,14 +1,13 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form;
 
+use Closure;
+use Arbory\Base\Admin\Layout\Grid;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Admin\Layout\Grid\Column;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
-use Arbory\Base\Admin\Layout\Grid;
-use Arbory\Base\Admin\Layout\Grid\Column;
-use Arbory\Base\Html\Elements\Content;
-use Closure;
 
 class FieldSetRenderer implements FieldSetRendererInterface
 {
@@ -72,7 +71,7 @@ class FieldSetRenderer implements FieldSetRendererInterface
             return $field->getRows();
         })->count();
 
-        if (!$hasRows) {
+        if (! $hasRows) {
             return new Content(
                 $collection
                     ->map(Closure::fromCallable([$this, 'renderField']))
@@ -107,7 +106,6 @@ class FieldSetRenderer implements FieldSetRendererInterface
                 $columns = $columnsExpected;
             }
 
-
             $currentRow->addColumn($this->createColumn($rows, $rendered));
         }
 
@@ -122,7 +120,7 @@ class FieldSetRenderer implements FieldSetRendererInterface
     protected function renderField(FieldInterface $field)
     {
         if ($field->isHidden()) {
-            return null;
+            return;
         }
 
         $style = $field->getStyle() ?: $this->getDefaultStyle();
