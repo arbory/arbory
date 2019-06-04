@@ -7,21 +7,7 @@
     <link href="{{ mix('css/controllers/sessions.css', 'arbory') }}" media="all" rel="stylesheet"/>
 </head>
 <body class="controller-arbory-sessions view-edit">
-    @if($errors->count())
-        <div class="notifications">
-            @if($errors->has('user.email'))
-                @foreach($errors->get('user.email') as $error)
-                    <div class="notification" data-type="error">{{ $error }}</div>
-                @endforeach
-            @endif
-
-            @if($errors->has('user.password'))
-                @foreach($errors->get('user.password') as $error)
-                    <div class="notification" data-type="error">{{ $error }}</div>
-                @endforeach
-            @endif
-        </div>
-    @endif
+    @include('arbory::layout.partials.message', ['class' => 'fixed'])
 
     <div class="container">
         <div class="box">
