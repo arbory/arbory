@@ -2,10 +2,8 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Http\Requests\LoginRequest;
-use Arbory\Base\Services\Authentication\SecurityStrategy;
-use Arbory\Base\Services\AuthReply\Reply;
-use Arbory\Base\Services\SecurityService;
+use Arbory\Base\Services\Authentication\AuthenticationMethod;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -13,7 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
-use View;
 use Illuminate\Routing\Controller as BaseController;
 
 class SecurityController extends BaseController
@@ -21,16 +18,23 @@ class SecurityController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * @var SecurityStrategy
+     * @var string
+     */
+    protected $loginView = 'arbory::controllers.security.login';
+
+    /**
+     * @var AuthenticationMethod
      */
     protected $security;
 
     /**
-     * @param SecurityStrategy $security
+     * @param AuthenticationMethod $security
      */
-    public function __construct( SecurityStrategy $security )
+    public function __construct(AuthenticationMethod $security)
     {
-        $this->middleware( 'arbory.admin_quest', [ 'except' => 'postLogout' ] );
+        $this->middleware('arbory.admin_quest', [
+            'except' => 'postLogout'
+        ]);
 
         $this->security = $security;
     }
@@ -39,44 +43,62 @@ class SecurityController extends BaseController
      * @param Request $request
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function getLogin( Request $request )
+    public function getLogin(Request $request)
     {
-        return view(
-            'arbory::controllers.security.login',
-            [ 'input' => $request ]
+        return view($this->loginView, [
+                'input' => $request
+            ]
         );
     }
 
     /**
-     * @param LoginRequest $request
      * @return RedirectResponse|Response|Redirect
      */
-    public function postLogin( LoginRequest $request )
+    public function postLogin()
     {
-        $credentials = array_only( $request->get( 'user' ), [ 'email', 'password' ] );
-        $remember = (bool) $request->get( 'remember', false );
+        $request = $this->getFormRequest();
 
-        $result = $this->security->authenticate( $credentials, $remember );
+        $remember = (bool)$request->get('remember', false);
 
-        if( $result->isSuccess() )
-        {
-            return $result->dispatch( session()->pull( 'url.intended', route( 'admin.login.form' ) ) );
+        return $this->attemptLogin($request->validated(), $remember);
+    }
+
+
+    /**
+     * @param array $credentials
+     * @param bool $remember
+     * @return RedirectResponse
+     */
+    protected function attemptLogin(array $credentials, bool $remember): RedirectResponse
+    {
+        $success = $this->security->authenticate($credentials, $remember);
+
+        if ($success) {
+            return Redirect::to(session()->pull('url.intended', route('admin.login.form')));
         }
 
-        return redirect( route( 'admin.login.form' ) )
+        return Redirect::route('admin.login.form')
             ->withInput()
-            ->withErrors( [
-                'user.email' => $result->getMessage()
-            ] );
+            ->withErrors([
+                'error' => trans('arbory::security.authentication_failed')
+            ]);
     }
 
     /**
-     * @return Response|Redirect
+     * @return RedirectResponse
      */
-    public function postLogout()
+    public function postLogout(): RedirectResponse
     {
-        $this->security->logout( null, null );
+        $this->security->logout();
 
-        return redirect( route( 'admin.login.form' ) );
+        return Redirect::route('admin.login.form');
+    }
+
+    /**
+     * @return FormRequest
+     */
+    protected function getFormRequest(): FormRequest
+    {
+        return app(get_class($this->security->getFormRequest()));
     }
 }
