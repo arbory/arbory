@@ -9,17 +9,9 @@
 <body class="controller-arbory-sessions view-edit">
     @if($errors->count())
         <div class="notifications">
-            @if($errors->has('user.email'))
-                @foreach($errors->get('user.email') as $error)
-                    <div class="notification" data-type="error">{{ $error }}</div>
-                @endforeach
-            @endif
-
-            @if($errors->has('user.password'))
-                @foreach($errors->get('user.password') as $error)
-                    <div class="notification" data-type="error">{{ $error }}</div>
-                @endforeach
-            @endif
+            @foreach($errors->messages() as $message)
+                <div class="notification" data-type="error">{{ implode('', $message) }}</div>
+            @endforeach
         </div>
     @endif
 
