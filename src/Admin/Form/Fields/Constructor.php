@@ -9,21 +9,20 @@ use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\Nested\PaneledItemRenderer;
 use Closure;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Form\Fields\Renderer\NestedFieldRenderer;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 
 /**
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Constructor extends AbstractRelationField implements NestedFieldInterface, RepeatableNestedFieldInterface, RenderOptionsInterface
+class Constructor extends AbstractRelationField implements
+    NestedFieldInterface,
+    RepeatableNestedFieldInterface,
+    RenderOptionsInterface
 {
     use HasRenderOptions;
     use HasRelationships;

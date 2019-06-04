@@ -71,9 +71,7 @@ class NodesController extends Controller
 
         $definition->getLayoutHandler()->call($this, $form, $layout);
 
-        $form->setFields(function (FieldSet $fields) use (
-            $layout,
-            $definition) {
+        $form->setFields(function (FieldSet $fields) use ($layout, $definition) {
             $fields->hidden('parent_id');
             $fields->hidden('content_type');
             $fields->text('name')->rules('required');
