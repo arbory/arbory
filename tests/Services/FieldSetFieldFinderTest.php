@@ -5,11 +5,13 @@ namespace Tests\Services;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\HasMany;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Services\FieldSetFieldFinder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
 use Mockery;
 use Mockery\Mock;
@@ -29,6 +31,20 @@ final class FieldSetFieldFinderTest extends TestCase
      */
     protected function setUp()
     {
+        app()->singleton(StyleManager::class, static function () {
+            $styles = [
+                'normal' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\LabeledFieldStyle::class,
+                'basic' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\BasicFieldStyle::class,
+                'raw' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\RawFieldStyle::class,
+                'nested' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\NestedFieldStyle::class,
+                'section' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\SectionFieldStyle::class,
+            ];
+        
+            $app = Mockery::mock(Application::class);
+        
+            return new StyleManager($app, $styles, 'normal');
+        });
+        
         $this->model = Mockery::mock(Model::class);
         $this->model->shouldReceive('translateOrNew')->andReturn($this->model);
         $this->model->shouldReceive('toArray')->andReturn([]);
