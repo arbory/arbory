@@ -26,6 +26,8 @@
 
         <main id="main">
             @yield('content.header')
+            @include('arbory::layout.partials.message')
+
             @yield('content')
         </main>
 
