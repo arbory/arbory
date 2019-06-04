@@ -18,11 +18,6 @@ class SecurityController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * @var string
-     */
-    protected $loginView = 'arbory::controllers.security.login';
-
-    /**
      * @var AuthenticationMethod
      */
     protected $security;
@@ -45,7 +40,7 @@ class SecurityController extends BaseController
      */
     public function getLogin(Request $request)
     {
-        return view($this->loginView, [
+        return view($this->security->getLoginView(), [
                 'input' => $request
             ]
         );

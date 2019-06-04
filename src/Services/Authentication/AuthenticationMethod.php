@@ -26,4 +26,10 @@ interface AuthenticationMethod
      * @return FormRequest
      */
     public function getFormRequest(): FormRequest;
+
+
+    /**
+     * @return string
+     */
+    public function getLoginView(): string;
 }
