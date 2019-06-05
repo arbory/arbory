@@ -1,0 +1,35 @@
+<?php
+
+namespace Arbory\Base\Services\Authentication;
+
+use Cartalyst\Sentinel\Users\UserInterface;
+use Illuminate\Foundation\Http\FormRequest;
+
+interface AuthenticationMethod
+{
+    /**
+     * @param array $credentials
+     * @param bool $remember
+     * @param bool $login
+     * @return bool
+     */
+    public function authenticate(array $credentials, bool $remember = false, bool $login = true): bool;
+
+    /**
+     * @param UserInterface|null $user
+     * @param bool $everywhere
+     * @return bool
+     */
+    public function logout(UserInterface $user = null, bool $everywhere = false): bool;
+
+    /**
+     * @return FormRequest
+     */
+    public function getFormRequest(): FormRequest;
+
+
+    /**
+     * @return string
+     */
+    public function getLoginView(): string;
+}

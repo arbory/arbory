@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title' => 'Arbory',
     'uri' => 'admin',
 
     'locales' => [
