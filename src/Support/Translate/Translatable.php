@@ -75,8 +75,6 @@ trait Translatable
                 $this->getTranslationByLocaleKey($fallbackLocale) ?:
                     $this->getTranslationByLocaleKey($configFallbackLocale);
         }
-
-        return null;
     }
 
     /**
@@ -109,7 +107,7 @@ trait Translatable
      */
     public function getTranslationModelNameDefault()
     {
-        return get_class($this) . Config::get('translatable.translation_suffix', 'Translation');
+        return get_class($this).Config::get('translatable.translation_suffix', 'Translation');
     }
 
     /**
@@ -150,11 +148,11 @@ trait Translatable
      */
     public function getAttribute($key)
     {
-        list($attribute, $locale) = $this->getAttributeAndLocale($key);
+        [$attribute, $locale] = $this->getAttributeAndLocale($key);
 
         if ($this->isTranslatableAttribute($attribute)) {
             if ($this->getTranslation($locale) === null) {
-                return null;
+                return;
             }
 
             // If the given $attribute has a mutator, we push it to $attributes and then call getAttributeValue
@@ -180,7 +178,7 @@ trait Translatable
      */
     public function setAttribute($key, $value)
     {
-        list($attribute, $locale) = $this->getAttributeAndLocale($key);
+        [$attribute, $locale] = $this->getAttributeAndLocale($key);
 
         if ($this->isTranslatableAttribute($attribute)) {
             $this->getTranslationOrNew($locale)->$attribute = $value;
@@ -254,7 +252,7 @@ trait Translatable
                 $this->getTranslationOrNew($key)->fill($values);
                 unset($attributes[$key]);
             } else {
-                list($attribute, $locale) = $this->getAttributeAndLocale($key);
+                [$attribute, $locale] = $this->getAttributeAndLocale($key);
                 if ($this->isTranslatableAttribute($attribute)) {
                     $this->getTranslationOrNew($locale)->fill([$attribute => $values]);
                     unset($attributes[$key]);
@@ -276,8 +274,6 @@ trait Translatable
                 return $translation;
             }
         }
-
-        return null;
     }
 
     /**
@@ -356,10 +352,10 @@ trait Translatable
      */
     protected function getLocales()
     {
-        $localesConfig = (array)Config::get('translatable.locales');
+        $localesConfig = (array) Config::get('translatable.locales');
 
         if (empty($localesConfig)) {
-            $errorMessage = 'Please make sure you have run "php artisan config:publish dimsav/laravel-translatable"' .
+            $errorMessage = 'Please make sure you have run "php artisan config:publish dimsav/laravel-translatable"'.
                 ' and that the locales configuration is defined.';
 
             throw new \ErrorException($errorMessage);
@@ -370,7 +366,7 @@ trait Translatable
             if (is_array($locale)) {
                 $locales[] = $key;
                 foreach ($locale as $countryLocale) {
-                    $locales[] = $key . $this->getLocaleSeparator() . $countryLocale;
+                    $locales[] = $key.$this->getLocaleSeparator().$countryLocale;
                 }
             } else {
                 $locales[] = $locale;
@@ -501,24 +497,24 @@ trait Translatable
         $localeKey = $this->getLocaleKey();
 
         $query
-            ->select($this->getTable() . '.' . $this->getKeyName(), $translationTable . '.' . $translationField)
+            ->select($this->getTable().'.'.$this->getKeyName(), $translationTable.'.'.$translationField)
             ->leftJoin(
                 $translationTable,
-                $translationTable . '.' . $this->getRelationKey(),
+                $translationTable.'.'.$this->getRelationKey(),
                 '=',
-                $this->getTable() . '.' . $this->getKeyName()
+                $this->getTable().'.'.$this->getKeyName()
             )
-            ->where($translationTable . '.' . $localeKey, $this->locale());
+            ->where($translationTable.'.'.$localeKey, $this->locale());
         if ($withFallback) {
             $query->orWhere(function (Builder $q) use ($translationTable, $localeKey) {
-                $q->where($translationTable . '.' . $localeKey, $this->getFallbackLocale())
-                    ->whereNotIn($translationTable . '.' . $this->getRelationKey(), function (QueryBuilder $q) use (
+                $q->where($translationTable.'.'.$localeKey, $this->getFallbackLocale())
+                    ->whereNotIn($translationTable.'.'.$this->getRelationKey(), function (QueryBuilder $q) use (
                         $translationTable,
                         $localeKey
                     ) {
-                        $q->select($translationTable . '.' . $this->getRelationKey())
+                        $q->select($translationTable.'.'.$this->getRelationKey())
                             ->from($translationTable)
-                            ->where($translationTable . '.' . $localeKey, $this->locale());
+                            ->where($translationTable.'.'.$localeKey, $this->locale());
                     });
             });
         }
@@ -534,11 +530,11 @@ trait Translatable
     {
         $query->with([
             'translations' => function (Relation $query) {
-                $query->where($this->getTranslationsTable() . '.' . $this->getLocaleKey(), $this->locale());
+                $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $this->locale());
 
                 if ($this->isUsingTranslationFallback()) {
                     return $query->orWhere(
-                        $this->getTranslationsTable() . '.' . $this->getLocaleKey(),
+                        $this->getTranslationsTable().'.'.$this->getLocaleKey(),
                         $this->getFallbackLocale()
                     );
                 }
@@ -559,9 +555,9 @@ trait Translatable
     public function scopeWhereTranslation(Builder $query, $key, $value, $locale = null)
     {
         return $query->whereHas('translations', function (Builder $query) use ($key, $value, $locale) {
-            $query->where($this->getTranslationsTable() . '.' . $key, $value);
+            $query->where($this->getTranslationsTable().'.'.$key, $value);
             if ($locale) {
-                $query->where($this->getTranslationsTable() . '.' . $this->getLocaleKey(), $locale);
+                $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $locale);
             }
         });
     }
@@ -579,9 +575,9 @@ trait Translatable
     public function scopeWhereTranslationLike(Builder $query, $key, $value, $locale = null)
     {
         return $query->whereHas('translations', function (Builder $query) use ($key, $value, $locale) {
-            $query->where($this->getTranslationsTable() . '.' . $key, 'LIKE', $value);
+            $query->where($this->getTranslationsTable().'.'.$key, 'LIKE', $value);
             if ($locale) {
-                $query->where($this->getTranslationsTable() . '.' . $this->getLocaleKey(), 'LIKE', $locale);
+                $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), 'LIKE', $locale);
             }
         });
     }
@@ -669,7 +665,7 @@ trait Translatable
         if ($locales === null) {
             $this->translations()->delete();
         } else {
-            $locales = (array)$locales;
+            $locales = (array) $locales;
             $this->translations()->whereIn($this->getLocaleKey(), $locales)->delete();
         }
 

@@ -1,14 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Inputs\Input;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 /**
- * Class ImageFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class ImageFieldRenderer.
  */
 final class ImageFieldRenderer extends FileFieldRenderer
 {
@@ -27,7 +28,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
             $value->append(
                 Html::image()
                     ->addAttributes([
-                        'src' => $image->getUrl($this->getManipulationParameters())
+                        'src' => $image->getUrl($this->getManipulationParameters()),
                     ])
                     ->addClass('thumbnail')
             );
@@ -52,7 +53,6 @@ final class ImageFieldRenderer extends FileFieldRenderer
         return $control->render($element);
     }
 
-
     /**
      * @return array
      */
@@ -63,7 +63,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
             'w' => 64,
             'q' => 40,
             'fm' => 'jpg',
-            'fit' => 'crop'
+            'fit' => 'crop',
         ];
     }
 

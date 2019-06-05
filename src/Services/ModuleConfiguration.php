@@ -5,8 +5,7 @@ namespace Arbory\Base\Services;
 use Arbory\Base\Admin\Module;
 
 /**
- * Class ModuleConfig
- * @package Arbory\Base\Services
+ * Class ModuleConfig.
  */
 class ModuleConfiguration
 {
@@ -148,7 +147,7 @@ class ModuleConfiguration
      */
     protected function createNameFromClass(string $class): string
     {
-        if (!preg_match('#Controllers(\\\Admin)?\\\(?P<name>.*)Controller#ui', $class, $matches)) {
+        if (! preg_match('#Controllers(\\\Admin)?\\\(?P<name>.*)Controller#ui', $class, $matches)) {
             return substr(md5($class), 0, 8);
         }
 

@@ -3,8 +3,7 @@
 namespace Arbory\Base\Html\Elements;
 
 /**
- * Class Tag
- * @package Arbory\Base\Html
+ * Class Tag.
  */
 class Tag
 {
@@ -25,7 +24,7 @@ class Tag
         'param',
         'source',
         'track',
-        'wbr'
+        'wbr',
     ];
 
     /**
@@ -64,10 +63,10 @@ class Tag
             : $this->content;
 
         if ($this->isSelfClosing($this->name)) {
-            return '<' . $this->name . '' . $attributes . '>' . $content;
+            return '<'.$this->name.''.$attributes.'>'.$content;
         }
 
-        return '<' . $this->name . '' . $attributes . '>' . $content . '</' . $this->name . '>';
+        return '<'.$this->name.''.$attributes.'>'.$content.'</'.$this->name.'>';
     }
 
     /**
@@ -97,7 +96,7 @@ class Tag
     {
         $attributes = $this->getFilteredAttributes();
 
-        return $attributes->isNotEmpty() ? ' ' . $attributes : '';
+        return $attributes->isNotEmpty() ? ' '.$attributes : '';
     }
 
     /**

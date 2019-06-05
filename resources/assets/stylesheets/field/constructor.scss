@@ -1,0 +1,23 @@
+.type-constructor {
+  &.in-layout {
+    padding: 0 !important;
+  }
+
+  .body {
+    .item {
+      position: relative;
+    }
+  }
+  
+  .template-types {
+    margin-top: steps(2);
+  }
+}
+
+.constructor-button-wrapper {
+  padding: steps(1) steps(2);
+  
+  .button {
+    width: 100%;
+  }
+}

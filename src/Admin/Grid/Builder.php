@@ -2,22 +2,22 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Widgets\Pagination;
-use Arbory\Base\Admin\Layout\Footer;
-use Arbory\Base\Admin\Layout\Footer\Tools;
+use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Widgets\Link;
-use Arbory\Base\Admin\Widgets\SearchField;
+use Arbory\Base\Admin\Layout\Footer;
+use Arbory\Base\Admin\Widgets\Filter;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Widgets\Pagination;
+use Arbory\Base\Admin\Layout\Footer\Tools;
 use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 /**
- * Class Builder
- * @package Arbory\Base\Admin\Grid
+ * Class Builder.
  */
 class Builder implements Renderable
 {
@@ -49,6 +49,57 @@ class Builder implements Renderable
     }
 
     /**
+     * @return Element|null
+     */
+    protected function bulkEdit() : ?Element
+    {
+        if (! $this->grid->hasTool('bulk-edit')) {
+            return null;
+        }
+
+        $this->addBulkColumn();
+
+        $href = $this->url('dialog', [
+            'dialog' => 'confirm_bulk_edit',
+        ]);
+        $button = new Link($href);
+        $button->withIcon('edit');
+        $button->asButton('bulk-action js-bulk-edit-button ajaxbox')->title(trans('arbory::resources.bulk_edit'));
+
+        return Html::div($button->render())->addClass('bulk-actions');
+    }
+
+    /**
+     * @return Column
+     */
+    protected function addBulkColumn() : Column
+    {
+        return $this->grid->prependColumn('id', trans('arbory::resources.nr'), 1)
+            ->checkable(true)
+            ->display(function ($value, Column $column) {
+                $cellContent = Html::span();
+                $checkbox = new CheckBox($value);
+                $checkbox->setValue($value);
+                $checkbox->addClass('js-bulk-edit-row-checkbox');
+                $checkbox->setName('bulk_edit_item_ids[]');
+
+                return $cellContent->append($checkbox);
+            });
+    }
+
+    /**
+     * @return Content|string|null
+     */
+    protected function filter()
+    {
+        if (! $this->grid->hasTool('filter')) {
+            return;
+        }
+
+        return (new Filter($this->grid()))->render();
+    }
+
+    /**
      * @return \Illuminate\Support\Collection
      */
     protected function getTableColumns()
@@ -68,10 +119,16 @@ class Builder implements Renderable
      */
     protected function getColumnHeader(Column $column)
     {
+        if ($column->isCheckable() && $this->grid->hasTool('bulk-edit')) {
+            $input = Html::label([Html::checkbox()->addClass('js-bulk-edit-header-checkbox')
+                ->setName('bulk-edit-column'), $column->getLabel(), ]);
+
+            return Html::th($input)->addClass('bulk-check-column');
+        }
         if ($column->isSortable()) {
             $link = Html::link($column->getLabel())
                 ->addAttributes([
-                    'href' => $this->getColumnOrderUrl($column->getName())
+                    'href' => $this->getColumnOrderUrl($column->getName()),
                 ]);
 
             if (request('_order_by') === $column->getName()) {
@@ -146,7 +203,7 @@ class Builder implements Renderable
                         })->toArray()
                     )->addClass('tbody'),
                 ])->addClass('table')
-            )->addClass('body')
+            )->addClass('body'),
         ]);
     }
 
@@ -155,8 +212,8 @@ class Builder implements Renderable
      */
     protected function createButton()
     {
-        if (!$this->grid->hasTool('create')) {
-            return null;
+        if (! $this->grid->hasTool('create')) {
+            return;
         }
 
         return
@@ -185,7 +242,7 @@ class Builder implements Renderable
                 Html::div(
                     Link::create($this->url('export', $parameters + ['as' => 'json']))
                         ->title('JSON')
-                )->addClass('options')
+                )->addClass('options'),
             ])->addClass('export');
     }
 
@@ -215,7 +272,7 @@ class Builder implements Renderable
      */
     protected function addCustomToolsToFooterToolset(Tools $toolset)
     {
-        foreach ($this->grid->getTools() as list($tool, $location)) {
+        foreach ($this->grid->getTools() as [$tool, $location]) {
             $toolset->getBlock($location)->push($tool->render());
         }
     }
@@ -253,9 +310,11 @@ class Builder implements Renderable
 
         return new Content([
             Html::section([
+                $this->bulkEdit(),
                 $this->table(),
                 $this->footer(),
-            ])
+            ])->addClass('content'),
+            $this->filter(),
         ]);
     }
 }

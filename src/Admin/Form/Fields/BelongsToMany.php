@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\Fields\Renderer\AssociatedSetRenderer;
-use Illuminate\Http\Request;
 
 /**
- * Class BelongsToMany
- * @package Arbory\Base\Admin\Form\Fields
+ * Class BelongsToMany.
  */
 class BelongsToMany extends AbstractField
 {
@@ -64,13 +63,13 @@ class BelongsToMany extends AbstractField
             ->toArray();
 
         foreach ($existingIds as $id) {
-            if (!in_array($id, $submittedIds)) {
+            if (! in_array($id, $submittedIds)) {
                 $relation->detach($id);
             }
         }
 
         foreach ($submittedIds as $id) {
-            if (!in_array($id, $existingIds)) {
+            if (! in_array($id, $existingIds)) {
                 $relation->attach($id);
             }
         }

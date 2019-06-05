@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\IconPickerRenderer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Form\Fields\Renderer\IconPickerRenderer;
 
 class IconPicker extends Select
 {
@@ -84,7 +84,7 @@ class IconPicker extends Select
 
             foreach ($node->attributes() as $attributeName => $attributeValue) {
                 if ($attributeName === 'id') {
-                    $id = (string)$attributeValue;
+                    $id = (string) $attributeValue;
                 }
             }
 
@@ -92,8 +92,6 @@ class IconPicker extends Select
                 return $node;
             }
         }
-
-        return null;
     }
 
     /**
@@ -104,7 +102,7 @@ class IconPicker extends Select
     {
         $ids = new Collection();
 
-        if (!file_exists($this->spritePath)) {
+        if (! file_exists($this->spritePath)) {
             $message = sprintf('Provided sprite-sheet [%s] doesn\'t exist', $this->spritePath);
             throw new \InvalidArgumentException($message);
         }
@@ -117,11 +115,11 @@ class IconPicker extends Select
 
             foreach ($node->attributes() as $attributeName => $attributeValue) {
                 if ($attributeName === 'id') {
-                    $id = (string)$attributeValue;
+                    $id = (string) $attributeValue;
                 }
             }
 
-            if ($this->filter && !str_contains($id, $this->filter)) {
+            if ($this->filter && ! str_contains($id, $this->filter)) {
                 continue;
             }
 

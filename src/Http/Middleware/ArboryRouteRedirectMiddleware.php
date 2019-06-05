@@ -3,9 +3,9 @@
 namespace Arbory\Base\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Arbory\Base\Pages\Redirect;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ArboryRouteRedirectMiddleware
 {
@@ -21,7 +21,7 @@ class ArboryRouteRedirectMiddleware
         $redirect = Redirect::query();
 
         $redirect->where('from_url', $request->url());
-        $redirect->orWhere('from_url', 'LIKE', '_' . $request->path() . '_');
+        $redirect->orWhere('from_url', 'LIKE', '_'.$request->path().'_');
 
         $redirect = $redirect->first(['to_url']);
 

@@ -2,17 +2,14 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptions;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
-use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 /**
- * Class TranslatableFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class TranslatableFieldRenderer.
  */
 class TranslatableFieldRenderer implements RendererInterface
 {
@@ -150,7 +147,7 @@ class TranslatableFieldRenderer implements RendererInterface
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *

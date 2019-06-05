@@ -2,12 +2,10 @@
 
 namespace Arbory\Base\Repositories;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class AbstractModelRepository
- * @package Arbory\Base\Repositories
+ * Class AbstractModelRepository.
  */
 abstract class AbstractModelsRepository
 {

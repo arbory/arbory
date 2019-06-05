@@ -1,10 +1,11 @@
 <?php
 
 return [
+    'title' => 'Arbory',
     'uri' => 'admin',
 
     'locales' => [
-        'en'
+        'en',
     ],
 
     'menu' => [
@@ -15,7 +16,7 @@ return [
         Arbory\Base\Http\Controllers\Admin\RedirectsController::class,
         [
             Arbory\Base\Http\Controllers\Admin\UsersController::class,
-            Arbory\Base\Http\Controllers\Admin\RolesController::class
+            Arbory\Base\Http\Controllers\Admin\RolesController::class,
         ],
     ],
 
@@ -29,10 +30,10 @@ return [
             'coordinates' => [
                 'lat' => 56.94725473000847,
                 'lng' => 24.099142639160167,
-            ]
+            ],
         ],
         'sprite_icon' => [
-            'path' => base_path( 'resources/assets/svg/icons.svg' ),
+            'path' => base_path('resources/assets/svg/icons.svg'),
         ],
     ],
 
@@ -60,6 +61,7 @@ return [
         'text' => Arbory\Base\Admin\Form\Fields\Text::class,
         'textarea' => Arbory\Base\Admin\Form\Fields\Textarea::class,
         'translatable' => Arbory\Base\Admin\Form\Fields\Translatable::class,
+        'constructor' => Arbory\Base\Admin\Form\Fields\Constructor::class,
     ],
 
     'field_styles' => [
@@ -74,15 +76,15 @@ return [
 
     'auth' => [
         'ip' => [
-            'allowed' => []
+            'allowed' => [],
         ],
         'activations' => [
             'expires' => 259200,
-            'lottery' => [ 2, 100 ],
+            'lottery' => [2, 100],
         ],
         'reminders' => [
             'expires' => 14400,
-            'lottery' => [ 2, 100 ],
+            'lottery' => [2, 100],
         ],
         'throttling' => [
             'global' => [
@@ -93,7 +95,7 @@ return [
                     30 => 4,
                     40 => 8,
                     50 => 16,
-                    60 => 12
+                    60 => 12,
                 ],
             ],
             'ip' => [
@@ -109,12 +111,12 @@ return [
 
     'services' => [
         'google' => [
-            'maps_api_key' => env('GOOGLE_MAPS_API_KEY')
-        ]
+            'maps_api_key' => env('GOOGLE_MAPS_API_KEY'),
+        ],
     ],
 
     'preview' => [
         'enabled' => true,
-        'slug_salt' => env('APP_KEY')
-    ]
+        'slug_salt' => env('APP_KEY'),
+    ],
 ];

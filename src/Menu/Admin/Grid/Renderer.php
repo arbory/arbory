@@ -2,17 +2,16 @@
 
 namespace Arbory\Base\Menu\Admin\Grid;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Layout\Footer;
-use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Nodes\MenuItem;
+use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Admin\Layout\Footer;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Arbory\Base\Menu\AbstractItem;
-use Arbory\Base\Nodes\MenuItem;
+use Arbory\Base\Admin\Layout\Footer\Tools;
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Support\Collection;
 
 class Renderer
 {
@@ -52,13 +51,13 @@ class Renderer
             Html::header([
                 Html::h1(trans('arbory::resources.all_resources')),
                 Html::span(trans('arbory::pagination.items_found', ['total' => $this->page->total()]))
-                    ->addClass('extras totals only-text')
+                    ->addClass('extras totals only-text'),
             ]),
             Html::div(
                 Html::div(
                     $this->buildTree($this->page->getCollection(), 1)
                 )->addClass('collection')
-            )->addClass('body')
+            )->addClass('body'),
         ]);
     }
 
@@ -120,7 +119,7 @@ class Renderer
     {
         foreach ($items as $model) {
             /** @var MenuItem $model */
-            if (!$model->isAfter()) {
+            if (! $model->isAfter()) {
                 continue;
             }
 

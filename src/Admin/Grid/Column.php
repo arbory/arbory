@@ -3,16 +3,15 @@
 namespace Arbory\Base\Admin\Grid;
 
 use Closure;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
 /**
- * Class Column
- * @package Arbory\Base\Admin\Grid
+ * Class Column.
  */
 class Column
 {
@@ -57,6 +56,21 @@ class Column
     protected $searchable = true;
 
     /**
+     * @var bool
+     */
+    protected $hasFilter = false;
+
+    /**
+     * @var
+     */
+    protected $filterType;
+
+    /**
+     * @var bool
+     */
+    protected $checkable = false;
+
+    /**
      * Column constructor.
      * @param string $name
      * @param string $label
@@ -72,7 +86,7 @@ class Column
      */
     public function __toString()
     {
-        return (string)$this->getName();
+        return (string) $this->getName();
     }
 
     /**
@@ -83,12 +97,49 @@ class Column
         return $this->name;
     }
 
+    public function getFilterType()
+    {
+        return $this->filterType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasFilter(): bool
+    {
+        return $this->hasFilter;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelationName()
+    {
+        return $this->relationName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelationColumn()
+    {
+        return $this->relationColumn;
+    }
+
     /**
      * @return string
      */
     public function getLabel()
     {
         return $this->label ?: $this->name;
+    }
+
+    /**
+     * @return Grid
+     */
+    public function getGrid(): Grid
+    {
+        return $this->grid;
     }
 
     /**
@@ -125,6 +176,17 @@ class Column
     }
 
     /**
+     * @param bool $isCheckable
+     * @return $this
+     */
+    public function checkable($isCheckable = true)
+    {
+        $this->checkable = $isCheckable;
+
+        return $this;
+    }
+
+    /**
      * @param bool $isSearchable
      * @return Column
      */
@@ -136,11 +198,31 @@ class Column
     }
 
     /**
+     * @param null $type
+     * @return $this
+     */
+    public function setFilter($type = null)
+    {
+        $this->filterType = $type;
+        $this->hasFilter = $type !== null;
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isSortable()
     {
         return $this->sortable && empty($this->relationName);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCheckable()
+    {
+        return $this->checkable;
     }
 
     /**
@@ -177,8 +259,8 @@ class Column
             if ($this->relationName === 'translations') {
                 $translation = $model->getTranslation(null, true);
 
-                if (!$translation) {
-                    return null;
+                if (! $translation) {
+                    return;
                 }
 
                 return $translation->getAttribute($this->relationColumn);
@@ -205,11 +287,11 @@ class Column
         $value = $this->getValue($model);
 
         if ($this->displayer === null) {
-            $value = (string)$value;
+            $value = (string) $value;
 
             if ($this->grid->hasTool('create')) {
                 return Html::link($value)->addAttributes([
-                    'href' => $this->grid->getModule()->url('edit', [$model->getKey()])
+                    'href' => $this->grid->getModule()->url('edit', [$model->getKey()]),
                 ]);
             }
 
@@ -227,5 +309,26 @@ class Column
     {
         $this->relationName = $relationName;
         $this->relationColumn = $relationColumn;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilterRelationColumn(): string
+    {
+        $columnName = $this->getFilterType()->getColumn();
+
+        return is_null($columnName) ? $this->getRelationColumn() : $columnName;
+    }
+
+    /**
+     * @param string $column
+     * @return string
+     */
+    public function getFilterColumnName(string $column): string
+    {
+        $columnInFilter = $this->getFilterType()->getColumn();
+
+        return $columnInFilter ? $columnInFilter : $column;
     }
 }

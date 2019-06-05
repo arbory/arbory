@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Services;
 
-use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Admin\Settings\Setting;
-use Arbory\Base\Admin\Settings\SettingDefinition;
 use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Settings\Setting;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Settings\SettingDefinition;
 
 class SettingRegistry
 {
@@ -79,10 +79,10 @@ class SettingRegistry
     public function importFromConfig(array $properties, $before = '')
     {
         foreach ($properties as $key => $data) {
-            if (is_array($data) && !empty($data) && !array_key_exists('value', $data)) {
-                $this->importFromConfig($data, $before . $key . '.');
+            if (is_array($data) && ! empty($data) && ! array_key_exists('value', $data)) {
+                $this->importFromConfig($data, $before.$key.'.');
             } else {
-                $key = $before . $key;
+                $key = $before.$key;
                 $value = $data['value'] ?? $data;
                 $type = $data['type'] ?? null;
 

@@ -18,7 +18,7 @@ class Attributes extends Collection
         foreach ($this->all() as $key => $value) {
             $element = $this->attributeElement($key, $value);
 
-            if (!is_null($element)) {
+            if (! is_null($element)) {
                 $html[] = $element;
             }
         }
@@ -32,10 +32,8 @@ class Attributes extends Collection
             $key = $value;
         }
 
-        if (!is_null($value)) {
-            return $key . '="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8', true) . '"';
+        if (! is_null($value)) {
+            return $key.'="'.htmlspecialchars($value, ENT_QUOTES, 'UTF-8', true).'"';
         }
-
-        return null;
     }
 }

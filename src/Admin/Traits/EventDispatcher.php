@@ -5,8 +5,7 @@ namespace Arbory\Base\Admin\Traits;
 use Closure;
 
 /**
- * Class EventDispatcher
- * @package Arbory\Base\Admin\Traits
+ * Class EventDispatcher.
  */
 trait EventDispatcher
 {
@@ -41,7 +40,7 @@ trait EventDispatcher
      */
     public function addEventListeners(array $events, Closure $callback)
     {
-        foreach ((array)$events as $event) {
+        foreach ((array) $events as $event) {
             $this->addEventListener($event, $callback);
         }
     }

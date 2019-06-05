@@ -2,11 +2,10 @@ language: php
 php:
 - '7.1'
 - '7.2'
-- nightly
+- '7.3'
 branches:
   only:
   - master
-  - psr2-compliant-test
   - 1.0
 install:
 - composer install
@@ -20,5 +19,3 @@ notifications:
     on_failure: always
 after_success:
 - travis_retry php vendor/bin/coveralls
-- vendor/bin/phpcs --standard=PSR2 ./src
-- vendor/bin/phpcs --standard=PSR2 ./tests

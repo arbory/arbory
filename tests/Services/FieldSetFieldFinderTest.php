@@ -2,19 +2,21 @@
 
 namespace Tests\Services;
 
-use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\AbstractField;
-use Arbory\Base\Admin\Form\Fields\HasMany;
-use Arbory\Base\Admin\Form\Fields\Text;
-use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Services\FieldSetFieldFinder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Mockery;
 use Mockery\Mock;
+use Arbory\Base\Admin\Form;
 use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Foundation\Application;
 use Waavi\Translation\Models\Language;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Form\Fields\HasMany;
+use Arbory\Base\Services\FieldSetFieldFinder;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Form\Fields\AbstractField;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 final class FieldSetFieldFinderTest extends TestCase
@@ -29,6 +31,20 @@ final class FieldSetFieldFinderTest extends TestCase
      */
     protected function setUp()
     {
+        app()->singleton(StyleManager::class, static function () {
+            $styles = [
+                'normal' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\LabeledFieldStyle::class,
+                'basic' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\BasicFieldStyle::class,
+                'raw' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\RawFieldStyle::class,
+                'nested' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\NestedFieldStyle::class,
+                'section' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\SectionFieldStyle::class,
+            ];
+
+            $app = Mockery::mock(Application::class);
+
+            return new StyleManager($app, $styles, 'normal');
+        });
+
         $this->model = Mockery::mock(Model::class);
         $this->model->shouldReceive('translateOrNew')->andReturn($this->model);
         $this->model->shouldReceive('toArray')->andReturn([]);
@@ -66,7 +82,7 @@ final class FieldSetFieldFinderTest extends TestCase
     public function itShouldFindNestedField()
     {
         /**
-         * @var Mock|HasMany $many
+         * @var Mock|HasMany
          */
         $text = new Text('name');
         $many = $this->getHasManyField('many_names.0', $text);
@@ -88,7 +104,7 @@ final class FieldSetFieldFinderTest extends TestCase
     public function itShouldFindCorrectFieldInTranslatables()
     {
         /**
-         * @var Mock|Translatable $translatable1
+         * @var Mock|Translatable
          * @var Mock|Translatable $translatable2
          */
         $text1 = new Text('foo');

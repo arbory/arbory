@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Controls;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 
 abstract class AbstractControl implements InputControlInterface
 {
@@ -122,9 +121,8 @@ abstract class AbstractControl implements InputControlInterface
         return $this;
     }
 
-
     /**
-     * Converts dot donation name to a input name
+     * Converts dot donation name to a input name.
      *
      * @param $namespacedName
      *
@@ -136,7 +134,7 @@ abstract class AbstractControl implements InputControlInterface
     }
 
     /**
-     * Creates Input ID from input name
+     * Creates Input ID from input name.
      *
      * @param $inputName
      *

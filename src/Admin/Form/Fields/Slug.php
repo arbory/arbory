@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\SlugFieldRenderer;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Repositories\NodesRepository;
+use Arbory\Base\Admin\Form\Fields\Renderer\SlugFieldRenderer;
 
 /**
- * Class Slug
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Slug.
  */
 class Slug extends Text
 {
@@ -48,7 +47,7 @@ class Slug extends Text
             $urlToSlug .= '/';
         }
 
-        return url($urlToSlug . $this->getValue());
+        return url($urlToSlug.$this->getValue());
     }
 
     /**
@@ -62,7 +61,7 @@ class Slug extends Text
             $urlToSlug .= '/';
         }
 
-        $slugHashed = 'preview-' . sha1(config('arbory.preview.slug_salt') . '/' . $urlToSlug . $this->getValue());
+        $slugHashed = 'preview-'.sha1(config('arbory.preview.slug_salt').'/'.$urlToSlug.$this->getValue());
 
         return url($slugHashed);
     }
@@ -93,12 +92,12 @@ class Slug extends Text
     protected function getUriToNewModel()
     {
         /**
-         * @var Node $parentNode
+         * @var Node
          */
         $repository = new NodesRepository;
         $parentNode = $repository->find($this->getParentId());
 
-        return $parentNode ? $parentNode->getUri() : (string)null;
+        return $parentNode ? $parentNode->getUri() : (string) null;
     }
 
     /**
@@ -106,7 +105,7 @@ class Slug extends Text
      */
     public function getUriToSlug()
     {
-        if (!$this->hasUriToSlug()) {
+        if (! $this->hasUriToSlug()) {
             return false;
         }
 

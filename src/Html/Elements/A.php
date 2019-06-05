@@ -3,8 +3,7 @@
 namespace Arbory\Base\Html\Elements;
 
 /**
- * Class A
- * @package Arbory\Base\Html\Elements
+ * Class A.
  */
 class A extends Element
 {
@@ -15,6 +14,6 @@ class A extends Element
     {
         $tag = $this->tag('a', $this->content);
 
-        return (string)$tag;
+        return (string) $tag;
     }
 }

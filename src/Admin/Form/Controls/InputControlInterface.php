@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Controls;
 
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Html\Elements\Element;
-use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 
 interface InputControlInterface extends RenderOptionsInterface
 {
@@ -43,5 +41,5 @@ interface InputControlInterface extends RenderOptionsInterface
      *
      * @return InputControlInterface
      */
-    public function setName(?string $name): InputControlInterface;
+    public function setName(?string $name): self;
 }

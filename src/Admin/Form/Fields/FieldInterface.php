@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
+use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 
 /**
- * Interface FieldInterface
- * @package Arbory\Base\Admin\Form\Fields
+ * Interface FieldInterface.
  */
 interface FieldInterface
 {
@@ -52,7 +51,6 @@ interface FieldInterface
      */
     public function setDefaultValue($defaultValue);
 
-
     /**
      * @return string
      */
@@ -84,7 +82,7 @@ interface FieldInterface
      * @param string $rules
      * @return FieldInterface
      */
-    public function rules(string $rules): FieldInterface;
+    public function rules(string $rules): self;
 
     /**
      * @return array
@@ -116,7 +114,7 @@ interface FieldInterface
      *
      * @return FieldInterface
      */
-    public function setRendererClass(?string $renderable = null): FieldInterface;
+    public function setRendererClass(?string $renderable = null): self;
 
     /**
      * @return RendererInterface|null
@@ -124,13 +122,13 @@ interface FieldInterface
     public function getRenderer(): ?RendererInterface;
 
     /**
-     * Set a render class override
+     * Set a render class override.
      *
      * @param RendererInterface|null $renderer
      *
      * @return FieldInterface
      */
-    public function setRenderer(?RendererInterface $renderer): FieldInterface;
+    public function setRenderer(?RendererInterface $renderer): self;
 
     /**
      * @return string|null
@@ -142,7 +140,7 @@ interface FieldInterface
      *
      * @return FieldInterface
      */
-    public function setTooltip($content = null): FieldInterface;
+    public function setTooltip($content = null): self;
 
     /**
      * @param int $rows
@@ -150,7 +148,7 @@ interface FieldInterface
      *
      * @return FieldInterface
      */
-    public function setRows(int $rows, $breakpoints = []): FieldInterface;
+    public function setRows(int $rows, $breakpoints = []): self;
 
     /**
      * @return mixed
@@ -167,7 +165,7 @@ interface FieldInterface
      *
      * @return mixed
      */
-    public function setStyle(string $style): FieldInterface;
+    public function setStyle(string $style): self;
 
     /**
      * @return array
@@ -175,7 +173,7 @@ interface FieldInterface
     public function getFieldClasses(): array;
 
     /**
-     * Element ID for label
+     * Element ID for label.
      *
      * @return string
      */
@@ -198,5 +196,5 @@ interface FieldInterface
      *
      * @return FieldInterface
      */
-    public function setHidden(bool $value): FieldInterface;
+    public function setHidden(bool $value): self;
 }

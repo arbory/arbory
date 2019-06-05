@@ -2,12 +2,11 @@
 
 namespace Arbory\Base\Auth\Roles;
 
-use Cartalyst\Sentinel\Roles\EloquentRole;
 use Arbory\Base\Auth\Users\User;
+use Cartalyst\Sentinel\Roles\EloquentRole;
 
 /**
- * Class Role
- * @package Arbory\Base\Auth\Roles
+ * Class Role.
  */
 class Role extends EloquentRole
 {
@@ -26,7 +25,7 @@ class Role extends EloquentRole
      */
     public function __toString()
     {
-        return (string)$this->getName();
+        return (string) $this->getName();
     }
 
     /**

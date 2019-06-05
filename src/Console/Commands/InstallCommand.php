@@ -2,19 +2,18 @@
 
 namespace Arbory\Base\Console\Commands;
 
-use Arbory\Base\Providers\FileManagerServiceProvider;
-use Arbory\Base\Providers\ArboryServiceProvider;
 use Exception;
+use ArboryDatabaseSeeder;
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Database\DatabaseManager;
-use Illuminate\Filesystem\Filesystem;
-use ArboryDatabaseSeeder;
+use Arbory\Base\Providers\ArboryServiceProvider;
 use Illuminate\Console\DetectsApplicationNamespace;
+use Arbory\Base\Providers\FileManagerServiceProvider;
 
 /**
- * Class SeedCommand
- * @package Arbory\Base\Console\Commands
+ * Class SeedCommand.
  */
 class InstallCommand extends Command
 {
@@ -112,7 +111,7 @@ class InstallCommand extends Command
     {
         $this->info('Running Arbory database seeder');
         $this->call('db:seed', [
-            '--class' => ArboryDatabaseSeeder::class
+            '--class' => ArboryDatabaseSeeder::class,
         ]);
     }
 

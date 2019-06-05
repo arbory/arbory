@@ -3,19 +3,20 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Closure;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Form\Fields\Renderer\NestedFieldRenderer;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
+use Arbory\Base\Admin\Form\Fields\Renderer\NestedFieldRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 
 /**
- * Class HasMany
- * @package Arbory\Base\Admin\Form\Fields
+ * Class HasMany.
  */
-class HasMany extends AbstractRelationField implements NestedFieldInterface
+class HasMany extends AbstractRelationField implements NestedFieldInterface, RepeatableNestedFieldInterface
 {
     use HasRelationships;
 
@@ -29,11 +30,25 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
      */
     protected $orderBy;
 
+    /**
+     * @var string
+     */
     protected $rendererClass = NestedFieldRenderer::class;
 
+    /**
+     * @var string
+     */
     protected $style = 'nested';
 
+    /**
+     * @var bool
+     */
     protected $isSortable = false;
+
+    /**
+     * @var ItemInterface
+     */
+    protected $itemRenderer;
 
     /**
      * AbstractRelationField constructor.
@@ -45,6 +60,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
         parent::__construct($name);
 
         $this->fieldSetCallback = $fieldSetCallback;
+        $this->itemRenderer = new NestedItemRenderer();
     }
 
     /**
@@ -78,7 +94,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
      */
     public function getRelationFieldSet($model, $index)
     {
-        $fieldSet = new FieldSet($model, $this->getNameSpacedName() . '.' . $index);
+        $fieldSet = new FieldSet($model, $this->getNameSpacedName().'.'.$index);
         $fieldSetCallback = $this->fieldSetCallback;
         $fieldSetCallback($fieldSet);
 
@@ -109,7 +125,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
      */
     public function afterModelSave(Request $request)
     {
-        $items = (array)$request->input($this->getNameSpacedName(), []);
+        $items = (array) $request->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
             $relatedModel = $this->findRelatedModel($item);
@@ -127,7 +143,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
                 $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
             }
 
-            if (!$relation instanceof BelongsToMany) {
+            if (! $relation instanceof BelongsToMany) {
                 $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
             }
 
@@ -151,7 +167,6 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
             }
         }
     }
-
 
     /**
      * @param $variables
@@ -213,7 +228,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
     }
 
     /**
-     * Make this field sortable
+     * Make this field sortable.
      *
      * @param string $field
      *
@@ -223,6 +238,40 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
     {
         $this->isSortable = true;
         $this->setOrderBy($field);
+
+        return $this;
+    }
+
+    /**
+     * @return Renderer\RendererInterface|mixed
+     */
+    public function newRenderer()
+    {
+        return app()->makeWith(
+            $this->rendererClass,
+            [
+                'field' => $this,
+                'itemRenderer' => $this->itemRenderer,
+            ]
+        );
+    }
+
+    /**
+     * @return ItemInterface
+     */
+    public function getItemRenderer(): ItemInterface
+    {
+        return $this->itemRenderer;
+    }
+
+    /**
+     * @param ItemInterface $itemRenderer
+     *
+     * @return HasMany
+     */
+    private function setItemRenderer(ItemInterface $itemRenderer): self
+    {
+        $this->itemRenderer = $itemRenderer;
 
         return $this;
     }

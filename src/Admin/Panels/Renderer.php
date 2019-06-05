@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Panels;
 
-use Arbory\Base\Admin\Tools\Toolbox;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Tools\Toolbox;
 use Illuminate\Contracts\Support\Renderable;
 
 class Renderer implements Renderable
@@ -18,7 +16,7 @@ class Renderer implements Renderable
     /**
      * Renderer constructor.
      *
-     * @param PanelInterface $panel
+     * @param  PanelInterface  $panel
      */
     public function __construct(PanelInterface $panel)
     {
@@ -36,8 +34,8 @@ class Renderer implements Renderable
                     ->addClass('content'),
             ]
         )->addClass('panel')
-            ->addClass(implode(' ', $this->panel->getClasses()))
-            ->addAttributes($this->panel->getAttributes());
+                       ->addClass(implode(' ', $this->panel->getClasses()))
+                       ->addAttributes($this->panel->getAttributes());
 
         return $wrapper ? $wrapper($element) : $element;
     }

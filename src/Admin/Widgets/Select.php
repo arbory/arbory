@@ -3,12 +3,11 @@
 namespace Arbory\Base\Admin\Widgets;
 
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Select
- * @package Arbory\Base\Admin\Widgets
+ * Class Select.
  */
 class Select implements Renderable
 {
@@ -45,7 +44,7 @@ class Select implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -76,7 +75,7 @@ class Select implements Renderable
      */
     public function selected($value)
     {
-        $this->selected = (array)$value;
+        $this->selected = (array) $value;
 
         return $this;
     }
@@ -98,7 +97,7 @@ class Select implements Renderable
     public function render()
     {
         foreach ($this->options as $key => $title) {
-            $option = Html::option((string)$title)->setValue($key);
+            $option = Html::option((string) $title)->setValue($key);
 
             if (in_array($key, $this->selected)) {
                 $option->select();

@@ -14,7 +14,7 @@ class SelectFieldRenderer extends ControlFieldRenderer
     public function render()
     {
         /**
-         * @var $control SelectControl
+         * @var SelectControl
          */
         $control = $this->getControl();
         $control = $this->configureControl($control);
@@ -30,7 +30,7 @@ class SelectFieldRenderer extends ControlFieldRenderer
             $name = $control->getName();
             $element->addAttributes([
                 'multiple' => '',
-                'name' => $name . '[]'
+                'name' => $name.'[]',
             ]);
         }
 

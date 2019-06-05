@@ -2,21 +2,20 @@
 
 namespace Arbory\Base\Nodes\Admin\Grid;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Layout\Footer;
-use Arbory\Base\Admin\Layout\Footer\Tools;
-use Arbory\Base\Admin\Tools\Toolbox;
+use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Admin\Layout\Footer;
+use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Pagination\Paginator;
+use Arbory\Base\Admin\Layout\Footer\Tools;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Pagination\Paginator;
 
 /**
- * Class Renderer
- * @package Arbory\Base\Nodes\Admin\Grid
+ * Class Renderer.
  */
 class Renderer implements Renderable
 {
@@ -58,13 +57,13 @@ class Renderer implements Renderable
             Html::header([
                 Html::h1(trans('arbory::resources.all_resources')),
                 Html::span(trans('arbory::pagination.items_found', ['total' => $this->page->total()]))
-                    ->addClass('extras totals only-text')
+                    ->addClass('extras totals only-text'),
             ]),
             Html::div(
                 Html::div(
                     $this->buildTree($this->page->getCollection(), 1)
                 )->addClass('collection')
-            )->addClass('body')
+            )->addClass('body'),
         ]);
     }
 
@@ -111,7 +110,7 @@ class Renderer implements Renderable
                 $li->append($collapser);
             }
 
-            $cell = Html::div()->addClass('node-cell ' . ($item->isActive() ? 'active' : ''));
+            $cell = Html::div()->addClass('node-cell '.($item->isActive() ? 'active' : ''));
 
             $link = str_replace('__ID__', $item->getKey(), $url);
 
@@ -184,7 +183,7 @@ class Renderer implements Renderable
      */
     protected function getNodeCookie($nodeId)
     {
-        $cookie = (array)json_decode(array_get($_COOKIE, self::COOKIE_NAME_NODES));
+        $cookie = (array) json_decode(array_get($_COOKIE, self::COOKIE_NAME_NODES));
 
         return array_get($cookie, $nodeId, true);
     }

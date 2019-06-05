@@ -3,8 +3,8 @@
 namespace Arbory\Base\Support\Replies;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Http\RedirectResponse;
 
 class ExceptionReply extends Reply
 {
@@ -19,7 +19,7 @@ class ExceptionReply extends Reply
     protected $success = false;
 
     /**
-     * @var string $url
+     * @var string
      * @return JsonResponse|RedirectResponse
      */
     public function dispatch($url = '/')

@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'all_translations' => 'All translations'
+    'all_translations' => 'All translations',
 ];

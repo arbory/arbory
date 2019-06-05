@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Button
- * @package Arbory\Base\Admin\Widgets
+ * Class Button.
  */
 class Button implements Renderable
 {
@@ -18,7 +17,7 @@ class Button implements Renderable
     protected $element;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $iconOnly;
 
@@ -54,7 +53,7 @@ class Button implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -75,7 +74,18 @@ class Button implements Renderable
     public function withIcon($name)
     {
         $this->element->addClass('with-icon');
-        $this->element->append(Html::i()->addClass('fa fa-' . $name));
+        $this->element->append(Html::i()->addClass('fa fa-'.$name));
+
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @return Button
+     */
+    public function withoutBackground()
+    {
+        $this->element->addClass('without-background');
 
         return $this;
     }

@@ -2,22 +2,17 @@
 
 namespace Arbory\Base\Admin;
 
-use Arbory\Base\Admin\Panels\PanelInterface;
-use Arbory\Base\Admin\Panels\FieldSetPanel;
-use Arbory\Base\Admin\Panels\Panel;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
+use Illuminate\Http\Request;
+use Arbory\Base\Content\Relation;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Validator;
-use Arbory\Base\Admin\Traits\EventDispatcher;
-use Arbory\Base\Admin\Traits\Renderable;
-use Arbory\Base\Content\Relation;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use Arbory\Base\Admin\Traits\Renderable;
+use Arbory\Base\Admin\Traits\EventDispatcher;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 
 /**
- * Class Form
- * @package Arbory\Base\Admin
+ * Class Form.
  */
 class Form
 {
@@ -89,7 +84,7 @@ class Form
     {
         if ($this->title === null) {
             $this->title = ($this->model->getKey())
-                ? (string)$this->model
+                ? (string) $this->model
                 : trans('arbory::resources.create_new');
         }
 
@@ -178,9 +173,6 @@ class Form
         $this->model->push();
     }
 
-    /**
-     *
-     */
     public function destroy()
     {
         $this->trigger('delete.before', $this);

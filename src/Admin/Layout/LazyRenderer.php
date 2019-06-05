@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
 use Illuminate\Contracts\Support\Renderable;

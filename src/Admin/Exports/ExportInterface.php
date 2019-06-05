@@ -5,8 +5,7 @@ namespace Arbory\Base\Admin\Exports;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
- * Interface ExportInterface
- * @package Arbory\Base\Admin\Grid
+ * Interface ExportInterface.
  */
 interface ExportInterface
 {

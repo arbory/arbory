@@ -2,17 +2,16 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
-use Dimsav\Translatable\Translatable as TranslatableModel;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\FieldSet;
 use Waavi\Translation\Models\Language;
+use Illuminate\Database\Eloquent\Model;
 use Waavi\Translation\Repositories\LanguageRepository;
+use Dimsav\Translatable\Translatable as TranslatableModel;
+use Arbory\Base\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
 
 /**
- * Class Translatable
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Translatable.
  */
 class Translatable extends AbstractField implements ProxyFieldInterface
 {
@@ -111,7 +110,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     {
         $fieldSet = new FieldSet(
             $model,
-            $this->getNameSpacedName() . '.' . $locale
+            $this->getNameSpacedName().'.'.$locale
         );
 
         $field = clone $this->field;
@@ -120,7 +119,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
 
         $defaultResource = $this->getDefaultResourceForLocale($locale);
 
-        if ($defaultResource && !$field->getValue()) {
+        if ($defaultResource && ! $field->getValue()) {
             $field->setValue($defaultResource->{$field->getName()});
         }
 
@@ -139,7 +138,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     {
         $resource = null;
 
-        if ($this->getValue() && !$this->getValue()->isEmpty()) {
+        if ($this->getValue() && ! $this->getValue()->isEmpty()) {
             foreach ($this->getValue() as $index => $item) {
                 if ($item->{$this->getModel()->getLocaleKey()} === $locale) {
                     $resource = $item;

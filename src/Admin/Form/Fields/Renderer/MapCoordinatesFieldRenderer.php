@@ -2,16 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\Hidden;
-use Arbory\Base\Admin\Form\Fields\MapCoordinates;
-use Arbory\Base\Admin\Form\Fields\Text;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\MapCoordinates;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 class MapCoordinatesFieldRenderer implements RendererInterface
 {
@@ -66,7 +61,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *

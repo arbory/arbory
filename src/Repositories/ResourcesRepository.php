@@ -3,8 +3,7 @@
 namespace Arbory\Base\Repositories;
 
 /**
- * Class ResourcesRepository
- * @package Arbory\Base\Repositories
+ * Class ResourcesRepository.
  */
 class ResourcesRepository extends AbstractModelsRepository
 {

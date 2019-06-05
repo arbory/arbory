@@ -2,7 +2,6 @@
 
 namespace Arbory\Base\Services;
 
-use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Settings\Setting;
 
 class SettingFactory
@@ -28,14 +27,14 @@ class SettingFactory
     {
         $definition = $this->settingRegistry->find($key);
 
-        if (!$definition) {
+        if (! $definition) {
             return null;
         }
 
         return new Setting([
             'name' => $key,
             'value' => $definition->getValue(),
-            'type' => $definition->getType()
+            'type' => $definition->getType(),
         ]);
     }
 }

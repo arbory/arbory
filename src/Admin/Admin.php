@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Admin;
 
-use Cartalyst\Sentinel\Sentinel;
-use Arbory\Base\Admin\Module\ModuleRoutesRegistry;
-use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Menu\Menu;
+use Arbory\Base\Auth\Roles\Role;
+use Cartalyst\Sentinel\Sentinel;
+use Illuminate\Support\Collection;
 use Arbory\Base\Services\AssetPipeline;
 use Arbory\Base\Services\ModuleRegistry;
-use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Module\ModuleRoutesRegistry;
 
 class Admin
 {
@@ -103,7 +103,7 @@ class Admin
     public function isAuthorized()
     {
         if ($this->authorized === null) {
-            $this->authorized = (bool)$this->sentinel()->check();
+            $this->authorized = (bool) $this->sentinel()->check();
         }
 
         return $this->authorized;
@@ -115,12 +115,12 @@ class Admin
      */
     public function isAuthorizedFor($module)
     {
-        if (!$this->isAuthorized()) {
+        if (! $this->isAuthorized()) {
             return false;
         }
 
         /**
-         * @var $roles Role[]|Collection
+         * @var Role[]|Collection
          */
         $roles = $this->sentinel()->getUser()->roles;
 

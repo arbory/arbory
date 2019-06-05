@@ -1,3 +1,3 @@
-<section class="dialog @if($class){{$class}}@endif ">
+<section class="dialog {{ $class ?? '' }}">
     @yield('dialog')
 </section>

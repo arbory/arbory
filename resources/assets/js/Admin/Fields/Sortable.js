@@ -31,8 +31,8 @@ export default class Sortable {
             handlers, this.config.vendor
         ));
 
-        container.on('click', '.sortable-navigation .button', event => this.manualSort(event));
-        container.on('click', '.sortable-navigation.button', event => this.manualSort(event));
+        container.on('click', '> .item  > .sortable-navigation .button', event => this.manualSort(event));
+        container.on('click', '> .item  > .sortable-navigation.button', event => this.manualSort(event));
         container.on('DOMNodeInserted DOMNodeRemoved', () => this.handleUpdate());
     }
 
@@ -67,15 +67,13 @@ export default class Sortable {
     }
 
     setLocationInput(item, locationIndex) {
-        let inputs = item.find('input');
+        // Expects that the position input is always a direct descendant of the fieldset.item entry
+        let sortByName = this.getSortByName();
+        let positionInput = item.find(`> input[data-name="${sortByName}"]`).first();
 
-        inputs.each((index) => {
-            let input = inputs.eq(index);
-
-            if (input.attr('id').includes(this.getSortByName())) {
-                input.val(locationIndex);
-            }
-        });
+        if(positionInput.length) {
+            positionInput.val(locationIndex);
+        }
     }
 
     getItems() {

@@ -2,24 +2,23 @@
 
 namespace Arbory\Base\Providers;
 
-use Arbory\Base\Nodes\ContentTypeRegister;
-use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 use Arbory\Base\Nodes\Node;
-use Arbory\Base\Repositories\NodesRepository;
-use Arbory\Base\Services\Content\PageBuilder;
-use Arbory\Base\Support\Facades\Admin;
-use Arbory\Base\Support\Facades\ArboryRouter;
 use Arbory\Base\Support\Facades\Page;
-use Arbory\Base\Support\Facades\Settings;
+use Arbory\Base\Support\Facades\Admin;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
-use Illuminate\Routing\Events\RouteMatched;
-use Illuminate\Routing\Router as LaravelRouter;
 use Illuminate\Support\ServiceProvider;
+use Arbory\Base\Support\Facades\Settings;
+use Arbory\Base\Nodes\ContentTypeRegister;
+use Illuminate\Routing\Events\RouteMatched;
+use Arbory\Base\Repositories\NodesRepository;
+use Arbory\Base\Services\Content\PageBuilder;
+use Arbory\Base\Support\Facades\ArboryRouter;
+use Illuminate\Routing\Router as LaravelRouter;
+use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 
 /**
- * Class NodeServiceProvider
- * @package Arbory\Base\Providers
+ * Class NodeServiceProvider.
  */
 class NodeServiceProvider extends ServiceProvider
 {
@@ -89,7 +88,7 @@ class NodeServiceProvider extends ServiceProvider
     {
         $path = base_path('routes/pages.php');
 
-        if (!\File::exists($path)) {
+        if (! \File::exists($path)) {
             return;
         }
 
@@ -106,7 +105,7 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function registerNodes()
     {
-        if (!app()->runningInConsole()) {
+        if (! app()->runningInConsole()) {
             $this->app->booted(function () {
                 $this->app->singleton(Node::class, function () {
                     return $this->routes->getCurrentNode();
@@ -114,7 +113,7 @@ class NodeServiceProvider extends ServiceProvider
             });
 
             $this->routes->registerNodes();
-        } elseif (!$this->app->routesAreCached() && $this->isDbConfigured()) {
+        } elseif (! $this->app->routesAreCached() && $this->isDbConfigured()) {
             $this->routes->registerNodes();
         }
     }

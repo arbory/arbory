@@ -18,7 +18,7 @@ class SuccessReply extends Reply
     protected $success = true;
 
     /**
-     * @var string $url
+     * @var string
      * @return JsonResponse|RedirectResponse
      */
     public function dispatch($url = '/')

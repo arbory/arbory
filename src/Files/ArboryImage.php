@@ -3,8 +3,7 @@
 namespace Arbory\Base\Files;
 
 /**
- * Class ArboryImage
- * @package Arbory\Base\Files
+ * Class ArboryImage.
  */
 class ArboryImage extends ArboryFile
 {
@@ -29,7 +28,5 @@ class ArboryImage extends ArboryFile
         } catch (\Exception $e) {
             \Log::warning($e);
         }
-
-        return null;
     }
 }

@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout\Grid;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
 class Column implements Renderable
@@ -46,15 +45,14 @@ class Column implements Renderable
         $this->content = $content;
 
         $this->breakpoints = [
-            $breakpoint => $size
+            $breakpoint => $size,
         ];
     }
-
 
     /**
      * Add breakpoints
      * Expected format:
-     *  Breakpoint => Size
+     *  Breakpoint => Size.
      *
      * @param array $breakpoints
      *
@@ -100,7 +98,7 @@ class Column implements Renderable
     }
 
     /**
-     * Column size
+     * Column size.
      *
      * @param int $size
      *
@@ -122,7 +120,7 @@ class Column implements Renderable
         foreach ($this->breakpoints as $breakpoint => $size) {
             $classes[] = str_replace([
                 '{breakpoint}',
-                '{size}'
+                '{size}',
             ], [$breakpoint, $size], $this->format);
         }
 

@@ -2,21 +2,20 @@
 
 namespace Arbory\Base\Admin;
 
+use Closure;
+use Arbory\Base\Admin\Grid\Row;
 use Arbory\Base\Admin\Grid\Column;
 use Arbory\Base\Admin\Grid\Filter;
-use Arbory\Base\Admin\Grid\FilterInterface;
-use Arbory\Base\Admin\Grid\Row;
-use Arbory\Base\Admin\Traits\Renderable;
-use Arbory\Base\Html\Elements\Content;
-use Closure;
-use Illuminate\Contracts\Support\Renderable as RenderableInterface;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Arbory\Base\Html\Elements\Content;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Traits\Renderable;
+use Arbory\Base\Admin\Grid\FilterInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Support\Renderable as RenderableInterface;
 
 /**
- * Class Grid
- * @package Arbory\Base\Admin
+ * Class Grid.
  */
 class Grid
 {
@@ -84,7 +83,7 @@ class Grid
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -123,6 +122,14 @@ class Grid
     public function getFilter()
     {
         return $this->filter;
+    }
+
+    /**
+     * @return Model
+     */
+    public function getModel(): Model
+    {
+        return $this->model;
     }
 
     /**
@@ -210,19 +217,65 @@ class Grid
      * @param null $label
      * @return Column
      */
-    public function column($name = null, $label = null)
+    public function column($name = null, $label = null) : Column
     {
-        $column = new Column($name, $label);
-        $column->setGrid($this);
+        return $this->appendColumn($name, $label);
+    }
 
+    /**
+     * @param null $name
+     * @param null $label
+     * @return Column
+     */
+    public function appendColumn($name = null, $label = null) : Column
+    {
+        $column = $this->createColumn($name, $label);
         $this->columns->push($column);
+        $this->setColumnRelation($column, $name);
 
+        return $column;
+    }
+
+    /**
+     * @param null $name
+     * @param null $label
+     * @return Column
+     */
+    public function prependColumn($name = null, $label = null) : Column
+    {
+        $column = $this->createColumn($name, $label);
+        $this->columns->prepend($column);
+        $this->setColumnRelation($column, $name);
+
+        return $column;
+    }
+
+    /**
+     * @param $column
+     * @param $name
+     * @return mixed
+     */
+    protected function setColumnRelation($column, $name) : Column
+    {
         if (strpos($name, '.') !== false) {
-            list($relationName, $relationColumn) = explode('.', $name);
+            [$relationName, $relationColumn] = explode('.', $name);
 
             $this->filter->withRelation($relationName);
             $column->setRelation($relationName, $relationColumn);
         }
+
+        return $column;
+    }
+
+    /**
+     * @param null $name
+     * @param null $label
+     * @return Column
+     */
+    protected function createColumn($name = null, $label = null) : Column
+    {
+        $column = new Column($name, $label);
+        $column->setGrid($this);
 
         return $column;
     }
@@ -292,7 +345,7 @@ class Grid
      */
     public function hasTools(): bool
     {
-        return !empty($this->enabledDefaultTools);
+        return ! empty($this->enabledDefaultTools);
     }
 
     /**
@@ -314,7 +367,7 @@ class Grid
         $this->buildRows($items);
 
         $columns = $this->columns->map(function (Column $column) {
-            return (string)$column;
+            return (string) $column;
         })->toArray();
 
         return $this->rows->map(function (Row $row) use ($columns) {

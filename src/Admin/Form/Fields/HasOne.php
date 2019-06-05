@@ -2,18 +2,17 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
+use Arbory\Base\Html\Html;
+use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 
 /**
- * Class HasOne
- * @package Arbory\Base\Admin\Form\Fields
+ * Class HasOne.
  */
 class HasOne extends AbstractRelationField implements RenderOptionsInterface
 {
@@ -29,9 +28,9 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         $item = $this->getValue() ?: $this->getRelatedModel();
 
         $block = Html::div()
-            ->addClass('section content-fields')
-            ->addAttributes($this->getAttributes())
-            ->addClass(implode(' ', $this->getClasses()));
+                     ->addClass('section content-fields')
+                     ->addAttributes($this->getAttributes())
+                     ->addClass(implode(' ', $this->getClasses()));
 
         $block->append(
             $this->getRelationFieldSet($item)->render()
@@ -49,7 +48,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         $fieldSet = $this->getNestedFieldSet($relatedModel);
 
         $fieldSet->hidden($relatedModel->getKeyName())
-            ->setValue($relatedModel->getKey());
+                 ->setValue($relatedModel->getKey());
 
         return $fieldSet;
     }
@@ -77,7 +76,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         if ($relation instanceof MorphOne) {
             $polymorphicFields = [
                 $relation->getMorphType() => get_class($relation->getParent()),
-                $relation->getForeignKeyName() => $relation->getParent()->{$relatedModel->getKeyName()}
+                $relation->getForeignKeyName() => $relation->getParent()->{$relatedModel->getKeyName()},
             ];
             $relatedModel->fill($polymorphicFields)->save();
         } elseif ($relation instanceof MorphTo) {
@@ -114,9 +113,15 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         if ($relation instanceof MorphTo) {
             $model = clone $this->fieldSet->getModel();
 
-            $morphType = request()->input($this->getFieldSet()->getNamespace() . '.' . $relation->getMorphType());
+            $str = $this->getFieldSet()->getNamespace().'.'.$relation->getMorphType();
+            $value = request()->input($str);
 
-            $model->setAttribute($relation->getMorphType(), $morphType);
+            // For deeply nested items if the key contains '*', request->input returns an array
+            if (is_array($value)) {
+                $value = head($value);
+            }
+
+            $model->setAttribute($relation->getMorphType(), $value);
             $model->setAttribute($relation->getForeignKey(), 0);
 
             $relatedModel = $model->{$this->getName()}()->getRelated();

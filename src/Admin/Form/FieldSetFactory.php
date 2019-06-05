@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form;
 
-use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 
 class FieldSetFactory
 {

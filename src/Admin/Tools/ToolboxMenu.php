@@ -2,16 +2,14 @@
 
 namespace Arbory\Base\Admin\Tools;
 
-use Arbory\Base\Admin\Tools\ToolboxMenuItem;
-use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Arbory\Base\Html\Elements\Content;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Toolbox
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Toolbox.
  */
 class ToolboxMenu implements Renderable
 {
@@ -74,7 +72,7 @@ class ToolboxMenu implements Renderable
 
         foreach ($this->items() as $item) {
             $link = Html::link($item->getTitle())
-                ->addClass('button ' . $item->getClass())
+                ->addClass('button '.$item->getClass())
                 ->addAttributes([
                     'href' => $item->getUrl(),
                     'title' => $item->getTitle(),
@@ -83,6 +81,6 @@ class ToolboxMenu implements Renderable
             $content->push(Html::li($link));
         }
 
-        return (string)$content;
+        return (string) $content;
     }
 }

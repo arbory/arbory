@@ -4,14 +4,13 @@ namespace Arbory\Base\Nodes\Routing;
 
 use Closure;
 use Arbory\Base\Nodes\Node;
-use Arbory\Base\Repositories\NodesRepository;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Foundation\Application;
+use Arbory\Base\Repositories\NodesRepository;
 
 /**
- * Class Router
- * @package Arbory\Base\Nodes\Routing
+ * Class Router.
  */
 class Router
 {
@@ -82,7 +81,7 @@ class Router
      */
     public function findNode(Request $request)
     {
-        $path = $request->path() === '/' ? '/' : '/' . $request->path();
+        $path = $request->path() === '/' ? '/' : '/'.$request->path();
 
         $this->currentNode = $this->getNodes()->findBySlug($path);
 
@@ -110,7 +109,7 @@ class Router
     {
         foreach ($contentTypes as $contentType) {
             $attributes = [
-                'as' => $contentType . '::',
+                'as' => $contentType.'::',
                 'prefix' => '{slug}',
             ];
 
@@ -171,8 +170,8 @@ class Router
      */
     public function getContentTypeHandler($contentType)
     {
-        if (!array_key_exists($contentType, $this->contentTypes)) {
-            return null;
+        if (! array_key_exists($contentType, $this->contentTypes)) {
+            return;
         }
 
         return $this->contentTypes[$contentType];

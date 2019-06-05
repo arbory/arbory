@@ -2,14 +2,14 @@
 
 namespace Arbory\Base\Providers;
 
-use Arbory\Base\Admin\Admin;
-use Arbory\Base\Admin\Layout\LayoutManager;
+use Illuminate\View\View;
 use Arbory\Base\Menu\Menu;
+use Arbory\Base\Admin\Admin;
 use Arbory\Base\Menu\MenuFactory;
 use Arbory\Base\Menu\MenuItemFactory;
-use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\View\View;
+use Arbory\Base\Admin\Layout\LayoutManager;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 class LayoutServiceProvider extends ServiceProvider
 {

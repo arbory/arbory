@@ -2,19 +2,17 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Http\Requests\LoginRequest;
-use Arbory\Base\Services\Authentication\SecurityStrategy;
-use Arbory\Base\Services\AuthReply\Reply;
-use Arbory\Base\Services\SecurityService;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\RedirectResponse;
+use View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use View;
+use Arbory\Base\Http\Requests\LoginRequest;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Arbory\Base\Services\Authentication\SecurityStrategy;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class SecurityController extends BaseController
 {
@@ -42,7 +40,7 @@ class SecurityController extends BaseController
     public function getLogin(Request $request)
     {
         return view(
-            'arbory::layout.login',
+            'arbory::controllers.security.login',
             ['input' => $request]
         );
     }
@@ -54,7 +52,7 @@ class SecurityController extends BaseController
     public function postLogin(LoginRequest $request)
     {
         $credentials = array_only($request->get('user'), ['email', 'password']);
-        $remember = (bool)$request->get('remember', false);
+        $remember = (bool) $request->get('remember', false);
 
         $result = $this->security->authenticate($credentials, $remember);
 
@@ -65,7 +63,7 @@ class SecurityController extends BaseController
         return redirect(route('admin.login.form'))
             ->withInput()
             ->withErrors([
-                'user.email' => $result->getMessage()
+                'user.email' => $result->getMessage(),
             ]);
     }
 

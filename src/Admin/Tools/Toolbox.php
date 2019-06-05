@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Tools;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Toolbox
- * @package Arbory\Base\Admin\Widgets
+ * Class Toolbox.
  */
 class Toolbox implements Renderable
 {
@@ -39,8 +38,8 @@ class Toolbox implements Renderable
      */
     public function render()
     {
-        if (!$this->url && !$this->menu) {
-            return null;
+        if (! $this->url && ! $this->menu) {
+            return;
         }
 
         $attributes = [];

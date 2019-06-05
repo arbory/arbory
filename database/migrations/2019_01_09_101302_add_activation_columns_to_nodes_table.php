@@ -20,7 +20,7 @@ class AddActivationColumnsToNodesTable extends Migration
         });
 
         DB::table('nodes')->where('active', 1)->update([
-            'activate_at' => date('Y-m-d H:i')
+            'activate_at' => date('Y-m-d H:i'),
         ]);
 
         if (Schema::getConnection()->getDriverName() === 'sqlsrv') {
@@ -46,7 +46,7 @@ class AddActivationColumnsToNodesTable extends Migration
         DB::table('nodes')->where('activate_at', '<=', date('Y-m-d H:i'))->where(function (Builder $query) {
             $query->where('expire_at', '>', date('Y-m-d H:i'))->orWhereNull('expire_at');
         })->update([
-            'active' => 1
+            'active' => 1,
         ]);
 
         Schema::table('nodes', function (Blueprint $table) {

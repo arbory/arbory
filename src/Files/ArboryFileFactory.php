@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Files;
 
-use Arbory\Base\Repositories\ArboryFilesRepository;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Repositories\ArboryFilesRepository;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ArboryFileFactory
 {
@@ -36,7 +36,7 @@ class ArboryFileFactory
         $arboryFile = $this->writeFile($model, $file);
         $relation = $model->{$relationName}();
 
-        if (!$relation instanceof BelongsTo) {
+        if (! $relation instanceof BelongsTo) {
             throw new \InvalidArgumentException('Unsupported relation');
         }
 

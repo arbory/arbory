@@ -3,8 +3,8 @@
 namespace Arbory\Base\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class ArboryAdminHasAllowedIpMiddleware
 {
@@ -40,7 +40,7 @@ class ArboryAdminHasAllowedIpMiddleware
         foreach ($ips as $allowed) {
             if (str_contains($allowed, '-')) {
                 $ip = ip2long($requestIp);
-                list($from, $to) = explode('-', $allowed);
+                [$from, $to] = explode('-', $allowed);
 
                 if ($ip <= ip2long($to) && ip2long($from) <= $ip) {
                     return true;

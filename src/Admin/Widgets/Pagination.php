@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
- * Class Pagination
- * @package Arbory\Base\Admin\Widgets
+ * Class Pagination.
  */
 class Pagination implements Renderable
 {
@@ -33,7 +32,7 @@ class Pagination implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -79,7 +78,7 @@ class Pagination implements Renderable
                 ? $this->paginator->total()
                 : $i * $this->paginator->perPage();
 
-            $option = Html::option($pageStart . ' - ' . $pageEnd)->setValue($i);
+            $option = Html::option($pageStart.' - '.$pageEnd)->setValue($i);
 
             if ($this->paginator->currentPage() === $i) {
                 $option->select();
