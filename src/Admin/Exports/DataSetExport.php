@@ -19,7 +19,7 @@ class DataSetExport
     /**
      * DataSetExport constructor.
      * @param Collection $items
-     * @param array      $columns
+     * @param array $columns
      */
     public function __construct(Collection $items, array $columns)
     {
@@ -39,7 +39,7 @@ class DataSetExport
      * @param Collection $items
      * @return DataSetExport
      */
-    public function setItems(Collection $items): DataSetExport
+    public function setItems(Collection $items): self
     {
         $this->items = $items;
 
@@ -58,7 +58,7 @@ class DataSetExport
      * @param array $columns
      * @return DataSetExport
      */
-    public function setColumns(array $columns): DataSetExport
+    public function setColumns(array $columns): self
     {
         $this->columns = $columns;
 

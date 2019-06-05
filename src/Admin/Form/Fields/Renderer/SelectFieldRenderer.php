@@ -14,7 +14,7 @@ class SelectFieldRenderer extends ControlFieldRenderer
     public function render()
     {
         /**
-         * @var $control SelectControl
+         * @var SelectControl
          */
         $control = $this->getControl();
         $control = $this->configureControl($control);
@@ -24,13 +24,13 @@ class SelectFieldRenderer extends ControlFieldRenderer
 
         $element = $control->element();
 
-        if($this->field->isMultiple()) {
+        if ($this->field->isMultiple()) {
             $control->setMultiple(true);
 
-            $name =  $control->getName();
+            $name = $control->getName();
             $element->addAttributes([
                 'multiple' => '',
-                'name' => $name . '[]'
+                'name' => $name.'[]',
             ]);
         }
 

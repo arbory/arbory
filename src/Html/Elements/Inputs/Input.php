@@ -24,26 +24,24 @@ class Input extends AbstractInputField
         'month',
         'week',
         'range',
-        'time'
+        'time',
     ];
 
-    public function __construct( $content = null )
+    public function __construct($content = null)
     {
-        parent::__construct( 'input', $content );
+        parent::__construct('input', $content);
 
-        $this->setType( 'text' );
+        $this->setType('text');
     }
 
-    public function setType( $type )
+    public function setType($type)
     {
-        if( !in_array( $type, static::$types, true ) )
-        {
-            throw new BadMethodCallException( 'Input type "' . $type . '" is not allowed' );
+        if (! in_array($type, static::$types, true)) {
+            throw new BadMethodCallException('Input type "'.$type.'" is not allowed');
         }
 
-        $this->attributes()->put( 'type', $type );
+        $this->attributes()->put('type', $type);
 
         return $this;
     }
-
 }

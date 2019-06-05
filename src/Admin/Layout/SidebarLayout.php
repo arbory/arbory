@@ -1,14 +1,14 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
+use Illuminate\Support\Arr;
 use Arbory\Base\Html\Elements\Content;
 
 class SidebarLayout extends AbstractLayout implements LayoutInterface
 {
     /**
-     * Sidebar width
+     * Sidebar width.
      *
      * @var int
      */
@@ -24,7 +24,10 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
         $this->sidebar = $this->slot('sidebar', $contents);
     }
 
-    function build()
+    /**
+     * @return void
+     */
+    public function build()
     {
         $grid = new GridLayout(new Grid());
 
@@ -34,11 +37,13 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
         $this->use($grid);
     }
 
+    /**
+     * @param mixed $content
+     * @return Content
+     */
     public function contents($content)
     {
-        return new Content(
-            [$content]
-        );
+        return new Content(Arr::wrap($content));
     }
 
     /**
@@ -74,7 +79,7 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
      *
      * @return SidebarLayout
      */
-    public function setSidebar($sidebar): SidebarLayout
+    public function setSidebar($sidebar): self
     {
         $this->sidebar->setContents($sidebar);
 

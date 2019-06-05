@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class ModifyHrefColumnInLinksTable extends Migration
 {
@@ -10,10 +10,9 @@ class ModifyHrefColumnInLinksTable extends Migration
      */
     public function up()
     {
-        Schema::table( 'links', function( Blueprint $table )
-        {
-            $table->text( 'href' )->change();
-        } );
+        Schema::table('links', function (Blueprint $table) {
+            $table->text('href')->change();
+        });
     }
 
     /**
@@ -21,9 +20,8 @@ class ModifyHrefColumnInLinksTable extends Migration
      */
     public function down()
     {
-        Schema::table( 'links', function( Blueprint $table )
-        {
-            $table->string( 'href' )->change();
-        } );
+        Schema::table('links', function (Blueprint $table) {
+            $table->string('href')->change();
+        });
     }
 }

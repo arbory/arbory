@@ -2,12 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
+use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 
 class NestedFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
 {
@@ -16,11 +15,10 @@ class NestedFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
      *
      * @return Element
      */
-    protected function getHeader( $label )
+    protected function getHeader($label)
     {
         return Html::header(Html::h1($label));
     }
-
 
     public function render(RendererInterface $renderer, StyleOptionsInterface $options)
     {
@@ -30,18 +28,17 @@ class NestedFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
             $this->getHeader($field->getLabel()),
             $this->renderField($field),
         ])
-           ->addClass('nested')
-           ->addClass(implode(' ', $field->getFieldClasses()))
-           ->addAttributes([
-               'data-name' => $field->getName(),
-           ]);
+            ->addClass('nested')
+            ->addClass(implode(' ', $field->getFieldClasses()))
+            ->addAttributes([
+                'data-name' => $field->getName(),
+            ]);
 
         $section->addAttributes($options->getAttributes());
         $section->addClass(implode(' ', $options->getClasses()));
 
-
-        if($field instanceof ControlFieldInterface) {
-            if($field->isDisabled()) {
+        if ($field instanceof ControlFieldInterface) {
+            if ($field->isDisabled()) {
                 $section->addAttributes(['data-disabled' => 1]);
             }
 

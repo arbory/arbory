@@ -2,14 +2,12 @@
 
 namespace Arbory\Base\Repositories;
 
+use Settings;
 use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
-use Settings;
 
 /**
- * Class NodesRepository
- * @package Arbory\Base\Repositories
+ * Class NodesRepository.
  */
 class NodesRepository extends AbstractModelsRepository
 {
@@ -30,8 +28,7 @@ class NodesRepository extends AbstractModelsRepository
     {
         $query = parent::newQuery();
 
-        if( $this->isQueryingOnlyActiveNodes() )
-        {
+        if ($this->isQueryingOnlyActiveNodes()) {
             $query->active();
         }
 
@@ -44,15 +41,14 @@ class NodesRepository extends AbstractModelsRepository
      * @param mixed|null $value
      * @return Builder
      */
-    public function findUnder( Node $node, string $key = null, $value = null )
+    public function findUnder(Node $node, string $key = null, $value = null)
     {
         $query = $this->newQuery()
-            ->whereBetween( $node->getLeftColumnName(), [ $node->getLeft() + 1, $node->getRight() - 1 ] )
-            ->whereBetween( $node->getRightColumnName(), [ $node->getLeft() + 1, $node->getRight() - 1 ] );
+            ->whereBetween($node->getLeftColumnName(), [$node->getLeft() + 1, $node->getRight() - 1])
+            ->whereBetween($node->getRightColumnName(), [$node->getLeft() + 1, $node->getRight() - 1]);
 
-        if ( $key && $value )
-        {
-            $query->where( $key, $value );
+        if ($key && $value) {
+            $query->where($key, $value);
         }
 
         return $query;
@@ -64,15 +60,14 @@ class NodesRepository extends AbstractModelsRepository
      * @param mixed|null $value
      * @return Builder
      */
-    public function findAbove( Node $node, string $key = null, $value = null )
+    public function findAbove(Node $node, string $key = null, $value = null)
     {
         $query = $this->newQuery()
-            ->where( $node->getLeftColumnName(), '<=', $node->getLeft() )
-            ->where( $node->getRightColumnName(), '>=', $node->getRight() );
+            ->where($node->getLeftColumnName(), '<=', $node->getLeft())
+            ->where($node->getRightColumnName(), '>=', $node->getRight());
 
-        if ( $key && $value )
-        {
-            $query->where( $key, $value );
+        if ($key && $value) {
+            $query->where($key, $value);
         }
 
         return $query;
@@ -82,26 +77,23 @@ class NodesRepository extends AbstractModelsRepository
      * @param $uri
      * @return Node|null
      */
-    public function findBySlug( $uri )
+    public function findBySlug($uri)
     {
-        $parts = explode( '/', trim( $uri, '/' ) );
+        $parts = explode('/', trim($uri, '/'));
 
         $node = null;
 
-        foreach( $parts as $depth => $part )
-        {
-            $query = $this->newQuery()->where( 'depth', $depth )->where( 'slug', $part );
+        foreach ($parts as $depth => $part) {
+            $query = $this->newQuery()->where('depth', $depth)->where('slug', $part);
 
-            if( $node instanceof Node )
-            {
-                $query->whereBetween( $node->getLeftColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
-                $query->whereBetween( $node->getRightColumnName(), array( $node->getLeft() + 1, $node->getRight() - 1 ) );
+            if ($node instanceof Node) {
+                $query->whereBetween($node->getLeftColumnName(), [$node->getLeft() + 1, $node->getRight() - 1]);
+                $query->whereBetween($node->getRightColumnName(), [$node->getLeft() + 1, $node->getRight() - 1]);
             }
 
             $nodes = $query->get();
 
-            if( $nodes->count() !== 1 )
-            {
+            if ($nodes->count() !== 1) {
                 break;
             }
 
@@ -116,16 +108,16 @@ class NodesRepository extends AbstractModelsRepository
      */
     public function getLastUpdateTimestamp()
     {
-        return Settings::get( 'nodes.last_update' );
+        return Settings::get('nodes.last_update');
     }
 
     /**
      * @param int $time
      * @return void
      */
-    public function setLastUpdateTimestamp( int $time )
+    public function setLastUpdateTimestamp(int $time)
     {
-        Settings::set( 'nodes.last_update', $time );
+        Settings::set('nodes.last_update', $time);
     }
 
     /**
@@ -139,7 +131,7 @@ class NodesRepository extends AbstractModelsRepository
     /**
      * @param bool $onlyActiveNodes
      */
-    public function setQueryOnlyActiveNodes( bool $onlyActiveNodes )
+    public function setQueryOnlyActiveNodes(bool $onlyActiveNodes)
     {
         $this->onlyActiveNodes = $onlyActiveNodes;
     }

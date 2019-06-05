@@ -2,36 +2,35 @@
 
 namespace Arbory\Base\Providers;
 
-use Cartalyst\Sentinel\Activations\IlluminateActivationRepository;
-use Cartalyst\Sentinel\Checkpoints\ActivationCheckpoint;
-use Cartalyst\Sentinel\Checkpoints\ThrottleCheckpoint;
-use Cartalyst\Sentinel\Cookies\IlluminateCookie;
-use Cartalyst\Sentinel\Hashing\NativeHasher;
-use Cartalyst\Sentinel\Persistences\IlluminatePersistenceRepository;
-use Cartalyst\Sentinel\Reminders\IlluminateReminderRepository;
-use Cartalyst\Sentinel\Roles\IlluminateRoleRepository;
-use Cartalyst\Sentinel\Sentinel;
-use Cartalyst\Sentinel\Sessions\IlluminateSession;
-use Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository;
-use Cartalyst\Sentinel\Users\IlluminateUserRepository;
-use Arbory\Base\Auth\Activations\Activation;
-use Arbory\Base\Auth\Persistences\Persistence;
-use Arbory\Base\Auth\Reminders\Reminder;
-use Arbory\Base\Auth\Roles\Role;
-use Arbory\Base\Auth\Throttling\Throttle;
-use Arbory\Base\Auth\Users\User;
 use Exception;
 use Illuminate\Http\Response;
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Auth\Users\User;
+use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Support\ServiceProvider;
+use Arbory\Base\Auth\Reminders\Reminder;
+use Arbory\Base\Auth\Throttling\Throttle;
+use Arbory\Base\Auth\Activations\Activation;
+use Cartalyst\Sentinel\Hashing\NativeHasher;
+use Arbory\Base\Auth\Persistences\Persistence;
+use Cartalyst\Sentinel\Cookies\IlluminateCookie;
+use Cartalyst\Sentinel\Sessions\IlluminateSession;
+use Cartalyst\Sentinel\Checkpoints\ThrottleCheckpoint;
+use Cartalyst\Sentinel\Roles\IlluminateRoleRepository;
+use Cartalyst\Sentinel\Users\IlluminateUserRepository;
+use Cartalyst\Sentinel\Checkpoints\ActivationCheckpoint;
+use Cartalyst\Sentinel\Reminders\IlluminateReminderRepository;
+use Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository;
+use Cartalyst\Sentinel\Activations\IlluminateActivationRepository;
+use Cartalyst\Sentinel\Persistences\IlluminatePersistenceRepository;
 
 /**
- * Class AuthServiceProvider
- * @package Arbory\Base\Providers
+ * Class AuthServiceProvider.
  */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function boot()
     {
@@ -39,7 +38,7 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -157,8 +156,8 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->app->singleton('sentinel.checkpoints', function ($app) {
             return [
-                $app["sentinel.checkpoint.throttle"],
-                $app["sentinel.checkpoint.activation"]
+                $app['sentinel.checkpoint.throttle'],
+                $app['sentinel.checkpoint.activation'],
             ];
         });
     }
@@ -307,7 +306,7 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function provides()
     {
@@ -338,11 +337,13 @@ class AuthServiceProvider extends ServiceProvider
         $config = $this->app['config']->get('arbory.auth');
 
         $this->sweep(
-            $this->app['sentinel.activations'], $config['activations']['lottery']
+            $this->app['sentinel.activations'],
+            $config['activations']['lottery']
         );
 
         $this->sweep(
-            $this->app['sentinel.reminders'], $config['reminders']['lottery']
+            $this->app['sentinel.reminders'],
+            $config['reminders']['lottery']
         );
     }
 

@@ -1,13 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Controls;
-
 
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Elements\Inputs\Input as InputElement;
-use Arbory\Base\Html\Html;
 
 class CheckboxControl extends InputControl
 {
@@ -16,7 +13,7 @@ class CheckboxControl extends InputControl
     /**
      * @var bool
      */
-    protected  $checked = false;
+    protected $checked = false;
 
     /**
      * @param Element $control
@@ -24,23 +21,22 @@ class CheckboxControl extends InputControl
      * @return Content
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
-    function render( Element $control )
+    public function render(Element $control)
     {
         $control->setType($this->type);
         $input = parent::render($control);
 
-
         $content = new Content();
 
-        if ( $this->isReadOnly()  ) {
-            $input->addAttributes([ 'disabled' => '' ]);
+        if ($this->isReadOnly()) {
+            $input->addAttributes(['disabled' => '']);
 
-            if($this->isChecked()) {
+            if ($this->isChecked()) {
                 $input->attributes()->forget(
-                    [ 'id' ]
+                    ['id']
                 );
 
-                $hidden = ( new InputElement() )->setType('hidden');
+                $hidden = (new InputElement())->setType('hidden');
 
                 $hidden->setName($this->getName());
                 $hidden->setValue($this->getValue());
@@ -49,7 +45,7 @@ class CheckboxControl extends InputControl
             }
         }
 
-        if($this->isChecked()) {
+        if ($this->isChecked()) {
             $input->attributes()->put('checked', '');
         }
 
@@ -71,12 +67,10 @@ class CheckboxControl extends InputControl
      *
      * @return CheckboxControl
      */
-    public function setChecked( bool $checked ): self
+    public function setChecked(bool $checked): self
     {
         $this->checked = $checked;
 
         return $this;
     }
-
-
 }

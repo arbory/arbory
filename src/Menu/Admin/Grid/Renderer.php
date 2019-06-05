@@ -2,17 +2,16 @@
 
 namespace Arbory\Base\Menu\Admin\Grid;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Layout\Footer;
-use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Nodes\MenuItem;
+use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Admin\Layout\Footer;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Arbory\Base\Menu\AbstractItem;
-use Arbory\Base\Nodes\MenuItem;
+use Arbory\Base\Admin\Layout\Footer\Tools;
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Support\Collection;
 
 class Renderer
 {
@@ -30,7 +29,7 @@ class Renderer
      * Renderer constructor.
      * @param Grid $grid
      */
-    public function __construct( Grid $grid )
+    public function __construct(Grid $grid)
     {
         $this->grid = $grid;
     }
@@ -48,18 +47,18 @@ class Renderer
      */
     protected function table()
     {
-        return new Content( [
-            Html::header( [
-                Html::h1( trans( 'arbory::resources.all_resources' ) ),
-                Html::span( trans( 'arbory::pagination.items_found', [ 'total' => $this->page->total() ] ) )
-                    ->addClass( 'extras totals only-text' )
-            ] ),
+        return new Content([
+            Html::header([
+                Html::h1(trans('arbory::resources.all_resources')),
+                Html::span(trans('arbory::pagination.items_found', ['total' => $this->page->total()]))
+                    ->addClass('extras totals only-text'),
+            ]),
             Html::div(
                 Html::div(
-                    $this->buildTree( $this->page->getCollection(), 1 )
-                )->addClass( 'collection' )
-            )->addClass( 'body' )
-        ] );
+                    $this->buildTree($this->page->getCollection(), 1)
+                )->addClass('collection')
+            )->addClass('body'),
+        ]);
     }
 
     /**
@@ -67,51 +66,46 @@ class Renderer
      * @param int $level
      * @return Element
      */
-    protected function buildTree( Collection $items, $level = 1 )
+    protected function buildTree(Collection $items, $level = 1)
     {
-        $url = $this->url( 'edit', '__ID__' );
+        $url = $this->url('edit', '__ID__');
 
-        $list = Html::ul()->addAttributes( [ 'data-level' => $level ] );
+        $list = Html::ul()->addAttributes(['data-level' => $level]);
 
-        $this->reorderItems( $items );
+        $this->reorderItems($items);
 
-        foreach( $items as $item )
-        {
+        foreach ($items as $item) {
             $children = $item->children;
-            $hasChildren = ( $children && $children->count() );
+            $hasChildren = ($children && $children->count());
 
             $li = Html::li()
-                ->addAttributes( [
+                ->addAttributes([
                     'data-level' => $level,
                     'data-id' => $item->getKey(),
-                ] );
+                ]);
 
-            $cell = Html::div()->addClass( 'node-cell active' );
+            $cell = Html::div()->addClass('node-cell active');
 
-            $link = str_replace( '__ID__', $item->getKey(), $url );
+            $link = str_replace('__ID__', $item->getKey(), $url);
 
-            foreach( $this->grid()->getColumns() as $column )
-            {
-                $cell->append( Html::link(
-                    Html::span( $item->{$column->getName()} )
+            foreach ($this->grid()->getColumns() as $column) {
+                $cell->append(Html::link(
+                    Html::span($item->{$column->getName()})
                 )
-                    ->addAttributes( [ 'href' => $link ] )
-                );
+                    ->addAttributes(['href' => $link]));
             }
 
-            $li->append( $cell );
+            $li->append($cell);
 
-            if( $hasChildren )
-            {
-                $li->append( $this->buildTree( $children, $level + 1 ) );
+            if ($hasChildren) {
+                $li->append($this->buildTree($children, $level + 1));
             }
 
-            if( $level === 1 && $item->hasParent() )
-            {
+            if ($level === 1 && $item->hasParent()) {
                 continue;
             }
 
-            $list->append( $li );
+            $list->append($li);
         }
 
         return $list;
@@ -121,27 +115,24 @@ class Renderer
      * @param Collection $items
      * @return void
      */
-    protected function reorderItems( Collection $items )
+    protected function reorderItems(Collection $items)
     {
-        foreach( $items as $model )
-        {
+        foreach ($items as $model) {
             /** @var MenuItem $model */
-            if( !$model->isAfter() )
-            {
+            if (! $model->isAfter()) {
                 continue;
             }
 
-            $afterItem = $items->filter( function( MenuItem $item ) use ( $model )
-            {
+            $afterItem = $items->filter(function (MenuItem $item) use ($model) {
                 return $item->getId() === $model->getAfterId();
-            } )->first();
+            })->first();
 
-            $currentPosition = $items->search( $model );
-            $afterKey = $items->search( $afterItem );
+            $currentPosition = $items->search($model);
+            $afterKey = $items->search($afterItem);
 
-            $items->forget( $currentPosition );
+            $items->forget($currentPosition);
 
-            $items->splice( ++$afterKey, 0, [ $model ] );
+            $items->splice(++$afterKey, 0, [$model]);
         }
     }
 
@@ -150,16 +141,16 @@ class Renderer
      */
     protected function footer()
     {
-        $createButton = Link::create( $this->url( 'create' ) )
-            ->asButton( 'primary' )
-            ->withIcon( 'plus' )
-            ->title( trans( 'arbory::resources.create_new' ) );
+        $createButton = Link::create($this->url('create'))
+            ->asButton('primary')
+            ->withIcon('plus')
+            ->title(trans('arbory::resources.create_new'));
 
         $tools = new Tools();
-        $tools->getBlock( 'primary' )->push( $createButton );
+        $tools->getBlock('primary')->push($createButton);
 
-        $footer = new Footer( 'main' );
-        $footer->getRows()->prepend( $tools );
+        $footer = new Footer('main');
+        $footer->getRows()->prepend($tools);
 
         return $footer->render();
     }
@@ -169,22 +160,22 @@ class Renderer
      * @param array $parameters
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url($route, $parameters = [])
     {
-        return $this->grid()->getModule()->url( $route, $parameters );
+        return $this->grid()->getModule()->url($route, $parameters);
     }
 
     /**
      * @param Paginator $page
      * @return Element
      */
-    public function render( Paginator $page )
+    public function render(Paginator $page)
     {
         $this->page = $page;
 
-        return Html::section( [
+        return Html::section([
             $this->table(),
             $this->footer(),
-        ] );
+        ]);
     }
 }

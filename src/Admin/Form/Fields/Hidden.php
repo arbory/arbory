@@ -5,21 +5,20 @@ namespace Arbory\Base\Admin\Form\Fields;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 
 /**
- * Class Hidden
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Hidden.
  */
 class Hidden extends ControlField
 {
     protected $style = 'raw';
 
     protected $attributes = [
-        'type' => 'hidden'
+        'type' => 'hidden',
     ];
 
-    public function beforeRender( RendererInterface $renderer )
+    public function beforeRender(RendererInterface $renderer)
     {
         $this->addAttributes([
-            'data-name' => $this->getName()
+            'data-name' => $this->getName(),
         ]);
     }
 }

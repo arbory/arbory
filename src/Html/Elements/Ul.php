@@ -9,6 +9,6 @@ class Ul extends Element
      */
     public function __toString()
     {
-        return (string) $this->tag( 'ul', $this->content );
+        return (string) $this->tag('ul', $this->content);
     }
 }

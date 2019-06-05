@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Constructor;
 
-
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Container\Container;
 
 class BlockRegistry
 {
@@ -27,7 +25,7 @@ class BlockRegistry
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->blocks    = new Collection();
+        $this->blocks = new Collection();
     }
 
     /**

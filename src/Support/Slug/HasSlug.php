@@ -23,12 +23,10 @@ trait HasSlug
     {
         /** @noinspection PhpUndefinedFieldInspection */
         $fillable = $this->fillable;
-        $fields = [ 'title', 'name' ];
+        $fields = ['title', 'name'];
 
-        foreach( $fields as $field )
-        {
-            if( in_array( $field, $fillable ) )
-            {
+        foreach ($fields as $field) {
+            if (in_array($field, $fillable)) {
                 return $field;
             }
         }
@@ -42,7 +40,7 @@ trait HasSlug
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom( $this->getSluggableFieldName() )
-            ->saveSlugsTo( 'slug' );
+            ->generateSlugsFrom($this->getSluggableFieldName())
+            ->saveSlugsTo('slug');
     }
 }

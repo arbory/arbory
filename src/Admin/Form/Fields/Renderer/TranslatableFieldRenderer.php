@@ -2,17 +2,14 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptions;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
-use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 /**
- * Class TranslatableFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class TranslatableFieldRenderer.
  */
 class TranslatableFieldRenderer implements RendererInterface
 {
@@ -25,7 +22,7 @@ class TranslatableFieldRenderer implements RendererInterface
      * TranslatableFieldRenderer constructor.
      * @param Translatable $field
      */
-    public function __construct( Translatable $field )
+    public function __construct(Translatable $field)
     {
         $this->field = $field;
     }
@@ -34,9 +31,9 @@ class TranslatableFieldRenderer implements RendererInterface
      * @param $locale
      * @return FieldInterface
      */
-    protected function getLocalizedField( $locale )
+    protected function getLocalizedField($locale)
     {
-        $resource = $this->field->getTranslatableResource( $locale );
+        $resource = $this->field->getTranslatableResource($locale);
 
         return $resource->getFields()->first();
     }
@@ -45,10 +42,10 @@ class TranslatableFieldRenderer implements RendererInterface
      * @param $locale
      * @return Element
      */
-    protected function getLocalizedFieldContent( $locale )
+    protected function getLocalizedFieldContent($locale)
     {
-        $field = $this->getLocalizedField( $locale );
-        
+        $field = $this->getLocalizedField($locale);
+
         $styleManager = $this->field->getFieldSet()->getStyleManager();
         $options = $styleManager->newOptions();
 
@@ -56,11 +53,10 @@ class TranslatableFieldRenderer implements RendererInterface
             ['data-locale' => $locale]
         )->addClass('localization');
 
-        if( $this->field->getCurrentLocale() === $locale )
-        {
-            $options->addClass( 'active' );
+        if ($this->field->getCurrentLocale() === $locale) {
+            $options->addClass('active');
         }
-        
+
         $block = $styleManager->render($field->getStyle() ?: $styleManager->getDefaultStyle(), $field, $options);
 
         return $block;
@@ -73,19 +69,18 @@ class TranslatableFieldRenderer implements RendererInterface
     {
         $list = Html::ul();
 
-        foreach( $this->field->getLocales() as $locale )
-        {
-            $button = Html::button( $locale );
-            $button->attributes()->put( 'name', 'button' );
-            $button->attributes()->put( 'type', 'button' );
-            $button->attributes()->put( 'data-locale', $locale );
+        foreach ($this->field->getLocales() as $locale) {
+            $button = Html::button($locale);
+            $button->attributes()->put('name', 'button');
+            $button->attributes()->put('type', 'button');
+            $button->attributes()->put('data-locale', $locale);
 
-            $list->append( Html::li( $button ) );
+            $list->append(Html::li($button));
         }
 
-        $localizationMenu = Html::menu( $list );
-        $localizationMenu->attributes()->put( 'class', 'localization-menu-items' );
-        $localizationMenu->attributes()->put( 'type', 'toolbar' );
+        $localizationMenu = Html::menu($list);
+        $localizationMenu->attributes()->put('class', 'localization-menu-items');
+        $localizationMenu->attributes()->put('type', 'toolbar');
 
         return $localizationMenu;
     }
@@ -96,20 +91,20 @@ class TranslatableFieldRenderer implements RendererInterface
     protected function getLocalizationSwitch()
     {
         $button = Html::button();
-        $button->addClass( 'trigger' );
-        $button->attributes()->put( 'type', 'button' );
+        $button->addClass('trigger');
+        $button->attributes()->put('type', 'button');
 
         $trigger = $button->append(
-            Html::span( $this->field->getCurrentLocale() )->addClass( 'label' )
+            Html::span($this->field->getCurrentLocale())->addClass('label')
         );
         $trigger->append(
-            Html::i()->addClass( 'fa fa-chevron-down' )
+            Html::i()->addClass('fa fa-chevron-down')
         );
 
         $localizationSwitch = Html::div()
-            ->addClass( 'localization-switch' )
-            ->append( $trigger )
-            ->append( $this->getLocalizationMenu() );
+            ->addClass('localization-switch')
+            ->append($trigger)
+            ->append($this->getLocalizationMenu());
 
         return $localizationSwitch;
     }
@@ -119,15 +114,14 @@ class TranslatableFieldRenderer implements RendererInterface
      */
     public function render()
     {
-        $block = Html::div()->addClass( 'field i18n' );
+        $block = Html::div()->addClass('field i18n');
         $block->addClass($this->field->getFieldTypeName());
 
-        foreach( $this->field->getLocales() as $locale )
-        {
-            $block->append( $this->getLocalizedFieldContent( $locale ) );
+        foreach ($this->field->getLocales() as $locale) {
+            $block->append($this->getLocalizedFieldContent($locale));
         }
 
-        $block->append( $this->getLocalizationSwitch() );
+        $block->append($this->getLocalizationSwitch());
 
         return $block;
     }
@@ -137,7 +131,7 @@ class TranslatableFieldRenderer implements RendererInterface
      *
      * @return mixed
      */
-    public function setField( FieldInterface $field ): RendererInterface
+    public function setField(FieldInterface $field): RendererInterface
     {
         $this->field = $field;
 
@@ -153,13 +147,13 @@ class TranslatableFieldRenderer implements RendererInterface
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *
      * @return StyleOptionsInterface
      */
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         return $options;
     }

@@ -5,8 +5,7 @@ namespace Arbory\Base\Services;
 use Arbory\Base\Admin\Module;
 
 /**
- * Class ModuleConfig
- * @package Arbory\Base\Services
+ * Class ModuleConfig.
  */
 class ModuleConfiguration
 {
@@ -44,10 +43,10 @@ class ModuleConfiguration
      * ModuleConfiguration constructor.
      * @param string $controllerClass
      */
-    public function __construct( string $controllerClass )
+    public function __construct(string $controllerClass)
     {
         $this->controllerClass = $controllerClass;
-        $this->name = $this->createNameFromClass( $controllerClass);
+        $this->name = $this->createNameFromClass($controllerClass);
     }
 
     /**
@@ -62,7 +61,7 @@ class ModuleConfiguration
      * @param string $controllerClass
      * @return $this
      */
-    public function setControllerClass( $controllerClass )
+    public function setControllerClass($controllerClass)
     {
         $this->controllerClass = $controllerClass;
 
@@ -73,7 +72,7 @@ class ModuleConfiguration
      * @param string $authorizationType
      * @return $this
      */
-    public function setAuthorizationType( $authorizationType )
+    public function setAuthorizationType($authorizationType)
     {
         $this->authorizationType = $authorizationType;
 
@@ -84,7 +83,7 @@ class ModuleConfiguration
      * @param \array[] $authorizedRoles
      * @return $this
      */
-    public function setAuthorizedRoles( $authorizedRoles )
+    public function setAuthorizedRoles($authorizedRoles)
     {
         $this->authorizedRoles = $authorizedRoles;
 
@@ -95,7 +94,7 @@ class ModuleConfiguration
      * @param array $requiredPermissions
      * @return $this
      */
-    public function setRequiredPermissions( $requiredPermissions )
+    public function setRequiredPermissions($requiredPermissions)
     {
         $this->requiredPermissions = $requiredPermissions;
 
@@ -146,16 +145,15 @@ class ModuleConfiguration
      * @param $class
      * @return string
      */
-    protected function createNameFromClass( string $class ) : string
+    protected function createNameFromClass(string $class): string
     {
-        if( !preg_match( '#Controllers(\\\Admin)?\\\(?P<name>.*)Controller#ui', $class, $matches ) )
-        {
-            return substr( md5( $class ), 0, 8 );
+        if (! preg_match('#Controllers(\\\Admin)?\\\(?P<name>.*)Controller#ui', $class, $matches)) {
+            return substr(md5($class), 0, 8);
         }
 
-        $slug = str_replace( '\\', '', $matches['name'] );
-        $slug = preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1 ', $slug );
+        $slug = str_replace('\\', '', $matches['name']);
+        $slug = preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1 ', $slug);
 
-        return str_slug( $slug );
+        return str_slug($slug);
     }
 }

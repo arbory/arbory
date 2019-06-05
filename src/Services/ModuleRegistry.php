@@ -7,8 +7,7 @@ use Arbory\Base\Admin\Module;
 use Illuminate\Support\Collection;
 
 /**
- * Class ModuleRegistryService
- * @package Arbory\Base\Services
+ * Class ModuleRegistryService.
  */
 class ModuleRegistry
 {
@@ -26,7 +25,7 @@ class ModuleRegistry
      * ModuleRegistry constructor.
      * @param Admin $admin
      */
-    public function __construct( Admin $admin )
+    public function __construct(Admin $admin)
     {
         $this->admin = $admin;
         $this->modules = new Collection();
@@ -37,19 +36,18 @@ class ModuleRegistry
      * @param \Closure|null $routes
      * @return Module
      */
-    public function register( string $controllerClass, \Closure $routes = null )
+    public function register(string $controllerClass, \Closure $routes = null)
     {
-        if( $this->modules->has( $controllerClass ) )
-        {
-            throw new \LogicException( 'Module with controller class "' . $controllerClass . '" already registered' );
+        if ($this->modules->has($controllerClass)) {
+            throw new \LogicException('Module with controller class "'.$controllerClass.'" already registered');
         }
 
-        $config = new ModuleConfiguration( $controllerClass );
-        $module = new Module( $this->admin, $config );
+        $config = new ModuleConfiguration($controllerClass);
+        $module = new Module($this->admin, $config);
 
-        $this->admin->routes()->register( $module, $routes );
+        $this->admin->routes()->register($module, $routes);
 
-        $this->modules->put( $controllerClass, $module );
+        $this->modules->put($controllerClass, $module);
 
         return $module;
     }
@@ -58,18 +56,18 @@ class ModuleRegistry
      * @param string $controllerClass
      * @return Module
      */
-    public function findModuleByControllerClass( $controllerClass )
+    public function findModuleByControllerClass($controllerClass)
     {
-        return $this->modules->get( $controllerClass );
+        return $this->modules->get($controllerClass);
     }
 
     /**
      * @param $instance
      * @return Module
      */
-    public function findModuleByController( $instance )
+    public function findModuleByController($instance)
     {
-        return $this->findModuleByControllerClass( get_class( $instance ) );
+        return $this->findModuleByControllerClass(get_class($instance));
     }
 
     /**
@@ -77,8 +75,8 @@ class ModuleRegistry
      * @param $parameters
      * @return Collection|Module[]|Module
      */
-    public function __call( $method, $parameters )
+    public function __call($method, $parameters)
     {
-        return $this->modules->$method( ...$parameters );
+        return $this->modules->$method(...$parameters);
     }
 }

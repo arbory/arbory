@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields;
-
 
 interface RepeatableNestedFieldInterface
 {
@@ -11,5 +9,5 @@ interface RepeatableNestedFieldInterface
      * @param $index
      * @return mixed
      */
-    public function getRelationFieldSet( $model, $index );
+    public function getRelationFieldSet($model, $index);
 }

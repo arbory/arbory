@@ -9,6 +9,6 @@ class Li extends Element
      */
     public function __toString()
     {
-        return (string) $this->tag( 'li', $this->content );
+        return (string) $this->tag('li', $this->content);
     }
 }

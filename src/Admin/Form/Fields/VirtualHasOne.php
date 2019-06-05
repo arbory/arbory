@@ -1,24 +1,20 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields;
 
-
+use Arbory\Base\Html\Html;
+use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 
 /**
- * HasOne for json data fields
+ * HasOne for json data fields.
  *
  * Class VirtualHasOne
- * @package Arbory\Base\Admin\Form\Fields
  */
 class VirtualHasOne extends HasOne
 {
-
     /**
      * @return mixed
      */
@@ -34,7 +30,7 @@ class VirtualHasOne extends HasOne
      */
     public function render()
     {
-        $item  = $this->getValue();
+        $item = $this->getValue();
         $model = $this->getModel();
 
         $block = Html::div()
@@ -66,7 +62,7 @@ class VirtualHasOne extends HasOne
     {
         $model = $this->getModel();
 
-        $value = (array)$request->input($this->getNameSpacedName(), []);
+        $value = (array) $request->input($this->getNameSpacedName(), []);
 
         $data = [];
 

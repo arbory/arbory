@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Admin\Exports\Type;
 
-use Arbory\Base\Admin\Exports\ExportInterface;
-use Arbory\Base\Admin\Exports\DataSetExport;
 use Illuminate\Support\Facades\File;
+use Arbory\Base\Admin\Exports\DataSetExport;
+use Arbory\Base\Admin\Exports\ExportInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class JsonExport implements ExportInterface
@@ -34,10 +34,10 @@ class JsonExport implements ExportInterface
         $fileName = vsprintf('%s-%s.%s', [
             $fileName,
             time(),
-            self::EXTENSION
+            self::EXTENSION,
         ]);
 
-        $tempPath = sys_get_temp_dir() . '/' . $fileName;
+        $tempPath = sys_get_temp_dir().'/'.$fileName;
 
         File::put($tempPath, $this->export->getItems()->toJson(JSON_PRETTY_PRINT));
 

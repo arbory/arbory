@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Admin\Panels;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Layout\WrappableInterface;
-use Arbory\Base\Admin\Navigator\Item;
-use Arbory\Base\Admin\Navigator\NavigableInterface;
-use Arbory\Base\Admin\Navigator\Navigator;
 use Arbory\Base\Admin\Tools\Toolbox;
+use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Traits\Renderable;
-use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Admin\Navigator\Navigator;
+use Arbory\Base\Admin\Layout\WrappableInterface;
+use Arbory\Base\Admin\Navigator\NavigableInterface;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Illuminate\Contracts\Support\Renderable as RenderableInterface;
 
 class Panel implements PanelInterface, WrappableInterface, NavigableInterface
@@ -43,9 +42,8 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     public function __construct(RenderableInterface $renderer = null)
     {
         $this->renderer = $renderer ?: new Renderer($this);
-        $this->toolbox  = new Toolbox(null);
+        $this->toolbox = new Toolbox(null);
     }
-
 
     /**
      * @param  Toolbox  $toolbox
@@ -147,11 +145,10 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * Build the panel
+     * Build the panel.
      */
     public function build()
     {
-
     }
 
     public function render()
@@ -180,7 +177,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
      */
     public function navigator(Navigator $navigator)
     {
-
     }
 
     /**

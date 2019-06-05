@@ -5,8 +5,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 use Arbory\Base\Admin\Form\Fields\Renderer\RichtextFieldRenderer;
 
 /**
- * Class Richtext
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Richtext.
  */
 class Richtext extends Textarea
 {
@@ -38,7 +37,7 @@ class Richtext extends Textarea
      *
      * @return Richtext
      */
-    public function setAttachmentsUploadUrl( $attachmentsUploadUrl ): Richtext
+    public function setAttachmentsUploadUrl($attachmentsUploadUrl): self
     {
         $this->attachmentsUploadUrl = $attachmentsUploadUrl;
 
@@ -58,7 +57,7 @@ class Richtext extends Textarea
      *
      * @return Richtext
      */
-    public function setCompact( bool $isCompact ): Richtext
+    public function setCompact(bool $isCompact): self
     {
         $this->isCompact = $isCompact;
 

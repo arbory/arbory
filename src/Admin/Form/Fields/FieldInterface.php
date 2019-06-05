@@ -1,15 +1,15 @@
 <?php
+
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
+use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 
 /**
- * Interface FieldInterface
- * @package Arbory\Base\Admin\Form\Fields
+ * Interface FieldInterface.
  */
 interface FieldInterface
 {
@@ -22,7 +22,7 @@ interface FieldInterface
      * @param $name string
      * @return $this
      */
-    public function setName( $name );
+    public function setName($name);
 
     /**
      * @return string
@@ -38,7 +38,7 @@ interface FieldInterface
      * @param $value string
      * @return $this
      */
-    public function setValue( $value );
+    public function setValue($value);
 
     /**
      * @return mixed
@@ -51,7 +51,6 @@ interface FieldInterface
      */
     public function setDefaultValue($defaultValue);
 
-
     /**
      * @return string
      */
@@ -61,7 +60,7 @@ interface FieldInterface
      * @param string $label
      * @return $this
      */
-    public function setLabel( $label );
+    public function setLabel($label);
 
     /**
      * @return FieldSet
@@ -72,7 +71,7 @@ interface FieldInterface
      * @param FieldSet $fieldSet
      * @return $this
      */
-    public function setFieldSet( FieldSet $fieldSet );
+    public function setFieldSet(FieldSet $fieldSet);
 
     /**
      * @return Model
@@ -83,7 +82,7 @@ interface FieldInterface
      * @param string $rules
      * @return FieldInterface
      */
-    public function rules( string $rules ): FieldInterface;
+    public function rules(string $rules): self;
 
     /**
      * @return array
@@ -93,18 +92,18 @@ interface FieldInterface
     /**
      * @param Request $request
      */
-    public function beforeModelSave( Request $request );
+    public function beforeModelSave(Request $request);
 
     /**
      * @param Request $request
      */
-    public function afterModelSave( Request $request );
+    public function afterModelSave(Request $request);
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|Element|string
      */
     public function render();
-    
+
     /**
      * @return string|null
      */
@@ -115,21 +114,21 @@ interface FieldInterface
      *
      * @return FieldInterface
      */
-    public function setRendererClass( ?string $renderable = null ): FieldInterface;
+    public function setRendererClass(?string $renderable = null): self;
 
     /**
      * @return RendererInterface|null
      */
-    public function getRenderer():?RendererInterface;
+    public function getRenderer(): ?RendererInterface;
 
     /**
-     * Set a render class override
+     * Set a render class override.
      *
      * @param RendererInterface|null $renderer
      *
      * @return FieldInterface
      */
-    public function setRenderer( ?RendererInterface $renderer ): FieldInterface;
+    public function setRenderer(?RendererInterface $renderer): self;
 
     /**
      * @return string|null
@@ -141,15 +140,15 @@ interface FieldInterface
      *
      * @return FieldInterface
      */
-    public function setTooltip( $content = null ): FieldInterface;
+    public function setTooltip($content = null): self;
 
     /**
-     * @param int   $rows
+     * @param int $rows
      * @param array $breakpoints
      *
      * @return FieldInterface
      */
-    public function setRows( int $rows, $breakpoints = [] ): FieldInterface;
+    public function setRows(int $rows, $breakpoints = []): self;
 
     /**
      * @return mixed
@@ -166,7 +165,7 @@ interface FieldInterface
      *
      * @return mixed
      */
-    public function setStyle( string $style ):FieldInterface;
+    public function setStyle(string $style): self;
 
     /**
      * @return array
@@ -174,7 +173,7 @@ interface FieldInterface
     public function getFieldClasses(): array;
 
     /**
-     * Element ID for label
+     * Element ID for label.
      *
      * @return string
      */
@@ -190,12 +189,12 @@ interface FieldInterface
     /**
      * @return bool
      */
-    public function isHidden():bool;
+    public function isHidden(): bool;
 
     /**
      * @param bool $value
      *
      * @return FieldInterface
      */
-    public function setHidden(bool $value):FieldInterface;
+    public function setHidden(bool $value): self;
 }

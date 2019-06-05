@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Controls\CheckboxControl;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\Controls\CheckboxControl;
 use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
 
 /**
- * Class DateTime
- * @package Arbory\Base\Admin\Form\Fields
+ * Class DateTime.
  */
 class Deactivator extends Checkbox
 {
@@ -47,7 +46,6 @@ class Deactivator extends Checkbox
     {
         return $this->expireAtName;
     }
-
 
     public function beforeModelSave(Request $request)
     {

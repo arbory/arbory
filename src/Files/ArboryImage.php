@@ -3,8 +3,7 @@
 namespace Arbory\Base\Files;
 
 /**
- * Class ArboryImage
- * @package Arbory\Base\Files
+ * Class ArboryImage.
  */
 class ArboryImage extends ArboryFile
 {
@@ -13,26 +12,21 @@ class ArboryImage extends ArboryFile
      */
     public function getTable()
     {
-        return ( new parent )->getTable();
+        return (new parent)->getTable();
     }
 
     /**
      * @param null $parameters
      * @return string
      */
-    public function getUrl( $parameters = null )
+    public function getUrl($parameters = null)
     {
-        try
-        {
-            return \GlideImage::from( $this->getLocalName() )
-                ->setSourceDisk( $this->disk )
-                ->getImageUrl( $parameters );
+        try {
+            return \GlideImage::from($this->getLocalName())
+                ->setSourceDisk($this->disk)
+                ->getImageUrl($parameters);
+        } catch (\Exception $e) {
+            \Log::warning($e);
         }
-        catch( \Exception $e )
-        {
-            \Log::warning( $e );
-        }
-
-        return null;
     }
 }

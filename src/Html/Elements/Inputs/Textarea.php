@@ -4,8 +4,8 @@ namespace Arbory\Base\Html\Elements\Inputs;
 
 class Textarea extends AbstractInputField
 {
-    public function __construct( $content = null )
+    public function __construct($content = null)
     {
-        parent::__construct( 'textarea', $content );
+        parent::__construct('textarea', $content);
     }
 }

@@ -5,8 +5,7 @@ namespace Arbory\Base\Admin\Form;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class Validator
- * @package Arbory\Base\Admin\Form
+ * Class Validator.
  */
 class Validator extends FormRequest
 {
@@ -27,7 +26,7 @@ class Validator extends FormRequest
      * @param array $rules
      * @return $this
      */
-    public function setRules( array $rules )
+    public function setRules(array $rules)
     {
         $this->rules = $rules;
 
@@ -50,16 +49,14 @@ class Validator extends FormRequest
         $input = $this->all();
         $destroyed = [];
 
-        foreach( array_dot( $input ) as $namespace => $value )
-        {
-            if( ends_with( $namespace, '._destroy' ) && $value === 'true' )
-            {
-                $destroyed[] = substr( $namespace, 0, strrpos( $namespace, "." ) );
+        foreach (array_dot($input) as $namespace => $value) {
+            if (ends_with($namespace, '._destroy') && $value === 'true') {
+                $destroyed[] = substr($namespace, 0, strrpos($namespace, '.'));
             }
         }
 
-        array_forget( $input, $destroyed );
+        array_forget($input, $destroyed);
 
-        $this->replace( $input );
+        $this->replace($input);
     }
 }

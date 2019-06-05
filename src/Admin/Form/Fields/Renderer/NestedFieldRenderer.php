@@ -2,19 +2,18 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Form\Fields\HasMany;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 
 /**
- * Class NestedFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class NestedFieldRenderer.
  */
 class NestedFieldRenderer implements RendererInterface
 {
@@ -26,7 +25,7 @@ class NestedFieldRenderer implements RendererInterface
     /**
      * @var ItemInterface
      */
-    protected  $itemRenderer;
+    protected $itemRenderer;
 
     /**
      * NestedFieldRenderer constructor.
@@ -34,7 +33,7 @@ class NestedFieldRenderer implements RendererInterface
      * @param HasMany       $field
      * @param ItemInterface $itemRenderer
      */
-    public function __construct( HasMany $field, ItemInterface $itemRenderer )
+    public function __construct(HasMany $field, ItemInterface $itemRenderer)
     {
         $this->field = $field;
         $this->itemRenderer = $itemRenderer;
@@ -48,23 +47,20 @@ class NestedFieldRenderer implements RendererInterface
         $orderBy = $this->field->getOrderBy();
         $relationItems = [];
 
-        if( $orderBy )
-        {
-            $this->field->setValue( $this->field->getValue()->sortBy( function( $item ) use ($orderBy)
-            {
+        if ($orderBy) {
+            $this->field->setValue($this->field->getValue()->sortBy(function ($item) use ($orderBy) {
                 return $item->{$orderBy};
-            } ) );
+            }));
         }
 
-        foreach( $this->field->getValue() as $index => $item )
-        {
+        foreach ($this->field->getValue() as $index => $item) {
             $relationItems[] = $this->getRelationItemHtml(
-                $this->field->getRelationFieldSet( $item, $index ),
+                $this->field->getRelationFieldSet($item, $index),
                 $index
             );
         }
 
-        return Html::div( $relationItems )->addClass( 'body list' );
+        return Html::div($relationItems)->addClass('body list');
     }
 
     /**
@@ -72,23 +68,22 @@ class NestedFieldRenderer implements RendererInterface
      */
     protected function getFooter()
     {
-        if( !$this->field->canAddRelationItem() )
-        {
-            return null;
+        if (! $this->field->canAddRelationItem()) {
+            return;
         }
 
-        $title = trans( 'arbory::fields.has_many.add_item', [ 'name' => $this->field->getName() ] );
+        $title = trans('arbory::fields.has_many.add_item', ['name' => $this->field->getName()]);
 
         return Html::footer(
-            Html::button( [
-                Html::i()->addClass( 'fa fa-plus' ),
+            Html::button([
+                Html::i()->addClass('fa fa-plus'),
                 $title,
-            ] )
-                ->addClass( 'button with-icon primary add-nested-item' )
-                ->addAttributes( [
+            ])
+                ->addClass('button with-icon primary add-nested-item')
+                ->addAttributes([
                     'type' => 'button',
                     'title' => $title,
-                ] )
+                ])
         );
     }
 
@@ -117,7 +112,7 @@ class NestedFieldRenderer implements RendererInterface
      * @param $index
      * @return Element
      */
-    protected function getRelationItemHtml( FieldSet $fieldSet, $index )
+    protected function getRelationItemHtml(FieldSet $fieldSet, $index)
     {
         return $this->itemRenderer->__invoke($this->field, $fieldSet, $index);
     }
@@ -127,9 +122,9 @@ class NestedFieldRenderer implements RendererInterface
      */
     protected function getRelationFromTemplate()
     {
-        $fieldSet = $this->field->getRelationFieldSet( $this->field->getRelatedModel(), '_template_' );
+        $fieldSet = $this->field->getRelationFieldSet($this->field->getRelatedModel(), '_template_');
 
-        return $this->getRelationItemHtml( $fieldSet, '_template_' );
+        return $this->getRelationItemHtml($fieldSet, '_template_');
     }
 
     /**
@@ -139,7 +134,7 @@ class NestedFieldRenderer implements RendererInterface
     {
         return new Content([
             $this->getBody(),
-            $this->getFooter()
+            $this->getFooter(),
         ]);
     }
 
@@ -148,7 +143,7 @@ class NestedFieldRenderer implements RendererInterface
      *
      * @return mixed
      */
-    public function setField( FieldInterface $field ): RendererInterface
+    public function setField(FieldInterface $field): RendererInterface
     {
         $this->field = $field;
 
@@ -164,19 +159,19 @@ class NestedFieldRenderer implements RendererInterface
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *
      * @return StyleOptionsInterface
      */
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         $options->addAttributes([
-            'data-arbory-template' => $this->getRelationFromTemplate()
+            'data-arbory-template' => $this->getRelationFromTemplate(),
         ]);
 
-        if($this->field->isSortable()) {
+        if ($this->field->isSortable()) {
             $options->addAttributes(
                 ['data-sort-by' => $this->field->getOrderBy()]
             );

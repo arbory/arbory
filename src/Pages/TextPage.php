@@ -15,6 +15,6 @@ class TextPage extends Model
      * @var array
      */
     protected $fillable = [
-        'html'
+        'html',
     ];
 }
