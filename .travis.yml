@@ -6,7 +6,6 @@ php:
 branches:
   only:
   - master
-  - psr2-compliant-test
   - 1.0
 install:
 - composer install
