@@ -13,14 +13,14 @@ interface AuthenticationMethod
      * @param bool $login
      * @return bool
      */
-    public function authenticate(array $credentials, $remember = false, $login = true): bool;
+    public function authenticate(array $credentials, bool $remember = false, bool $login = true): bool;
 
     /**
      * @param UserInterface|null $user
      * @param bool $everywhere
      * @return bool
      */
-    public function logout(UserInterface $user = null, $everywhere = false): bool;
+    public function logout(UserInterface $user = null, bool $everywhere = false): bool;
 
     /**
      * @return FormRequest
