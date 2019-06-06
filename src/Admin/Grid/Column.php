@@ -289,9 +289,9 @@ class Column
         if ($this->displayer === null) {
             $value = (string) $value;
 
-            if ($this->grid->hasTool('create')) {
+            if ($url = $this->grid->getOpenUrl($model)) {
                 return Html::link($value)->addAttributes([
-                    'href' => $this->grid->getModule()->url('edit', [$model->getKey()]),
+                    'href' => $url,
                 ]);
             }
 

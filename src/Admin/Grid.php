@@ -64,6 +64,11 @@ class Grid
      * @var Filter
      */
     protected $filter;
+    
+    /**
+     * @var callable
+     */
+    protected $openUrlCallback;
 
     /**
      * @param Model $model
@@ -355,6 +360,44 @@ class Grid
     public function hasTool(string $tool): bool
     {
         return in_array($tool, $this->enabledDefaultTools, false);
+    }
+
+    /**
+     * @param Model $model
+     *
+     * @return string|null
+     */
+    public function getOpenUrl(Model $model): ?string
+    {
+        if($customUrlOpener = $this->getOpenUrlCallback()) {
+            return call_user_func($customUrlOpener, $model);
+        }
+
+        if($this->hasTool('create')) {
+            return $this->getModule()->url('edit', [$model->getKey()]);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return callable
+     */
+    public function getOpenUrlCallback(): callable
+    {
+        return $this->openUrlCallback;
+    }
+
+    /**
+     * @param callable $openUrlCallback
+     *
+     * @return Grid
+     */
+    public function setOpenUrlCallback(callable $openUrlCallback): self
+    {
+        $this->openUrlCallback = $openUrlCallback;
+
+        return $this;
     }
 
     /**
