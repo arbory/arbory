@@ -64,7 +64,7 @@ class Grid
      * @var Filter
      */
     protected $filter;
-    
+
     /**
      * @var callable
      */
@@ -369,11 +369,11 @@ class Grid
      */
     public function getOpenUrl(Model $model): ?string
     {
-        if($customUrlOpener = $this->getOpenUrlCallback()) {
+        if ($customUrlOpener = $this->getOpenUrlCallback()) {
             return call_user_func($customUrlOpener, $model);
         }
 
-        if($this->hasTool('create')) {
+        if ($this->hasTool('create')) {
             return $this->getModule()->url('edit', [$model->getKey()]);
         }
 
