@@ -381,9 +381,9 @@ class Grid
     }
 
     /**
-     * @return callable
+     * @return callable|null
      */
-    public function getRowUrlCallback(): callable
+    public function getRowUrlCallback(): ?callable
     {
         return $this->rowUrlCallback;
     }
