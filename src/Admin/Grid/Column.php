@@ -289,7 +289,7 @@ class Column
         if ($this->displayer === null) {
             $value = (string) $value;
 
-            if ($url = $this->grid->getOpenUrl($model)) {
+            if ($url = $this->grid->getRowUrl($model)) {
                 return Html::link($value)->addAttributes([
                     'href' => $url,
                 ]);

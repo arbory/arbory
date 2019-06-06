@@ -68,7 +68,7 @@ class Grid
     /**
      * @var callable
      */
-    protected $openUrlCallback;
+    protected $rowUrlCallback;
 
     /**
      * @param Model $model
@@ -367,9 +367,9 @@ class Grid
      *
      * @return string|null
      */
-    public function getOpenUrl(Model $model): ?string
+    public function getRowUrl(Model $model): ?string
     {
-        if ($customUrlOpener = $this->getOpenUrlCallback()) {
+        if ($customUrlOpener = $this->getRowUrlCallback()) {
             return call_user_func($customUrlOpener, $model);
         }
 
@@ -383,19 +383,19 @@ class Grid
     /**
      * @return callable
      */
-    public function getOpenUrlCallback(): callable
+    public function getRowUrlCallback(): callable
     {
-        return $this->openUrlCallback;
+        return $this->rowUrlCallback;
     }
 
     /**
-     * @param callable $openUrlCallback
+     * @param callable $rowUrlCallback
      *
      * @return Grid
      */
-    public function setOpenUrlCallback(callable $openUrlCallback): self
+    public function setRowUrlCallback(callable $rowUrlCallback): self
     {
-        $this->openUrlCallback = $openUrlCallback;
+        $this->rowUrlCallback = $rowUrlCallback;
 
         return $this;
     }
