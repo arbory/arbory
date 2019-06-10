@@ -41,6 +41,7 @@ class AddActivationColumnsToNodesTable extends Migration
     {
         Schema::table('nodes', function (Blueprint $table) {
             $table->tinyInteger('active')->default(0);
+            $table->index('active');
         });
 
         DB::table('nodes')->where('activate_at', '<=', date('Y-m-d H:i'))->where(function (Builder $query) {
