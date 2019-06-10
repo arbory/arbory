@@ -207,8 +207,8 @@ class Grid
     }
 
     /**
-     * @param null $name
-     * @param null $label
+     * @param string|null $name
+     * @param string|null $label
      * @return Column
      */
     public function column( $name = null, $label = null )
