@@ -40,7 +40,9 @@ class AddActivationColumnsToNodesTable extends Migration
     public function down()
     {
         Schema::table('nodes', function (Blueprint $table) {
-            $table->tinyInteger('active')->default(0);
+            if (!Schema::hasColumn('nodes', 'active')) {
+                $table->tinyInteger('active')->default(0);
+            }
             $table->index('active');
         });
 
