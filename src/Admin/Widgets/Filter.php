@@ -11,6 +11,16 @@ use Illuminate\Contracts\Support\Renderable;
 class Filter implements Renderable
 {
     /**
+     * @var string
+     */
+    protected $action;
+
+    /**
+     * @var Grid\Column[]
+     */
+    protected $columns;
+
+    /**
      * Filter constructor.
      * @param Grid $grid
      */
