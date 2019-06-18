@@ -4,8 +4,11 @@
 namespace Arbory\Base\Admin\Filter;
 
 
+// TODO: Consider using mixins for configuring certain filters
 class FilterItem
 {
+    protected $namespace;
+
     /**
      * @var FilterTypeInterface
      */
@@ -25,6 +28,12 @@ class FilterItem
      * @var mixed
      */
     protected $defaultValue;
+
+    protected $isRelation = false;
+
+    protected $relationName;
+
+    protected $relation;
 
     /**
      * @param string $name
@@ -100,5 +109,32 @@ class FilterItem
     public function getDefaultValue()
     {
         return $this->defaultValue;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespacedName(): string
+    {
+        return implode(".", [$this->getNamespace(), $this->getName()]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    /**
+     * @param string $namespace
+     * @return FilterItem
+     */
+    public function setNamespace(string $namespace): FilterItem
+    {
+        $this->namespace = $namespace;
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Arbory\Base\Admin\Filter\FilterBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -39,14 +40,20 @@ class Filter implements FilterInterface
     protected $perPage;
 
     /**
+     * @var FilterBuilder
+     */
+    protected $filterBuilder;
+
+    /**
      * Filter constructor.
      * @param Model $model
      */
-    public function __construct(Model $model)
+    public function __construct(Model $model, FilterBuilder $filterBuilder)
     {
         $this->model = $model;
         $this->query = $model->newQuery();
         $this->request = request();
+        $this->filterBuilder = $filterBuilder;
     }
 
     /**
@@ -80,6 +87,8 @@ class Filter implements FilterInterface
      */
     protected function filter(Collection $columns): void
     {
+        $this->filterBuilder->apply($this->query);
+
         $filterParameters = self::removeNonFilterParameters($this->request->all());
 
         foreach ($filterParameters as $getKey => $getValue) {
@@ -260,7 +269,7 @@ class Filter implements FilterInterface
      * @param $actions
      * @param $values
      */
-    public function createQueryWithRelation($column, $actions, $values): void
+    public function createQueryWithRelation(Column $column, $actions, $values): void
     {
         $actions = array_wrap($actions);
         $values = array_wrap($values);

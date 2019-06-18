@@ -25,11 +25,6 @@ interface FilterTypeInterface
     public function getValue();
 
     /**
-     * @return CustomizedTargetInterface
-     */
-    public function getTarget(): CustomizedTargetInterface;
-
-    /**
      * @return iterable
      */
     public function getConfiguration(): iterable;

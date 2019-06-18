@@ -96,7 +96,7 @@ class Builder implements Renderable
             return;
         }
 
-        return (new Filter($this->grid()))->render();
+        return $this->grid->getFilterBuilder()->render();
     }
 
     /**

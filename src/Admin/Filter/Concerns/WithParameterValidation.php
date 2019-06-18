@@ -9,10 +9,9 @@ use Arbory\Base\Admin\Filter\Parameters;
 interface WithParameterValidation
 {
     /**
-     * TODO: Laravel validator & Validation support for multi level parameters
-     *
      * @param Parameters $parameters
+     * @param callable $attributeResolver
      * @return array
      */
-    public function rules(Parameters $parameters): array;
+    public function rules(Parameters $parameters, callable $attributeResolver): array;
 }

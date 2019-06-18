@@ -4,10 +4,16 @@
 namespace Arbory\Base\Admin\Filter;
 
 
-use Illuminate\Database\Query\Builder;
+use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
+use Arbory\Base\Admin\Traits\Renderable;
+use Arbory\Base\Html\Elements\Content;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 class FilterBuilder
 {
+    use Renderable;
+
     /**
      * @var FilterCollection
      */
@@ -23,10 +29,18 @@ class FilterBuilder
      */
     protected $parameters;
 
+    /**
+     * @var FilterExecutor
+     */
+    protected $filterExecutor;
+
     public function __construct(FilterTypeFactory $filterTypeFactory)
     {
         $this->filters = new FilterCollection();
         $this->filterTypeFactory = $filterTypeFactory;
+        $this->renderer = new Renderer();
+        $this->parameters = new Parameters();
+        $this->filterExecutor = new FilterExecutor($this);
     }
 
     /**
@@ -41,6 +55,7 @@ class FilterBuilder
     {
         $filterItem = new FilterItem();
         $filterItem
+            ->setNamespace($this->getParameters()->getNamespace())
             ->setName($name)
             ->setTitle($title)
             ->setType(
@@ -52,8 +67,15 @@ class FilterBuilder
         return $filterItem;
     }
 
+    public function addFromTarget(CustomizedTargetInterface $target)
+    {
+        $filterItem = new FilterItem();
+
+
+    }
+
     /**
-     * @return FilterCollection
+     * @return FilterCollection|FilterItem[]
      */
     public function getFilters(): FilterCollection
     {
@@ -79,13 +101,76 @@ class FilterBuilder
         return $this->parameters;
     }
 
-    public function apply(Builder $builder)
+    /**
+     *
+     */
+    protected function populateParameters(): void
     {
+        $parameters = $this->getParameters();
 
+        $parameters->replace(
+            request()->input($parameters->getNamespace(), []) // TODO: Implement system which would allow populating filters from multiple sources
+        );
+
+        foreach($this->getFilters() as $filterItem) {
+            $value = $parameters->get($filterItem->getName());
+            $type = $filterItem->getType();
+
+            if($type instanceof WithParameterValidation) {
+                // TODO: Move a validator class
+                $validator = validator()->make([
+                    $filterItem->getName() => $value
+                ], $this->normalizeRules($filterItem,
+                    $type->rules($parameters, function (string $attribute) use ($filterItem) {
+                        return $filterItem->getName() . "." . $attribute;
+                    })));
+
+                if($validator->fails()) {
+                    $value = $filterItem->getDefaultValue();
+
+                    $parameters->offsetSet($filterItem->getName(), $value);
+                }
+            }
+
+            $filterItem->getType()->setValue(
+                $value
+            );
+        }
     }
 
+    protected function normalizeRules(FilterItem $filterItem, array $rules): array {
+        if(! Arr::isAssoc($rules)) {
+            return [
+                $filterItem->getName() => $rules
+            ];
+        }
+
+        $rulesNormalized = [];
+
+        foreach($rules as $field => $ruleList) {
+            $rulesNormalized["{$filterItem->getName()}.{$field}"] = $ruleList;
+        }
+
+        return $rulesNormalized;
+    }
+
+    /**
+     * @param Builder $builder
+     */
+    public function apply(Builder $builder)
+    {
+        $this->populateParameters();
+
+        $this->filterExecutor->execute($builder);
+    }
+
+    /**
+     * @return Content|string
+     */
     public function render()
     {
+        $this->renderer->setBuilder($this);
 
+        return $this->renderer->render();
     }
 }

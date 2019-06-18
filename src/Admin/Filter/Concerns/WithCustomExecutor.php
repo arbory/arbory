@@ -4,9 +4,15 @@
 namespace Arbory\Base\Admin\Filter\Concerns;
 
 
-use Illuminate\Database\Query\Builder;
+use Arbory\Base\Admin\Filter\FilterItem;
+use Illuminate\Database\Eloquent\Builder;
 
 interface WithCustomExecutor
 {
-    public function execute(Builder $builder);
+    /**
+     * @param FilterItem $filterItem
+     * @param Builder $builder
+     * @return mixed
+     */
+    public function execute(FilterItem $filterItem, Builder $builder);
 }
