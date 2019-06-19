@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Filter;
 
 
 use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
+use Arbory\Base\Admin\Filter\Transformers\QueryStringTransformer;
 use Arbory\Base\Admin\Traits\Renderable;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,7 +26,7 @@ class FilterBuilder
     protected $filterTypeFactory;
 
     /**
-     * @var Parameters
+     * @var FilterParameters
      */
     protected $parameters;
 
@@ -34,13 +35,21 @@ class FilterBuilder
      */
     protected $filterExecutor;
 
+    /**
+     * @var FilterValidator
+     */
+    protected $validator;
+
     public function __construct(FilterTypeFactory $filterTypeFactory)
     {
         $this->filters = new FilterCollection();
         $this->filterTypeFactory = $filterTypeFactory;
         $this->renderer = new Renderer();
-        $this->parameters = new Parameters();
+        $this->parameters = new FilterParameters();
         $this->filterExecutor = new FilterExecutor($this);
+
+        // TODO: Refactor properly to support change better
+        $this->validator = new FilterValidator(validator(), $this->parameters, $this->filters);
     }
 
     /**
@@ -83,10 +92,10 @@ class FilterBuilder
     }
 
     /**
-     * @param Parameters $parameters
+     * @param FilterParameters $parameters
      * @return FilterBuilder
      */
-    public function setParameters(Parameters $parameters): FilterBuilder
+    public function setParameters(FilterParameters $parameters): FilterBuilder
     {
         $this->parameters = $parameters;
 
@@ -94,64 +103,45 @@ class FilterBuilder
     }
 
     /**
-     * @return Parameters
+     * @return FilterParameters
      */
-    public function getParameters(): Parameters
+    public function getParameters(): FilterParameters
     {
         return $this->parameters;
     }
 
     /**
-     *
+     * TODO: Move to a configurable builder which would allow to define how parameters are added
      */
     protected function populateParameters(): void
     {
+        $this->setParameters(
+            (new ParameterTransformerPipeline(app()))
+                ->setParameters($this->getParameters())
+                ->addTransformer(QueryStringTransformer::class)
+                ->execute()
+        );
+
         $parameters = $this->getParameters();
 
-        $parameters->replace(
-            request()->input($parameters->getNamespace(), []) // TODO: Implement system which would allow populating filters from multiple sources
-        );
+        $validator = $this->validator->getValidator();
+
+        $errors = $validator->getMessageBag();
 
         foreach($this->getFilters() as $filterItem) {
             $value = $parameters->get($filterItem->getName());
-            $type = $filterItem->getType();
 
-            if($type instanceof WithParameterValidation) {
-                // TODO: Move a validator class
-                $validator = validator()->make([
-                    $filterItem->getName() => $value
-                ], $this->normalizeRules($filterItem,
-                    $type->rules($parameters, function (string $attribute) use ($filterItem) {
-                        return $filterItem->getName() . "." . $attribute;
-                    })));
+            if($errors->has($filterItem->getName())) {
+                $value = $filterItem->getDefaultValue();
 
-                if($validator->fails()) {
-                    $value = $filterItem->getDefaultValue();
-
-                    $parameters->offsetSet($filterItem->getName(), $value);
-                }
+                $parameters->offsetSet($filterItem->getName(), $value);
             }
+
 
             $filterItem->getType()->setValue(
                 $value
             );
         }
-    }
-
-    protected function normalizeRules(FilterItem $filterItem, array $rules): array {
-        if(! Arr::isAssoc($rules)) {
-            return [
-                $filterItem->getName() => $rules
-            ];
-        }
-
-        $rulesNormalized = [];
-
-        foreach($rules as $field => $ruleList) {
-            $rulesNormalized["{$filterItem->getName()}.{$field}"] = $ruleList;
-        }
-
-        return $rulesNormalized;
     }
 
     /**

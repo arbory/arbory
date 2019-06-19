@@ -10,7 +10,7 @@ namespace Arbory\Base\Admin\Filter;
 // TODO: Maybe allowed/disallowed values (probably using callable)
 use Illuminate\Support\Fluent;
 
-class Parameters extends Fluent
+class FilterParameters extends Fluent
 {
     protected $namespace = 'filter';
 
@@ -25,9 +25,9 @@ class Parameters extends Fluent
     /**
      * @param string|null $namespace
      *
-     * @return Parameters
+     * @return FilterParameters
      */
-    public function setNamespace(?string $namespace): Parameters
+    public function setNamespace(?string $namespace): FilterParameters
     {
         $this->namespace = $namespace;
 
@@ -36,11 +36,22 @@ class Parameters extends Fluent
 
     /**
      * @param array $data
-     * @return Parameters
+     * @return FilterParameters
      */
-    public function replace(array $data = []): Parameters
+    public function replace(array $data = []): FilterParameters
     {
         $this->attributes = $data;
+
+        return $this;
+    }
+
+    /**
+     * @param array $data
+     * @return FilterParameters
+     */
+    public function add(array $data = []): FilterParameters
+    {
+        $this->attributes = array_merge($this->attributes, $data);
 
         return $this;
     }

@@ -6,8 +6,9 @@ namespace Arbory\Base\Admin\Filter\Types;
 
 use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Admin\Filter\FilterParameters;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
-use Arbory\Base\Admin\Filter\Parameters;
+use Arbory\Base\Admin\Filter\Transformers;
 use Arbory\Base\Admin\Form\Controls\SelectControl;
 use Arbory\Base\Html\Html;
 use Illuminate\Validation\Rule;
@@ -35,11 +36,11 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
     /**
      * TODO: Laravel validator & Validation support for multi level parameters
      *
-     * @param Parameters $parameters
+     * @param FilterParameters $parameters
      * @param callable $attributeResolver
      * @return array
      */
-    public function rules(Parameters $parameters, callable $attributeResolver): array
+    public function rules(FilterParameters $parameters, callable $attributeResolver): array
     {
         return [
             'nullable',

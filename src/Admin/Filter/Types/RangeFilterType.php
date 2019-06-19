@@ -7,8 +7,9 @@ namespace Arbory\Base\Admin\Filter\Types;
 use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
 use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Admin\Filter\FilterParameters;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
-use Arbory\Base\Admin\Filter\Parameters;
+use Arbory\Base\Admin\Filter\Transformers;
 use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -75,11 +76,11 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param Parameters $parameters
+     * @param FilterParameters $parameters
      * @param callable $attributeResolver
      * @return array
      */
-    public function rules(Parameters $parameters, callable $attributeResolver): array
+    public function rules(FilterParameters $parameters, callable $attributeResolver): array
     {
         $minAttribute = $attributeResolver(static::KEY_MIN);
         $maxAttribute = $attributeResolver(static::KEY_MAX);
