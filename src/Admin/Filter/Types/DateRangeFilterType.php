@@ -3,18 +3,19 @@
 
 namespace Arbory\Base\Admin\Filter\Types;
 
-
-use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
-use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 use Arbory\Base\Admin\Filter\FilterItem;
-use Arbory\Base\Admin\Filter\FilterParameters;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Illuminate\Database\Eloquent\Builder;
 
-class DateRangeFilterType extends RangeFilterType implements WithCustomExecutor, WithParameterValidation
+class DateRangeFilterType extends RangeFilterType
 {
     protected $inputType = 'date';
 
-    public function execute(FilterItem $filterItem, Builder $builder)
+    /**
+     * @param FilterItem $filterItem
+     * @param Builder $builder
+     */
+    public function execute(FilterItem $filterItem, Builder $builder): void
     {
         $min = $this->getRangeValue(static::KEY_MIN);
         $max = $this->getRangeValue(static::KEY_MAX);
@@ -29,8 +30,6 @@ class DateRangeFilterType extends RangeFilterType implements WithCustomExecutor,
     }
 
     /**
-     * TODO: Laravel validator & Validation support for multi level parameters
-     *
      * @param FilterParameters $parameters
      * @param callable $attributeResolver
      * @return array

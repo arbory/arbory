@@ -13,17 +13,17 @@ use Arbory\Base\Admin\Filter\FilterTypeInterface;
 abstract class AbstractType
 {
     /**
-     * @var array
+     * @var mixed
      */
     protected $value;
 
     /**
      * @var iterable
      */
-    protected $configuration;
+    protected $config;
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return mixed
      */
     public function setValue($value)
@@ -42,20 +42,33 @@ abstract class AbstractType
     /**
      * @return iterable
      */
-    public function getConfiguration(): iterable
+    public function getConfig(): iterable
     {
-        return $this->configuration;
+        return $this->config;
     }
 
     /**
-     * @param iterable $configuration
+     * @param iterable $config
      * @return FilterTypeInterface
      */
-    public function setConfiguration(iterable $configuration): FilterTypeInterface
+    public function setConfig(iterable $config): FilterTypeInterface
     {
-        $this->configuration = $configuration;
+        $this->config = $config;
 
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        $value = $this->getValue();
+
+        if(is_array($value)) {
+            $value = array_filter($value, 'blank');
+        }
+
+        return blank($value);
+    }
 }

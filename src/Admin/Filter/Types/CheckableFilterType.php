@@ -18,7 +18,7 @@ class CheckableFilterType extends AbstractType implements FilterTypeInterface
      */
     public function render(FilterItem $filterItem)
     {
-        $options = $this->configuration['options'] ?? [];
+        $options = $this->config['options'] ?? [];
 
         $labels = [];
 

@@ -3,7 +3,8 @@
 
 namespace Arbory\Base\Admin\Filter\Concerns;
 
-use Arbory\Base\Admin\Filter\FilterParameters;
+
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 
 interface WithParameterValidation
 {

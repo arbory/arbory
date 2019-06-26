@@ -67,11 +67,22 @@ class Renderer
     }
 
     /**
+     * @return Button
+     */
+    protected function resetButton(): Button
+    {
+        return Button::create()
+            ->type('reset', 'full-width reset secondary')
+            ->title(trans('arbory::filter.reset'));
+    }
+
+    /**
      * @return Content
      */
     protected function renderFilters(): Content
     {
-        return (new Content($this->builder->getFilters()))->map(Closure::fromCallable([$this, 'renderFilter']));
+        return (new Content($this->builder->getFilters()))
+            ->map(Closure::fromCallable([$this, 'renderFilter']));
     }
 
     /**
@@ -123,6 +134,7 @@ class Renderer
                 $this->filterHeader(),
                 $this->renderFilters(),
                 $this->filterButton(),
+                $this->resetButton(),
             ])->addClass('form-filter')
                 ->addAttributes(['action' => $this->action])
                 ->addAttributes(['method' => 'get']),

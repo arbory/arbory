@@ -4,6 +4,7 @@
 namespace Arbory\Base\Admin\Filter;
 
 use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\Validator;
@@ -43,7 +44,7 @@ class FilterValidator
     /**
      * @return bool
      */
-    public function validate(): Boolean
+    public function validate(): bool
     {
         return $this->getValidator()->fails();
     }
@@ -55,18 +56,12 @@ class FilterValidator
     {
         $rules = [[]];
 
-        foreach($this->filterCollection as $filterItem)
+        foreach($this->filterCollection->findByConcerns([ WithParameterValidation::class ]) as $filterItem)
         {
-            $type = $filterItem->getType();
-
-            if(! $type instanceof WithParameterValidation) {
-                continue;
-            }
-
             $rules[] = $this->normalizeRules($filterItem, $this->resolveRules($filterItem));
         }
 
-        $rules = array_merge([], ...$rules);
+        $rules = array_merge(...$rules);
 
         return $this->validatorFactory->make($this->parameters->toArray(), $rules);
     }
@@ -94,13 +89,13 @@ class FilterValidator
             ];
         }
 
-        $rulesNormalized = [];
+        $normalizedRules = [];
 
         foreach($rules as $field => $ruleList) {
-            $rulesNormalized["{$filterItem->getName()}.{$field}"] = $ruleList;
+            $normalizedRules["{$filterItem->getName()}.{$field}"] = $ruleList;
         }
 
-        return $rulesNormalized;
+        return $normalizedRules;
     }
 
     /**
@@ -112,7 +107,7 @@ class FilterValidator
         $type = $filterItem->getType();
 
         return $type->rules($this->parameters, function (string $attribute) use ($filterItem) {
-            return $filterItem->getName() . "." . $attribute;
+            return $filterItem->getName() . '.' . $attribute;
         });
     }
 }

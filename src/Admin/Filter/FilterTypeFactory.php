@@ -24,14 +24,17 @@ class FilterTypeFactory
 
     /**
      * @param string $type
-     * @param iterable $configuration
+     * @param iterable $config
      * @return FilterTypeInterface
      */
-    public function make(string $type, iterable $configuration): FilterTypeInterface
+    public function make(string $type, iterable $config): FilterTypeInterface
     {
+        /**
+         * @var $instance FilterTypeInterface
+         */
         $instance = $this->container->make($type);
 
-        $instance->setConfiguration($configuration);
+        $instance->setConfig($config);
 
         return $instance;
     }

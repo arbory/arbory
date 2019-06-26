@@ -4,12 +4,12 @@
 namespace Arbory\Base\Admin\Filter;
 
 
-use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
-use Arbory\Base\Admin\Filter\Transformers\QueryStringTransformer;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
+use Arbory\Base\Admin\Filter\Parameters\ParameterTransformerPipeline;
+use Arbory\Base\Admin\Filter\Parameters\Transformers\QueryStringTransformer;
 use Arbory\Base\Admin\Traits\Renderable;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 
 class FilterBuilder
 {
@@ -56,11 +56,11 @@ class FilterBuilder
      * @param string $name
      * @param string $title
      * @param string $filterType
-     * @param iterable $filterTypeConfiguration
+     * @param iterable $filterTypeConfig
      *
      * @return FilterItem
      */
-    public function addFilter(string $name, string $title, string $filterType, iterable $filterTypeConfiguration): FilterItem
+    public function addFilter(string $name, string $title, string $filterType, iterable $filterTypeConfig = []): FilterItem
     {
         $filterItem = new FilterItem();
         $filterItem
@@ -68,7 +68,7 @@ class FilterBuilder
             ->setName($name)
             ->setTitle($title)
             ->setType(
-                $this->filterTypeFactory->make($filterType, $filterTypeConfiguration)
+                $this->filterTypeFactory->make($filterType, $filterTypeConfig)
             );
 
         $this->filters->push($filterItem);
@@ -123,18 +123,16 @@ class FilterBuilder
         );
 
         $parameters = $this->getParameters();
-
         $validator = $this->validator->getValidator();
-
         $errors = $validator->getMessageBag();
 
         foreach($this->getFilters() as $filterItem) {
             $value = $parameters->get($filterItem->getName());
 
-            if($errors->has($filterItem->getName())) {
+            if($errors->has($filterItem->getName() . '.*')) {
                 $value = $filterItem->getDefaultValue();
 
-                $parameters->offsetSet($filterItem->getName(), $value);
+                $parameters->set($filterItem->getName(), $value);
             }
 
 

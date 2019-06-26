@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Arbory\Base\Admin\Filter;
+namespace Arbory\Base\Admin\Filter\Parameters;
 
 
-use Arbory\Base\Admin\Filter\Transformers\ParameterTransformerInterface;
+use Arbory\Base\Admin\Filter\Parameters\Transformers\ParameterTransformerInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Pipeline\Pipeline;
 

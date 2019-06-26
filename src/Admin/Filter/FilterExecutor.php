@@ -32,7 +32,14 @@ class FilterExecutor
         $parameters = $this->filterBuilder->getParameters();
 
         foreach($filters as $filterItem) {
-            if(! $parameters->offsetExists($filterItem->getName())) {
+            if(! $parameters->has($filterItem->getName())) {
+                continue;
+            }
+
+            // Use user defined executor
+            if($executor = $filterItem->getExecutor()) {
+                $executor($filterItem, $builder);
+
                 continue;
             }
 

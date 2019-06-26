@@ -7,9 +7,8 @@ namespace Arbory\Base\Admin\Filter\Types;
 use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
 use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 use Arbory\Base\Admin\Filter\FilterItem;
-use Arbory\Base\Admin\Filter\FilterParameters;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
-use Arbory\Base\Admin\Filter\Transformers;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -27,7 +26,7 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
      */
     public function render(FilterItem $filterItem)
     {
-        $step = $this->configuration['step'] ?? '.01';
+        $step = $this->config['step'] ?? '.01';
 
         return Html::div([
             Html::div([
@@ -59,9 +58,9 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     /**
      * @param FilterItem $filterItem
      * @param Builder $builder
-     * @return mixed
+     * @return void
      */
-    public function execute(FilterItem $filterItem, Builder $builder)
+    public function execute(FilterItem $filterItem, Builder $builder): void
     {
         $min = $this->getRangeValue(static::KEY_MIN);
         $max = $this->getRangeValue(static::KEY_MAX);

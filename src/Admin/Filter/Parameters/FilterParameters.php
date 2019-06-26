@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Arbory\Base\Admin\Filter;
+namespace Arbory\Base\Admin\Filter\Parameters;
 
 
 // TODO: Parameter collectors?
@@ -52,6 +52,27 @@ class FilterParameters extends Fluent
     public function add(array $data = []): FilterParameters
     {
         $this->attributes = array_merge($this->attributes, $data);
+
+        return $this;
+    }
+
+    /**
+     * @param string $attribute
+     * @return bool
+     */
+    public function has(string $attribute): bool
+    {
+        return $this->offsetExists($attribute);
+    }
+
+    /**
+     * @param string $attribute
+     * @param $value
+     * @return FilterParameters
+     */
+    public function set(string $attribute, $value): FilterParameters
+    {
+        $this->offsetSet($attribute, $value);
 
         return $this;
     }

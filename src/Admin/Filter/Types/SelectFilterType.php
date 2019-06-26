@@ -6,9 +6,8 @@ namespace Arbory\Base\Admin\Filter\Types;
 
 use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 use Arbory\Base\Admin\Filter\FilterItem;
-use Arbory\Base\Admin\Filter\FilterParameters;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
-use Arbory\Base\Admin\Filter\Transformers;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Arbory\Base\Admin\Form\Controls\SelectControl;
 use Arbory\Base\Html\Html;
 use Illuminate\Validation\Rule;
@@ -21,11 +20,11 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
      */
     public function render(FilterItem $filterItem)
     {
-        $options = $this->configuration['options'] ?? [];
-        $multiple = $this->configuration['multiple'] ?? false;
+        $options = $this->config['options'] ?? [];
+        $multiple = $this->config['multiple'] ?? false;
 
         $control = new SelectControl();
-        $control->setName($filterItem->getNamespacedName());
+        $control->setName($control->getInputName($filterItem->getNamespacedName()));
         $control->setOptions($options);
         $control->setMultiple($multiple);
         $control->setSelected($this->getValue());
@@ -44,7 +43,7 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
     {
         return [
             'nullable',
-            Rule::in(array_keys($this->configuration['options'] ?? []))
+            Rule::in(array_keys($this->config['options'] ?? []))
         ];
     }
 }

@@ -7,6 +7,9 @@ namespace Arbory\Base\Admin\Filter;
 // TODO: Consider using mixins for configuring certain filters
 class FilterItem
 {
+    /**
+     * @var string
+     */
     protected $namespace;
 
     /**
@@ -29,12 +32,11 @@ class FilterItem
      */
     protected $defaultValue;
 
-    protected $isRelation = false;
-
-    protected $relationName;
-
-    protected $relation;
-
+    /**
+     * @var callable|null
+     */
+    protected $executor;
+    
     /**
      * @param string $name
      * @return FilterItem
@@ -96,7 +98,7 @@ class FilterItem
      * @param mixed $defaultValue
      * @return FilterItem
      */
-    public function setDefaultValue($defaultValue)
+    public function setDefaultValue($defaultValue): FilterItem
     {
         $this->defaultValue = $defaultValue;
 
@@ -116,7 +118,7 @@ class FilterItem
      */
     public function getNamespacedName(): string
     {
-        return implode(".", [$this->getNamespace(), $this->getName()]);
+        return implode('.', [$this->getNamespace(), $this->getName()]);
     }
 
     /**
@@ -136,5 +138,24 @@ class FilterItem
         $this->namespace = $namespace;
 
         return $this;
+    }
+
+    /**
+     * @param callable|null $executor
+     * @return FilterItem
+     */
+    public function setExecutor(?callable $executor): FilterItem
+    {
+        $this->executor = $executor;
+
+        return $this;
+    }
+
+    /**
+     * @return callable|null
+     */
+    public function getExecutor(): ?callable
+    {
+        return $this->executor;
     }
 }

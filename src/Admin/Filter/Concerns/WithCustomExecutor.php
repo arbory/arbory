@@ -12,7 +12,7 @@ interface WithCustomExecutor
     /**
      * @param FilterItem $filterItem
      * @param Builder $builder
-     * @return mixed
+     * @return void
      */
-    public function execute(FilterItem $filterItem, Builder $builder);
+    public function execute(FilterItem $filterItem, Builder $builder): void;
 }

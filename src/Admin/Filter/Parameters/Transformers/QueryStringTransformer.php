@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Arbory\Base\Admin\Filter\Transformers;
+namespace Arbory\Base\Admin\Filter\Parameters\Transformers;
 
 
-use Arbory\Base\Admin\Filter\FilterParameters;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Illuminate\Http\Request;
 
 class QueryStringTransformer implements ParameterTransformerInterface
