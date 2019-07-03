@@ -4,13 +4,11 @@
 namespace Arbory\Base\Admin\Filter;
 
 
-// TODO: Consider using mixins for configuring certain filters
+use Illuminate\Support\Traits\Macroable;
+
 class FilterItem
 {
-    /**
-     * @var string
-     */
-    protected $namespace;
+    use Macroable;
 
     /**
      * @var FilterTypeInterface
@@ -36,7 +34,12 @@ class FilterItem
      * @var callable|null
      */
     protected $executor;
-    
+
+    /**
+     * @var FilterManager
+     */
+    protected $manager;
+
     /**
      * @param string $name
      * @return FilterItem
@@ -126,18 +129,7 @@ class FilterItem
      */
     public function getNamespace()
     {
-        return $this->namespace;
-    }
-
-    /**
-     * @param string $namespace
-     * @return FilterItem
-     */
-    public function setNamespace(string $namespace): FilterItem
-    {
-        $this->namespace = $namespace;
-
-        return $this;
+        return $this->getManager()->getParameters()->getNamespace();
     }
 
     /**
@@ -157,5 +149,24 @@ class FilterItem
     public function getExecutor(): ?callable
     {
         return $this->executor;
+    }
+
+    /**
+     * @param FilterManager $manager
+     * @return FilterItem
+     */
+    public function setManager(FilterManager $manager): FilterItem
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * @return FilterManager
+     */
+    public function getManager(): FilterManager
+    {
+        return $this->manager;
     }
 }

@@ -49,4 +49,12 @@ class Filter implements FilterInterface
     {
         $this->query->with($relationName);
     }
+
+    /**
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
 }

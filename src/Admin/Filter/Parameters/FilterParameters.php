@@ -3,16 +3,21 @@
 
 namespace Arbory\Base\Admin\Filter\Parameters;
 
-
-// TODO: Parameter collectors?
-// TODO: Preprocessor (when using a more custom query string format)
-// TODO: Default values
-// TODO: Maybe allowed/disallowed values (probably using callable)
+use Arbory\Base\Admin\Filter\FilterItem;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 
 class FilterParameters extends Fluent
 {
+    /**
+     * @var string
+     */
     protected $namespace = 'filter';
+
+    /**
+     * @var array
+     */
+    protected $errors = [];
 
     /**
      * @return string
@@ -32,6 +37,15 @@ class FilterParameters extends Fluent
         $this->namespace = $namespace;
 
         return $this;
+    }
+
+    /**
+     * @param FilterItem $filterItem
+     * @return mixed
+     */
+    public function getFromFilter(FilterItem $filterItem)
+    {
+        return $this->get($filterItem->getName());
     }
 
     /**
@@ -75,5 +89,51 @@ class FilterParameters extends Fluent
         $this->offsetSet($attribute, $value);
 
         return $this;
+    }
+
+    /**
+     * @param string|null $fieldName
+     * @return array
+     */
+    public function getErrors(?string $fieldName = null): array
+    {
+        if($fieldName !== null) {
+            return Arr::get($this->errors, $fieldName);
+        }
+
+        return $this->errors;
+    }
+
+    /**
+     * @param array $errors
+     *
+     * @return FilterParameters
+     */
+    public function setErrors(array $errors): FilterParameters
+    {
+        $this->errors = $errors;
+
+        return $this;
+    }
+
+    /**
+     * @param string $fieldName
+     * @param array $errors
+     * @return FilterParameters
+     */
+    public function addErrors(string $fieldName, array $errors): FilterParameters
+    {
+        $this->errors[$fieldName] = $errors;
+
+        return $this;
+    }
+
+    /**
+     * @param string $fieldName
+     * @return bool
+     */
+    public function hasError(string $fieldName): bool
+    {
+        return Arr::has($this->errors, $fieldName);
     }
 }

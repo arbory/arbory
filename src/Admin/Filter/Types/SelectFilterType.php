@@ -46,4 +46,26 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
             Rule::in(array_keys($this->config['options'] ?? []))
         ];
     }
+
+    /**
+     * @param FilterParameters $filterParameters
+     * @param callable $attributeResolver
+     *
+     * @return array
+     */
+    public function messages(FilterParameters $filterParameters, callable $attributeResolver): array
+    {
+        return [];
+    }
+
+    /**
+     * @param FilterParameters $filterParameters
+     * @param callable $attributeResolver
+     *
+     * @return array
+     */
+    public function attributes(FilterParameters $filterParameters, callable $attributeResolver): array
+    {
+        return [];
+    }
 }

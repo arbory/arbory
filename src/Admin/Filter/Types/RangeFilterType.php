@@ -89,4 +89,26 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
             static::KEY_MAX => ['nullable', 'numeric', "gt:{$minAttribute}"]
         ];
     }
+
+    /**
+     * @param FilterParameters $filterParameters
+     * @param callable $attributeResolver
+     *
+     * @return array
+     */
+    public function messages(FilterParameters $filterParameters, callable $attributeResolver): array
+    {
+        return [];
+    }
+
+    /**
+     * @param FilterParameters $filterParameters
+     * @param callable $attributeResolver
+     *
+     * @return array
+     */
+    public function attributes(FilterParameters $filterParameters, callable $attributeResolver): array
+    {
+        return [];
+    }
 }

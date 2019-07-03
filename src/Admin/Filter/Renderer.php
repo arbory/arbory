@@ -13,9 +13,9 @@ use Closure;
 class Renderer
 {
     /**
-     * @var FilterBuilder
+     * @var FilterManager
      */
-    protected $builder;
+    protected $manager;
 
     /**
      * @var string
@@ -23,20 +23,20 @@ class Renderer
     protected $action;
 
     /**
-     * @return FilterBuilder
+     * @return FilterManager
      */
-    public function getBuilder(): FilterBuilder
+    public function getManager(): FilterManager
     {
-        return $this->builder;
+        return $this->manager;
     }
 
     /**
-     * @param FilterBuilder $builder
+     * @param FilterManager $manager
      * @return Renderer
      */
-    public function setBuilder(FilterBuilder $builder): self
+    public function setManager(FilterManager $manager): self
     {
-        $this->builder = $builder;
+        $this->manager = $manager;
 
         return $this;
     }
@@ -81,7 +81,7 @@ class Renderer
      */
     protected function renderFilters(): Content
     {
-        return (new Content($this->builder->getFilters()))
+        return (new Content($this->manager->getFilters()))
             ->map(Closure::fromCallable([$this, 'renderFilter']));
     }
 

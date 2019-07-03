@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Admin\Filter\FilterBuilder;
+use Arbory\Base\Admin\Filter\FilterManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -40,20 +40,19 @@ class Filter implements FilterInterface
     protected $perPage;
 
     /**
-     * @var FilterBuilder
+     * @var FilterManager
      */
-    protected $filterBuilder;
+    protected $filterManager;
 
     /**
      * Filter constructor.
      * @param Model $model
      */
-    public function __construct(Model $model, FilterBuilder $filterBuilder)
+    public function __construct(Model $model)
     {
         $this->model = $model;
         $this->query = $model->newQuery();
         $this->request = request();
-        $this->filterBuilder = $filterBuilder;
     }
 
     /**
@@ -71,7 +70,7 @@ class Filter implements FilterInterface
 
         $column = $columns->filter(function (Column $column) {
             return $column->isSortable();
-        })->filter(function (Column $column) use ($orderBy) {
+        })->filter(static function (Column $column) use ($orderBy) {
             return $column->getName() === $orderBy;
         })->first();
 
@@ -87,24 +86,8 @@ class Filter implements FilterInterface
      */
     protected function filter(Collection $columns): void
     {
-        $this->filterBuilder->apply($this->query);
-
-        $filterParameters = self::removeNonFilterParameters($this->request->all());
-
-        foreach ($filterParameters as $getKey => $getValue) {
-            if (! $getValue) {
-                continue;
-            }
-
-            $column = $columns->filter(function (Column $column) use ($getKey) {
-                return $column->getName() === $getKey || $column->getRelationName() === $getKey;
-            })->first();
-
-            if (! $column || ! $column->getHasFilter()) {
-                continue;
-            }
-
-            $this->createQuery($column, $getValue, $getKey);
+        if($filterManager = $this->getFilterManager()) {
+            $filterManager->apply($this->query);
         }
     }
 
@@ -290,29 +273,21 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param array $parameters
-     * @return array
+     * @param FilterManager $filterManager
+     * @return Filter
      */
-    private function removeNonFilterParameters(array $parameters): array
+    public function setFilterManager(FilterManager $filterManager): Filter
     {
-        unset($parameters['_order_by']);
-        unset($parameters['_order']);
+        $this->filterManager = $filterManager;
 
-        return self::recursiveArrayFilter($parameters);
+        return $this;
     }
 
     /**
-     * @param array $filterParameters
-     * @return array
+     * @return FilterManager|null
      */
-    private function recursiveArrayFilter(array $filterParameters): array
+    public function getFilterManager(): ?FilterManager
     {
-        foreach ($filterParameters as $getKey => &$getValue) {
-            if (is_array($getValue)) {
-                $getValue = self::recursiveArrayFilter($getValue);
-            }
-        }
-
-        return array_filter($filterParameters);
+        return $this->filterManager;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Admin;
 
-use Arbory\Base\Admin\Filter\FilterBuilder;
+use Arbory\Base\Admin\Filter\FilterManager;
 use Closure;
 use Arbory\Base\Admin\Grid\Row;
 use Arbory\Base\Admin\Grid\Column;
@@ -72,9 +72,9 @@ class Grid
     protected $rowUrlCallback;
 
     /**
-     * @var FilterBuilder
+     * @var FilterManager
      */
-    protected $filterBuilder;
+    protected $filterManager;
 
     /**
      * @param Model $model
@@ -84,7 +84,7 @@ class Grid
         $this->model = $model;
         $this->columns = new Collection();
         $this->rows = new Collection();
-        $this->filterBuilder = app(FilterBuilder::class); // TODO: Use proper DI
+        $this->filterManager = app(FilterManager::class); // TODO: Use proper DI
 
         $this->setupFilter();
     }
@@ -113,7 +113,7 @@ class Grid
      */
     protected function setupFilter()
     {
-        $this->setFilter(new Filter($this->model, $this->filterBuilder));
+        $this->setFilter(new Filter($this->model));
     }
 
     /**
@@ -425,10 +425,21 @@ class Grid
     }
 
     /**
-     * @return FilterBuilder
+     * @return FilterManager
      */
-    public function getFilterBuilder(): FilterBuilder
+    public function getFilterManager(): FilterManager
     {
-        return $this->filterBuilder;
+        return $this->filterManager;
+    }
+
+    /**
+     * @param FilterManager $filterManager
+     * @return Grid
+     */
+    public function setFilterManager(FilterManager $filterManager): Grid
+    {
+        $this->filterManager = $filterManager;
+
+        return $this;
     }
 }

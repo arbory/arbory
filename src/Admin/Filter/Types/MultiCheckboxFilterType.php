@@ -8,7 +8,7 @@ use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 use Arbory\Base\Html\Html;
 
-class CheckableFilterType extends AbstractType implements FilterTypeInterface
+class MultiCheckboxFilterType extends AbstractType implements FilterTypeInterface
 {
     protected $value;
 

@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Arbory\Base\Admin\Filter\Renderer as FilterRenderer;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Layout\Footer;
-use Arbory\Base\Admin\Widgets\Filter;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Widgets\Pagination;
@@ -96,7 +96,11 @@ class Builder implements Renderable
             return;
         }
 
-        return $this->grid->getFilterBuilder()->render();
+        $filterManager = $this->grid->getFilterManager();
+
+        return (new FilterRenderer())
+            ->setManager($filterManager)
+            ->render();
     }
 
     /**

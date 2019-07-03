@@ -5,39 +5,29 @@ namespace Arbory\Base\Admin\Filter;
 
 
 use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Illuminate\Database\Eloquent\Builder;
 
 class FilterExecutor
 {
     /**
-     * @var FilterBuilder
-     */
-    protected $filterBuilder;
-
-    /**
-     * FilterExecutor constructor.p
-     * @param FilterBuilder $filterBuilder
-     */
-    public function __construct(FilterBuilder $filterBuilder)
-    {
-        $this->filterBuilder = $filterBuilder;
-    }
-
-    /**
+     * @param FilterManager $filterManager
      * @param Builder $builder
+     *
+     * @return Builder
      */
-    public function execute(Builder $builder)
+    public function execute(FilterManager $filterManager, Builder $builder): Builder
     {
-        $filters = $this->filterBuilder->getFilters();
-        $parameters = $this->filterBuilder->getParameters();
+        $filters = $filterManager->getFilters();
+        $parameters = $filterManager->getParameters();
 
-        foreach($filters as $filterItem) {
-            if(! $parameters->has($filterItem->getName())) {
+        foreach ($filters as $filterItem) {
+            if (! $parameters->has($filterItem->getName())) {
                 continue;
             }
 
             // Use user defined executor
-            if($executor = $filterItem->getExecutor()) {
+            if ($executor = $filterItem->getExecutor()) {
                 $executor($filterItem, $builder);
 
                 continue;
@@ -45,17 +35,29 @@ class FilterExecutor
 
             $type = $filterItem->getType();
 
-            if($type instanceof WithCustomExecutor) {
+            if ($type instanceof WithCustomExecutor) {
                 $type->execute($filterItem, $builder);
             } else {
-                $value = $parameters->get($filterItem->getName());
-
-                if(is_array($value)) {
-                    $builder->whereIn($filterItem->getName(), $value);
-                } else {
-                    $builder->where($filterItem->getName(), $value);
-                }
+                $this->applyQuery($filterManager->getParameters(), $filterItem, $builder);
             }
+        }
+
+        return $builder;
+    }
+
+    /**
+     * @param FilterParameters $parameters
+     * @param FilterItem $filterItem
+     * @param Builder $builder
+     */
+    protected function applyQuery(FilterParameters $parameters, FilterItem $filterItem, Builder $builder): void
+    {
+        $value = $parameters->getFromFilter($filterItem);
+
+        if (is_array($value)) {
+            $builder->whereIn($filterItem->getName(), $value);
+        } else {
+            $builder->where($filterItem->getName(), $value);
         }
     }
 }

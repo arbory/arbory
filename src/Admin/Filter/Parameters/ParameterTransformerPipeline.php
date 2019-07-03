@@ -28,6 +28,18 @@ class ParameterTransformerPipeline
     }
 
     /**
+     * @return FilterParameters
+     */
+    public function execute(): FilterParameters
+    {
+        return $this->pipeline
+            ->through($this->transformers)
+            ->via('transform')
+            ->send($this->parameters)
+            ->thenReturn();
+    }
+
+    /**
      * @param callable|ParameterTransformerInterface $transformer
      *
      * @return ParameterTransformerPipeline
@@ -40,15 +52,14 @@ class ParameterTransformerPipeline
     }
 
     /**
-     * @return FilterParameters
+     * @param ParameterTransformerInterface[] $transformers
+     * @return ParameterTransformerPipeline
      */
-    public function execute(): FilterParameters
+    public function setTransformers(array $transformers): ParameterTransformerPipeline
     {
-        return $this->pipeline
-            ->through($this->transformers)
-            ->via('transform')
-            ->send($this->parameters)
-            ->thenReturn();
+        $this->transformers = $transformers;
+
+        return $this;
     }
 
     /**
