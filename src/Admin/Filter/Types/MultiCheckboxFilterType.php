@@ -23,7 +23,7 @@ class MultiCheckboxFilterType extends AbstractType implements FilterTypeInterfac
         $labels = [];
 
         foreach($options as $key => $value) {
-            $checked = in_array($key, (array) $this->getValue());
+            $checked = in_array($key, (array) $this->getValue(), false);
 
             $labels[] = Html::label([
                 Html::input((string) $value)

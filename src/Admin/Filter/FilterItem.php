@@ -41,6 +41,11 @@ class FilterItem
     protected $manager;
 
     /**
+     * @var bool|null
+     */
+    protected $isOpen;
+
+    /**
      * @param string $name
      * @return FilterItem
      */
@@ -168,5 +173,24 @@ class FilterItem
     public function getManager(): FilterManager
     {
         return $this->manager;
+    }
+
+    /**
+     * @param bool $isOpen
+     * @return FilterItem
+     */
+    public function setIsOpen(?bool $isOpen): FilterItem
+    {
+        $this->isOpen = $isOpen;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isOpen(): ?bool
+    {
+        return $this->isOpen;
     }
 }

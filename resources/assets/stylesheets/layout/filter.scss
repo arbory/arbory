@@ -72,6 +72,10 @@
     {
       margin-bottom: 20px;
 
+      &.hidden {
+        display: none;
+      }
+
       .select, .text
       {
         select, input

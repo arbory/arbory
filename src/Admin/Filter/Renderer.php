@@ -110,17 +110,23 @@ class Renderer
      */
     protected function renderFilter(FilterItem $filterItem)
     {
+        $isOpen = $filterItem->isOpen();
+
+        if($isOpen === null) {
+            $isOpen = ! $filterItem->getType()->isEmpty();
+        }
+
         return Html::div([
             Html::div([
                 Html::h3($filterItem->getTitle()),
                 Button::create()
-                    ->withIcon('minus')
+                    ->withIcon($isOpen ? 'minus' : 'plus')
                     ->iconOnly()
                     ->withoutBackground(),
             ])->addClass('js-accordion-trigger heading'),
             Html::div([
                 $filterItem->getType()->render($filterItem)
-            ])->addClass('body'),
+            ])->addClass('body' . (! $isOpen ? ' hidden' : '')),
         ])->addClass('accordion');
     }
 
