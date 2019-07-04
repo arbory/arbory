@@ -38,4 +38,13 @@ class QueryStringTransformer implements ParameterTransformerInterface
 
        return $next($parameters);
     }
+
+    /**
+     * @param FilterParameters $parameters
+     * @return string|null
+     */
+    public function stringify(FilterParameters $parameters): ?string
+    {
+        return http_build_query($parameters->toArray());
+    }
 }
