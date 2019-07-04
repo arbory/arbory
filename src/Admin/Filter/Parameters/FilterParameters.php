@@ -4,10 +4,10 @@
 namespace Arbory\Base\Admin\Filter\Parameters;
 
 use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Support\ExtendedFluent;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Fluent;
 
-class FilterParameters extends Fluent
+class FilterParameters extends ExtendedFluent
 {
     /**
      * @var string
@@ -46,62 +46,6 @@ class FilterParameters extends Fluent
     public function getFromFilter(FilterItem $filterItem)
     {
         return $this->get($filterItem->getName());
-    }
-
-    /**
-     * @param array $data
-     * @return FilterParameters
-     */
-    public function replace(array $data = []): FilterParameters
-    {
-        $this->attributes = $data;
-
-        return $this;
-    }
-
-    /**
-     * @param array $data
-     * @return FilterParameters
-     */
-    public function add(array $data = []): FilterParameters
-    {
-        $this->attributes = array_merge($this->attributes, $data);
-
-        return $this;
-    }
-
-    /**
-     * @param string $attribute
-     * @return bool
-     */
-    public function has(string $attribute): bool
-    {
-        return $this->offsetExists($attribute);
-    }
-
-    /**
-     * @param string $attribute
-     * @param $value
-     * @return FilterParameters
-     */
-    public function set(string $attribute, $value): FilterParameters
-    {
-        $this->offsetSet($attribute, $value);
-
-        return $this;
-    }
-
-    /**
-     * @param string|null $attribute
-     * @return bool
-     */
-    public function isEmpty(?string $attribute = null): bool
-    {
-        if($attribute) {
-            return $this->isEmptyDeep($this->get($attribute));
-        }
-
-        return $this->isEmptyDeep($this->attributes);
     }
 
     /**
@@ -148,19 +92,5 @@ class FilterParameters extends Fluent
     public function hasError(string $fieldName): bool
     {
         return Arr::has($this->errors, $fieldName);
-    }
-
-    /**
-     * @param mixed $item
-     * @return bool
-     */
-    protected function isEmptyDeep($item): bool {
-        if(! is_array($item)) {
-            return blank($item);
-        }
-
-        return count(array_filter($item, function($item) {
-            return ! $this->isEmptyDeep($item);
-        }, ARRAY_FILTER_USE_BOTH)) === 0;
     }
 }
