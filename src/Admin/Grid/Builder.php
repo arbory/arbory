@@ -132,7 +132,7 @@ class Builder implements Renderable
         if ($column->isSortable()) {
             $link = Html::link($column->getLabel())
                 ->addAttributes([
-                    'href' => $this->getColumnOrderUrl($column->getName()),
+                    'href' => $this->grid->getColumnOrderUrl($column),
                 ]);
 
             if (request('_order_by') === $column->getName()) {
@@ -143,19 +143,6 @@ class Builder implements Renderable
         }
 
         return Html::th(Html::span($column->getLabel()));
-    }
-
-    /**
-     * @param $column
-     * @return string
-     */
-    protected function getColumnOrderUrl($column)
-    {
-        return $this->grid->getModule()->url('index', array_filter([
-            'search' => request('search'),
-            '_order_by' => $column,
-            '_order' => request('_order') === 'ASC' ? 'DESC' : 'ASC',
-        ]));
     }
 
     /**

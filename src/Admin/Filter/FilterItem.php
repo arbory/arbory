@@ -46,6 +46,11 @@ class FilterItem
     protected $isOpen;
 
     /**
+     * @var object
+     */
+    protected $owner;
+
+    /**
      * @param string $name
      * @return FilterItem
      */
@@ -192,5 +197,24 @@ class FilterItem
     public function isOpen(): ?bool
     {
         return $this->isOpen;
+    }
+
+    /**
+     * @param object $owner
+     * @return FilterItem
+     */
+    public function setOwner($owner): FilterItem
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return object
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }

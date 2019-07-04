@@ -176,22 +176,6 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $column
-     * @param $value
-     * @param $key
-     */
-    public function createQuery($column, $value, $key): void
-    {
-        $actions = $this->getFilterTypeAction($column);
-
-        if (is_null($column->getRelationName())) {
-            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $actions, $value);
-        } else {
-            $this->createQueryWithRelation($column, $actions, $value);
-        }
-    }
-
-    /**
      * @return bool
      */
     public function isPaginated(): bool
@@ -216,60 +200,11 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $column
-     * @return array
-     */
-    public function getFilterTypeAction($column): array
-    {
-        return $column->getFilterType()->getAction();
-    }
-
-    /**
      * @param int $perPage
      */
     public function setPerPage(int $perPage)
     {
         $this->perPage = $perPage;
-    }
-
-    /**
-     * @param $columnName
-     * @param $actions
-     * @param $values
-     */
-    public function createQueryWithoutRelation($columnName, $actions, $values): void
-    {
-        $actions = array_wrap($actions);
-        $values = array_wrap($values);
-
-        foreach (array_combine($values, $actions) as $value => $action) {
-            $this->query->where($columnName, $action, $value);
-        }
-    }
-
-    /**
-     * @param $column
-     * @param $actions
-     * @param $values
-     */
-    public function createQueryWithRelation(Column $column, $actions, $values): void
-    {
-        $actions = array_wrap($actions);
-        $values = array_wrap($values);
-
-        if (count($actions) === count($values)) {
-            foreach (array_combine($values, $actions) as $value => $action) {
-                $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
-                    $query->where($column->getFilterRelationColumn(), $action, $value);
-                });
-            }
-
-            return;
-        }
-
-        $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $values) {
-            $query->whereIn($column->getFilterRelationColumn(), $values);
-        });
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Arbory\Base\Admin\Filter\FilterCollection;
+use Arbory\Base\Admin\Filter\FilterItem;
 use Closure;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
@@ -198,18 +200,6 @@ class Column
     }
 
     /**
-     * @param null $type
-     * @return $this
-     */
-    public function setFilter($type = null)
-    {
-        $this->filterType = $type;
-        $this->hasFilter = $type !== null;
-
-        return $this;
-    }
-
-    /**
      * @return bool
      */
     public function isSortable()
@@ -312,23 +302,26 @@ class Column
     }
 
     /**
-     * @return string
+     * @param string $filterType
+     * @param iterable $filterTypeConfig
+     * @return FilterItem
      */
-    public function getFilterRelationColumn(): string
+    public function addFilter(string $filterType, iterable $filterTypeConfig = []): FilterItem
     {
-        $columnName = $this->getFilterType()->getColumn();
+        $filterManager = $this->grid->getFilterManager();
 
-        return is_null($columnName) ? $this->getRelationColumn() : $columnName;
+        return $filterManager
+            ->addFilter($this->getName(), $this->getLabel(), $filterType, $filterTypeConfig)
+            ->setOwner($this);
     }
 
     /**
-     * @param string $column
-     * @return string
+     * @return FilterCollection|FilterItem[]
      */
-    public function getFilterColumnName(string $column): string
+    public function getFilters(): FilterCollection
     {
-        $columnInFilter = $this->getFilterType()->getColumn();
+        $filterManager = $this->grid->getFilterManager();
 
-        return $columnInFilter ? $columnInFilter : $column;
+        return $filterManager->getFilters()->findByOwner($this);
     }
 }

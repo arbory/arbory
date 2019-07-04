@@ -7,6 +7,7 @@ use Closure;
 use Arbory\Base\Admin\Grid\Row;
 use Arbory\Base\Admin\Grid\Column;
 use Arbory\Base\Admin\Grid\Filter;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Database\Eloquent\Model;
@@ -72,9 +73,19 @@ class Grid
     protected $rowUrlCallback;
 
     /**
+     * @var callable
+     */
+    protected $orderUrlCallback;
+
+    /**
      * @var FilterManager
      */
     protected $filterManager;
+
+    /**
+     * @var bool
+     */
+    protected $rememberFilters = false;
 
     /**
      * @param Model $model
@@ -113,7 +124,10 @@ class Grid
      */
     protected function setupFilter()
     {
-        $this->setFilter(new Filter($this->model));
+        $filter = new Filter($this->model);
+        $filter->setFilterManager($this->getFilterManager());
+
+        $this->setFilter($filter);
     }
 
     /**
@@ -242,6 +256,7 @@ class Grid
     {
         $column = $this->createColumn($name, $label);
         $this->columns->push($column);
+
         $this->setColumnRelation($column, $name);
 
         return $column;
@@ -256,6 +271,7 @@ class Grid
     {
         $column = $this->createColumn($name, $label);
         $this->columns->prepend($column);
+
         $this->setColumnRelation($column, $name);
 
         return $column;
@@ -375,12 +391,21 @@ class Grid
      */
     public function getRowUrl(Model $model): ?string
     {
+        $filterParameters = $this->getFilterParameters();
+        $params = [];
+
         if ($customUrlOpener = $this->getRowUrlCallback()) {
-            return call_user_func($customUrlOpener, $model);
+            return $customUrlOpener($model, $this, $filterParameters);
+        }
+
+        if($this->rememberFilters()) {
+            $params = [
+                Form::INPUT_RETURN_URL => $this->getModule()->url('index', $filterParameters)
+            ];
         }
 
         if ($this->hasTool('create')) {
-            return $this->getModule()->url('edit', [$model->getKey()]);
+            return $this->getModule()->url('edit', [$model->getKey()] + $params);
         }
 
         return null;
@@ -402,6 +427,43 @@ class Grid
     public function setRowUrlCallback(callable $rowUrlCallback): self
     {
         $this->rowUrlCallback = $rowUrlCallback;
+
+        return $this;
+    }
+
+    /**
+     * @param Column $column
+     * @return string|null
+     */
+    public function getColumnOrderUrl(Column $column): ?string
+    {
+        $params = $this->getFilterParameters();
+        $params['_order_by'] = $column;
+        $params['_order'] = Arr::get($params, '_order') === 'ASC' ? 'DESC' : 'ASC';
+
+        if($callback = $this->getOrderUrlCallback()) {
+            return $callback($column, $this, $params);
+        }
+
+        return $this->getModule()->url('index', $params);
+    }
+
+    /**
+     * @return callable|null
+     */
+    public function getOrderUrlCallback(): ?callable
+    {
+        return $this->orderUrlCallback;
+    }
+
+    /**
+     * @param callable $orderUrlCallback
+     *
+     * @return Grid
+     */
+    public function setOrderUrlCallback(callable $orderUrlCallback): self
+    {
+        $this->orderUrlCallback = $orderUrlCallback;
 
         return $this;
     }
@@ -441,5 +503,43 @@ class Grid
         $this->filterManager = $filterManager;
 
         return $this;
+    }
+
+    /**
+     * @param bool $rememberFilters
+     * @return Grid
+     */
+    public function setRememberFilters(bool $rememberFilters): Grid
+    {
+        $this->rememberFilters = $rememberFilters;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function rememberFilters(): bool
+    {
+        return $this->rememberFilters;
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getFilterParameters(): ?array
+    {
+        $filterParameters = $this->getFilterManager()->getParameters();
+
+        $params = array_filter([
+            'search' => request('search'),
+            '_order_by' => request('_order_by'),
+            '_order' => request('_order'),
+        ]);
+
+        if(! $filterParameters->isEmpty()) {
+            $params[$filterParameters->getNamespace()] = http_build_query($filterParameters->toArray());
+        }
+
+        return $params;
     }
 }

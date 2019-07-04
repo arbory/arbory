@@ -92,6 +92,19 @@ class FilterParameters extends Fluent
     }
 
     /**
+     * @param string|null $attribute
+     * @return bool
+     */
+    public function isEmpty(?string $attribute = null): bool
+    {
+        if($attribute) {
+            return $this->isEmptyDeep($this->get($attribute));
+        }
+
+        return $this->isEmptyDeep($this->attributes);
+    }
+
+    /**
      * @param string|null $fieldName
      * @return array
      */
@@ -135,5 +148,19 @@ class FilterParameters extends Fluent
     public function hasError(string $fieldName): bool
     {
         return Arr::has($this->errors, $fieldName);
+    }
+
+    /**
+     * @param mixed $item
+     * @return bool
+     */
+    protected function isEmptyDeep($item): bool {
+        if(! is_array($item)) {
+            return blank($item);
+        }
+
+        return count(array_filter($item, function($item) {
+            return ! $this->isEmptyDeep($item);
+        }, ARRAY_FILTER_USE_BOTH)) === 0;
     }
 }
