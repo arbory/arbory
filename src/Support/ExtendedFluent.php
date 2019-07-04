@@ -3,9 +3,12 @@
 
 namespace Arbory\Base\Support;
 
+use ArrayIterator;
 use Illuminate\Support\Fluent;
+use IteratorAggregate;
+use Traversable;
 
-class ExtendedFluent extends Fluent
+class ExtendedFluent extends Fluent implements IteratorAggregate
 {
     /**
      * @param array $data
@@ -76,5 +79,17 @@ class ExtendedFluent extends Fluent
         return count(array_filter($item, function ($item) {
                 return !$this->isEmptyDeep($item);
             }, ARRAY_FILTER_USE_BOTH)) === 0;
+    }
+
+    /**
+     * Retrieve an external iterator
+     * @link https://php.net/manual/en/iteratoraggregate.getiterator.php
+     * @return Traversable An instance of an object implementing <b>Iterator</b> or
+     * <b>Traversable</b>
+     * @since 5.0.0
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->attributes);
     }
 }

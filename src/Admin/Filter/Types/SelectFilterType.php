@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Filter\Types;
 
 
 use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
+use Arbory\Base\Admin\Filter\Config\SelectLikeTypeConfig;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
@@ -15,13 +16,18 @@ use Illuminate\Validation\Rule;
 class SelectFilterType extends AbstractType implements FilterTypeInterface, WithParameterValidation
 {
     /**
+     * @var SelectLikeTypeConfig
+     */
+    protected $config;
+
+    /**
      * @param FilterItem $filterItem
      * @return mixed
      */
     public function render(FilterItem $filterItem)
     {
-        $options = $this->config['options'] ?? [];
-        $multiple = $this->config['multiple'] ?? false;
+        $options = $this->config->getOptions() ?? [];
+        $multiple = $this->config->isMultiple() ?? false;
 
         $control = new SelectControl();
         $control->setName($control->getInputName($filterItem->getNamespacedName()));
@@ -67,5 +73,13 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
     public function attributes(FilterParameters $filterParameters, callable $attributeResolver): array
     {
         return [];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getConfigType(): ?string
+    {
+        return SelectLikeTypeConfig::class;
     }
 }

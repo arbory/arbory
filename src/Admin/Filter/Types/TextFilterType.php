@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Filter\Types;
 
 
 use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
+use Arbory\Base\Admin\Filter\Config\TextLikeTypeConfig;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 use Arbory\Base\Html\Html;
@@ -16,6 +17,12 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
     public const ENDS_WITH = 'ends';
     public const CONTAINS = 'contains';
     public const EQUALS = 'equals';
+
+    /**
+     * @var TextLikeTypeConfig
+     */
+    protected $config;
+
 
     /**
      * @param FilterItem $filterItem
@@ -37,7 +44,7 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
      */
     public function execute(FilterItem $filterItem, Builder $builder): void
     {
-        $type = $this->config['type'] ?? static::CONTAINS;
+        $type = $this->config->getType() ?? static::CONTAINS;
 
         $resolvedValue = $this->resolveLikeQuery($type, $this->value);
         $operator = $resolvedValue === $this->value ? '=' : 'LIKE';
@@ -65,5 +72,13 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
         }
 
         return $value;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getConfigType(): ?string
+    {
+        return TextLikeTypeConfig::class;
     }
 }

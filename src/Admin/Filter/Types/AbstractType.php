@@ -4,6 +4,7 @@
 namespace Arbory\Base\Admin\Filter\Types;
 
 
+use Arbory\Base\Admin\Filter\Config\BaseConfig;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 
 /**
@@ -18,7 +19,7 @@ abstract class AbstractType
     protected $value;
 
     /**
-     * @var iterable
+     * @var iterable|BaseConfig
      */
     protected $config;
 
@@ -40,7 +41,7 @@ abstract class AbstractType
     }
 
     /**
-     * @return iterable
+     * @return iterable|BaseConfig
      */
     public function getConfig(): iterable
     {
@@ -53,6 +54,12 @@ abstract class AbstractType
      */
     public function setConfig(iterable $config): FilterTypeInterface
     {
+        $configType = $this->getConfigType();
+
+        if(! $config instanceof BaseConfig && $configType) {
+            $config = new $configType($config);
+        }
+
         $this->config = $config;
 
         return $this;
@@ -70,5 +77,12 @@ abstract class AbstractType
         }
 
         return blank($value);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getConfigType(): ?string {
+        return null;
     }
 }

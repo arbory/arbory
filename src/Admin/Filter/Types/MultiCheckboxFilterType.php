@@ -4,21 +4,32 @@
 namespace Arbory\Base\Admin\Filter\Types;
 
 
+use Arbory\Base\Admin\Filter\Config\SelectLikeTypeConfig;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
+use Arbory\Base\Exceptions\BadMethodCallException;
 use Arbory\Base\Html\Html;
 
 class MultiCheckboxFilterType extends AbstractType implements FilterTypeInterface
 {
+    /**
+     * @var SelectLikeTypeConfig
+     */
+    protected $config;
+
+    /**
+     * @var array
+     */
     protected $value;
 
     /**
      * @param FilterItem $filterItem
      * @return mixed
+     * @throws BadMethodCallException
      */
     public function render(FilterItem $filterItem)
     {
-        $options = $this->config['options'] ?? [];
+        $options = $this->config->getOptions() ?? [];
 
         $labels = [];
 
@@ -35,5 +46,10 @@ class MultiCheckboxFilterType extends AbstractType implements FilterTypeInterfac
         }
 
         return Html::div($labels)->addClass('checkbox');
+    }
+
+    public function getConfigType(): ?string
+    {
+        return SelectLikeTypeConfig::class;
     }
 }
