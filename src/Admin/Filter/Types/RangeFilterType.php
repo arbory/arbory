@@ -12,6 +12,8 @@ use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Fluent;
+use Illuminate\Validation\Validator;
 
 class RangeFilterType extends AbstractType implements FilterTypeInterface, WithCustomExecutor, WithParameterValidation
 {
@@ -81,12 +83,9 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
      */
     public function rules(FilterParameters $parameters, callable $attributeResolver): array
     {
-        $minAttribute = $attributeResolver(static::KEY_MIN);
-        $maxAttribute = $attributeResolver(static::KEY_MAX);
-
         return [
-            static::KEY_MIN => ['nullable', 'numeric', "lt:{$maxAttribute}"],
-            static::KEY_MAX => ['nullable', 'numeric', "gt:{$minAttribute}"]
+            static::KEY_MIN => ['nullable', 'numeric'],
+            static::KEY_MAX => ['nullable', 'numeric']
         ];
     }
 
@@ -110,5 +109,29 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     public function attributes(FilterParameters $filterParameters, callable $attributeResolver): array
     {
         return [];
+    }
+
+    /**
+     * @param Validator $validator
+     * @param FilterParameters $filterParameters
+     * @param callable $attributeResolver
+     */
+    public function withValidator(
+        Validator $validator,
+        FilterParameters $filterParameters,
+        callable $attributeResolver
+    ): void {
+        $minAttribute = $attributeResolver(static::KEY_MIN);
+        $maxAttribute = $attributeResolver(static::KEY_MAX);
+
+        $validator->sometimes($attributeResolver(static::KEY_MIN), "lt:{$maxAttribute}",
+            static function (Fluent $fluent) use ($maxAttribute) {
+                return ! blank(Arr::get($fluent->getAttributes(), $maxAttribute));
+            });
+
+        $validator->sometimes($attributeResolver(static::KEY_MAX), "gt:{$minAttribute}",
+            static function (Fluent $fluent) use ($minAttribute) {
+                return ! blank(Arr::get($fluent->getAttributes(), $minAttribute));
+            });
     }
 }

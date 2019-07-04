@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Filter;
 
 use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
+use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\Validator;
@@ -48,21 +49,35 @@ class FilterValidatorBuilder
         $rules = [[]];
         $attributes = [[]];
         $messages = [[]];
+        $transformers = [];
 
         foreach ($filterCollection->findByConcerns([WithParameterValidation::class]) as $filterItem) {
+            $type = $filterItem->getType();
             $data = $this->buildForFilter($filterItem, $filterParameters);
 
             $rules[] = $data[0];
             $messages[] = $data[1];
             $attributes[] = $data[2];
+
+            if(method_exists($type, 'withValidator')) {
+                $transformers[] = [Closure::fromCallable([$type, 'withValidator']), $this->getAttributeResolver($filterItem)];
+            }
         }
 
-        return $this->validatorFactory->make(
+        $validator = $this->validatorFactory->make(
             $filterParameters->toArray(),
             array_merge(...$rules),
             array_merge(...$messages),
             array_merge(...$attributes)
         );
+
+        foreach($transformers as $transformerData) {
+            $transformer = $transformerData[0];
+
+            $transformer($validator, $filterParameters, $transformerData[1]);
+        }
+
+        return $validator;
     }
 
     /**

@@ -6,6 +6,9 @@ namespace Arbory\Base\Admin\Filter\Types;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Fluent;
+use Illuminate\Validation\Validator;
 
 class DateRangeFilterType extends RangeFilterType
 {
@@ -20,11 +23,11 @@ class DateRangeFilterType extends RangeFilterType
         $min = $this->getRangeValue(static::KEY_MIN);
         $max = $this->getRangeValue(static::KEY_MAX);
 
-        if($min) {
+        if ($min) {
             $builder->whereDate($filterItem->getName(), '>=', $min);
         }
 
-        if($max) {
+        if ($max) {
             $builder->whereDate($filterItem->getName(), '<', $max);
         }
     }
@@ -36,12 +39,33 @@ class DateRangeFilterType extends RangeFilterType
      */
     public function rules(FilterParameters $parameters, callable $attributeResolver): array
     {
+        return [
+            static::KEY_MIN => ['nullable', 'date'],
+            static::KEY_MAX => ['nullable', 'date']
+        ];
+    }
+
+    /**
+     * @param Validator $validator
+     * @param FilterParameters $filterParameters
+     * @param callable $attributeResolver
+     */
+    public function withValidator(
+        Validator $validator,
+        FilterParameters $filterParameters,
+        callable $attributeResolver
+    ): void {
         $minAttribute = $attributeResolver(static::KEY_MIN);
         $maxAttribute = $attributeResolver(static::KEY_MAX);
 
-        return [
-            static::KEY_MIN => ['nullable', 'date', "before:{$maxAttribute}"],
-            static::KEY_MAX => ['nullable', 'date', "after:{$minAttribute}"]
-        ];
+        $validator->sometimes($attributeResolver(static::KEY_MIN), "before:{$maxAttribute}",
+            static function (Fluent $fluent) use ($maxAttribute) {
+                return ! blank(Arr::get($fluent->getAttributes(), $maxAttribute));
+            });
+
+        $validator->sometimes($attributeResolver(static::KEY_MAX), "after:{$minAttribute}",
+            static function (Fluent $fluent) use ($minAttribute) {
+                return ! blank(Arr::get($fluent->getAttributes(), $minAttribute));
+            });
     }
 }
