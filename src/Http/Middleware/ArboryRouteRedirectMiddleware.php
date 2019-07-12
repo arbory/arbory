@@ -22,6 +22,7 @@ class ArboryRouteRedirectMiddleware
 
         $redirect->where( 'from_url', $request->url() );
         $redirect->orWhere( 'from_url', 'LIKE', '_' . $request->path() . '_' );
+        $redirect->orWhere('from_url', $request->path());
         
         $redirect = $redirect->first( [ 'to_url' ] );
 
