@@ -7,7 +7,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\RichtextFieldRenderer;
 class CompactRichtext extends Richtext
 {
     /**
-     * @var bool 
+     * @var bool
      */
     protected $isCompact = true;
 

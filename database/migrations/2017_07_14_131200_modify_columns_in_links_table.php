@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class ModifyColumnsInLinksTable extends Migration
 {
@@ -10,10 +10,9 @@ class ModifyColumnsInLinksTable extends Migration
      */
     public function up()
     {
-        Schema::table( 'links', function( Blueprint $table )
-        {
-            $table->string( 'title' )->nullable()->change();
-            $table->text( 'href' )->nullable()->change();
-        } );
+        Schema::table('links', function (Blueprint $table) {
+            $table->string('title')->nullable()->change();
+            $table->text('href')->nullable()->change();
+        });
     }
 }

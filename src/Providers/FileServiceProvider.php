@@ -3,8 +3,8 @@
 namespace Arbory\Base\Providers;
 
 use Arbory\Base\Files\ArboryFile;
-use Arbory\Base\Repositories\ArboryFilesRepository;
 use Illuminate\Support\ServiceProvider;
+use Arbory\Base\Repositories\ArboryFilesRepository;
 
 class FileServiceProvider extends ServiceProvider
 {

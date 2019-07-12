@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
-
 
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
 
@@ -33,5 +31,5 @@ interface PageInterface extends LayoutInterface
     /**
      * @return Breadcrumbs|null
      */
-    public function getBreadcrumbs():?Breadcrumbs;
+    public function getBreadcrumbs(): ?Breadcrumbs;
 }

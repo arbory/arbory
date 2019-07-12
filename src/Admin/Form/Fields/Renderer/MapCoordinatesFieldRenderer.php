@@ -2,16 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\Hidden;
-use Arbory\Base\Admin\Form\Fields\MapCoordinates;
-use Arbory\Base\Admin\Form\Fields\Text;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\MapCoordinates;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 class MapCoordinatesFieldRenderer implements RendererInterface
 {
@@ -23,7 +18,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     /**
      * @param MapCoordinates $field
      */
-    public function __construct( MapCoordinates $field )
+    public function __construct(MapCoordinates $field)
     {
         $this->field = $field;
     }
@@ -34,7 +29,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     public function render()
     {
         $value = $this->field->getValue();
-        $body  = Html::div();
+        $body = Html::div();
 
         $body->append(Html::div()->addClass('canvas'));
 
@@ -50,7 +45,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
      *
      * @return mixed
      */
-    public function setField( FieldInterface $field ): RendererInterface
+    public function setField(FieldInterface $field): RendererInterface
     {
         $this->field = $field;
 
@@ -66,13 +61,13 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *
      * @return StyleOptionsInterface
      */
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         return $options;
     }

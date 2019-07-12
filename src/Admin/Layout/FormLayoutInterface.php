@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
-
 
 use Arbory\Base\Admin\Form;
 

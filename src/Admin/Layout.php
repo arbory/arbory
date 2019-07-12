@@ -2,18 +2,17 @@
 
 namespace Arbory\Base\Admin;
 
-use Arbory\Base\Admin\Layout\AbstractLayout;
-use Arbory\Base\Admin\Layout\LayoutInterface;
-use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
-use Arbory\Base\Html\Elements\Content;
 use Closure;
 use Arbory\Base\Admin\Layout\Row;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Admin\Layout\AbstractLayout;
+use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Layout\Transformers\AppendTransformer;
 
 /**
- * Class Layout
- * @package Arbory\Base\Admin
+ * Class Layout.
  */
 class Layout extends AbstractLayout implements Renderable, LayoutInterface
 {
@@ -23,7 +22,6 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
     protected $rows;
 
     protected $bodyClass;
-
 
     /**
      * Layout constructor.
@@ -44,7 +42,7 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -112,7 +110,7 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
     public function contents($content)
     {
         $variables = [
-            'content'   => $content,
+            'content' => $content,
             'bodyClass' => $this->bodyClass,
         ];
 

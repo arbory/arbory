@@ -1,19 +1,17 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Widgets;
 
-
-use Arbory\Base\Admin\Layout\Footer\Tools;
-use Arbory\Base\Admin\Widgets\Button;
-use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Admin\Layout\Footer\Tools;
 use Illuminate\Contracts\Support\Renderable;
 
 class Controls implements Renderable
 {
     /**
-     * @var Tools 
+     * @var Tools
      */
     protected $tools;
     /**
@@ -25,7 +23,7 @@ class Controls implements Renderable
      * Controls constructor.
      *
      * @param Tools $tools
-     * @param null  $backUrl
+     * @param null $backUrl
      */
     public function __construct(Tools $tools, $backUrl = null)
     {
@@ -37,26 +35,26 @@ class Controls implements Renderable
 
     public function compose()
     {
-        $primary   = $this->tools->getBlock('primary');
+        $primary = $this->tools->getBlock('primary');
         $secondary = $this->tools->getBlock('secondary');
 
         $primary
             ->push(
                 Button::create('save_and_return', true)
-                      ->type('submit', 'secondary')
-                      ->withIcon('check')
-                      ->disableOnSubmit()
-                      ->title(trans('arbory::resources.save_and_return'))
+                    ->type('submit', 'secondary')
+                    ->withIcon('check')
+                    ->disableOnSubmit()
+                    ->title(trans('arbory::resources.save_and_return'))
             )
             ->push(
                 Button::create('save', true)
-                      ->type('submit', 'primary')
-                      ->withIcon('check')
-                      ->disableOnSubmit()
-                      ->title(trans('arbory::resources.save'))
+                    ->type('submit', 'primary')
+                    ->withIcon('check')
+                    ->disableOnSubmit()
+                    ->title(trans('arbory::resources.save'))
             );
 
-        if($this->backUrl) {
+        if ($this->backUrl) {
             $secondary->push(
                 Link::create($this->backUrl)
                     ->asButton('secondary')
@@ -89,10 +87,10 @@ class Controls implements Renderable
      *
      * @return Controls
      */
-    public function setTools(Tools $tools): Controls
+    public function setTools(Tools $tools): self
     {
         $this->tools = $tools;
 
         return $this;
-}
+    }
 }

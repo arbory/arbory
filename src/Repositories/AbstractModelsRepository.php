@@ -2,12 +2,10 @@
 
 namespace Arbory\Base\Repositories;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class AbstractModelRepository
- * @package Arbory\Base\Repositories
+ * Class AbstractModelRepository.
  */
 abstract class AbstractModelsRepository
 {
@@ -26,7 +24,7 @@ abstract class AbstractModelsRepository
      */
     public function __construct()
     {
-        $this->makeModel( $this->modelClass );
+        $this->makeModel($this->modelClass);
     }
 
     /**
@@ -41,9 +39,9 @@ abstract class AbstractModelsRepository
      * @param array $columns
      * @return mixed
      */
-    public function all( array $columns = [ '*' ] )
+    public function all(array $columns = ['*'])
     {
-        return $this->newQuery()->get( $columns );
+        return $this->newQuery()->get($columns);
     }
 
     /**
@@ -51,18 +49,18 @@ abstract class AbstractModelsRepository
      * @param array $columns
      * @return mixed
      */
-    public function paginate( $perPage = 15, array $columns = [ '*' ] )
+    public function paginate($perPage = 15, array $columns = ['*'])
     {
-        return $this->newQuery()->paginate( $perPage, $columns );
+        return $this->newQuery()->paginate($perPage, $columns);
     }
 
     /**
      * @param array $data
      * @return mixed
      */
-    public function create( array $data )
+    public function create(array $data)
     {
-        return $this->getModel()->create( $data );
+        return $this->getModel()->create($data);
     }
 
     /**
@@ -71,18 +69,18 @@ abstract class AbstractModelsRepository
      * @param string $attribute
      * @return mixed
      */
-    public function update( array $data, $itemId, $attribute = 'id' )
+    public function update(array $data, $itemId, $attribute = 'id')
     {
-        return $this->newQuery()->where( $attribute, '=', $itemId )->update( $data );
+        return $this->newQuery()->where($attribute, '=', $itemId)->update($data);
     }
 
     /**
      * @param $arboryFileId
      * @return mixed
      */
-    public function delete( $arboryFileId )
+    public function delete($arboryFileId)
     {
-        return $this->getModel()->destroy( $arboryFileId );
+        return $this->getModel()->destroy($arboryFileId);
     }
 
     /**
@@ -90,9 +88,9 @@ abstract class AbstractModelsRepository
      * @param array $columns
      * @return mixed
      */
-    public function find( $itemId, array $columns = [ '*' ] )
+    public function find($itemId, array $columns = ['*'])
     {
-        return $this->newQuery()->find( $itemId, $columns );
+        return $this->newQuery()->find($itemId, $columns);
     }
 
     /**
@@ -101,9 +99,9 @@ abstract class AbstractModelsRepository
      * @param array $columns
      * @return mixed
      */
-    public function findBy( $attribute, $value, array $columns = [ '*' ] )
+    public function findBy($attribute, $value, array $columns = ['*'])
     {
-        return $this->newQuery()->where( $attribute, '=', $value )->get();
+        return $this->newQuery()->where($attribute, '=', $value)->get();
     }
 
     /**
@@ -112,9 +110,9 @@ abstract class AbstractModelsRepository
      * @param array $columns
      * @return mixed
      */
-    public function findOneBy( $attribute, $value, array $columns = [ '*' ] )
+    public function findOneBy($attribute, $value, array $columns = ['*'])
     {
-        return $this->newQuery()->where( $attribute, '=', $value )->first();
+        return $this->newQuery()->where($attribute, '=', $value)->first();
     }
 
     /**
@@ -122,9 +120,9 @@ abstract class AbstractModelsRepository
      * @param array $columns
      * @return Model
      */
-    public function findOrNew( $itemId, array $columns = [ '*' ] )
+    public function findOrNew($itemId, array $columns = ['*'])
     {
-        return $this->newQuery()->findOrNew( $itemId, $columns );
+        return $this->newQuery()->findOrNew($itemId, $columns);
     }
 
     /**
@@ -138,7 +136,7 @@ abstract class AbstractModelsRepository
     /**
      * @param $class
      */
-    protected function makeModel( $class )
+    protected function makeModel($class)
     {
         $this->model = new $class;
     }

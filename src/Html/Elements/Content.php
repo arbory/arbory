@@ -2,11 +2,8 @@
 
 namespace Arbory\Base\Html\Elements;
 
-use Arbory\Base\Admin\Navigator\NavigableInterface;
-use Arbory\Base\Admin\Navigator\Navigator;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Support\Renderable;
 
 class Content extends Collection implements Renderable
 {
@@ -61,7 +58,7 @@ class Content extends Collection implements Renderable
             return $value;
         }
 
-        throw new \LogicException("Cannot render the contents of ".gettype($value)." {$className}");
+        throw new \LogicException('Cannot render the contents of '.gettype($value)." {$className}");
     }
 
     /**

@@ -3,8 +3,7 @@
 namespace Arbory\Base\Admin;
 
 /**
- * Class ModuleComponent
- * @package Arbory\Base\Admin
+ * Class ModuleComponent.
  */
 trait ModuleComponent
 {
@@ -17,7 +16,7 @@ trait ModuleComponent
      * @param Module $module
      * @return $this
      */
-    public function setModule( Module $module )
+    public function setModule(Module $module)
     {
         $this->module = $module;
 

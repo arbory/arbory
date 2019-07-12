@@ -1,12 +1,13 @@
-<?php declare( strict_types=1 );
+<?php
+
+declare(strict_types=1);
 
 namespace Arbory\Base\Admin\Form\Fields\Helpers;
 
 use Arbory\Base\Files\ArboryFile;
 
 /**
- * Class FileSize
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class FileSize.
  */
 final class FileSize
 {
@@ -19,7 +20,7 @@ final class FileSize
     const UNITS = [
         self::UNIT_BYTE,
         self::UNIT_KILOBYTE,
-        self::UNIT_MEGABYTE
+        self::UNIT_MEGABYTE,
     ];
 
     /**
@@ -31,7 +32,7 @@ final class FileSize
      * FileSize constructor.
      * @param ArboryFile $file
      */
-    public function __construct( ArboryFile $file )
+    public function __construct(ArboryFile $file)
     {
         $this->file = $file;
     }
@@ -50,15 +51,15 @@ final class FileSize
     public function getReadableSize(): string
     {
         $sizeInBytes = $this->getSizeInBytes();
-        $sizeLength = mb_strlen( (string) $sizeInBytes );
+        $sizeLength = mb_strlen((string) $sizeInBytes);
 
-        $unitIndex = (int) floor( $sizeLength / self::CLOSEST_UNIT_DIGIT_COUNT_DIFF );
+        $unitIndex = (int) floor($sizeLength / self::CLOSEST_UNIT_DIGIT_COUNT_DIFF);
         $availableUnits = self::UNITS;
-        $closestUnit = $availableUnits[$unitIndex] ?? end( $availableUnits );
+        $closestUnit = $availableUnits[$unitIndex] ?? end($availableUnits);
 
-        $roundedSize = $this->roundToUnit( $sizeInBytes, $closestUnit );
+        $roundedSize = $this->roundToUnit($sizeInBytes, $closestUnit);
 
-        return sprintf( '%s %s', $roundedSize, $closestUnit );
+        return sprintf('%s %s', $roundedSize, $closestUnit);
     }
 
     /**
@@ -66,16 +67,15 @@ final class FileSize
      * @param string $unit
      * @return float
      */
-    private function roundToUnit( int $sizeInBytes, string $unit ): float
+    private function roundToUnit(int $sizeInBytes, string $unit): float
     {
-        $unitIndex = array_search( $unit, self::UNITS, true );
+        $unitIndex = array_search($unit, self::UNITS, true);
 
-        while( $unitIndex > 0 )
-        {
+        while ($unitIndex > 0) {
             $sizeInBytes /= 1000;
             $unitIndex--;
         }
 
-        return round( $sizeInBytes, 2 );
+        return round($sizeInBytes, 2);
     }
 }

@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
-
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Container\Container;
 
 class LayoutManager
 {
@@ -15,7 +13,7 @@ class LayoutManager
     protected $container;
 
     /**
-     * Current layout
+     * Current layout.
      *
      * @var PageInterface
      */
@@ -38,7 +36,7 @@ class LayoutManager
     }
 
     /**
-     * Creates a new main page
+     * Creates a new main page.
      *
      * @param $pageClass
      *
@@ -65,7 +63,7 @@ class LayoutManager
      *
      * @return LayoutInterface
      */
-    public function make($layoutClass, $name = null):LayoutInterface
+    public function make($layoutClass, $name = null): LayoutInterface
     {
         $layout = $this->container->make($layoutClass);
 
@@ -74,7 +72,7 @@ class LayoutManager
         return $layout;
     }
 
-    public function get($name):?LayoutInterface
+    public function get($name): ?LayoutInterface
     {
         return $this->layouts->get($name);
     }

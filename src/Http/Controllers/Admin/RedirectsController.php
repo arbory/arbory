@@ -4,9 +4,9 @@ namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Pages\Redirect;
 use Illuminate\Routing\Controller;
+use Arbory\Base\Admin\Traits\Crudify;
 
 class RedirectsController extends Controller
 {

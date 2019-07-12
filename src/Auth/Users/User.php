@@ -2,16 +2,15 @@
 
 namespace Arbory\Base\Auth\Users;
 
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Auth\Reminders\Reminder;
+use Arbory\Base\Auth\Throttling\Throttle;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Arbory\Base\Auth\Activations\Activation;
 use Arbory\Base\Auth\Persistences\Persistence;
-use Arbory\Base\Auth\Reminders\Reminder;
-use Arbory\Base\Auth\Roles\Role;
-use Arbory\Base\Auth\Throttling\Throttle;
 
 /**
- * Class User
- * @package Arbory\Base\Auth\Users
+ * Class User.
  */
 class User extends EloquentUser
 {
@@ -26,22 +25,22 @@ class User extends EloquentUser
     protected static $rolesModel = Role::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected static $persistencesModel = Persistence::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected static $activationsModel = Activation::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected static $remindersModel = Reminder::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected static $throttlingModel = Throttle::class;
 
@@ -74,7 +73,7 @@ class User extends EloquentUser
      */
     public function getFullName()
     {
-        return $this->getFirstName() . ' ' . $this->getLastName();
+        return $this->getFirstName().' '.$this->getLastName();
     }
 
     /**
@@ -82,7 +81,6 @@ class User extends EloquentUser
      */
     public function roles()
     {
-        return $this->belongsToMany( static::$rolesModel, 'admin_role_users', 'user_id', 'role_id' )->withTimestamps();
+        return $this->belongsToMany(static::$rolesModel, 'admin_role_users', 'user_id', 'role_id')->withTimestamps();
     }
-
 }

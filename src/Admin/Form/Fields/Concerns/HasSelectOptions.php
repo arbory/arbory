@@ -5,13 +5,12 @@ namespace Arbory\Base\Admin\Form\Fields\Concerns;
 use Illuminate\Support\Collection;
 
 /**
- * Class HasSelectOptions
- * @package Arbory\Base\Admin\Form\Fields\Concerns
+ * Class HasSelectOptions.
  */
 trait HasSelectOptions
 {
     /**
-     * @var Collection $options
+     * @var Collection
      */
     protected $options;
 

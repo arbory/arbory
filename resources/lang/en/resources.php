@@ -15,6 +15,6 @@ return [
     'cancel'    => 'Cancel',
     'status' => [
         'enabled' => 'Enabled',
-        'disabled' => 'Disabled'
-    ]
+        'disabled' => 'Disabled',
+    ],
 ];

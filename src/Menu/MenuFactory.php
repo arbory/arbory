@@ -12,7 +12,7 @@ class MenuFactory
     /**
      * @param MenuItemFactory $menuItemFactory
      */
-    public function __construct( MenuItemFactory $menuItemFactory )
+    public function __construct(MenuItemFactory $menuItemFactory)
     {
         $this->menuItemFactory = $menuItemFactory;
     }
@@ -22,14 +22,13 @@ class MenuFactory
      * @return Menu
      * @throws \DomainException
      */
-    public function build( array $items )
+    public function build(array $items)
     {
-        foreach( $items as $key => &$item )
-        {
-            $title = !is_numeric( $key ) ? $key : null;
-            $item = $this->menuItemFactory->build( $item, $title );
+        foreach ($items as $key => &$item) {
+            $title = ! is_numeric($key) ? $key : null;
+            $item = $this->menuItemFactory->build($item, $title);
         }
 
-        return new Menu( collect( $items ) );
+        return new Menu(collect($items));
     }
 }

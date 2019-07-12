@@ -3,16 +3,15 @@
 namespace Arbory\Base\Admin\Grid;
 
 use Closure;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
 /**
- * Class Column
- * @package Arbory\Base\Admin\Grid
+ * Class Column.
  */
 class Column
 {
@@ -76,7 +75,7 @@ class Column
      * @param string $name
      * @param string $label
      */
-    public function __construct( $name = null, $label = null )
+    public function __construct($name = null, $label = null)
     {
         $this->name = $name;
         $this->label = $label;
@@ -98,7 +97,8 @@ class Column
         return $this->name;
     }
 
-    public function getFilterType() {
+    public function getFilterType()
+    {
         return $this->filterType;
     }
 
@@ -146,7 +146,7 @@ class Column
      * @param Grid $grid
      * @return Column
      */
-    public function setGrid( Grid $grid )
+    public function setGrid(Grid $grid)
     {
         $this->grid = $grid;
 
@@ -157,7 +157,7 @@ class Column
      * @param Closure $callable
      * @return Column
      */
-    public function display( Closure $callable )
+    public function display(Closure $callable)
     {
         $this->displayer = $callable;
 
@@ -168,7 +168,7 @@ class Column
      * @param bool $isSortable
      * @return Column
      */
-    public function sortable( $isSortable = true )
+    public function sortable($isSortable = true)
     {
         $this->sortable = $isSortable;
 
@@ -179,7 +179,7 @@ class Column
      * @param bool $isCheckable
      * @return $this
      */
-    public function checkable( $isCheckable = true )
+    public function checkable($isCheckable = true)
     {
         $this->checkable = $isCheckable;
 
@@ -190,7 +190,7 @@ class Column
      * @param bool $isSearchable
      * @return Column
      */
-    public function searchable( $isSearchable = true )
+    public function searchable($isSearchable = true)
     {
         $this->searchable = $isSearchable;
 
@@ -214,7 +214,7 @@ class Column
      */
     public function isSortable()
     {
-        return $this->sortable && empty( $this->relationName );
+        return $this->sortable && empty($this->relationName);
     }
 
     /**
@@ -238,81 +238,74 @@ class Column
      * @param $string
      * @return QueryBuilder
      */
-    public function searchConditions( QueryBuilder $query, $string )
+    public function searchConditions(QueryBuilder $query, $string)
     {
-        if( $this->relationName )
-        {
-            return $query->orWhereHas( $this->relationName, function( QueryBuilder $query ) use ( $string )
-            {
-                $query->where( $this->relationColumn, 'like', "%$string%" );
-            } );
+        if ($this->relationName) {
+            return $query->orWhereHas($this->relationName, function (QueryBuilder $query) use ($string) {
+                $query->where($this->relationColumn, 'like', "%$string%");
+            });
         }
 
-        return $query->where( $this->getName(), 'like', "%$string%", 'OR' );
+        return $query->where($this->getName(), 'like', "%$string%", 'OR');
     }
 
     /**
      * @param Model $model
      * @return mixed
      */
-    protected function getValue( Model $model )
+    protected function getValue(Model $model)
     {
-        if( $this->relationName )
-        {
-            if ( $this->relationName === 'translations' )
-            {
-                $translation = $model->getTranslation( null, true );
+        if ($this->relationName) {
+            if ($this->relationName === 'translations') {
+                $translation = $model->getTranslation(null, true);
 
-                if ( !$translation )
-                {
-                    return null;
+                if (! $translation) {
+                    return;
                 }
 
-                return $translation->getAttribute( $this->relationColumn );
+                return $translation->getAttribute($this->relationColumn);
             }
 
-            $attribute = $model->getAttribute( $this->relationName );
+            $attribute = $model->getAttribute($this->relationName);
 
-            if ( $attribute instanceof Model || $attribute instanceof Relation) {
-                return $attribute->getAttribute( $this->relationColumn );
+            if ($attribute instanceof Model || $attribute instanceof Relation) {
+                return $attribute->getAttribute($this->relationColumn);
             }
-                
+
             return $attribute;
         }
 
-        return $model->getAttribute( $this->getName() );
+        return $model->getAttribute($this->getName());
     }
 
     /**
      * @param Model $model
      * @return Element
      */
-    public function callDisplayCallback( Model $model )
+    public function callDisplayCallback(Model $model)
     {
-        $value = $this->getValue( $model );
+        $value = $this->getValue($model);
 
-        if( $this->displayer === null )
-        {
+        if ($this->displayer === null) {
             $value = (string) $value;
 
-            if( $this->grid->hasTool( 'create' ) )
-            {
-                return Html::link( $value )->addAttributes( [
-                    'href' => $this->grid->getModule()->url( 'edit', [ $model->getKey() ] )
-                ] );
+            if ($url = $this->grid->getRowUrl($model)) {
+                return Html::link($value)->addAttributes([
+                    'href' => $url,
+                ]);
             }
 
-            return Html::span( $value );
+            return Html::span($value);
         }
 
-        return call_user_func_array( $this->displayer, [ $value, $this, $model ] );
+        return call_user_func_array($this->displayer, [$value, $this, $model]);
     }
 
     /**
      * @param $relationName
      * @param $relationColumn
      */
-    public function setRelation( $relationName, $relationColumn )
+    public function setRelation($relationName, $relationColumn)
     {
         $this->relationName = $relationName;
         $this->relationColumn = $relationColumn;
@@ -324,6 +317,7 @@ class Column
     public function getFilterRelationColumn(): string
     {
         $columnName = $this->getFilterType()->getColumn();
+
         return is_null($columnName) ? $this->getRelationColumn() : $columnName;
     }
 

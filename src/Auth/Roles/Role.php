@@ -2,12 +2,11 @@
 
 namespace Arbory\Base\Auth\Roles;
 
-use Cartalyst\Sentinel\Roles\EloquentRole;
 use Arbory\Base\Auth\Users\User;
+use Cartalyst\Sentinel\Roles\EloquentRole;
 
 /**
- * Class Role
- * @package Arbory\Base\Auth\Roles
+ * Class Role.
  */
 class Role extends EloquentRole
 {
@@ -44,6 +43,6 @@ class Role extends EloquentRole
      */
     public function users()
     {
-        return $this->belongsToMany( static::$usersModel, 'admin_role_users', 'role_id', 'user_id' )->withTimestamps();
+        return $this->belongsToMany(static::$usersModel, 'admin_role_users', 'role_id', 'user_id')->withTimestamps();
     }
 }

@@ -5,8 +5,7 @@ namespace Arbory\Base\Auth\Reminders;
 use Cartalyst\Sentinel\Reminders\EloquentReminder;
 
 /**
- * Class Reminder
- * @package Arbory\Base\Auth\Reminders
+ * Class Reminder.
  */
 class Reminder extends EloquentReminder
 {

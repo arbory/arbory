@@ -4,15 +4,15 @@ namespace Arbory\Base\Html\Elements\Inputs;
 
 class CheckBox extends Input
 {
-    public function __construct( $content = null )
+    public function __construct($content = null)
     {
-        parent::__construct( $content );
+        parent::__construct($content);
 
-        $this->setType( 'checkbox' );
+        $this->setType('checkbox');
     }
 
     public function select()
     {
-        $this->attributes()->put( 'checked', 'checked' );
+        $this->attributes()->put('checked', 'checked');
     }
 }

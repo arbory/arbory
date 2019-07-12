@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Constructor\Models;
-
 
 use Illuminate\Database\Eloquent\Model;
 

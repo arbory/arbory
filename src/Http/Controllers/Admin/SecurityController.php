@@ -2,19 +2,17 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Http\Requests\LoginRequest;
-use Arbory\Base\Services\Authentication\SecurityStrategy;
-use Arbory\Base\Services\AuthReply\Reply;
-use Arbory\Base\Services\SecurityService;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\RedirectResponse;
+use View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use View;
+use Arbory\Base\Http\Requests\LoginRequest;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Arbory\Base\Services\Authentication\SecurityStrategy;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class SecurityController extends BaseController
 {
@@ -28,9 +26,9 @@ class SecurityController extends BaseController
     /**
      * @param SecurityStrategy $security
      */
-    public function __construct( SecurityStrategy $security )
+    public function __construct(SecurityStrategy $security)
     {
-        $this->middleware( 'arbory.admin_quest', [ 'except' => 'postLogout' ] );
+        $this->middleware('arbory.admin_quest', ['except' => 'postLogout']);
 
         $this->security = $security;
     }
@@ -39,11 +37,11 @@ class SecurityController extends BaseController
      * @param Request $request
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function getLogin( Request $request )
+    public function getLogin(Request $request)
     {
         return view(
             'arbory::controllers.security.login',
-            [ 'input' => $request ]
+            ['input' => $request]
         );
     }
 
@@ -51,23 +49,22 @@ class SecurityController extends BaseController
      * @param LoginRequest $request
      * @return RedirectResponse|Response|Redirect
      */
-    public function postLogin( LoginRequest $request )
+    public function postLogin(LoginRequest $request)
     {
-        $credentials = array_only( $request->get( 'user' ), [ 'email', 'password' ] );
-        $remember = (bool) $request->get( 'remember', false );
+        $credentials = array_only($request->get('user'), ['email', 'password']);
+        $remember = (bool) $request->get('remember', false);
 
-        $result = $this->security->authenticate( $credentials, $remember );
+        $result = $this->security->authenticate($credentials, $remember);
 
-        if( $result->isSuccess() )
-        {
-            return $result->dispatch( session()->pull( 'url.intended', route( 'admin.login.form' ) ) );
+        if ($result->isSuccess()) {
+            return $result->dispatch(session()->pull('url.intended', route('admin.login.form')));
         }
 
-        return redirect( route( 'admin.login.form' ) )
+        return redirect(route('admin.login.form'))
             ->withInput()
-            ->withErrors( [
-                'user.email' => $result->getMessage()
-            ] );
+            ->withErrors([
+                'user.email' => $result->getMessage(),
+            ]);
     }
 
     /**
@@ -75,8 +72,8 @@ class SecurityController extends BaseController
      */
     public function postLogout()
     {
-        $this->security->logout( null, null );
+        $this->security->logout(null, null);
 
-        return redirect( route( 'admin.login.form' ) );
+        return redirect(route('admin.login.form'));
     }
 }

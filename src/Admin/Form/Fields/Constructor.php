@@ -2,28 +2,24 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Constructor\BlockInterface;
-use Arbory\Base\Admin\Constructor\Models\ConstructorBlock;
-use Arbory\Base\Admin\Constructor\BlockRegistry;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\Nested\PaneledItemRenderer;
 use Closure;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Form\Fields\Renderer\NestedFieldRenderer;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Constructor\BlockRegistry;
+use Arbory\Base\Admin\Constructor\BlockInterface;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Arbory\Base\Admin\Constructor\Models\ConstructorBlock;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 
-/**
- * @package Arbory\Base\Admin\Form\Fields
- */
-class Constructor extends AbstractRelationField implements NestedFieldInterface, RepeatableNestedFieldInterface, RenderOptionsInterface
+class Constructor extends AbstractRelationField implements
+    NestedFieldInterface,
+    RepeatableNestedFieldInterface,
+    RenderOptionsInterface
 {
     use HasRenderOptions;
     use HasRelationships;
@@ -128,14 +124,14 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
      */
     public function getRelationFieldSet($model, $index)
     {
-        $blockName  = $model->name;
+        $blockName = $model->name;
         $block = $this->resolveBlockByName($blockName);
 
-        if($block === null) {
+        if ($block === null) {
             throw new \LogicException("Block '{$blockName}' not found");
         }
 
-        $fieldSet = new FieldSet($model, $this->getNameSpacedName() . '.' . $index);
+        $fieldSet = new FieldSet($model, $this->getNameSpacedName().'.'.$index);
 
         $fieldSet->hidden($model->getKeyName())
                  ->setValue($model->getKey());
@@ -152,7 +148,8 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
         }
 
         $fieldSet->hasOne(
-            'content', Closure::fromCallable([$block, 'fields'])
+            'content',
+            Closure::fromCallable([$block, 'fields'])
         );
 
         return $fieldSet;
@@ -163,7 +160,6 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
      */
     public function beforeModelSave(Request $request)
     {
-
     }
 
     /**
@@ -171,7 +167,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
      */
     public function afterModelSave(Request $request)
     {
-        $items = (array)$request->input($this->getNameSpacedName(), []);
+        $items = (array) $request->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
             $relatedModel = $this->createRelatedModelFromRequest($item);
@@ -191,8 +187,8 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
                 $index
             );
 
-            foreach($relatedFieldSet->getFields() as $field) {
-                if( $this->isContentField($field) ) {
+            foreach ($relatedFieldSet->getFields() as $field) {
+                if ($this->isContentField($field)) {
                     $block->beforeModelSave($request, $field);
                 } else {
                     $field->beforeModelSave($request);
@@ -201,8 +197,8 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
 
             $relatedModel->save();
 
-            foreach($relatedFieldSet->getFields() as $field) {
-                if( $this->isContentField($field) ) {
+            foreach ($relatedFieldSet->getFields() as $field) {
+                if ($this->isContentField($field)) {
                     $block->afterModelSave($request, $field);
                 } else {
                     $field->afterModelSave($request);
@@ -210,7 +206,6 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
             }
         }
     }
-
 
     /**
      * @param $variables
@@ -261,11 +256,11 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
     {
         $rules = [];
 
-        $items = (array)request()->input($this->getNameSpacedName(), []);
+        $items = (array) request()->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
             $relatedModel = $this->createRelatedModelFromRequest($item);
-            
+
             $this->verifyBlockFromRequest($item, $relatedModel);
 
             $relatedFieldSet = $this->getRelationFieldSet(
@@ -273,11 +268,11 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
                 $index
             );
 
-            foreach($relatedFieldSet->getFields() as $field) {
+            foreach ($relatedFieldSet->getFields() as $field) {
                 $rules = array_merge($rules, $field->getRules());
             }
         }
-        
+
         return $rules;
     }
 
@@ -320,7 +315,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
     }
 
     /**
-     * Make this field sortable
+     * Make this field sortable.
      *
      * @param string $field
      *
@@ -339,7 +334,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
      *
      * @return bool
      */
-    protected function isContentField( FieldInterface $field ): bool
+    protected function isContentField(FieldInterface $field): bool
     {
         return $field instanceof HasOne && $field->getName() === 'content';
     }
@@ -351,11 +346,11 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
      */
     protected function verifyBlockFromRequest(array $item, Model $model)
     {
-        $blockName     = array_get($item, static::BLOCK_NAME);
+        $blockName = array_get($item, static::BLOCK_NAME);
         $blockResource = array_get($item, $model->content()->getMorphType());
-        $block         = $this->resolveBlockByName($blockName);
+        $block = $this->resolveBlockByName($blockName);
 
-        if (!$block) {
+        if (! $block) {
             throw new \LogicException("Unknown block '{$blockName}'");
         }
 
@@ -376,8 +371,8 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
         $relation = $this->getRelation();
         $relatedModel = $this->findRelatedModel($item);
 
-        if (!$relation instanceof MorphMany) {
-            throw new \LogicException("Unknown relation used");
+        if (! $relation instanceof MorphMany) {
+            throw new \LogicException('Unknown relation used');
         }
 
         $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
@@ -400,7 +395,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
      *
      * @return Constructor
      */
-    public function setItemRenderer( ItemInterface $itemRenderer ): Constructor
+    public function setItemRenderer(ItemInterface $itemRenderer): self
     {
         $this->itemRenderer = $itemRenderer;
 
@@ -416,7 +411,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
             $this->rendererClass,
             [
                 'field' => $this,
-                'itemRenderer' => $this->itemRenderer
+                'itemRenderer' => $this->itemRenderer,
             ]
         );
     }
@@ -426,7 +421,7 @@ class Constructor extends AbstractRelationField implements NestedFieldInterface,
      *
      * @return Constructor
      */
-    public function setAllowToAdd( bool $allowToAdd ): Constructor
+    public function setAllowToAdd(bool $allowToAdd): self
     {
         $this->allowToAdd = $allowToAdd;
 

@@ -5,37 +5,33 @@ namespace Arbory\Base\Admin\Form\Fields;
 use Illuminate\Http\Request;
 
 /**
- * Class Password
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Password.
  */
 class Password extends ControlField
 {
     protected $classes = [
-        'text'
+        'text',
     ];
 
     protected $attributes = [
-        'type' => 'password'
+        'type' => 'password',
     ];
 
     public function getValue()
     {
-        return null;
     }
 
     /**
      * @param Request $request
      * @return void
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
-        $password = $request->input( $this->getNameSpacedName() );
+        $password = $request->input($this->getNameSpacedName());
         $hasher = \Sentinel::getUserRepository()->getHasher();
 
-        if( $password )
-        {
-            $this->getModel()->setAttribute( $this->getName(), $hasher->hash( $password ) );
+        if ($password) {
+            $this->getModel()->setAttribute($this->getName(), $hasher->hash($password));
         }
     }
 }
-

@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
 /**
- * Class Filter
- * @package Arbory\Base\Admin\Grid
+ * Class Filter.
  */
 class Filter implements FilterInterface
 {
@@ -59,7 +58,7 @@ class Filter implements FilterInterface
         $orderBy = $this->request->get('_order_by');
         $orderDirection = $this->request->get('_order', 'asc');
 
-        if (!$orderBy) {
+        if (! $orderBy) {
             return;
         }
 
@@ -69,7 +68,7 @@ class Filter implements FilterInterface
             return $column->getName() === $orderBy;
         })->first();
 
-        if (!$column) {
+        if (! $column) {
             return;
         }
 
@@ -84,7 +83,7 @@ class Filter implements FilterInterface
         $filterParameters = self::removeNonFilterParameters($this->request->all());
 
         foreach ($filterParameters as $getKey => $getValue) {
-            if (!$getValue) {
+            if (! $getValue) {
                 continue;
             }
 
@@ -92,7 +91,7 @@ class Filter implements FilterInterface
                 return $column->getName() === $getKey || $column->getRelationName() === $getKey;
             })->first();
 
-            if (!$column || !$column->getHasFilter()) {
+            if (! $column || ! $column->getHasFilter()) {
                 continue;
             }
 
@@ -111,7 +110,7 @@ class Filter implements FilterInterface
         foreach ($keywords as $string) {
             $this->query->where(function (QueryBuilder $query) use ($string, $columns) {
                 foreach ($columns as $column) {
-                    if (!$column->isSearchable()) {
+                    if (! $column->isSearchable()) {
                         continue;
                     }
 
@@ -128,7 +127,7 @@ class Filter implements FilterInterface
     {
         $result = $this->query;
 
-        if (!$this->isPaginated()) {
+        if (! $this->isPaginated()) {
             return $result->get();
         }
 

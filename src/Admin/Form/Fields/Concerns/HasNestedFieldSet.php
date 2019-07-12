@@ -1,14 +1,11 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Concerns;
 
-
+use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\NestedFieldInterface;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 
 trait HasNestedFieldSet
 {
@@ -17,7 +14,7 @@ trait HasNestedFieldSet
      *
      * @return FieldSet
      */
-    public function configureFieldSet( FieldSet $fieldSet )
+    public function configureFieldSet(FieldSet $fieldSet)
     {
         return $fieldSet;
     }
@@ -27,7 +24,7 @@ trait HasNestedFieldSet
      *
      * @return FieldSet|FieldInterface[]
      */
-    public function getNestedFieldSet( $model )
+    public function getNestedFieldSet($model)
     {
         $fieldSet = new FieldSet($model, $this->getNamespacedName());
 
@@ -35,18 +32,18 @@ trait HasNestedFieldSet
     }
 
     /**
-     * @param Request             $request
-     * @param callable            $callback
+     * @param Request $request
+     * @param callable $callback
      * @param FieldInterface|null $parent
      */
-    public function iterate( Request $request, callable $callback, $parent = null )
+    public function iterate(Request $request, callable $callback, $parent = null)
     {
         $fieldSet = $this->getNestedFieldSet($this->getModel());
 
-        foreach ( $fieldSet->all() as $field ) {
+        foreach ($fieldSet->all() as $field) {
             $callback($field, $parent, $request);
 
-            if ( $field instanceof NestedFieldInterface ) {
+            if ($field instanceof NestedFieldInterface) {
                 $field->iterate($field->getModel(), $request, $field);
             }
         }

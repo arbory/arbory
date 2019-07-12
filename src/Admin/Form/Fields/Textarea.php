@@ -5,8 +5,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 use Arbory\Base\Admin\Form\Controls\TextareaControl;
 
 /**
- * Class Textarea
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Textarea.
  */
 class Textarea extends ControlField
 {
@@ -14,7 +13,7 @@ class Textarea extends ControlField
 
     protected $attributes = [
         'rows' => 5,
-        'cols' => 50
+        'cols' => 50,
     ];
 
     /**

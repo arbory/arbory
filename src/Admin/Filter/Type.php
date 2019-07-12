@@ -5,8 +5,7 @@ namespace Arbory\Base\Admin\Filter;
 use Illuminate\Http\Request;
 
 /**
- * Class Type
- * @package Arbory\Base\Admin\Filter
+ * Class Type.
  */
 class Type
 {
@@ -83,7 +82,7 @@ class Type
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -108,7 +107,7 @@ class Type
     {
         $value = $this->request->get($this->column);
 
-        if (!$value) {
+        if (! $value) {
             return null;
         }
 

@@ -1,10 +1,7 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout\Grid;
 
-
-use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Html;
 
 class Row
@@ -46,7 +43,8 @@ class Row
     }
 
     public function addColumn(Column $column)
-    {   $this->columns[] = $column;
+    {
+        $this->columns[] = $column;
 
         return $column;
     }
@@ -58,7 +56,7 @@ class Row
     {
         $content = Html::div()->addClass('grid-row');
 
-        foreach( $this->columns as $col) {
+        foreach ($this->columns as $col) {
             $content->append(
                 $col->render()
             );

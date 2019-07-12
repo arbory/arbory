@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Panels;
-
 
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Tools\Toolbox;
@@ -47,7 +45,7 @@ class FormPanel extends Panel
      *
      * @return FormPanel
      */
-    public function setForm(Form $form): FormPanel
+    public function setForm(Form $form): self
     {
         $this->form = $form;
 

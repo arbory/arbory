@@ -1,12 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Panels;
 
-
-use Arbory\Base\Admin\Tools\Toolbox;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Tools\Toolbox;
 use Illuminate\Contracts\Support\Renderable;
 
 class Renderer implements Renderable

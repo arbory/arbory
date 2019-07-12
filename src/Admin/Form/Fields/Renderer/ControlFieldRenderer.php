@@ -1,15 +1,13 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-
-use Arbory\Base\Admin\Form\Controls\InputControlInterface;
-use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
+use Arbory\Base\Admin\Form\Controls\InputControlInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 class ControlFieldRenderer implements RendererInterface
 {
@@ -23,7 +21,7 @@ class ControlFieldRenderer implements RendererInterface
      *
      * @param ControlFieldInterface $field
      */
-    public function __construct( ControlFieldInterface $field )
+    public function __construct(ControlFieldInterface $field)
     {
         $this->field = $field;
     }
@@ -41,24 +39,23 @@ class ControlFieldRenderer implements RendererInterface
      *
      * @return InputControlInterface
      */
-    public function configureControl( InputControlInterface $control )
+    public function configureControl(InputControlInterface $control)
     {
         $control->addAttributes(
             $this->field->getAttributes()
         );
 
-
-        if ( $this->field->getFieldId() ) {
+        if ($this->field->getFieldId()) {
             $control->addAttributes(
-                [ 'id' => $this->field->getFieldId() ]
+                ['id' => $this->field->getFieldId()]
             );
         }
 
         $control->addClass(
-            implode(" ", $this->field->getClasses())
+            implode(' ', $this->field->getClasses())
         );
 
-        if ( $this->field->getName() ) {
+        if ($this->field->getName()) {
             $control->setName(
                 Element::formatName($this->field->getNameSpacedName())
             );
@@ -84,7 +81,7 @@ class ControlFieldRenderer implements RendererInterface
      *
      * @return self
      */
-    public function setField( FieldInterface $field ): RendererInterface
+    public function setField(FieldInterface $field): RendererInterface
     {
         $this->field = $field;
 
@@ -104,7 +101,7 @@ class ControlFieldRenderer implements RendererInterface
      *
      * @return StyleOptionsInterface
      */
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         return $options;
     }

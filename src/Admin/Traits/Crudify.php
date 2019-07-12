@@ -4,20 +4,20 @@ namespace Arbory\Base\Admin\Traits;
 
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Grid\ExportBuilder;
-use Arbory\Base\Admin\Layout;
-use Arbory\Base\Admin\Layout\LayoutInterface;
-use Arbory\Base\Admin\Module;
 use Arbory\Base\Admin\Page;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Module;
 use Illuminate\Http\Response;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Grid\ExportBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Admin\Exports\DataSetExport;
+use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Exports\ExportInterface;
-use Arbory\Base\Admin\Exports\Type\ExcelExport;
 use Arbory\Base\Admin\Exports\Type\JsonExport;
+use Arbory\Base\Admin\Exports\Type\ExcelExport;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Crudify
@@ -58,7 +58,7 @@ trait Crudify
     }
 
     /**
-     * @param Form                            $form
+     * @param Form $form
      * @param Layout\FormLayoutInterface|null $layout
      *
      * @return Form
@@ -69,7 +69,7 @@ trait Crudify
     }
 
     /**
-     * @param Model                           $model
+     * @param Model $model
      * @param Layout\FormLayoutInterface|null $layout
      *
      * @return Form
@@ -128,7 +128,7 @@ trait Crudify
 
         $page->setBreadcrumbs($this->module()->breadcrumbs());
         $page->use($layout);
-        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index' . $bulkEditClass);
+        $page->bodyClass('controller-'.str_slug($this->module()->name()).' view-index'.$bulkEditClass);
 
         return $page;
     }
@@ -155,7 +155,7 @@ trait Crudify
         $page = $manager->page(Page::class);
 
         $page->use($layout);
-        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+        $page->bodyClass('controller-'.str_slug($this->module()->name()).' view-edit');
 
         return $page;
     }
@@ -196,7 +196,7 @@ trait Crudify
 
         $page = $manager->page(Page::class);
         $page->use($layout);
-        $page->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+        $page->bodyClass('controller-'.str_slug($this->module()->name()).' view-edit');
 
         return $page;
     }
@@ -209,11 +209,10 @@ trait Crudify
     public function update(Request $request, $resourceId)
     {
         $resource = $this->findOrNew($resourceId);
-        $layout   = $this->layout('form');
-        $form     = $this->buildForm($resource, $layout);
+        $layout = $this->layout('form');
+        $form = $this->buildForm($resource, $layout);
 
         $layout->setForm($form);
-
 
         $request->request->add(['fields' => $form->fields()]);
 
@@ -235,7 +234,7 @@ trait Crudify
     public function destroy($resourceId)
     {
         $resource = $this->resource()->findOrFail($resourceId);
-        $layout   = $this->layout('form');
+        $layout = $this->layout('form');
 
         $this->buildForm($resource, $layout)->destroy();
 
@@ -249,17 +248,16 @@ trait Crudify
      */
     public function dialog(Request $request, string $name)
     {
-        $method = camel_case($name) . 'Dialog';
+        $method = camel_case($name).'Dialog';
 
-        if (!$name || !method_exists($this, $method)) {
+        if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
 
-            return null;
+            return;
         }
 
         return $this->{$method}($request);
     }
-
 
     /**
      * @param string $type
@@ -289,7 +287,7 @@ trait Crudify
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
         if (! isset(self::$exportTypes[$type])) {
-            throw new \Exception('Export Type not found - ' . $type);
+            throw new \Exception('Export Type not found - '.$type);
         }
 
         return new self::$exportTypes[$type]($dataSet);
@@ -318,7 +316,8 @@ trait Crudify
         $model = $tools->model();
 
         $tools->add('edit', $this->url('edit', $model->getKey()));
-        $tools->add('delete',
+        $tools->add(
+            'delete',
             $this->url('dialog', ['dialog' => 'confirm_delete', 'id' => $model->getKey()])
         )->dialog()->danger();
     }
@@ -335,7 +334,7 @@ trait Crudify
         return view('arbory::dialogs.confirm_delete', [
             'form_target' => $this->url('destroy', [$resourceId]),
             'list_url' => $this->url('index'),
-            'object_name' => (string)$model,
+            'object_name' => (string) $model,
         ]);
     }
 
@@ -346,12 +345,12 @@ trait Crudify
      */
     public function api(Request $request, string $name)
     {
-        $method = camel_case($name) . 'Api';
+        $method = camel_case($name).'Api';
 
-        if (!$name || !method_exists($this, $method)) {
+        if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
 
-            return null;
+            return;
         }
 
         return $this->{$method}($request);
@@ -374,7 +373,7 @@ trait Crudify
     protected function findOrNew($resourceId): Model
     {
         /**
-         * @var Model $resource
+         * @var Model
          */
         $resource = $this->resource();
 
@@ -409,7 +408,7 @@ trait Crudify
         }
 
         if ($column && $query->exists()) {
-            $slug .= '-' . random_int(0, 9999);
+            $slug .= '-'.random_int(0, 9999);
         }
 
         return $slug;
@@ -440,7 +439,7 @@ trait Crudify
     }
 
     /**
-     * Creates a layout instance
+     * Creates a layout instance.
      *
      * @param string $component
      * @param mixed $with
@@ -453,7 +452,7 @@ trait Crudify
 
         $class = $layouts[$component] ?? null;
 
-        if(!$class && !class_exists($class)) {
+        if (! $class && ! class_exists($class)) {
             throw new \RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
         }
 
@@ -461,7 +460,7 @@ trait Crudify
     }
 
     /**
-     * Defined layouts
+     * Defined layouts.
      *
      * @return array
      */
@@ -469,7 +468,7 @@ trait Crudify
     {
         return [
             'grid' => Grid\Layout::class,
-            'form' => Form\Layout::class
+            'form' => Form\Layout::class,
         ];
     }
 }

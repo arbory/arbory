@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Files;
 
+use Storage;
 use Alsofronie\Uuid\UuidModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Storage;
 
 /**
  * @property string id
@@ -33,7 +33,7 @@ class ArboryFile extends Model
         'original_name',
         'local_name',
         'sha1',
-        'size'
+        'size',
     ];
 
     /**
@@ -54,7 +54,7 @@ class ArboryFile extends Model
      */
     public function getUrl()
     {
-        return Storage::disk( $this->getDisk() )->url( $this->getLocalName() );
+        return Storage::disk($this->getDisk())->url($this->getLocalName());
     }
 
     /**
@@ -62,7 +62,7 @@ class ArboryFile extends Model
      */
     public function getExtension()
     {
-        return pathinfo( $this->getOriginalName(), PATHINFO_EXTENSION );
+        return pathinfo($this->getOriginalName(), PATHINFO_EXTENSION);
     }
 
     /**

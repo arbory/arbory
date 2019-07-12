@@ -2,11 +2,11 @@
 
 namespace Arbory\Base\Services\Authentication;
 
-use Arbory\Base\Support\Replies\FailureReply;
-use Arbory\Base\Support\Replies\Reply;
-use Arbory\Base\Support\Replies\SuccessReply;
 use Cartalyst\Sentinel\Sentinel;
+use Arbory\Base\Support\Replies\Reply;
 use Cartalyst\Sentinel\Users\UserInterface;
+use Arbory\Base\Support\Replies\FailureReply;
+use Arbory\Base\Support\Replies\SuccessReply;
 
 class SessionSecurityService implements SecurityStrategy
 {
@@ -18,43 +18,41 @@ class SessionSecurityService implements SecurityStrategy
     /**
      * @param Sentinel $sentinel
      */
-    public function __construct( Sentinel $sentinel )
+    public function __construct(Sentinel $sentinel)
     {
         $this->sentinel = $sentinel;
     }
 
     /**
      * @param array $credentials
-     * @param boolean $remember
-     * @param boolean $login
+     * @param bool $remember
+     * @param bool $login
      * @return Reply
      */
-    public function authenticate( array $credentials, $remember = false, $login = true ): Reply
+    public function authenticate(array $credentials, $remember = false, $login = true): Reply
     {
-        $user = $this->sentinel->authenticate( $credentials, $remember, $login );
+        $user = $this->sentinel->authenticate($credentials, $remember, $login);
 
-        if( $user )
-        {
-            return new SuccessReply( trans( 'auth.success' ) );
+        if ($user) {
+            return new SuccessReply(trans('auth.success'));
         }
 
-        return new FailureReply( trans( 'auth.failed' ) );
+        return new FailureReply(trans('auth.failed'));
     }
 
     /**
      * @param UserInterface|null $user
-     * @param boolean $everywhere
+     * @param bool $everywhere
      * @return Reply
      */
-    public function logout( UserInterface $user = null, $everywhere = false ): Reply
+    public function logout(UserInterface $user = null, $everywhere = false): Reply
     {
-        $this->sentinel->logout( $user, $everywhere );
+        $this->sentinel->logout($user, $everywhere);
 
-        if( !$this->sentinel->check() )
-        {
-            return new SuccessReply( trans( 'auth.user_logout' ) );
+        if (! $this->sentinel->check()) {
+            return new SuccessReply(trans('auth.user_logout'));
         }
 
-        return new FailureReply( trans( 'auth.generic_problem' ) );
+        return new FailureReply(trans('auth.generic_problem'));
     }
 }

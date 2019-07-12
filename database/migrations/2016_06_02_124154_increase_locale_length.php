@@ -1,12 +1,11 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class IncreaseLocaleLength extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -54,5 +53,4 @@ class IncreaseLocaleLength extends Migration
             $table->unique(['locale', 'namespace', 'group', 'item']);
         });
     }
-
 }

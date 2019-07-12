@@ -1,11 +1,11 @@
 <?php
+
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Styles;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Html\Html;
 
 class BasicFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
 {
@@ -15,21 +15,20 @@ class BasicFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
 
         $template = Html::div()->addClass('field');
         $template->addClass(implode(' ', $field->getFieldClasses()));
-        
+
         $template->addAttributes($options->getAttributes());
         $template->addClass(implode(' ', $options->getClasses()));
-
 
         if ($name = $field->getName()) {
             $template->addAttributes(
                 [
-                    'data-name' => $name
+                    'data-name' => $name,
                 ]
             );
         }
-        
-        if($field instanceof ControlFieldInterface) {
-            if($field->isDisabled()) {
+
+        if ($field instanceof ControlFieldInterface) {
+            if ($field->isDisabled()) {
                 $template->addAttributes(['data-disabled' => 1]);
             }
 
@@ -39,12 +38,11 @@ class BasicFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
 
         $template->append($this->renderField($field));
 
-        if ( $info = $field->getTooltip() ) {
+        if ($info = $field->getTooltip()) {
             $template->append(
-                Html::abbr(' ?')->addAttributes([ 'title' => $info ])
+                Html::abbr(' ?')->addAttributes(['title' => $info])
             );
         }
-
 
         return $template;
     }
