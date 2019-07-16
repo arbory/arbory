@@ -172,4 +172,12 @@ class Node extends \Baum\Node
 
         return true;
     }
+
+    /**
+     * @return bool
+     */
+    public function isDirectlyActive()
+    {
+        return $this->hasActivated() && !$this->hasExpired();
+    }
 }

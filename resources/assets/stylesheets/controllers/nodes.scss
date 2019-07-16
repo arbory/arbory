@@ -75,6 +75,11 @@
                 color: $color-text-normal;
             }
 
+            &:not(.active) + ul .trigger
+            {
+                color: $color-text-lightest;
+            }
+
             span
             {
                 margin-left: 0;
