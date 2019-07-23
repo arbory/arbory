@@ -2,7 +2,6 @@
 
 namespace Arbory\Base\Observers;
 
-
 use Arbory\Base\Pages\Redirect;
 use Arbory\Base\Jobs\UpdateRedirectUrlStatus;
 use Illuminate\Foundation\Bus\DispatchesJobs;

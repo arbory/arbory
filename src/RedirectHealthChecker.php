@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Arbory\Base;
 
 use Illuminate\Support\Collection;
 
 class RedirectHealthChecker
 {
-
     /**
      * @var Collection
      */
@@ -48,7 +46,7 @@ class RedirectHealthChecker
         foreach ($this->redirectsCollection as $redirect) {
             $url = url($redirect->to_url);
 
-            if($this->isPageAlive($url)) {
+            if ($this->isPageAlive($url)) {
                 $this->valid[$url] = $redirect->id;
             } else {
                 $this->invalid[$url] = $redirect->id;
@@ -69,7 +67,7 @@ class RedirectHealthChecker
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => $url,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_TIMEOUT => 1000
+            CURLOPT_TIMEOUT => 1000,
         ]);
 
         if (env('APP_USER') && env('APP_PASSWORD')) {
@@ -136,4 +134,5 @@ class RedirectHealthChecker
     {
         return $this->errors;
     }
+
 }

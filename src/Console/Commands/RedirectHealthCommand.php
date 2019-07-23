@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Console\Commands;
-
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -59,10 +57,10 @@ class RedirectHealthCommand extends Command
 
             $this->warn("\nInvalid entries: {$result->getInvalidCount()}");
             $this->info("Valid entries: {$result->getValidCount()}");
-
         } catch (\Exception $e) {
             $this->error('Redirects healthcheck failed with an exception');
             $this->error($e->getMessage());
+
             return 2;
         }
 
@@ -74,7 +72,6 @@ class RedirectHealthCommand extends Command
      */
     public function selectAllRedirectIds()
     {
-
         $results = DB::table('redirects')->where('id', '>', 0)->pluck('id')->toArray();
 
         return $results;
@@ -107,4 +104,5 @@ class RedirectHealthCommand extends Command
 
         return $this->selectAllRedirectIds();
     }
+
 }

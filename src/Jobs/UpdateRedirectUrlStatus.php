@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Arbory\Base\Jobs;
 
 use Illuminate\Log\Logger;
@@ -10,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UpdateRedirectUrlStatus implements ShouldQueue
 {
-
     /**
      * @var Logger
      */
@@ -44,7 +42,6 @@ class UpdateRedirectUrlStatus implements ShouldQueue
         $this->logger = $logger;
 
         $this->checkAndUpdateRedirectStatus();
-
     }
 
     /**
@@ -74,7 +71,7 @@ class UpdateRedirectUrlStatus implements ShouldQueue
      */
     public function selectRedirects(array $ids)
     {
-        $results = DB::table('redirects')->whereIn('id', $ids)->get(['id','to_url']);
+        $results = DB::table('redirects')->whereIn('id', $ids)->get(['id', 'to_url']);
 
         return $results;
     }
@@ -94,4 +91,5 @@ class UpdateRedirectUrlStatus implements ShouldQueue
     {
         return $this->redirectHealthChecker ?? null;
     }
+
 }
