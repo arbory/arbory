@@ -4,10 +4,10 @@
 namespace Arbory\Base\Console\Commands;
 
 
-use Arbory\Base\Jobs\UpdateRedirectUrlStatus;
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\DB;
+use Arbory\Base\Jobs\UpdateRedirectUrlStatus;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class RedirectHealthCommand extends Command
 {
@@ -39,19 +39,19 @@ class RedirectHealthCommand extends Command
             $ids = $this->getIDs();
             $job = new UpdateRedirectUrlStatus($ids);
 
-            $this->info("Start to check " . count($ids) . " entries...");
+            $this->info('Start to check '.count($ids).' entries...');
 
             $this->dispatchNow($job);
             $result = $job->getResult();
 
-            if(!empty($result) && count($result->getInvalidUrlList())) {
+            if (! empty($result) && count($result->getInvalidUrlList())) {
                 $this->warn("\nInvalid URLs list:");
                 foreach ($result->getInvalidUrlList() as $url) {
                     $this->warn($url);
                 }
             }
 
-            if($this->option('errors') && !empty($result) && count($result->getErrors())) {
+            if ($this->option('errors') && ! empty($result) && count($result->getErrors())) {
                 foreach ($result->getErrors() as $url => $err) {
                     $this->error("Request to $url - $err");
                 }
@@ -61,7 +61,7 @@ class RedirectHealthCommand extends Command
             $this->info("Valid entries: {$result->getValidCount()}");
 
         } catch (\Exception $e) {
-            $this->error("Redirects healthcheck failed with an exception");
+            $this->error('Redirects healthcheck failed with an exception');
             $this->error($e->getMessage());
             return 2;
         }
@@ -72,7 +72,8 @@ class RedirectHealthCommand extends Command
     /**
      * @return array
      */
-    public function selectAllRedirectIds() {
+    public function selectAllRedirectIds()
+    {
 
         $results = DB::table('redirects')->where('id', '>', 0)->pluck('id')->toArray();
 
@@ -83,18 +84,20 @@ class RedirectHealthCommand extends Command
      * @param array $entryIds
      * @param int $status
      */
-    public function setStatus(array $entryIds, int $status) {
+    public function setStatus(array $entryIds, int $status)
+    {
         DB::table('redirects')->whereIn('id', $entryIds)->update(['status' => $status]);
     }
 
     /**
      * @return array
      */
-    private function getIDs() {
+    private function getIDs()
+    {
         $param = $this->argument('ids');
 
         $final_ids = [];
-        foreach(explode(",", $param) as $id) {
+        foreach (explode(',', $param) as $id) {
             $final_ids[] = $id;
         }
 

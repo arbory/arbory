@@ -3,10 +3,10 @@
 
 namespace Arbory\Base\Jobs;
 
-use Arbory\Base\RedirectHealthChecker;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
+use Arbory\Base\RedirectHealthChecker;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UpdateRedirectUrlStatus implements ShouldQueue
 {
@@ -39,7 +39,8 @@ class UpdateRedirectUrlStatus implements ShouldQueue
      * @param Logger $logger
      * @return void
      */
-    public function handle(Logger $logger) {
+    public function handle(Logger $logger)
+    {
         $this->logger = $logger;
 
         $this->checkAndUpdateRedirectStatus();
@@ -49,7 +50,8 @@ class UpdateRedirectUrlStatus implements ShouldQueue
     /**
      * @return void
      */
-    private function checkAndUpdateRedirectStatus() {
+    private function checkAndUpdateRedirectStatus()
+    {
         try {
             $redirects = $this->selectRedirects($this->redirectIds);
 
@@ -70,7 +72,8 @@ class UpdateRedirectUrlStatus implements ShouldQueue
      * @param array $ids
      * @return \Illuminate\Support\Collection
      */
-    public function selectRedirects(array $ids) {
+    public function selectRedirects(array $ids)
+    {
         $results = DB::table('redirects')->whereIn('id', $ids)->get(['id','to_url']);
 
         return $results;
@@ -79,7 +82,8 @@ class UpdateRedirectUrlStatus implements ShouldQueue
     /*
      * @return void
      */
-    public function updateStatusBulk(array $entryIds, int $status) {
+    public function updateStatusBulk(array $entryIds, int $status)
+    {
         DB::table('redirects')->whereIn('id', $entryIds)->update(['status' => $status]);
     }
 

@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Console;
 
-use Arbory\Base\Console\Commands\RedirectHealthCommand;
 use Arbory\Base\Console\Commands\SeedCommand;
+use Arbory\Base\Console\Commands\RedirectHealthCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 /**

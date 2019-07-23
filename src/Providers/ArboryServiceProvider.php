@@ -2,16 +2,16 @@
 
 namespace Arbory\Base\Providers;
 
-use Arbory\Base\Observers\RedirectObserver;
-use Arbory\Base\Console\Commands\RedirectHealthCommand;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Admin\Admin;
 use Arbory\Base\Pages\Redirect;
 use Arbory\Base\Services\AssetPipeline;
 use Illuminate\Support\ServiceProvider;
+use Arbory\Base\Observers\RedirectObserver;
 use Arbory\Base\Console\Commands\SeedCommand;
 use Arbory\Base\Console\Commands\InstallCommand;
 use Arbory\Base\Console\Commands\CreateUserCommand;
+use Arbory\Base\Console\Commands\RedirectHealthCommand;
 use Arbory\Base\Services\Authentication\SecurityStrategy;
 use Arbory\Base\Services\Authentication\SessionSecurityService;
 

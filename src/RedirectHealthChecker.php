@@ -38,11 +38,12 @@ class RedirectHealthChecker
     }
 
     /**
-     * Check redirect urls and fill out info values
+     * Check redirect urls and fill out info values.
      *
      * return void
      */
-    public function check() {
+    public function check()
+    {
 
         foreach ($this->redirectsCollection as $redirect) {
             $url = url($redirect->to_url);
@@ -56,12 +57,13 @@ class RedirectHealthChecker
     }
 
     /**
-     * Make curl request to url and check it is alive
+     * Make curl request to url and check it is alive.
      *
      * @param $url
      * @return bool
      */
-    public function isPageAlive($url) {
+    public function isPageAlive($url)
+    {
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => 1,
@@ -70,12 +72,13 @@ class RedirectHealthChecker
             CURLOPT_TIMEOUT => 1000
         ]);
 
-        if(env('APP_USER') && env('APP_PASSWORD')) {
-            curl_setopt($curl, CURLOPT_USERPWD, env('APP_USER') . ":" . env('APP_PASSWORD'));
+        if (env('APP_USER') && env('APP_PASSWORD')) {
+            curl_setopt($curl, CURLOPT_USERPWD, env('APP_USER').':'.env('APP_PASSWORD'));
         }
 
-        if (!curl_exec($curl)) {
-            $this->errors[$url] = 'Error: "' . curl_error($curl) . '" - Code: ' . curl_errno($curl);
+        if (! curl_exec($curl)) {
+            $this->errors[$url] = 'Error: "'.curl_error($curl).'" - Code: '.curl_errno($curl);
+
             return false;
         }
 
@@ -89,42 +92,48 @@ class RedirectHealthChecker
     /**
      * @return int
      */
-    public function getValidCount() {
+    public function getValidCount()
+    {
         return count($this->valid);
     }
 
     /**
      * @return int
      */
-    public function getInvalidCount() {
+    public function getInvalidCount()
+    {
         return count($this->invalid);
     }
 
     /**
      * @return array
      */
-    public function getValidIds() {
+    public function getValidIds()
+    {
         return array_values($this->valid);
     }
 
     /**
      * @return array
      */
-    public function getInvalidIds() {
+    public function getInvalidIds()
+    {
         return array_values($this->invalid);
     }
 
     /**
      * @return array
      */
-    public function getInvalidUrlList() {
+    public function getInvalidUrlList()
+    {
         return array_keys($this->invalid);
     }
 
     /**
      * @return array
      */
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
 }
