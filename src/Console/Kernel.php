@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Console;
 
+use Arbory\Base\Console\Commands\RedirectHealthCommand;
 use Arbory\Base\Console\Commands\SeedCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,5 +16,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         SeedCommand::class,
+        RedirectHealthCommand::class,
     ];
 }
