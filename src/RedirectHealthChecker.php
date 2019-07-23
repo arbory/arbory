@@ -70,6 +70,10 @@ class RedirectHealthChecker
             CURLOPT_TIMEOUT => 1000
         ]);
 
+        if(env('APP_USER') && env('APP_PASSWORD')) {
+            curl_setopt($curl, CURLOPT_USERPWD, env('APP_USER') . ":" . env('APP_PASSWORD'));
+        }
+
         if (!curl_exec($curl)) {
             $this->errors[$url] = 'Error: "' . curl_error($curl) . '" - Code: ' . curl_errno($curl);
             return false;
