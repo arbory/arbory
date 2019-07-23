@@ -2,8 +2,11 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Observers\RedirectObserver;
+use Arbory\Base\Console\Commands\RedirectHealthCommand;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Admin\Admin;
+use Arbory\Base\Pages\Redirect;
 use Arbory\Base\Services\AssetPipeline;
 use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Console\Commands\SeedCommand;
@@ -28,6 +31,8 @@ class ArboryServiceProvider extends ServiceProvider
         $this->registerModuleRegistry();
         $this->registerCommands();
         $this->registerLocales();
+
+        Redirect::observe(RedirectObserver::class);
 
         $this->app->singleton(SecurityStrategy::class, function () {
             return $this->app->make(SessionSecurityService::class);
@@ -73,6 +78,7 @@ class ArboryServiceProvider extends ServiceProvider
             'arbory.seed' => SeedCommand::class,
             'arbory.create-user' => CreateUserCommand::class,
             'arbory.install' => InstallCommand::class,
+            'arbory.redirect-health' => RedirectHealthCommand::class,
         ];
 
         foreach ($commands as $containerKey => $commandClass) {
