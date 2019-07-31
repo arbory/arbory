@@ -42,7 +42,6 @@ class RedirectHealthChecker
      */
     public function check()
     {
-
         foreach ($this->redirectsCollection as $redirect) {
             $url = url($redirect->to_url);
 
@@ -134,5 +133,4 @@ class RedirectHealthChecker
     {
         return $this->errors;
     }
-
 }

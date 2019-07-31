@@ -59,7 +59,6 @@ class UpdateRedirectUrlStatus implements ShouldQueue
             $this->updateStatusBulk($redirectHealthChecker->getInvalidIds(), false);
 
             $this->redirectHealthChecker = $redirectHealthChecker;
-
         } catch (\Exception $e) {
             $this->logger->warning($e->getMessage());
         }
@@ -91,5 +90,4 @@ class UpdateRedirectUrlStatus implements ShouldQueue
     {
         return $this->redirectHealthChecker ?? null;
     }
-
 }

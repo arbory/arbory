@@ -106,5 +106,4 @@ class RedirectHealthCommand extends Command
 
         return $this->selectAllRedirectIds();
     }
-
 }
