@@ -47,9 +47,9 @@ class RedirectHealthChecker
             $url = url($redirect->to_url);
 
             if ($this->isPageAlive($url)) {
-                $this->valid[$url] = $redirect->id;
+                $this->valid[$redirect->id] = $url;
             } else {
-                $this->invalid[$url] = $redirect->id;
+                $this->invalid[$redirect->id] = $url;
             }
         }
     }
@@ -108,7 +108,7 @@ class RedirectHealthChecker
      */
     public function getValidIds()
     {
-        return array_values($this->valid);
+        return array_keys($this->valid);
     }
 
     /**
@@ -116,7 +116,7 @@ class RedirectHealthChecker
      */
     public function getInvalidIds()
     {
-        return array_values($this->invalid);
+        return array_keys($this->invalid);
     }
 
     /**
@@ -124,7 +124,7 @@ class RedirectHealthChecker
      */
     public function getInvalidUrlList()
     {
-        return array_keys($this->invalid);
+        return array_unique(array_values($this->invalid));
     }
 
     /**

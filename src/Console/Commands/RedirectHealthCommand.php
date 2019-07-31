@@ -95,7 +95,9 @@ class RedirectHealthCommand extends Command
 
         $final_ids = [];
         foreach (explode(',', $param) as $id) {
-            $final_ids[] = $id;
+            if (is_numeric($id)) {
+                $final_ids[] = $id;
+            }
         }
 
         if (count($final_ids)) {
