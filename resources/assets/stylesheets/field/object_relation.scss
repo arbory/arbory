@@ -1,16 +1,16 @@
 
 .type-object-relation {
     user-select: none;
-
+    
     &:not(.single) {
         float: none;
     }
-
-    &[data-indent] {
+    
+    .object-relation[data-indent] {
         .item {
             &[data-inactive=true] {
                 color: $color-text-lightest;
-
+                
                 &:hover {
                     color: $color-text-normal;
                     background-color: $color-highlight-lightest;
@@ -18,10 +18,10 @@
             }
         }
     }
-
+    
     .relations, .related {
         overflow: auto;
-
+        
         .item {
             cursor: default;
             position: relative;
@@ -29,26 +29,32 @@
             overflow: hidden;
             height: steps(2);
             padding-left: steps(1);
-
-            &[data-inactive=false]:hover {
-                color: white;
-                background-color: $color-highlight-normal;
+        }
+    }
+    
+    &.interactive {
+        .relations, .related {
+            .item {
+                &[data-inactive=false]:hover {
+                    color: white;
+                    background-color: $color-highlight-normal;
+                }
             }
         }
     }
-
+    
     .relations {
         .group {
             & > .title {
                 font-weight: bold;
                 padding-left: steps(1);
             }
-
+            
             .item {
                 padding-left: steps(2);
             }
         }
-
+        
         .item {
             // nested item indentation
             @for $i from 1 through 10
@@ -59,74 +65,84 @@
             }
         }
     }
-
+    
     &.multiple
     {
         clear: both;
         width: auto;
         margin-right: steps(2);
         padding: 0;
-
+        
         .contents {
             border: 1px solid $color-border-normal;
             overflow: hidden;
             position: relative;
             height: steps(20);
         }
-
+        
         .relations, .related {
             height: 100%;
             border: none;
         }
-
+        
         .relations {
             float: left;
             width: 50%;
             background-color: $color-background-lightest;
-
+            
             .group {
                 & > .title {
                     display: block;
-
-                    &:hover {
-                        background-color: $color-highlight-normal;
-
-                        & ~ .item {
-                            background-color: $color-highlight-lightest;
-                        }
-                    }
                 }
             }
         }
-
+        
         .related {
             float: right;
             width: 50%;
         }
+        
+        &.interactive {
+            .relations .group > .title {
+                &:hover {
+                    background-color: $color-highlight-normal;
+                    
+                    & ~ .item {
+                        background-color: $color-highlight-lightest;
+                    }
+                }
+            }
+        }
     }
-
+    
     &.single {
         .related {
             position: relative;
             height: steps(3);
             border: 1px solid $color-border-normal;
-
-            &:hover {
-                border-color: $color-border-darker;
-            }
-
+            
             .item {
                 padding-left: steps(1);
                 padding-top: steps(0.5);
                 height: 100%;
-
+            }
+        }
+        
+        &.interactive {
+            .related {
                 &:hover {
-                    color: $color-text-darkest;
-                    background-color: transparent;
+                    border-color: $color-border-darker;
+                }
+                
+                .item {
+                    &:hover {
+                        color: $color-text-darkest;
+                        background-color: transparent;
+                    }
                 }
             }
         }
-
+        
         .relations {
             display: none;
             position: absolute;
@@ -138,7 +154,7 @@
             overflow: auto;
             border: 1px solid $color-border-normal;
             max-height: steps(20);
-
+            
             &.active {
                 display: block;
             }

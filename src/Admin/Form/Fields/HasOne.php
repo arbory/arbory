@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -15,8 +15,12 @@ use Illuminate\Http\Request;
  * Class HasOne
  * @package Arbory\Base\Admin\Form\Fields
  */
-class HasOne extends AbstractRelationField
+class HasOne extends AbstractRelationField implements RenderOptionsInterface
 {
+    use HasRenderOptions;
+
+    protected $style = 'section';
+
     /**
      * @return Element
      */
@@ -24,12 +28,14 @@ class HasOne extends AbstractRelationField
     {
         $item = $this->getValue() ?: $this->getRelatedModel();
 
-        $block = Html::div()->addClass( 'section content-fields' );
+        $block = Html::div()
+                     ->addClass( 'section content-fields' )
+                     ->addAttributes($this->getAttributes())
+                     ->addClass(implode(' ', $this->getClasses()));
 
-        foreach( $this->getRelationFieldSet( $item )->getFields() as $field )
-        {
-            $block->append( $field->render() );
-        }
+        $block->append(
+            $this->getRelationFieldSet( $item )->render()
+        );
 
         return $block;
     }
@@ -40,13 +46,10 @@ class HasOne extends AbstractRelationField
      */
     public function getRelationFieldSet( Model $relatedModel )
     {
-        $fieldSet = new FieldSet( $relatedModel, $this->getNameSpacedName() );
-        $fieldSetCallback = $this->fieldSetCallback;
+        $fieldSet = $this->getNestedFieldSet($relatedModel);
 
-        $fieldSetCallback( $fieldSet );
-
-        $fieldSet->add( new Hidden( $relatedModel->getKeyName() ) )
-            ->setValue( $relatedModel->getKey() );
+        $fieldSet->hidden( $relatedModel->getKeyName() )
+                 ->setValue( $relatedModel->getKey() );
 
         return $fieldSet;
     }

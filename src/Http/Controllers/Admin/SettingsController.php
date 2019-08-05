@@ -3,7 +3,6 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Grid;
@@ -16,7 +15,6 @@ use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Services\SettingFactory;
 use Arbory\Base\Services\SettingRegistry;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 
@@ -46,77 +44,72 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param Model $model
+     * @param Form $form
      * @return Form
      */
-    protected function form( Model $model )
+    protected function form(Form $form)
     {
-        $definition = $this->settingRegistry->find( $model->getKey() );
+        $definition = $this->settingRegistry->find($form->getModel()->getKey());
 
-        $form = $this->module()->form( $model, function( Form $form ) use ( $definition )
-        {
-            $form->addField( $this->getField( $form, $definition ) );
-            $form->addField( new Hidden( 'type' ) )->setValue( $definition->getType() );
-        } );
+        $form->setFields(function (Form\FieldSet $fields) use ($definition) {
+            $fields->add($this->getField($fields, $definition));
+            $fields->hidden('type')->setValue($definition->getType());
+        });
 
         return $form;
     }
 
     /**
+     * @param Grid $grid
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
-        $grid = $this->module()->grid( $this->resource(), function( Grid $grid )
-        {
-            $grid->column( 'name' );
-            $grid->column( 'value' )->display( function( $value, $column, Setting $setting )
-            {
+        $grid->setColumns(function (Grid $grid) {
+            $grid->column('name');
+            $grid->column('value')->display(function ($value, $column, Setting $setting) {
                 $container = Html::span();
                 $definition = $setting->getDefinition();
 
-                if( $definition->isFile() )
-                {
+                if ($definition->isFile()) {
                     /** @var ArboryFile $file */
                     $file = $setting->file;
 
-                    if( !$file )
-                    {
+                    if (!$file) {
                         return null;
                     }
 
-                    if( $definition->isImage() )
-                    {
-                        return $container->append( Html::image()->addAttributes( [
+                    if ($definition->isImage()) {
+                        return $container->append(Html::image()->addAttributes([
                             'src' => $file->getUrl(),
                             'width' => 64,
                             'height' => 64
-                        ] ) );
+                        ]));
                     }
 
                     return $container->append(
-                        Html::link( $file->getOriginalName() )->addAttributes( [
+                        Html::link($file->getOriginalName())->addAttributes([
                             'href' => $file->getUrl()
-                        ] )
+                        ])
                     );
                 }
 
-                return $container->append( $value );
-            } );
-        } );
+                return $container->append($value);
+            });
+        });
 
         return $grid
-            ->tools( [] )
-            ->items( $this->getSettings() )
-            ->paginate( false );
+            ->tools([])
+            ->items($this->getSettings())
+            ->paginate(false);
     }
 
     /**
-     * @param Form $form
+     * @param Form\FieldSet $fields
      * @param SettingDefinition $definition
-     * @return Form\Fields\AbstractField
+     * @return Form\Fields\AbstractField|Translatable
      */
-    protected function getField( Form $form, SettingDefinition $definition )
+    protected function getField( Form\FieldSet $fields, SettingDefinition $definition )
     {
         /**
          * @var Form\Fields\AbstractField $field
@@ -131,7 +124,7 @@ class SettingsController extends Controller
             $innerField = new $innerType( 'value' );
 
             $field = new Translatable( $innerField );
-            $field->setFieldSet( $form->fields() );
+            $field->setFieldSet( $fields );
 
             if( !$field->getValue() || $field->getValue()->isEmpty() )
             {
@@ -165,9 +158,9 @@ class SettingsController extends Controller
     {
         /** @var SettingFactory $factory */
         $factory = \App::make( SettingFactory::class );
-        $result = null;
+        $result = [];
 
-        foreach( $this->settingRegistry->getSettings() as $key => $_ )
+        foreach( $this->settingRegistry->getSettings()->keys() as $key )
         {
             $result[ $key ] = $factory->build( $key );
         }

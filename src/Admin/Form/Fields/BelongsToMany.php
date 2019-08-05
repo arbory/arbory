@@ -3,9 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Form\Fields\Renderer\AssociatedSetRenderer;
 use Illuminate\Http\Request;
 
 /**
@@ -16,21 +14,8 @@ class BelongsToMany extends AbstractField
 {
     use HasRelationships;
 
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        $list = Html::ul();
-
-        foreach( $this->getValue() as $item )
-        {
-            $list->append( Html::li( $item ) );
-        }
-
-        return (string) $list;
-    }
-
+    protected $rendererClass = AssociatedSetRenderer::class;
+    
     /**
      * @return bool
      */
@@ -47,54 +32,16 @@ class BelongsToMany extends AbstractField
         return false;
     }
 
-    /**
-     * @return Element
-     */
-    public function render()
+    public function getValue()
     {
         $relatedModel = $this->getRelatedModel();
-        $checkboxes = $this->getRelatedModelOptions( $relatedModel );
 
-        $label = Html::label( $this->getLabel() )->addAttributes( [ 'for' => $this->getName() ] );
-
-        return Html::div( [
-            Html::div( $label )->addClass( 'label-wrap' ),
-            Html::div( $checkboxes )->addClass( 'value' )
-        ] )->addClass( 'field type-associated-set' );
+        return parent::getValue()->pluck( $relatedModel->getKeyName() )->all();
     }
 
-    /**
-     * @param \Illuminate\Database\Eloquent\Model $relatedModel
-     * @return Element[]
-     */
-    public function getRelatedModelOptions( $relatedModel )
+    public function getOptions()
     {
-        $checkboxes = [];
-
-        $selectedOptions = $this->getValue()->pluck( $relatedModel->getKeyName() )->all();
-
-        foreach( $relatedModel::all() as $modelOption )
-        {
-            $name = [
-                $this->getNameSpacedName(),
-                $modelOption->getKey()
-            ];
-
-            $checkbox = Html::checkbox()
-                ->setName( implode( '.', $name ) )
-                ->setValue( 1 );
-
-            $checkbox->append( $checkbox->getLabel( (string) $modelOption ) );
-
-            if( in_array( $modelOption->getKey(), $selectedOptions, true ) )
-            {
-                $checkbox->select();
-            }
-
-            $checkboxes[] = Html::div( $checkbox )->addClass( 'type-associated-set-item' );
-        }
-
-        return $checkboxes;
+        return $this->getRelatedItems();
     }
 
     /**
@@ -119,15 +66,15 @@ class BelongsToMany extends AbstractField
 
         foreach( $existingIds as $id )
         {
-            if( !array_key_exists( $id, $submittedIds ) )
+            if( !in_array( $id, $submittedIds ) )
             {
                 $relation->detach( $id );
             }
         }
 
-        foreach( array_keys( $submittedIds ) as $id )
+        foreach( $submittedIds as $id )
         {
-            if( !in_array( $id, $existingIds, true ) )
+            if( !in_array( $id, $existingIds ) )
             {
                 $relation->attach( $id );
             }

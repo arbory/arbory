@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelatedOptions;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasSelectOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\SelectFieldRenderer;
 use Illuminate\Http\Request;
 
@@ -10,22 +10,18 @@ use Illuminate\Http\Request;
  * Class Dropdown
  * @package Arbory\Base\Admin\Form\Fields
  */
-class Select extends AbstractField
+class Select extends ControlField
 {
-    use HasRelatedOptions;
+    use HasSelectOptions;
+
+    protected $control = \Arbory\Base\Admin\Form\Controls\SelectControl::class;
+
+    protected $rendererClass = SelectFieldRenderer::class;
 
     /**
      * @var bool
      */
     protected $multiple = false;
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     */
-    public function render()
-    {
-        return ( new SelectFieldRenderer( $this, $this->getOptions() ) )->render();
-    }
 
     /**
      * @param Request $request
@@ -46,11 +42,6 @@ class Select extends AbstractField
         if( is_array( $value ) )
         {
             $value = implode( ',', $value );
-        }
-
-        if( method_exists( $this->getModel(), $this->getName() ) )
-        {
-            $property = $this->getRelation()->getForeignKey();
         }
 
         $this->getModel()->setAttribute( $property, $value );
@@ -88,8 +79,7 @@ class Select extends AbstractField
 
         foreach( $input as $item )
         {
-            if( !$this->options->has( $item ) )
-            {
+            if (!empty($item) && !$this->getOptions()->has($item)) {
                 return false;
             }
         }

@@ -2,7 +2,7 @@
 
 namespace Tests\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\FileSize;
+use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
 use Arbory\Base\Files\ArboryFile;
 use Mockery;
 use Mockery\Mock;

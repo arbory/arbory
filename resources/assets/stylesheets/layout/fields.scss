@@ -59,6 +59,10 @@ input.text
     position: relative;
     min-height: steps(7);
     margin-left: steps(2);
+    
+    &.i18n > .field {
+        margin-left: 0;
+    }
 
     &.has-error:not(.i18n),
     &.i18n.has-error .localization.has-error
@@ -72,7 +76,7 @@ input.text
         }
     }
 
-    &.type-boolean .value
+    &.type-checkbox  .value
     {
         padding-top: steps(3);
 
@@ -94,13 +98,15 @@ input.text
         }
     }
 
-    &.type-richtext
+    &.type-richtext,
+    &.type-compact-richtext
     {
         width: steps(74);
     }
 
 
     &.type-richtext,
+    &.type-compact-richtext,
     &.type-textarea:not(.i18n)
     {
         float: none;
@@ -111,6 +117,11 @@ input.text
     .label-wrap
     {
         padding: steps(0.5) 0;
+        
+        .required {
+            color: red;
+            font-weight: bold;
+        }
 
         .description
         {
@@ -189,6 +200,11 @@ input.text
                 user-select: none;
                 height: steps(3);
                 border: 1px solid $color-border-normal;
+                
+                &.disabled {
+                    cursor: not-allowed;
+                    background: rgb(235, 235, 228);
+                }
             }
 
             .items {
@@ -227,7 +243,7 @@ input.text
         word-wrap: break-word;
     }
 
-    &[data-name="slug"], .localization[data-name="slug"]
+    &.type-slug, .localization.type-slug
     {
         .button.generate
         {
@@ -286,7 +302,7 @@ input.text
                 }
             }
 
-            &.type-boolean {
+            &.type-checkbox {
                 min-height: 0;
 
                 .value {
@@ -322,7 +338,7 @@ section.nested
 }
 
 
-section.coordinate_picker {
+section.type-map-coordinates {
     padding-top: steps(3.5);
 
     .canvas {
@@ -353,6 +369,10 @@ section.coordinate_picker {
     {
         @include reset-font;
         @include font-size-normal;
+    }
+    
+    button {
+        @extend .button;
     }
 
     .ui-corner-all
@@ -393,9 +413,14 @@ section.coordinate_picker {
         td
         {
             border: 1px solid $color-border-normal;
+            border-width: 1px 1px 1px 0;
             text-align: center;
             vertical-align: middle;
             padding: steps(0.5);
+            
+            &:last-child {
+                border-right: 0;
+            }
 
             a
             {
@@ -415,7 +440,7 @@ section.coordinate_picker {
                 background-color: $color-background-darker;
             }
 
-            &:hover,
+            &:hover:not(.ui-datepicker-unselectable),
             &.ui-datepicker-current-day:hover
             {
                 background-color: $color-highlight-normal;
@@ -429,6 +454,17 @@ section.coordinate_picker {
 
         }
 
+    }
+    
+    .ui-datepicker-buttonpane {
+        margin-top:  steps(0.5);
+        background: $color-background-normal;
+        border-top: 1px solid $color-border-dark;
+        border-width: 1px 1px 0 1px;
+        
+        .ui-datepicker-close {
+            float: right;
+        }
     }
 
     thead

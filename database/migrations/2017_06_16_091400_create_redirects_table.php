@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateRedirectsTable extends Migration
 {
@@ -12,12 +13,16 @@ class CreateRedirectsTable extends Migration
      */
     public function up()
     {
-        Schema::create( 'redirects', function ( Blueprint $table )
-        {
+        Schema::create('redirects', function (Blueprint $table) {
             $table->timestamps();
-            $table->increments( 'id' );
-            $table->text( 'from_url' );
-            $table->text( 'to_url' );
-        } );
+            $table->increments('id');
+            $table->text('from_url');
+            $table->text('to_url');
+        });
+    }
+
+    public function down()
+    {
+        Schema::drop('redirects');
     }
 }

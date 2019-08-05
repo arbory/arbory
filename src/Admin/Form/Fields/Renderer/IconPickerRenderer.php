@@ -2,7 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\SpriteIcon;
+use Arbory\Base\Admin\Form\Fields\IconPicker;
+use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\HtmlString;
@@ -10,20 +11,15 @@ use Arbory\Base\Html\HtmlString;
 class IconPickerRenderer extends SelectFieldRenderer
 {
     /**
-     * @return Element
+     * @return Content
      */
     public function render()
     {
-        $field = new FieldRenderer();
-        $field->setType( 'select' );
-        $field->setName( $this->field->getName() );
-        $field->setLabel( $this->getLabel() );
+        $input = parent::render();
 
-        $input = $this->getSelectInput();
+        $content = [ $input, $this->getIconSelectElement() ];
 
-        $field->setValue( [ $input,  $this->getIconSelectElement() ] );
-
-        return $field->render()->addClass( 'type-icon-picker' );
+        return new Content($content);
     }
 
     /**
@@ -31,11 +27,11 @@ class IconPickerRenderer extends SelectFieldRenderer
      */
     protected function getIconSelectElement()
     {
-        /** @var SpriteIcon $field */
+        /** @var IconPicker $field */
         $field = $this->field;
         $items = Html::ul()->addClass( 'items' );
 
-        foreach( $field->getOptions() as $option )
+        foreach( $field->getOptions()->prepend('', '') as $option )
         {
             $items->append( Html::li( $this->getSvgIconElement( $option ) ) );
         }
@@ -59,7 +55,7 @@ class IconPickerRenderer extends SelectFieldRenderer
             return Html::svg();
         }
 
-        /** @var SpriteIcon $field */
+        /** @var IconPicker $field */
         $field = $this->field;
         $iconNode = $field->getIconContent( $id );
 
@@ -75,23 +71,44 @@ class IconPickerRenderer extends SelectFieldRenderer
         {
             $content = $path->asXML();
         }
-        else 
+        else
         {
             return Html::div()->addClass( 'element' );
         }
 
         $attributes = $iconNode->attributes();
-        $width = (int) $attributes->width;
-        $height = (int) $attributes->height;
+
+        $dimensions = $this->field->getDimensions();
+
+        $width = $dimensions ? $dimensions[0] : (int) $attributes->width;
+        $height = $dimensions ? $dimensions[1] : (int) $attributes->height;
 
         $icon = Html::span( Html::svg( new HtmlString($content) )
             ->addAttributes( [
                 'width' => $width,
                 'height' => $height,
-                'viewBox' => sprintf( '0 0 %d %d', $width, $height ),
+                'viewBox' => $this->resolveViewBox($iconNode, $width, $height),
                 'role' => 'presentation',
             ] ) )->addClass( 'icon' );
 
         return Html::div( [ $icon, Html::span( $id ) ] )->addClass( 'element' );
+    }
+
+    /**
+     * @param \SimpleXMLElement $iconNode
+     * @param  int              $width
+     * @param  int              $height
+     *
+     * @return string
+     */
+    protected function resolveViewBox( \SimpleXMLElement $iconNode, $width, $height )
+    {
+        $resolver = $this->field->getViewboxResolver();
+
+        if ( $resolver ) {
+            return $resolver($iconNode, $width, $height);
+        }
+
+        return sprintf('0 0 %d %d', $width, $height);
     }
 }

@@ -11,13 +11,14 @@ use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 
 /**
  * Class Renderer
  * @package Arbory\Base\Nodes\Admin\Grid
  */
-class Renderer
+class Renderer implements Renderable
 {
     const COOKIE_NAME_NODES = 'nodes';
 
@@ -113,7 +114,7 @@ class Renderer
                 $li->append( $collapser );
             }
 
-            $cell = Html::div()->addClass( 'node-cell ' . ( $item->isActive() ? 'active'  : '' ) );
+            $cell = Html::div()->addClass('node-cell ' . ($item->isDirectlyActive() ? 'active' : ''));
 
             $link = str_replace( '__ID__', $item->getKey(), $url );
 
@@ -171,12 +172,11 @@ class Renderer
     }
 
     /**
-     * @param Paginator $page
      * @return Element
      */
-    public function render( Paginator $page )
+    public function render()
     {
-        $this->page = $page;
+        $this->page = $this->grid->getItems();
 
         return Html::section( [
             $this->table(),

@@ -45,9 +45,14 @@ class ObjectRelation extends AbstractField
     private $groupByGetName;
 
     /**
-     * @var bool
+     * @var string
      */
-    private $default = true;
+    protected $rendererClass = ObjectRelationRenderer::class;
+
+    /**
+     * @var string
+     */
+    protected $groupedRendererClass = ObjectRelationGroupedRenderer::class;
 
     /**
      * @param string $name
@@ -77,18 +82,7 @@ class ObjectRelation extends AbstractField
         parent::__construct( $name );
     }
 
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     * @throws \ReflectionException
-     */
-    public function render()
-    {
-        $renderer = $this->isGrouped() ?
-            ObjectRelationGroupedRenderer::class :
-            ObjectRelationRenderer::class;
 
-        return ( new $renderer( $this ) )->render();
-    }
 
     /**
      * @return bool
@@ -118,17 +112,6 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param Model|bool $default
-     * @return self
-     */
-    public function default( $default )
-    {
-        $this->default = $default;
-
-        return $this;
-    }
-
-    /**
      * @param string $attribute
      * @param Closure $groupName
      * @return self
@@ -139,6 +122,10 @@ class ObjectRelation extends AbstractField
 
         $this->groupByAttribute = $attribute;
         $this->groupByGetName = $groupName;
+
+        $this->setRendererClass(
+            $this->getGroupedRendererClass()
+        );
 
         return $this;
     }
@@ -302,11 +289,6 @@ class ObjectRelation extends AbstractField
     {
         $values = collect();
 
-        if ( $this->hasDefault() )
-        {
-            $values->push( null );
-        }
-
         $values = $values->merge($this->options ?: $this->relatedModelType::all()->mapWithKeys( function( $item )
         {
             return [ $item->getKey() => $item ];
@@ -372,8 +354,14 @@ class ObjectRelation extends AbstractField
             }
         }
 
-        $fieldSet->add( new Hidden( 'related_id' ) )->setValue( $ids )->rules( implode( '|', $this->rules ) );
-        $fieldSet->add( new Hidden( 'related_type' ) )->setValue( ( new \ReflectionClass( $this->relatedModelType ) )->getName() );
+        $fieldSet->hidden('related_id')
+                 ->setValue($ids)->rules(implode('|', $this->rules))
+                 ->setDisabled($this->isDisabled())
+                 ->setInteractive($this->isInteractive());
+        $fieldSet->hidden('related_type')
+                 ->setValue(( new \ReflectionClass($this->relatedModelType) )->getName())
+                 ->setDisabled($this->isDisabled())
+                 ->setInteractive($this->isInteractive());
 
         return $fieldSet;
     }
@@ -434,10 +422,43 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @return bool
+     * @return array
      */
-    private function hasDefault()
+    public function getFieldClasses(): array
     {
-        return $this->isSingular() && $this->default;
+        $classes = parent::getFieldClasses();
+
+        $relates = strtolower( class_basename( $this->getRelatedModelType() ) );
+        $class = "relates-{$relates}";
+
+        $classes[] = $class;
+
+        if($this->isSingular()) {
+            $classes[] = 'single';
+        } else {
+            $classes[] = 'multiple';
+        }
+        
+        return $classes;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGroupedRendererClass(): string
+    {
+        return $this->groupedRendererClass;
+    }
+
+    /**
+     * @param string $groupedRendererClass
+     *
+     * @return ObjectRelation
+     */
+    public function setGroupedRendererClass( string $groupedRendererClass ): self
+    {
+        $this->groupedRendererClass = $groupedRendererClass;
+
+        return $this;
     }
 }

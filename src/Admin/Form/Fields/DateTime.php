@@ -2,7 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
+use Carbon\Carbon;
 
 /**
  * Class DateTime
@@ -10,19 +11,50 @@ use Arbory\Base\Html\Elements\Element;
  */
 class DateTime extends Text
 {
+    protected $classes = [
+        'text',
+        'datetime-picker'
+    ];
+
+    protected $format = 'Y-m-d H:i';
+
     /**
-     * @param string $name
+     * @return string
      */
-    public function __construct( $name )
+    public function getFormat(): string
     {
-        parent::__construct( $name );
+        return $this->format;
     }
 
     /**
-     * @return Element
+     * @param string $format
+     *
+     * @return DateTime
      */
-    public function render()
+    public function setFormat( string $format ): DateTime
     {
-        return ( new Renderer\DateFieldRenderer( $this ) )->render();
+        $this->format = $format;
+
+        return $this;
+    }
+
+    public function getValue()
+    {
+        $value = parent::getValue();
+
+        if($value) {
+            return Carbon::parse($value)->format($this->getFormat());
+        }
+
+        return null;
+    }
+
+    public function beforeRender( RendererInterface $renderer )
+    {
+        if($this->isDisabled() || !$this->isInteractive()) {
+            $this->removeClasses('datetime-picker');
+        }
+
+
     }
 }

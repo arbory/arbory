@@ -6,6 +6,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\FileFieldRenderer;
 use Arbory\Base\Files\ArboryFileFactory;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Repositories\ArboryFilesRepository;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 
 /**
@@ -13,8 +14,14 @@ use Illuminate\Http\Request;
  * @package Arbory\Base\Admin\Form\Fields
  * @method \Arbory\Base\Files\ArboryFile getModel
  */
-class ArboryFile extends AbstractField
+class ArboryFile extends ControlField
 {
+    protected $elementType = 'input';
+
+    protected $attributes = [
+        'type' => 'file'
+    ];
+
     /**
      * @var string
      */
@@ -63,7 +70,7 @@ class ArboryFile extends AbstractField
      */
     protected function deleteCurrentFileIfExists()
     {
-        if ($this->isRequired()) {
+        if ($this->isRequired() || $this->isDisabled()) {
             return;
         }
 
@@ -103,8 +110,18 @@ class ArboryFile extends AbstractField
         if ($uploadedFile) {
             $this->deleteCurrentFileIfExists();
 
-            $factory = new ArboryFileFactory(new ArboryFilesRepository($this->getDisk()));
-            $factory->make($this->getModel(), $uploadedFile, $this->getName());
+            $model = $this->getModel();
+
+            /**
+             * @var $relation BelongsTo
+             */
+            $relation = $model->{$this->getName()}();
+            $modelClass = get_class($relation->getRelated());
+
+            $factory = new ArboryFileFactory(
+                new ArboryFilesRepository($this->getDisk(), $modelClass)
+            );
+            $factory->make($model, $uploadedFile, $this->getName());
         }
     }
 
@@ -113,6 +130,6 @@ class ArboryFile extends AbstractField
      */
     public function isRequired(): bool
     {
-        return in_array('arbory_file_required', $this->getRules(), true);
+        return in_array('arbory_file_required', $this->getRules(), true) || $this->required;
     }
 }

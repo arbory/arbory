@@ -2,87 +2,38 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Widgets\Select;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Form\Controls\SelectControl;
 
-class SelectFieldRenderer
+class SelectFieldRenderer extends ControlFieldRenderer
 {
     /**
      * @var \Arbory\Base\Admin\Form\Fields\Select
      */
     protected $field;
 
-    /**
-     * @var array
-     */
-    protected $value;
-
-    /**
-     * @var Collection
-     */
-    protected $options;
-
-    /**
-     * AssociatedSetRenderer constructor.
-     * @param FieldInterface $field
-     * @param Collection $options
-     */
-    public function __construct( FieldInterface $field, Collection $options )
-    {
-        $this->field = $field;
-        $this->value = $field->getValue();
-        $this->options = $options;
-    }
-
-    /**
-     * @return \Arbory\Base\Html\Elements\Element
-     */
-    protected function getLabel()
-    {
-        return Html::label( $this->field->getLabel() );
-    }
-
-    /**
-     * @return Select
-     */
-    protected function getSelectInput()
-    {
-        $select = ( new Select )
-            ->name( $this->field->getNameSpacedName() )
-            ->options( $this->options )
-            ->selected( $this->field->getValue() );
-
-        if( $this->field->isMultiple() )
-        {
-            $select->name( $this->field->getNameSpacedName() . '[]' );
-        }
-
-        return $select;
-    }
-
-    /**
-     * @return Element
-     */
     public function render()
     {
-        $selectInput = $this->getSelectInput();
-        $field = new FieldRenderer();
-        $field->setType( 'select' );
-        $field->setName( $this->field->getName() );
-        $field->setLabel( $this->getLabel() );
+        /**
+         * @var $control SelectControl
+         */
+        $control = $this->getControl();
+        $control = $this->configureControl($control);
 
-        if( $this->field->isMultiple() )
-        {
-            $selectInput->attributes( [
-                'multiple'
-            ] );
+        $control->setOptions($this->field->getOptions()->prepend('', '')->all());
+        $control->setSelected($this->field->getValue());
+
+        $element = $control->element();
+
+        if($this->field->isMultiple()) {
+            $control->setMultiple(true);
+
+            $name =  $control->getName();
+            $element->addAttributes([
+                'multiple' => '',
+                'name' => $name . '[]'
+            ]);
         }
 
-        $field->setValue( $selectInput );
-
-        return $field->render();
+        return $control->render($element);
     }
 }

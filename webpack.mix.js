@@ -1,22 +1,11 @@
 module.exports = function (mix) {
 
-    mix.webpackConfig(function () {
-        var config = mix.config.webpackConfig || {};
-
-        config.resolve = config.resolve || {};
-        config.resolve.symlinks = false;
-
-        return config;
-    });
-
-    mix.js(
-        'vendor/arbory/arbory/resources/assets/js/admin.js',
-        'public/arbory/js'
-    );
+    mix.setPublicPath('public/arbory');
+    mix.webpackConfig({resolve: {symlinks: false}});
 
     mix.js(
         'vendor/arbory/arbory/resources/assets/js/controllers/*',
-        'public/arbory/js/controllers/'
+        'js/controllers/'
     );
 
     mix.babel([
@@ -33,17 +22,17 @@ module.exports = function (mix) {
 
     mix.sass(
         'vendor/arbory/arbory/resources/assets/stylesheets/application.scss',
-        'public/arbory/css/application.css'
+        'css/application.css'
     );
 
     mix.sass(
         'vendor/arbory/arbory/resources/assets/stylesheets/controllers/nodes.scss',
-        'public/arbory/css/controllers/'
+        'css/controllers/'
     );
 
     mix.sass(
         'vendor/arbory/arbory/resources/assets/stylesheets/controllers/sessions.scss',
-        'public/arbory/css/controllers/'
+        'css/controllers/'
     );
 
     mix.copyDirectory(
@@ -63,6 +52,8 @@ module.exports = function (mix) {
 
     mix.copyDirectory(
         'vendor/unisharp/laravel-filemanager/public/',
-        'public/vendor/laravel-filemanager/'
+        'public/arbory/laravel-filemanager/'
     );
+
+    mix.version();
 };

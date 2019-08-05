@@ -8,7 +8,6 @@ use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Pages\Redirect;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 
 class RedirectsController extends Controller
@@ -21,9 +20,10 @@ class RedirectsController extends Controller
     protected $resource = Redirect::class;
 
     /**
-     * @param Model $model
+     * @param Form $form
      * @return Form
      */
+
     protected function form(Model $model)
     {
         $form = $this->module()->form($model, function (Form $form) {
@@ -43,9 +43,10 @@ class RedirectsController extends Controller
     }
 
     /**
+     * @param Grid $grid
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
         $grid = $this->module()->grid($this->resource(), function (Grid $grid) {
             $grid->column('from_url', trans('arbory::redirect.from_url'));

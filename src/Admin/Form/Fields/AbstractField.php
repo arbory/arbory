@@ -2,7 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
+use Arbory\Base\Admin\Form\Fields\Concerns\IsTranslatable;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -11,8 +15,11 @@ use Illuminate\View\View;
  * Class AbstractField
  * @package Arbory\Base\Admin\Form\Fields
  */
-abstract class AbstractField implements FieldInterface
+abstract class AbstractField implements FieldInterface, ControlFieldInterface
 {
+    use IsTranslatable;
+    use IsControlField;
+
     /**
      * @var string
      */
@@ -22,6 +29,11 @@ abstract class AbstractField implements FieldInterface
      * @var mixed
      */
     protected $value;
+
+    /**
+     * @var mixed
+     */
+    protected $defaultValue;
 
     /**
      * @var string
@@ -37,6 +49,31 @@ abstract class AbstractField implements FieldInterface
      * @var FieldSet
      */
     protected $fieldSet;
+
+    /**
+     * @var string
+     */
+    protected $rendererClass;
+
+    /**
+     * @var RendererInterface
+     */
+    protected $renderer;
+
+    /**
+     * @var mixed
+     */
+    protected $tooltip;
+
+    /**
+     * @var int
+     */
+    protected $rows;
+
+    /**
+     * @var string
+     */
+    protected $style;
 
     /**
      * AbstractField constructor.
@@ -95,7 +132,28 @@ abstract class AbstractField implements FieldInterface
             $this->value = $this->getModel()->getAttribute( $this->getName() );
         }
 
+        if ($this->hasNoValue() && $this->getDefaultValue()) {
+            $this->value = $this->getDefaultValue();
+        }
+
         return $this->value;
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasNoValue()
+    {
+        return $this->value === null || $this->isEmptyCollection($this->value);
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    private function isEmptyCollection($value)
+    {
+        return $value instanceof Collection && $value->isEmpty();
     }
 
     /**
@@ -105,6 +163,25 @@ abstract class AbstractField implements FieldInterface
     public function setValue( $value )
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * @param mixed $defaultValue
+     * @return $this
+     */
+    public function setDefaultValue($defaultValue)
+    {
+        $this->defaultValue = $defaultValue;
 
         return $this;
     }
@@ -202,6 +279,155 @@ abstract class AbstractField implements FieldInterface
     /**
      * @return View
      */
-    abstract public function render();
+    public function render()
+    {
+            return $this->getRenderer()->render();
+    }
 
+    /**
+     * @return string|null
+     */
+    public function getRendererClass(): ?string
+    {
+        return $this->rendererClass;
+    }
+
+    /**
+     * @param string|null $rendererClass
+     *
+     * @return FieldInterface
+     */
+    public function setRendererClass( ?string $rendererClass = null ): FieldInterface
+    {
+        $this->rendererClass = $rendererClass;
+        
+        $this->setRenderer(null);
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTooltip()
+    {
+        return $this->tooltip;
+    }
+
+    /**
+     * @param string|null $content
+     *
+     * @return FieldInterface
+     */
+    public function setTooltip( $content = null ): FieldInterface
+    {
+        $this->tooltip = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRows(): int
+    {
+        return $this->rows;
+    }
+
+    /**
+     * @param int $rows
+     *
+     * @return FieldInterface
+     */
+    public function setRows( int $rows ): FieldInterface
+    {
+        $this->rows = $rows;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStyle()
+    {
+        return $this->style;
+    }
+
+    /**
+     * @param string $style
+     *
+     * @return FieldInterface
+     */
+    public function setStyle( string $style ): FieldInterface
+    {
+        $this->style = $style;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldClasses():array
+    {
+        $type = snake_case(class_basename(get_class($this)), '-');
+
+        return ["type-{$type}"];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFieldId()
+    {
+        return null;
+    }
+
+    /**
+     * @return RendererInterface|null
+     */
+    public function getRenderer(): ?RendererInterface
+    {
+        if ( is_null($this->renderer) && $this->rendererClass ) {
+            $this->renderer = $this->newRenderer();
+        }
+
+        return $this->renderer;
+    }
+
+    /**
+     * @param RendererInterface|null $renderer
+     *
+     * @return FieldInterface
+     */
+    public function setRenderer(?RendererInterface $renderer):FieldInterface
+    {
+        $this->renderer = $renderer;
+
+        return $this;
+    }
+
+    /**                 
+     * @return RendererInterface
+     */
+    public function newRenderer()
+    {
+        return app()->makeWith(
+            $this->rendererClass,
+            [
+                'field' => $this
+            ]
+        );
+    }
+
+    /**
+     * @param RendererInterface $renderer
+     *
+     * @return mixed|void
+     */
+    public function beforeRender( RendererInterface $renderer )
+    {
+
+    }
 }
