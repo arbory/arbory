@@ -122,7 +122,9 @@ class NodeServiceProvider extends ServiceProvider
                 } );
             } );
 
-            $this->routes->registerNodes();
+	    if (!$this->app->routesAreCached()) {
+                $this->routes->registerNodes();
+            }
         }
         elseif( !$this->app->routesAreCached() && $this->isDbConfigured() )
         {
