@@ -69,12 +69,12 @@ class Grid
      * @var callable
      */
     protected $rowUrlCallback;
-    
+
     /**
      * @var bool
      */
     protected $toolbox = true;
-    
+
     /**
      * @param Model $model
      * @param Closure $layout
@@ -151,7 +151,7 @@ class Grid
     {
         $this->tools[] = [$tool, $side ?: self::FOOTER_SIDE_SECONDARY];
     }
-    
+
     /**
      * @param  bool  $show
      *
@@ -160,10 +160,10 @@ class Grid
     public function toolbox(bool $show): self
     {
         $this->toolbox = $show;
-        
+
         return $this;
     }
-    
+
     /**
      * @return bool
      */

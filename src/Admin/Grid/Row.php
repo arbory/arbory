@@ -60,7 +60,7 @@ class Row implements Renderable
     public function render()
     {
         $cells = $this->getCells();
-        
+
         if ($this->grid->isToolboxEnable()) {
             $cells->push(
                 Html::td(
