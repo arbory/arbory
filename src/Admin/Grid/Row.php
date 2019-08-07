@@ -60,14 +60,16 @@ class Row implements Renderable
     public function render()
     {
         $cells = $this->getCells();
-
-        $cells->push(
-            Html::td(
-                Toolbox::create(
-                    $this->grid->getModule()->url('dialog', ['dialog' => 'toolbox', 'id' => $this->model->getKey()])
-                )->render()
-            )->addClass('only-icon toolbox-cell')
-        );
+        
+        if ($this->grid->isToolboxEnable()) {
+            $cells->push(
+                Html::td(
+                    Toolbox::create(
+                        $this->grid->getModule()->url('dialog', ['dialog' => 'toolbox', 'id' => $this->model->getKey()])
+                    )->render()
+                )->addClass('only-icon toolbox-cell')
+            );
+        }
 
         return Html::tr($cells->toArray())
             ->addAttributes([

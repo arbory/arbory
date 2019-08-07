@@ -69,7 +69,12 @@ class Grid
      * @var callable
      */
     protected $rowUrlCallback;
-
+    
+    /**
+     * @var bool
+     */
+    protected $toolbox = true;
+    
     /**
      * @param Model $model
      * @param Closure $layout
@@ -145,6 +150,26 @@ class Grid
     public function addTool(RenderableInterface $tool, string $side = null)
     {
         $this->tools[] = [$tool, $side ?: self::FOOTER_SIDE_SECONDARY];
+    }
+    
+    /**
+     * @param  bool  $show
+     *
+     * @return \Arbory\Base\Admin\Grid
+     */
+    public function toolbox(bool $show): self
+    {
+        $this->toolbox = $show;
+        
+        return $this;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isToolboxEnable(): bool
+    {
+        return $this->toolbox;
     }
 
     /**
