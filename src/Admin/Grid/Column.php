@@ -73,6 +73,11 @@ class Column
     protected $checkable = false;
 
     /**
+     * @var null
+     */
+    protected $customQuery = null;
+
+    /**
      * Column constructor.
      * @param string $name
      * @param string $label
@@ -224,12 +229,34 @@ class Column
     }
 
     /**
+     * @param callable $query
+     */
+    public function setCustomSearchQuery(callable $query)
+    {
+        $this->customQuery = $query;
+
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCustomSearchQuery()
+    {
+        return $this->customQuery;
+    }
+
+    /**
      * @param QueryBuilder $query
      * @param $string
      * @return QueryBuilder
      */
     public function searchConditions(QueryBuilder $query, $string)
     {
+        if ($this->customQuery) {
+            return call_user_func($this->customQuery, $query, $string);
+        }
+
         if ($this->relationName) {
             return $query->orWhereHas($this->relationName, function (QueryBuilder $query) use ($string) {
                 $query->where($this->relationColumn, 'like', "%$string%");
