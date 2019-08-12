@@ -176,6 +176,9 @@ class Grid
         return $this;
     }
 
+    /**
+     * @return LengthAwarePaginator|Collection|null
+     */
     public function getItems()
     {
         if ($this->items === null) {
@@ -213,8 +216,8 @@ class Grid
     }
 
     /**
-     * @param null $name
-     * @param null $label
+     * @param string|null $name
+     * @param string|null $label
      * @return Column
      */
     public function column($name = null, $label = null) : Column
@@ -223,8 +226,8 @@ class Grid
     }
 
     /**
-     * @param null $name
-     * @param null $label
+     * @param string|null $name
+     * @param string|null $label
      * @return Column
      */
     public function appendColumn($name = null, $label = null) : Column
@@ -237,8 +240,8 @@ class Grid
     }
 
     /**
-     * @param null $name
-     * @param null $label
+     * @param string|null $name
+     * @param string|null $label
      * @return Column
      */
     public function prependColumn($name = null, $label = null) : Column
@@ -251,8 +254,8 @@ class Grid
     }
 
     /**
-     * @param $column
-     * @param $name
+     * @param string $column
+     * @param string $name
      * @return mixed
      */
     protected function setColumnRelation($column, $name) : Column
@@ -268,8 +271,8 @@ class Grid
     }
 
     /**
-     * @param null $name
-     * @param null $label
+     * @param string|null $name
+     * @param string|null $label
      * @return Column
      */
     protected function createColumn($name = null, $label = null) : Column

@@ -18,7 +18,7 @@ class Row implements Renderable
 
     /**
      * Row constructor.
-     * @param null $content
+     * @param mixed|null $content
      */
     public function __construct($content = null)
     {
@@ -35,7 +35,7 @@ class Row implements Renderable
     }
 
     /**
-     * @return Body
+     * @return Content|string
      */
     public function render()
     {
