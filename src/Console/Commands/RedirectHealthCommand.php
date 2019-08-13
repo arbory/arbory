@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Arbory\Base\Jobs\UpdateRedirectUrlStatus;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class RedirectHealthCommand extends Command
 {
@@ -15,9 +16,7 @@ class RedirectHealthCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'arbory.redirect-health
-                            {ids=[] : The array of IDs from redirects table to check (if not provided then would be selected all redirects table entries)}
-                            {--errors : Show curl request errors}';
+    protected $signature = 'arbory.redirect-health';
 
     /**
      * The console command description.
@@ -33,38 +32,45 @@ class RedirectHealthCommand extends Command
      */
     public function handle()
     {
+        $ids = $this->getIDs();
+        $job = new UpdateRedirectUrlStatus($ids);
+
+        $this->info('Start to check '.count($ids).' entries...');
         try {
-            $ids = $this->getIDs();
-            $job = new UpdateRedirectUrlStatus($ids);
-
-            $this->info('Start to check '.count($ids).' entries...');
-
             $this->dispatchNow($job);
             $result = $job->getResult();
-
-            if (! empty($result) && count($result->getInvalidUrlList())) {
-                $this->warn("\nInvalid URLs list:");
-                foreach ($result->getInvalidUrlList() as $url) {
-                    $this->warn($url);
-                }
-            }
-
-            if ($this->option('errors') && ! empty($result) && count($result->getErrors())) {
-                foreach ($result->getErrors() as $url => $err) {
-                    $this->error("Request to $url - $err");
-                }
-            }
-
-            $this->warn("\nInvalid entries: {$result->getInvalidCount()}");
-            $this->info("Valid entries: {$result->getValidCount()}");
         } catch (\Exception $e) {
-            $this->error('Redirects healthcheck failed with an exception');
+            $this->error('Command redirect-health failed with an exception');
             $this->error($e->getMessage());
 
-            return 2;
+            return 1;
         }
 
+        if (! empty($result) && count($result->getInvalidUrlList())) {
+            $this->warn(PHP_EOL . 'Invalid URLs list:');
+            foreach ($result->getInvalidUrlList() as $url) {
+                $this->warn($url);
+            }
+        }
+
+        if ($this->isSetVerboseFlag() && ! empty($result) && count($result->getErrors())) {
+            foreach ($result->getErrors() as $url => $err) {
+                $this->error('Request to ' . $url . ' - ' . $err);
+            }
+        }
+
+        $this->warn(PHP_EOL . 'Invalid entries: ' . $result->getInvalidCount());
+        $this->info('Valid entries: ' . $result->getValidCount());
+
         return 0;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isSetVerboseFlag()
+    {
+        return $this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE;
     }
 
     /**
@@ -91,19 +97,6 @@ class RedirectHealthCommand extends Command
      */
     private function getIDs()
     {
-        $param = $this->argument('ids');
-
-        $final_ids = [];
-        foreach (explode(',', $param) as $id) {
-            if (is_numeric($id)) {
-                $final_ids[] = $id;
-            }
-        }
-
-        if (count($final_ids)) {
-            return $final_ids;
-        }
-
         return $this->selectAllRedirectIds();
     }
 }
