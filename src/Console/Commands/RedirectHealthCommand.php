@@ -47,7 +47,7 @@ class RedirectHealthCommand extends Command
         }
 
         if (! empty($result) && count($result->getInvalidUrlList())) {
-            $this->warn(PHP_EOL . 'Invalid URLs list:');
+            $this->warn(PHP_EOL.'Invalid URLs list:');
             foreach ($result->getInvalidUrlList() as $url) {
                 $this->warn($url);
             }
@@ -55,12 +55,12 @@ class RedirectHealthCommand extends Command
 
         if ($this->isSetVerboseFlag() && ! empty($result) && count($result->getErrors())) {
             foreach ($result->getErrors() as $url => $err) {
-                $this->error('Request to ' . $url . ' - ' . $err);
+                $this->error('Request to '.$url.' - '.$err);
             }
         }
 
-        $this->warn(PHP_EOL . 'Invalid entries: ' . $result->getInvalidCount());
-        $this->info('Valid entries: ' . $result->getValidCount());
+        $this->warn(PHP_EOL.'Invalid entries: '.$result->getInvalidCount());
+        $this->info('Valid entries: '.$result->getValidCount());
 
         return 0;
     }
