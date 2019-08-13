@@ -198,7 +198,7 @@ class Column
     }
 
     /**
-     * @param null $type
+     * @param string|null $type
      * @return $this
      */
     public function setFilter($type = null)

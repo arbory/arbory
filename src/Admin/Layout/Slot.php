@@ -75,6 +75,9 @@ class Slot implements Renderable
         return $this->children->get($name);
     }
 
+    /**
+     * @return Content|string
+     */
     public function render()
     {
         if (is_callable($this->contents)) {
@@ -92,7 +95,7 @@ class Slot implements Renderable
 
         $contents = $contents->merge(
             $this->children->map(
-                function (Slot $value) {
+                static function (self $value) {
                     return $value->render();
                 }
             )
