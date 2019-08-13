@@ -17,6 +17,7 @@
     "require": {
         "php": "^7.1",
         "ext-json": "*",
+        "ext-curl": "*",
         "laravel/framework": "^5.5.0|^5.6.0",
         "laravelcollective/html": "^5.5.0|^5.6.0",
         "doctrine/dbal": "^2.5",
@@ -32,8 +33,7 @@
         "roboc/laravel-glide": "^1.1.0",
         "spatie/laravel-sluggable": "^2.1.0",
         "maatwebsite/excel": "^3.0.5",
-        "unisharp/laravel-filemanager": "^1.8.5",
-        "ext-curl": "*"
+        "unisharp/laravel-filemanager": "^1.8.5"
     },
     "require-dev" : {
         "satooshi/php-coveralls": "^1.0",
