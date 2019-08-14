@@ -158,7 +158,7 @@ class Grid
     public function showToolbox(): self
     {
         $this->hasToolbox = true;
-        
+
         return $this;
     }
 
