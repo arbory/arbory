@@ -73,7 +73,7 @@ class Grid
     /**
      * @var bool
      */
-    protected $toolbox = true;
+    protected $hasToolbox = true;
 
     /**
      * @param Model $model
@@ -153,13 +153,21 @@ class Grid
     }
 
     /**
-     * @param  bool  $show
-     *
      * @return \Arbory\Base\Admin\Grid
      */
-    public function toolbox(bool $show): self
+    public function showToolbox(): self
     {
-        $this->toolbox = $show;
+        $this->hasToolbox = true;
+        
+        return $this;
+    }
+
+    /**
+     * @return \Arbory\Base\Admin\Grid
+     */
+    public function hideToolbox(): self
+    {
+        $this->hasToolbox = false;
 
         return $this;
     }
@@ -169,7 +177,7 @@ class Grid
      */
     public function isToolboxEnable(): bool
     {
-        return $this->toolbox;
+        return $this->hasToolbox;
     }
 
     /**
