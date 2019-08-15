@@ -3,8 +3,7 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\Select;
-use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Pages\Redirect;
@@ -23,23 +22,20 @@ class RedirectsController extends Controller
      * @param Form $form
      * @return Form
      */
-
-    protected function form(Model $model)
+    public function form(Form $form)
     {
-        $form = $this->module()->form($model, function (Form $form) {
-            $form->addField(new Text('from_url'))
+        return $form->setFields(function (FieldSet $fields) {
+            $fields->text('from_url')
                 ->rules('required')
                 ->setLabel(trans('arbory::redirect.from_url'));
-            $form->addField(new Text('to_url'))
+            $fields->text('to_url')
                 ->rules('required')
                 ->setLabel(trans('arbory::redirect.to_url'));
 
-            $form->addField(new Select('status'))
+            $fields->select('status')
                 ->options($this->getStatusOptions())
                 ->setLabel(trans('arbory::redirect.status.name'));
         });
-
-        return $form;
     }
 
     /**
@@ -48,12 +44,10 @@ class RedirectsController extends Controller
      */
     public function grid(Grid $grid)
     {
-        $grid = $this->module()->grid($this->resource(), function (Grid $grid) {
+        return $grid->setColumns(function (Grid $grid) {
             $grid->column('from_url', trans('arbory::redirect.from_url'));
             $grid->column('to_url', trans('arbory::redirect.to_url'));
         });
-
-        return $grid;
     }
 
     private function getStatusOptions()
