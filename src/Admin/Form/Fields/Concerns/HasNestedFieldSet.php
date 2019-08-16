@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\NestedFieldInterface;
 
