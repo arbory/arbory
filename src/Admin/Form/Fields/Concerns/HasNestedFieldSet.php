@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Concerns;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
@@ -20,7 +21,7 @@ trait HasNestedFieldSet
     }
 
     /**
-     * @param $model
+     * @param Model $model
      *
      * @return FieldSet|FieldInterface[]
      */
