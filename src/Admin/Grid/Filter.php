@@ -168,9 +168,9 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $relationName
+     * @param string $relationName
      */
-    public function withRelation($relationName)
+    public function withRelation(string $relationName)
     {
         $this->query->with($relationName);
     }
@@ -184,11 +184,11 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $column
-     * @param $value
-     * @param $key
+     * @param Column $column
+     * @param string $value
+     * @param string $key
      */
-    public function createQuery($column, $value, $key): void
+    public function createQuery(Column $column, $value, $key): void
     {
         $actions = $this->getFilterTypeAction($column);
 
@@ -224,10 +224,10 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $column
+     * @param Column $column
      * @return array
      */
-    public function getFilterTypeAction($column): array
+    public function getFilterTypeAction(Column $column): array
     {
         return $column->getFilterType()->getAction();
     }
@@ -241,11 +241,11 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $columnName
+     * @param string $columnName
      * @param $actions
      * @param $values
      */
-    public function createQueryWithoutRelation($columnName, $actions, $values): void
+    public function createQueryWithoutRelation(string $columnName, $actions, $values): void
     {
         $actions = array_wrap($actions);
         $values = array_wrap($values);
@@ -256,11 +256,11 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $column
+     * @param Column $column
      * @param $actions
      * @param $values
      */
-    public function createQueryWithRelation($column, $actions, $values): void
+    public function createQueryWithRelation(Column $column, $actions, $values): void
     {
         $actions = array_wrap($actions);
         $values = array_wrap($values);

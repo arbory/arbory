@@ -26,5 +26,5 @@ interface FilterInterface
     /**
      * @param $relationName
      */
-    public function withRelation($relationName);
+    public function withRelation(string $relationName);
 }

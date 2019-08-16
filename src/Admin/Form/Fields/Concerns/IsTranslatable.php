@@ -16,7 +16,7 @@ trait IsTranslatable
     public function translatable()
     {
         /**
-         * @var FieldTypeRegistry
+         * @var $registry FieldTypeRegistry
          */
         $registry = app(FieldTypeRegistry::class);
 
