@@ -46,7 +46,7 @@ class Link implements Renderable
     }
 
     /**
-     * @param null $type
+     * @param string|null $type
      * @return Link
      */
     public function asButton($type = null)
