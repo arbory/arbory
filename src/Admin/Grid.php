@@ -71,6 +71,11 @@ class Grid
     protected $rowUrlCallback;
 
     /**
+     * @var bool
+     */
+    protected $hasToolbox = true;
+
+    /**
      * @param Model $model
      * @param Closure $layout
      */
@@ -145,6 +150,34 @@ class Grid
     public function addTool(RenderableInterface $tool, string $side = null)
     {
         $this->tools[] = [$tool, $side ?: self::FOOTER_SIDE_SECONDARY];
+    }
+
+    /**
+     * @return \Arbory\Base\Admin\Grid
+     */
+    public function showToolbox(): self
+    {
+        $this->hasToolbox = true;
+
+        return $this;
+    }
+
+    /**
+     * @return \Arbory\Base\Admin\Grid
+     */
+    public function hideToolbox(): self
+    {
+        $this->hasToolbox = false;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isToolboxEnable(): bool
+    {
+        return $this->hasToolbox;
     }
 
     /**
