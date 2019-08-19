@@ -69,12 +69,12 @@ class Column
      * @var bool
      */
     protected $checkable = false;
-    
+
     /**
      * @var Closure
      */
     protected $exportColumnDisplay;
-    
+
     /**
      * Column constructor.
      * @param string $name
@@ -305,7 +305,7 @@ class Column
 
         return call_user_func_array($this->displayer, [$value, $this, $model]);
     }
-    
+
     /**
      * @param  \Closure  $closure
      *
@@ -314,10 +314,10 @@ class Column
     public function setExportColumnDisplay(Closure $closure): self
     {
         $this->exportColumnDisplay = $closure;
-        
+
         return $this;
     }
-    
+
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $model
      *
@@ -328,9 +328,9 @@ class Column
         if ($this->exportColumnDisplay === null) {
             return $this->callDisplayCallback($model);
         }
-        
+
         $value = $this->getValue($model);
-        
+
         return call_user_func($this->exportColumnDisplay, $value, $this, $model);
     }
 

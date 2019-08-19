@@ -74,7 +74,7 @@ class Grid
      * @var bool
      */
     protected $isExport = false;
-    
+
     /**
      * @var bool
      */
@@ -440,7 +440,7 @@ class Grid
 
         return $this;
     }
-    
+
     /**
      * @return bool
      */
@@ -448,24 +448,24 @@ class Grid
     {
         return $this->isExport;
     }
-    
+
     /**
      * @return $this
      */
     public function enableExport(): self
     {
         $this->isExport = true;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function disableExport(): self
     {
         $this->isExport = false;
-        
+
         return $this;
     }
 
