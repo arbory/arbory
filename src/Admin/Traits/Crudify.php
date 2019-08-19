@@ -270,7 +270,7 @@ trait Crudify
         $grid->setRenderer(new ExportBuilder($grid));
         $grid->paginate(false);
 
-        $grid->enableExport();
+        $grid->exportEnabled();
 
         /** @var DataSetExport $dataSet */
         $dataSet = $grid->render();

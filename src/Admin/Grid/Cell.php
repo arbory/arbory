@@ -81,7 +81,9 @@ class Cell implements Renderable
         $model = $this->getModel();
         $column = $this->getColumn();
 
-        $value = $grid->isExport() ? $column->getExportColumnDisplay($model) : $column->callDisplayCallback($model);
+        $value = $grid->isExportEnabled() ?
+            $column->getExportColumnDisplay($model) :
+            $column->callDisplayCallback($model);
 
         return Html::td($value);
     }
