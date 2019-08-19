@@ -73,7 +73,7 @@ class Grid
     /**
      * @var bool
      */
-    protected $isExport = false;
+    protected $isExportEnabled = false;
 
     /**
      * @var bool
@@ -82,7 +82,6 @@ class Grid
 
     /**
      * @param Model $model
-     * @param Closure $layout
      */
     public function __construct(Model $model)
     {
@@ -446,7 +445,7 @@ class Grid
      */
     public function isExportEnabled(): bool
     {
-        return $this->isExport;
+        return $this->isExportEnabled;
     }
 
     /**
@@ -454,7 +453,7 @@ class Grid
      */
     public function exportEnabled(): self
     {
-        $this->isExport = true;
+        $this->isExportEnabled = true;
 
         return $this;
     }
@@ -464,7 +463,7 @@ class Grid
      */
     public function exportDisabled(): self
     {
-        $this->isExport = false;
+        $this->isExportEnabled = false;
 
         return $this;
     }
