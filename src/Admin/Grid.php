@@ -73,11 +73,15 @@ class Grid
     /**
      * @var bool
      */
+    protected $isExportEnabled = false;
+
+    /**
+     * @var bool
+     */
     protected $hasToolbox = true;
 
     /**
      * @param Model $model
-     * @param Closure $layout
      */
     public function __construct(Model $model)
     {
@@ -432,6 +436,34 @@ class Grid
     public function setRowUrlCallback(callable $rowUrlCallback): self
     {
         $this->rowUrlCallback = $rowUrlCallback;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExportEnabled(): bool
+    {
+        return $this->isExportEnabled;
+    }
+
+    /**
+     * @return $this
+     */
+    public function exportEnabled(): self
+    {
+        $this->isExportEnabled = true;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function exportDisabled(): self
+    {
+        $this->isExportEnabled = false;
 
         return $this;
     }
