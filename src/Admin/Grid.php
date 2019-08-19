@@ -71,6 +71,11 @@ class Grid
     protected $rowUrlCallback;
 
     /**
+     * @var bool
+     */
+    protected $isExport = false;
+    
+    /**
      * @param Model $model
      * @param Closure $layout
      */
@@ -397,6 +402,34 @@ class Grid
     {
         $this->rowUrlCallback = $rowUrlCallback;
 
+        return $this;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isExport(): bool
+    {
+        return $this->isExport;
+    }
+    
+    /**
+     * @return $this
+     */
+    public function enableExport(): self
+    {
+        $this->isExport = true;
+        
+        return $this;
+    }
+    
+    /**
+     * @return $this
+     */
+    public function disableExport(): self
+    {
+        $this->isExport = false;
+        
         return $this;
     }
 
