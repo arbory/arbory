@@ -244,6 +244,10 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      */
     public function beforeModelSave(Request $request)
     {
+        if ($this->isDisabled()) {
+            return;
+        }
+        
         $value = $request->has($this->getNameSpacedName())
             ? $request->input($this->getNameSpacedName())
             : null;
