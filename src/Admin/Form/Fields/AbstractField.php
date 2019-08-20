@@ -247,7 +247,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         if ($this->isDisabled()) {
             return;
         }
-        
+
         $value = $request->has($this->getNameSpacedName())
             ? $request->input($this->getNameSpacedName())
             : null;
