@@ -142,6 +142,7 @@ class Renderer
                 $this->filterButton(),
                 $this->resetButton(),
             ])->addClass('form-filter')
+                ->addAttributes(['id' => 'grid-filter'])
                 ->addAttributes(['action' => $this->action])
                 ->addAttributes(['method' => 'get']),
         ]);

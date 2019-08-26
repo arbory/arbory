@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Filter\Types;
 
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
@@ -24,10 +25,12 @@ class DateRangeFilterType extends RangeFilterType
         $max = $this->getRangeValue(static::KEY_MAX);
 
         if ($min) {
+            $min = Carbon::parse($min)->startOfDay()->toDateTimeString();
             $builder->whereDate($filterItem->getName(), '>=', $min);
         }
 
         if ($max) {
+            $max = Carbon::parse($max)->startOfDay()->toDateTimeString();
             $builder->whereDate($filterItem->getName(), '<', $max);
         }
     }
