@@ -30,7 +30,7 @@ class DateRangeFilterType extends RangeFilterType
         }
 
         if ($max) {
-            $max = Carbon::parse($max)->startOfDay()->toDateTimeString();
+            $max = Carbon::parse($max)->endOfDay()->toDateTimeString();
             $builder->whereDate($filterItem->getName(), '<', $max);
         }
     }
