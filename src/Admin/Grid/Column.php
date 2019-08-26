@@ -230,6 +230,7 @@ class Column
 
     /**
      * @param callable $query
+     * @return $this
      */
     public function setCustomSearchQuery(callable $query)
     {
@@ -239,7 +240,7 @@ class Column
     }
 
     /**
-     * @return null
+     * @return null|QueryBuilder
      */
     public function getCustomSearchQuery()
     {
