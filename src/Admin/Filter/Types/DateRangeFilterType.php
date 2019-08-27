@@ -40,7 +40,7 @@ class DateRangeFilterType extends RangeFilterType
     {
         return [
             static::KEY_MIN => ['nullable', 'date'],
-            static::KEY_MAX => ['nullable', 'date']
+            static::KEY_MAX => ['nullable', 'date'],
         ];
     }
 

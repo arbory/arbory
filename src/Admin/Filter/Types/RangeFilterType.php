@@ -33,14 +33,14 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
                 Html::h4(trans('arbory::filter.range.from')),
                 Html::input()
                     ->setType($this->inputType)
-                    ->setName($filterItem->getNamespacedName() . '.' . static::KEY_MIN)
+                    ->setName($filterItem->getNamespacedName().'.'.static::KEY_MIN)
                     ->addAttributes(['step' => $step, 'value' => $this->getRangeValue(static::KEY_MIN)]),
             ])->addClass('column'),
             Html::div([
                 Html::h4(trans('arbory::filter.range.to')),
                 Html::input()
                     ->setType($this->inputType)
-                    ->setName($filterItem->getNamespacedName() . '.' . static::KEY_MAX)
+                    ->setName($filterItem->getNamespacedName().'.'.static::KEY_MAX)
                     ->addAttributes(['step' => $step, 'value' => $this->getRangeValue(static::KEY_MAX)]),
             ])->addClass('column'),
         ])->addClass('range');
