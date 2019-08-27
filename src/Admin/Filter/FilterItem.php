@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter;
-
 
 use Illuminate\Support\Traits\Macroable;
 
@@ -54,7 +52,7 @@ class FilterItem
      * @param string $name
      * @return FilterItem
      */
-    public function setName(string $name): FilterItem
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -73,7 +71,7 @@ class FilterItem
      * @param string $title
      * @return FilterItem
      */
-    public function setTitle(string $title): FilterItem
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -92,7 +90,7 @@ class FilterItem
      * @param FilterTypeInterface $type
      * @return FilterItem
      */
-    public function setType(FilterTypeInterface $type): FilterItem
+    public function setType(FilterTypeInterface $type): self
     {
         $this->type = $type;
 
@@ -111,7 +109,7 @@ class FilterItem
      * @param mixed $defaultValue
      * @return FilterItem
      */
-    public function setDefaultValue($defaultValue): FilterItem
+    public function setDefaultValue($defaultValue): self
     {
         $this->defaultValue = $defaultValue;
 
@@ -146,7 +144,7 @@ class FilterItem
      * @param callable|null $executor
      * @return FilterItem
      */
-    public function setExecutor(?callable $executor): FilterItem
+    public function setExecutor(?callable $executor): self
     {
         $this->executor = $executor;
 
@@ -165,7 +163,7 @@ class FilterItem
      * @param FilterManager $manager
      * @return FilterItem
      */
-    public function setManager(FilterManager $manager): FilterItem
+    public function setManager(FilterManager $manager): self
     {
         $this->manager = $manager;
 
@@ -184,7 +182,7 @@ class FilterItem
      * @param bool $isOpen
      * @return FilterItem
      */
-    public function setIsOpen(?bool $isOpen): FilterItem
+    public function setIsOpen(?bool $isOpen): self
     {
         $this->isOpen = $isOpen;
 
@@ -203,7 +201,7 @@ class FilterItem
      * @param object $owner
      * @return FilterItem
      */
-    public function setOwner($owner): FilterItem
+    public function setOwner($owner): self
     {
         $this->owner = $owner;
 

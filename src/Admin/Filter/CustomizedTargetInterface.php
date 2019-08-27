@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter;
-
 
 interface CustomizedTargetInterface
 {

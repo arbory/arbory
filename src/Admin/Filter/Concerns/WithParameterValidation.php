@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Concerns;
-
 
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 

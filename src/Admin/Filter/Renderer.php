@@ -1,14 +1,12 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter;
 
-
+use Closure;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Closure;
 
 class Renderer
 {
@@ -54,7 +52,6 @@ class Renderer
                 ->iconOnly(),
         ])->addClass('title-block');
     }
-
 
     /**
      * @return Button
@@ -112,7 +109,7 @@ class Renderer
     {
         $isOpen = $filterItem->isOpen();
 
-        if($isOpen === null) {
+        if ($isOpen === null) {
             $isOpen = ! $filterItem->getType()->isEmpty();
         }
 
@@ -125,8 +122,8 @@ class Renderer
                     ->withoutBackground(),
             ])->addClass('js-accordion-trigger heading'),
             Html::div([
-                $filterItem->getType()->render($filterItem)
-            ])->addClass('body' . (! $isOpen ? ' hidden' : '')),
+                $filterItem->getType()->render($filterItem),
+            ])->addClass('body'.(! $isOpen ? ' hidden' : '')),
         ])->addClass('accordion');
     }
 

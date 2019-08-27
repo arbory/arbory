@@ -73,8 +73,8 @@ class Builder implements Renderable, WrappableInterface
         if ($this->form->getModel()->getKey()) {
             $form->append(Html::input()->setName('_method')->setType('hidden')->setValue('PUT'));
         }
-        
-        if($returnUrl = $this->form->getReturnUrl()) {
+
+        if ($returnUrl = $this->form->getReturnUrl()) {
             $form->append(Html::input()
                 ->setName(Form::INPUT_RETURN_URL)
                 ->setValue($returnUrl)

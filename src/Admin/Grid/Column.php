@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Admin\Filter\FilterCollection;
-use Arbory\Base\Admin\Filter\FilterItem;
 use Closure;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Admin\Filter\FilterCollection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 

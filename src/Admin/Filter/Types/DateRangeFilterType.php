@@ -1,15 +1,13 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Types;
 
-use Arbory\Base\Admin\Filter\FilterItem;
-use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Illuminate\Validation\Validator;
+use Arbory\Base\Admin\Filter\FilterItem;
+use Illuminate\Database\Eloquent\Builder;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 
 class DateRangeFilterType extends RangeFilterType
 {
@@ -42,7 +40,7 @@ class DateRangeFilterType extends RangeFilterType
     {
         return [
             static::KEY_MIN => ['nullable', 'date'],
-            static::KEY_MAX => ['nullable', 'date']
+            static::KEY_MAX => ['nullable', 'date'],
         ];
     }
 

@@ -2,7 +2,6 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Admin\Filter\Renderer as FilterRenderer;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
 use Illuminate\Support\Collection;
@@ -15,6 +14,7 @@ use Arbory\Base\Admin\Layout\Footer\Tools;
 use Illuminate\Contracts\Support\Renderable;
 use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Arbory\Base\Admin\Filter\Renderer as FilterRenderer;
 
 /**
  * Class Builder.

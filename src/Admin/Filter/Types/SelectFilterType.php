@@ -1,17 +1,15 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Types;
 
-
-use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
-use Arbory\Base\Admin\Filter\Config\SelectLikeTypeConfig;
-use Arbory\Base\Admin\Filter\FilterItem;
-use Arbory\Base\Admin\Filter\FilterTypeInterface;
-use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
-use Arbory\Base\Admin\Form\Controls\SelectControl;
 use Arbory\Base\Html\Html;
 use Illuminate\Validation\Rule;
+use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Admin\Filter\FilterTypeInterface;
+use Arbory\Base\Admin\Form\Controls\SelectControl;
+use Arbory\Base\Admin\Filter\Config\SelectLikeTypeConfig;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
+use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 
 class SelectFilterType extends AbstractType implements FilterTypeInterface, WithParameterValidation
 {
@@ -39,7 +37,7 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
     }
 
     /**
-     * TODO: Laravel validator & Validation support for multi level parameters
+     * TODO: Laravel validator & Validation support for multi level parameters.
      *
      * @param FilterParameters $parameters
      * @param callable $attributeResolver
@@ -49,7 +47,7 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
     {
         return [
             'nullable',
-            Rule::in(array_keys($this->config['options'] ?? []))
+            Rule::in(array_keys($this->config['options'] ?? [])),
         ];
     }
 

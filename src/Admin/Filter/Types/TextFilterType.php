@@ -1,15 +1,13 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Types;
 
-
-use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
-use Arbory\Base\Admin\Filter\Config\TextLikeTypeConfig;
-use Arbory\Base\Admin\Filter\FilterItem;
-use Arbory\Base\Admin\Filter\FilterTypeInterface;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Filter\FilterItem;
 use Illuminate\Database\Eloquent\Builder;
+use Arbory\Base\Admin\Filter\FilterTypeInterface;
+use Arbory\Base\Admin\Filter\Config\TextLikeTypeConfig;
+use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
 
 class TextFilterType extends AbstractType implements FilterTypeInterface, WithCustomExecutor
 {
@@ -22,7 +20,6 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
      * @var TextLikeTypeConfig
      */
     protected $config;
-
 
     /**
      * @param FilterItem $filterItem
@@ -59,15 +56,15 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
      */
     protected function resolveLikeQuery(string $type, string $value): string
     {
-        if($type === static::BEGINS_WITH) {
+        if ($type === static::BEGINS_WITH) {
             return "%{$value}";
         }
 
-        if($type === static::ENDS_WITH) {
+        if ($type === static::ENDS_WITH) {
             return "{$value}%";
         }
 
-        if($type === static::CONTAINS) {
+        if ($type === static::CONTAINS) {
             return "%{$value}%";
         }
 

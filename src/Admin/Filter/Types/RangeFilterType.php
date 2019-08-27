@@ -1,19 +1,17 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Types;
 
-
-use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
-use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
-use Arbory\Base\Admin\Filter\FilterItem;
-use Arbory\Base\Admin\Filter\FilterTypeInterface;
-use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Arbory\Base\Html\Html;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Illuminate\Validation\Validator;
+use Arbory\Base\Admin\Filter\FilterItem;
+use Illuminate\Database\Eloquent\Builder;
+use Arbory\Base\Admin\Filter\FilterTypeInterface;
+use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
+use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 
 class RangeFilterType extends AbstractType implements FilterTypeInterface, WithCustomExecutor, WithParameterValidation
 {
@@ -35,14 +33,14 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
                 Html::h4(trans('arbory::filter.range.from')),
                 Html::input()
                     ->setType($this->inputType)
-                    ->setName($filterItem->getNamespacedName() . '.' . static::KEY_MIN)
+                    ->setName($filterItem->getNamespacedName().'.'.static::KEY_MIN)
                     ->addAttributes(['step' => $step, 'value' => $this->getRangeValue(static::KEY_MIN)]),
             ])->addClass('column'),
             Html::div([
                 Html::h4(trans('arbory::filter.range.to')),
                 Html::input()
                     ->setType($this->inputType)
-                    ->setName($filterItem->getNamespacedName() . '.' . static::KEY_MAX)
+                    ->setName($filterItem->getNamespacedName().'.'.static::KEY_MAX)
                     ->addAttributes(['step' => $step, 'value' => $this->getRangeValue(static::KEY_MAX)]),
             ])->addClass('column'),
         ])->addClass('range');
@@ -67,11 +65,11 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
         $min = $this->getRangeValue(static::KEY_MIN);
         $max = $this->getRangeValue(static::KEY_MAX);
 
-        if($min) {
+        if ($min) {
             $builder->where($filterItem->getName(), '>=', $min);
         }
 
-        if($max) {
+        if ($max) {
             $builder->where($filterItem->getName(), '<=', $max);
         }
     }
@@ -85,7 +83,7 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     {
         return [
             static::KEY_MIN => ['nullable', 'numeric'],
-            static::KEY_MAX => ['nullable', 'numeric']
+            static::KEY_MAX => ['nullable', 'numeric'],
         ];
     }
 

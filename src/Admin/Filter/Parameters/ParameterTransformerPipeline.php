@@ -1,12 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Parameters;
 
-
-use Arbory\Base\Admin\Filter\Parameters\Transformers\ParameterTransformerInterface;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Contracts\Container\Container;
+use Arbory\Base\Admin\Filter\Parameters\Transformers\ParameterTransformerInterface;
 
 class ParameterTransformerPipeline
 {
@@ -44,7 +42,7 @@ class ParameterTransformerPipeline
      *
      * @return ParameterTransformerPipeline
      */
-    public function addTransformer($transformer): ParameterTransformerPipeline
+    public function addTransformer($transformer): self
     {
         $this->transformers[] = $transformer;
 
@@ -55,7 +53,7 @@ class ParameterTransformerPipeline
      * @param ParameterTransformerInterface[] $transformers
      * @return ParameterTransformerPipeline
      */
-    public function setTransformers(array $transformers): ParameterTransformerPipeline
+    public function setTransformers(array $transformers): self
     {
         $this->transformers = $transformers;
 
@@ -66,7 +64,7 @@ class ParameterTransformerPipeline
      * @param FilterParameters $parameters
      * @return ParameterTransformerPipeline
      */
-    public function setParameters(FilterParameters $parameters): ParameterTransformerPipeline
+    public function setParameters(FilterParameters $parameters): self
     {
         $this->parameters = $parameters;
 
