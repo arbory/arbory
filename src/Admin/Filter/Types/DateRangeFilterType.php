@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Filter\Types;
 
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
@@ -28,7 +29,7 @@ class DateRangeFilterType extends RangeFilterType
         }
 
         if ($max) {
-            $builder->whereDate($filterItem->getName(), '<', $max);
+            $builder->whereDate($filterItem->getName(), '<=', $max);
         }
     }
 
@@ -58,12 +59,12 @@ class DateRangeFilterType extends RangeFilterType
         $minAttribute = $attributeResolver(static::KEY_MIN);
         $maxAttribute = $attributeResolver(static::KEY_MAX);
 
-        $validator->sometimes($attributeResolver(static::KEY_MIN), "before:{$maxAttribute}",
+        $validator->sometimes($attributeResolver(static::KEY_MIN), "before_or_equal:{$maxAttribute}",
             static function (Fluent $fluent) use ($maxAttribute) {
                 return ! blank(Arr::get($fluent->getAttributes(), $maxAttribute));
             });
 
-        $validator->sometimes($attributeResolver(static::KEY_MAX), "after:{$minAttribute}",
+        $validator->sometimes($attributeResolver(static::KEY_MAX), "after_or_equal:{$minAttribute}",
             static function (Fluent $fluent) use ($minAttribute) {
                 return ! blank(Arr::get($fluent->getAttributes(), $minAttribute));
             });
