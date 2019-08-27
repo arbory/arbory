@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Config;
-
 
 class TextLikeTypeConfig extends BaseConfig
 {
@@ -12,7 +10,7 @@ class TextLikeTypeConfig extends BaseConfig
      * @param string $type
      * @return TextLikeTypeConfig
      */
-    public function setType(string $type): TextLikeTypeConfig
+    public function setType(string $type): self
     {
         $this->set(static::CONFIG_TYPE, $type);
 

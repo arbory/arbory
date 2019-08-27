@@ -1,14 +1,13 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter;
 
-use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
-use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Closure;
 use Illuminate\Support\Arr;
-use Illuminate\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\Validator;
+use Illuminate\Validation\Factory as ValidatorFactory;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
+use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 
 class FilterValidatorBuilder
 {
@@ -26,7 +25,6 @@ class FilterValidatorBuilder
         $this->validatorFactory = $validatorFactory;
     }
 
-
     /**
      * @param FilterCollection $filterCollection
      * @param FilterParameters $filterParameters
@@ -37,7 +35,6 @@ class FilterValidatorBuilder
     {
         return $this->build($filterCollection, $filterParameters)->fails();
     }
-
 
     /**
      * @param FilterCollection $filterCollection
@@ -59,7 +56,7 @@ class FilterValidatorBuilder
             $messages[] = $data[1];
             $attributes[] = $data[2];
 
-            if(method_exists($type, 'withValidator')) {
+            if (method_exists($type, 'withValidator')) {
                 $transformers[] = [Closure::fromCallable([$type, 'withValidator']), $this->getAttributeResolver($filterItem)];
             }
         }
@@ -71,7 +68,7 @@ class FilterValidatorBuilder
             array_merge(...$attributes)
         );
 
-        foreach($transformers as $transformerData) {
+        foreach ($transformers as $transformerData) {
             $transformer = $transformerData[0];
 
             $transformer($validator, $filterParameters, $transformerData[1]);
@@ -111,7 +108,7 @@ class FilterValidatorBuilder
         // A single field with rules
         if (! Arr::isAssoc($data)) {
             return [
-                $filterItem->getName() => $data
+                $filterItem->getName() => $data,
             ];
         }
 
@@ -120,7 +117,7 @@ class FilterValidatorBuilder
         foreach ($data as $field => $ruleList) {
             $name = $field;
 
-            if($prependName) {
+            if ($prependName) {
                 $name = "{$filterItem->getName()}.{$name}";
             }
 
@@ -139,7 +136,7 @@ class FilterValidatorBuilder
     protected function resolveMethod(string $method, FilterItem $filterItem, FilterParameters $filterParameters)
     {
         /**
-         * @var WithParameterValidation $type
+         * @var WithParameterValidation
          */
         $type = $filterItem->getType();
 
@@ -152,8 +149,8 @@ class FilterValidatorBuilder
      */
     protected function getAttributeResolver(FilterItem $filterItem): callable
     {
-        return static function(?string $attribute = null) use($filterItem) {
-            return $filterItem->getName() . ($attribute ? '.' . $attribute : '');
+        return static function (?string $attribute = null) use ($filterItem) {
+            return $filterItem->getName().($attribute ? '.'.$attribute : '');
         };
     }
 }

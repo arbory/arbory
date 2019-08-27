@@ -1,12 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter;
 
-
+use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
-use Illuminate\Database\Eloquent\Builder;
 
 class FilterExecutor
 {

@@ -218,7 +218,7 @@ class Form
      * @param string|null $returnUrl
      * @return Form
      */
-    public function setReturnUrl(?string $returnUrl): Form
+    public function setReturnUrl(?string $returnUrl): self
     {
         $this->returnUrl = $returnUrl;
 
@@ -230,7 +230,7 @@ class Form
      */
     public function getReturnUrl(): ?string
     {
-        if($this->returnUrl) {
+        if ($this->returnUrl) {
             return $this->returnUrl;
         }
 

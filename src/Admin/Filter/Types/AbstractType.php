@@ -1,15 +1,12 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Types;
-
 
 use Arbory\Base\Admin\Filter\Config\BaseConfig;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 
 /**
- * Class AbstractType
- * @package Arbory\Base\Admin\Filter\Types
+ * Class AbstractType.
  */
 abstract class AbstractType
 {
@@ -56,7 +53,7 @@ abstract class AbstractType
     {
         $configType = $this->getConfigType();
 
-        if(! $config instanceof BaseConfig && $configType) {
+        if (! $config instanceof BaseConfig && $configType) {
             $config = new $configType($config);
         }
 
@@ -72,7 +69,7 @@ abstract class AbstractType
     {
         $value = $this->getValue();
 
-        if(is_array($value)) {
+        if (is_array($value)) {
             $value = array_filter($value, 'blank');
         }
 
@@ -82,7 +79,8 @@ abstract class AbstractType
     /**
      * @return string|null
      */
-    public function getConfigType(): ?string {
+    public function getConfigType(): ?string
+    {
         return null;
     }
 }

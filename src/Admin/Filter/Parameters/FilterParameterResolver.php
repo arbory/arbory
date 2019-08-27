@@ -1,10 +1,7 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Parameters;
 
-
-use Arbory\Base\Admin\Filter\FilterCollection;
 use Arbory\Base\Admin\Filter\FilterManager;
 use Arbory\Base\Admin\Filter\FilterValidatorBuilder;
 
@@ -38,7 +35,7 @@ class FilterParameterResolver
     {
         $this->transformerPipeline->setParameters($this->createParameters());
         $this->transformerPipeline->setTransformers($filterManager->getTransformers());
-        
+
         $parameters = $this->transformerPipeline->execute();
 
         return $this->filterInvalidParameterValues($parameters, $filterManager);
@@ -55,12 +52,12 @@ class FilterParameterResolver
         $filterCollection = $filterManager->getFilters();
         $errors = $this->filterValidator->build($filterCollection, $parameters)->getMessageBag();
 
-        foreach($filterCollection as $filterItem) {
+        foreach ($filterCollection as $filterItem) {
             $value = $parameters->getFromFilter($filterItem);
             $name = $filterItem->getName();
             $errorWildcard = "{$name}.*";
 
-            if($errors->has($errorWildcard)) {
+            if ($errors->has($errorWildcard)) {
                 $value = $filterItem->getDefaultValue();
 
                 $parameters->set($name, $value);

@@ -1,15 +1,12 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter;
-
 
 /**
  * TODO: Figure out if filter type should interact with parameters directly or already filtered specifically for this filter?
  *
  *
  * Interface FilterTypeInterface
- * @package Arbory\Base\Admin\Filter
  */
 interface FilterTypeInterface
 {
@@ -38,7 +35,7 @@ interface FilterTypeInterface
      * @param iterable $config
      * @return FilterTypeInterface
      */
-    public function setConfig(iterable $config): FilterTypeInterface;
+    public function setConfig(iterable $config): self;
 
     /**
      * @param FilterItem $filterItem

@@ -2,7 +2,6 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Admin\Filter\FilterManager;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Pagination\Paginator;

@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Admin\Filter\FilterManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Filter\FilterManager;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
@@ -86,7 +86,7 @@ class Filter implements FilterInterface
      */
     protected function filter(Collection $columns): void
     {
-        if($filterManager = $this->getFilterManager()) {
+        if ($filterManager = $this->getFilterManager()) {
             $filterManager->apply($this->query);
         }
     }
@@ -211,7 +211,7 @@ class Filter implements FilterInterface
      * @param FilterManager $filterManager
      * @return Filter
      */
-    public function setFilterManager(FilterManager $filterManager): Filter
+    public function setFilterManager(FilterManager $filterManager): self
     {
         $this->filterManager = $filterManager;
 

@@ -1,18 +1,16 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Config;
-
 
 class SelectLikeTypeConfig extends BaseConfig
 {
     /**
-     * Accepts a key => value iterable array
+     * Accepts a key => value iterable array.
      */
     public const CONFIG_OPTIONS = 'options';
 
     /**
-     * Accepts bool
+     * Accepts bool.
      */
     public const CONFIG_MULTIPLE = 'multiple';
 
@@ -20,7 +18,7 @@ class SelectLikeTypeConfig extends BaseConfig
      * @param iterable $options
      * @return SelectLikeTypeConfig
      */
-    public function setOptions(iterable $options): SelectLikeTypeConfig
+    public function setOptions(iterable $options): self
     {
         $this->set(static::CONFIG_OPTIONS, $options);
 
@@ -39,7 +37,7 @@ class SelectLikeTypeConfig extends BaseConfig
      * @param bool $options
      * @return SelectLikeTypeConfig
      */
-    public function setMultiple(?bool $options): SelectLikeTypeConfig
+    public function setMultiple(?bool $options): self
     {
         $this->set(static::CONFIG_OPTIONS, $options);
 

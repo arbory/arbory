@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Parameters;
 
-use Arbory\Base\Admin\Filter\FilterItem;
-use Arbory\Base\Support\ExtendedFluent;
 use Illuminate\Support\Arr;
+use Arbory\Base\Support\ExtendedFluent;
+use Arbory\Base\Admin\Filter\FilterItem;
 
 class FilterParameters extends ExtendedFluent
 {
@@ -32,7 +31,7 @@ class FilterParameters extends ExtendedFluent
      *
      * @return FilterParameters
      */
-    public function setNamespace(?string $namespace): FilterParameters
+    public function setNamespace(?string $namespace): self
     {
         $this->namespace = $namespace;
 
@@ -54,7 +53,7 @@ class FilterParameters extends ExtendedFluent
      */
     public function getErrors(?string $fieldName = null): array
     {
-        if($fieldName !== null) {
+        if ($fieldName !== null) {
             return Arr::get($this->errors, $fieldName);
         }
 
@@ -66,7 +65,7 @@ class FilterParameters extends ExtendedFluent
      *
      * @return FilterParameters
      */
-    public function setErrors(array $errors): FilterParameters
+    public function setErrors(array $errors): self
     {
         $this->errors = $errors;
 
@@ -78,7 +77,7 @@ class FilterParameters extends ExtendedFluent
      * @param array $errors
      * @return FilterParameters
      */
-    public function addErrors(string $fieldName, array $errors): FilterParameters
+    public function addErrors(string $fieldName, array $errors): self
     {
         $this->errors[$fieldName] = $errors;
 

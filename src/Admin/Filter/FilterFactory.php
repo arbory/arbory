@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter;
 
-
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\Container\Container;
 
 class FilterFactory
 {
@@ -31,7 +29,7 @@ class FilterFactory
     public function makeType(string $type, iterable $config): FilterTypeInterface
     {
         /**
-         * @var $instance FilterTypeInterface
+         * @var FilterTypeInterface
          */
         $instance = $this->container->make($type);
 

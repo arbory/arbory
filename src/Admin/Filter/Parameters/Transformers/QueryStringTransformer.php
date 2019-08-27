@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter\Parameters\Transformers;
 
-
-use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 
 class QueryStringTransformer implements ParameterTransformerInterface
 {
@@ -30,13 +28,13 @@ class QueryStringTransformer implements ParameterTransformerInterface
      */
     public function transform(FilterParameters $parameters, callable $next)
     {
-       $parameters->add(
+        $parameters->add(
            (array) $this->request->input(
                $parameters->getNamespace()
            )
        );
 
-       return $next($parameters);
+        return $next($parameters);
     }
 
     /**

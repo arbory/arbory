@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Filter;
 
-
-use Arbory\Base\Admin\Filter\Parameters\FilterParameterResolver;
-use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
-use Arbory\Base\Admin\Filter\Parameters\ParameterTransformerPipeline;
 use Illuminate\Database\Eloquent\Builder;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameterResolver;
+use Arbory\Base\Admin\Filter\Parameters\ParameterTransformerPipeline;
 
 class FilterManager
 {
@@ -94,7 +92,7 @@ class FilterManager
      */
     public function getParameters(): FilterParameters
     {
-        if($this->parameters === null) {
+        if ($this->parameters === null) {
             return $this->parameters = $this->filterParameterResolver->resolve($this);
         }
 
@@ -122,7 +120,7 @@ class FilterManager
      * @param $transformer
      * @return FilterManager
      */
-    public function addTransformer($transformer): FilterManager
+    public function addTransformer($transformer): self
     {
         $this->transformers[] = $transformer;
 

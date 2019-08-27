@@ -2,16 +2,16 @@
 
 namespace Arbory\Base\Admin;
 
-use Arbory\Base\Admin\Filter\FilterManager;
 use Closure;
+use Illuminate\Support\Arr;
 use Arbory\Base\Admin\Grid\Row;
 use Arbory\Base\Admin\Grid\Column;
 use Arbory\Base\Admin\Grid\Filter;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Traits\Renderable;
+use Arbory\Base\Admin\Filter\FilterManager;
 use Arbory\Base\Admin\Grid\FilterInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Support\Renderable as RenderableInterface;
@@ -398,9 +398,9 @@ class Grid
             return $customUrlOpener($model, $this, $filterParameters);
         }
 
-        if($this->rememberFilters()) {
+        if ($this->rememberFilters()) {
             $params = [
-                Form::INPUT_RETURN_URL => $this->getModule()->url('index', $filterParameters)
+                Form::INPUT_RETURN_URL => $this->getModule()->url('index', $filterParameters),
             ];
         }
 
@@ -441,7 +441,7 @@ class Grid
         $params['_order_by'] = $column;
         $params['_order'] = Arr::get($params, '_order') === 'ASC' ? 'DESC' : 'ASC';
 
-        if($callback = $this->getOrderUrlCallback()) {
+        if ($callback = $this->getOrderUrlCallback()) {
             return $callback($column, $this, $params);
         }
 
@@ -498,7 +498,7 @@ class Grid
      * @param FilterManager $filterManager
      * @return Grid
      */
-    public function setFilterManager(FilterManager $filterManager): Grid
+    public function setFilterManager(FilterManager $filterManager): self
     {
         $this->filterManager = $filterManager;
 
@@ -509,9 +509,10 @@ class Grid
      * @param bool $rememberFilters
      * @return Grid
      */
-    public function setRememberFilters(bool $rememberFilters): Grid
+    public function setRememberFilters(bool $rememberFilters): self
     {
         $this->rememberFilters = $rememberFilters;
+
         return $this;
     }
 
@@ -536,7 +537,7 @@ class Grid
             '_order' => request('_order'),
         ]);
 
-        if(! $filterParameters->isEmpty()) {
+        if (! $filterParameters->isEmpty()) {
             $params[$filterParameters->getNamespace()] = http_build_query($filterParameters->toArray());
         }
 
