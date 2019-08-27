@@ -5,9 +5,9 @@ jQuery(document).ready(function() {
     var searchInputName = 'search';
 
     filterWindow.submit( function(eventObj) {
-        $("<input />").attr("type", "hidden")
-            .attr("name", searchInputName)
-            .attr("value", $('#'+searchInputName).val())
+        $('<input />').attr('type', 'hidden')
+            .attr('name', searchInputName)
+            .attr('value', $(`#${searchInputName}`).val())
             .appendTo(filterWindow);
         return true;
     });

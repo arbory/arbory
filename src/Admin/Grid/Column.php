@@ -73,9 +73,9 @@ class Column
     protected $checkable = false;
 
     /**
-     * @var null
+     * @var QueryBuilder
      */
-    protected $customQuery = null;
+    protected $customQuery;
 
     /**
      * Column constructor.
