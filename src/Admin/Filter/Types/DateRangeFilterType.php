@@ -25,12 +25,10 @@ class DateRangeFilterType extends RangeFilterType
         $max = $this->getRangeValue(static::KEY_MAX);
 
         if ($min) {
-            $min = Carbon::parse($min)->startOfDay()->toDateTimeString();
             $builder->whereDate($filterItem->getName(), '>=', $min);
         }
 
         if ($max) {
-            $max = Carbon::parse($max)->endOfDay()->toDateTimeString();
             $builder->whereDate($filterItem->getName(), '<', $max);
         }
     }
