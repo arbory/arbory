@@ -73,7 +73,7 @@ class Column
     protected $checkable = false;
 
     /**
-     * @var QueryBuilder
+     * @var callable
      */
     protected $customQuery;
 
