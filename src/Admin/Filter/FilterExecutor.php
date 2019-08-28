@@ -16,31 +16,39 @@ class FilterExecutor
      */
     public function execute(FilterManager $filterManager, Builder $builder): Builder
     {
-        $filters = $filterManager->getFilters();
         $parameters = $filterManager->getParameters();
 
-        foreach ($filters as $filterItem) {
-            if (! $parameters->has($filterItem->getName())) {
-                continue;
-            }
-
-            // Use user defined executor
-            if ($executor = $filterItem->getExecutor()) {
-                $executor($filterItem, $builder);
-
-                continue;
-            }
-
-            $type = $filterItem->getType();
-
-            if ($type instanceof WithCustomExecutor) {
-                $type->execute($filterItem, $builder);
-            } else {
-                $this->applyQuery($filterManager->getParameters(), $filterItem, $builder);
-            }
+        foreach ($filterManager->getFilters() as $filterItem) {
+            $this->executeForItem($filterItem, $parameters, $builder);
         }
 
         return $builder;
+    }
+
+    /**
+     * @param FilterItem $filterItem
+     * @param FilterParameters $parameters
+     * @param Builder $builder
+     */
+    protected function executeForItem(FilterItem $filterItem, FilterParameters $parameters, Builder $builder): void
+    {
+        if (!$parameters->has($filterItem->getName())) {
+            return;
+        }
+
+        // Use user defined executor
+        if ($executor = $filterItem->getExecutor()) {
+            $executor($filterItem, $builder);
+            return;
+        }
+
+        $type = $filterItem->getType();
+
+        if ($type instanceof WithCustomExecutor) {
+            $type->execute($filterItem, $builder);
+        } else {
+            $this->applyQuery($parameters, $filterItem, $builder);
+        }
     }
 
     /**
