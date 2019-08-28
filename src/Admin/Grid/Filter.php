@@ -160,9 +160,9 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $relationName
+     * @param string $relationName
      */
-    public function withRelation($relationName)
+    public function withRelation(string $relationName)
     {
         $this->query->with($relationName);
     }
@@ -173,6 +173,22 @@ class Filter implements FilterInterface
     public function getQuery(): QueryBuilder
     {
         return $this->query;
+    }
+
+    /**
+     * @param Column $column
+     * @param string $value
+     * @param string $key
+     */
+    public function createQuery(Column $column, $value, $key): void
+    {
+        $actions = $this->getFilterTypeAction($column);
+
+        if (is_null($column->getRelationName())) {
+            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $actions, $value);
+        } else {
+            $this->createQueryWithRelation($column, $actions, $value);
+        }
     }
 
     /**
@@ -197,6 +213,15 @@ class Filter implements FilterInterface
     public function getPerPage()
     {
         return $this->perPage;
+    }
+
+    /**
+     * @param Column $column
+     * @return array
+     */
+    public function getFilterTypeAction(Column $column): array
+    {
+        return $column->getFilterType()->getAction();
     }
 
     /**

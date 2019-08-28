@@ -80,6 +80,11 @@ class LayoutResolver
         return $resolver;
     }
 
+    /**
+     * @param string $name
+     * @param mixed $content
+     * @return $this
+     */
     public function slot($name, $content)
     {
         $className = $this->layoutClass;

@@ -108,7 +108,7 @@ class Button implements Renderable
 
     /**
      * @param $inputType
-     * @param null $visualType
+     * @param string|null $visualType
      * @return Button
      */
     public function type($inputType, $visualType = null)
@@ -163,7 +163,7 @@ class Button implements Renderable
 
     /**
      * @param string|null $name
-     * @param null $value
+     * @param string|null $value
      * @return Button
      */
     public static function create(string $name = null, $value = null)

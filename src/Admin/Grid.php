@@ -85,7 +85,17 @@ class Grid
     /**
      * @var bool
      */
+    protected $isExportEnabled = false;
+
+    /**
+     * @var bool
+     */
     protected $rememberFilters = false;
+
+    /**
+     * @var bool
+     */
+    protected $hasToolbox = true;
 
     /**
      * @param Model $model
@@ -168,6 +178,34 @@ class Grid
     }
 
     /**
+     * @return \Arbory\Base\Admin\Grid
+     */
+    public function showToolbox(): self
+    {
+        $this->hasToolbox = true;
+
+        return $this;
+    }
+
+    /**
+     * @return \Arbory\Base\Admin\Grid
+     */
+    public function hideToolbox(): self
+    {
+        $this->hasToolbox = false;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isToolboxEnable(): bool
+    {
+        return $this->hasToolbox;
+    }
+
+    /**
      * @return array
      */
     public function getTools()
@@ -201,6 +239,9 @@ class Grid
         return $this;
     }
 
+    /**
+     * @return LengthAwarePaginator|Collection|null
+     */
     public function getItems()
     {
         if ($this->items === null) {
@@ -238,8 +279,8 @@ class Grid
     }
 
     /**
-     * @param null $name
-     * @param null $label
+     * @param string|null $name
+     * @param string|null $label
      * @return Column
      */
     public function column($name = null, $label = null) : Column
@@ -248,8 +289,8 @@ class Grid
     }
 
     /**
-     * @param null $name
-     * @param null $label
+     * @param string|null $name
+     * @param string|null $label
      * @return Column
      */
     public function appendColumn($name = null, $label = null) : Column
@@ -263,8 +304,8 @@ class Grid
     }
 
     /**
-     * @param null $name
-     * @param null $label
+     * @param string|null $name
+     * @param string|null $label
      * @return Column
      */
     public function prependColumn($name = null, $label = null) : Column
@@ -278,8 +319,8 @@ class Grid
     }
 
     /**
-     * @param $column
-     * @param $name
+     * @param string $column
+     * @param string $name
      * @return mixed
      */
     protected function setColumnRelation($column, $name) : Column
@@ -295,8 +336,8 @@ class Grid
     }
 
     /**
-     * @param null $name
-     * @param null $label
+     * @param string|null $name
+     * @param string|null $label
      * @return Column
      */
     protected function createColumn($name = null, $label = null) : Column
@@ -464,6 +505,32 @@ class Grid
     public function setOrderUrlCallback(callable $orderUrlCallback): self
     {
         $this->orderUrlCallback = $orderUrlCallback;
+    }
+     
+    /**
+     * @return bool
+     */
+    public function isExportEnabled(): bool
+    {
+        return $this->isExportEnabled;
+    }
+
+    /**
+     * @return $this
+     */
+    public function exportEnabled(): self
+    {
+        $this->isExportEnabled = true;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function exportDisabled(): self
+    {
+        $this->isExportEnabled = false;
 
         return $this;
     }
