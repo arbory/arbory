@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Filter\Types;
 
-use Arbory\Base\Admin\Filter\Config\BaseConfig;
 use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Admin\Filter\Config\BaseConfig;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 
 /**

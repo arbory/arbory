@@ -32,13 +32,14 @@ class FilterExecutor
      */
     protected function executeForItem(FilterItem $filterItem, FilterParameters $parameters, Builder $builder): void
     {
-        if (!$parameters->has($filterItem->getName())) {
+        if (! $parameters->has($filterItem->getName())) {
             return;
         }
 
         // Use user defined executor
         if ($executor = $filterItem->getExecutor()) {
             $executor($filterItem, $builder);
+
             return;
         }
 
@@ -46,6 +47,7 @@ class FilterExecutor
 
         if ($type instanceof WithCustomExecutor) {
             $type->execute($filterItem, $builder);
+
             return;
         }
 

@@ -11,7 +11,6 @@ use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 
 class FilterValidatorBuilder
 {
-
     protected const VALIDATION_CONCERNS = [WithParameterValidation::class];
 
     /**
@@ -58,7 +57,7 @@ class FilterValidatorBuilder
             if (method_exists($type, 'withValidator')) {
                 $validationObject->addTransformers([
                     Closure::fromCallable([$type, 'withValidator']),
-                    $this->getAttributeResolver($filterItem)
+                    $this->getAttributeResolver($filterItem),
                 ]);
             }
         }

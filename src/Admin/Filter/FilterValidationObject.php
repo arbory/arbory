@@ -4,7 +4,6 @@ namespace Arbory\Base\Admin\Filter;
 
 class FilterValidationObject
 {
-
     /**
      * @var array
      */
@@ -44,6 +43,7 @@ class FilterValidationObject
     public function addRules(array $rules): self
     {
         array_push($this->rules, $rules);
+
         return $this;
     }
 
@@ -54,6 +54,7 @@ class FilterValidationObject
     public function addMessages(array $messages): self
     {
         array_push($this->messages, $messages);
+
         return $this;
     }
 
@@ -64,6 +65,7 @@ class FilterValidationObject
     public function addAttributes(array $attributes): self
     {
         array_push($this->attributes, $attributes);
+
         return $this;
     }
 
@@ -74,6 +76,7 @@ class FilterValidationObject
     public function addTransformers(array $transformers): self
     {
         array_push($this->transformers, $transformers);
+
         return $this;
     }
 
