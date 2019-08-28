@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Admin\Filter\Types;
 
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\Config\BaseConfig;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
-use Arbory\Base\Html\Elements\Element;
 
 /**
  * Class AbstractType.
