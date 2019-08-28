@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Filter\Types;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\Config\BaseConfig;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
+use Arbory\Base\Html\Elements\Element;
 
 /**
  * Class AbstractType.
@@ -40,9 +41,9 @@ abstract class AbstractType
 
     /**
      * @param FilterItem $filterItem
-     * @return mixed
+     * @return Element
      */
-    abstract public function render(FilterItem $filterItem);
+    abstract public function render(FilterItem $filterItem): Element;
 
     /**
      * @return iterable|BaseConfig

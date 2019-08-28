@@ -48,18 +48,7 @@ class FilterValidatorBuilder
         $validationObject = new FilterValidationObject();
 
         foreach ($filterCollection->findByConcerns(self::VALIDATION_CONCERNS) as $filterItem) {
-            $type = $filterItem->getType();
-
-            $validationObject->addRules($this->buildRules($filterItem, $filterParameters));
-            $validationObject->addMessages($this->buildMessages($filterItem, $filterParameters));
-            $validationObject->addAttributes($this->buildAttributes($filterItem, $filterParameters));
-
-            if (method_exists($type, 'withValidator')) {
-                $validationObject->addTransformers([
-                    Closure::fromCallable([$type, 'withValidator']),
-                    $this->getAttributeResolver($filterItem),
-                ]);
-            }
+            $this->buildFilterItem($validationObject, $filterParameters, $filterItem);
         }
 
         $validator = $this->validatorFactory->make(
@@ -70,6 +59,31 @@ class FilterValidatorBuilder
         $this->applyTransformers($validationObject->getTransformers(), $validator, $filterParameters);
 
         return $validator;
+    }
+
+    /**
+     * @param FilterValidationObject $validationObject
+     * @param FilterItem $filterItem
+     * @param FilterParameters $filterParameters
+     * @return void
+     */
+    protected function buildFilterItem(
+        FilterValidationObject $validationObject,
+        FilterParameters $filterParameters,
+        FilterItem $filterItem
+    ): void {
+        $type = $filterItem->getType();
+
+        $validationObject->addRules($this->buildRules($filterItem, $filterParameters));
+        $validationObject->addMessages($this->buildMessages($filterItem, $filterParameters));
+        $validationObject->addAttributes($this->buildAttributes($filterItem, $filterParameters));
+
+        if (method_exists($type, 'withValidator')) {
+            $validationObject->addTransformers([
+                Closure::fromCallable([$type, 'withValidator']),
+                $this->getAttributeResolver($filterItem),
+            ]);
+        }
     }
 
     /**
