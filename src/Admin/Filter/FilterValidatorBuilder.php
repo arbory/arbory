@@ -11,7 +11,7 @@ use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 
 class FilterValidatorBuilder
 {
-    
+
     protected const VALIDATION_CONCERNS = [WithParameterValidation::class];
 
     /**
@@ -51,12 +51,12 @@ class FilterValidatorBuilder
         foreach ($filterCollection->findByConcerns(self::VALIDATION_CONCERNS) as $filterItem) {
             $type = $filterItem->getType();
 
-            $validationObject->addRule($this->buildRules($filterItem, $filterParameters));
-            $validationObject->addMessage($this->buildMessages($filterItem, $filterParameters));
-            $validationObject->addAttribute($this->buildAttributes($filterItem, $filterParameters));
+            $validationObject->addRules($this->buildRules($filterItem, $filterParameters));
+            $validationObject->addMessages($this->buildMessages($filterItem, $filterParameters));
+            $validationObject->addAttributes($this->buildAttributes($filterItem, $filterParameters));
 
             if (method_exists($type, 'withValidator')) {
-                $validationObject->addTransformer([
+                $validationObject->addTransformers([
                     Closure::fromCallable([$type, 'withValidator']),
                     $this->getAttributeResolver($filterItem)
                 ]);
@@ -64,10 +64,11 @@ class FilterValidatorBuilder
         }
 
         $validator = $this->validatorFactory->make(
-            $filterParameters->toArray(), ...$validationObject->getAllForValidator()
+            $filterParameters->toArray(), $validationObject->getRules(), $validationObject->getMessages(),
+            $validationObject->getAttributes()
         );
 
-        $this->applyTransformers($validationObject->getTranformers(), $validator, $filterParameters);
+        $this->applyTransformers($validationObject->getTransformers(), $validator, $filterParameters);
 
         return $validator;
     }

@@ -38,35 +38,43 @@ class FilterValidationObject
     }
 
     /**
-     * @param array $rule
+     * @param array $rules
+     * @return $this
      */
-    public function addRule(array $rule)
+    public function addRules(array $rules)
     {
-        array_push($this->rules, $rule);
+        array_push($this->rules, $rules);
+        return $this;
     }
 
     /**
-     * @param array $message
+     * @param array $messages
+     * @return $this
      */
-    public function addMessage(array $message)
+    public function addMessages(array $messages)
     {
-        array_push($this->messages, $message);
+        array_push($this->messages, $messages);
+        return $this;
     }
 
     /**
-     * @param array $attribute
+     * @param array $attributes
+     * @return $this
      */
-    public function addAttribute(array $attribute)
+    public function addAttributes(array $attributes)
     {
-        array_push($this->attributes, $attribute);
+        array_push($this->attributes, $attributes);
+        return $this;
     }
 
     /**
-     * @param array $transformer
+     * @param array $transformers
+     * @return $this
      */
-    public function addTransformer(array $transformer)
+    public function addTransformers(array $transformers)
     {
-        array_push($this->transformers, $transformer);
+        array_push($this->transformers, $transformers);
+        return $this;
     }
 
     /**
@@ -74,7 +82,7 @@ class FilterValidationObject
      */
     public function getRules(): array
     {
-        return $this->rules;
+        return array_merge([], ...$this->rules);
     }
 
     /**
@@ -82,7 +90,7 @@ class FilterValidationObject
      */
     public function getMessages(): array
     {
-        return $this->messages;
+        return array_merge([], ...$this->messages);
     }
 
     /**
@@ -90,26 +98,14 @@ class FilterValidationObject
      */
     public function getAttributes(): array
     {
-        return $this->attributes;
+        return array_merge([], ...$this->attributes);
     }
 
     /**
      * @return array
      */
-    public function getTranformers(): array
+    public function getTransformers(): array
     {
         return $this->transformers;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAllForValidator(): array
-    {
-        return [
-            array_merge([], ...$this->getRules()),
-            array_merge([], ...$this->getMessages()),
-            array_merge([], ...$this->getAttributes()),
-        ];
     }
 }
