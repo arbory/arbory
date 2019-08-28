@@ -11,11 +11,7 @@ use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 
 class FilterValidatorBuilder
 {
-
-    public const RULES_METHOD = 'rules';
-    public const MESSAGES_METHOD = 'messages';
-    public const ATTRIBUTES_METHOD = 'attributes';
-
+    
     protected const VALIDATION_CONCERNS = [WithParameterValidation::class];
 
     /**
