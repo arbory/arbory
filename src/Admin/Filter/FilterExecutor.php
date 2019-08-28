@@ -46,9 +46,10 @@ class FilterExecutor
 
         if ($type instanceof WithCustomExecutor) {
             $type->execute($filterItem, $builder);
-        } else {
-            $this->applyQuery($parameters, $filterItem, $builder);
+            return;
         }
+
+        $this->applyQuery($parameters, $filterItem, $builder);
     }
 
     /**

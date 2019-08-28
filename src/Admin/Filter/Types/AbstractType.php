@@ -39,7 +39,8 @@ abstract class AbstractType
     }
 
     /**
-     * @return Element
+     * @param FilterItem $filterItem
+     * @return mixed
      */
     abstract public function render(FilterItem $filterItem);
 
