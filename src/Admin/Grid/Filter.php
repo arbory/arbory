@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Grid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Filter\FilterManager;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
@@ -39,6 +40,11 @@ class Filter implements FilterInterface
     protected $perPage;
 
     /**
+     * @var FilterManager
+     */
+    protected $filterManager;
+
+    /**
      * Filter constructor.
      * @param Model $model
      */
@@ -64,7 +70,7 @@ class Filter implements FilterInterface
 
         $column = $columns->filter(function (Column $column) {
             return $column->isSortable();
-        })->filter(function (Column $column) use ($orderBy) {
+        })->filter(static function (Column $column) use ($orderBy) {
             return $column->getName() === $orderBy;
         })->first();
 
@@ -80,22 +86,8 @@ class Filter implements FilterInterface
      */
     protected function filter(Collection $columns): void
     {
-        $filterParameters = self::removeNonFilterParameters($this->request->all());
-
-        foreach ($filterParameters as $getKey => $getValue) {
-            if (! $getValue) {
-                continue;
-            }
-
-            $column = $columns->filter(function (Column $column) use ($getKey) {
-                return $column->getName() === $getKey || $column->getRelationName() === $getKey;
-            })->first();
-
-            if (! $column || ! $column->getHasFilter()) {
-                continue;
-            }
-
-            $this->createQuery($column, $getValue, $getKey);
+        if ($filterManager = $this->getFilterManager()) {
+            $filterManager->apply($this->query);
         }
     }
 
@@ -241,69 +233,21 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string $columnName
-     * @param $actions
-     * @param $values
+     * @param FilterManager $filterManager
+     * @return Filter
      */
-    public function createQueryWithoutRelation(string $columnName, $actions, $values): void
+    public function setFilterManager(FilterManager $filterManager): self
     {
-        $actions = array_wrap($actions);
-        $values = array_wrap($values);
+        $this->filterManager = $filterManager;
 
-        foreach (array_combine($values, $actions) as $value => $action) {
-            $this->query->where($columnName, $action, $value);
-        }
+        return $this;
     }
 
     /**
-     * @param Column $column
-     * @param $actions
-     * @param $values
+     * @return FilterManager|null
      */
-    public function createQueryWithRelation(Column $column, $actions, $values): void
+    public function getFilterManager(): ?FilterManager
     {
-        $actions = array_wrap($actions);
-        $values = array_wrap($values);
-
-        if (count($actions) === count($values)) {
-            foreach (array_combine($values, $actions) as $value => $action) {
-                $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
-                    $query->where($column->getFilterRelationColumn(), $action, $value);
-                });
-            }
-
-            return;
-        }
-
-        $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $values) {
-            $query->whereIn($column->getFilterRelationColumn(), $values);
-        });
-    }
-
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    private function removeNonFilterParameters(array $parameters): array
-    {
-        unset($parameters['_order_by']);
-        unset($parameters['_order']);
-
-        return self::recursiveArrayFilter($parameters);
-    }
-
-    /**
-     * @param array $filterParameters
-     * @return array
-     */
-    private function recursiveArrayFilter(array $filterParameters): array
-    {
-        foreach ($filterParameters as $getKey => &$getValue) {
-            if (is_array($getValue)) {
-                $getValue = self::recursiveArrayFilter($getValue);
-            }
-        }
-
-        return array_filter($filterParameters);
+        return $this->filterManager;
     }
 }

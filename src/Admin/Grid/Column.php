@@ -7,6 +7,8 @@ use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Admin\Filter\FilterCollection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
@@ -69,6 +71,11 @@ class Column
      * @var bool
      */
     protected $checkable = false;
+
+    /**
+     * @var callable
+     */
+    protected $customQuery;
 
     /**
      * @var Closure
@@ -239,12 +246,35 @@ class Column
     }
 
     /**
+     * @param callable $query
+     * @return $this
+     */
+    public function setCustomSearchQuery(callable $query)
+    {
+        $this->customQuery = $query;
+
+        return $this;
+    }
+
+    /**
+     * @return null|QueryBuilder
+     */
+    public function getCustomSearchQuery()
+    {
+        return $this->customQuery;
+    }
+
+    /**
      * @param QueryBuilder $query
      * @param $string
      * @return QueryBuilder
      */
     public function searchConditions(QueryBuilder $query, $string)
     {
+        if ($this->customQuery) {
+            return call_user_func($this->customQuery, $query, $string);
+        }
+
         if ($this->relationName) {
             return $query->orWhereHas($this->relationName, function (QueryBuilder $query) use ($string) {
                 $query->where($this->relationColumn, 'like', "%$string%");
@@ -345,23 +375,26 @@ class Column
     }
 
     /**
-     * @return string
+     * @param string $filterType
+     * @param iterable $filterTypeConfig
+     * @return FilterItem
      */
-    public function getFilterRelationColumn(): string
+    public function addFilter(string $filterType, iterable $filterTypeConfig = []): FilterItem
     {
-        $columnName = $this->getFilterType()->getColumn();
+        $filterManager = $this->grid->getFilterManager();
 
-        return is_null($columnName) ? $this->getRelationColumn() : $columnName;
+        return $filterManager
+            ->addFilter($this->getName(), $this->getLabel(), $filterType, $filterTypeConfig)
+            ->setOwner($this);
     }
 
     /**
-     * @param string $column
-     * @return string
+     * @return FilterCollection|FilterItem[]
      */
-    public function getFilterColumnName(string $column): string
+    public function getFilters(): FilterCollection
     {
-        $columnInFilter = $this->getFilterType()->getColumn();
+        $filterManager = $this->grid->getFilterManager();
 
-        return $columnInFilter ? $columnInFilter : $column;
+        return $filterManager->getFilters()->findByOwner($this);
     }
 }

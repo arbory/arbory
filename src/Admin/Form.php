@@ -20,6 +20,8 @@ class Form
     use EventDispatcher;
     use Renderable;
 
+    public const INPUT_RETURN_URL = '_return_url';
+
     /**
      * @var Model
      */
@@ -44,6 +46,11 @@ class Form
      * @var Validator
      */
     protected $validator;
+
+    /**
+     * @var string|null
+     */
+    protected $returnUrl;
 
     /**
      * @var
@@ -208,9 +215,32 @@ class Form
     }
 
     /**
+     * @param string|null $returnUrl
+     * @return Form
+     */
+    public function setReturnUrl(?string $returnUrl): self
+    {
+        $this->returnUrl = $returnUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReturnUrl(): ?string
+    {
+        if ($this->returnUrl) {
+            return $this->returnUrl;
+        }
+
+        return request(static::INPUT_RETURN_URL);
+    }
+
+    /**
      * @return void
      */
-    protected function registerEventListeners()
+    protected function registerEventListeners(): void
     {
         $this->addEventListeners(
             ['create.before', 'update.before'],

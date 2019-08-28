@@ -53,7 +53,9 @@ class FieldSetRenderer implements FieldSetRendererInterface
      */
     public function setDefaultStyle(string $value): FieldSetRendererInterface
     {
-        return $this->setDefaultStyle($value);
+        $this->defaultStyle = $value;
+
+        return $this;
     }
 
     /**

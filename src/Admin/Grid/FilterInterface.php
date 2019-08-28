@@ -27,4 +27,9 @@ interface FilterInterface
      * @param $relationName
      */
     public function withRelation(string $relationName);
+
+    /**
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function getQuery();
 }

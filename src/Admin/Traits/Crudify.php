@@ -424,7 +424,10 @@ trait Crudify
      */
     protected function getAfterEditResponse(Request $request, $model)
     {
-        return redirect($request->has('save_and_return') ? $this->module()->url('index') : $request->url());
+        $defaultReturnUrl = $this->module()->url('index');
+        $returnUrl = $request->has(Form::INPUT_RETURN_URL) ? $request->get(Form::INPUT_RETURN_URL) : $defaultReturnUrl;
+
+        return redirect($request->has('save_and_return') ? $returnUrl : $request->url());
     }
 
     /**
@@ -435,9 +438,12 @@ trait Crudify
      */
     protected function getAfterCreateResponse(Request $request, $model)
     {
+        $defaultReturnUrl = $this->module()->url('index');
+        $returnUrl = $request->has(Form::INPUT_RETURN_URL) ? $request->get(Form::INPUT_RETURN_URL) : $defaultReturnUrl;
+
         $url = $this->url('edit', $model);
 
-        return redirect($request->has('save_and_return') ? $this->module()->url('index') : $url);
+        return redirect($request->has('save_and_return') ? $returnUrl : $url);
     }
 
     /**

@@ -72,9 +72,13 @@
     {
       margin-bottom: 20px;
 
-      .select
+      &.hidden {
+        display: none;
+      }
+
+      .select, .text
       {
-        select
+        select, input
         {
           height: 40px;
           width: 100%;
