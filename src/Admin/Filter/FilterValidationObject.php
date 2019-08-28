@@ -41,7 +41,7 @@ class FilterValidationObject
      * @param array $rules
      * @return $this
      */
-    public function addRules(array $rules)
+    public function addRules(array $rules): self
     {
         array_push($this->rules, $rules);
         return $this;
@@ -51,7 +51,7 @@ class FilterValidationObject
      * @param array $messages
      * @return $this
      */
-    public function addMessages(array $messages)
+    public function addMessages(array $messages): self
     {
         array_push($this->messages, $messages);
         return $this;
@@ -61,7 +61,7 @@ class FilterValidationObject
      * @param array $attributes
      * @return $this
      */
-    public function addAttributes(array $attributes)
+    public function addAttributes(array $attributes): self
     {
         array_push($this->attributes, $attributes);
         return $this;
@@ -71,7 +71,7 @@ class FilterValidationObject
      * @param array $transformers
      * @return $this
      */
-    public function addTransformers(array $transformers)
+    public function addTransformers(array $transformers): self
     {
         array_push($this->transformers, $transformers);
         return $this;
