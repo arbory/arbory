@@ -438,7 +438,7 @@ class Grid
     public function getColumnOrderUrl(Column $column): ?string
     {
         $params = $this->getFilterParameters();
-        $params['_order_by'] = $column;
+        $params['_order_by'] = $column->getName();
         $params['_order'] = Arr::get($params, '_order') === 'ASC' ? 'DESC' : 'ASC';
 
         if ($callback = $this->getOrderUrlCallback()) {
@@ -530,7 +530,6 @@ class Grid
     protected function getFilterParameters(): ?array
     {
         $filterParameters = $this->getFilterManager()->getParameters();
-
         $params = array_filter([
             'search' => request('search'),
             '_order_by' => request('_order_by'),
@@ -538,7 +537,7 @@ class Grid
         ]);
 
         if (! $filterParameters->isEmpty()) {
-            $params[$filterParameters->getNamespace()] = http_build_query($filterParameters->toArray());
+            $params[$filterParameters->getNamespace()] = $filterParameters->toArray();
         }
 
         return $params;
