@@ -237,7 +237,7 @@ class Filter implements FilterInterface
 
         $orderBy = $this->request->get('_order_by');
 
-        if (!$orderBy) {
+        if (! $orderBy) {
             $this->request->merge([
                 '_order_by' => $defaultOrderBy,
                 '_order' => $defaultOrderDirection,
