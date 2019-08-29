@@ -225,4 +225,25 @@ class Filter implements FilterInterface
     {
         return $this->filterManager;
     }
+
+    /**
+     * @param string $defaultOrderBy
+     * @param string $defaultOrderDirection
+     * @return Filter
+     */
+    public function setDefaultOrderBy(string $defaultOrderBy, string $defaultOrderDirection = 'desc'): self
+    {
+        $this->defaultOrderBy = [$defaultOrderBy, $defaultOrderDirection];
+
+        $orderBy = $this->request->get('_order_by');
+
+        if (!$orderBy) {
+            $this->request->merge([
+                '_order_by' => $defaultOrderBy,
+                '_order' => $defaultOrderDirection,
+            ]);
+        }
+
+        return $this;
+    }
 }
