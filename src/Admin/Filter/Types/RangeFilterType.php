@@ -6,6 +6,7 @@ use Arbory\Base\Html\Html;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Illuminate\Validation\Validator;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
@@ -22,9 +23,10 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
 
     /**
      * @param FilterItem $filterItem
-     * @return mixed
+     * @return \Arbory\Base\Html\Elements\Element
+     * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
-    public function render(FilterItem $filterItem)
+    public function render(FilterItem $filterItem): Element
     {
         $step = $this->config['step'] ?? '.01';
 

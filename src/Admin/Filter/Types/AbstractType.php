@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Filter\Types;
 
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\Config\BaseConfig;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 
@@ -36,6 +38,12 @@ abstract class AbstractType
     {
         return $this->value;
     }
+
+    /**
+     * @param FilterItem $filterItem
+     * @return Element
+     */
+    abstract public function render(FilterItem $filterItem): Element;
 
     /**
      * @return iterable|BaseConfig

@@ -11,6 +11,8 @@ use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 
 class FilterValidatorBuilder
 {
+    protected const VALIDATION_CONCERNS = [WithParameterValidation::class];
+
     /**
      * @var ValidatorFactory
      */
@@ -43,57 +45,89 @@ class FilterValidatorBuilder
      */
     public function build(FilterCollection $filterCollection, FilterParameters $filterParameters): Validator
     {
-        $rules = [[]];
-        $attributes = [[]];
-        $messages = [[]];
-        $transformers = [];
+        $validationObject = new FilterValidationObject();
 
-        foreach ($filterCollection->findByConcerns([WithParameterValidation::class]) as $filterItem) {
-            $type = $filterItem->getType();
-            $data = $this->buildForFilter($filterItem, $filterParameters);
-
-            $rules[] = $data[0];
-            $messages[] = $data[1];
-            $attributes[] = $data[2];
-
-            if (method_exists($type, 'withValidator')) {
-                $transformers[] = [Closure::fromCallable([$type, 'withValidator']), $this->getAttributeResolver($filterItem)];
-            }
+        foreach ($filterCollection->findByConcerns(self::VALIDATION_CONCERNS) as $filterItem) {
+            $this->buildFilterItem($validationObject, $filterParameters, $filterItem);
         }
 
         $validator = $this->validatorFactory->make(
-            $filterParameters->toArray(),
-            array_merge(...$rules),
-            array_merge(...$messages),
-            array_merge(...$attributes)
+            $filterParameters->toArray(), $validationObject->getRules(), $validationObject->getMessages(),
+            $validationObject->getAttributes()
         );
 
-        foreach ($transformers as $transformerData) {
-            $transformer = $transformerData[0];
-
-            $transformer($validator, $filterParameters, $transformerData[1]);
-        }
+        $this->applyTransformers($validationObject->getTransformers(), $validator, $filterParameters);
 
         return $validator;
     }
 
     /**
+     * @param FilterValidationObject $validationObject
      * @param FilterItem $filterItem
      * @param FilterParameters $filterParameters
-     *
+     * @return void
+     */
+    protected function buildFilterItem(
+        FilterValidationObject $validationObject,
+        FilterParameters $filterParameters,
+        FilterItem $filterItem
+    ): void {
+        $type = $filterItem->getType();
+
+        $validationObject->addRules($this->buildRules($filterItem, $filterParameters));
+        $validationObject->addMessages($this->buildMessages($filterItem, $filterParameters));
+        $validationObject->addAttributes($this->buildAttributes($filterItem, $filterParameters));
+
+        if (method_exists($type, 'withValidator')) {
+            $validationObject->addTransformers([
+                Closure::fromCallable([$type, 'withValidator']),
+                $this->getAttributeResolver($filterItem),
+            ]);
+        }
+    }
+
+    /**
+     * @param array $transformers
+     * @param $validator
+     * @param FilterParameters $filterParameters
+     */
+    protected function applyTransformers(array $transformers, $validator, FilterParameters $filterParameters): void
+    {
+        foreach ($transformers as $transformerData) {
+            $transformer = $transformerData[0];
+
+            $transformer($validator, $filterParameters, $transformerData[1]);
+        }
+    }
+
+    /**
+     * @param FilterItem $filterItem
+     * @param FilterParameters $filterParameters
      * @return array
      */
-    public function buildForFilter(FilterItem $filterItem, FilterParameters $filterParameters): array
+    public function buildRules(FilterItem $filterItem, FilterParameters $filterParameters): array
     {
-        $rules = $this->normalize($filterItem, $this->resolveMethod('rules', $filterItem, $filterParameters));
-        $messages = $this->normalize($filterItem, $this->resolveMethod('messages', $filterItem, $filterParameters), false);
-        $attributes = $this->normalize($filterItem, $this->resolveMethod('attributes', $filterItem, $filterParameters), false);
+        return $this->normalize($filterItem, $this->resolveMethod('rules', $filterItem, $filterParameters));
+    }
 
-        return [
-            $rules,
-            $messages,
-            $attributes,
-        ];
+    /**
+     * @param FilterItem $filterItem
+     * @param FilterParameters $filterParameters
+     * @return array
+     */
+    public function buildMessages(FilterItem $filterItem, FilterParameters $filterParameters): array
+    {
+        return $this->normalize($filterItem, $this->resolveMethod('messages', $filterItem, $filterParameters), false);
+    }
+
+    /**
+     * @param FilterItem $filterItem
+     * @param FilterParameters $filterParameters
+     * @return array
+     */
+    public function buildAttributes(FilterItem $filterItem, FilterParameters $filterParameters): array
+    {
+        return $this->normalize($filterItem, $this->resolveMethod('attributes', $filterItem, $filterParameters), false);
     }
 
     /**

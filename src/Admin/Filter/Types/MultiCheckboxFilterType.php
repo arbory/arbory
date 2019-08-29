@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Filter\Types;
 
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 use Arbory\Base\Exceptions\BadMethodCallException;
@@ -22,10 +23,10 @@ class MultiCheckboxFilterType extends AbstractType implements FilterTypeInterfac
 
     /**
      * @param FilterItem $filterItem
-     * @return mixed
+     * @return Element
      * @throws BadMethodCallException
      */
-    public function render(FilterItem $filterItem)
+    public function render(FilterItem $filterItem): Element
     {
         $options = $this->config->getOptions() ?? [];
 

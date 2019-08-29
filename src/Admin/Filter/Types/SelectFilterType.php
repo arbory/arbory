@@ -4,6 +4,7 @@ namespace Arbory\Base\Admin\Filter\Types;
 
 use Arbory\Base\Html\Html;
 use Illuminate\Validation\Rule;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 use Arbory\Base\Admin\Form\Controls\SelectControl;
@@ -20,9 +21,9 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
 
     /**
      * @param FilterItem $filterItem
-     * @return mixed
+     * @return \Arbory\Base\Html\Elements\Element
      */
-    public function render(FilterItem $filterItem)
+    public function render(FilterItem $filterItem): Element
     {
         $options = $this->config->getOptions() ?? [];
         $multiple = $this->config->isMultiple() ?? false;

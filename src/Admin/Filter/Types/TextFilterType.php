@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Filter\Types;
 
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
@@ -23,9 +24,9 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
 
     /**
      * @param FilterItem $filterItem
-     * @return mixed
+     * @return \Arbory\Base\Html\Elements\Element
      */
-    public function render(FilterItem $filterItem)
+    public function render(FilterItem $filterItem): Element
     {
         return Html::div(
             Html::input()
