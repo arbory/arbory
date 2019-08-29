@@ -112,7 +112,9 @@ class Builder implements Renderable
             return $this->getColumnHeader($column);
         });
 
-        $tableColumns->push(Html::th(Html::span(' ')));
+        if ($this->grid->isToolboxEnable()) {
+            $tableColumns->push(Html::th(Html::span(' ')));
+        }
 
         return $tableColumns;
     }
