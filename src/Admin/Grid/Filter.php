@@ -45,6 +45,11 @@ class Filter implements FilterInterface
     protected $filterManager;
 
     /**
+     * @var array
+     */
+    protected $defaultOrderOptions;
+
+    /**
      * Filter constructor.
      * @param Model $model
      */
@@ -252,20 +257,28 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string $defaultOrderBy
-     * @param string $defaultOrderDirection
+     * @return array
+     */
+    public function getDefaultOrderOptions(): array
+    {
+        return $this->defaultOrderOptions;
+    }
+
+    /**
+     * @param string $orderBy
+     * @param string $orderDirection
      * @return Filter
      */
-    public function setDefaultOrderBy(string $defaultOrderBy, string $defaultOrderDirection = 'desc'): self
+    public function setDefaultOrderBy(string $orderBy, string $orderDirection = 'desc'): self
     {
-        $this->defaultOrderBy = [$defaultOrderBy, $defaultOrderDirection];
+        $this->defaultOrderOptions = [$orderBy, $orderDirection];
 
-        $orderBy = $this->request->get('_order_by');
+        $isOrderBySpecified = $this->request->get('_order_by');
 
-        if (! $orderBy) {
+        if (! $isOrderBySpecified) {
             $this->request->merge([
-                '_order_by' => $defaultOrderBy,
-                '_order' => $defaultOrderDirection,
+                '_order_by' => $orderBy,
+                '_order' => $orderDirection,
             ]);
         }
 
