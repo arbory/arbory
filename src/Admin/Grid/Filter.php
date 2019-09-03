@@ -218,7 +218,7 @@ class Filter implements FilterInterface
      */
     public function getPerPage()
     {
-        return $this->perPage ?? Settings::get('arbory.pagination.items_per_page');
+        return $this->perPage ?? config('arbory.pagination.items_per_page');
     }
 
     /**
