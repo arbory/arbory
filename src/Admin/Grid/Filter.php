@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Arbory\Base\Support\Facades\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -217,7 +218,7 @@ class Filter implements FilterInterface
      */
     public function getPerPage()
     {
-        return $this->perPage;
+        return $this->perPage ?? config('arbory.pagination.items_per_page');
     }
 
     /**
