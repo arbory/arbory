@@ -506,7 +506,7 @@ class Grid
     {
         $this->orderUrlCallback = $orderUrlCallback;
     }
-     
+
     /**
      * @return bool
      */
