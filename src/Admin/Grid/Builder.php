@@ -252,13 +252,8 @@ class Builder implements Renderable
         $this->addCustomToolsToFooterToolset($tools);
 
         if ($this->grid->isPaginated() && $this->items->hasPages()) {
-            $params = array_filter([
-                'search' => request('search'),
-                '_order_by' => request('_order_by'),
-                '_order' => request('_order'),
-                'filter' => request('filter')
-            ]);
-
+            $params = request()->only(['search', '_order', '_order_by', 'filter']);
+            
             $this->items->appends($params);
             $pagination = (new Pagination($this->items))->render();
             $tools->getBlock($pagination->attributes()->get('class'))->push($pagination->content());
