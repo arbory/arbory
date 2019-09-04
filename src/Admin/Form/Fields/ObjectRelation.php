@@ -131,15 +131,15 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @return Relation|Collection|null
+     * @return Relation[]|Collection
      */
     public function getValue()
     {
-        if( !$this->value )
-        {
-            $relation = $this->getModel()->morphMany( Relation::class, 'owner' )->where( 'name', $this->getName() );
-
-            $this->value = $this->isSingular() ? $relation->first() : $relation->get();
+        if (!$this->value) {
+            $this->value = $this->getModel()
+                ->morphMany(Relation::class, 'owner')
+                ->where('name', $this->getName())
+                ->get();
         }
 
         return $this->value;
@@ -160,29 +160,25 @@ class ObjectRelation extends AbstractField
      * @throws \Exception
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function afterModelSave( Request $request )
+    public function afterModelSave(Request $request)
     {
-        $attributes = $request->input( $this->getNameSpacedName() );
-        $relationIds = explode( ',', array_get( $attributes, 'related_id' ) );
+        $attributes = $request->input($this->getNameSpacedName());
+        $relationIds = explode(',', array_get($attributes, 'related_id'));
         $value = $this->getValue();
 
-        if( $this->isSingular() )
-        {
-            $id = reset( $relationIds );
+        if ($this->isSingular()) {
+            $id = reset($relationIds);
 
-            if( !$id && $value instanceof Model )
-            {
+            if (!$id && $value->first() instanceof Model) {
                 $this->deleteOldRelations();
 
                 return;
             }
 
-            $this->saveOne( $id );
-        }
-        else
-        {
-            $this->saveMany( $relationIds );
-            $this->deleteOldRelations( $relationIds );
+            $this->saveOne($id);
+        } else {
+            $this->saveMany($relationIds);
+            $this->deleteOldRelations($relationIds);
         }
     }
 
@@ -242,44 +238,22 @@ class ObjectRelation extends AbstractField
      * @return void
      * @throws \Exception
      */
-    protected function deleteOldRelations( $updatedRelationIds = [] )
+    protected function deleteOldRelations($updatedRelationIds = [])
     {
-        $relations = $this->getValue();
-
-        if ($this->isSingular())
-        {
-            $relations = [ $relations ];
-        }
-
-        foreach( $relations as $relation )
-        {
-            if( !in_array( $relation->related_id, $updatedRelationIds ) )
-            {
+        $this->getValue()->each(function ($relation) use ($updatedRelationIds) {
+            if (!in_array($relation->related_id, $updatedRelationIds)) {
                 $relation->delete();
             }
-        }
+        });
     }
 
     /**
      * @param Model $model
      * @return bool
      */
-    public function hasRelationWith( Model $model ): bool
+    public function hasRelationWith(Model $model): bool
     {
-        $key = $model->getKey();
-        $value = $this->getValue();
-
-        if( !$value )
-        {
-            return false;
-        }
-
-        if( $this->isSingular() )
-        {
-            return $value->related_id === $key;
-        }
-
-        return $value->contains( 'related_id', $key );
+        return $this->getValue()->contains('related_id', $model->getKey());
     }
 
     /**
@@ -334,34 +308,20 @@ class ObjectRelation extends AbstractField
      */
     public function getInnerFieldSet()
     {
-        $fieldSet = new FieldSet( $this->getModel(), $this->getNameSpacedName() );
+        $fieldSet = new FieldSet($this->getModel(), $this->getNameSpacedName());
 
-        $value = $this->getValue();
-        $ids = null;
-
-        if( $value )
-        {
-            if( $this->isSingular() )
-            {
-                $ids = $value->related_id;
-            }
-            else
-            {
-                $ids = $value->map( function( $item )
-                {
-                    return $item->related_id;
-                } )->implode( ',' );
-            }
-        }
+        $ids = $this->getValue()->map(function ($item) {
+            return $item->related_id;
+        })->implode(',');
 
         $fieldSet->hidden('related_id')
-                 ->setValue($ids)->rules(implode('|', $this->rules))
-                 ->setDisabled($this->isDisabled())
-                 ->setInteractive($this->isInteractive());
+            ->setValue($ids)->rules(implode('|', $this->rules))
+            ->setDisabled($this->isDisabled())
+            ->setInteractive($this->isInteractive());
         $fieldSet->hidden('related_type')
-                 ->setValue(( new \ReflectionClass($this->relatedModelType) )->getName())
-                 ->setDisabled($this->isDisabled())
-                 ->setInteractive($this->isInteractive());
+            ->setValue((new \ReflectionClass($this->relatedModelType))->getName())
+            ->setDisabled($this->isDisabled())
+            ->setInteractive($this->isInteractive());
 
         return $fieldSet;
     }
@@ -438,7 +398,7 @@ class ObjectRelation extends AbstractField
         } else {
             $classes[] = 'multiple';
         }
-        
+
         return $classes;
     }
 
