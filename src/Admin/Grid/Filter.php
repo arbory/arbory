@@ -153,7 +153,7 @@ class Filter implements FilterInterface
      */
     public function execute(Collection $columns)
     {
-        if ($this->request->has('search')) {
+        if ($this->request->has('search') && !empty($this->request->get('search'))) {
             $this->search($this->request->get('search'), $columns);
         }
 
