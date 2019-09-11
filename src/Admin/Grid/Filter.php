@@ -65,7 +65,7 @@ class Filter implements FilterInterface
      * @param Collection|Column[] $columns
      * @return void
      */
-    protected function order(Collection $columns)
+    public function order(Collection $columns)
     {
         $orderBy = $this->request->get('_order_by');
         $orderDirection = $this->request->get('_order', 'asc');
@@ -88,9 +88,9 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Collection $columns
+     * @return void
      */
-    protected function filter(Collection $columns): void
+    public function filter(): void
     {
         if ($filterManager = $this->getFilterManager()) {
             $filterManager->apply($this->query);
@@ -101,7 +101,7 @@ class Filter implements FilterInterface
      * @param $phrase
      * @param Collection|Column[] $columns
      */
-    protected function search($phrase, $columns)
+    public function search($phrase, $columns)
     {
         $keywords = explode(' ', $phrase);
 
@@ -121,7 +121,7 @@ class Filter implements FilterInterface
     /**
      * @return Collection|LengthAwarePaginator
      */
-    protected function loadItems()
+    public function loadItems()
     {
         $result = $this->query;
 
@@ -149,20 +149,20 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Collection|Column[] $columns
-     * @return Collection|LengthAwarePaginator
+     * @param Collection $columns
+     * @return self
      */
-    public function execute(Collection $columns)
+    public function execute(Collection $columns): self
     {
         if ($this->request->has('search') && ! empty($this->request->get('search'))) {
             $this->search($this->request->get('search'), $columns);
         }
 
-        $this->filter($columns);
+        $this->filter();
 
         $this->order($columns);
 
-        return $this->loadItems();
+        return $this;
     }
 
     /**
