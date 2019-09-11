@@ -379,7 +379,7 @@ class Grid
             $this->filter->setPaginated($this->paginated);
         }
 
-        return $this->filter->execute($this->getColumns());
+        return $this->filter->execute($this->getColumns())->loadItems();
     }
 
     /**
