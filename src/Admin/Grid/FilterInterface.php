@@ -19,9 +19,15 @@ interface FilterInterface
 
     /**
      * @param Collection $columns
-     * @return Paginator
+     * @return self
      */
     public function execute(Collection $columns);
+
+    /**
+     * @param Collection $columns
+     * @return mixed
+     */
+    public function loadItems();
 
     /**
      * @param $relationName

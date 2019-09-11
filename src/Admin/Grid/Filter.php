@@ -87,9 +87,9 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Collection $columns
+     * @return void
      */
-    public function filter(Collection $columns): void
+    public function filter(): void
     {
         if ($filterManager = $this->getFilterManager()) {
             $filterManager->apply($this->query);
@@ -157,7 +157,7 @@ class Filter implements FilterInterface
             $this->search($this->request->get('search'), $columns);
         }
 
-        $this->filter($columns);
+        $this->filter();
 
         $this->order($columns);
 
