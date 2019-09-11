@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Arbory\Base\Support\Facades\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
