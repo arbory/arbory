@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -24,7 +26,6 @@ interface FilterInterface
     public function execute(Collection $columns);
 
     /**
-     * @param Collection $columns
      * @return mixed
      */
     public function loadItems();
