@@ -74,25 +74,17 @@ class ObjectRelationRenderer implements RendererInterface
      */
     protected function getRelatedItemsElement()
     {
-        $items = [];
-        $values = $this->field->getValue();
-
-        if( $values )
-        {
-            $values = $values instanceof Collection ? $values : new Collection( [ $values ] );
-
-            foreach( $values as $value )
-            {
+        $items = $this->field->getValue()
+            ->map(function ($value) {
                 $relation = $value->related()->first();
 
-                if( $relation )
-                {
-                    $items[] = $this->buildRelationalItemElement( $relation );
+                if ($relation) {
+                    return $this->buildRelationalItemElement($relation);
                 }
-            }
-        }
+            })
+            ->toArray();
 
-        return Html::div( $items )->addClass( 'related' );
+        return Html::div($items)->addClass('related');
     }
 
     /**
@@ -187,7 +179,7 @@ class ObjectRelationRenderer implements RendererInterface
         } else {
             $options->addClass('interactive');
         }
-        
+
         return $options;
     }
 }
