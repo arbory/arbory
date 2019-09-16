@@ -43,9 +43,10 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $relationName
+     * @param string $relationName
+     * @return void
      */
-    public function withRelation($relationName)
+    public function withRelation(string $relationName)
     {
         $this->query->with($relationName);
     }
