@@ -20,12 +20,11 @@ class SecurityController extends BaseController
     /**
      * @var AuthenticationMethod
      */
-
     protected $security;
+
     /**
      * @param AuthenticationMethod $security
      */
-
     public function __construct(AuthenticationMethod $security)
     {
         $this->middleware('arbory.admin_quest', [
