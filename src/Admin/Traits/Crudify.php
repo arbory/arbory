@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Traits;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Page;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Module;
@@ -18,7 +19,6 @@ use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Exports\ExportInterface;
 use Arbory\Base\Admin\Exports\Type\JsonExport;
 use Arbory\Base\Admin\Exports\Type\ExcelExport;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Crudify
@@ -249,7 +249,7 @@ trait Crudify
      */
     public function dialog(Request $request, string $name)
     {
-        $method =  Str::camel($name).'Dialog';
+        $method = Str::camel($name).'Dialog';
 
         if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
@@ -346,7 +346,7 @@ trait Crudify
      */
     public function api(Request $request, string $name)
     {
-        $method = camel_case($name).'Api';
+        $method = Str::camel($name).'Api';
 
         if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
@@ -390,12 +390,13 @@ trait Crudify
 
     /**
      * @param Request $request
-     * @return array|Request|string
+     * @return string
+     * @throws \Exception
      */
     public function slugGeneratorApi(Request $request)
     {
         /** @var \Illuminate\Database\Query\Builder $query */
-        $slug = str_slug($request->input('from'));
+        $slug = Str::slug($request->input('from'));
         $column = $request->input('column_name');
 
         $query = \DB::table($request->input('model_table'))->where($column, $slug);
