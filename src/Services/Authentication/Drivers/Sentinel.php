@@ -35,6 +35,7 @@ class Sentinel implements AuthenticationMethod
     public function authenticate(array $credentials, $remember = false, $login = true): bool
     {
         $user = $this->sentinel->authenticate(Arr::get($credentials, 'user', []), $remember, $login);
+
         return $user !== false;
     }
 

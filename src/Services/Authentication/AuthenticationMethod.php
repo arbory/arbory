@@ -27,7 +27,6 @@ interface AuthenticationMethod
      */
     public function getFormRequest(): FormRequest;
 
-
     /**
      * @return string
      */
