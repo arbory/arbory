@@ -100,8 +100,10 @@ final class ElementTest extends TestCase
      */
     public function itShouldFormatNameWithMultipleValues()
     {
-        foreach (Element::FIELD_NAME_MULTIPLE_ENDINGS as $ending) {
-            $this->assertEquals('resources[field_name][]', Element::formatName('resources.field_name'.$ending));
+        $supportedEndingFormats = ['[]', '[ ]'];
+
+        foreach ($supportedEndingFormats as $ending) {
+            $this->assertEquals('resources[field_name][]', Element::formatName('resources.field_name' . $ending));
         }
     }
 
