@@ -18,6 +18,7 @@ use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Exports\ExportInterface;
 use Arbory\Base\Admin\Exports\Type\JsonExport;
 use Arbory\Base\Admin\Exports\Type\ExcelExport;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Crudify
@@ -248,12 +249,10 @@ trait Crudify
      */
     public function dialog(Request $request, string $name)
     {
-        $method = camel_case($name).'Dialog';
+        $method =  Str::camel($name).'Dialog';
 
         if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
-
-            return null;
         }
 
         return $this->{$method}($request);
@@ -289,7 +288,7 @@ trait Crudify
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
         if (! isset(self::$exportTypes[$type])) {
-            throw new \Exception('Export Type not found - ' . $type);
+            throw new \Exception('Export Type not found - '.$type);
         }
 
         return new self::$exportTypes[$type]($dataSet);
