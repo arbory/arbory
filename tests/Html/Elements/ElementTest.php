@@ -103,7 +103,7 @@ final class ElementTest extends TestCase
         $supportedEndingFormats = ['[]', '[ ]'];
 
         foreach ($supportedEndingFormats as $ending) {
-            $this->assertEquals('resources[field_name][]', Element::formatName('resources.field_name' . $ending));
+            $this->assertEquals('resources[field_name][]', Element::formatName('resources.field_name'.$ending));
         }
     }
 
