@@ -30,6 +30,11 @@ vi .env
 php artisan arbory:install
 ```
 
+#### That's it!
+```bash
+Visit http://localhost/admin
+```
+
 ## Usage
 
 ### Registering new pages
