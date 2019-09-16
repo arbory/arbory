@@ -2,33 +2,34 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Arbory\Base\Http\Requests\LoginRequest;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Arbory\Base\Services\Authentication\SecurityStrategy;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Arbory\Base\Services\Authentication\AuthenticationMethod;
 
 class SecurityController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * @var SecurityStrategy
+     * @var AuthenticationMethod
      */
     protected $security;
 
     /**
-     * @param SecurityStrategy $security
+     * @param AuthenticationMethod $security
      */
-    public function __construct(SecurityStrategy $security)
+    public function __construct(AuthenticationMethod $security)
     {
-        $this->middleware('arbory.admin_quest', ['except' => 'postLogout']);
+        $this->middleware('arbory.admin_quest', [
+            'except' => 'postLogout',
+        ]);
 
         $this->security = $security;
     }
@@ -39,41 +40,58 @@ class SecurityController extends BaseController
      */
     public function getLogin(Request $request)
     {
-        return view(
-            'arbory::controllers.security.login',
-            ['input' => $request]
+        return view($this->security->getLoginView(), [
+                'input' => $request,
+            ]
         );
     }
 
     /**
-     * @param LoginRequest $request
      * @return RedirectResponse|Response|Redirect
      */
-    public function postLogin(LoginRequest $request)
+    public function postLogin()
     {
-        $credentials = array_only($request->get('user'), ['email', 'password']);
+        $request = $this->getFormRequest();
         $remember = (bool) $request->get('remember', false);
 
-        $result = $this->security->authenticate($credentials, $remember);
+        return $this->attemptLogin($request->validated(), $remember);
+    }
 
-        if ($result->isSuccess()) {
-            return $result->dispatch(session()->pull('url.intended', route('admin.login.form')));
+    /**
+     * @param array $credentials
+     * @param bool $remember
+     * @return RedirectResponse
+     */
+    protected function attemptLogin(array $credentials, bool $remember): RedirectResponse
+    {
+        $success = $this->security->authenticate($credentials, $remember);
+
+        if ($success) {
+            return Redirect::to(session()->pull('url.intended', route('admin.login.form')));
         }
 
-        return redirect(route('admin.login.form'))
+        return Redirect::route('admin.login.form')
             ->withInput()
             ->withErrors([
-                'user.email' => $result->getMessage(),
+                'error' => trans('arbory::security.authentication_failed'),
             ]);
     }
 
     /**
-     * @return Response|Redirect
+     * @return RedirectResponse
      */
-    public function postLogout()
+    public function postLogout(): RedirectResponse
     {
-        $this->security->logout(null, null);
+        $this->security->logout();
 
-        return redirect(route('admin.login.form'));
+        return Redirect::route('admin.login.form');
+    }
+
+    /**
+     * @return FormRequest
+     */
+    protected function getFormRequest(): FormRequest
+    {
+        return app(get_class($this->security->getFormRequest()));
     }
 }

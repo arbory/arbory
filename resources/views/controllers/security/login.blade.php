@@ -1,4 +1,4 @@
-@extends('arbory::layout.login')
+@extends('arbory::layout.public')
 
 @section('content')
     <form class="login" action="{{route('admin.login.attempt')}}" accept-charset="UTF-8" method="post">
