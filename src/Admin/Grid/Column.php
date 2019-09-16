@@ -265,7 +265,7 @@ class Column
                 $translation = $model->getTranslation(null, true);
 
                 if (! $translation) {
-                    return;
+                    return null;
                 }
 
                 return $translation->getAttribute($this->relationColumn);

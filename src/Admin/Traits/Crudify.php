@@ -253,7 +253,7 @@ trait Crudify
         if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
 
-            return;
+            return null;
         }
 
         return $this->{$method}($request);
@@ -289,7 +289,7 @@ trait Crudify
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
         if (! isset(self::$exportTypes[$type])) {
-            throw new \Exception('Export Type not found - '.$type);
+            throw new \Exception('Export Type not found - ' . $type);
         }
 
         return new self::$exportTypes[$type]($dataSet);

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Interface ExportInterface.
+ * @package Arbory\Base\Admin\Grid
  */
 interface ExportInterface
 {

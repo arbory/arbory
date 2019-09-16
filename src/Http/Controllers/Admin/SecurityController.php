@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use View;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
@@ -51,7 +51,7 @@ class SecurityController extends BaseController
      */
     public function postLogin(LoginRequest $request)
     {
-        $credentials = array_only($request->get('user'), ['email', 'password']);
+        $credentials = Arr::only($request->get('user'), ['email', 'password']);
         $remember = (bool) $request->get('remember', false);
 
         $result = $this->security->authenticate($credentials, $remember);
