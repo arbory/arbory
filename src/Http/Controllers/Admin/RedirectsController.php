@@ -3,12 +3,12 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\Select;
-use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Pages\Redirect;
 use Illuminate\Routing\Controller;
 use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\Fields\Select;
 
 class RedirectsController extends Controller
 {
@@ -58,7 +58,7 @@ class RedirectsController extends Controller
     {
         $statusOptions = [];
         foreach (Redirect::AVAILABLE_STATUSES as $status) {
-            $statusOptions[$status] = trans('arbory::redirect.status.' . $status);
+            $statusOptions[$status] = trans('arbory::redirect.status.'.$status);
         }
 
         return $statusOptions;
