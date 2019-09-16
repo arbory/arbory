@@ -21,8 +21,8 @@ class Authentication
 
     /**
      * @param array $credentials
-     * @param boolean $remember
-     * @param boolean $login
+     * @param bool $remember
+     * @param bool $login
      * @return bool
      */
     public function authenticate(array $credentials, $remember = false, $login = true): bool
@@ -32,7 +32,7 @@ class Authentication
 
     /**
      * @param UserInterface|null $user
-     * @param boolean $everywhere
+     * @param bool $everywhere
      * @return bool
      */
     public function logout(UserInterface $user = null, $everywhere = false): bool

@@ -2,16 +2,16 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Services\Authentication\AuthenticationMethod;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Arbory\Base\Services\Authentication\AuthenticationMethod;
 
 class SecurityController extends BaseController
 {
@@ -29,8 +29,9 @@ class SecurityController extends BaseController
     public function __construct(AuthenticationMethod $security)
     {
         $this->middleware('arbory.admin_quest', [
-            'except' => 'postLogout'
+            'except' => 'postLogout',
         ]);
+
         $this->security = $security;
     }
 
@@ -41,7 +42,7 @@ class SecurityController extends BaseController
     public function getLogin(Request $request)
     {
         return view($this->security->getLoginView(), [
-                'input' => $request
+                'input' => $request,
             ]
         );
     }
@@ -73,7 +74,7 @@ class SecurityController extends BaseController
         return Redirect::route('admin.login.form')
             ->withInput()
             ->withErrors([
-                'error' => trans('arbory::security.authentication_failed')
+                'error' => trans('arbory::security.authentication_failed'),
             ]);
     }
 
