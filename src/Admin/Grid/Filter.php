@@ -2,7 +2,6 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Support\Facades\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -179,22 +178,6 @@ class Filter implements FilterInterface
     public function getQuery(): QueryBuilder
     {
         return $this->query;
-    }
-
-    /**
-     * @param Column $column
-     * @param string $value
-     * @param string $key
-     */
-    public function createQuery(Column $column, $value, $key): void
-    {
-        $actions = $this->getFilterTypeAction($column);
-
-        if (is_null($column->getRelationName())) {
-            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $actions, $value);
-        } else {
-            $this->createQueryWithRelation($column, $actions, $value);
-        }
     }
 
     /**
