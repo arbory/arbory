@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Admin\Grid\FilterInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Closure;
 
 class Filter implements FilterInterface
 {
@@ -32,17 +31,6 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param \Closure $closure
-     * @return $this
-     */
-    public function apply(Closure $closure)
-    {
-        $this->query = $closure($this->query) ?: $this->query;
-
-        return $this;
-    }
-
-    /**
      * @param Collection $columns
      * @return $this
      */
@@ -64,6 +52,7 @@ class Filter implements FilterInterface
 
     /**
      * @param string $relationName
+     * @return void
      */
     public function withRelation(string $relationName)
     {

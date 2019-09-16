@@ -2,14 +2,15 @@
 
 namespace Arbory\Base\Html\Elements;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+
 /**
  * Class Element.
  */
 class Element
 {
-    const FIELD_NAME_MULTIPLE_ENDINGS = [
-        '[]', '[ ]',
-    ];
+    private const FIELD_NAME_MULTIPLE_ENDING = '[]';
 
     /**
      * @var Tag
@@ -113,7 +114,9 @@ class Element
             }
 
             return $this;
-        } elseif (is_string($content)) {
+        }
+
+        if (is_string($content)) {
             $content = e($content);
         }
 
@@ -147,20 +150,23 @@ class Element
      */
     public static function formatName($name): string
     {
-        $multiple = ends_with($name, self::FIELD_NAME_MULTIPLE_ENDINGS);
+        // Normalize multiple ending pattern
+        $name = str_replace('[ ]', self::FIELD_NAME_MULTIPLE_ENDING, $name);
+
+        $multiple = Str::endsWith($name, [self::FIELD_NAME_MULTIPLE_ENDING]);
 
         if ($multiple) {
-            $name = rtrim($name, implode('', self::FIELD_NAME_MULTIPLE_ENDINGS));
+            $name = Str::substr($name, 0, strlen(self::FIELD_NAME_MULTIPLE_ENDING) * -1);
         }
 
         $nameParts = preg_split('/\./', $name, null, PREG_SPLIT_NO_EMPTY);
 
-        $inputName = array_pull($nameParts, 0);
+        $inputName = Arr::pull($nameParts, 0);
 
         if (count($nameParts) > 0) {
             $inputName .= '['.implode('][', $nameParts).']';
         }
 
-        return $inputName.($multiple ? '[]' : '');
+        return $inputName.($multiple ? self::FIELD_NAME_MULTIPLE_ENDING : '');
     }
 }

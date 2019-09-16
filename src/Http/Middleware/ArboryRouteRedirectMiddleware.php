@@ -26,7 +26,7 @@ class ArboryRouteRedirectMiddleware
         $redirect = $redirect->first(['to_url']);
 
         if ($redirect) {
-            return \Redirect::to($redirect->to_url, 301);
+            return Redirect::to($redirect->to_url, $redirect->status);
         }
 
         return $next($request);

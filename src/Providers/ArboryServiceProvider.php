@@ -9,8 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Console\Commands\SeedCommand;
 use Arbory\Base\Console\Commands\InstallCommand;
 use Arbory\Base\Console\Commands\CreateUserCommand;
-use Arbory\Base\Services\Authentication\SecurityStrategy;
-use Arbory\Base\Services\Authentication\SessionSecurityService;
+use Arbory\Base\Services\Authentication\Drivers\Sentinel;
+use Arbory\Base\Services\Authentication\AuthenticationMethod;
 
 /**
  * Class ArboryServiceProvider.
@@ -29,8 +29,8 @@ class ArboryServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerLocales();
 
-        $this->app->singleton(SecurityStrategy::class, function () {
-            return $this->app->make(SessionSecurityService::class);
+        $this->app->singleton(AuthenticationMethod::class, function () {
+            return $this->app->make(Sentinel::class);
         });
     }
 
