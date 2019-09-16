@@ -24,17 +24,35 @@ class Filter implements FilterInterface
      * Filter constructor.
      * @param Model $model
      */
-    public function __construct(Model $model)
+    public function __construct( Model $model )
     {
         $this->model = $model;
         $this->query = $model->newQuery();
     }
 
     /**
-     * @param Collection $columns
-     * @return mixed
+     * @param \Closure $closure
+     * @return $this
      */
-    public function execute(Collection $columns)
+    public function apply(\Closure $closure) {
+        $this->query = $closure($this->query) ?: $this->query;
+
+        return $this;
+    }
+
+    /**
+     * @param Collection $columns
+     * @return $this
+     */
+    public function execute( Collection $columns ): self
+    {
+        return $this;
+    }
+
+    /**
+     * @return LengthAwarePaginator|mixed
+     */
+    public function loadItems()
     {
         $items = $this->query->get();
         $hierarchy = $items->toHierarchy();
@@ -43,18 +61,19 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $relationName
+     * @param string $relationName
      */
-    public function withRelation($relationName)
+    public function withRelation( string $relationName )
     {
-        $this->query->with($relationName);
+        $this->query->with( $relationName );
     }
 
     /**
-     * @return \Illuminate\Database\Query\Builder
+     * @return Builder|\Illuminate\Database\Query\Builder
      */
     public function getQuery()
     {
         return $this->query;
     }
 }
+

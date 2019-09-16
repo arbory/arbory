@@ -379,7 +379,7 @@ class Grid
             $this->filter->setPaginated($this->paginated);
         }
 
-        return $this->filter->execute($this->getColumns());
+        return $this->filter->execute($this->getColumns())->loadItems();
     }
 
     /**
@@ -506,7 +506,7 @@ class Grid
     {
         $this->orderUrlCallback = $orderUrlCallback;
     }
-     
+
     /**
      * @return bool
      */
@@ -597,11 +597,7 @@ class Grid
     protected function getFilterParameters(): ?array
     {
         $filterParameters = $this->getFilterManager()->getParameters();
-        $params = array_filter([
-            'search' => request('search'),
-            '_order_by' => request('_order_by'),
-            '_order' => request('_order'),
-        ]);
+        $params = request()->only(['search', '_order', '_order_by']);
 
         if (! $filterParameters->isEmpty()) {
             $params[$filterParameters->getNamespace()] = $filterParameters->toArray();
