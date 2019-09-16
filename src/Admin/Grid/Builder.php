@@ -7,7 +7,6 @@ use Arbory\Base\Admin\Grid;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Layout\Footer;
-use Arbory\Base\Admin\Widgets\Filter;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Widgets\Pagination;
@@ -15,6 +14,7 @@ use Arbory\Base\Admin\Layout\Footer\Tools;
 use Illuminate\Contracts\Support\Renderable;
 use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Arbory\Base\Admin\Filter\Renderer as FilterRenderer;
 
 /**
  * Class Builder.
@@ -96,7 +96,11 @@ class Builder implements Renderable
             return;
         }
 
-        return (new Filter($this->grid()))->render();
+        $filterManager = $this->grid->getFilterManager();
+
+        return (new FilterRenderer())
+            ->setManager($filterManager)
+            ->render();
     }
 
     /**
@@ -130,7 +134,7 @@ class Builder implements Renderable
         if ($column->isSortable()) {
             $link = Html::link($column->getLabel())
                 ->addAttributes([
-                    'href' => $this->getColumnOrderUrl($column->getName()),
+                    'href' => $this->grid->getColumnOrderUrl($column),
                 ]);
 
             if (request('_order_by') === $column->getName()) {
@@ -141,19 +145,6 @@ class Builder implements Renderable
         }
 
         return Html::th(Html::span($column->getLabel()));
-    }
-
-    /**
-     * @param $column
-     * @return string
-     */
-    protected function getColumnOrderUrl($column)
-    {
-        return $this->grid->getModule()->url('index', array_filter([
-            'search' => request('search'),
-            '_order_by' => $column,
-            '_order' => request('_order') === 'ASC' ? 'DESC' : 'ASC',
-        ]));
     }
 
     /**
@@ -261,6 +252,9 @@ class Builder implements Renderable
         $this->addCustomToolsToFooterToolset($tools);
 
         if ($this->grid->isPaginated() && $this->items->hasPages()) {
+            $params = request()->only(['search', '_order', '_order_by', 'filter']);
+
+            $this->items->appends($params);
             $pagination = (new Pagination($this->items))->render();
             $tools->getBlock($pagination->attributes()->get('class'))->push($pagination->content());
         }

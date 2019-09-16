@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Traits;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Page;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Layout;
 use Arbory\Base\Admin\Module;
@@ -248,12 +249,10 @@ trait Crudify
      */
     public function dialog(Request $request, string $name)
     {
-        $method = camel_case($name).'Dialog';
+        $method = Str::camel($name).'Dialog';
 
         if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
-
-            return null;
         }
 
         return $this->{$method}($request);
@@ -289,7 +288,7 @@ trait Crudify
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
         if (! isset(self::$exportTypes[$type])) {
-            throw new \Exception('Export Type not found - ' . $type);
+            throw new \Exception('Export Type not found - '.$type);
         }
 
         return new self::$exportTypes[$type]($dataSet);
@@ -347,7 +346,7 @@ trait Crudify
      */
     public function api(Request $request, string $name)
     {
-        $method = camel_case($name).'Api';
+        $method = Str::camel($name).'Api';
 
         if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
@@ -391,12 +390,13 @@ trait Crudify
 
     /**
      * @param Request $request
-     * @return array|Request|string
+     * @return string
+     * @throws \Exception
      */
     public function slugGeneratorApi(Request $request)
     {
         /** @var \Illuminate\Database\Query\Builder $query */
-        $slug = str_slug($request->input('from'));
+        $slug = Str::slug($request->input('from'));
         $column = $request->input('column_name');
 
         $query = \DB::table($request->input('model_table'))->where($column, $slug);
@@ -424,7 +424,10 @@ trait Crudify
      */
     protected function getAfterEditResponse(Request $request, $model)
     {
-        return redirect($request->has('save_and_return') ? $this->module()->url('index') : $request->url());
+        $defaultReturnUrl = $this->module()->url('index');
+        $returnUrl = $request->has(Form::INPUT_RETURN_URL) ? $request->get(Form::INPUT_RETURN_URL) : $defaultReturnUrl;
+
+        return redirect($request->has('save_and_return') ? $returnUrl : $request->url());
     }
 
     /**
@@ -435,9 +438,12 @@ trait Crudify
      */
     protected function getAfterCreateResponse(Request $request, $model)
     {
+        $defaultReturnUrl = $this->module()->url('index');
+        $returnUrl = $request->has(Form::INPUT_RETURN_URL) ? $request->get(Form::INPUT_RETURN_URL) : $defaultReturnUrl;
+
         $url = $this->url('edit', $model);
 
-        return redirect($request->has('save_and_return') ? $this->module()->url('index') : $url);
+        return redirect($request->has('save_and_return') ? $returnUrl : $url);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Grid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Filter\FilterManager;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
@@ -39,6 +40,16 @@ class Filter implements FilterInterface
     protected $perPage;
 
     /**
+     * @var FilterManager
+     */
+    protected $filterManager;
+
+    /**
+     * @var array
+     */
+    protected $defaultOrderOptions;
+
+    /**
      * Filter constructor.
      * @param Model $model
      */
@@ -53,7 +64,7 @@ class Filter implements FilterInterface
      * @param Collection|Column[] $columns
      * @return void
      */
-    protected function order(Collection $columns)
+    public function order(Collection $columns)
     {
         $orderBy = $this->request->get('_order_by');
         $orderDirection = $this->request->get('_order', 'asc');
@@ -64,7 +75,7 @@ class Filter implements FilterInterface
 
         $column = $columns->filter(function (Column $column) {
             return $column->isSortable();
-        })->filter(function (Column $column) use ($orderBy) {
+        })->filter(static function (Column $column) use ($orderBy) {
             return $column->getName() === $orderBy;
         })->first();
 
@@ -76,26 +87,12 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Collection $columns
+     * @return void
      */
-    protected function filter(Collection $columns): void
+    public function filter(): void
     {
-        $filterParameters = self::removeNonFilterParameters($this->request->all());
-
-        foreach ($filterParameters as $getKey => $getValue) {
-            if (! $getValue) {
-                continue;
-            }
-
-            $column = $columns->filter(function (Column $column) use ($getKey) {
-                return $column->getName() === $getKey || $column->getRelationName() === $getKey;
-            })->first();
-
-            if (! $column || ! $column->getHasFilter()) {
-                continue;
-            }
-
-            $this->createQuery($column, $getValue, $getKey);
+        if ($filterManager = $this->getFilterManager()) {
+            $filterManager->apply($this->query);
         }
     }
 
@@ -103,7 +100,7 @@ class Filter implements FilterInterface
      * @param $phrase
      * @param Collection|Column[] $columns
      */
-    protected function search($phrase, $columns)
+    public function search($phrase, $columns)
     {
         $keywords = explode(' ', $phrase);
 
@@ -121,9 +118,9 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @return Collection|LengthAwarePaginator
+     * @return QueryBuilder|QueryBuilder[]|\Illuminate\Database\Eloquent\Collection|LengthAwarePaginator|mixed
      */
-    protected function loadItems()
+    public function loadItems()
     {
         $result = $this->query;
 
@@ -151,20 +148,20 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Collection|Column[] $columns
-     * @return Collection|LengthAwarePaginator
+     * @param Collection $columns
+     * @return self
      */
-    public function execute(Collection $columns)
+    public function execute(Collection $columns): self
     {
-        if ($this->request->has('search')) {
+        if ($this->request->has('search') && ! empty($this->request->get('search'))) {
             $this->search($this->request->get('search'), $columns);
         }
 
-        $this->filter($columns);
+        $this->filter();
 
         $this->order($columns);
 
-        return $this->loadItems();
+        return $this;
     }
 
     /**
@@ -181,22 +178,6 @@ class Filter implements FilterInterface
     public function getQuery(): QueryBuilder
     {
         return $this->query;
-    }
-
-    /**
-     * @param Column $column
-     * @param string $value
-     * @param string $key
-     */
-    public function createQuery(Column $column, $value, $key): void
-    {
-        $actions = $this->getFilterTypeAction($column);
-
-        if (is_null($column->getRelationName())) {
-            $this->createQueryWithoutRelation($column->getFilterColumnName($key), $actions, $value);
-        } else {
-            $this->createQueryWithRelation($column, $actions, $value);
-        }
     }
 
     /**
@@ -220,7 +201,7 @@ class Filter implements FilterInterface
      */
     public function getPerPage()
     {
-        return $this->perPage;
+        return $this->perPage ?? config('arbory.pagination.items_per_page');
     }
 
     /**
@@ -241,69 +222,50 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string $columnName
-     * @param $actions
-     * @param $values
+     * @param FilterManager $filterManager
+     * @return Filter
      */
-    public function createQueryWithoutRelation(string $columnName, $actions, $values): void
+    public function setFilterManager(FilterManager $filterManager): self
     {
-        $actions = array_wrap($actions);
-        $values = array_wrap($values);
+        $this->filterManager = $filterManager;
 
-        foreach (array_combine($values, $actions) as $value => $action) {
-            $this->query->where($columnName, $action, $value);
-        }
+        return $this;
     }
 
     /**
-     * @param Column $column
-     * @param $actions
-     * @param $values
+     * @return FilterManager|null
      */
-    public function createQueryWithRelation(Column $column, $actions, $values): void
+    public function getFilterManager(): ?FilterManager
     {
-        $actions = array_wrap($actions);
-        $values = array_wrap($values);
-
-        if (count($actions) === count($values)) {
-            foreach (array_combine($values, $actions) as $value => $action) {
-                $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $action, $value) {
-                    $query->where($column->getFilterRelationColumn(), $action, $value);
-                });
-            }
-
-            return;
-        }
-
-        $this->query->whereHas($column->getRelationName(), function ($query) use ($column, $values) {
-            $query->whereIn($column->getFilterRelationColumn(), $values);
-        });
+        return $this->filterManager;
     }
 
     /**
-     * @param array $parameters
      * @return array
      */
-    private function removeNonFilterParameters(array $parameters): array
+    public function getDefaultOrderOptions(): array
     {
-        unset($parameters['_order_by']);
-        unset($parameters['_order']);
-
-        return self::recursiveArrayFilter($parameters);
+        return $this->defaultOrderOptions;
     }
 
     /**
-     * @param array $filterParameters
-     * @return array
+     * @param string $orderBy
+     * @param string $orderDirection
+     * @return Filter
      */
-    private function recursiveArrayFilter(array $filterParameters): array
+    public function setDefaultOrderBy(string $orderBy, string $orderDirection = 'desc'): self
     {
-        foreach ($filterParameters as $getKey => &$getValue) {
-            if (is_array($getValue)) {
-                $getValue = self::recursiveArrayFilter($getValue);
-            }
+        $this->defaultOrderOptions = [$orderBy, $orderDirection];
+
+        $isOrderBySpecified = $this->request->get('_order_by');
+
+        if (! $isOrderBySpecified) {
+            $this->request->merge([
+                '_order_by' => $orderBy,
+                '_order' => $orderDirection,
+            ]);
         }
 
-        return array_filter($filterParameters);
+        return $this;
     }
 }

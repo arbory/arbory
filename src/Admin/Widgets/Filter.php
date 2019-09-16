@@ -11,6 +11,16 @@ use Illuminate\Contracts\Support\Renderable;
 class Filter implements Renderable
 {
     /**
+     * @var string
+     */
+    protected $action;
+
+    /**
+     * @var Grid\Column[]
+     */
+    protected $columns;
+
+    /**
      * Filter constructor.
      * @param Grid $grid
      */
@@ -26,7 +36,7 @@ class Filter implements Renderable
     protected function filterHeader(): Element
     {
         return Html::div([
-            Html::h2(trans('arbory::filter.sort_and_filter')),
+            Html::h2(trans('arbory::filter.filter')),
             Button::create()
                 ->type('button', 'js-filter-trigger')
                 ->withIcon('times')

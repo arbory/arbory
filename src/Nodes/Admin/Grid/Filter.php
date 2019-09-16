@@ -32,9 +32,17 @@ class Filter implements FilterInterface
 
     /**
      * @param Collection $columns
-     * @return mixed
+     * @return $this
      */
-    public function execute(Collection $columns)
+    public function execute(Collection $columns): self
+    {
+        return $this;
+    }
+
+    /**
+     * @return LengthAwarePaginator|mixed
+     */
+    public function loadItems()
     {
         $items = $this->query->get();
         $hierarchy = $items->toHierarchy();
@@ -49,5 +57,13 @@ class Filter implements FilterInterface
     public function withRelation(string $relationName)
     {
         $this->query->with($relationName);
+    }
+
+    /**
+     * @return Builder|\Illuminate\Database\Query\Builder
+     */
+    public function getQuery()
+    {
+        return $this->query;
     }
 }

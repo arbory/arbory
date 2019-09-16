@@ -45,6 +45,14 @@ class SelectControl extends AbstractControl
     {
         $content = new Content();
 
+        if ($this->isMultiple()) {
+            $control->setName(
+                $this->getName().'[]'
+            );
+
+            $control->addAttributes(['multiple' => true]);
+        }
+
         $content->push($control);
 
         $values = array_wrap($this->getValue());
