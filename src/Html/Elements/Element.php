@@ -114,7 +114,9 @@ class Element
             }
 
             return $this;
-        } elseif (is_string($content)) {
+        }
+
+        if (is_string($content)) {
             $content = e($content);
         }
 
