@@ -21,7 +21,6 @@ class AddIndexesToNodesTable extends Migration
             $table->index('parent_id');
             $table->index('lft');
             $table->index('rgt');
-            $table->index('active');
         });
     }
 
@@ -40,7 +39,6 @@ class AddIndexesToNodesTable extends Migration
             $table->dropIndex('nodes_parent_id_index');
             $table->dropIndex('nodes_lft_index');
             $table->dropIndex('nodes_rgt_index');
-            $table->dropIndex('nodes_active_index');
         });
     }
 }
