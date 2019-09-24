@@ -27,6 +27,7 @@
   }
 
   > .content {
+    padding: 0 steps(1) steps(1);
     border-width: 0 1px 1px 1px;
     border-style: solid;
     border-color: $color-border-normal;

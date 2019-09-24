@@ -1,7 +1,8 @@
 .field {
     &.type-richtext,
     &.type-compact-richtext {
-        width: calc(100% - #{$form-gutter-width});
+        width: calc(100% - #{$form-gutter-half});
+        height: 160px;
     }
     
     
