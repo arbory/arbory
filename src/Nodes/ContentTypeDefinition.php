@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Nodes;
 
-use Arbory\Base\Support\Nodes\NameGenerator;
 use Closure;
+use Arbory\Base\Support\Nodes\NameGenerator;
 
 class ContentTypeDefinition
 {

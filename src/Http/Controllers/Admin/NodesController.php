@@ -6,7 +6,6 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Page;
 use Arbory\Base\Nodes\Node;
-use Arbory\Base\Support\Nodes\NameGenerator;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Layout;
 use Illuminate\Routing\Controller;
@@ -21,6 +20,7 @@ use Arbory\Base\Nodes\Admin\Grid\Renderer;
 use Arbory\Base\Nodes\ContentTypeRegister;
 use Arbory\Base\Admin\Layout\LayoutManager;
 use Arbory\Base\Nodes\ContentTypeDefinition;
+use Arbory\Base\Support\Nodes\NameGenerator;
 use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Repositories\NodesRepository;
 use Arbory\Base\Admin\Form\Fields\Deactivator;
@@ -86,7 +86,7 @@ class NodesController extends Controller
         });
 
         /**
-         * @var $node Node
+         * @var Node
          */
         $node = $form->fields()->getModel();
 

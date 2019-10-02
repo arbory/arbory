@@ -5,7 +5,6 @@ namespace Arbory\Base\Nodes\Admin\Grid;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Nodes\Node;
-use Arbory\Base\Support\Nodes\NameGenerator;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Layout\Footer;
@@ -13,6 +12,7 @@ use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Support\Nodes\NameGenerator;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Pagination\Paginator;
 
@@ -90,9 +90,8 @@ class Renderer implements Renderable
 
         foreach ($items as $item) {
             /**
-             * @var $item Node
+             * @var Node
              */
-
             $collapsed = $this->getNodeCookie($item->getKey());
             $children = $item->children;
             $hasChildren = ($children && $children->count());
@@ -122,7 +121,6 @@ class Renderer implements Renderable
 
             foreach ($this->grid()->getColumns() as $column) {
                 $cellValue = $item->{$column->getName()};
-
 
                 $cell->append(
                     Html::link(
@@ -201,7 +199,6 @@ class Renderer implements Renderable
 
         return array_get($cookie, $nodeId, true);
     }
-
 
     /**
      * @param string $type

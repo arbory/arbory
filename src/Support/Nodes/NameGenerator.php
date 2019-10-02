@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Support\Nodes;
-
 
 class NameGenerator
 {
@@ -11,7 +9,8 @@ class NameGenerator
      *
      * @return string
      */
-    public function generate(string $type): string {
+    public function generate(string $type): string
+    {
         $className = class_basename($type);
         $title = preg_replace('/Page$/', '', $className);
 
