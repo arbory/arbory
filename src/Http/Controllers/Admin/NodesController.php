@@ -6,6 +6,7 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Page;
 use Arbory\Base\Nodes\Node;
+use Arbory\Base\Support\Nodes\NameGenerator;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Layout;
 use Illuminate\Routing\Controller;
@@ -83,6 +84,15 @@ class NodesController extends Controller
 
             $fields->hasOne('content', $this->contentResolver($definition, $layout));
         });
+
+        /**
+         * @var $node Node
+         */
+        $node = $form->fields()->getModel();
+
+        if ($contentType = $node->getContentType()) {
+            $form->title($form->getTitle().' ('.$this->makeNameFromType($contentType).')');
+        }
 
         $form->addEventListeners(['create.after'], function () use ($form) {
             $this->afterSave($form);
@@ -326,5 +336,14 @@ class NodesController extends Controller
         $definition = $this->contentTypeRegister->findByModelClass($class);
 
         return $definition;
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    protected function makeNameFromType($type): string
+    {
+        return app(NameGenerator::class)->generate($type);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Nodes;
 
+use Arbory\Base\Support\Nodes\NameGenerator;
 use Closure;
 
 class ContentTypeDefinition
@@ -100,17 +101,6 @@ class ContentTypeDefinition
      */
     protected function makeNameFromType($type): string
     {
-        $className = class_basename($type);
-        $title = preg_replace('/Page$/', '', $className);
-
-        return implode(
-            ' ',
-            preg_split(
-                '/(?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z])/',
-                $title,
-                -1,
-                PREG_SPLIT_NO_EMPTY
-            )
-        );
+        return app(NameGenerator::class)->generate($type);
     }
 }

@@ -4,6 +4,8 @@ namespace Arbory\Base\Nodes\Admin\Grid;
 
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
+use Arbory\Base\Nodes\Node;
+use Arbory\Base\Support\Nodes\NameGenerator;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Layout\Footer;
@@ -87,6 +89,10 @@ class Renderer implements Renderable
         $items = $items->sortBy('lft');
 
         foreach ($items as $item) {
+            /**
+             * @var $item Node
+             */
+
             $collapsed = $this->getNodeCookie($item->getKey());
             $children = $item->children;
             $hasChildren = ($children && $children->count());
@@ -115,11 +121,19 @@ class Renderer implements Renderable
             $link = str_replace('__ID__', $item->getKey(), $url);
 
             foreach ($this->grid()->getColumns() as $column) {
-                $cell->append(Html::link(
-                    Html::span($item->{$column->getName()})
-                )
-                    ->addClass('trigger')
-                    ->addAttributes(['href' => $link]));
+                $cellValue = $item->{$column->getName()};
+
+
+                $cell->append(
+                    Html::link(
+                        Html::span($cellValue)
+                    )
+                        ->append(
+                            Html::span($this->makeNameFromType($item->getContentType()))->addClass('content-type')
+                        )
+                        ->addClass('trigger')
+                        ->addAttributes(['href' => $link])
+                );
             }
 
             $li->append($cell);
@@ -186,5 +200,15 @@ class Renderer implements Renderable
         $cookie = (array) json_decode(array_get($_COOKIE, self::COOKIE_NAME_NODES));
 
         return array_get($cookie, $nodeId, true);
+    }
+
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    protected function makeNameFromType($type): string
+    {
+        return app(NameGenerator::class)->generate($type);
     }
 }
