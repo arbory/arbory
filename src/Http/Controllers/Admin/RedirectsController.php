@@ -26,14 +26,15 @@ class RedirectsController extends Controller
     protected function form(Form $form)
     {
         return $form->setFields(function (Form\FieldSet $fieldSet) {
-            $fieldSet->addField(new Text('from_url'))
+            $fieldSet->add(new Text('from_url'))
                 ->rules('required')
                 ->setLabel(trans('arbory::redirect.from_url'));
-            $fieldSet->addField(new Text('to_url'))
+            
+            $fieldSet->add(new Text('to_url'))
                 ->rules('required')
                 ->setLabel(trans('arbory::redirect.to_url'));
 
-            $fieldSet->addField(new Select('status'))
+            $fieldSet->add(new Select('status'))
                 ->options($this->getStatusOptions())
                 ->setLabel(trans('arbory::redirect.status.name'));
         });
