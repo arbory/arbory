@@ -31,6 +31,6 @@ class ResourceRoutes
      */
     public function getUrl( $name, $parameters = [] )
     {
-        return route( config( 'arbory.uri' ) . '.' . $this->module->name() . '.' . $name, $parameters );
+        return route( 'admin.' . $this->module->name() . '.' . $name, $parameters );
     }
 }
