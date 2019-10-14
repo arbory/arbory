@@ -3,6 +3,8 @@
 return [
     'uri' => 'admin',
 
+    'app_uri_prefix' => '',
+
     'locales' => [
         'en'
     ],

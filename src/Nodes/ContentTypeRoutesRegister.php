@@ -108,7 +108,8 @@ class ContentTypeRoutesRegister
      */
     public function registerNodes()
     {
-        $this->registerRoutesForNodeCollection( Node::all()->unorderedHierarchicalList() );
+        $prefix = config('arbory.app_uri_prefix');
+        $this->registerRoutesForNodeCollection(Node::all()->unorderedHierarchicalList(), $prefix);
     }
 
     /**
@@ -157,7 +158,7 @@ class ContentTypeRoutesRegister
         foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            $this->registerNodeRoutes($item, 'preview-' . sha1(config('arbory.preview.slug_salt') . $slug));
+            $this->registerNodeRoutes($item, '/preview-' . sha1(config('arbory.preview.slug_salt') . $slug));
 
             if ($item->children->count()) {
                 $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
