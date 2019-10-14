@@ -29,7 +29,7 @@ class RedirectsController extends Controller
             $fieldSet->add(new Text('from_url'))
                 ->rules('required')
                 ->setLabel(trans('arbory::redirect.from_url'));
-            
+
             $fieldSet->add(new Text('to_url'))
                 ->rules('required')
                 ->setLabel(trans('arbory::redirect.to_url'));
