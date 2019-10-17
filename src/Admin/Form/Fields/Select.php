@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
@@ -52,7 +53,7 @@ class Select extends ControlField
 
         // Use relation foreign key when name matches relationships
         if ($this->isRelationship()) {
-            $property = $this->getRelation()->getForeignKey();
+            $property = $this->getRelation()->getForeignKeyName();
         }
 
         $this->getModel()->setAttribute($property, $value);
@@ -112,7 +113,7 @@ class Select extends ControlField
                 $value = explode(',', $value);
             }
 
-            return array_wrap($value);
+            return Arr::wrap($value);
         }
 
         return $value;

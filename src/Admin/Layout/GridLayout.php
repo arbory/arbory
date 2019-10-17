@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Layout;
 
 use Arbory\Base\Admin\Layout\Grid\Column;
+use Illuminate\Support\Arr;
 
 class GridLayout extends AbstractLayout implements LayoutInterface
 {
@@ -96,7 +97,7 @@ class GridLayout extends AbstractLayout implements LayoutInterface
         $this->width = $width;
         $this->breakpoints = array_merge(
             [Column::BREAKPOINT_DEFAULT => $width],
-            array_wrap($breakpoints)
+            Arr::wrap($breakpoints)
         );
 
         return $this;

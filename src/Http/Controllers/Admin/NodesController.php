@@ -20,6 +20,7 @@ use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\ContentTypeRegister;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Repositories\NodesRepository;
+use Illuminate\Support\Str;
 use Arbory\Base\Support\Nodes\NameGenerator;
 use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
@@ -162,7 +163,7 @@ class NodesController extends Controller
 
         $page = $manager->page(Page::class);
         $page->use($layout);
-        $page->bodyClass('controller-'.str_slug($this->module()->name()).' view-edit');
+        $page->bodyClass('controller-'.Str::slug($this->module()->name()).' view-edit');
 
         return $page;
     }
@@ -245,7 +246,7 @@ class NodesController extends Controller
             $node->moveToLeftOf($nodes->findOneBy('id', $toRightId));
         }
 
-        return \Response::make();
+        return response();
     }
 
     /**
@@ -268,14 +269,14 @@ class NodesController extends Controller
         }
 
         $from = $request->get('from');
-        $slug = str_slug($from);
+        $slug = Str::slug($from);
 
         if (in_array($slug, $reservedSlugs, true) && $request->has('id')) {
-            $slug = str_slug($request->get('id').'-'.$from);
+            $slug = Str::slug($request->get('id').'-'.$from);
         }
 
         if (in_array($slug, $reservedSlugs, true)) {
-            $slug = str_slug($from.'-'.random_int(0, 9999));
+            $slug = Str::slug($from.'-'.random_int(0, 9999));
         }
 
         return $slug;

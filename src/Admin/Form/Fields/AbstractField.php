@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
@@ -123,7 +124,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      */
     public function getFieldTypeName()
     {
-        return 'type-'.camel_case(class_basename(static::class));
+        return 'type-'.Str::camel(class_basename(static::class));
     }
 
     /**
@@ -377,7 +378,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      */
     public function getFieldClasses(): array
     {
-        $type = snake_case(class_basename(get_class($this)), '-');
+        $type = Str::snake(class_basename(get_class($this)), '-');
 
         return ["type-{$type}"];
     }

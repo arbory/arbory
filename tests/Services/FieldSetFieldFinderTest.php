@@ -2,6 +2,7 @@
 
 namespace Tests\Services;
 
+use Illuminate\Support\Arr;
 use Mockery;
 use Mockery\Mock;
 use Arbory\Base\Admin\Form;
@@ -180,7 +181,7 @@ final class FieldSetFieldFinderTest extends TestCase
      */
     private function assertContainsField(array $haystack, AbstractField $field)
     {
-        $this->assertEquals($field, array_get($haystack, $field->getName()));
+        $this->assertEquals($field, Arr::get($haystack, $field->getName()));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Arbory\Base\Menu;
 
 use Arbory\Base\Admin\Admin;
+use Illuminate\Support\Str;
 use Waavi\Translation\Repositories\TranslationRepository;
 
 class MenuItemFactory
@@ -65,13 +66,13 @@ class MenuItemFactory
     {
         $name = is_array($definition) ? $definition[0] : $definition;
         $name = str_replace('Controller', '', class_basename($name));
-        $name = snake_case($name);
+        $name = Str::snake($name);
         $key = 'arbory::modules.'.$name;
 
         $translated = trans($key);
 
         if ($translated === $key) {
-            $generatedText = title_case(str_replace('_', ' ', $name));
+            $generatedText = Str::title(str_replace('_', ' ', $name));
 
             $this->translations->create([
                 'locale' => \App::getLocale(),
