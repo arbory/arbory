@@ -114,6 +114,8 @@ class Filter implements FilterInterface
 
         /** @var LengthAwarePaginator $result */
         $result = $this->query->paginate( $this->getPerPage() );
+        $path = '/' .  ltrim($this->request->path());
+        $result->setPath($path);
 
         if( $this->request->has( 'search' ) )
         {

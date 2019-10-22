@@ -27,10 +27,11 @@ class ResourceRoutes
     /**
      * @param $name
      * @param array $parameters
+     * @param bool $absolute
      * @return string
      */
-    public function getUrl( $name, $parameters = [] )
+    public function getUrl( $name, $parameters = [], $absolute = true )
     {
-        return route( 'admin.' . $this->module->name() . '.' . $name, $parameters );
+        return route( 'admin.' . $this->module->name() . '.' . $name, $parameters, $absolute );
     }
 }

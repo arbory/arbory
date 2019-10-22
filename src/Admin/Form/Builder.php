@@ -34,11 +34,12 @@ class Builder implements Renderable
     /**
      * @param $route
      * @param array $parameters
+     * @param bool $absolute
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url( $route, $parameters = [], $absolute = true )
     {
-        return $this->form->getModule()->url( $route, $parameters );
+        return $this->form->getModule()->url( $route, $parameters, $absolute );
     }
 
     /**
@@ -51,7 +52,7 @@ class Builder implements Renderable
         if( $this->form->getModel()->getKey() )
         {
             $toolbox = Toolbox::create(
-                $this->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $this->form->getModel()->getKey() ] )
+                $this->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $this->form->getModel()->getKey() ], false )
             )->render();
         }
 
@@ -86,7 +87,7 @@ class Builder implements Renderable
         );
 
         $secondary->append(
-            Link::create( $this->url( 'index' ) )
+            Link::create( $this->url( 'index', [], false ) )
                 ->asButton( 'secondary' )
                 ->withIcon( 'caret-left' )
                 ->title( trans( 'arbory::resources.back_to_list' ) )
@@ -138,8 +139,8 @@ class Builder implements Renderable
         $breadcrumbs->addItem(
             $this->form->getTitle(),
             $this->form->getModel()->getKey()
-                ? $this->form->getModule()->url( 'edit', $this->form->getModel()->getKey() )
-                : $this->form->getModule()->url( 'create' )
+                ? $this->form->getModule()->url( 'edit', $this->form->getModel()->getKey(), false )
+                : $this->form->getModule()->url( 'create', [], false )
         );
 
         return $breadcrumbs;

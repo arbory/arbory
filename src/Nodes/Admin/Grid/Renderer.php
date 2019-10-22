@@ -75,7 +75,7 @@ class Renderer implements Renderable
      */
     protected function buildTree( Collection $items, $level = 1 )
     {
-        $url = $this->url( 'edit', '__ID__' );
+        $url = $this->url( 'edit', '__ID__', false );
 
         $list = Html::ul()->addAttributes( [ 'data-level' => $level ] );
 
@@ -146,7 +146,7 @@ class Renderer implements Renderable
      */
     protected function footer()
     {
-        $createButton = Link::create( $this->url( 'dialog', 'content_types' ) )
+        $createButton = Link::create( $this->url( 'dialog', 'content_types', false ) )
             ->asButton( 'primary ajaxbox' )
             ->withIcon( 'plus' )
             ->title( trans( 'arbory::resources.create_new' ) );
@@ -164,11 +164,12 @@ class Renderer implements Renderable
     /**
      * @param $route
      * @param array $parameters
+     * @param bool $absolute
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url( $route, $parameters = [], $absolute = true )
     {
-        return $this->grid()->getModule()->url( $route, $parameters );
+        return $this->grid()->getModule()->url( $route, $parameters, $absolute );
     }
 
     /**

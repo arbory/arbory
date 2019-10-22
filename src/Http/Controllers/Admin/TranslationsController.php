@@ -186,8 +186,8 @@ class TranslationsController extends Controller
                 'group' => $group,
                 'item' => $item,
                 'translations' => $translations,
-                'back_to_index_url' => route( 'admin.translations.index', $this->getContext() ),
-                'update_url' => route( 'admin.translations.update', $this->getContext() )
+                'back_to_index_url' => route( 'admin.translations.index', $this->getContext(), false ),
+                'update_url' => route( 'admin.translations.update', $this->getContext(), false )
             ]
         );
     }
@@ -227,7 +227,7 @@ class TranslationsController extends Controller
             $cache->flush( $locale, $request->get( 'group' ), $request->get( 'namespace' ) );
         }
 
-        return redirect( route( 'admin.translations.index', $this->getContext() ) );
+        return redirect( route( 'admin.translations.index', $this->getContext(), false ) );
     }
 
     /**
@@ -239,7 +239,7 @@ class TranslationsController extends Controller
 
         return ( new Breadcrumbs )->addItem(
             $module->getConfiguration()->getName(),
-            route( 'admin.translations.index', $this->getContext() )
+            route( 'admin.translations.index', $this->getContext(), false )
         );
     }
 
@@ -270,7 +270,9 @@ class TranslationsController extends Controller
                 'item' => $item->item,
                 'page' => $paginator->currentPage(),
                 'search' => $this->request->get( 'search' )
-            ] );
+            ],
+            false
+        );
     }
 
     /**

@@ -80,7 +80,7 @@ class LanguageController extends Controller
 
         $resource->restore();
 
-        return redirect( $this->module()->url( 'index' ) );
+        return redirect( $this->module()->url( 'index', [], false ) );
     }
 
     /**
@@ -96,7 +96,7 @@ class LanguageController extends Controller
 
         $resource->delete();
 
-        return redirect( $this->module()->url( 'index' ) );
+        return redirect( $this->module()->url( 'index', [], false ) );
     }
 
     /**
@@ -109,7 +109,7 @@ class LanguageController extends Controller
 
         $resource->forceDelete();
 
-        return redirect( $this->module()->url( 'index' ) );
+        return redirect( $this->module()->url( 'index', [], false ) );
     }
 
     /**
@@ -120,16 +120,16 @@ class LanguageController extends Controller
         /** @var Language $model */
         $model = $tools->model();
 
-        $tools->add( 'edit', $this->url( 'edit', $model->getKey() ) );
+        $tools->add( 'edit', $this->url( 'edit', $model->getKey(), false ) );
 
         if( $model->trashed() )
         {
-            $tools->add( 'restore', $this->url( 'dialog', [ 'dialog' => 'confirm_restore', 'id' => $model->getKey() ] ) )->dialog();
-            $tools->add( 'delete', $this->url( 'dialog', [ 'dialog' => 'confirm_delete', 'id' => $model->getKey() ] ) )->dialog()->danger();
+            $tools->add( 'restore', $this->url( 'dialog', [ 'dialog' => 'confirm_restore', 'id' => $model->getKey() ], false ) )->dialog();
+            $tools->add( 'delete', $this->url( 'dialog', [ 'dialog' => 'confirm_delete', 'id' => $model->getKey() ], false ) )->dialog()->danger();
         }
         else
         {
-            $tools->add( 'disable', $this->url( 'dialog', [ 'dialog' => 'confirm_disable', 'id' => $model->getKey() ] ) )->dialog()->danger();
+            $tools->add( 'disable', $this->url( 'dialog', [ 'dialog' => 'confirm_disable', 'id' => $model->getKey() ], false ) )->dialog()->danger();
         }
     }
 
@@ -143,8 +143,8 @@ class LanguageController extends Controller
         $model = $this->resource()->find( $resourceId );
 
         return view( 'arbory::dialogs.confirm_disable', [
-            'form_target' => $this->url( 'disable', [ $resourceId ] ),
-            'list_url' => $this->url( 'index' ),
+            'form_target' => $this->url( 'disable', [ $resourceId ], false ),
+            'list_url' => $this->url( 'index', [], false ),
             'object_name' => (string) $model,
         ] );
     }
@@ -159,8 +159,8 @@ class LanguageController extends Controller
         $model = $this->resource()->withTrashed()->find( $resourceId );
 
         return view( 'arbory::dialogs.confirm_restore', [
-            'form_target' => $this->url( 'restore', [ $resourceId ] ),
-            'list_url' => $this->url( 'index' ),
+            'form_target' => $this->url( 'restore', [ $resourceId ], false ),
+            'list_url' => $this->url( 'index', [], false ),
             'object_name' => (string) $model,
         ] );
     }

@@ -86,7 +86,7 @@ class Module
         if( $this->breadcrumbs === null )
         {
             $this->breadcrumbs = new Breadcrumbs();  // TODO: Move this to menu
-            $this->breadcrumbs->addItem( $this->name(), $this->url( 'index' ) );
+            $this->breadcrumbs->addItem( $this->name(), $this->url( 'index', [], false ) );
         }
 
         return $this->breadcrumbs;
@@ -103,16 +103,17 @@ class Module
     /**
      * @param $route
      * @param array $parameters
+     * @param bool $absolute
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url( $route, $parameters = [], $absolute = true )
     {
         if( $this->routes === null)
         {
             $this->routes = $this->admin->routes()->findByModule( $this );
         }
 
-        return $this->routes->getUrl( $route, $parameters );
+        return $this->routes->getUrl( $route, $parameters, $absolute );
     }
 
 }

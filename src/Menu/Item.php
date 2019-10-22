@@ -61,7 +61,7 @@ class Item extends AbstractItem
      */
     protected function getUrl()
     {
-        return $this->getRoute()->getUrl( 'index' );
+        return $this->getRoute()->getUrl( 'index', [], false );
     }
 
     /**

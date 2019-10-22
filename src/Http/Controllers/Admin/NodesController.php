@@ -119,8 +119,8 @@ class NodesController extends Controller
     {
         $node = $tools->model();
 
-        $tools->add( 'add_child', $this->url( 'dialog', [ 'dialog' => 'content_types', 'parent_id' => $node->getKey() ] ) )->dialog();
-        $tools->add( 'delete', $this->url( 'dialog', [ 'dialog' => 'confirm_delete', 'id' => $node->getKey() ] ) )->danger()->dialog();
+        $tools->add( 'add_child', $this->url( 'dialog', [ 'dialog' => 'content_types', 'parent_id' => $node->getKey() ], false ) )->dialog();
+        $tools->add( 'delete', $this->url( 'dialog', [ 'dialog' => 'confirm_delete', 'id' => $node->getKey() ], false ) )->danger()->dialog();
     }
 
     /**
@@ -133,7 +133,7 @@ class NodesController extends Controller
 
         if( !$this->contentTypeRegister->isValidContentType( $contentType ) )
         {
-            return redirect( $this->url( 'index' ) )->withErrors( 'Undefined content type "' . $contentType . '"' );
+            return redirect( $this->url( 'index', [], false ) )->withErrors( 'Undefined content type "' . $contentType . '"' );
         }
 
         $node = $this->resource();
@@ -205,7 +205,8 @@ class NodesController extends Controller
                 'url' => $this->url( 'create', [
                     'content_type' => $type,
                     'parent_id' => $request->get( 'parent_id' )
-                ] )
+                ],
+                    false )
             ];
         } );
 
@@ -279,6 +280,6 @@ class NodesController extends Controller
      */
     protected function getSlugGeneratorUrl()
     {
-        return $this->url('api', 'slug_generator');
+        return $this->url('api', 'slug_generator', false);
     }
 }
