@@ -29,7 +29,7 @@
     <div class="box">
         <div class="logo"></div>
 
-        <form class="login" action="{{route('admin.login.attempt')}}" accept-charset="UTF-8" method="post">
+        <form class="login" action="{{route('admin.login.attempt', [], false)}}" accept-charset="UTF-8" method="post">
             {!!csrf_field()!!}
             <div class="field @if($errors->has('user.email'))has-error @endif">
                 <label for="email">Email</label>

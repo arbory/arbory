@@ -69,7 +69,7 @@ class Renderer
      */
     protected function buildTree( Collection $items, $level = 1 )
     {
-        $url = $this->url( 'edit', '__ID__' );
+        $url = $this->url( 'edit', '__ID__', false );
 
         $list = Html::ul()->addAttributes( [ 'data-level' => $level ] );
 
@@ -150,7 +150,7 @@ class Renderer
      */
     protected function footer()
     {
-        $createButton = Link::create( $this->url( 'create' ) )
+        $createButton = Link::create( $this->url( 'create', [], false ) )
             ->asButton( 'primary' )
             ->withIcon( 'plus' )
             ->title( trans( 'arbory::resources.create_new' ) );
@@ -167,11 +167,12 @@ class Renderer
     /**
      * @param $route
      * @param array $parameters
+     * @param bool $absolute
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url( $route, $parameters = [], $absolute = true )
     {
-        return $this->grid()->getModule()->url( $route, $parameters );
+        return $this->grid()->getModule()->url( $route, $parameters, $absolute );
     }
 
     /**

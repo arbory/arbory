@@ -65,7 +65,7 @@ class Row implements Renderable
         $cells->push(
             Html::td(
                 Toolbox::create(
-                    $this->grid->getModule()->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $this->model->getKey() ] )
+                    $this->grid->getModule()->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $this->model->getKey() ], false )
                 )->render()
             )->addClass( 'only-icon toolbox-cell' )
         );

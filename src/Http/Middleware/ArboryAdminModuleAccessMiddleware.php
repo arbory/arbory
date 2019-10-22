@@ -66,7 +66,7 @@ class ArboryAdminModuleAccessMiddleware
         }
 
         return redirect()
-            ->guest( route( 'admin.login.form' ) )
+            ->guest( route( 'admin.login.form', [], false ) )
             ->with( 'error', $message );
     }
 

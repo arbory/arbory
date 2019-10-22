@@ -66,7 +66,7 @@ class Builder implements Renderable
             return null;
         }
 
-        return ( new SearchField( $this->url( 'index' ) ) )->render();
+        return ( new SearchField( $this->url( 'index', [], false ) ) )->render();
     }
 
     /**
@@ -118,7 +118,7 @@ class Builder implements Renderable
             'search' => request( 'search' ),
             '_order_by' => $column,
             '_order' => request( '_order' ) === 'ASC' ? 'DESC' : 'ASC',
-        ] ) );
+        ] ), false );
     }
 
     /**
@@ -187,7 +187,7 @@ class Builder implements Renderable
         }
 
         return
-            Link::create( $this->url( 'create' ) )
+            Link::create( $this->url( 'create', [], false ) )
             ->asButton( 'primary' )
             ->withIcon( 'plus' )
             ->title( trans( 'arbory::resources.create_new' ) );
@@ -206,11 +206,11 @@ class Builder implements Renderable
                     trans('arbory::resources.export')
                 )->addClass('title'),
                 Html::div(
-                    Link::create($this->url('export', $parameters + ['as' => 'xls']))
+                    Link::create($this->url('export', $parameters + ['as' => 'xls'], false))
                         ->title('XLS')
                 )->addClass('options'),
                 Html::div(
-                    Link::create($this->url('export', $parameters + ['as' => 'json']))
+                    Link::create($this->url('export', $parameters + ['as' => 'json'], false))
                         ->title('JSON')
                 )->addClass('options')
             ])->addClass('export');
@@ -267,11 +267,12 @@ class Builder implements Renderable
     /**
      * @param $route
      * @param array $parameters
+     * @param bool $absolute
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url( $route, $parameters = [], $absolute = true )
     {
-        return $this->grid()->getModule()->url( $route, $parameters );
+        return $this->grid()->getModule()->url( $route, $parameters, $absolute );
     }
 
     /**

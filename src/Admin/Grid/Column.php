@@ -216,7 +216,7 @@ class Column
             if( $this->grid->hasTool( 'create' ) )
             {
                 return Html::link( $value )->addAttributes( [
-                    'href' => $this->grid->getModule()->url( 'edit', [ $model->getKey() ] )
+                    'href' => $this->grid->getModule()->url( 'edit', [ $model->getKey() ], false )
                 ] );
             }
 

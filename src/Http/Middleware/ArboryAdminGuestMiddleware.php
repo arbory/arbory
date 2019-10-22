@@ -55,7 +55,7 @@ class ArboryAdminGuestMiddleware
                     throw new AccessDeniedHttpException();
                 }
 
-                return redirect( $firstAvailableModule->url('index') );
+                return redirect( $firstAvailableModule->url('index', [], false) );
             }
         }
 

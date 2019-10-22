@@ -60,10 +60,10 @@ class SecurityController extends BaseController
 
         if( $result->isSuccess() )
         {
-            return $result->dispatch( session()->pull( 'url.intended', route( 'admin.login.form' ) ) );
+            return $result->dispatch( session()->pull( 'url.intended', route( 'admin.login.form',[], false ) ) );
         }
 
-        return redirect( route( 'admin.login.form' ) )
+        return redirect( route( 'admin.login.form', [], false ) )
             ->withInput()
             ->withErrors( [
                 'user.email' => $result->getMessage()
@@ -77,6 +77,6 @@ class SecurityController extends BaseController
     {
         $this->security->logout( null, null );
 
-        return redirect( route( 'admin.login.form' ) );
+        return redirect( route( 'admin.login.form', [], false ) );
     }
 }

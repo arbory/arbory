@@ -236,6 +236,7 @@ class Grid
     {
         if( $items instanceof LengthAwarePaginator )
         {
+
             $items = new Collection( $items->items() );
         }
 
