@@ -2,11 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\FileFieldRenderer;
 use Illuminate\Http\Request;
 use Arbory\Base\Files\ArboryFileFactory;
 use Arbory\Base\Repositories\ArboryFilesRepository;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Arbory\Base\Admin\Form\Fields\Renderer\FileFieldRenderer;
 
 /**
  * Class ArboryFile.
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ArboryFile extends ControlField
 {
     /**
-     * @var string 
+     * @var string
      */
     protected $elementType = 'input';
 
@@ -27,7 +27,7 @@ class ArboryFile extends ControlField
     ];
 
     /**
-     * @var string 
+     * @var string
      */
     protected $rendererClass = FileFieldRenderer::class;
 
