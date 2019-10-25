@@ -10,9 +10,9 @@ module.exports = function (mix) {
 
     mix.babel([
             'vendor/arbory/arbory/resources/assets/js/environment.js',
-            'vendor/components/jquery/jquery.min.js',
-            'vendor/components/jqueryui/jquery-ui.min.js',
-            'vendor/components/jquery-cookie/jquery.cookie.js',
+            'node_modules/jquery/jquery.min.js',
+            'node_modules/jquery-ui/jquery-ui.min.js',
+            'node_modules/jquery.cookie/jquery.cookie.js',
             'vendor/ckeditor/ckeditor/ckeditor.js',
             'vendor/ckeditor/ckeditor/adapters/jquery.js',
             'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
