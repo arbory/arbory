@@ -22,7 +22,11 @@
   "dependencies": {
     "jquery": "^3.4.1",
     "jquery-ui": "^1.12.1",
-    "jquery.cookie": "^1.4.1"
+    "ckeditor": "^4.12.1",
+    "magnific-popup": "^1.1.0",
+    "is-in-viewport": "^3.0.4",
+    "js-cookie": "^2.2.1",
+    "jquery-ui-timepicker-addon": "^1.6.3"
   },
   "private": true
 }

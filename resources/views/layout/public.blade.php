@@ -17,6 +17,7 @@
         </div>
     </div>
 
+    <script src="{{ mix('js/vendor.js', 'arbory') }}"></script>
     <script src="{{ mix('js/application.js', 'arbory') }}"></script>
 </body>
 </html>

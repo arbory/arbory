@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+import 'jquery-ui/ui/widgets/sortable';
 
 const COOKIE_NAME_NODES = 'nodes';
 
@@ -47,11 +49,15 @@ class Node {
 
 class NodeStore {
     static getStored() {
-        if (typeof jQuery.cookie(COOKIE_NAME_NODES) === 'undefined') {
+        const storedData = Cookies.getJSON(COOKIE_NAME_NODES);
+
+        if (typeof storedData !== 'object') {
             NodeStore.save({});
+
+            return {};
         }
 
-        return JSON.parse(jQuery.cookie(COOKIE_NAME_NODES));
+        return storedData;
     }
 
     static get(id) {
@@ -75,7 +81,7 @@ class NodeStore {
     }
 
     static save(data) {
-        jQuery.cookie(COOKIE_NAME_NODES, JSON.stringify(data));
+        Cookies.set(COOKIE_NAME_NODES, data);
     }
 }
 
@@ -118,8 +124,8 @@ jQuery(document).ready(() => {
 
         let nodes = collection.find('ul[data-level] > li');
 
-        nodes.each(function () {
-            let node = new Node(jQuery(this));
+        nodes.each((index, element) => {
+            let node = new Node(jQuery(element));
 
             node.element.on('click', '> .collapser-cell > .collapser', () => node.toggleChildVisibility());
 

@@ -1,7 +1,22 @@
+const webpack = require('webpack');
+
 module.exports = function (mix) {
 
     mix.setPublicPath('public/arbory');
-    mix.webpackConfig({resolve: {symlinks: false}});
+    mix.webpackConfig({
+        resolve: {
+            symlinks: false
+        },
+
+        plugins: [
+            new webpack.ProvidePlugin({
+                'window.jQuery'    : 'jquery',
+                'window.$'         : 'jquery',
+                'jQuery'           : 'jquery',
+                '$'                : 'jquery'
+            })
+        ],
+    });
 
     mix.js(
         'vendor/arbory/arbory/resources/assets/js/controllers/*',
@@ -10,14 +25,17 @@ module.exports = function (mix) {
 
     mix.babel([
             'vendor/arbory/arbory/resources/assets/js/environment.js',
-            'node_modules/jquery/jquery.min.js',
-            'node_modules/jquery-ui/jquery-ui.min.js',
-            'node_modules/jquery.cookie/jquery.cookie.js',
-            'vendor/ckeditor/ckeditor/ckeditor.js',
-            'vendor/ckeditor/ckeditor/adapters/jquery.js',
-            'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
+            'node_modules/jquery/dist/jquery.min.js',
+            'node_modules/magnific-popup/dist/jquery.magnific-popup.min.js',
+            'node_modules/ckeditor/ckeditor.js',
+            'node_modules/ckeditor/adapters/jquery.js',
         ],
-        'public/arbory/js/application.js'
+        'public/arbory/js/vendor.js'
+    );
+
+    mix.js(
+        'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
+        'js/application.js'
     );
 
     mix.sass(
