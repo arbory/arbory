@@ -234,7 +234,7 @@ class NodesController extends Controller
             $node->moveToLeftOf($nodes->findOneBy('id', $toRightId));
         }
 
-        return \Response::make();
+        return response()->make();
     }
 
     /**
