@@ -10,10 +10,11 @@ module.exports = function (mix) {
 
         plugins: [
             new webpack.ProvidePlugin({
-                'window.jQuery'    : 'jquery',
-                'window.$'         : 'jquery',
-                'jQuery'           : 'jquery',
-                '$'                : 'jquery'
+                'window.jQuery': 'jquery',
+                'window.$': 'jquery',
+                'jQuery': 'jquery',
+                '$': 'jquery',
+
             })
         ],
     });
@@ -21,16 +22,6 @@ module.exports = function (mix) {
     mix.js(
         'vendor/arbory/arbory/resources/assets/js/controllers/*',
         'js/controllers/'
-    );
-
-    mix.babel([
-            'vendor/arbory/arbory/resources/assets/js/environment.js',
-            'node_modules/jquery/dist/jquery.min.js',
-            'node_modules/magnific-popup/dist/jquery.magnific-popup.min.js',
-            'node_modules/ckeditor/ckeditor.js',
-            'node_modules/ckeditor/adapters/jquery.js',
-        ],
-        'public/arbory/js/vendor.js'
     );
 
     mix.js(
@@ -74,4 +65,5 @@ module.exports = function (mix) {
     );
 
     mix.version();
+    mix.extract();
 };
