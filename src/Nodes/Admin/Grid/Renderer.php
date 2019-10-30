@@ -106,7 +106,7 @@ class Renderer implements Renderable
             }
 
             $li->append(
-                Toolbox::create( $this->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $item->getKey() ] ) )->render()
+                Toolbox::create( $this->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $item->getKey() ], false ) )->render()
             );
 
             if( $hasChildren )
