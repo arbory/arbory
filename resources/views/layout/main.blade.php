@@ -18,6 +18,10 @@
                 {!! $style !!}
             </style>
         @endforeach
+
+        <script>
+            window.APP_URI_PREFIX = '{{ config('arbory.app_uri_prefix') }}';
+        </script>
     </head>
     <body class="view-index @if(isset($body_class)) {{ $body_class }}  @endif">
 
