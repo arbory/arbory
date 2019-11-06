@@ -24,7 +24,7 @@ export default class AdminPanel {
      * @return {void}
      */
     initialize() {
-        CKEDITOR.basePath = '/arbory/ckeditor/';
+        CKEDITOR.basePath = '/' + [window.APP_URI_PREFIX, 'arbory/ckeditor/'].join('/');
 
         CKEDITOR.on('instanceReady', function(e) {
             jQuery(e.editor.element.$).addClass("ckeditor-initialized");
