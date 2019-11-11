@@ -13,8 +13,8 @@ env:
 matrix:
   fast_finish: true
 install:
-- composer require "laravel/laravel:${LARAVEL_VERSION}" --no-update
 - composer install
+- composer require "laravel/framework:${LARAVEL_VERSION}"
 notifications:
   slack:
     matrix:
