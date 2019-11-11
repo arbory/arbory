@@ -17,7 +17,7 @@
     "require": {
         "php": "^7.1",
         "ext-json": "*",
-        "laravel/framework": "^5.5.0|^5.6.0",
+        "laravel/framework": "~5.5.0|~5.6.0",
         "laravelcollective/html": "^5.5.0|^5.6.0",
         "doctrine/dbal": "^2.5",
         "gazsp/baum": "~1.1",
@@ -36,7 +36,7 @@
     },
     "require-dev" : {
         "satooshi/php-coveralls": "^1.0",
-        "phpunit/phpunit" : "^6.1",
+        "phpunit/phpunit" : "^6",
         "mockery/mockery": "dev-master",
         "diablomedia/phpunit-pretty-printer": "^2"
     },
