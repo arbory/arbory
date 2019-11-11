@@ -13,10 +13,8 @@ env:
 matrix:
   fast_finish: true
 install:
-- travis_retry composer self-update
-- travis_retry composer install --prefer-source --no-interaction
-- if [ "$LARAVEL_VERSION" != "" ]; then composer require --dev "laravel/laravel:${LARAVEL_VERSION}" --no-update; fi;
-- composer update
+- composer require "laravel/laravel:${LARAVEL_VERSION}" --no-update
+- composer install
 notifications:
   slack:
     matrix:
