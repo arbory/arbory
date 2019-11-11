@@ -8,6 +8,9 @@ use Arbory\Base\Admin\Filter\Parameters\Transformers\ParameterTransformerInterfa
 
 class ParameterTransformerPipeline
 {
+    /**
+     * @var Pipeline
+     */
     protected $pipeline;
 
     /**
@@ -34,7 +37,9 @@ class ParameterTransformerPipeline
             ->through($this->transformers)
             ->via('transform')
             ->send($this->parameters)
-            ->thenReturn();
+            ->then(function ($passable) {
+                return $passable;
+            });
     }
 
     /**
