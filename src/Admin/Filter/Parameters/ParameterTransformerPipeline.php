@@ -2,12 +2,15 @@
 
 namespace Arbory\Base\Admin\Filter\Parameters;
 
-use Illuminate\Pipeline\Pipeline;
-use Illuminate\Contracts\Container\Container;
 use Arbory\Base\Admin\Filter\Parameters\Transformers\ParameterTransformerInterface;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Pipeline\Pipeline;
 
 class ParameterTransformerPipeline
 {
+    /**
+     * @var Pipeline
+     */
     protected $pipeline;
 
     /**
@@ -34,7 +37,9 @@ class ParameterTransformerPipeline
             ->through($this->transformers)
             ->via('transform')
             ->send($this->parameters)
-            ->thenReturn();
+            ->then(function ($passable) {
+                return $passable;
+            });
     }
 
     /**

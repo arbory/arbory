@@ -7,7 +7,7 @@
 ## Installation
 #### Create new Laravel project
 ```bash
-composer create-project --prefer-dist laravel/laravel my-project "5.6.*"
+composer create-project --prefer-dist laravel/laravel=5.6 my-project
 ```
 
 #### Go to project root
@@ -17,7 +17,7 @@ cd my-project
 
 #### Require Arbory package
 ```bash
-composer require arbory/arbory "0.2.*"
+composer require arbory/arbory
 ```
 
 #### Fill in database info
@@ -28,6 +28,11 @@ vi .env
 #### Run installer and follow instructions
 ```bash
 php artisan arbory:install
+```
+
+#### That's it!
+```bash
+Visit http://localhost/admin
 ```
 
 ## Usage
@@ -178,29 +183,15 @@ return [
 ]
 ```
 
-## Generators
-
-### Quick generator
+## Generate admin User 
 
 ```bash
-php artisan arbory:generate {type?} {--T|table=}
-```
-
-Generators available for
-
-* Model
-* Page
-* Controller
-* View
-* AdminController - appends a new route to `routes/admin.php`
-
-### Verbose Generator
-
-```bash
-php artisan arbory:generator
+php artisan arbory:create-user 
 ```
 
 ## Coding style
+
+Use PSR-1/2
 
 ### JS
 
