@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Admin\Filter\Parameters;
 
-use Illuminate\Pipeline\Pipeline;
-use Illuminate\Contracts\Container\Container;
 use Arbory\Base\Admin\Filter\Parameters\Transformers\ParameterTransformerInterface;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Pipeline\Pipeline;
 
 class ParameterTransformerPipeline
 {
