@@ -60,7 +60,8 @@
                 "Arbory\\Base\\Providers\\RoutesServiceProvider",
                 "Arbory\\Base\\Providers\\LayoutServiceProvider",
                 "Arbory\\Base\\Providers\\ValidationRulesServiceProvider",
-                "Arbory\\Base\\Providers\\ConstructorServiceProvider"
+                "Arbory\\Base\\Providers\\ConstructorServiceProvider",
+                "Waavi\\Translation\\TranslationServiceProvider"
             ],
             "aliases": {
                 "Activation": "Cartalyst\\Sentinel\\Laravel\\Facades\\Activation",
