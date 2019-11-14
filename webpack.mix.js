@@ -45,7 +45,7 @@ module.exports = function (mix) {
     );
 
     mix.copyDirectory(
-        'vendor/ckeditor/ckeditor/',
+        'node_modules/ckeditor/',
         'public/arbory/ckeditor/'
     );
 
