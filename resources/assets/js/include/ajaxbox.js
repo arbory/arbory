@@ -110,7 +110,7 @@ jQuery(document).ready( function()
             var link = jQuery(this);
             var params =
             {
-                url     : new UrlBuilder(  ).add( { ajax: 1 } ).getUrl(),
+                url     : new UrlBuilder(link.attr('href')).add( { ajax: 1 } ).getUrl(),
                 modal   : link.is('[data-modal]'),
                 trigger : link,
                 cache   : link.is('[data-cache]'),
