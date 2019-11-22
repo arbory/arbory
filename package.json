@@ -12,9 +12,9 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rerzy/arbory/issues"
+    "url": "https://github.com/arbory/arbory/issues"
   },
-  "homepage": "https://github.com/rerzy/arbory#readme",
+  "homepage": "https://www.arborycms.com/",
   "dependencies": {
     "jquery": "^3.4.1",
     "jquery-ui": "^1.12.1",
