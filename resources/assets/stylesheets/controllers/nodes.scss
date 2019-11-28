@@ -24,6 +24,14 @@
         li
         {
             @include clear-inside;
+
+            &:first-child {
+
+                .node-cell {
+                    border-radius: $border-radius $border-radius 0 0;
+                    border: 1px solid $color-border-normal;
+                }
+            }
         }
 
         .collapser-cell
@@ -43,19 +51,22 @@
             .trigger
             {
                 background: transparent;
+                height: 52px;
             }
         }
 
         .node-cell
         {
             border-bottom: 1px solid $color-border-normal;
+            border-right: 1px solid $color-border-normal;
+            border-left: 1px solid $color-border-normal;
 
             .trigger
             {
                 display: block;
                 color: $color-text-lightest;
                 text-decoration: none;
-                padding: steps(0.5) steps(3);
+                padding: steps(1)+2 steps(3);
                 font-weight: bold;
 
                 &.selected,
@@ -189,8 +200,6 @@
     &.view-edit
     {
         @include clear-inside;
-
-        background: $color-background-lighter;
 
         .field[data-name="active"]
         {

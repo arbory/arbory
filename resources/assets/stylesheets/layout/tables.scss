@@ -2,13 +2,24 @@
 {
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid $color-border-normal;
-    border-top: none;
+    background-color: $color-background-lightest;
+
+    thead {
+        tr:first-child {
+
+            th:first-child {
+                border-top-left-radius: $border-radius;
+            }
+
+            th:last-child {
+                border-top-right-radius: $border-radius;
+            }
+        }
+    }
 
     th, td
     {
-        border-left:  1px solid $color-border-normal;
-        border-right: 1px solid $color-border-normal;
+        border:  1px solid $color-border-normal;
         padding: 0;
         vertical-align: top;
     }
@@ -23,7 +34,11 @@
 
     tr:nth-child(odd) td
     {
-        background-color: $color-background-normal;
+        background-color: $color-background-lighter;
+    }
+
+    tr:nth-child(odd):hover td {
+        background-color: $color-highlight-lighter;
     }
 
     tr:hover td
@@ -54,7 +69,7 @@
     td:not(.only-icon) a:not(.button),
     td > span
     {
-        padding: steps(0.5) steps(1);
+        padding: steps(1)+5 steps(1)+4;
     }
 
     th:first-child,
@@ -74,26 +89,6 @@
     {
         text-align: center;
         width: steps(3);
-    }
-
-
-    // remove outer table borders if the table is directly inside a section body
-    // because the body will have its own border
-    section .body > &
-    {
-        border: none;
-
-        th:first-child,
-        td:first-child
-        {
-            border-left: none;
-        }
-        th:last-child,
-        td:last-child
-        {
-            border-right: none;
-        }
-
     }
 }
 

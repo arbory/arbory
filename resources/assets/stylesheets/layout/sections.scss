@@ -12,6 +12,12 @@ section
         padding-bottom: steps(1);
     }
 
+    > .body
+    {
+        padding: steps(2) steps(3);
+        background-color: $color-background-lighter;
+    }
+
 }
 
 section.nested,
@@ -26,10 +32,14 @@ section > form
 {
     > header
     {
-        @include section-header;
+        //@include section-header;
         @include clear-inside;
 
-        margin-top: steps(2);
+        border-bottom: 1px solid $color-border-normal;
+        background-color: $color-background-lightest;
+        padding: steps(1)+2 steps(3);
+        box-shadow: 0 2px 3px 0 rgba(0,0,0,0.05);
+        position: relative;
 
         h1
         {

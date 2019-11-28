@@ -3,8 +3,9 @@ textarea,
 input.text
 {
     color: $color-text-normal;
-    background-color: $color-background-lighter;
+    background-color: $color-background-lightest;
     border: 1px solid $color-border-normal;
+    border-radius: $border-radius;
     outline: none;
     font-weight: bold;
 

@@ -121,7 +121,7 @@
 
 @mixin section-header
 {
-    @include inverted;
+    //@include inverted;
 
     padding: steps(0.5) steps(2);
     position: relative;

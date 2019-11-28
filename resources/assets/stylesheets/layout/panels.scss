@@ -1,9 +1,10 @@
 .panel {
+
+  padding: steps(2) steps(3);
+
   > header {
     @include section-header;
     @include clear-inside;
-
-    margin-top: steps(2);
 
     .title
     {
@@ -27,10 +28,9 @@
   }
 
   > .content {
-    border-width: 0 1px 1px 1px;
-    border-style: solid;
-    border-color: $color-border-normal;
-    margin-bottom: -1px;
+
+    border: 1px solid $color-border-normal;
+    border-radius: $border-radius;
 
     @include clear-inside;
   }

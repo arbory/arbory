@@ -1,14 +1,14 @@
 // basic text and background colors:
 $color-text-darkest:        #111111;
-$color-text-normal:         #1d1d1d;
+$color-text-normal:         #3E3F42;
 $color-text-light:          #3c3c3c;
 $color-text-lighter:        #636363;
 $color-text-lightest:       #a6a6a6;
 
 $color-background-darkest:  #c5c5c5;
-$color-background-darker:   #d4d4d4;
+$color-background-darker:   #EAEDF3;
 $color-background-normal:   #e6e6e6;
-$color-background-lighter:  #f8f8f8;
+$color-background-lighter:  #FBFBFD;
 $color-background-lightest: #ffffff;
 
 
@@ -31,21 +31,17 @@ $color-text-inverted-darker:            #a6a6a6;
 $color-text-inverted-normal:            #d4d4d4;
 $color-text-inverted-lightest:          #ffffff;
 
-
-
 // border colors:
 $color-border-darkest:          #636363;
 $color-border-darker:           #a6a6a6;
 $color-border-dark:             #c5c5c5;
-$color-border-normal:           #d4d4d4;
+$color-border-normal:           #E2E5ED;
 $color-border-light:            #e6e6e6;
 
 $color-border-inverted-normal:  #282828;
 $color-border-inverted-lighter: #3c3c3c;
 
-
 $color-background-see-through:  create-rgba( #000, 0.6 );
-
 
 $color-shadow-normal:   $color-background-see-through;
 $color-shadow-lighter:  create-rgba( $color-shadow-normal,  0.3 );
@@ -56,15 +52,12 @@ $color-shadow-lightest: create-rgba( $color-shadow-normal,  0.1 );
 $color-highlight-darkest: 	#307851;
 $color-highlight-darker: 	#26995c;
 $color-highlight-normal: 	#19a55c;
-$color-highlight-lighter: 	#40cf83;
-$color-highlight-lightest: 	#ccebda;
-
+$color-highlight-lighter: 	#EEF2FC;
+$color-highlight-lightest: 	$color-background-lighter;
 
 
 // error color:
 $color-alert: #ee462a;
-
-
 
 // notification colors:
 // special colors used for floating notifications. NOT to be used anywhere else
@@ -73,8 +66,6 @@ $color-notification-error-background:       #eed3d7;
 $color-notification-error-text:             #b94a48;
 $color-notification-success-text:           #468847;
 $color-notification-success-background:     #ddf4d0;
-
-
 
 // dummy colors for debugging
 // 2 sets of lighter and darker red / orange / yellow / green / blue / purple
