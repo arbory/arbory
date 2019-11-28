@@ -135,10 +135,21 @@ class Builder implements Renderable
             $link = Html::link($column->getLabel())
                 ->addAttributes([
                     'href' => $this->grid->getColumnOrderUrl($column),
-                ]);
+                ])
+                ->addClass('sortable')
+                ->append(
+                    Html::span()
+                        ->addClass('sortables')
+                        ->append(
+                            Html::i()->addClass('fa fa-chevron-up up')
+                        )
+                        ->append(
+                            Html::i()->addClass('fa fa-chevron-down down')
+                        )
+                );
 
             if (request('_order_by') === $column->getName()) {
-                $link->append($this->getOrderByIcon());
+                $link->addClass($this->getOrderByIcon());
             }
 
             return Html::th($link);
@@ -152,13 +163,7 @@ class Builder implements Renderable
      */
     protected function getOrderByIcon()
     {
-        return Html::i()
-            ->addClass('fa')
-            ->addClass(
-                (request('_order') === 'DESC')
-                    ? 'fa-sort-up'
-                    : 'fa-sort-down'
-            );
+        return (request('_order') === 'DESC') ? 'up' : 'down';
     }
 
     /**

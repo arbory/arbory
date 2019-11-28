@@ -19,9 +19,63 @@
 
     th, td
     {
+        position: relative;
         border:  1px solid $color-border-normal;
         padding: 0;
         vertical-align: top;
+
+        .sortable {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+
+            padding: steps(1) steps(1) steps(1) steps(1)+4;
+            text-decoration: none;
+            color: $color-text-normal;
+
+            .sortables {
+                position: relative;
+                line-height: 1;
+                color: $color-highlight-lighter;
+                height: 34px;
+
+                .fa {
+                    font-size: 10px;
+                }
+
+                >i {
+                    position: absolute;
+                    right: 0;
+
+                    &.up {
+                        top:0;
+                    }
+
+                    &.down {
+                        bottom: 0;
+                    }
+                }
+            }
+
+            &.up {
+
+                .sortables .up {
+                    color: $color-highlight-darker;
+                }
+            }
+
+            &.down {
+
+                .sortables .down {
+                    color: $color-highlight-darker;
+                }
+            }
+        }
     }
 
     tr th,
@@ -29,7 +83,6 @@
     tr th a
     {
         text-align:  left;
-        font-weight: bold;
     }
 
     tr:nth-child(odd) td
@@ -76,7 +129,7 @@
     td:first-child:not(.only-icon) a:not(.button),
     td:first-child > span
     {
-        padding-left: steps(2); // align first column with table heading
+        padding-left: steps(1)+4; // align first column with table heading
     }
 
 
