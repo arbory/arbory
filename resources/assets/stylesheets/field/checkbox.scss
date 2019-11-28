@@ -1,10 +1,53 @@
 .field {
     &.type-checkbox .value {
         display: inline-block;
+        position: relative;
         padding-top: $input-height;
-        
+    }
+
+    &.type-checkbox .value,
+    &.type-deactivator .value {
+
         label {
-            margin-left: steps(1);
+            display: block;
+            position: relative;
+            padding-left: steps(2);
+            cursor: pointer;
+        }
+        input {
+            position: absolute;
+            visibility: hidden;
+
+            + span {
+                visibility: visible;
+                position: absolute;
+                left: 0;
+                top: 0.3rem;
+                display: block;
+                width: 16px;
+                height: 16px;
+                border: 1px solid $color-border-normal;
+                border-radius: $border-radius;
+            }
+
+            &:checked + span {
+
+                background-color: $color-highlight-darker;
+                border-color: $color-highlight-darker;
+
+                &:after {
+                    content: '';
+                    display: block;
+                    width: 7px;
+                    height: 3px;
+                    border-left: 2px solid white;
+                    border-bottom: 2px solid white;
+                    position: absolute;
+                    top: 47%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) rotate(-45deg);
+                }
+            }
         }
     }
 }
