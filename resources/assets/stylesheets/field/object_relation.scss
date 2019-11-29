@@ -46,7 +46,7 @@
     .relations {
         .group {
             & > .title {
-                font-weight: bold;
+                @include font-bold;
                 padding-left: steps(1);
             }
             

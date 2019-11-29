@@ -7,7 +7,7 @@ input.text
     border: 1px solid $color-border-normal;
     border-radius: $border-radius;
     outline: none;
-    font-weight: bold;
+    @include font-bold;
 
     &:hover
     {
@@ -96,7 +96,7 @@ input.text
         
         .required {
             color: red;
-            font-weight: bold;
+            @include font-bold;
         }
 
         .description

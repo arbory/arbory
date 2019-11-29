@@ -67,7 +67,7 @@
                 color: $color-text-lightest;
                 text-decoration: none;
                 padding: steps(1)+2 steps(3);
-                font-weight: bold;
+                @include font-bold;
 
                 &.selected,
                 &:hover

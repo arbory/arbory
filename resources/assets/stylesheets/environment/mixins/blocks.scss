@@ -91,7 +91,7 @@
     {
         background-color: inherit;
         color: $text-color;
-        font-weight: bold;
+        @include font-bold;
 
         &:hover,
         &:focus,

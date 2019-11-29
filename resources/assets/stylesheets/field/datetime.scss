@@ -73,7 +73,7 @@
                 text-decoration: none;
                 text-align: center;
                 @include font-size-normal;
-                font-weight: bold;
+                @include font-bold;
                 background: 0;
                 padding: 0;
             }
