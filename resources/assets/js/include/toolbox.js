@@ -130,21 +130,21 @@ jQuery(function()
             if (openToRight)
             {
                 menu.css({
-                    left:  triggerCenterX - 23,
-                    top :  triggerOffset.top  + trigger.outerHeight()
+                    left:  triggerCenterX - menuWidth - 16,
+                    top :  triggerOffset.top + 5
                 });
                 beak.css({
-                    left : 18
+                    left : 16
                 });
             }
             else
             {
                 menu.css({
-                    left:  triggerCenterX - menuWidth + 20,
-                    top :  triggerOffset.top  + trigger.outerHeight()
+                    left:  triggerCenterX - menuWidth - 16,
+                    top :  triggerOffset.top + 5
                 });
                 beak.css({
-                    left : menuWidth - 24
+                    left : menuWidth - 16
                 });
             }
 

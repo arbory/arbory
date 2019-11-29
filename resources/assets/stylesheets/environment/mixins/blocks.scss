@@ -90,14 +90,15 @@
     .button.secondary
     {
         background-color: inherit;
-        color: $color-highlight-normal;
+        color: $text-color;
+        font-weight: bold;
 
         &:hover,
         &:focus,
         &:active
         {
             background-color: inherit;
-            color: $text-color;
+            color: white;
         }
 
         &.danger
@@ -113,6 +114,7 @@
             &:active
             {
                 background-color: $color-alert;
+                color: white;
             }
         }
     }

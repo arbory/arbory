@@ -54,7 +54,6 @@ class Toolbox implements Renderable
                     ->addClass('button trigger only-icon')
                     ->addAttributes(['type' => 'button']),
                 Html::menu([
-                    Html::i()->addClass('fa fa-caret-up'),
                     Html::ul($this->menu),
                 ])
                     ->addClass('toolbox-items')
