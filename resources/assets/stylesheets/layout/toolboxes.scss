@@ -48,6 +48,9 @@
 
         .button
         {
+
+            border-radius: 0;
+
             &:hover
             {
                 background-color: $color-highlight-normal;
