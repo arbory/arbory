@@ -24,19 +24,28 @@
         li
         {
             @include clear-inside;
-
-            &:first-child {
-
-                .node-cell {
-                    border-radius: $border-radius $border-radius 0 0;
-                    border: 1px solid $color-border-normal;
-                }
-            }
         }
 
         .collapser-cell
         {
             float: left;
+        }
+
+        ul[data-level="1"] > li:first-child {
+
+            >.node-cell {
+                border-radius: $border-radius $border-radius 0 0;
+                border: 1px solid $color-border-normal;
+            }
+        }
+
+        ul[data-level="1"]  ul {
+
+            background-color: $color-background-lighter;
+
+             ul {
+                background-color: $color-background-normal;
+            }
         }
 
         .toolbox-cell
@@ -107,8 +116,6 @@
                 & > .collapser-cell
                 {
                     $previous: $i - 1;
-                    position: absolute;
-                    left: $previous * steps(2);
                 }
 
                 & > .node-cell span
@@ -122,11 +129,6 @@
         {
             padding: steps(0.5) steps(2);
         }
-    }
-
-    main .collection li ul ul
-    {
-        background: $color-background-normal;
     }
 
     .dialog .collection > ul li
