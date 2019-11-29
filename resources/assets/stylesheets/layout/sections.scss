@@ -9,7 +9,8 @@ section
 
     > form .body
     {
-        padding-bottom: steps(1);
+        padding: steps(2) steps(3);
+        background-color: $color-background-lighter;
     }
 
     > .body
@@ -59,18 +60,6 @@ section > form
 
 }
 
-section:not(.nested):not(.dialog),
-section:not(.dialog) > form
-{
-    > .body
-    {
-        border-width: 0 1px 1px 1px;
-        border-style: solid;
-        border-color: $color-border-normal;
-        margin-bottom: -1px;
-    }
-}
-
 section.nested
 {
     clear: both;
@@ -79,11 +68,6 @@ section.nested
     h1
     {
         margin-bottom: steps(1);
-    }
-
-    .body
-    {
-        padding-bottom: 0;
     }
 
     .list

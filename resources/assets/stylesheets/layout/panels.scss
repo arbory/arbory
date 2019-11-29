@@ -31,6 +31,7 @@
 
     border: 1px solid $color-border-normal;
     border-radius: $border-radius;
+    padding: steps(1) 0 ;
 
     @include clear-inside;
   }
