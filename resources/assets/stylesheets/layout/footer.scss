@@ -8,7 +8,7 @@ footer.main
     bottom: 0;
     right:  0;
     left:   0;
-    margin: 0 steps(3) 0px steps(20 + 3);
+    margin: 0 0 0 steps(20);
     z-index: 10;
     background: $color-background-lightest;
 
@@ -19,22 +19,20 @@ footer.main
 
     .tools
     {
-        background: $color-background-normal;
-        color: $color-text-lighter;
-        border:       1px solid $color-border-dark;
-        border-width: 1px 1px 0 1px;
-        height:       steps(3) + 1px;
+        color: $color-text-normal;
+        border: 1px solid $color-border-normal;
+        padding: steps(1) steps(2);
+
+        &:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
 
         .button
         {
             margin-left:  steps(0.5);
             margin-right: steps(0.5);
-        }
-
-        .button.secondary
-        {
-            border-left:  1px solid $color-border-dark;
-            border-right: 1px solid $color-border-dark;
         }
 
         > .primary,

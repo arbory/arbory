@@ -11,6 +11,7 @@ input[type="submit"]
     display: inline-block;
     background: $color-highlight-normal;
     color: $color-text-inverted-lightest;
+    border-radius: $border-radius;
 
     @include font-size-larger;
     padding: steps(0.5) steps(1.5);
