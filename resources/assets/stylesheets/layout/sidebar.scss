@@ -1,6 +1,6 @@
 body > aside
 {
-    @include inverted( $background-color: $color-background-inverted-darker );
+    @include inverted( $color-background-inverted-darkest );
     @include font-size-larger;
 
     position: absolute;
@@ -16,8 +16,6 @@ body > aside
 
     > nav
     {
-        border-top: 1px solid $color-border-inverted-normal;
-        margin-top: -1px;
 
         margin-bottom: steps(4);
 
@@ -29,11 +27,6 @@ body > aside
         // all menu items
         li
         {
-            &:not(:active)
-            {
-                border-bottom: 1px solid $color-border-inverted-normal;
-                margin-bottom: -1px;
-            }
 
             position: relative;
 
@@ -42,7 +35,7 @@ body > aside
                 position: absolute;
                 right: 0;
                 top: 0;
-                color: $color-text-inverted-darkest;
+                color: inherit;
 
                 button
                 {
@@ -63,7 +56,7 @@ body > aside
                 &:focus,
                 &:active
                 {
-                    color: $color-text-inverted-lightest;
+                    color: $color-highlight-normal;
                 }
 
                 abbr
@@ -85,27 +78,15 @@ body > aside
         {
             & > .trigger
             {
-                &:hover,
-                &:focus,
-                &:active
-                {
-                    background-color: $color-background-inverted-darkest;
-                    color: $color-text-inverted-lightest;
-
-                    .collapser
-                    {
-                        color: $color-text-inverted-darker;
-                    }
-                }
 
                 &.active
                 {
                     background-color: $color-highlight-normal;
-                    color: $color-text-darkest;
+                    color: white;
 
                     .collapser
                     {
-                        color: $color-text-darkest;
+                        color: white;
                     }
                 }
 
@@ -119,8 +100,7 @@ body > aside
         // nested menu items
         li li
         {
-            background: $color-background-inverted-normal;
-            border-bottom: none;
+            background: lighten($color-background-inverted-darkest, 2%);
 
             .trigger
             {
@@ -142,7 +122,7 @@ body > aside
             &.active > .trigger
             {
                 color: $color-text-inverted-lightest;
-                background: $color-background-inverted-lightest;
+                background: lighten($color-background-inverted-darkest, 6%);
             }
         }
 
@@ -215,7 +195,6 @@ body.side-compact > aside
                 abbr
                 {
                     display: inline-block;
-                    border: none;
                     text-decoration: none;
                 }
 
