@@ -4,6 +4,8 @@ namespace Arbory\Base\Nodes;
 
 use Alsofronie\Uuid\UuidModelTrait;
 use Arbory\Base\Pages\PageInterface;
+use Baum\NestedSet\Node as BaumNode;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Arbory\Base\Repositories\NodesRepository;
 use Arbory\Base\Support\Activation\HasActivationDates;
@@ -11,10 +13,21 @@ use Arbory\Base\Support\Activation\HasActivationDates;
 /**
  * Class Node.
  */
-class Node extends \Baum\Node
+class Node extends Model
 {
     use UuidModelTrait;
     use HasActivationDates;
+    use BaumNode;
+
+    /**
+     * @var string
+     */
+    protected $leftColumnName = 'lft';
+
+    /**
+     * @var string 
+     */
+    protected $rightColumnName = 'rgt';
 
     /**
      * @var array
@@ -108,15 +121,6 @@ class Node extends \Baum\Node
     }
 
     /**
-     * @param array $models
-     * @return NodeCollection
-     */
-    public function newCollection(array $models = [])
-    {
-        return new NodeCollection($models);
-    }
-
-    /**
      * @return string
      */
     public function getUri()
@@ -169,5 +173,15 @@ class Node extends \Baum\Node
         }
 
         return true;
+    }
+
+    /**
+     * Return parent id (legacy support)
+     *
+     * @return mixed
+     */
+    public function getParentId()
+    {
+        return $this->getAttribute($this->getParentColumnName());
     }
 }

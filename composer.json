@@ -20,7 +20,7 @@
         "laravel/framework": "^6.0",
         "laravelcollective/html": "^6.0",
         "doctrine/dbal": "^2.5",
-        "gazsp/baum": "~1.1",
+        "baum/baum": "2.0.0-alpha1",
         "components/jquery": "^3.2",
         "components/jqueryui": "1.12.*",
         "components/jquery-cookie": "1.4.*",
