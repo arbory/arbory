@@ -35,10 +35,10 @@
         "unisharp/laravel-filemanager": "^1.8.5"
     },
     "require-dev" : {
-        "satooshi/php-coveralls": "^1.0",
-        "phpunit/phpunit" : "^6.1",
+        "php-coveralls/php-coveralls": "^2.0",
+        "phpunit/phpunit" : "^8.3",
         "mockery/mockery": "dev-master",
-        "diablomedia/phpunit-pretty-printer": "^2"
+        "diablomedia/phpunit-pretty-printer": "^4"
     },
     "autoload": {
         "psr-4": { "Arbory\\Base\\": "src" },
