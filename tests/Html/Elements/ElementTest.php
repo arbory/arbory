@@ -6,6 +6,12 @@ use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
 use Arbory\Base\Html\Elements\Element;
 
+/**
+ * Class ElementTest
+ * @package Tests\Html\Elements
+ *
+ * @covers \Arbory\Base\Html\Elements\Element
+ */
 final class ElementTest extends TestCase
 {
     /**

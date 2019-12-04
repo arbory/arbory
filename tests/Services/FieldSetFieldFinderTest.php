@@ -20,6 +20,12 @@ use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Waavi\Translation\Repositories\LanguageRepository;
 
+/**
+ * Class FieldSetFieldFinderTest
+ * @package Tests\Services
+ *
+ * @covers \Arbory\Base\Services\FieldSetFieldFinder
+ */
 final class FieldSetFieldFinderTest extends TestCase
 {
     /**
