@@ -30,7 +30,7 @@ final class FieldSetFieldFinderTest extends TestCase
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         app()->singleton(StyleManager::class, static function () {
             $styles = [
@@ -54,7 +54,7 @@ final class FieldSetFieldFinderTest extends TestCase
     /**
      * @return void
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Mockery::close();
     }

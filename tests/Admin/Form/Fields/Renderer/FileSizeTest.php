@@ -28,7 +28,7 @@ final class FileSizeTest extends TestCase
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->file = Mockery::mock(ArboryFile::class);
         $this->fileSize = new FileSize($this->file);
@@ -37,7 +37,7 @@ final class FileSizeTest extends TestCase
     /**
      * @return void
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Mockery::close();
     }

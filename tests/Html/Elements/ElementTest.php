@@ -21,7 +21,7 @@ final class ElementTest extends TestCase
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->name = 'test';
         $this->attributes = [
