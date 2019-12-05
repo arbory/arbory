@@ -2,19 +2,20 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Closure;
-use Illuminate\Http\Request;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Database\Eloquent\Model;
-use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Constructor\BlockInterface;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Constructor\Models\ConstructorBlock;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
+use Arbory\Base\Admin\Form\FieldSet;
+use Closure;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class Constructor extends AbstractRelationField implements
     NestedFieldInterface,
@@ -254,11 +255,16 @@ class Constructor extends AbstractRelationField implements
      */
     public function getRules(): array
     {
-        $rules = [];
+        $rules = [[]];
 
         $items = (array) request()->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
+            // Do not add rules for fields which will be removed
+            if (filter_var(Arr::get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
+                continue;
+            }
+
             $relatedModel = $this->createRelatedModelFromRequest($item);
 
             $this->verifyBlockFromRequest($item, $relatedModel);
@@ -269,11 +275,11 @@ class Constructor extends AbstractRelationField implements
             );
 
             foreach ($relatedFieldSet->getFields() as $field) {
-                $rules = array_merge($rules, $field->getRules());
+                $rules[] = $field->getRules();
             }
         }
 
-        return $rules;
+        return array_merge(...$rules);
     }
 
     /**
@@ -366,7 +372,7 @@ class Constructor extends AbstractRelationField implements
      *
      * @return ConstructorBlock
      */
-    protected function createRelatedModelFromRequest(array $item):Model
+    protected function createRelatedModelFromRequest(array $item): Model
     {
         $relation = $this->getRelation();
         $relatedModel = $this->findRelatedModel($item);
