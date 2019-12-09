@@ -105,15 +105,21 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function registerNodes()
     {
-        if (! app()->runningInConsole()) {
-            $this->app->booted(function () {
-                $this->app->singleton(Node::class, function () {
-                    return $this->routes->getCurrentNode();
-                });
-            });
+        if (app()->runningInConsole()) {
+            if ($this->isDbConfigured() && ! $this->app->routesAreCached()) {
+                $this->routes->registerNodes();
+            }
 
-            $this->routes->registerNodes();
-        } elseif (! $this->app->routesAreCached() && $this->isDbConfigured()) {
+            return;
+        }
+
+        $this->app->booted(function () {
+            $this->app->singleton(Node::class, function () {
+                return $this->routes->getCurrentNode();
+            });
+        });
+
+        if (! $this->app->routesAreCached()) {
             $this->routes->registerNodes();
         }
     }
