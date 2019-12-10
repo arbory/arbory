@@ -2,10 +2,14 @@
 
 namespace Arbory\Base\Admin\Filter;
 
+use Arbory\Base\Admin\Filter\Models\SavedFilter;
+use Arbory\Base\Admin\Filter\Repositories\SavedFilterRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameterResolver;
 use Arbory\Base\Admin\Filter\Parameters\ParameterTransformerPipeline;
+use Arbory\Base\Admin\Module;
+use Illuminate\Support\Collection;
 
 class FilterManager
 {
@@ -30,6 +34,11 @@ class FilterManager
     protected $filterParameterResolver;
 
     /**
+     * @var SavedFilterRepository
+     */
+    protected $savedFilterRepository;
+
+    /**
      * @var FilterParameters
      */
     protected $parameters;
@@ -44,16 +53,19 @@ class FilterManager
      * @param FilterFactory $filterTypeFactory
      * @param FilterExecutor $filterExecutor
      * @param FilterParameterResolver $filterParameterResolver
+     * @param SavedFilterRepository $savedFilterRepository
      */
     public function __construct(
         FilterFactory $filterTypeFactory,
         FilterExecutor $filterExecutor,
-        FilterParameterResolver $filterParameterResolver
+        FilterParameterResolver $filterParameterResolver,
+        SavedFilterRepository $savedFilterRepository
     ) {
         $this->filters = new FilterCollection();
         $this->filterTypeFactory = $filterTypeFactory;
         $this->filterExecutor = $filterExecutor;
         $this->filterParameterResolver = $filterParameterResolver;
+        $this->savedFilterRepository = $savedFilterRepository;
     }
 
     /**
@@ -125,5 +137,14 @@ class FilterManager
         $this->transformers[] = $transformer;
 
         return $this;
+    }
+
+    /**
+     * @param Module $module
+     * @return SavedFilter[]|Collection
+     */
+    public function getSavedFilters(Module $module): Collection
+    {
+        return $this->savedFilterRepository->findByModule($module);
     }
 }
