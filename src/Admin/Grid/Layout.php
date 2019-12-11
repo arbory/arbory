@@ -54,7 +54,7 @@ class Layout extends AbstractLayout implements LayoutInterface
     /**
      * @return Content|null
      */
-    protected function filterButton()
+    protected function filterButtons()
     {
         if (! $this->grid->hasTool('filter')) {
             return;
@@ -112,7 +112,7 @@ class Layout extends AbstractLayout implements LayoutInterface
      */
     protected function addSlots(Body $body)
     {
-        $body->getTarget()->slot('header_right_filter', $this->filterButton());
+        $body->getTarget()->slot('header_right_filter', $this->filterButtons());
         $body->getTarget()->slot('header_right', $this->searchField());
     }
 }
