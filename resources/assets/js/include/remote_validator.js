@@ -170,7 +170,9 @@ var RemoteValidator = function( form )
 
         if (target.is(input_selector))
         {
-            var field_box = target.parents('.field').first();
+            // i18n fields contain a child .field element
+            var field_box = target.parents('.field:not(.localization)').first();
+
             if (field_box.length !== 1)
             {
                 return;
