@@ -5,7 +5,7 @@ namespace Arbory\Base\Admin\Filter\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class SavedFilter
+ * Class SavedFilter.
  *
  * @property int $id
  * @property string $name

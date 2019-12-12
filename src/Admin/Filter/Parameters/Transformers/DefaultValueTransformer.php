@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 
 /**
- * Class DefaultValueTransformer
+ * Class DefaultValueTransformer.
  */
 class DefaultValueTransformer implements ParameterTransformerInterface
 {

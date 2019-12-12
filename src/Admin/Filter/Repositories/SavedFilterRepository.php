@@ -8,7 +8,7 @@ use Arbory\Base\Repositories\AbstractModelsRepository;
 use Illuminate\Support\Collection;
 
 /**
- * Class SavedFilterRepository
+ * Class SavedFilterRepository.
  */
 class SavedFilterRepository extends AbstractModelsRepository
 {
