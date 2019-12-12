@@ -6,6 +6,9 @@ use Arbory\Base\Admin\Filter\FilterManager;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 
+/**
+ * Class DefaultValueTransformer
+ */
 class DefaultValueTransformer implements ParameterTransformerInterface
 {
     /**
@@ -34,7 +37,7 @@ class DefaultValueTransformer implements ParameterTransformerInterface
         }
 
         foreach ($this->filterManager->getFilters() as $filterItem) {
-            if (!empty($filterItem->getDefaultValue())) {
+            if (! empty($filterItem->getDefaultValue())) {
                 $parameters->add([$filterItem->getName() => $filterItem->getDefaultValue()]);
             }
         }

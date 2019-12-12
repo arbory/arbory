@@ -64,7 +64,7 @@ class Layout extends AbstractLayout implements LayoutInterface
             Button::create()
                 ->type('button', 'filter js-filter-trigger')
                 ->withIcon('filter')
-                ->title(trans('arbory::filter.filter'))
+                ->title(trans('arbory::filter.filter')),
         ]);
 
         $savedFilters = $this->grid->getFilterManager()->getSavedFilters($this->grid->getModule());

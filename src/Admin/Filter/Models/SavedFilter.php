@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SavedFilter
- * @package Arbory\Base\Admin\Filter\Models
  *
  * @property int $id
  * @property string $name

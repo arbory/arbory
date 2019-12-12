@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 
 /**
  * Class SavedFilterRepository
- * @package Arbory\Base\Admin\Filter\Repositories
  */
 class SavedFilterRepository extends AbstractModelsRepository
 {
