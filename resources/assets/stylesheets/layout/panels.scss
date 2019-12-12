@@ -3,6 +3,7 @@
   padding: steps(1)+2 steps(1)+4;
   border: 1px solid $color-border-normal;
   border-radius: $border-radius;
+  margin-bottom: steps(3);
 
   @include clear-inside;
 
