@@ -122,6 +122,15 @@
                 {
                     margin-left: ($i - 1) * steps(2);
                 }
+
+                & > .collapser-cell {
+
+                    margin-left: ($i - 1) * steps(2);
+
+                    button {
+                        text-align: if($i != 1, right, center);
+                    }
+                }
             }
         }
 
