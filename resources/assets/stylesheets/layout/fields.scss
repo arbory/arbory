@@ -17,7 +17,7 @@ input.text
     &:focus
     {
         background-color: $color-background-lightest;
-        border: 1px solid $color-border-darkest;
+        border: 1px solid $color-highlight-normal;
     }
 
     .field &
@@ -60,7 +60,7 @@ input.text
     position: relative;
     min-height: steps(7);
     margin: 0 $form-gutter-half;
-    
+
     &.i18n > .field {
         margin-left: 0;
         width: 100%;
@@ -93,7 +93,7 @@ input.text
     .label-wrap
     {
         padding: steps(0.5) 0;
-        
+
         .required {
             color: red;
             @include font-bold;
@@ -102,6 +102,12 @@ input.text
         .description
         {
             @include font-size-smaller;
+        }
+
+        label {
+            color: $color-labels;
+            font-size: 12px;
+            text-transform: uppercase;
         }
     }
 
