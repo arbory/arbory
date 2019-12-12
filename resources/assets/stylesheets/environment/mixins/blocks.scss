@@ -124,12 +124,25 @@
 @mixin section-header
 {
     //@include inverted;
-
-    padding: steps(0.5) steps(2);
+    margin: 0 steps(2);
+    padding-right: steps(2);
     position: relative;
+
+    .title {
+        @include font-bold;
+        font-size: 18px;
+        line-height: 23px;
+
+    }
+
+    .toolbox {
+        .trigger {
+            height: 40px;
+        }
+    }
 }
 
 @mixin pop-up-shadow
 {
-    box-shadow: 1px 3px 5px 0px $color-shadow-normal;
+    box-shadow: 1px 3px 5px 0 $color-shadow-normal;
 }
