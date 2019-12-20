@@ -128,7 +128,7 @@ jQuery(document).ready(() => {
                 stop: (event, ui) => {
                     node = new Node(ui.item);
 
-                    jQuery.post('/admin/nodes/api/node_reposition', {
+                    jQuery.post(window.NODE_CLONE_BASEPATH, {
                         _token: token,
                         id: node.id,
                         toLeftId: node.getLeftSibling().id,
