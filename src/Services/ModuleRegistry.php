@@ -39,11 +39,6 @@ class ModuleRegistry
      */
     public function register( string $controllerClass, \Closure $routes = null )
     {
-        if( $this->modules->has( $controllerClass ) )
-        {
-            throw new \LogicException( 'Module with controller class "' . $controllerClass . '" already registered' );
-        }
-
         $config = new ModuleConfiguration( $controllerClass );
         $module = new Module( $this->admin, $config );
 
