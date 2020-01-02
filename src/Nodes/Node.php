@@ -135,16 +135,23 @@ class Node extends \Baum\Node
     }
 
     /**
-     * @param       $name
+     * @param string $name
      * @param array $parameters
-     * @param bool  $absolute
+     * @param bool $absolute
      * @return string|null
      */
     public function getUrl($name, array $parameters = [], $absolute = true)
     {
-        $routes    = app('routes');
-        $routeName = 'node.' . $this->getKey() . '.' . $name;
-        $route     = $routes->getByName($routeName);
+        $prefix = config('arbory.app_uri_prefix');
+        $routeName = implode('.', array_filter([
+            $prefix,
+            'node',
+            $this->getKey(),
+            $name,
+        ]));
+
+        $routes = app('routes');
+        $route = $routes->getByName($routeName);
 
         return $route ? route($routeName, $parameters, $absolute) : null;
     }
