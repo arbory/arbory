@@ -134,6 +134,12 @@ class Node extends \Baum\Node
         return implode('/', $uri);
     }
 
+    /**
+     * @param string $name
+     * @param array $parameters
+     * @param bool $absolute
+     * @return string|null
+     */
     public function getUrl($name, array $parameters = [], $absolute = true)
     {
         $prefix = config('arbory.app_uri_prefix');
