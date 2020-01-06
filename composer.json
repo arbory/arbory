@@ -71,8 +71,6 @@
                 "cartalyst/sentinel"
             ]
         },
-        "extra": {
-            "foxy": true
-        }
+        "foxy": true
     }
 }
