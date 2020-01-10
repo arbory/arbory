@@ -10,6 +10,7 @@ use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Admin\Widgets\SearchField;
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Widgets\Link;
 
 class Layout extends AbstractLayout implements LayoutInterface
 {
@@ -51,18 +52,30 @@ class Layout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @return Button|null
+     * @return Content|null
      */
-    protected function filterButton()
+    protected function filterButtons()
     {
         if (! $this->grid->hasTool('filter')) {
             return;
         }
 
-        return Button::create()
-            ->type('button', 'filter js-filter-trigger')
-            ->withIcon('filter')
-            ->title(trans('arbory::filter.filter'));
+        $content = new Content([
+            Button::create()
+                ->type('button', 'filter js-filter-trigger')
+                ->withIcon('filter')
+                ->title(trans('arbory::filter.filter')),
+        ]);
+
+        $savedFilters = $this->grid->getFilterManager()->getSavedFilters($this->grid->getModule());
+        foreach ($savedFilters as $savedFilter) {
+            $content->push(Link::create($savedFilter->filter)
+                ->asButton('filter')
+                ->withIcon('bookmark')
+                ->title($savedFilter->name));
+        }
+
+        return $content;
     }
 
     /**
@@ -99,7 +112,7 @@ class Layout extends AbstractLayout implements LayoutInterface
      */
     protected function addSlots(Body $body)
     {
-        $body->getTarget()->slot('header_right_filter', $this->filterButton());
+        $body->getTarget()->slot('header_right_filter', $this->filterButtons());
         $body->getTarget()->slot('header_right', $this->searchField());
     }
 }
