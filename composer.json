@@ -17,8 +17,8 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "laravel/framework": "~5.5.0|~5.6.0|~5.8.0",
-        "laravelcollective/html": "^5.5.0",
+        "laravel/framework": "~5.6.0|~5.8.0",
+        "laravelcollective/html": "5.6*|5.8.*",
         "doctrine/dbal": "^2.5",
         "gazsp/baum": "~1.1",
         "alsofronie/eloquent-uuid": "^1.0.5",
