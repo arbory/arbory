@@ -2,28 +2,28 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Page;
-use Arbory\Base\Nodes\Node;
-use Illuminate\Http\Request;
-use Arbory\Base\Admin\Layout;
-use Illuminate\Routing\Controller;
-use Illuminate\Container\Container;
+use Arbory\Base\Admin\Form\Fields\Deactivator;
 use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Traits\Crudify;
-use Illuminate\Http\RedirectResponse;
-use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Layout\LayoutManager;
+use Arbory\Base\Admin\Page;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Nodes\Admin\Grid\Filter;
 use Arbory\Base\Nodes\Admin\Grid\Renderer;
-use Arbory\Base\Nodes\ContentTypeRegister;
-use Arbory\Base\Admin\Layout\LayoutManager;
 use Arbory\Base\Nodes\ContentTypeDefinition;
-use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Nodes\Node;
 use Arbory\Base\Repositories\NodesRepository;
-use Arbory\Base\Admin\Form\Fields\Deactivator;
-use Arbory\Base\Admin\Constructor\BlockRegistry;
+use Illuminate\Container\Container;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class NodesController extends Controller
 {
@@ -234,7 +234,7 @@ class NodesController extends Controller
             $node->moveToLeftOf($nodes->findOneBy('id', $toRightId));
         }
 
-        return \Response::make();
+        return response()->make();
     }
 
     /**

@@ -1,3 +1,4 @@
+import "jquery-ui/ui/widgets/sortable";
 
 export const CONFIG_JQUERY_SORTABLE = {
     items: '> .item',
