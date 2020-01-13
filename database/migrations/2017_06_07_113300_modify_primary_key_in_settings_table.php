@@ -17,6 +17,7 @@ class ModifyPrimaryKeyInSettingsTable extends Migration
 
         Schema::table('settings', function (Blueprint $table) {
             $table->dropColumn('id');
+            $table->dropUnique('settings_name_unique');
             $table->string('name')->primary()->change();
         });
     }
