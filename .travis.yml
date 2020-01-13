@@ -11,8 +11,9 @@ env:
 - LARAVEL_VERSION=5.8.*
 matrix:
   fast_finish: true
-install:
-- composer install
+before_install:
 - composer require "laravel/framework:${LARAVEL_VERSION}"
+install:
+- composer update --prefer-source --no-interaction --dev
 after_success:
 - travis_retry php vendor/bin/coveralls
