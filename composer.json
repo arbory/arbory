@@ -67,7 +67,8 @@
                 "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
             },
             "dont-discover": [
-                "cartalyst/sentinel"
+                "cartalyst/sentinel",
+                "unisharp/laravel-filemanager"
             ]
         },
         "foxy": true
