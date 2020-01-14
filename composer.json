@@ -22,13 +22,13 @@
         "doctrine/dbal": "^2.5",
         "baum/baum": "2.0.0-alpha1",
         "alsofronie/eloquent-uuid": "^1.0.5",
-        "astrotomic/laravel-translatable": "^11.5",
+        "astrotomic/laravel-translatable": "^11.6",
         "waavi/translation": "^2.4",
         "cartalyst/sentinel": "^3.0.3",
         "roboc/laravel-glide": "^1.1.0",
         "spatie/laravel-sluggable": "^2.1.0",
         "maatwebsite/excel": "^3.0.5",
-        "unisharp/laravel-filemanager": "^1.8.5"
+        "unisharp/laravel-filemanager": "^2.0"
     },
     "require-dev" : {
         "php-coveralls/php-coveralls": "^2.0",
