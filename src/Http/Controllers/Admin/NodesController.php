@@ -13,7 +13,6 @@ use Arbory\Base\Admin\Layout\LayoutManager;
 use Arbory\Base\Admin\Page;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Nodes\Admin\Grid\Filter;
 use Arbory\Base\Nodes\Admin\Grid\Renderer;
 use Arbory\Base\Nodes\ContentTypeDefinition;
@@ -21,11 +20,11 @@ use Arbory\Base\Nodes\ContentTypeRegister;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Repositories\NodesRepository;
 use Illuminate\Support\Str;
-use Arbory\Base\Support\Nodes\NameGenerator;
 use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Arbory\Base\Support\Nodes\NameGenerator;
 
 class NodesController extends Controller
 {
@@ -246,7 +245,7 @@ class NodesController extends Controller
             $node->moveToLeftOf($nodes->findOneBy('id', $toRightId));
         }
 
-        return response();
+        return response()->make();
     }
 
     /**

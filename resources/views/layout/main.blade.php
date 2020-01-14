@@ -35,6 +35,10 @@
 
         <script src="https://maps.googleapis.com/maps/api/js?key={{ config('arbory.services.google.maps_api_key') }}&libraries=places"></script>
 
+        @include('arbory::layout.partials.environment')
+
+        <script src="{{ mix('js/manifest.js', 'arbory') }}"></script>
+        <script src="{{ mix('js/vendor.js', 'arbory') }}"></script>
         <script src="{{ mix('js/application.js', 'arbory') }}"></script>
         <script src="{{ mix('js/controllers/nodes.js', 'arbory') }}"></script>
 

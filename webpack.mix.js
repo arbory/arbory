@@ -1,23 +1,32 @@
+const webpack = require('webpack');
+
 module.exports = function (mix) {
 
     mix.setPublicPath('public/arbory');
-    mix.webpackConfig({resolve: {symlinks: false}});
+    mix.webpackConfig({
+        resolve: {
+            symlinks: false
+        },
+
+        plugins: [
+            new webpack.ProvidePlugin({
+                'window.jQuery': 'jquery',
+                'window.$': 'jquery',
+                'jQuery': 'jquery',
+                '$': 'jquery',
+
+            })
+        ],
+    });
 
     mix.js(
         'vendor/arbory/arbory/resources/assets/js/controllers/*',
         'js/controllers/'
     );
 
-    mix.babel([
-            'vendor/arbory/arbory/resources/assets/js/environment.js',
-            'vendor/components/jquery/jquery.min.js',
-            'vendor/components/jqueryui/jquery-ui.min.js',
-            'vendor/components/jquery-cookie/jquery.cookie.js',
-            'vendor/ckeditor/ckeditor/ckeditor.js',
-            'vendor/ckeditor/ckeditor/adapters/jquery.js',
-            'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
-        ],
-        'public/arbory/js/application.js'
+    mix.js(
+        'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
+        'js/application.js'
     );
 
     mix.sass(
@@ -36,7 +45,7 @@ module.exports = function (mix) {
     );
 
     mix.copyDirectory(
-        'vendor/ckeditor/ckeditor/',
+        'node_modules/ckeditor/',
         'public/arbory/ckeditor/'
     );
 
@@ -56,4 +65,5 @@ module.exports = function (mix) {
     );
 
     mix.version();
+    mix.extract();
 };
