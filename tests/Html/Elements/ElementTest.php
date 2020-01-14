@@ -7,8 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Arbory\Base\Html\Elements\Element;
 
 /**
- * Class ElementTest
- * @package Tests\Html\Elements
+ * Class ElementTest.
  *
  * @covers \Arbory\Base\Html\Elements\Element
  */

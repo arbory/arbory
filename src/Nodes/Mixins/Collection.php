@@ -1,14 +1,11 @@
 <?php
 
-
 namespace Arbory\Base\Nodes\Mixins;
-
 
 use Closure;
 
 /**
- * Class Collection
- * @package Arbory\Base\Nodes\Mixins
+ * Class Collection.
  *
  * @mixin \Illuminate\Support\Collection
  * @mixin \Baum\Mixins\Collection

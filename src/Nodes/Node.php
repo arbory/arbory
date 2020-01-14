@@ -25,7 +25,7 @@ class Node extends Model
     protected $leftColumnName = 'lft';
 
     /**
-     * @var string 
+     * @var string
      */
     protected $rightColumnName = 'rgt';
 
@@ -176,7 +176,7 @@ class Node extends Model
     }
 
     /**
-     * Return parent id (legacy support)
+     * Return parent id (legacy support).
      *
      * @return mixed
      */

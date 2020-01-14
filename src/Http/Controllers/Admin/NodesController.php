@@ -86,7 +86,7 @@ class NodesController extends Controller
         });
 
         /**
-         * @var $node Node
+         * @var Node
          */
         $node = $form->fields()->getModel();
         $contentType = $node->getContentType();

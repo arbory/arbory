@@ -22,7 +22,7 @@ class FileManagerServiceProvider extends ServiceProvider
         if (config('arbory.lfm.register_routes')) {
             Route::group([
                 'prefix' => config('arbory.lfm.prefix'),
-                'middleware' => config('arbory.lfm.middleware')
+                'middleware' => config('arbory.lfm.middleware'),
             ], function () {
                 \UniSharp\LaravelFilemanager\Lfm::routes();
             });
@@ -55,7 +55,7 @@ class FileManagerServiceProvider extends ServiceProvider
         $fileManagerFileDest = base_path('resources/lang/vendor/laravel-filemanager');
 
         $this->publishes([
-            $lfmVendorPath . 'src/lang' => $fileManagerFileDest,
+            $lfmVendorPath.'src/lang' => $fileManagerFileDest,
         ], 'file_manager');
 
         $this->publishes([
@@ -67,7 +67,7 @@ class FileManagerServiceProvider extends ServiceProvider
 
         // Add fallback to original LFM views for other views which are not extended
         $this->app['view']->addNamespace('laravel-filemanager', [
-            $lfmVendorPath . 'src/views'
+            $lfmVendorPath.'src/views',
         ]);
     }
 }

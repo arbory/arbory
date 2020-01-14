@@ -21,8 +21,7 @@ use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
- * Class FieldSetFieldFinderTest
- * @package Tests\Services
+ * Class FieldSetFieldFinderTest.
  *
  * @covers \Arbory\Base\Services\FieldSetFieldFinder
  */

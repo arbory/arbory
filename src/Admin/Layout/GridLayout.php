@@ -65,7 +65,7 @@ class GridLayout extends AbstractLayout implements LayoutInterface
      *
      * @return Column
      */
-    public function addColumn($size, $content, $breakpoint = null):Column
+    public function addColumn($size, $content, $breakpoint = null): Column
     {
         return $this->grid->column($size, $content, $breakpoint);
     }
