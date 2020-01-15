@@ -15,6 +15,8 @@ use Arbory\Base\Support\Activation\HasActivationDates;
  */
 class Node extends Model
 {
+    public const PARENTS_CACHE_ATTRIBUTE = '_parents';
+
     use UuidModelTrait;
     use HasActivationDates;
     use BaumNode;
@@ -74,18 +76,20 @@ class Node extends Model
     }
 
     /**
-     * @return NodeCollection|\Illuminate\Support\Collection|static[]
+     * @return \Illuminate\Support\Collection|Node[]
      */
     public function parents()
     {
-        if (! $this->relationLoaded('parents')) {
-            $this->setRelation('parents', $this->parentsQuery()->get());
+        if (! $this->getAttributeValue(static::PARENTS_CACHE_ATTRIBUTE)) {
+            $this->setAttribute(static::PARENTS_CACHE_ATTRIBUTE, $this->ancestors()->get());
         }
 
-        return $this->getRelation('parents');
+        return $this->getAttributeValue(static::PARENTS_CACHE_ATTRIBUTE);
     }
 
     /**
+     * @deprecated
+     *
      * @return Builder
      */
     public function parentsQuery()
