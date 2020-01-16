@@ -6,7 +6,7 @@ use Alsofronie\Uuid\UuidModelTrait;
 use Arbory\Base\Pages\PageInterface;
 use Baum\NestedSet\Node as BaumNode;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Repositories\NodesRepository;
 use Arbory\Base\Support\Activation\HasActivationDates;
 
@@ -15,8 +15,6 @@ use Arbory\Base\Support\Activation\HasActivationDates;
  */
 class Node extends Model
 {
-    public const PARENTS_CACHE_ATTRIBUTE = '_parents';
-
     use UuidModelTrait;
     use HasActivationDates;
     use BaumNode;
@@ -80,14 +78,12 @@ class Node extends Model
      */
     public function parents()
     {
-        if (! $this->getAttributeValue(static::PARENTS_CACHE_ATTRIBUTE)) {
-            $this->setAttribute(static::PARENTS_CACHE_ATTRIBUTE, $this->ancestors()->get());
-        }
-
-        return $this->getAttributeValue(static::PARENTS_CACHE_ATTRIBUTE);
+        return $this->ancestors()->get();
     }
 
     /**
+     * Use ancestors() instead
+     *
      * @deprecated
      *
      * @return Builder
