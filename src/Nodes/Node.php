@@ -82,7 +82,7 @@ class Node extends Model
     }
 
     /**
-     * Use ancestors() instead
+     * Use ancestors() instead.
      *
      * @deprecated
      *
