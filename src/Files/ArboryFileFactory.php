@@ -40,7 +40,7 @@ class ArboryFileFactory
             throw new \InvalidArgumentException('Unsupported relation');
         }
 
-        $localKey = explode('.', $relation->getQualifiedForeignKey())[1];
+        $localKey = explode('.', $relation->getQualifiedForeignKeyName())[1];
 
         $model->setAttribute($localKey, $arboryFile->getKey());
         $model->setRelation($relationName, $arboryFile);
