@@ -7,6 +7,7 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Files\ArboryFile;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Admin\Form\Fields\Text;
@@ -117,7 +118,7 @@ class SettingsController extends Controller
         $type = $definition->getType();
 
         if ($type === Translatable::class) {
-            $inner = array_get($definition->getConfigEntry(), 'value');
+            $inner = Arr::get($definition->getConfigEntry(), 'value');
             $innerType = $inner['type'] ?? Text::class;
             $innerField = new $innerType('value');
 
@@ -125,7 +126,7 @@ class SettingsController extends Controller
             $field->setFieldSet($fields);
 
             if (! $field->getValue() || $field->getValue()->isEmpty()) {
-                $localized = array_get($inner, 'value', []);
+                $localized = Arr::get($inner, 'value', []);
                 $fieldValue = new Collection();
 
                 foreach ($localized as $locale => $value) {

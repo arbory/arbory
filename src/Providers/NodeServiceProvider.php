@@ -2,9 +2,11 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Nodes\Mixins\Collection as NodesCollectionMixin;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Support\Facades\Page;
 use Arbory\Base\Support\Facades\Admin;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -66,6 +68,8 @@ class NodeServiceProvider extends ServiceProvider
                 $this->app->make('arbory_router')
             );
         });
+
+        Collection::mixin(new NodesCollectionMixin);
 
         $this->routes = $this->app->make('arbory_router');
     }

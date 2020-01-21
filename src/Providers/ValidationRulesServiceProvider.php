@@ -4,10 +4,12 @@ namespace Arbory\Base\Providers;
 
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Support\Str;
 
 class ValidationRulesServiceProvider extends ServiceProvider
 {
@@ -53,7 +55,7 @@ class ValidationRulesServiceProvider extends ServiceProvider
                 $attributeParent = array_slice($attributeParts, 0, $toManyIndex + 2);
                 $attributeParent = implode('.', $attributeParent);
 
-                $isDestroyed = array_get($request->input($attributeParent), '_destroy');
+                $isDestroyed = Arr::get($request->input($attributeParent), '_destroy');
 
                 return filter_var($isDestroyed, FILTER_VALIDATE_BOOLEAN);
             }
@@ -110,7 +112,7 @@ class ValidationRulesServiceProvider extends ServiceProvider
             $checkLocales = $translatable->getLocales();
 
             foreach ($checkLocales as $index => $checkLocale) {
-                if (str_contains($attribute, $checkLocale)) {
+                if (Str::contains($attribute, $checkLocale)) {
                     $attributeLocale = $checkLocale;
                     unset($checkLocales[$index]);
                     break;

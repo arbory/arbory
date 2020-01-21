@@ -19,7 +19,7 @@ class BelongsTo extends Select
 
     public function getValue()
     {
-        $foreignKey = $this->getRelation()->getForeignKey();
+        $foreignKey = $this->getRelation()->getForeignKeyName();
         $value = $this->getModel()->getAttribute($foreignKey);
 
         return $value ?? $this->getDefaultValue();
@@ -39,7 +39,7 @@ class BelongsTo extends Select
     public function beforeModelSave(Request $request)
     {
         $this->getModel()->setAttribute(
-            $this->getRelation()->getForeignKey(),
+            $this->getRelation()->getForeignKeyName(),
             $request->input($this->getNameSpacedName())
         );
     }

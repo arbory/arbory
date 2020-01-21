@@ -85,7 +85,13 @@
             {
                 display: none;
             }
-
+    
+            .content-type {
+                float: right;
+                color: $color-text-lightest;
+                padding-right: steps(1);
+                font-weight: bold;
+            }
         }
 
         // nested item indentation

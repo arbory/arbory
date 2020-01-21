@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Console\Commands;
 
+use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Arbory\Base\Auth\Roles\Role;
@@ -141,7 +142,7 @@ class CreateUserCommand extends Command
         return $repository->create([
             'name' => 'Administrator',
             'slug' => 'administrator',
-            'permissions' => array_flatten(
+            'permissions' => Arr::flatten(
                 array_merge(
                     [
                         \Arbory\Base\Http\Controllers\Admin\DashboardController::class,

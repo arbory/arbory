@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Html\Html;
-use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Html;
 
 class Link extends HasOne
 {
@@ -39,7 +39,7 @@ class Link extends HasOne
         $fieldSet->checkbox('new_tab');
 
         $fieldSet
-            ->each(function (FieldInterface $field) {
+            ->getFields()->each(function (FieldInterface $field) {
                 if ($field instanceof ControlFieldInterface) {
                     $field->setInteractive($this->isInteractive());
                     $field->setDisabled($this->isDisabled());

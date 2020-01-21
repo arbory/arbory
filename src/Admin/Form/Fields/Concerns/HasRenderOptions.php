@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields\Concerns;
 
 use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
+use Illuminate\Support\Arr;
 
 trait HasRenderOptions
 {
@@ -85,7 +86,7 @@ trait HasRenderOptions
      */
     public function setClasses($classes): RenderOptionsInterface
     {
-        $this->classes = array_wrap($classes);
+        $this->classes = Arr::wrap($classes);
 
         return $this;
     }
@@ -97,7 +98,7 @@ trait HasRenderOptions
      */
     public function removeClasses($classes): RenderOptionsInterface
     {
-        $classes = array_wrap($classes);
+        $classes = Arr::wrap($classes);
 
         $this->classes = array_filter($this->classes, function ($value) use ($classes) {
             return ! in_array($value, $classes, true);

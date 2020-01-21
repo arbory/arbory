@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Str;
 
 class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
 {
@@ -45,7 +46,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
         $this->navigable = $navigable;
         $this->title = $title;
         $this->anchor = $anchor;
-        $this->reference = str_random(16);
+        $this->reference = Str::random(16);
 
         $this->children = collect();
     }

@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Services;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Settings\Setting;
 use Arbory\Base\Admin\Form\Fields\Translatable;
@@ -87,13 +88,13 @@ class SettingRegistry
                 $type = $data['type'] ?? null;
 
                 if ($type) {
-                    $value = array_get($data, 'value');
+                    $value = Arr::get($data, 'value');
                 }
 
                 if (is_array($value)) {
                     if ($type === Translatable::class) {
-                        $value = array_get($value, 'value');
-                        $value = array_get($value, request()->getLocale(), $value);
+                        $value = Arr::get($value, 'value');
+                        $value = Arr::get($value, request()->getLocale(), $value);
                     }
                 }
 

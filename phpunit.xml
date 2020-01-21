@@ -4,7 +4,6 @@
     bootstrap="tests/bootstrap.php"
     colors="true"
     printerClass="DiabloMedia\PHPUnit\Printer\PrettyPrinter"
-    mapTestClassNameToCoveredClassName="true"
 >
     <logging>
         <log type="coverage-html" target="tests/coverage/html" />
