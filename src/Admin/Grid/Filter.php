@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Filter\FilterManager;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Str;
 
 /**
  * Class Filter.
@@ -102,6 +103,7 @@ class Filter implements FilterInterface
      */
     public function search($phrase, $columns)
     {
+        $phrase = Str::ascii($phrase);
         $keywords = explode(' ', $phrase);
 
         foreach ($keywords as $string) {
