@@ -393,7 +393,7 @@ trait Translatable
 
         if( empty( $localesConfig ) )
         {
-            throw new \ErrorException( 'Please make sure you have run "php artisan config:publish astrotomic/laravel-translatable" ' .
+            throw new \ErrorException( 'Please make sure you have run "php artisan vendor:publish --tag=translatable" ' .
                 ' and that the locales configuration is defined.' );
         }
 
