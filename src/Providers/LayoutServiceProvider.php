@@ -32,14 +32,12 @@ class LayoutServiceProvider extends ServiceProvider
 
             $assets->css(mix('css/application.css', 'vendor/arbory'));
 
-            $this->loadThirdPartyAssets($assets);
-
             $assets->prependJs(mix('js/application.js', 'vendor/arbory'));
             $assets->prependJs(mix('js/includes.js', 'vendor/arbory'));
             $assets->prependJs(mix('js/vendor.js', 'vendor/arbory'));
             $assets->prependJs(mix('js/manifest.js', 'vendor/arbory'));
 
-
+            $this->loadThirdPartyAssets($assets);
 
             $view->with([
                 'assets' => $assets,
@@ -71,7 +69,7 @@ class LayoutServiceProvider extends ServiceProvider
         $googleMapsAPIKey = config('arbory.services.google.maps_api_key');
 
         if ($googleMapsAPIKey) {
-            $assets->js(self::GOOGLE_MAPS_SRC . $googleMapsAPIKey);
+            $assets->prependJs(self::GOOGLE_MAPS_SRC . $googleMapsAPIKey);
         }
     }
 
