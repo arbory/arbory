@@ -72,7 +72,7 @@ class InstallCommand extends Command
         $this->publishAssets();
         $this->createAdminUser();
 
-        $this->info('Hurray! You can access Arbory on ' . url('/admin'));
+        $this->info('Hurray! You can access Arbory on ' . url(config('arbory.uri')));
     }
 
     protected function publishConfig()
