@@ -48,16 +48,20 @@ class ArboryServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->publishes([
-            __DIR__.'/../../stubs/pages.stub' => base_path('/routes/pages.php'),
+            __DIR__ . '/../../stubs/pages.stub' => base_path('/routes/pages.php'),
         ], 'config');
 
         $this->publishes([
-            __DIR__.'/../../stubs/admin_routes.stub' => base_path('/routes/admin.php'),
+            __DIR__ . '/../../stubs/admin_routes.stub' => base_path('/routes/admin.php'),
         ], 'config');
 
         $this->publishes([
-            __DIR__.'/../../resources/lang/' => base_path('resources/lang/vendor/arbory'),
+            __DIR__ . '/../../resources/lang/' => base_path('resources/lang/vendor/arbory'),
         ], 'lang');
+
+        $this->publishes([
+            __DIR__ . '/../../dist/' => public_path('vendor/arbory'),
+        ], 'assets');
 
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'arbory');
