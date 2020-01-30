@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Services\AssetPipeline;
 use Illuminate\View\View;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Admin\Admin;
@@ -13,31 +14,62 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 
 class LayoutServiceProvider extends ServiceProvider
 {
+    protected const GOOGLE_MAPS_SRC = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=';
+
     /**
      * Bootstrap services.
      *
      * @param ViewFactory $view
      * @param Admin $admin
-     * @return void
-     */
+
+        * @return void
+        */
     public function boot(ViewFactory $view, Admin $admin): void
     {
-        $view->composer('arbory::layout.main', function (View $view) use ($admin) {
-            $assets = $admin->assets();
-            $assets->js('/js/admin.js');
+        $assets = $admin->assets();
+
+        $view->composer('arbory::layout.main', function (View $view) use ($assets, $admin) {
+
+            $assets->css(mix('css/application.css', 'vendor/arbory'));
+
+            $assets->prependJs(mix('js/application.js', 'vendor/arbory'));
+            $assets->prependJs(mix('js/includes.js', 'vendor/arbory'));
+            $assets->prependJs(mix('js/vendor.js', 'vendor/arbory'));
+            $assets->prependJs(mix('js/manifest.js', 'vendor/arbory'));
+
+            $this->loadThirdPartyAssets($assets);
 
             $view->with([
                 'assets' => $assets,
-                'assetsJs' => $assets->getJs(),
-                'assetsCss' => $assets->getCss(),
-                'inlineJs' => implode(PHP_EOL, $assets->getInlineJs()->all()),
-                'inlineCss' => implode(PHP_EOL, $assets->getInlineCss()->all()),
                 'user' => $admin->sentinel()->getUser(),
                 'menu' => $this->buildMenu()->render(),
             ]);
         });
 
+        $view->composer('arbory::layout.public', function (View $view) use ($assets) {
+
+            $assets->css(mix('css/application.css', 'vendor/arbory'));
+            $assets->css(mix('css/controllers/sessions.css', 'vendor/arbory'));
+
+            $view->with([
+                'assets' => $assets,
+            ]);
+        });
+
         $this->app->singleton(LayoutManager::class);
+    }
+
+    /**
+     * @param AssetPipeline $assets
+     * @return void
+     */
+    protected function loadThirdPartyAssets(AssetPipeline $assets): void
+    {
+        $googleMapsAPIKey = config('arbory.services.google.maps_api_key');
+
+        if ($googleMapsAPIKey) {
+            $assets->prependJs(self::GOOGLE_MAPS_SRC . $googleMapsAPIKey);
+        }
     }
 
     /**

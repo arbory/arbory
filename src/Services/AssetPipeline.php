@@ -36,24 +36,45 @@ class AssetPipeline
 
     /**
      * @param string $filePath
+     * @return void
      */
-    public function js(string $filePath)
+    public function js(string $filePath): void
     {
         $this->js->push($filePath);
     }
 
     /**
      * @param string $filePath
+     * @return void
      */
-    public function css(string $filePath)
+    public function css(string $filePath): void
     {
         $this->css->push($filePath);
     }
 
     /**
+     * @param string $filePath
+     * @return void
+     */
+    public function prependJs(string $filePath): void
+    {
+        $this->js->prepend($filePath);
+    }
+
+    /**
+     * @param string $filePath
+     * @return void
+     */
+    public function prependCss(string $filePath): void
+    {
+        $this->css->prepend($filePath);
+    }
+
+
+    /**
      * @param string $inlineContent
      */
-    public function inlineJs(string $inlineContent)
+    public function inlineJs(string $inlineContent): void
     {
         $this->inlineJs->push($inlineContent);
     }
@@ -61,7 +82,7 @@ class AssetPipeline
     /**
      * @param string $inlineContent
      */
-    public function inlineCss(string $inlineContent)
+    public function inlineCss(string $inlineContent): void
     {
         $this->inlineCss->push($inlineContent);
     }

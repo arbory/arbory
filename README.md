@@ -7,7 +7,7 @@
 ## Installation
 #### Create new Laravel project
 ```bash
-composer create-project --prefer-dist laravel/laravel=5.6 my-project
+composer create-project --prefer-dist laravel/laravel=5.8 my-project
 ```
 
 #### Go to project root
@@ -71,7 +71,7 @@ $nodes->findUnder( $currentNode );
 
 ## Validation
 
-[Validation rules](https://laravel.com/docs/5.6/validation) can be attached to any field, like so
+[Validation rules](https://laravel.com/docs/5.8/validation) can be attached to any field, like so
 
 ```php
 $form->addField( new Text( 'title' ) )->setRules( 'required' );
@@ -189,6 +189,10 @@ return [
 php artisan arbory:create-user 
 ```
 
+# Contributing
+
+To submit SCSS/Js changes you must rebuild `dist` directory containing compiled assets. Run `npm run prod` to do that.
+
 ## Coding style
 
 Use PSR-1/2
@@ -215,7 +219,3 @@ or project's `package.json` file (`jscsConfig` section).
 * JS - [https://github.com/airbnb/javascript](https://github.com/airbnb/javascript)
 * CSS / SASS - [https://github.com/airbnb/css](https://github.com/airbnb/css)
 
-
-## Development
-
-(Roadmap in progress)

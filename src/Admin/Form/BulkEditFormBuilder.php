@@ -3,8 +3,6 @@
 namespace Arbory\Base\Admin\Form;
 
 use Arbory\Base\Html\Html;
-use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
@@ -14,20 +12,6 @@ use Arbory\Base\Html\Elements\Element;
  */
 class BulkEditFormBuilder extends Builder
 {
-    /**
-     * @var Form
-     */
-    protected $form;
-
-    /**
-     * Builder constructor.
-     * @param Form $form
-     */
-    public function __construct(Form $form)
-    {
-        $this->form = $form;
-    }
-
     /**
      * @param $route
      * @param array $parameters
