@@ -38,11 +38,11 @@ class ArboryAdminModuleAccessMiddleware
     {
         $targetModule = $this->resolveTargetModule($request);
 
-        if (! $targetModule) {
+        if (!$targetModule) {
             throw new \RuntimeException('Could not find target module for route controller');
         }
 
-        if (! $targetModule->isAuthorized()) {
+        if (!$targetModule->isRequestAuthorized($request)) {
             return $this->denied($request);
         }
 
@@ -62,8 +62,8 @@ class ArboryAdminModuleAccessMiddleware
         }
 
         return redirect()
-            ->guest(route('admin.login.form'))
-            ->with('error', $message);
+            ->back()
+            ->withErrors($message);
     }
 
     /**

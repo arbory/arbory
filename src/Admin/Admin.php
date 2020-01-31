@@ -38,11 +38,6 @@ class Admin
     protected $menu;
 
     /**
-     * @var bool
-     */
-    protected $authorized;
-
-    /**
      * Admin constructor.
      * @param Sentinel $sentinel
      * @param Menu $menu
@@ -95,39 +90,5 @@ class Admin
     public function menu()
     {
         return $this->menu;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAuthorized()
-    {
-        if ($this->authorized === null) {
-            $this->authorized = (bool) $this->sentinel()->check();
-        }
-
-        return $this->authorized;
-    }
-
-    /**
-     * @param $module
-     * @return bool
-     */
-    public function isAuthorizedFor($module)
-    {
-        if (! $this->isAuthorized()) {
-            return false;
-        }
-
-        /**
-         * @var Role[]|Collection
-         */
-        $roles = $this->sentinel()->getUser()->roles;
-
-        $permissions = $roles->mapWithKeys(function (Role $role) {
-            return $role->getPermissions();
-        })->toArray();
-
-        return in_array($module, $permissions, true);
     }
 }

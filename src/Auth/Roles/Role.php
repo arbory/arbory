@@ -2,12 +2,15 @@
 
 namespace Arbory\Base\Auth\Roles;
 
+use Arbory\Base\Admin\Admin;
 use Arbory\Base\Auth\Users\User;
 use Cartalyst\Sentinel\Roles\EloquentRole;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 /**
  * Class Role.
+ * @property string $permissions
  */
 class Role extends EloquentRole
 {
