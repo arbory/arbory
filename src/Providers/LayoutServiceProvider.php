@@ -17,19 +17,14 @@ class LayoutServiceProvider extends ServiceProvider
     protected const GOOGLE_MAPS_SRC = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=';
 
     /**
-     * Bootstrap services.
-     *
      * @param ViewFactory $view
      * @param Admin $admin
-
-        * @return void
-        */
+     */
     public function boot(ViewFactory $view, Admin $admin): void
     {
         $assets = $admin->assets();
 
         $view->composer('arbory::layout.main', function (View $view) use ($assets, $admin) {
-
             $assets->css(mix('css/application.css', 'vendor/arbory'));
 
             $assets->prependJs(mix('js/application.js', 'vendor/arbory'));
@@ -47,7 +42,6 @@ class LayoutServiceProvider extends ServiceProvider
         });
 
         $view->composer('arbory::layout.public', function (View $view) use ($assets) {
-
             $assets->css(mix('css/application.css', 'vendor/arbory'));
             $assets->css(mix('css/controllers/sessions.css', 'vendor/arbory'));
 

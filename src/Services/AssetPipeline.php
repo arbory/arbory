@@ -70,7 +70,6 @@ class AssetPipeline
         $this->css->prepend($filePath);
     }
 
-
     /**
      * @param string $inlineContent
      */

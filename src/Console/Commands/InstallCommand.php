@@ -122,7 +122,6 @@ class InstallCommand extends Command
         $this->call('translator:flush');
     }
 
-
     protected function runSeeder()
     {
         $this->info('Running Arbory database seeder');
