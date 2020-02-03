@@ -88,7 +88,7 @@ class RolesController extends Controller
     {
         return [
             'grid' => Grid\Layout::class,
-            'form' => PanelLayout::class
+            'form' => PanelLayout::class,
         ];
     }
 
@@ -113,7 +113,7 @@ class RolesController extends Controller
     {
         $permissionsInput = $request->input('resource.permissions');
 
-        if (!$permissionsInput) {
+        if (! $permissionsInput) {
             $permissionsInput = [];
         }
 

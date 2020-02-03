@@ -153,7 +153,7 @@ class Module
      * @param callable $callback
      * @return Module
      */
-    public function registerCustomPermissions(callable $callback): Module
+    public function registerCustomPermissions(callable $callback): self
     {
         $callback($this->permissions);
 

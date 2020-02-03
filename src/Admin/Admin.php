@@ -3,9 +3,7 @@
 namespace Arbory\Base\Admin;
 
 use Arbory\Base\Menu\Menu;
-use Arbory\Base\Auth\Roles\Role;
 use Cartalyst\Sentinel\Sentinel;
-use Illuminate\Support\Collection;
 use Arbory\Base\Services\AssetPipeline;
 use Arbory\Base\Services\ModuleRegistry;
 use Arbory\Base\Admin\Module\ModuleRoutesRegistry;

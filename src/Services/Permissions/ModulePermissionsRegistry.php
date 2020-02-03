@@ -13,13 +13,13 @@ class ModulePermissionsRegistry
         'index',
         'create',
         'edit',
-        'show'
+        'show',
     ];
 
     private const LINKED_PERMISSIONS = [
         'destroy' => 'edit',
         'update' => 'edit',
-        'store' => 'create'
+        'store' => 'create',
     ];
 
     /**
@@ -58,7 +58,7 @@ class ModulePermissionsRegistry
     public function accessible(string $permission, ?Role $role = null): bool
     {
         $permission = $this->getUnderlyingPermission($permission);
-        if (!$this->modulePermissions->has($permission)) {
+        if (! $this->modulePermissions->has($permission)) {
             return true;
         }
 
@@ -110,6 +110,7 @@ class ModulePermissionsRegistry
 
         $this->modulePermissions = $permissions->mapWithKeys(function ($permission) {
             $permission = new ModulePermission($permission);
+
             return [$permission->getName() => $permission];
         });
     }
