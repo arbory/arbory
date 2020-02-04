@@ -5,10 +5,7 @@ jQuery(document).ready(function() {
     var searchInputName = 'search';
 
     filterWindow.submit( function(eventObj) {
-        $('<input />').attr('type', 'hidden')
-            .attr('name', searchInputName)
-            .attr('value', $(`#${searchInputName}`).val())
-            .appendTo(filterWindow);
+        addSerchToFilter();
         return true;
     });
 
@@ -20,6 +17,13 @@ jQuery(document).ready(function() {
     filterOpenButton.on('click', function() {
         openCloseFilter();
     });
+
+    function addSerchToFilter() {
+        $('<input />').attr('type', 'hidden')
+            .attr('name', searchInputName)
+            .attr('value', $(`#${searchInputName}`).val())
+            .appendTo(filterWindow);
+    }
 
     $('body').on('contentdone', '.js-save-filter-dialog', initSaveFilterDialog);
 
