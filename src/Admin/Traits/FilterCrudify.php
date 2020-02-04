@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /**
- * Trait FilterCrudify
+ * Trait FilterCrudify.
  */
 trait FilterCrudify
 {

@@ -5,7 +5,7 @@ namespace Arbory\Base\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class FilterStoreRequest
+ * Class FilterStoreRequest.
  */
 class FilterStoreRequest extends FormRequest
 {

@@ -74,9 +74,9 @@ class Layout extends AbstractLayout implements LayoutInterface
             );
             $button->append(
                 Link::create($this->grid->getModule()->url('dialog', [
-                        'dialog' => 'delete_filter',
-                        'filter_id' => $savedFilter->id
-                    ]))
+                    'dialog' => 'delete_filter',
+                    'filter_id' => $savedFilter->id
+                ]))
                     ->asButton('delete only-icon')
                     ->withIcon('times')
                     ->asAjaxbox()
