@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Filter;
 use Closure;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 
@@ -61,6 +62,19 @@ class Renderer
         return Button::create()
             ->type('submit', 'full-width')
             ->title(trans('arbory::filter.apply'));
+    }
+
+    /**
+     * @return Link
+     */
+    protected function saveButton(): Link
+    {
+        $linkUrl = $this->getManager()->getModule()->url('dialog', ['dialog' => 'save_filter']);
+
+        return Link::create($linkUrl)
+            ->asButton('full-width')
+            ->asAjaxbox()
+            ->title(trans('arbory::filter.save_as'));
     }
 
     /**
@@ -137,6 +151,7 @@ class Renderer
                 $this->filterHeader(),
                 $this->renderFilters(),
                 $this->filterButton(),
+                $this->saveButton(),
                 $this->resetButton(),
             ])->addClass('form-filter')
                 ->addAttributes(['id' => 'grid-filter'])

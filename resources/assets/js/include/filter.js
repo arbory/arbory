@@ -20,4 +20,17 @@ jQuery(document).ready(function() {
     filterOpenButton.on('click', function() {
         openCloseFilter();
     });
+
+    $('body').on('contentdone', '.js-save-filter-dialog', initSaveFilterDialog);
+
+    function initSaveFilterDialog(event) {
+        let dialog = $(event.target);
+        let form = dialog.find('form');
+
+        form.on('submit', function() {
+            addSerchToFilter();
+            dialog.find('[name="filter"]').val(filterWindow.serialize());
+            return true;
+        });
+    }
 });

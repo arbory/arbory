@@ -143,5 +143,35 @@
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 20px;
+    text-align: center;
+  }
+}
+
+.saved-filters{
+  flex: 2 0 0;
+}
+.saved-filter {
+  position: relative;
+  float: right;
+  margin-right: steps(0.75);
+  margin-bottom: steps(0.75);
+
+  .button.link {
+    padding-right: steps(2);
+  }
+
+  .button.delete {
+    position: absolute;
+    top: steps(-0.75);
+    right: steps(-0.75);
+    background: transparent;
+    color: $color-highlight-darkest;
+    border-radius: steps(1.5);
+    transition: background-color 0.05s ease-out;
+
+    &:hover {
+      background: $color-notification-error-text;
+      color: $color-background-lightest;
+    }
   }
 }

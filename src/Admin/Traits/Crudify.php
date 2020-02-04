@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Traits;
 
+use Arbory\Base\Admin\Filter\FilterManager;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Page;
@@ -106,6 +107,8 @@ trait Crudify
         $grid = new Grid($model);
         $grid->setModule($this->module());
         $grid->setRenderer(new Grid\Builder($grid));
+        $grid->setFilterManager(app(FilterManager::class)); // TODO: Use proper DI
+        $grid->setupFilter();
 
         return $this->grid($grid) ?: $grid;
     }
