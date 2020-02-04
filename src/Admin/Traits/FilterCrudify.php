@@ -20,7 +20,7 @@ trait FilterCrudify
     protected function saveFilterDialog(): View
     {
         return view('arbory::dialogs.save_filter', [
-            'action' => $this->url('filter.store')
+            'action' => $this->url('filter.store'),
         ]);
     }
 
