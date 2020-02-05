@@ -1,69 +1,38 @@
+const mix = require('laravel-mix');
 const webpack = require('webpack');
 
-module.exports = function (mix) {
+mix.setPublicPath('dist');
 
-    mix.setPublicPath('public/arbory');
-    mix.webpackConfig({
-        resolve: {
-            symlinks: false
-        },
+mix.webpackConfig({
+    plugins: [
+        new webpack.ProvidePlugin({
+            'window.jQuery': 'jquery',
+            'window.$': 'jquery',
+            'jQuery': 'jquery',
+            '$': 'jquery',
 
-        plugins: [
-            new webpack.ProvidePlugin({
-                'window.jQuery': 'jquery',
-                'window.$': 'jquery',
-                'jQuery': 'jquery',
-                '$': 'jquery',
+        })
+    ],
+});
 
-            })
-        ],
-    });
+mix.js('resources/assets/js/controllers/*', 'js/controllers/');
 
-    mix.js(
-        'vendor/arbory/arbory/resources/assets/js/controllers/*',
-        'js/controllers/'
-    );
+mix.js('resources/assets/js/include/**/*.js', 'js/includes.js');
 
-    mix.js(
-        'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
-        'js/application.js'
-    );
+mix.js('resources/assets/js/application.js', 'js/application.js');
 
-    mix.sass(
-        'vendor/arbory/arbory/resources/assets/stylesheets/application.scss',
-        'css/application.css'
-    );
 
-    mix.sass(
-        'vendor/arbory/arbory/resources/assets/stylesheets/controllers/nodes.scss',
-        'css/controllers/'
-    );
+mix.sass('resources/assets/stylesheets/application.scss', 'css/application.css');
 
-    mix.sass(
-        'vendor/arbory/arbory/resources/assets/stylesheets/controllers/sessions.scss',
-        'css/controllers/'
-    );
+mix.sass('resources/assets/stylesheets/controllers/sessions.scss', 'css/controllers/');
 
-    mix.copyDirectory(
-        'node_modules/ckeditor/',
-        'public/arbory/ckeditor/'
-    );
 
-    mix.copyDirectory(
-        'vendor/arbory/arbory/resources/assets/js/lib/ckeditor/plugins/',
-        'public/arbory/ckeditor/plugins/'
-    );
+mix.copyDirectory('node_modules/ckeditor/', 'dist/ckeditor/');
 
-    mix.copyDirectory(
-        'vendor/arbory/arbory/resources/assets/images/',
-        'public/arbory/images/'
-    );
+mix.copyDirectory('resources/assets/js/ckeditor_plugins/', 'dist/ckeditor/plugins/');
 
-    mix.copyDirectory(
-        'vendor/unisharp/laravel-filemanager/public/',
-        'public/arbory/laravel-filemanager/'
-    );
+mix.copyDirectory('resources/assets/images/', 'dist/images/');
+mix.copyDirectory('resources/assets/fonts/', 'dist/fonts/');
 
-    mix.version();
-    mix.extract();
-};
+mix.version();
+mix.extract();

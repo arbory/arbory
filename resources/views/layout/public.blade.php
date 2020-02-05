@@ -3,8 +3,9 @@
 <head>
     <title>{{ config('arbory.title', 'Arbory') }}</title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <link href="{{ mix('css/application.css', 'arbory') }}" media="all" rel="stylesheet"/>
-    <link href="{{ mix('css/controllers/sessions.css', 'arbory') }}" media="all" rel="stylesheet"/>
+    <link rel="icon" href="/vendor/arbory/images/favicon.ico">
+
+    @include('arbory::layout.partials.assets-css')
 </head>
 <body class="controller-arbory-sessions view-edit">
     @include('arbory::layout.partials.message', ['class' => 'fixed'])
@@ -17,8 +18,6 @@
         </div>
     </div>
 
-    <script src="{{ mix('js/manifest.js', 'arbory') }}"></script>
-    <script src="{{ mix('js/vendor.js', 'arbory') }}"></script>
-    <script src="{{ mix('js/application.js', 'arbory') }}"></script>
+    @include('arbory::layout.partials.assets-js')
 </body>
 </html>
