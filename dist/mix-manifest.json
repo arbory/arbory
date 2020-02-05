@@ -2,7 +2,7 @@
     "/js/manifest.js": "/js/manifest.js?id=7db827d654313dce4250",
     "/js/vendor.js": "/js/vendor.js?id=70867080311847ee89a8",
     "/js/application.js": "/js/application.js?id=536c3153631c54e13adf",
-    "/js/controllers/sessions.js": "/js/controllers/sessions.js?id=ed3660e0235768b52473",
+    "/js/controllers/roles.js": "/js/controllers/roles.js?id=23f2d721aff48bcfe734",
     "/css/application.css": "/css/application.css?id=b8ec50309d0ae006e773",
     "/css/controllers/sessions.css": "/css/controllers/sessions.css?id=d3c534f3cd3ee125fb85",
     "/js/includes.js": "/js/includes.js?id=5c7fe0ffea48f9cc56e1"
