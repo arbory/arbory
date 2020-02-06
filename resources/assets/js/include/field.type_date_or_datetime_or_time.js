@@ -24,6 +24,9 @@ jQuery(document).ready(function()
             controlType: 'select',
             showHour: true,
             showMinute: true,
+            showTimezone: false,
+            showMillisec: false,
+            showMicrosec: false,
             changeMonth: true,
             changeYear: true,
             beforeShow: function(input, instance) {

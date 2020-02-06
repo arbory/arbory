@@ -4,16 +4,20 @@ namespace Arbory\Base\Admin;
 
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Admin\Module\ResourceRoutes;
+use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Services\ModuleConfiguration;
+use Arbory\Base\Services\Permissions\ModulePermission;
+use Arbory\Base\Services\Permissions\ModulePermissionsRegistry;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 /**
  * Class Module.
  */
 class Module
 {
-    const AUTHORIZATION_TYPE_ROLES = 'roles';
-    const AUTHORIZATION_TYPE_PERMISSIONS = 'permissions';
     const AUTHORIZATION_TYPE_NONE = 'none';
+    private const INDEX_PERMISSION_KEY = 'index';
 
     /**
      * @var Admin
@@ -30,21 +34,59 @@ class Module
      */
     protected $routes;
 
+    /**
+     * @var Breadcrumbs
+     */
     protected $breadcrumbs;
 
     /**
+     * @var ModulePermissionsRegistry
+     */
+    private $permissions;
+
+    /**
+     * Module constructor.
      * @param Admin $admin
      * @param ModuleConfiguration $configuration
+     * @param ModulePermissionsRegistry $permissions
      */
-    public function __construct(Admin $admin, ModuleConfiguration $configuration)
-    {
+    public function __construct(
+        Admin $admin,
+        ModuleConfiguration $configuration,
+        ModulePermissionsRegistry $permissions
+    ) {
         $this->admin = $admin;
         $this->configuration = $configuration;
+        $this->permissions = $permissions;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->name();
+    }
+
+    /**
+     * @param string|null $permission
+     * @return bool
+     */
+    public function isAuthorized(?string $permission = self::INDEX_PERMISSION_KEY): bool
+    {
+        return $this->permissions->accessible($permission);
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function isRequestAuthorized(Request $request): bool
+    {
+        $routeName = explode('.', $request->route()->getName());
+        $routeName = end($routeName);
+
+        return $this->isAuthorized($routeName);
     }
 
     /**
@@ -61,14 +103,6 @@ class Module
     public function getConfiguration(): ModuleConfiguration
     {
         return $this->configuration;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAuthorized()
-    {
-        return $this->admin->isAuthorizedFor($this->getControllerClass());
     }
 
     /**
@@ -104,5 +138,25 @@ class Module
         }
 
         return $this->routes->getUrl($route, $parameters);
+    }
+
+    /**
+     * @param Role|null $role
+     * @return Collection|ModulePermission[]
+     */
+    public function getPermissions(?Role $role = null): Collection
+    {
+        return $this->permissions->getPermissions($role);
+    }
+
+    /**
+     * @param callable $callback
+     * @return Module
+     */
+    public function registerCustomPermissions(callable $callback): self
+    {
+        $callback($this->permissions);
+
+        return $this;
     }
 }

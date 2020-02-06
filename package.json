@@ -1,13 +1,16 @@
 {
   "name": "arbory",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "webpack.mix.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run dev -- --watch",
+    "watch-poll": "npm run watch -- --watch-poll"
   },
   "author": "",
   "license": "MIT",
@@ -16,13 +19,23 @@
   },
   "homepage": "https://www.arborycms.com/",
   "dependencies": {
+    "ckeditor": "^4.12.1",
+    "is-in-viewport": "^3.0.4",
     "jquery": "^3.4.1",
     "jquery-ui": "^1.12.1",
-    "ckeditor": "^4.12.1",
-    "magnific-popup": "^1.1.0",
-    "is-in-viewport": "^3.0.4",
+    "jquery-ui-timepicker-addon": "^1.6.3",
     "js-cookie": "^2.2.1",
-    "jquery-ui-timepicker-addon": "^1.6.3"
+    "laravel-file-manager": "^2.4.10",
+    "magnific-popup": "^1.1.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "laravel-mix": "^4.0.13",
+    "resolve-url-loader": "^3.1.0",
+    "sass": "^1.15.3",
+    "sass-loader": "7.*",
+    "standard": "^11.0.1",
+    "vue-template-compiler": "^2.6.11"
   },
   "private": true
 }

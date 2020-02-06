@@ -1,6 +1,6 @@
 <header>
     <a class="home" href="{{route('admin.dashboard.index')}}">
-        <img alt="Arbory" src="/arbory/images/logo.svg"/>
+        <img alt="Arbory" src="/vendor/arbory/images/logo.svg"/>
     </a>
     <a class="button profile" href="{{route('admin.users.update', ['user' => $user->id])}}">
         <span class="name">

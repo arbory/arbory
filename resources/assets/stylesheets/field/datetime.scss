@@ -26,6 +26,7 @@
     .ui-widget-header
     {
         @include section-header;
+        padding: steps(0.5) steps(3);
         
         .next, .previous
         {
@@ -45,6 +46,7 @@
         {
             width: auto;
             margin: 0 2px;
+            text-align: center;
         }
     }
     
@@ -155,7 +157,10 @@
             margin-right: steps(0.5);
             margin-left:  steps(0.5);
         }
-        
+
+        .ui_tpicker_unit_hide{
+            display: none;
+        }
     }
     
 }

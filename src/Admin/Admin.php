@@ -3,9 +3,7 @@
 namespace Arbory\Base\Admin;
 
 use Arbory\Base\Menu\Menu;
-use Arbory\Base\Auth\Roles\Role;
 use Cartalyst\Sentinel\Sentinel;
-use Illuminate\Support\Collection;
 use Arbory\Base\Services\AssetPipeline;
 use Arbory\Base\Services\ModuleRegistry;
 use Arbory\Base\Admin\Module\ModuleRoutesRegistry;
@@ -36,11 +34,6 @@ class Admin
      * @var Menu
      */
     protected $menu;
-
-    /**
-     * @var bool
-     */
-    protected $authorized;
 
     /**
      * Admin constructor.
@@ -95,39 +88,5 @@ class Admin
     public function menu()
     {
         return $this->menu;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAuthorized()
-    {
-        if ($this->authorized === null) {
-            $this->authorized = (bool) $this->sentinel()->check();
-        }
-
-        return $this->authorized;
-    }
-
-    /**
-     * @param $module
-     * @return bool
-     */
-    public function isAuthorizedFor($module)
-    {
-        if (! $this->isAuthorized()) {
-            return false;
-        }
-
-        /**
-         * @var Role[]|Collection
-         */
-        $roles = $this->sentinel()->getUser()->roles;
-
-        $permissions = $roles->mapWithKeys(function (Role $role) {
-            return $role->getPermissions();
-        })->toArray();
-
-        return in_array($module, $permissions, true);
     }
 }
