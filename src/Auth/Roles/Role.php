@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Role.
+ * @property string $permissions
  */
 class Role extends EloquentRole
 {
