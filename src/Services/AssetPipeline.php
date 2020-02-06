@@ -37,33 +37,33 @@ class AssetPipeline
     /**
      * @param string $filePath
      */
-    public function js( string $filePath )
+    public function js(string $filePath)
     {
-        $this->js->push( $filePath );
+        $this->js->push($filePath);
     }
 
     /**
      * @param string $filePath
      */
-    public function css( string $filePath )
+    public function css(string $filePath)
     {
-        $this->css->push( $filePath );
+        $this->css->push($filePath);
     }
 
     /**
      * @param string $inlineContent
      */
-    public function inlineJs( string $inlineContent )
+    public function inlineJs(string $inlineContent)
     {
-        $this->inlineJs->push( $inlineContent );
+        $this->inlineJs->push($inlineContent);
     }
 
     /**
      * @param string $inlineContent
      */
-    public function inlineCss( string $inlineContent )
+    public function inlineCss(string $inlineContent)
     {
-        $this->inlineCss->push( $inlineContent );
+        $this->inlineCss->push($inlineContent);
     }
 
     /**

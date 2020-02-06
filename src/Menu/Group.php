@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Menu;
 
-use Arbory\Base\Html\Elements;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements;
 use Illuminate\Support\Collection;
 
 class Group extends AbstractItem
@@ -25,38 +25,37 @@ class Group extends AbstractItem
      * @param Elements\Element $parentElement
      * @return Elements\Element
      */
-    public function render( Elements\Element $parentElement ): Elements\Element
+    public function render(Elements\Element $parentElement): Elements\Element
     {
-        $ul = Html::ul()->addClass( 'block' );
+        $ul = Html::ul()->addClass('block');
 
-        foreach( $this->getChildren() as $child )
-        {
+        foreach ($this->getChildren() as $child) {
             /** @var AbstractItem $child */
-            $li = Html::li()->addAttributes( [ 'data-name' => snake_case( $child->getTitle() ) ] );
+            $li = Html::li()->addAttributes(['data-name' => snake_case($child->getTitle())]);
 
-            if( $child->isAccessible() )
-            {
-                $child->render( $li );
+            if ($child->isAccessible()) {
+                $child->render($li);
 
-                if( $child->isActive() )
-                {
-                    $li->addClass( 'active' );
+                if ($child->isActive()) {
+                    $li->addClass('active');
                 }
 
-                $ul->append( $li );
+                $ul->append($li);
             }
         }
 
         return
             $parentElement
                 ->append(
-                    Html::span( [
-                        Html::abbr( $this->getAbbreviation() )->addAttributes( [ 'title' => $this->getTitle() ] ),
-                        Html::span( $this->getTitle() )->addClass( 'name' ),
-                        Html::span( Html::button( Html::i()->addClass( 'fa fa-chevron-up' ) )->addAttributes( [ 'type' => 'button' ] ) )->addClass( 'collapser' ),
-                    ] )->addClass( 'trigger ' . ( $this->isActive() ? 'active' : '' ) )
+                    Html::span([
+                        Html::abbr($this->getAbbreviation())->addAttributes(['title' => $this->getTitle()]),
+                        Html::span($this->getTitle())->addClass('name'),
+                        Html::span(Html::button(Html::i()->addClass('fa fa-chevron-up'))
+                            ->addAttributes(['type' => 'button']))
+                            ->addClass('collapser'),
+                    ])->addClass('trigger '.($this->isActive() ? 'active' : ''))
                 )
-                ->append( $ul );
+                ->append($ul);
     }
 
     /**
@@ -64,19 +63,18 @@ class Group extends AbstractItem
      */
     public function isActive(): bool
     {
-        return (bool) $this->getChildren()->first( function( Item $item )
-        {
+        return (bool) $this->getChildren()->first(function (Item $item) {
             return $item->isActive();
-        } );
+        });
     }
 
     /**
      * @param AbstractItem $child
      * @return void
      */
-    public function addChild( AbstractItem $child )
+    public function addChild(AbstractItem $child)
     {
-        $this->children->push( $child );
+        $this->children->push($child);
     }
 
     /**
@@ -90,7 +88,7 @@ class Group extends AbstractItem
     /**
      * @param Collection $children
      */
-    public function setChildren( Collection $children )
+    public function setChildren(Collection $children)
     {
         $this->children = $children;
     }
@@ -100,10 +98,8 @@ class Group extends AbstractItem
      */
     public function isAccessible(): bool
     {
-        foreach( $this->getChildren() as $item )
-        {
-            if( $item->isAccessible() )
-            {
+        foreach ($this->getChildren() as $item) {
+            if ($item->isAccessible()) {
                 return true;
             }
         }

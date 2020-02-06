@@ -3,19 +3,17 @@
 namespace Arbory\Base\Http\Controllers\Admin;
 
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Auth\Roles\Role;
-use Arbory\Base\Admin\Module;
-use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Admin;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Module;
+use Arbory\Base\Auth\Roles\Role;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Traits\Crudify;
 
 /**
- * Class RoleController
- * @package App\Http\Controllers
+ * Class RoleController.
  */
 class RolesController extends Controller
 {
@@ -27,41 +25,45 @@ class RolesController extends Controller
     protected $resource = Role::class;
 
     /**
-     * @param Model $model
+     * @var Admin
+     */
+    protected $admin;
+
+    /**
+     * RolesController constructor.
+     * @param Admin $admin
+     */
+    public function __construct(Admin $admin)
+    {
+        $this->admin = $admin;
+    }
+
+    /**
+     * @param Form $form
      * @return Form
      */
-    protected function form( Model $model )
+    protected function form(Form $form)
     {
-        $form = $this->module()->form( $model, function ( Form $form )
-        {
-            /**
-             * @var $options Collection
-             */
-            $options = \Admin::modules()->mapWithKeys( function ( Module $value )
-            {
-                return [ $value->getControllerClass() => (string) $value ];
-            } )->sort();
+        $form->setFields(function (Form\FieldSet $fields) {
+            $fields->text('name')->rules('required');
+            $fields->multipleSelect('permissions')->options($this->getPermissionOptions());
+        });
 
-            $form->addField( new Text( 'name' ) )->rules( 'required' );
-            $form->addField( ( new Form\Fields\MultipleSelect( 'permissions' ) )->options( $options ) );
-        } );
+        $model = $form->getModel();
 
-        $form->addEventListener( 'validate.before', function( Request $request ) use ( $model )
-        {
-            $resource = $request->input( 'resource' );
+        $form->addEventListener('validate.before', function (Request $request) {
+            $resource = $request->input('resource');
 
-            if( array_get( $resource, 'permissions' ) )
-            {
+            if (array_get($resource, 'permissions')) {
                 return;
             }
 
-            $request->merge( [ 'resource' => array_merge( $resource, [ 'permissions' => [] ] ) ] );
-        } );
+            $request->merge(['resource' => array_merge($resource, ['permissions' => []])]);
+        });
 
-        $form->addEventListener( 'create.before', function() use ( $model )
-        {
-            $model->slug = str_slug( $model->name );
-        } );
+        $form->addEventListener('create.before', function () use ($model) {
+            $model->slug = str_slug($model->name);
+        });
 
         return $form;
     }
@@ -69,13 +71,22 @@ class RolesController extends Controller
     /**
      * @return Grid
      */
-    public function grid()
+    public function grid(Grid $grid)
     {
-        return $this->module()->grid( $this->resource(), function ( Grid $grid )
-        {
-            $grid->column( 'name' )->sortable();
-            $grid->column( 'created_at' )->sortable();
-            $grid->column( 'updated_at' );
-        } );
+        return $grid->setColumns(function (Grid $grid) {
+            $grid->column('name')->sortable();
+            $grid->column('created_at')->sortable();
+            $grid->column('updated_at');
+        });
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getPermissionOptions()
+    {
+        return $this->admin->modules()->mapWithKeys(function (Module $value) {
+            return [$value->getControllerClass() => (string) $value];
+        })->sort();
     }
 }

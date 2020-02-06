@@ -2,12 +2,11 @@
 
 namespace Arbory\Base\Auth\Persistences;
 
-use Cartalyst\Sentinel\Persistences\EloquentPersistence;
 use Arbory\Base\Auth\Users\User;
+use Cartalyst\Sentinel\Persistences\EloquentPersistence;
 
 /**
- * Class Persistence
- * @package Arbory\Base\Auth\Persistences
+ * Class Persistence.
  */
 class Persistence extends EloquentPersistence
 {
@@ -20,5 +19,4 @@ class Persistence extends EloquentPersistence
      * @var string
      */
     protected static $usersModel = User::class;
-
 }

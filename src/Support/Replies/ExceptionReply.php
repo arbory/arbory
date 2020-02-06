@@ -3,8 +3,8 @@
 namespace Arbory\Base\Support\Replies;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Http\RedirectResponse;
 
 class ExceptionReply extends Reply
 {
@@ -19,24 +19,22 @@ class ExceptionReply extends Reply
     protected $success = false;
 
     /**
-     * @var string $url
+     * @var string
      * @return JsonResponse|RedirectResponse
      */
-    public function dispatch( $url = '/' )
+    public function dispatch($url = '/')
     {
-        $request = app( 'request' );
+        $request = app('request');
 
-        if( $request->ajax() || $request->wantsJson() )
-        {
-            return new JsonResponse( $this->toArray(), $this->statusCode );
+        if ($request->ajax() || $request->wantsJson()) {
+            return new JsonResponse($this->toArray(), $this->statusCode);
         }
 
-        if( $this->has( 'message' ) )
-        {
-            session()->flash( 'error', $this->message );
+        if ($this->has('message')) {
+            session()->flash('error', $this->message);
         }
 
-        return redirect()->to( $this->determineRedirectUrl() )->withInput( $request->input() );
+        return redirect()->to($this->determineRedirectUrl())->withInput($request->input());
     }
 
     /**
@@ -44,11 +42,10 @@ class ExceptionReply extends Reply
      */
     protected function determineRedirectUrl()
     {
-        if( $this->redirectUrl )
-        {
+        if ($this->redirectUrl) {
             return $this->redirectUrl;
         }
 
-        return app( UrlGenerator::class )->previous();
+        return app(UrlGenerator::class)->previous();
     }
 }

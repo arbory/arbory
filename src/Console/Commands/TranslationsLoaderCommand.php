@@ -6,5 +6,4 @@ use Waavi\Translation\Commands\FileLoaderCommand;
 
 class TranslationsLoaderCommand extends FileLoaderCommand
 {
-
 }

@@ -1,53 +1,51 @@
+const webpack = require('webpack');
+
 module.exports = function (mix) {
 
-    mix.webpackConfig(function () {
-        var config = mix.config.webpackConfig || {};
+    mix.setPublicPath('public/arbory');
+    mix.webpackConfig({
+        resolve: {
+            symlinks: false
+        },
 
-        config.resolve = config.resolve || {};
-        config.resolve.symlinks = false;
+        plugins: [
+            new webpack.ProvidePlugin({
+                'window.jQuery': 'jquery',
+                'window.$': 'jquery',
+                'jQuery': 'jquery',
+                '$': 'jquery',
 
-        return config;
+            })
+        ],
     });
 
     mix.js(
-        'vendor/arbory/arbory/resources/assets/js/admin.js',
-        'public/arbory/js'
+        'vendor/arbory/arbory/resources/assets/js/controllers/*',
+        'js/controllers/'
     );
 
     mix.js(
-        'vendor/arbory/arbory/resources/assets/js/controllers/*',
-        'public/arbory/js/controllers/'
-    );
-
-    mix.babel([
-            'vendor/arbory/arbory/resources/assets/js/environment.js',
-            'vendor/components/jquery/jquery.min.js',
-            'vendor/components/jqueryui/jquery-ui.min.js',
-            'vendor/components/jquery-cookie/jquery.cookie.js',
-            'vendor/ckeditor/ckeditor/ckeditor.js',
-            'vendor/ckeditor/ckeditor/adapters/jquery.js',
-            'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
-        ],
-        'public/arbory/js/application.js'
+        'vendor/arbory/arbory/resources/assets/js/include/**/*.js',
+        'js/application.js'
     );
 
     mix.sass(
         'vendor/arbory/arbory/resources/assets/stylesheets/application.scss',
-        'public/arbory/css/application.css'
+        'css/application.css'
     );
 
     mix.sass(
         'vendor/arbory/arbory/resources/assets/stylesheets/controllers/nodes.scss',
-        'public/arbory/css/controllers/'
+        'css/controllers/'
     );
 
     mix.sass(
         'vendor/arbory/arbory/resources/assets/stylesheets/controllers/sessions.scss',
-        'public/arbory/css/controllers/'
+        'css/controllers/'
     );
 
     mix.copyDirectory(
-        'vendor/ckeditor/ckeditor/',
+        'node_modules/ckeditor/',
         'public/arbory/ckeditor/'
     );
 
@@ -63,6 +61,9 @@ module.exports = function (mix) {
 
     mix.copyDirectory(
         'vendor/unisharp/laravel-filemanager/public/',
-        'public/vendor/laravel-filemanager/'
+        'public/arbory/laravel-filemanager/'
     );
+
+    mix.version();
+    mix.extract();
 };

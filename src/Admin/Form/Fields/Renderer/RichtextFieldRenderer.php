@@ -3,79 +3,40 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 
 /**
- * Class RichtextFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class RichtextFieldRenderer.
  */
-class RichtextFieldRenderer extends TextareaFieldRenderer
+class RichtextFieldRenderer extends ControlFieldRenderer
 {
     /**
-     * @var string
+     * @param RenderOptionsInterface $options
+     *
+     * @return RenderOptionsInterface
      */
-    protected $type = 'richtext';
-
-    /**
-     * @var
-     */
-    protected $attachmentsUploadUrl;
-
-    /**
-     * @var bool
-     */
-    protected $compact = false;
-
-    /**
-     * @param $url
-     * @return RichtextFieldRenderer
-     */
-    public function setAttachmentsUploadUrl( $url )
+    public function configureOptions(RenderOptionsInterface $options)
     {
-        $this->attachmentsUploadUrl = $url;
-
-        return $this;
+        return $options;
     }
 
     /**
      * @return Element
      */
-    protected function getInput()
+    public function render()
     {
-        $textarea = parent::getInput();
-        $textarea->addClass( 'richtext type-richText' );
-        $textarea->addAttributes( [
-            'data-attachment-upload-url' => $this->attachmentsUploadUrl,
+        $textarea = parent::render();
+        $textarea->addClass('richtext type-richText');
+        $textarea->addAttributes([
+            'data-attachment-upload-url' => $this->field->getAttachmentsUploadUrl(),
         ]);
 
-
-        if ( $this->isCompact() )
-        {
-            $textarea->addClass( 'compact' );
-        }
-        else
-        {
-            $textarea->addClass( 'full' );
+        if ($this->field->isCompact()) {
+            $textarea->addClass('compact');
+        } else {
+            $textarea->addClass('full');
         }
 
         return $textarea;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCompact(): bool
-    {
-        return $this->compact;
-    }
-
-    /**
-     * @param bool $compact
-     * @return self
-     */
-    public function setCompact( bool $compact )
-    {
-        $this->compact = $compact;
-
-        return $this;
     }
 }

@@ -1,12 +1,12 @@
 <?php
+
 namespace Arbory\Base\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
- * Class TranslationStoreRequest
- * @package Arbory\Base\Http\Requests
+ * Class TranslationStoreRequest.
  */
 class TranslationStoreRequest extends FormRequest
 {
@@ -23,10 +23,9 @@ class TranslationStoreRequest extends FormRequest
         ];
 
         /* @var $languageRepository LanguageRepository */
-        $languageRepository = app( LanguageRepository::class );
-        foreach( $languageRepository->all() as $language )
-        {
-            $rules['text_' . $language->locale] = 'required|';
+        $languageRepository = app(LanguageRepository::class);
+        foreach ($languageRepository->all() as $language) {
+            $rules['text_'.$language->locale] = 'required|';
         }
 
         return $rules;

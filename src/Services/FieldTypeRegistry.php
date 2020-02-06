@@ -2,117 +2,151 @@
 
 namespace Arbory\Base\Services;
 
+use ReflectionClass;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
+use Illuminate\Container\Container;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
 
 class FieldTypeRegistry
 {
     /**
      * @var Collection
      */
-    protected $fieldsByType;
+    protected $fieldTypes;
 
     /**
-     * @var Collection
+     * @var
      */
-    protected $fieldsByRelation;
+    protected $reservedTypes = [];
+    /**
+     * @var Container
+     */
+    protected $app;
 
     /**
-     * @var Collection
+     * FieldTypeRegistry constructor.
+     *
+     * @param Container $app
+     *
+     * @throws \ReflectionException
      */
-    protected $fieldTypeHints;
-
-    public function __construct()
+    public function __construct(Container $app)
     {
-        $this->fieldsByType = new Collection();
-        $this->fieldsByRelation = new Collection();
-        $this->fieldTypeHints = new Collection();
+        $this->fieldTypes = new Collection();
+        $this->reservedTypes = $this->getReservedMethods(FieldSet::class);
+        $this->app = $app;
     }
 
     /**
-     * @param string $databaseType
-     * @param string $fieldClass
-     * @return void
+     * @param string $type
+     * @param string $class
+     * @return $this
      */
-    public function registerByType( string $databaseType, string $fieldClass, string $typeHint = null )
+    public function register(string $type, string $class): self
     {
-        $this->fieldsByType->put( $databaseType, $fieldClass );
-
-        if( $typeHint )
-        {
-            $this->fieldTypeHints->put( $fieldClass, $typeHint );
-        }
-    }
-
-    /**
-     * @param string $tableName
-     * @param string $fieldClass
-     * @return void
-     */
-    public function registerByRelation( string $tableName, string $fieldClass )
-    {
-        $this->fieldsByRelation->put( $tableName, $fieldClass );
-    }
-
-    /**
-     * @param string $fieldName
-     * @param string $fieldType
-     * @return string
-     */
-    public function resolve( string $fieldName, string $fieldType )
-    {
-        if( Str::contains( $fieldName, '.' ) )
-        {
-            list( $tableName, $tableFieldName ) = explode( '.', $fieldName );
-
-            return $this->findByRelationName( $tableName );
+        if (in_array(strtolower($type), $this->reservedTypes, true)) {
+            $message = 'The name '.$type.' is already being used by FieldSet class for a method';
+            throw new \InvalidArgumentException($message);
         }
 
-        return $this->findByTypeName( $fieldType );
-    }
+        $this->fieldTypes->put($type, $class);
 
-    /**
-     * @param string $name
-     * @return string|null
-     */
-    public function findByRelationName( string $name )
-    {
-        return $this->fieldsByRelation->get( $name );
-    }
-
-    /**
-     * @param string $name
-     * @return string|null
-     */
-    public function findByTypeName( string $name )
-    {
-        return $this->fieldsByType->get( $name );
-    }
-
-    /**
-     * @param string $fieldType
-     * @return string
-     */
-    public function getFieldTypeHint( string $fieldType )
-    {
-        $typeHint = $this->fieldTypeHints->get( $fieldType );
-
-        return $typeHint ?: 'int';
+        return $this;
     }
 
     /**
      * @return Collection
      */
-    public function getFieldsByType(): Collection
+    public function getFieldTypes()
     {
-        return $this->fieldsByType;
+        return $this->fieldTypes;
     }
 
     /**
-     * @return Collection
+     * @param string $type
+     * @return string|null
      */
-    public function getFieldsByRelation(): Collection
+    public function findByType($type): ?string
     {
-        return $this->fieldsByRelation;
+        return $this->fieldTypes->get($type);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public function has($type): bool
+    {
+        return $this->fieldTypes->has($type);
+    }
+
+    /**
+     * Resolves a field class instance.
+     *
+     * @param string $type
+     * @param array $parameters
+     *
+     * @return FieldInterface
+     */
+    public function resolve($type, array $parameters): FieldInterface
+    {
+        $fieldClass = $this->findByType($type);
+
+        if (! $fieldClass || ! class_exists($fieldClass)) {
+            throw new \InvalidArgumentException("Could not resolve a field for a type '{$type}'");
+        }
+
+        return $this->app->make($fieldClass, $this->bindParametersByIndex($fieldClass, $parameters));
+    }
+
+    /**
+     * Finds any accessible functions which are defined in class.
+     *
+     * @param mixed $class
+     *
+     * @return array
+     * @throws \ReflectionException
+     */
+    protected function getReservedMethods($class)
+    {
+        $reflection = new ReflectionClass($class);
+
+        $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+        $reservedMethods = [];
+
+        foreach ($methods as $method) {
+            $reservedMethods[] = strtolower($method->getName());
+        }
+
+        return $reservedMethods;
+    }
+
+    /**
+     * Builds an dictionary of parameters by name for an class from index based parameter list.
+     *
+     * @param string $class
+     * @param array  $parameters
+     *
+     * @return array
+     * @throws \ReflectionException
+     */
+    protected function bindParametersByIndex(string $class, array $parameters)
+    {
+        $reflection = new ReflectionClass($class);
+        $constructor = $reflection->getConstructor();
+        $reflectionParameters = $constructor->getParameters();
+
+        $out = [];
+
+        foreach ($parameters as $key => $parameter) {
+            $reflectionParameter = $reflectionParameters[$key];
+
+            $out[$reflectionParameter->getName()] = $parameter;
+        }
+
+        return $out;
     }
 }

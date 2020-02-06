@@ -22,12 +22,20 @@ class ContentTypeDefinition
     protected $fieldSetHandler;
 
     /**
+     * @var \Closure
+     */
+    protected $layoutHandler;
+
+    /**
      * @param string $model
      */
-    public function __construct( string $model )
+    public function __construct(string $model)
     {
         $this->model = $model;
-        $this->name = $this->makeNameFromType( $model );
+        $this->name = $this->makeNameFromType($model);
+
+        $this->layoutHandler = function () {
+        };
     }
 
     /**
@@ -41,7 +49,7 @@ class ContentTypeDefinition
     /**
      * @param string $name
      */
-    public function setName( string $name )
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -65,21 +73,38 @@ class ContentTypeDefinition
     /**
      * @param Closure $fieldSetHandler
      */
-    public function setFieldSetHandler( Closure $fieldSetHandler )
+    public function setFieldSetHandler(Closure $fieldSetHandler)
     {
         $this->fieldSetHandler = $fieldSetHandler;
+    }
+
+    /**
+     * @param Closure $layoutHandler
+     */
+    public function setLayoutHandler(Closure $layoutHandler): void
+    {
+        $this->layoutHandler = $layoutHandler;
+    }
+
+    /**
+     * @return Closure
+     */
+    public function getLayoutHandler(): Closure
+    {
+        return $this->layoutHandler;
     }
 
     /**
      * @param string $type
      * @return string
      */
-    protected function makeNameFromType( $type ): string
+    protected function makeNameFromType($type): string
     {
-        $className = class_basename( $type );
-        $title = preg_replace( '/Page$/', '', $className );
+        $className = class_basename($type);
+        $title = preg_replace('/Page$/', '', $className);
 
-        return implode( ' ',
+        return implode(
+            ' ',
             preg_split(
                 '/(?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z])/',
                 $title,

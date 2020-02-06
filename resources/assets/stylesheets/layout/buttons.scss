@@ -54,6 +54,12 @@ input[type="submit"]
         }
     }
 
+    &.without-background
+    {
+        background: none;
+        color: $color-highlight-normal;
+    }
+
     &.danger
     {
         &:hover,
@@ -97,6 +103,12 @@ input[type="submit"]
             margin-top:  -0.5em;
         }
 
+    }
+
+    &.filter
+    {
+        float: right;
+        margin-left: steps(1);
     }
 
 

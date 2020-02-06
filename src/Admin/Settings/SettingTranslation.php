@@ -15,7 +15,7 @@ class SettingTranslation extends Model
      * @var array
      */
     protected $fillable = [
-        'setting_name', 'value', 'locale'
+        'setting_name', 'value', 'locale',
     ];
 
     /**
@@ -23,6 +23,6 @@ class SettingTranslation extends Model
      */
     public function setting()
     {
-        return $this->belongsTo( Setting::class, 'setting_name' );
+        return $this->belongsTo(Setting::class, 'setting_name');
     }
 }

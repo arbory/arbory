@@ -2,24 +2,23 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 
 /**
- * Class Hidden
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Hidden.
  */
-class Hidden extends AbstractField
+class Hidden extends ControlField
 {
-    /**
-     * @return Element
-     */
-    public function render()
+    protected $style = 'raw';
+
+    protected $attributes = [
+        'type' => 'hidden',
+    ];
+
+    public function beforeRender(RendererInterface $renderer)
     {
-        return Html::input()
-            ->addAttributes( [ 'data-name' => $this->getName() ] )
-            ->setType( 'hidden' )
-            ->setValue( $this->getValue() )
-            ->setName( $this->getNameSpacedName() );
+        $this->addAttributes([
+            'data-name' => $this->getName(),
+        ]);
     }
 }

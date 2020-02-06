@@ -2,38 +2,33 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
-use Arbory\Base\Admin\Form\Fields\Renderer\OptionFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
+use Arbory\Base\Admin\Form\Fields\Renderer\SelectFieldRenderer;
 
 /**
- * Class BelongsTo
- * @package Arbory\Base\Admin\Form\Fields
+ * Class BelongsTo.
  */
-class BelongsTo extends AbstractField
+class BelongsTo extends Select
 {
     use HasRelationships;
 
-    /**
-     * @return Element
-     */
-    public function render()
+    protected $rendererClass = SelectFieldRenderer::class;
+
+    public function getValue()
     {
-        $renderer = new OptionFieldRenderer( $this );
         $foreignKey = $this->getRelation()->getForeignKey();
-        $foreignId = $this->getModel()->getAttribute( $foreignKey );
+        $value = $this->getModel()->getAttribute($foreignKey);
 
-        $renderer->setSelected( $foreignId );
-
-        return $renderer->render();
+        return $value ?? $this->getDefaultValue();
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Collection|Model[]
      */
-    public function getOptions()
+    public function getOptions(): Collection
     {
         return $this->getRelatedItems();
     }
@@ -41,11 +36,11 @@ class BelongsTo extends AbstractField
     /**
      * @param Request $request
      */
-    public function beforeModelSave( Request $request )
+    public function beforeModelSave(Request $request)
     {
         $this->getModel()->setAttribute(
-            $this->getRelatedModel()->getForeignKey(),
-            $request->input( $this->getNameSpacedName() )
+            $this->getRelation()->getForeignKey(),
+            $request->input($this->getNameSpacedName())
         );
     }
 }

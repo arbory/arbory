@@ -19,15 +19,27 @@ export default class IconPicker {
             items.removeClass('active');
         });
 
+        if(!this.isInteractive()) {
+            selected.addClass('disabled');
+        }
+
         field.on('click', event => {
             event.stopPropagation();
         });
 
         selected.on('click', () => {
+            if(!this.isInteractive()) {
+                return false;
+            }
+
             items.toggleClass('active');
         });
 
         items.on('click', 'li', event => {
+            if(!this.isInteractive()) {
+                return false;
+            }
+
             let target = jQuery(event.target);
             let item = target.is('li') ? target : target.closest('li');
             let index = item.index();
@@ -40,5 +52,13 @@ export default class IconPicker {
         });
 
         field.data('initialized', true);
+    }
+
+    isInteractive()
+    {
+        let disabled =  jQuery(this.element).data('disabled');
+        let interactive = jQuery(this.element).data('interactive') == 1;
+        
+        return interactive && !disabled;
     }
 }

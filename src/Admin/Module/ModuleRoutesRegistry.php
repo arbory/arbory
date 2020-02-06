@@ -7,8 +7,7 @@ use Arbory\Base\Admin\Module;
 use Illuminate\Routing\Router;
 
 /**
- * Class ModuleRoutesRegistry
- * @package Arbory\Base\Admin\Module
+ * Class ModuleRoutesRegistry.
  */
 class ModuleRoutesRegistry
 {
@@ -22,44 +21,48 @@ class ModuleRoutesRegistry
      * @param Closure|null $callback
      * @return ResourceRoutes
      */
-    public function register( Module $module, Closure $callback = null )
+    public function register(Module $module, Closure $callback = null)
     {
         $class = $module->getControllerClass();
         $slug = $module->name();
 
         /**
-         * @var $router Router
+         * @var Router
          */
-        $router = app( 'router' );
+        $router = app('router');
 
-        if( $callback !== null )
-        {
+        if ($callback !== null) {
             $attributes = [
-                'as' => $slug . '.',
+                'as' => $slug.'.',
                 'prefix' => $slug,
             ];
 
-            $router->group( $attributes, $callback );
+            $router->group($attributes, $callback);
         }
 
-        $router->resource( $slug, '\\' . $class );
+        $router->resource($slug, '\\'.$class);
 
-        $router->get( $slug . '/dialog/{dialog}', [
-            'as' => $slug . '.dialog',
-            'uses' => '\\' . $class . '@dialog'
-        ] );
+        $router->post($slug.'/bulkupdate', [
+            'as' => $slug.'.bulkupdate',
+            'uses' => '\\'.$class.'@bulkUpdate',
+        ]);
 
-        $router->any( $slug . '/api/{api}', [
-            'as' => $slug . '.api',
-            'uses' => '\\' . $class . '@api'
-        ] );
+        $router->get($slug.'/dialog/{dialog}', [
+            'as' => $slug.'.dialog',
+            'uses' => '\\'.$class.'@dialog',
+        ]);
 
-        $router->get( $slug . '/export/{as}', [
-            'as' => $slug . '.export',
-            'uses' => '\\' . $class . '@export'
-        ] );
+        $router->any($slug.'/api/{api}', [
+            'as' => $slug.'.api',
+            'uses' => '\\'.$class.'@api',
+        ]);
 
-        $this->routes[$module->name()] = new ResourceRoutes( $module );
+        $router->get($slug.'/export/{as}', [
+            'as' => $slug.'.export',
+            'uses' => '\\'.$class.'@export',
+        ]);
+
+        $this->routes[$module->name()] = new ResourceRoutes($module);
 
         return $this->routes[$module->name()];
     }
@@ -68,8 +71,8 @@ class ModuleRoutesRegistry
      * @param Module $module
      * @return ResourceRoutes
      */
-    public function findByModule( Module $module )
+    public function findByModule(Module $module)
     {
-        return array_get( $this->routes, $module->name() );
+        return array_get($this->routes, $module->name());
     }
 }

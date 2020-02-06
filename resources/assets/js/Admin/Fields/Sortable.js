@@ -1,3 +1,4 @@
+import "jquery-ui/ui/widgets/sortable";
 
 export const CONFIG_JQUERY_SORTABLE = {
     items: '> .item',
@@ -31,7 +32,10 @@ export default class Sortable {
             handlers, this.config.vendor
         ));
 
-        container.on('click', '.sortable-navigation .button', event => this.manualSort(event));
+        // Normal has many layout
+        container.on('click', '> .item > .sortable-navigation .button', event => this.manualSort(event));
+        // Panel layouts
+        container.on('click', '> .item > header .sortable-navigation.button', event => this.manualSort(event));
         container.on('DOMNodeInserted DOMNodeRemoved', () => this.handleUpdate());
     }
 
@@ -44,7 +48,7 @@ export default class Sortable {
     }
 
     manualSort(event) {
-        const itemSelector = 'fieldset.item';
+        const itemSelector = '.item';
         let target = jQuery(event.target);
         let button = target.is('button') ? target : target.closest('button');
         let item = button.closest(itemSelector);
@@ -66,15 +70,13 @@ export default class Sortable {
     }
 
     setLocationInput(item, locationIndex) {
-        let inputs = item.find('input');
+        // Expects that the position input is always a direct descendant of the fieldset.item entry
+        let sortByName = this.getSortByName();
+        let positionInput = item.find(`> input[data-name="${sortByName}"]`).first();
 
-        inputs.each((index) => {
-            let input = inputs.eq(index);
-
-            if (input.attr('id').includes(this.getSortByName())) {
-                input.val(locationIndex);
-            }
-        });
+        if(positionInput.length) {
+            positionInput.val(locationIndex);
+        }
     }
 
     getItems() {

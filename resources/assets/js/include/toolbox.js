@@ -1,4 +1,4 @@
-/* global UrlBuilder */
+import UrlBuilder from '../modules/UrlBuilder';
 
 jQuery(function()
 {

@@ -2,13 +2,11 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Interface FilterInterface
- * @package Arbory\Base\Admin\Grid
+ * Interface FilterInterface.
  */
 interface FilterInterface
 {
@@ -16,16 +14,26 @@ interface FilterInterface
      * FilterInterface constructor.
      * @param Model $model
      */
-    public function __construct( Model $model );
+    public function __construct(Model $model);
 
     /**
      * @param Collection $columns
-     * @return Paginator
+     * @return self
      */
-    public function execute( Collection $columns );
+    public function execute(Collection $columns);
+
+    /**
+     * @return mixed
+     */
+    public function loadItems();
 
     /**
      * @param $relationName
      */
-    public function withRelation( $relationName );
+    public function withRelation(string $relationName);
+
+    /**
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function getQuery();
 }

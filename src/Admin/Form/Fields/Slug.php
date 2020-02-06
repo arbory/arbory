@@ -2,17 +2,14 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Widgets\Button;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Repositories\NodesRepository;
+use Arbory\Base\Admin\Form\Fields\Renderer\SlugFieldRenderer;
 
 /**
- * Class Slug
- * @package Arbory\Base\Admin\Form\Fields
+ * Class Slug.
  */
-class Slug extends AbstractField
+class Slug extends Text
 {
     /**
      * @var string
@@ -24,107 +21,55 @@ class Slug extends AbstractField
      */
     protected $fromFieldName;
 
+    protected $rendererClass = SlugFieldRenderer::class;
+
     /**
      * @param string $name
      * @param string $fromFieldName
      * @param string $apiUrl
      */
-    public function __construct( $name, $fromFieldName, $apiUrl )
+    public function __construct($name, $fromFieldName, $apiUrl)
     {
         $this->apiUrl = $apiUrl;
         $this->fromFieldName = $fromFieldName;
 
-        parent::__construct( $name );
-    }
-
-    /**
-     * @return Element
-     */
-    public function render()
-    {
-        $label = Html::label( $this->getLabel() )->addAttributes( [ 'for' => $this->getNameSpacedName() ] );
-
-        $input = Html::input()
-            ->setName( $this->getNameSpacedName() )
-            ->setValue( $this->getValue() )
-            ->addClass( 'text' )
-            ->addAttributes( [
-                'data-generator-url' => $this->getApiUrl(),
-                'data-from-field-name' => $this->getFromFieldName(),
-                'data-node-parent-id' => $this->getParentId(),
-                'data-model-table' => $this->getModel()->getTable(),
-                'data-object-id' => $this->getModel()->getKey()
-            ] );
-
-        $button = Button::create()
-            ->type( 'button', 'secondary generate' )
-            ->title( trans( 'arbory::fields.slug.suggest_slug' ) )
-            ->withIcon( 'keyboard-o' )
-            ->iconOnly()
-            ->render();
-
-        return Html::div( [
-            Html::div( $label )->addClass( 'label-wrap' ),
-            Html::div( [ $input, $button ] )->addClass( 'value' ),
-            $this->getLinkElement(),
-        ] )->addClass( 'field type-slug' )->addAttributes( [ 'data-name' => 'slug' ] );
-    }
-
-    /**
-     * @return Element|null
-     */
-    protected function getLinkElement()
-    {
-        if( !$this->hasUriToSlug() )
-        {
-            return null;
-        }
-
-        return Html::div(
-            Html::link(
-                $this->getLinkValue()
-            )->addAttributes( [ 'href' => $this->getLinkHref() ] )
-        )->addClass( 'link' );
-    }
-
-    /**
-     * @return array
-     */
-    protected function getLinkValue()
-    {
-        $urlToSlug = ltrim($this->getUriToSlug(), "/");
-        $urlToSlugElement = Html::span( $urlToSlug );
-
-        return [
-            [
-                url( '/' ),
-                '/',
-                $urlToSlugElement,
-                ( $urlToSlug ) ? '/' : ''
-            ],
-            Html::span( $this->getValue() )
-        ];
+        parent::__construct($name);
     }
 
     /**
      * @return string
      */
-    protected function getLinkHref()
+    public function getLinkHref()
     {
         $urlToSlug = $this->getUriToSlug();
 
-        if( $urlToSlug )
-        {
+        if ($urlToSlug) {
             $urlToSlug .= '/';
         }
 
-        return url( '/' ) . '/' . $urlToSlug . $this->getValue();
+        return url($urlToSlug.$this->getValue());
     }
 
     /**
      * @return string
      */
-    protected function getUri()
+    public function getPreviewLinkHref()
+    {
+        $urlToSlug = $this->getUriToSlug();
+
+        if ($urlToSlug) {
+            $urlToSlug .= '/';
+        }
+
+        $slugHashed = 'preview-'.sha1(config('arbory.preview.slug_salt').'/'.$urlToSlug.$this->getValue());
+
+        return url($slugHashed);
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri()
     {
         return $this->getModel()->getUri();
     }
@@ -134,11 +79,11 @@ class Slug extends AbstractField
      */
     protected function getUriToExistingModel()
     {
-        $uriParts = explode( '/', $this->getUri() );
+        $uriParts = explode('/', $this->getUri());
 
-        array_pop( $uriParts );
+        array_pop($uriParts);
 
-        return implode( '/', $uriParts );
+        return implode('/', $uriParts);
     }
 
     /**
@@ -147,10 +92,10 @@ class Slug extends AbstractField
     protected function getUriToNewModel()
     {
         /**
-         * @var Node $parentNode
+         * @var Node
          */
         $repository = new NodesRepository;
-        $parentNode = $repository->find( $this->getParentId() );
+        $parentNode = $repository->find($this->getParentId());
 
         return $parentNode ? $parentNode->getUri() : (string) null;
     }
@@ -158,10 +103,9 @@ class Slug extends AbstractField
     /**
      * @return string
      */
-    protected function getUriToSlug()
+    public function getUriToSlug()
     {
-        if( !$this->getModel() instanceof Node )
-        {
+        if (! $this->hasUriToSlug()) {
             return false;
         }
 
@@ -171,7 +115,7 @@ class Slug extends AbstractField
     /**
      * @return bool
      */
-    protected function hasUriToSlug(): bool
+    public function hasUriToSlug(): bool
     {
         return $this->getModel() instanceof Node;
     }
@@ -179,16 +123,15 @@ class Slug extends AbstractField
     /**
      * @return int
      */
-    protected function getParentId()
+    public function getParentId()
     {
         $model = $this->getModel();
 
-        if( $model instanceof Node )
-        {
+        if ($model instanceof Node) {
             return $this->getModel()->getParentId();
         }
 
-        return request( 'parent_id' );
+        return request('parent_id');
     }
 
     /**

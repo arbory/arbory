@@ -2,14 +2,13 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use Arbory\Base\Html\Elements\Element;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Footer
- * @package Arbory\Base\Admin\Layout
+ * Class Footer.
  */
 class Footer implements Renderable
 {
@@ -27,7 +26,7 @@ class Footer implements Renderable
      * Footer constructor.
      * @param string|null $type
      */
-    public function __construct( $type = null )
+    public function __construct($type = null)
     {
         $this->type = $type;
         $this->rows = new Collection();
@@ -58,14 +57,12 @@ class Footer implements Renderable
     {
         $footer = Html::footer();
 
-        foreach( $this->getRows() as $row )
-        {
-            $footer->append( $row->render() );
+        foreach ($this->getRows() as $row) {
+            $footer->append($row->render());
         }
 
-        if( $this->type )
-        {
-            $footer->addClass( $this->type );
+        if ($this->type) {
+            $footer->addClass($this->type);
         }
 
         return $footer;

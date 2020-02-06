@@ -2,14 +2,13 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Hidden;
-use Arbory\Base\Admin\Form\Fields\MapCoordinates;
-use Arbory\Base\Admin\Form\Fields\Text;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\MapCoordinates;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
-class MapCoordinatesFieldRenderer implements Renderable
+class MapCoordinatesFieldRenderer implements RendererInterface
 {
     /**
      * @var MapCoordinates
@@ -19,7 +18,7 @@ class MapCoordinatesFieldRenderer implements Renderable
     /**
      * @param MapCoordinates $field
      */
-    public function __construct( MapCoordinates $field )
+    public function __construct(MapCoordinates $field)
     {
         $this->field = $field;
     }
@@ -27,48 +26,49 @@ class MapCoordinatesFieldRenderer implements Renderable
     /**
      * @return Element
      */
-    protected function getHeader()
-    {
-        return Html::header( Html::h1( $this->field->getLabel() ) );
-    }
-
-    /**
-     * @return Element
-     */
-    protected function getBody()
+    public function render()
     {
         $value = $this->field->getValue();
         $body = Html::div();
 
-        $body->append( Html::div()->addClass( 'canvas' ) );
-        
-        $field = new Hidden( $this->field->getName() );
-        $field->setFieldSet( $this->field->getFieldSet() );
-        $field->setValue( is_array( $value ) ? implode( ',', $value ) : $value );
-        $body->append( $field->render() );
+        $body->append(Html::div()->addClass('canvas'));
 
-        $field = new Text( 'search' );
-        $field->setLabel( (string) null );
-        $field->setFieldSet( $this->field->getFieldSet() );
-        $body->append( Html::div( $field->render() )->addClass( 'search_address' ) );
+        $body->append(
+            $this->field->getNestedFieldSet($this->field->getModel())->render()
+        );
 
-        return $body->addClass( 'body' );
+        return $body->addClass('body');
     }
 
     /**
-     * @return Element
+     * @param FieldInterface $field
+     *
+     * @return mixed
      */
-    public function render()
+    public function setField(FieldInterface $field): RendererInterface
     {
-        return Html::section( [
-            $this->getHeader(),
-            $this->getBody(),
-        ] )
-            ->addAttributes( $this->field->getData() )
-            ->addClass( 'nested' )
-            ->addClass( 'coordinate_picker' )
-            ->addAttributes( [
-                'data-name' => $this->field->getName(),
-            ] );
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * @return FieldInterface
+     */
+    public function getField(): FieldInterface
+    {
+        return $this->field;
+    }
+
+    /**
+     * Configure the style before rendering the field.
+     *
+     * @param StyleOptionsInterface $options
+     *
+     * @return StyleOptionsInterface
+     */
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
+    {
+        return $options;
     }
 }

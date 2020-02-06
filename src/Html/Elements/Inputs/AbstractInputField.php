@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Html\Elements\Inputs;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 
 abstract class AbstractInputField extends Element
 {
@@ -11,9 +11,9 @@ abstract class AbstractInputField extends Element
      * @param mixed $value
      * @return self
      */
-    public function setValue( $value )
+    public function setValue($value)
     {
-        $this->attributes()->put( 'value', $value );
+        $this->attributes()->put('value', $value);
 
         return $this;
     }
@@ -22,10 +22,10 @@ abstract class AbstractInputField extends Element
      * @param string $name
      * @return self
      */
-    public function setName( $name )
+    public function setName($name)
     {
-        $this->attributes()->put( 'name', Element::formatName( $name ) );
-        $this->attributes()->put( 'id', $this->formatInputId() );
+        $this->attributes()->put('name', Element::formatName($name));
+        $this->attributes()->put('id', $this->formatInputId());
 
         return $this;
     }
@@ -34,9 +34,9 @@ abstract class AbstractInputField extends Element
      * @param string $text
      * @return Element
      */
-    public function getLabel( $text )
+    public function getLabel($text)
     {
-        return Html::label( $text )->addAttributes( [ 'for' => $this->attributes()->get( 'id' ) ] );
+        return Html::label($text)->addAttributes(['for' => $this->attributes()->get('id')]);
     }
 
     /**
@@ -44,6 +44,6 @@ abstract class AbstractInputField extends Element
      */
     protected function formatInputId()
     {
-        return rtrim( strtr( $this->attributes()->get( 'name' ), [ '[' => '_', ']' => '' ] ), '_');
+        return rtrim(strtr($this->attributes()->get('name'), ['[' => '_', ']' => '']), '_');
     }
 }

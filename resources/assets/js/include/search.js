@@ -1,4 +1,4 @@
-/* global UrlBuilder */
+import UrlBuilder from '../modules/UrlBuilder';
 
 jQuery(function () {
     'use strict';
@@ -10,6 +10,8 @@ jQuery(function () {
         var timeout;
         var form = jQuery(e.target);
         var all_selector = 'input, select';
+        var filterForm = jQuery('#grid-filter');
+
 
         // Set up options.
         var options = form.data('search-options');
@@ -72,6 +74,8 @@ jQuery(function () {
                 var url = new UrlBuilder({ baseUrl: form_url });
                 url.add(form.serializeArray());
 
+                url.add(filterForm.serializeArray());
+
                 if ('replaceState' in window.history) {
                     window.history.replaceState(window.history.state, window.title, url.getUrl());
                 }
@@ -104,6 +108,12 @@ jQuery(function () {
             form.trigger('searchstart');
         };
 
+        if(filterForm.length){
+            form.on('submit', function(eventObj) {
+                filterForm.trigger('submit');
+                return false;
+            });
+        }
 
         form.on('searchresponse', function (e, response) {
             response = jQuery('<div />').append(response);

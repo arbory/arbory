@@ -2,9 +2,8 @@
 
 namespace Arbory\Base\Admin\Settings;
 
-use Arbory\Base\Providers\SettingsServiceProvider;
-use Arbory\Base\Services\SettingRegistry;
 use Illuminate\Support\Collection;
+use Arbory\Base\Services\SettingRegistry;
 
 class Settings
 {
@@ -31,7 +30,7 @@ class Settings
     {
         $definition = $this->settingRegistry->find($key);
 
-        if (!$definition) {
+        if (! $definition) {
             return $default;
         }
 
@@ -58,7 +57,7 @@ class Settings
      */
     public function has(string $key)
     {
-        return (bool)$this->get($key);
+        return (bool) $this->get($key);
     }
 
     /**
@@ -81,8 +80,7 @@ class Settings
      */
     public function all(): Collection
     {
-        return $this->settingRegistry->getSettings()->mapWithKeys(function (SettingDefinition $definition)
-        {
+        return $this->settingRegistry->getSettings()->mapWithKeys(function (SettingDefinition $definition) {
             return [$definition->getKey() => $definition->getValue()];
         });
     }

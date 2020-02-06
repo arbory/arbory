@@ -2,84 +2,66 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
 
 class Link extends HasOne
 {
+    use HasNestedFieldSet;
+
+    protected $style = 'nested';
+
+    protected $urlRules;
+
     /**
      * @param string $name
      */
-    public function __construct( string $name )
+    public function __construct(string $name)
     {
-        $fieldSetCallback = function( FieldSet $fieldSet )
-        {
-            $fieldSet->add( new Text( 'href' ) );
-            $fieldSet->add( new Text( 'title' ) );
-            $fieldSet->add( new Checkbox( 'new_tab' ) );
+        $this->wrapper = function ($content) {
+            $div = Html::div()->addClass('link-body');
+            $fieldset = Html::fieldset()->addClass('item');
+
+            $div->append($fieldset);
+            $fieldset->append($content);
+
+            return $div;
         };
 
-        parent::__construct( $name, $fieldSetCallback );
+        parent::__construct($name, null);
+    }
+
+    public function configureFieldSet(FieldSet $fieldSet)
+    {
+        $fieldSet->text('href');
+        $fieldSet->text('title');
+        $fieldSet->checkbox('new_tab');
+
+        $fieldSet
+            ->each(function (FieldInterface $field) {
+                if ($field instanceof ControlFieldInterface) {
+                    $field->setInteractive($this->isInteractive());
+                    $field->setDisabled($this->isDisabled());
+                }
+            });
+
+        return $fieldSet;
     }
 
     /**
-     * @return Element
+     * @return mixed
      */
-    public function render()
+    public function getUrlRules()
     {
-        return Html::section( [
-            $this->getHeader(),
-            $this->getBody(),
-        ] )->addClass( 'nested' );
+        return $this->urlRules;
     }
 
     /**
-     * @return Element
+     * @param mixed $urlRules
      */
-    protected function getHeader()
+    public function setUrlRules($urlRules): void
     {
-        return Html::div( Html::label( $this->getLabel() ) )->addClass( 'label-wrap' );
-    }
-
-    /**
-     * @return Element
-     */
-    protected function getBody()
-    {
-        $item = $this->getValue() ?: $this->getRelatedModel();
-
-        $block = Html::div()->addClass( 'link-body' );
-
-        $fieldSetHtml = Html::fieldset()->addClass( 'item' );
-
-        foreach( $this->getRelationFieldSet( $item )->getFields() as $field )
-        {
-            $fieldSetHtml->append( $field->render() );
-        }
-
-        return $block->append( $fieldSetHtml );
-    }
-
-    /**
-     * @return array
-     */
-    public function getRules(): array
-    {
-        $rules = $this->rules[ 0 ] ?? null;
-
-        if( $rules )
-        {
-            $this->fieldSetCallback = function( FieldSet $fieldSet ) use ( $rules )
-            {
-                $fieldSet->add( new Text( 'href' ) )->rules( $rules );
-                $fieldSet->add( new Text( 'title' ) )->rules( $rules );
-                $fieldSet->add( new Checkbox( 'new_tab' ) );
-            };
-        }
-
-        unset( $this->rules );
-
-        return parent::getRules();
+        $this->urlRules = $urlRules;
     }
 }

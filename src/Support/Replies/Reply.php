@@ -31,7 +31,7 @@ abstract class Reply implements Jsonable, Arrayable
     protected $success = false;
 
     /**
-     * @var Exception|Null
+     * @var Exception|null
      */
     protected $exception = null;
 
@@ -45,7 +45,7 @@ abstract class Reply implements Jsonable, Arrayable
      * @param array $payload
      * @param Exception $exception
      */
-    public function __construct( $message = '', array $payload = [], Exception $exception = null )
+    public function __construct($message = '', array $payload = [], Exception $exception = null)
     {
         $this->message = $message;
         $this->payload = $payload;
@@ -53,10 +53,10 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @var string $url
+     * @var string
      * @return Response|Redirect
      */
-    abstract public function dispatch( $url = '/' );
+    abstract public function dispatch($url = '/');
 
     /**
      * @return bool
@@ -71,13 +71,13 @@ abstract class Reply implements Jsonable, Arrayable
      */
     public function hasMessage()
     {
-        return !empty( $this->message );
+        return ! empty($this->message);
     }
 
     /**
      * @param string $message
      */
-    public function setMessage( $message )
+    public function setMessage($message)
     {
         $this->message = $message;
     }
@@ -87,7 +87,7 @@ abstract class Reply implements Jsonable, Arrayable
      */
     public function hasPayload()
     {
-        return !empty( $this->payload );
+        return ! empty($this->payload);
     }
 
     /**
@@ -102,40 +102,35 @@ abstract class Reply implements Jsonable, Arrayable
      * @param string $key
      * @return bool
      */
-    public function has( $key )
+    public function has($key)
     {
-        if( $key === 'message' )
-        {
+        if ($key === 'message') {
             return $this->hasMessage();
         }
 
-        if( $key === 'exception' )
-        {
+        if ($key === 'exception') {
             return $this->hasCaughtException();
         }
 
-        return array_key_exists( $key, $this->payload );
+        return array_key_exists($key, $this->payload);
     }
 
     /**
      * @param string $key
      * @return void
      */
-    public function remove( $key )
+    public function remove($key)
     {
-        if( $key === 'message' )
-        {
+        if ($key === 'message') {
             $this->message = '';
         }
 
-        if( $key === 'exception' )
-        {
+        if ($key === 'exception') {
             $this->exception = null;
         }
 
-        if( array_key_exists( $key, $this->payload ) )
-        {
-            unset( $this->payload[$key] );
+        if (array_key_exists($key, $this->payload)) {
+            unset($this->payload[$key]);
         }
     }
 
@@ -151,7 +146,7 @@ abstract class Reply implements Jsonable, Arrayable
      * @param Exception $e
      * @return Exception
      */
-    public function setException( Exception $e )
+    public function setException(Exception $e)
     {
         return $this->exception = $e;
     }
@@ -164,55 +159,47 @@ abstract class Reply implements Jsonable, Arrayable
         $dispatch = [];
         $dispatch['status'] = $this->statusCode;
 
-        if( $this->hasMessage() )
-        {
+        if ($this->hasMessage()) {
             $dispatch['message'] = $this->message;
         }
 
-        if( $this->hasPayload() )
-        {
-            $dispatch = array_merge( $dispatch, $this->payload );
+        if ($this->hasPayload()) {
+            $dispatch = array_merge($dispatch, $this->payload);
         }
 
         return $dispatch;
     }
 
     /**
-     * @param integer $options
+     * @param int $options
      * @return string
      */
-    public function toJson( $options = 0 )
+    public function toJson($options = 0)
     {
-        return json_encode( $this->toArray(), $options );
+        return json_encode($this->toArray(), $options);
     }
 
     /**
      * @param string $key
      * @return mixed|null
      */
-    public function __get( $key )
+    public function __get($key)
     {
-        if( $key === 'message' )
-        {
+        if ($key === 'message') {
             return $this->message;
         }
 
-        if( $key === 'statusCode' )
-        {
+        if ($key === 'statusCode') {
             return $this->statusCode;
         }
 
-        if( $key === 'exception' )
-        {
+        if ($key === 'exception') {
             return $this->exception;
         }
 
-        if( array_key_exists( $key, $this->payload ) )
-        {
+        if (array_key_exists($key, $this->payload)) {
             return $this->payload[$key];
         }
-
-        return null;
     }
 
     /**

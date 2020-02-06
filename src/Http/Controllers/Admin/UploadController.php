@@ -10,7 +10,7 @@ use UniSharp\LaravelFilemanager\Controllers\UploadController as LfmUploadControl
 class UploadController extends LfmUploadController
 {
     /**
-     * Upload files
+     * Upload files.
      *
      * @param void
      * @return string
@@ -32,10 +32,10 @@ class UploadController extends LfmUploadController
     {
         if (request('responseType') === 'json') {
             return [
-                "uploaded" => 0,
-                "error" => [
-                    "message" => implode(",\n", $this->errors)
-                ]
+                'uploaded' => 0,
+                'error' => [
+                    'message' => implode(",\n", $this->errors),
+                ],
             ];
         } else {
             return $this->errors;

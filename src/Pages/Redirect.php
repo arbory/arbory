@@ -8,7 +8,7 @@ class Redirect extends Model
 {
     public const AVAILABLE_STATUSES = [
         301,
-        302
+        302,
     ];
 
     /**
@@ -17,7 +17,7 @@ class Redirect extends Model
     protected $fillable = [
         'from_url',
         'to_url',
-        'status'
+        'status',
     ];
 
     /**
@@ -25,6 +25,6 @@ class Redirect extends Model
      */
     public function __toString()
     {
-        return (string)$this->to_url;
+        return (string) $this->to_url;
     }
 }
