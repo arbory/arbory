@@ -35,6 +35,7 @@
         margin-left: steps(1);
         width: steps(30);
         min-height: auto;
+        margin-bottom: steps(1);
 
         label
         {
@@ -54,7 +55,7 @@
         {
 
             display: block;
-            margin: 0 auto;
+            margin: steps(2) auto 0 auto;
             width: auto;
             min-width: 128px;
 
@@ -77,6 +78,11 @@
             padding: steps(2);
             border-top: 1px solid rgba($color-border-normal, 0.1);
             text-align: center;
+
+            a {
+                color: white;
+                text-decoration: none;
+            }
 
             p {
                 margin: 0;

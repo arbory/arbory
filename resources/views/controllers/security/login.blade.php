@@ -10,23 +10,14 @@
         <div class="field @if($errors->has('user.password'))has-error @endif">
             <input id="password" class="text" type="password" name="user[password]" placeholder="{{ trans('arbory::security.password') }}">
         </div>
-        <div class="field type-checkbox">
-            <div class="value">
-                <label>
-                    <input type="checkbox" name="remember" value="1" {{ $input->old('remember') ? 'checked' : '' }} />
-                    <span></span>
-                    {{ trans('arbory::security.remember') }}
-                </label>
-            </div>
-        </div>
         <div class="field">
             <button class="button" type="submit">{{ trans('arbory::security.submit') }}</button>
         </div>
 
 
         <div class="field info">
-            <p><b>{{ trans('arbory::security.lost_password') }}</b></p>
-            <p>{{ trans('arbory::security.contact_admin') }}</p>
+            <p><a href=""><b>{{ trans('arbory::security.lost_password') }}</b></a></p>
+            <p><a href="">{{ trans('arbory::security.contact_admin') }}</a></p>
         </div>
     </form>
 @endsection
