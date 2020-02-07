@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Class ArboryAdminSwitchOffModuleMiddleware
+ * Class ArboryAdminSwitchOffModuleMiddleware.
  */
 class ArboryAdminSwitchedOffModuleMiddleware
 {
