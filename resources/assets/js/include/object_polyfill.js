@@ -1,6 +1,6 @@
 if (!Object.entries) {
-    Object.entries = function( obj ){
-        var ownProps = Object.keys( obj ),
+    Object.entries = function (obj) {
+        var ownProps = Object.keys(obj),
             i = ownProps.length,
             resArray = new Array(i); // preallocate the Array
         while (i--)
@@ -12,7 +12,7 @@ if (!Object.entries) {
 
 if (typeof Object.assign !== 'function') {
     // Must be writable: true, enumerable: false, configurable: true
-    Object.defineProperty(Object, "assign", {
+    Object.defineProperty(Object, 'assign', {
         value: function assign(target, varArgs) { // .length of function is 2
             'use strict';
             if (target === null || target === undefined) {
