@@ -107,7 +107,7 @@ trait Crudify
         $grid = new Grid($model);
         $grid->setModule($this->module());
         $grid->setRenderer(new Grid\Builder($grid));
-        $grid->setFilterManager(app(FilterManager::class)); // TODO: Use proper DI
+        $grid->setFilterManager(app(FilterManager::class));
         $grid->setupFilter();
 
         return $this->grid($grid) ?: $grid;

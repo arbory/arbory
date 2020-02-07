@@ -153,8 +153,8 @@
 .saved-filter {
   position: relative;
   float: right;
-  margin-right: steps(0.75);
-  margin-bottom: steps(0.75);
+  margin-right: steps(1);
+  margin-bottom: steps(1);
 
   .button.link {
     padding-right: steps(2);
@@ -162,11 +162,11 @@
 
   .button.delete {
     position: absolute;
-    top: steps(-0.75);
-    right: steps(-0.75);
+    top: -9px;
+    right: -9px;
     background: transparent;
     color: $color-highlight-darkest;
-    border-radius: steps(1.5);
+    border-radius: 18px;
     transition: background-color 0.05s ease-out;
 
     &:hover {

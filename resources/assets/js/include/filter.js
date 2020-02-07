@@ -5,7 +5,7 @@ jQuery(document).ready(function() {
     var searchInputName = 'search';
 
     filterWindow.submit( function(eventObj) {
-        addSerchToFilter();
+        addSearchToFilter();
         return true;
     });
 
@@ -18,7 +18,7 @@ jQuery(document).ready(function() {
         openCloseFilter();
     });
 
-    function addSerchToFilter() {
+    function addSearchToFilter() {
         $('<input />').attr('type', 'hidden')
             .attr('name', searchInputName)
             .attr('value', $(`#${searchInputName}`).val())
@@ -32,7 +32,7 @@ jQuery(document).ready(function() {
         let form = dialog.find('form');
 
         form.on('submit', function() {
-            addSerchToFilter();
+            addSearchToFilter();
             dialog.find('[name="filter"]').val(filterWindow.serialize());
             return true;
         });
