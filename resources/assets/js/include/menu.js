@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 
 const COOKIE_NAME_MENU = 'menu';
 const SELECTOR_MENU_ITEM = 'li[data-name]';
@@ -104,11 +106,15 @@ class MenuItem {
 
 class MenuStore {
     static getStored() {
-        if (typeof jQuery.cookie(COOKIE_NAME_MENU) === 'undefined') {
+        const storedData = Cookies.getJSON(COOKIE_NAME_MENU);
+
+        if (typeof storedData === 'undefined') {
             MenuStore.save({});
+
+            return {};
         }
 
-        return JSON.parse(jQuery.cookie(COOKIE_NAME_MENU));
+        return storedData;
     }
 
     static get(id) {
@@ -132,7 +138,7 @@ class MenuStore {
     }
 
     static save(data) {
-        jQuery.cookie(COOKIE_NAME_MENU, JSON.stringify(data));
+        Cookies.set(COOKIE_NAME_MENU, JSON.stringify(data));
     }
 }
 

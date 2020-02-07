@@ -1,1 +1,9 @@
 preset: laravel
+
+disabled:
+  - alpha_ordered_imports
+  - concat_without_spaces
+
+finder:
+  exclude:
+    - "dist"

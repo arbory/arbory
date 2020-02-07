@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -17,6 +18,7 @@ class ModifyPrimaryKeyInSettingsTable extends Migration
 
         Schema::table('settings', function (Blueprint $table) {
             $table->dropColumn('id');
+            $table->dropUnique('settings_name_unique');
             $table->string('name')->primary()->change();
         });
     }
@@ -38,7 +40,7 @@ class ModifyPrimaryKeyInSettingsTable extends Migration
     {
         $schema = Schema::getConnection()->getDoctrineSchemaManager();
         $indexes = $schema->listTableIndexes('settings');
-        $primaryIndex = array_get($indexes, 'primary');
+        $primaryIndex = Arr::get($indexes, 'primary');
 
         if ($primaryIndex) {
             Schema::table('settings', function (Blueprint $table) use ($primaryIndex) {

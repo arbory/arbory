@@ -1,4 +1,3 @@
-
 import RichText from "./RichText";
 
 export const CONFIG_EDITOR_COMPACT = {

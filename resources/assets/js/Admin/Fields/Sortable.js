@@ -1,3 +1,4 @@
+import "jquery-ui/ui/widgets/sortable";
 
 export const CONFIG_JQUERY_SORTABLE = {
     items: '> .item',
@@ -31,8 +32,10 @@ export default class Sortable {
             handlers, this.config.vendor
         ));
 
-        container.on('click', '> .item  > .sortable-navigation .button', event => this.manualSort(event));
-        container.on('click', '> .item  > .sortable-navigation.button', event => this.manualSort(event));
+        // Normal has many layout
+        container.on('click', '> .item > .sortable-navigation .button', event => this.manualSort(event));
+        // Panel layouts
+        container.on('click', '> .item > header .sortable-navigation.button', event => this.manualSort(event));
         container.on('DOMNodeInserted DOMNodeRemoved', () => this.handleUpdate());
     }
 

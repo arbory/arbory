@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Console\Commands;
 
+use Arbory\Base\Services\Permissions\ModulePermissionsRegistry;
+use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Arbory\Base\Auth\Roles\Role;
@@ -9,6 +11,7 @@ use Arbory\Base\Auth\Users\User;
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Roles\RoleInterface;
 use Cartalyst\Sentinel\Users\UserInterface;
+use Arbory\Base\Http\Controllers\Admin\DashboardController;
 
 /**
  * Class CreateUserCommand.
@@ -141,15 +144,24 @@ class CreateUserCommand extends Command
         return $repository->create([
             'name' => 'Administrator',
             'slug' => 'administrator',
-            'permissions' => array_flatten(
-                array_merge(
-                    [
-                        \Arbory\Base\Http\Controllers\Admin\DashboardController::class,
-                    ],
-                    config('arbory.menu')
-                )
-            ),
+            'permissions' => $this->getPermissions(),
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    private function getPermissions(): array
+    {
+        $permissions = [];
+        $modules = Arr::flatten(array_merge([DashboardController::class], config('arbory.menu')));
+        foreach ($modules as $module) {
+            foreach (ModulePermissionsRegistry::DEFAULT_PERMISSIONS as $permission) {
+                $permissions[$module . '.' . $permission] = true;
+            }
+        }
+
+        return $permissions;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Arbory\Base\Admin\Form;
 
 use Countable;
 use ArrayAccess;
+use Illuminate\Support\Arr;
 use Traversable;
 use ArrayIterator;
 use IteratorAggregate;
@@ -115,7 +116,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         $inputNameParts = explode('.', $inputName);
         $fields = $this->findFieldsByInputName($inputName);
 
-        return array_get($fields, end($inputNameParts));
+        return Arr::get($fields, end($inputNameParts));
     }
 
     /**

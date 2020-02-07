@@ -8,6 +8,7 @@ use Arbory\Base\Auth\Throttling\Throttle;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Arbory\Base\Auth\Activations\Activation;
 use Arbory\Base\Auth\Persistences\Persistence;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class User.
@@ -77,9 +78,9 @@ class User extends EloquentUser
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(static::$rolesModel, 'admin_role_users', 'user_id', 'role_id')->withTimestamps();
     }

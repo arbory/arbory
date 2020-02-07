@@ -89,7 +89,7 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
      *
      * @return FieldSet
      */
-    public function fields(callable $closure, ...$parameters):FieldSet
+    public function fields(callable $closure, ...$parameters): FieldSet
     {
         $fields = new FieldSet($this->form->getModel(), $this->form->fields()->getNamespace());
         $fields = $closure($fields, ...$parameters) ?: $fields;

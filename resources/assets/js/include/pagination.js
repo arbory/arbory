@@ -1,4 +1,4 @@
-/* global UrlBuilder */
+import url from "url";
 
 jQuery(function()
 {
@@ -10,8 +10,11 @@ jQuery(function()
             var val = jQuery(this).val();
             if (val)
             {
-                var url = new UrlBuilder().add({page: val}).getUrl();
-                window.location.href = url;
+                window.location.href = url.format({
+                    query: {
+                        page: val
+                    }
+                });
             }
         });
     });

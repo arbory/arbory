@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Form\Fields\Renderer\IconPickerRenderer;
+use Illuminate\Support\Str;
 
 class IconPicker extends Select
 {
@@ -119,7 +120,7 @@ class IconPicker extends Select
                 }
             }
 
-            if ($this->filter && ! str_contains($id, $this->filter)) {
+            if ($this->filter && ! Str::contains($id, $this->filter)) {
                 continue;
             }
 

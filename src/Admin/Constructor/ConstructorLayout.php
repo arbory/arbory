@@ -186,8 +186,8 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         return $this->getForm()->getModule()->url(
             'dialog',
             [
-                'name'  => 'constructor_types',
-                'field' => $this->field->getNameSpacedName(),
+                'dialog' => 'constructor_types',
+                'field' => $this->getField()->getNameSpacedName(),
             ]
         );
     }

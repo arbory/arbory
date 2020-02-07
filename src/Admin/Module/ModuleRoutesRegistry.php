@@ -5,6 +5,7 @@ namespace Arbory\Base\Admin\Module;
 use Closure;
 use Arbory\Base\Admin\Module;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
 
 /**
  * Class ModuleRoutesRegistry.
@@ -73,6 +74,6 @@ class ModuleRoutesRegistry
      */
     public function findByModule(Module $module)
     {
-        return array_get($this->routes, $module->name());
+        return Arr::get($this->routes, $module->name());
     }
 }

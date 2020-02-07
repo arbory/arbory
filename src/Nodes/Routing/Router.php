@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Application;
 use Arbory\Base\Repositories\NodesRepository;
+use Illuminate\Support\Str;
 
 /**
  * Class Router.
@@ -148,7 +149,7 @@ class Router
         $nodeRoutes = new Collection();
 
         foreach ($routes as $route) {
-            if (starts_with($route->getName(), $node->getContentType())) {
+            if (Str::startsWith($route->getName(), $node->getContentType())) {
                 $nodeRoutes->push($route);
             }
         }

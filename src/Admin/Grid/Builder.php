@@ -51,7 +51,7 @@ class Builder implements Renderable
     /**
      * @return Element|null
      */
-    protected function bulkEdit() : ?Element
+    protected function bulkEdit(): ?Element
     {
         if (! $this->grid->hasTool('bulk-edit')) {
             return null;
@@ -72,7 +72,7 @@ class Builder implements Renderable
     /**
      * @return Column
      */
-    protected function addBulkColumn() : Column
+    protected function addBulkColumn(): Column
     {
         return $this->grid->prependColumn('id', trans('arbory::resources.nr'), 1)
             ->checkable(true)
@@ -135,21 +135,10 @@ class Builder implements Renderable
             $link = Html::link($column->getLabel())
                 ->addAttributes([
                     'href' => $this->grid->getColumnOrderUrl($column),
-                ])
-                ->addClass('sortable')
-                ->append(
-                    Html::span()
-                        ->addClass('sortables')
-                        ->append(
-                            Html::i()->addClass('fa fa-chevron-up up')
-                        )
-                        ->append(
-                            Html::i()->addClass('fa fa-chevron-down down')
-                        )
-                );
+                ]);
 
             if (request('_order_by') === $column->getName()) {
-                $link->addClass($this->getOrderByIcon());
+                $link->append($this->getOrderByIcon());
             }
 
             return Html::th($link);
@@ -163,7 +152,13 @@ class Builder implements Renderable
      */
     protected function getOrderByIcon()
     {
-        return (request('_order') === 'DESC') ? 'up' : 'down';
+        return Html::i()
+            ->addClass('fa')
+            ->addClass(
+                (request('_order') === 'DESC')
+                    ? 'fa-sort-up'
+                    : 'fa-sort-down'
+            );
     }
 
     /**

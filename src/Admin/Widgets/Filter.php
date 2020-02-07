@@ -47,7 +47,7 @@ class Filter implements Renderable
     /**
      * @return array|null
      */
-    protected function addFields():? array
+    protected function addFields(): ?array
     {
         $fieldCollection = null;
 

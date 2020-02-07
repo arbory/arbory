@@ -41,9 +41,8 @@ class SecurityController extends BaseController
     public function getLogin(Request $request)
     {
         return view($this->security->getLoginView(), [
-                'input' => $request,
-            ]
-        );
+            'input' => $request,
+        ]);
     }
 
     /**

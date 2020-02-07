@@ -2,28 +2,29 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Page;
-use Arbory\Base\Nodes\Node;
-use Illuminate\Http\Request;
-use Arbory\Base\Admin\Layout;
-use Illuminate\Routing\Controller;
-use Illuminate\Container\Container;
+use Arbory\Base\Admin\Form\Fields\Deactivator;
 use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Traits\Crudify;
-use Illuminate\Http\RedirectResponse;
-use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Layout\LayoutManager;
+use Arbory\Base\Admin\Page;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Nodes\Admin\Grid\Filter;
 use Arbory\Base\Nodes\Admin\Grid\Renderer;
-use Arbory\Base\Nodes\ContentTypeRegister;
-use Arbory\Base\Admin\Layout\LayoutManager;
 use Arbory\Base\Nodes\ContentTypeDefinition;
-use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Nodes\Node;
 use Arbory\Base\Repositories\NodesRepository;
-use Arbory\Base\Admin\Form\Fields\Deactivator;
-use Arbory\Base\Admin\Constructor\BlockRegistry;
+use Illuminate\Support\Str;
+use Illuminate\Container\Container;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Arbory\Base\Support\Nodes\NameGenerator;
 
 class NodesController extends Controller
 {
@@ -83,6 +84,16 @@ class NodesController extends Controller
 
             $fields->hasOne('content', $this->contentResolver($definition, $layout));
         });
+
+        /**
+         * @var Node
+         */
+        $node = $form->fields()->getModel();
+        $contentType = $node->getContentType();
+
+        if ($contentType) {
+            $form->title(sprintf('%s (%s)', $form->getTitle(), $this->makeNameFromType($contentType)));
+        }
 
         $form->addEventListeners(['create.after'], function () use ($form) {
             $this->afterSave($form);
@@ -151,7 +162,7 @@ class NodesController extends Controller
 
         $page = $manager->page(Page::class);
         $page->use($layout);
-        $page->bodyClass('controller-'.str_slug($this->module()->name()).' view-edit');
+        $page->bodyClass('controller-'.Str::slug($this->module()->name()).' view-edit');
 
         return $page;
     }
@@ -234,7 +245,7 @@ class NodesController extends Controller
             $node->moveToLeftOf($nodes->findOneBy('id', $toRightId));
         }
 
-        return \Response::make();
+        return response()->make();
     }
 
     /**
@@ -257,14 +268,14 @@ class NodesController extends Controller
         }
 
         $from = $request->get('from');
-        $slug = str_slug($from);
+        $slug = Str::slug($from);
 
         if (in_array($slug, $reservedSlugs, true) && $request->has('id')) {
-            $slug = str_slug($request->get('id').'-'.$from);
+            $slug = Str::slug($request->get('id').'-'.$from);
         }
 
         if (in_array($slug, $reservedSlugs, true)) {
-            $slug = str_slug($from.'-'.random_int(0, 9999));
+            $slug = Str::slug($from.'-'.random_int(0, 9999));
         }
 
         return $slug;
@@ -326,5 +337,14 @@ class NodesController extends Controller
         $definition = $this->contentTypeRegister->findByModelClass($class);
 
         return $definition;
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    protected function makeNameFromType($type): string
+    {
+        return $this->container->get(NameGenerator::class)->generate($type);
     }
 }

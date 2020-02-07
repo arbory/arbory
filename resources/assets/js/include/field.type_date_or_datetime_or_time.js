@@ -1,3 +1,6 @@
+import "jquery-ui/ui/widgets/datepicker";
+import 'jquery-ui-timepicker-addon';
+
 jQuery(document).ready(function()
 {
     var body = jQuery('body');
@@ -21,6 +24,9 @@ jQuery(document).ready(function()
             controlType: 'select',
             showHour: true,
             showMinute: true,
+            showTimezone: false,
+            showMillisec: false,
+            showMicrosec: false,
             changeMonth: true,
             changeYear: true,
             beforeShow: function(input, instance) {

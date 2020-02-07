@@ -5,6 +5,7 @@ namespace Arbory\Base\Menu;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Group extends AbstractItem
 {
@@ -31,7 +32,7 @@ class Group extends AbstractItem
 
         foreach ($this->getChildren() as $child) {
             /** @var AbstractItem $child */
-            $li = Html::li()->addAttributes(['data-name' => snake_case($child->getTitle())]);
+            $li = Html::li()->addAttributes(['data-name' => Str::snake($child->getTitle())]);
 
             if ($child->isAccessible()) {
                 $child->render($li);

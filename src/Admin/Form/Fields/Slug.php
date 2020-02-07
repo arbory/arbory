@@ -128,7 +128,7 @@ class Slug extends Text
         $model = $this->getModel();
 
         if ($model instanceof Node) {
-            return $this->getModel()->getParentId();
+            return $model->getParentId();
         }
 
         return request('parent_id');

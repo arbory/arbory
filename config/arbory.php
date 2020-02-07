@@ -119,4 +119,10 @@ return [
         'enabled' => true,
         'slug_salt' => env('APP_KEY'),
     ],
+
+    'lfm' => [
+        'register_routes' => true,
+        'prefix' => 'admin/filemanager',
+        'middleware' => ['admin', 'arbory.admin_auth'],
+    ],
 ];

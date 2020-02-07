@@ -2,19 +2,20 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Closure;
-use Illuminate\Http\Request;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Database\Eloquent\Model;
-use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Constructor\BlockInterface;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Constructor\Models\ConstructorBlock;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
+use Arbory\Base\Admin\Form\FieldSet;
+use Closure;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class Constructor extends AbstractRelationField implements
     NestedFieldInterface,
@@ -172,7 +173,7 @@ class Constructor extends AbstractRelationField implements
         foreach ($items as $index => $item) {
             $relatedModel = $this->createRelatedModelFromRequest($item);
 
-            if (filter_var(array_get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
+            if (filter_var(Arr::get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
                 $relatedModel->delete();
                 $relatedModel->content()->delete();
 
@@ -180,7 +181,7 @@ class Constructor extends AbstractRelationField implements
             }
 
             $this->verifyBlockFromRequest($item, $relatedModel);
-            $block = $this->resolveBlockByName(array_get($item, static::BLOCK_NAME));
+            $block = $this->resolveBlockByName(Arr::get($item, static::BLOCK_NAME));
 
             $relatedFieldSet = $this->getRelationFieldSet(
                 $relatedModel,
@@ -216,7 +217,7 @@ class Constructor extends AbstractRelationField implements
     {
         $relation = $this->getRelation();
 
-        $relatedModelId = array_get($variables, $relation->getRelated()->getKeyName());
+        $relatedModelId = Arr::get($variables, $relation->getRelated()->getKeyName());
 
         return $relation->getRelated()->findOrNew($relatedModelId);
     }
@@ -254,11 +255,16 @@ class Constructor extends AbstractRelationField implements
      */
     public function getRules(): array
     {
-        $rules = [];
+        $rules = [[]];
 
         $items = (array) request()->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
+            // Do not add rules for fields which will be removed
+            if (filter_var(Arr::get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
+                continue;
+            }
+
             $relatedModel = $this->createRelatedModelFromRequest($item);
 
             $this->verifyBlockFromRequest($item, $relatedModel);
@@ -269,11 +275,11 @@ class Constructor extends AbstractRelationField implements
             );
 
             foreach ($relatedFieldSet->getFields() as $field) {
-                $rules = array_merge($rules, $field->getRules());
+                $rules[] = $field->getRules();
             }
         }
 
-        return $rules;
+        return array_merge(...$rules);
     }
 
     /**
@@ -291,7 +297,7 @@ class Constructor extends AbstractRelationField implements
      *
      * @return ConstructorBlock|Model
      */
-    public function buildFromBlock(BlockInterface $block):Model
+    public function buildFromBlock(BlockInterface $block): Model
     {
         $content = $block->resource();
 
@@ -346,8 +352,8 @@ class Constructor extends AbstractRelationField implements
      */
     protected function verifyBlockFromRequest(array $item, Model $model)
     {
-        $blockName = array_get($item, static::BLOCK_NAME);
-        $blockResource = array_get($item, $model->content()->getMorphType());
+        $blockName = Arr::get($item, static::BLOCK_NAME);
+        $blockResource = Arr::get($item, $model->content()->getMorphType());
         $block = $this->resolveBlockByName($blockName);
 
         if (! $block) {
@@ -366,7 +372,7 @@ class Constructor extends AbstractRelationField implements
      *
      * @return ConstructorBlock
      */
-    protected function createRelatedModelFromRequest(array $item):Model
+    protected function createRelatedModelFromRequest(array $item): Model
     {
         $relation = $this->getRelation();
         $relatedModel = $this->findRelatedModel($item);
@@ -375,7 +381,7 @@ class Constructor extends AbstractRelationField implements
             throw new \LogicException('Unknown relation used');
         }
 
-        $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
+        $relatedModel->fill(Arr::only($item, $relatedModel->getFillable()));
         $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
         $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
 

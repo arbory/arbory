@@ -1,3 +1,5 @@
+import 'ckeditor';
+import 'ckeditor/adapters/jquery';
 
 export const CONFIG_EDITOR = {
     language: 'en',

@@ -1,4 +1,4 @@
-/* global UrlBuilder */
+import UrlBuilder from '../modules/UrlBuilder';
 
 jQuery(function()
 {
@@ -130,21 +130,21 @@ jQuery(function()
             if (openToRight)
             {
                 menu.css({
-                    left:  triggerCenterX - menuWidth - 16,
-                    top :  triggerOffset.top + 5
+                    left:  triggerCenterX - 23,
+                    top :  triggerOffset.top  + trigger.outerHeight()
                 });
                 beak.css({
-                    left : 16
+                    left : 18
                 });
             }
             else
             {
                 menu.css({
-                    left:  triggerCenterX - menuWidth - 16,
-                    top :  triggerOffset.top + 5
+                    left:  triggerCenterX - menuWidth + 20,
+                    top :  triggerOffset.top  + trigger.outerHeight()
                 });
                 beak.css({
-                    left : menuWidth - 16
+                    left : menuWidth - 24
                 });
             }
 

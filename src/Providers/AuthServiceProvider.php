@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Auth\Users\User;
 use Cartalyst\Sentinel\Sentinel;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Auth\Reminders\Reminder;
 use Arbory\Base\Auth\Throttling\Throttle;
@@ -218,14 +219,14 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->singleton('sentinel.throttling', function ($app) {
             $config = $app['config']->get('arbory.auth.throttling');
 
-            $globalInterval = array_get($config, 'global.interval');
-            $globalThresholds = array_get($config, 'global.thresholds');
+            $globalInterval = Arr::get($config, 'global.interval');
+            $globalThresholds = Arr::get($config, 'global.thresholds');
 
-            $ipInterval = array_get($config, 'ip.interval');
-            $ipThresholds = array_get($config, 'ip.thresholds');
+            $ipInterval = Arr::get($config, 'ip.interval');
+            $ipThresholds = Arr::get($config, 'ip.thresholds');
 
-            $userInterval = array_get($config, 'user.interval');
-            $userThresholds = array_get($config, 'user.thresholds');
+            $userInterval = Arr::get($config, 'user.interval');
+            $userThresholds = Arr::get($config, 'user.thresholds');
 
             return new IlluminateThrottleRepository(
                 Throttle::class,

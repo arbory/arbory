@@ -12,6 +12,7 @@ use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\Fields\Renderer\NestedFieldRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
+use Illuminate\Support\Arr;
 
 /**
  * Class HasMany.
@@ -130,7 +131,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface, Rep
         foreach ($items as $index => $item) {
             $relatedModel = $this->findRelatedModel($item);
 
-            if (filter_var(array_get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
+            if (filter_var(Arr::get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
                 $relatedModel->delete();
 
                 continue;
@@ -139,7 +140,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface, Rep
             $relation = $this->getRelation();
 
             if ($relation instanceof MorphMany) {
-                $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
+                $relatedModel->fill(Arr::only($item, $relatedModel->getFillable()));
                 $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
             }
 
@@ -176,7 +177,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface, Rep
     {
         $relation = $this->getRelation();
 
-        $relatedModelId = array_get($variables, $relation->getRelated()->getKeyName());
+        $relatedModelId = Arr::get($variables, $relation->getRelated()->getKeyName());
 
         return $relation->getRelated()->findOrNew($relatedModelId);
     }

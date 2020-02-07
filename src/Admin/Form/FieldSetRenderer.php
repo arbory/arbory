@@ -94,9 +94,9 @@ class FieldSetRenderer implements FieldSetRendererInterface
             }
 
             $rows = $field->getRows() ?? [
-                    'size' => $grid->getRowSize(),
-                    'breakpoints' => [],
-                ];
+                'size' => $grid->getRowSize(),
+                'breakpoints' => [],
+            ];
 
             $columnsExpected = $columns + $rows['size'];
 

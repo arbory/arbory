@@ -69,9 +69,10 @@ class InstallCommand extends Command
         $this->runSeeder();
         $this->publishFileManager();
         $this->publishLanguages();
+        $this->publishAssets();
         $this->createAdminUser();
 
-        $this->info('Installation completed!');
+        $this->info('Hurray! You can access Arbory on ' . url(config('arbory.uri')));
     }
 
     protected function publishConfig()
@@ -100,6 +101,20 @@ class InstallCommand extends Command
         $this->call('vendor:publish', [
             '--provider' => ArboryServiceProvider::class,
             '--tag' => 'lang',
+            '--force' => null,
+        ]);
+
+        $this->call('translator:load');
+        $this->call('translator:flush');
+    }
+
+    protected function publishAssets()
+    {
+        $this->info('Publishing assets');
+
+        $this->call('vendor:publish', [
+            '--provider' => ArboryServiceProvider::class,
+            '--tag' => 'assets',
             '--force' => null,
         ]);
 

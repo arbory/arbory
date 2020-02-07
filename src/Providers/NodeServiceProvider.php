@@ -2,9 +2,11 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Nodes\Mixins\Collection as NodesCollectionMixin;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Support\Facades\Page;
 use Arbory\Base\Support\Facades\Admin;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -67,6 +69,8 @@ class NodeServiceProvider extends ServiceProvider
             );
         });
 
+        Collection::mixin(new NodesCollectionMixin);
+
         $this->routes = $this->app->make('arbory_router');
     }
 
@@ -105,15 +109,21 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function registerNodes()
     {
-        if (! app()->runningInConsole()) {
-            $this->app->booted(function () {
-                $this->app->singleton(Node::class, function () {
-                    return $this->routes->getCurrentNode();
-                });
-            });
+        if (app()->runningInConsole()) {
+            if ($this->isDbConfigured() && ! $this->app->routesAreCached()) {
+                $this->routes->registerNodes();
+            }
 
-            $this->routes->registerNodes();
-        } elseif (! $this->app->routesAreCached() && $this->isDbConfigured()) {
+            return;
+        }
+
+        $this->app->booted(function () {
+            $this->app->singleton(Node::class, function () {
+                return $this->routes->getCurrentNode();
+            });
+        });
+
+        if (! $this->app->routesAreCached()) {
             $this->routes->registerNodes();
         }
     }

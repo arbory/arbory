@@ -6,6 +6,7 @@ use Closure;
 use Arbory\Base\Nodes\Node;
 use Illuminate\Http\Request;
 use Arbory\Base\Content\Relation;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Form\FieldSet;
 use Illuminate\Database\Eloquent\Model;
@@ -157,7 +158,7 @@ class ObjectRelation extends AbstractField
     public function afterModelSave(Request $request)
     {
         $attributes = $request->input($this->getNameSpacedName());
-        $relationIds = explode(',', array_get($attributes, 'related_id'));
+        $relationIds = explode(',', Arr::get($attributes, 'related_id'));
         $value = $this->getValue();
 
         if ($this->isSingular()) {

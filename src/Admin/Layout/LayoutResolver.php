@@ -30,7 +30,7 @@ class LayoutResolver
      */
     protected $handler;
 
-    /**                                                                     c
+    /**
      * @var array
      */
     protected $slots;
@@ -114,7 +114,7 @@ class LayoutResolver
     /**
      * @return LayoutInterface
      */
-    public function resolve():LayoutInterface
+    public function resolve(): LayoutInterface
     {
         $layout = $this->instance ?: $this->create();
 

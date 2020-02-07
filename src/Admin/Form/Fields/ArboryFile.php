@@ -7,6 +7,7 @@ use Arbory\Base\Files\ArboryFileFactory;
 use Arbory\Base\Repositories\ArboryFilesRepository;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Arbory\Base\Admin\Form\Fields\Renderer\FileFieldRenderer;
+use Illuminate\Support\Arr;
 
 /**
  * Class ArboryFile.
@@ -104,7 +105,7 @@ class ArboryFile extends ControlField
         $input = $request->input($this->getNameSpacedName());
         $uploadedFile = $request->file($this->getNameSpacedName());
 
-        if (array_get($input, 'remove')) {
+        if (Arr::get($input, 'remove')) {
             $this->deleteCurrentFileIfExists();
         }
 

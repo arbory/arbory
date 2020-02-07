@@ -129,7 +129,7 @@ trait Crudify
 
         $page->setBreadcrumbs($this->module()->breadcrumbs());
         $page->use($layout);
-        $page->bodyClass('controller-'.str_slug($this->module()->name()).' view-index'.$bulkEditClass);
+        $page->bodyClass('controller-'.Str::slug($this->module()->name()).' view-index'.$bulkEditClass);
 
         return $page;
     }
@@ -156,7 +156,7 @@ trait Crudify
         $page = $manager->page(Page::class);
 
         $page->use($layout);
-        $page->bodyClass('controller-'.str_slug($this->module()->name()).' view-edit');
+        $page->bodyClass('controller-'.Str::slug($this->module()->name()).' view-edit');
 
         return $page;
     }
@@ -197,7 +197,7 @@ trait Crudify
 
         $page = $manager->page(Page::class);
         $page->use($layout);
-        $page->bodyClass('controller-'.str_slug($this->module()->name()).' view-edit');
+        $page->bodyClass('controller-'.Str::slug($this->module()->name()).' view-edit');
 
         return $page;
     }

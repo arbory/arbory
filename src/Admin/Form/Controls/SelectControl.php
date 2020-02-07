@@ -7,6 +7,7 @@ use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Html\Elements\Inputs\Input;
+use Illuminate\Support\Arr;
 
 class SelectControl extends AbstractControl
 {
@@ -55,7 +56,7 @@ class SelectControl extends AbstractControl
 
         $content->push($control);
 
-        $values = array_wrap($this->getValue());
+        $values = Arr::wrap($this->getValue());
 
         if ($this->isReadOnly()) {
             foreach ($values as $value) {
@@ -132,7 +133,7 @@ class SelectControl extends AbstractControl
      */
     public function setSelected($selected): self
     {
-        $this->selected = array_wrap($selected);
+        $this->selected = Arr::wrap($selected);
 
         return $this;
     }

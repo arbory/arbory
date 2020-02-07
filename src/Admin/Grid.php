@@ -283,7 +283,7 @@ class Grid
      * @param string|null $label
      * @return Column
      */
-    public function column($name = null, $label = null) : Column
+    public function column($name = null, $label = null): Column
     {
         return $this->appendColumn($name, $label);
     }
@@ -293,7 +293,7 @@ class Grid
      * @param string|null $label
      * @return Column
      */
-    public function appendColumn($name = null, $label = null) : Column
+    public function appendColumn($name = null, $label = null): Column
     {
         $column = $this->createColumn($name, $label);
         $this->columns->push($column);
@@ -308,7 +308,7 @@ class Grid
      * @param string|null $label
      * @return Column
      */
-    public function prependColumn($name = null, $label = null) : Column
+    public function prependColumn($name = null, $label = null): Column
     {
         $column = $this->createColumn($name, $label);
         $this->columns->prepend($column);
@@ -323,7 +323,7 @@ class Grid
      * @param string $name
      * @return mixed
      */
-    protected function setColumnRelation($column, $name) : Column
+    protected function setColumnRelation($column, $name): Column
     {
         if (strpos($name, '.') !== false) {
             [$relationName, $relationColumn] = explode('.', $name);
@@ -340,7 +340,7 @@ class Grid
      * @param string|null $label
      * @return Column
      */
-    protected function createColumn($name = null, $label = null) : Column
+    protected function createColumn($name = null, $label = null): Column
     {
         $column = new Column($name, $label);
         $column->setGrid($this);

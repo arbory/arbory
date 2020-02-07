@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 /**
  * HasOne for json data fields.
@@ -22,7 +23,7 @@ class VirtualHasOne extends HasOne
     {
         $value = parent::getValue();
 
-        return array_wrap($value);
+        return Arr::wrap($value);
     }
 
     /**
@@ -42,7 +43,7 @@ class VirtualHasOne extends HasOne
 
         foreach ($fieldSet->getFields() as $field) {
             $field->setValue(
-                array_get($item, $field->getName())
+                Arr::get($item, $field->getName())
             );
         }
 
@@ -69,7 +70,7 @@ class VirtualHasOne extends HasOne
         foreach ($this->getRelationFieldSet($model)->getFields() as $field) {
             $name = $field->getName();
 
-            $data[$name] = array_get($value, $name);
+            $data[$name] = Arr::get($value, $name);
         }
 
         $model->setAttribute($this->getName(), $data);

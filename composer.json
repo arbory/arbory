@@ -15,30 +15,26 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "ext-json": "*",
-        "laravel/framework": "~5.5.0|~5.6.0",
-        "laravelcollective/html": "^5.5.0|^5.6.0",
+        "laravel/framework": "^6.0",
+        "laravelcollective/html": "^6.0",
         "doctrine/dbal": "^2.5",
-        "gazsp/baum": "~1.1",
-        "components/jquery": "^3.2",
-        "components/jqueryui": "1.12.*",
-        "components/jquery-cookie": "1.4.*",
-        "ckeditor/ckeditor": "^4.5",
+        "baum/baum": "2.0.0-alpha1",
         "alsofronie/eloquent-uuid": "^1.0.5",
-        "dimsav/laravel-translatable": "8.*|9.*",
-        "waavi/translation": "^2.1.5",
-        "cartalyst/sentinel": "^2.0.13",
+        "astrotomic/laravel-translatable": "^11.6",
+        "waavi/translation": "^2.4",
+        "cartalyst/sentinel": "^3.0.3",
         "roboc/laravel-glide": "^1.1.0",
         "spatie/laravel-sluggable": "^2.1.0",
         "maatwebsite/excel": "^3.0.5",
-        "unisharp/laravel-filemanager": "^1.8.5"
+        "unisharp/laravel-filemanager": "^2.0"s
     },
     "require-dev" : {
-        "satooshi/php-coveralls": "^1.0",
-        "phpunit/phpunit" : "^6",
+        "php-coveralls/php-coveralls": "^2.0",
+        "phpunit/phpunit" : "^8.3",
         "mockery/mockery": "dev-master",
-        "diablomedia/phpunit-pretty-printer": "^2"
+        "diablomedia/phpunit-pretty-printer": "^4"
     },
     "autoload": {
         "psr-4": { "Arbory\\Base\\": "src" },
@@ -49,8 +45,7 @@
             "providers": [
                 "Arbory\\Base\\Providers\\ArboryServiceProvider",
                 "Arbory\\Base\\Providers\\NodeServiceProvider",
-                "Arbory\\Base\\Providers\\TranslationServiceProvider",
-                "Dimsav\\Translatable\\TranslatableServiceProvider",
+                "Astrotomic\\Translatable\\TranslatableServiceProvider",
                 "Arbory\\Base\\Providers\\FileServiceProvider",
                 "Arbory\\Base\\Providers\\AuthServiceProvider",
                 "Roboc\\Glide\\GlideImageServiceProvider",
@@ -61,7 +56,8 @@
                 "Arbory\\Base\\Providers\\RoutesServiceProvider",
                 "Arbory\\Base\\Providers\\LayoutServiceProvider",
                 "Arbory\\Base\\Providers\\ValidationRulesServiceProvider",
-                "Arbory\\Base\\Providers\\ConstructorServiceProvider"
+                "Arbory\\Base\\Providers\\ConstructorServiceProvider",
+                "Waavi\\Translation\\TranslationServiceProvider"
             ],
             "aliases": {
                 "Activation": "Cartalyst\\Sentinel\\Laravel\\Facades\\Activation",
@@ -71,12 +67,10 @@
                 "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
             },
             "dont-discover": [
-                "waavi/translation",
-                "cartalyst/sentinel"
+                "cartalyst/sentinel",
+                "unisharp/laravel-filemanager"
             ]
-        }
-    },
-    "config": {
-        "component-dir": "vendor/components"
+        },
+        "foxy": true
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Repositories;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Storage;
 use RuntimeException;
 use Arbory\Base\Files\ArboryFile;
@@ -130,9 +132,9 @@ class ArboryFilesRepository extends AbstractModelsRepository
 
         while ($uploadsDisk->exists($fileName)) {
             $fileNameParts = pathinfo($fileName);
-            $fileName = $fileNameParts['filename'].'-'.str_random(10);
+            $fileName = $fileNameParts['filename'].'-'.Str::random(10);
 
-            if (($extension = array_get($fileNameParts, 'extension', false))) {
+            if (($extension = Arr::get($fileNameParts, 'extension', false))) {
                 $fileName .= '.'.$extension;
             }
         }
