@@ -13,6 +13,7 @@ use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminHasAccessMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminHasAllowedIpMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminModuleAccessMiddleware;
+use Arbory\Base\Http\Middleware\ArboryAdminSwitchedOffModuleMiddleware;
 
 class RoutesServiceProvider extends ServiceProvider
 {
@@ -52,6 +53,7 @@ class RoutesServiceProvider extends ServiceProvider
         $router->aliasMiddleware('arbory.admin_has_access', ArboryAdminHasAccessMiddleware::class);
         $router->aliasMiddleware('arbory.route_redirect', ArboryRouteRedirectMiddleware::class);
         $router->aliasMiddleware('arbory.admin_has_allowed_ip', ArboryAdminHasAllowedIpMiddleware::class);
+        $router->aliasMiddleware('arbory.admin_switched_off_module', ArboryAdminSwitchedOffModuleMiddleware::class);
 
         $this->app->booted(function ($app) {
             $app[Kernel::class]->prependMiddleware(ArboryRouteRedirectMiddleware::class);
