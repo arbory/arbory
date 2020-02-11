@@ -11,6 +11,7 @@ use Arbory\Base\Admin\Widgets\SearchField;
 use Arbory\Base\Admin\Layout\AbstractLayout;
 use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Html\Html;
 
 class Layout extends AbstractLayout implements LayoutInterface
 {
@@ -60,22 +61,37 @@ class Layout extends AbstractLayout implements LayoutInterface
             return;
         }
 
-        $content = new Content([
+        $savedFilterButtons = Html::div()->addClass('saved-filters');
+        foreach ($this->grid->getFilterManager()->getSavedFilters() as $savedFilter) {
+            parse_str($savedFilter->filter, $parameters);
+
+            $button = Html::div()->addClass('saved-filter');
+            $button->append(
+                Link::create($this->grid->getModule()->url('index', $parameters))
+                    ->asButton('link')
+                    ->withIcon('bookmark')
+                    ->title($savedFilter->name)
+            );
+            $button->append(
+                Link::create($this->grid->getModule()->url('dialog', [
+                    'dialog' => 'delete_filter',
+                    'filter_id' => $savedFilter->id,
+                ]))
+                    ->asButton('delete only-icon')
+                    ->withIcon('times')
+                    ->asAjaxbox()
+            );
+
+            $savedFilterButtons->append($button);
+        }
+
+        return new Content([
+            $savedFilterButtons,
             Button::create()
                 ->type('button', 'filter js-filter-trigger')
                 ->withIcon('filter')
                 ->title(trans('arbory::filter.filter')),
         ]);
-
-        $savedFilters = $this->grid->getFilterManager()->getSavedFilters($this->grid->getModule());
-        foreach ($savedFilters as $savedFilter) {
-            $content->push(Link::create($savedFilter->filter)
-                ->asButton('filter')
-                ->withIcon('bookmark')
-                ->title($savedFilter->name));
-        }
-
-        return $content;
     }
 
     /**

@@ -25,4 +25,16 @@ class SavedFilterRepository extends AbstractModelsRepository
     {
         return $this->findBy('module', $module->name());
     }
+
+    /**
+     * @param int $filterId
+     * @param Module $module
+     * @return SavedFilter
+     */
+    public function findOrFail(int $filterId, Module $module): SavedFilter
+    {
+        return $this->newQuery()
+            ->where('module', $module->name())
+            ->findOrFail($filterId);
+    }
 }

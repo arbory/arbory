@@ -1,1 +1,71 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[3],{0:function(e,n,o){o("oOYV"),o("8mvK"),o("yi7R"),e.exports=o("iT2E")},"8mvK":function(e,n){},iT2E:function(e,n){},oOYV:function(e,n,o){(function(e){console.log("roles");e(document).ready((function(){e(".type-empty-field").on("click","#permissions_select_all, #permissions_select_none",(function(){console.log("here");var n="permissions_select_all"===e(this).attr("id")&&"checked";console.log(n,"checked"),e('input[type="checkbox"][name^="resource[permissions]"]').attr("checked",n)}))}))}).call(this,o("EVdn"))},yi7R:function(e,n){}},[[0,0,1]]]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/controllers/roles"],{
+
+/***/ "./resources/assets/js/controllers/roles.js":
+/*!**************************************************!*\
+  !*** ./resources/assets/js/controllers/roles.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(jQuery) {var SELECT_CLASS = 'permissions_select_all';
+var UNSELECT_CLASS = 'permissions_select_none';
+var CHECK_TRIGGERS = '#' + SELECT_CLASS + ', #' + UNSELECT_CLASS;
+jQuery(document).ready(function () {
+  jQuery('.type-empty-field').on('click', CHECK_TRIGGERS, function () {
+    var checked = jQuery(this).attr('id') === SELECT_CLASS ? 'checked' : false;
+    jQuery('input[type="checkbox"][name^="resource[permissions]"]').attr('checked', checked);
+  });
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./resources/assets/js/controllers/sessions.js":
+/*!*****************************************************!*\
+  !*** ./resources/assets/js/controllers/sessions.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// Empty js controller
+
+/***/ }),
+
+/***/ "./resources/assets/stylesheets/application.scss":
+/*!*******************************************************!*\
+  !*** ./resources/assets/stylesheets/application.scss ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./resources/assets/stylesheets/controllers/sessions.scss":
+/*!****************************************************************!*\
+  !*** ./resources/assets/stylesheets/controllers/sessions.scss ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 0:
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** multi ./resources/assets/js/controllers/roles.js ./resources/assets/js/controllers/sessions.js ./resources/assets/stylesheets/application.scss ./resources/assets/stylesheets/controllers/sessions.scss ***!
+  \***************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/controllers/roles.js */"./resources/assets/js/controllers/roles.js");
+__webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/controllers/sessions.js */"./resources/assets/js/controllers/sessions.js");
+__webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/stylesheets/application.scss */"./resources/assets/stylesheets/application.scss");
+module.exports = __webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/stylesheets/controllers/sessions.scss */"./resources/assets/stylesheets/controllers/sessions.scss");
+
+
+/***/ })
+
+},[[0,"/js/manifest","/js/vendor"]]]);

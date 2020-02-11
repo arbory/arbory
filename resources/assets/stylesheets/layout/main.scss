@@ -32,11 +32,12 @@ main
 
         padding: steps(1) 0;
 
-        @include clear-inside;
+        display: flex;
+        align-items: flex-start;
 
         > nav
         {
-            float: left;
+            flex: 0 0 auto;
         }
     }
 

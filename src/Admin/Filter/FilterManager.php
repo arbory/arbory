@@ -4,15 +4,17 @@ namespace Arbory\Base\Admin\Filter;
 
 use Arbory\Base\Admin\Filter\Models\SavedFilter;
 use Arbory\Base\Admin\Filter\Repositories\SavedFilterRepository;
+use Arbory\Base\Admin\ModuleComponent;
 use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Arbory\Base\Admin\Filter\Parameters\FilterParameterResolver;
 use Arbory\Base\Admin\Filter\Parameters\ParameterTransformerPipeline;
-use Arbory\Base\Admin\Module;
 use Illuminate\Support\Collection;
 
 class FilterManager
 {
+    use ModuleComponent;
+
     /**
      * @var FilterCollection
      */
@@ -140,11 +142,10 @@ class FilterManager
     }
 
     /**
-     * @param Module $module
      * @return SavedFilter[]|Collection
      */
-    public function getSavedFilters(Module $module): Collection
+    public function getSavedFilters(): Collection
     {
-        return $this->savedFilterRepository->findByModule($module);
+        return $this->savedFilterRepository->findByModule($this->getModule());
     }
 }

@@ -48,6 +48,15 @@ class ModuleRoutesRegistry
             'uses' => '\\'.$class.'@bulkUpdate',
         ]);
 
+        $router->post($slug.'/filter', [
+            'as' => $slug.'.filter.store',
+            'uses' => '\\'.$class.'@storeFilter',
+        ]);
+        $router->delete($slug.'/filter/{filterId}', [
+            'as' => $slug.'.filter.destroy',
+            'uses' => '\\'.$class.'@destroyFilter',
+        ]);
+
         $router->get($slug.'/dialog/{dialog}', [
             'as' => $slug.'.dialog',
             'uses' => '\\'.$class.'@dialog',
