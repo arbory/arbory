@@ -15,12 +15,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $link
  * @property int|null $language_id
  * @property string|null $node_id
- * @property string|null $related_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Language|null $language
  * @property-read Node|null $node
- * @property-read Node|null $related
  * @method static Builder|LanguageLinkedNode newModelQuery()
  * @method static Builder|LanguageLinkedNode newQuery()
  * @method static Builder|LanguageLinkedNode query()
@@ -57,21 +55,5 @@ class LanguageLinkedNode extends Model
     public function node(): BelongsTo
     {
         return $this->belongsTo(Node::class);
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function related(): BelongsTo
-    {
-        return $this->node();
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getRelatedIdAttribute(): ?string
-    {
-        return $this->node_id;
     }
 }
