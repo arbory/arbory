@@ -4,10 +4,7 @@ namespace Arbory\Base\Repositories;
 
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Nodes\LanguageLinkedNode;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Waavi\Translation\Models\Language;
 
 /**
@@ -29,7 +26,7 @@ class LanguageLinkedNodeRepository extends AbstractModelsRepository
     {
         return $this->newQuery()->firstOrCreate(
             [
-                'node_id' => $node->getKey()
+                'node_id' => $node->getKey(),
             ],
             [
                 'language_id' => $language->getKey(),
@@ -62,10 +59,10 @@ class LanguageLinkedNodeRepository extends AbstractModelsRepository
         $this->newQuery()->updateOrCreate(
             [
                 'link' => $languageLinkedNode->link,
-                'language_id' => $language->getKey()
+                'language_id' => $language->getKey(),
             ],
             [
-                'node_id' => $nodeId
+                'node_id' => $nodeId,
             ]
         );
 
@@ -81,6 +78,5 @@ class LanguageLinkedNodeRepository extends AbstractModelsRepository
     public function getNextAvailableLink(): int
     {
         return $this->newQuery()->max('link') + 1;
-
     }
 }

@@ -38,7 +38,7 @@ class LanguageLinkedNode extends Model
     protected $fillable = [
         'link',
         'language_id',
-        'node_id'
+        'node_id',
     ];
 
     /**
