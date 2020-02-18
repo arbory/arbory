@@ -125,4 +125,9 @@ return [
         'prefix' => 'admin/filemanager',
         'middleware' => ['admin', 'arbory.admin_auth'],
     ],
+
+    'language_node_linking' => [
+        'enabled' => false,
+        'class' => Arbory\Base\Pages\LanguagePage::class,
+    ],
 ];

@@ -5,6 +5,7 @@ namespace Arbory\Base\Http\Controllers\Admin;
 use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\Fields\Deactivator;
+use Arbory\Base\Admin\Form\Fields\LanguageLinkedNodeRelation;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout;
@@ -19,6 +20,8 @@ use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\ContentTypeRegister;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Repositories\NodesRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
@@ -43,15 +46,23 @@ class NodesController extends Controller
     protected $contentTypeRegister;
 
     /**
+     * @var NodesRepository
+     */
+    protected $nodesRepository;
+
+    /**
      * @param Container           $container
      * @param ContentTypeRegister $contentTypeRegister
+     * @param NodesRepository     $nodesRepository
      */
     public function __construct(
         Container $container,
-        ContentTypeRegister $contentTypeRegister
+        ContentTypeRegister $contentTypeRegister,
+        NodesRepository $nodesRepository
     ) {
         $this->container = $container;
         $this->contentTypeRegister = $contentTypeRegister;
+        $this->nodesRepository = $nodesRepository;
     }
 
     /**
@@ -82,6 +93,10 @@ class NodesController extends Controller
                 $fields->add(new Deactivator('deactivate'));
             }
 
+            if (config('arbory.language_node_linking.enabled')) {
+                $this->addLanguageLinkedNodeFields($fields);
+            }
+
             $fields->hasOne('content', $this->contentResolver($definition, $layout));
         });
 
@@ -100,6 +115,32 @@ class NodesController extends Controller
         });
 
         return $form;
+    }
+
+    /**
+     * @param FieldSet $fields
+     */
+    protected function addLanguageLinkedNodeFields(FieldSet $fields): void
+    {
+        $currentLanguageNode = $this->getCurrentLanguageNode($fields->getModel());
+        if (! $currentLanguageNode) {
+            return;
+        }
+
+        foreach ($this->getLinkingLanguageNodes($currentLanguageNode) as $languageNode) {
+            $childNodes = $this->nodesRepository
+                ->findUnder($languageNode)
+                ->orderBy('lft')
+                ->pluck('name', 'id');
+
+            $field = new LanguageLinkedNodeRelation(
+                $languageNode->content->language,
+                $currentLanguageNode->content->language
+            );
+            $field->options($childNodes);
+
+            $fields->add($field);
+        }
     }
 
     /**
@@ -346,5 +387,30 @@ class NodesController extends Controller
     protected function makeNameFromType($type): string
     {
         return $this->container->get(NameGenerator::class)->generate($type);
+    }
+
+    /**
+     * @param Node|Model $node
+     * @return Node[]|Collection
+     */
+    protected function getLinkingLanguageNodes(Node $node): Collection
+    {
+        return $this->nodesRepository->newQuery()
+            ->where('content_type', config('arbory.language_node_linking.class'))
+            ->whereNotIn('id', [$node->id])
+            ->with('content.language')
+            ->get();
+    }
+
+    /**
+     * @param Node|Model $node
+     * @return Node|null
+     */
+    protected function getCurrentLanguageNode(Node $node): ?Node
+    {
+        return $this->nodesRepository
+            ->findAbove($node, 'content_type', config('arbory.language_node_linking.class'))
+            ->with('content.language')
+            ->first();
     }
 }
