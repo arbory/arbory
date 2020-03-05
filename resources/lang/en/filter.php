@@ -14,4 +14,5 @@ return [
     'enabled' => 'Enabled',
     'apply' => 'Apply',
     'reset' => 'Reset',
+    'save_as' => 'Save as',
 ];

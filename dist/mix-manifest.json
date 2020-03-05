@@ -1,9 +1,9 @@
 {
-    "/js/manifest.js": "/js/manifest.js?id=7db827d654313dce4250",
-    "/js/vendor.js": "/js/vendor.js?id=70867080311847ee89a8",
-    "/js/application.js": "/js/application.js?id=536c3153631c54e13adf",
-    "/js/controllers/roles.js": "/js/controllers/roles.js?id=23f2d721aff48bcfe734",
-    "/css/application.css": "/css/application.css?id=b8ec50309d0ae006e773",
-    "/css/controllers/sessions.css": "/css/controllers/sessions.css?id=d3c534f3cd3ee125fb85",
-    "/js/includes.js": "/js/includes.js?id=5c7fe0ffea48f9cc56e1"
+    "/js/application.js": "/js/application.js?id=27045cb52ca453cf08bf",
+    "/js/controllers/roles.js": "/js/controllers/roles.js?id=680d8c3e173439a70f42",
+    "/css/application.css": "/css/application.css?id=93c76ad15dba1e2f9f81",
+    "/css/controllers/sessions.css": "/css/controllers/sessions.css?id=8380bf6a44e5c7e03534",
+    "/js/includes.js": "/js/includes.js?id=fa4f72ca894a9fbdc238",
+    "/js/manifest.js": "/js/manifest.js?id=41f053ba9a94d81b39f8",
+    "/js/vendor.js": "/js/vendor.js?id=6f713f7e8bb5bd18ac5e"
 }

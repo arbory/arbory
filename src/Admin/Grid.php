@@ -105,9 +105,6 @@ class Grid
         $this->model = $model;
         $this->columns = new Collection();
         $this->rows = new Collection();
-        $this->filterManager = app(FilterManager::class); // TODO: Use proper DI
-
-        $this->setupFilter();
     }
 
     /**
@@ -132,7 +129,7 @@ class Grid
     /**
      * @return void
      */
-    protected function setupFilter()
+    public function setupFilter()
     {
         $filter = new Filter($this->model);
         $filter->setFilterManager($this->getFilterManager());
@@ -567,6 +564,7 @@ class Grid
      */
     public function setFilterManager(FilterManager $filterManager): self
     {
+        $filterManager->setModule($this->getModule());
         $this->filterManager = $filterManager;
 
         return $this;

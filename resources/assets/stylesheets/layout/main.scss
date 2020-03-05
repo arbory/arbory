@@ -17,25 +17,27 @@ main
 {
     display: block;  /* as of now, not all rendering engines recognize the main element as a block */
     position: relative;
-    padding: 0 0 0 steps(20);
+    padding: 0 steps(3) steps(4) steps(20 + 3);
     z-index: 1;
 
     .side-compact &
     {
-        padding-left: steps(4);
+        padding-left: steps(4 + 3);
     }
 
     > header
     {
         border-bottom: 1px solid $color-border-light;
+        margin-bottom: -1px;
 
-        padding: steps(1) steps(3);
+        padding: steps(1) 0;
 
-        @include clear-inside;
+        display: flex;
+        align-items: flex-start;
 
         > nav
         {
-            float: left;
+            flex: 0 0 auto;
         }
     }
 
