@@ -28,7 +28,7 @@
         "roboc/laravel-glide": "^1.1.0",
         "spatie/laravel-sluggable": "^2.1.0",
         "maatwebsite/excel": "^3.0.5",
-        "unisharp/laravel-filemanager": "^2.0"s
+        "unisharp/laravel-filemanager": "^2.0"
     },
     "require-dev" : {
         "php-coveralls/php-coveralls": "^2.0",
