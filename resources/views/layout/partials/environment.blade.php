@@ -1,3 +1,3 @@
 <script>
-    window.CKEDITOR_BASEPATH = "{{ asset('/vendor/arbory/ckeditor') }}/"; 
+    window.CKEDITOR_BASEPATH = "{{ Admin::assets()->getStaticUrl('/ckeditor')  }}/";
 </script>

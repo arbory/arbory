@@ -72,7 +72,8 @@ class RolesController extends Controller
      */
     protected function form(Form $form, PanelLayout $layout)
     {
-        $this->admin->assets()->js(mix('/js/controllers/roles.js', 'vendor/arbory'));
+        $assetPipeline = $this->admin->assets();
+        $assetPipeline->js($assetPipeline->getMixUrl('/js/controllers/roles.js'));
 
         /** @var Role $role */
         $role = $form->getModel();

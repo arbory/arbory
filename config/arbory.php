@@ -125,4 +125,8 @@ return [
         'prefix' => 'admin/filemanager',
         'middleware' => ['admin', 'arbory.admin_auth'],
     ],
+
+    'assets' => [
+        'directory' => 'vendor/arbory',
+    ],
 ];

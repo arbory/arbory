@@ -117,4 +117,29 @@ class AssetPipeline
     {
         return $this->inlineCss;
     }
+
+    /**
+     * @param  string  $path
+     *
+     * @return string
+     */
+    public function getStaticUrl(string $path): string
+    {
+        return asset(
+            config('arbory.assets.directory') . '/' . ltrim($path, '/')
+        );
+    }
+
+    /**
+     * @param  string  $path
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function getMixUrl(string $path): string
+    {
+        return asset(
+            mix($path, config('arbory.assets.directory'))
+        );
+    }
 }

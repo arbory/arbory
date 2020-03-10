@@ -25,12 +25,12 @@ class LayoutServiceProvider extends ServiceProvider
         $assets = $admin->assets();
 
         $view->composer('arbory::layout.main', function (View $view) use ($assets, $admin) {
-            $assets->css(mix('css/application.css', 'vendor/arbory'));
+            $assets->css($assets->getMixUrl('css/application.css'));
 
-            $assets->prependJs(mix('js/application.js', 'vendor/arbory'));
-            $assets->prependJs(mix('js/includes.js', 'vendor/arbory'));
-            $assets->prependJs(mix('js/vendor.js', 'vendor/arbory'));
-            $assets->prependJs(mix('js/manifest.js', 'vendor/arbory'));
+            $assets->prependJs($assets->getMixUrl('js/application.js'));
+            $assets->prependJs($assets->getMixUrl('js/includes.js'));
+            $assets->prependJs($assets->getMixUrl('js/vendor.js'));
+            $assets->prependJs($assets->getMixUrl('js/manifest.js'));
 
             $this->loadThirdPartyAssets($assets);
 
@@ -42,8 +42,8 @@ class LayoutServiceProvider extends ServiceProvider
         });
 
         $view->composer('arbory::layout.public', function (View $view) use ($assets) {
-            $assets->css(mix('css/application.css', 'vendor/arbory'));
-            $assets->css(mix('css/controllers/sessions.css', 'vendor/arbory'));
+            $assets->css($assets->getMixUrl('css/application.css'));
+            $assets->css($assets->getMixUrl('css/controllers/sessions.css'));
 
             $view->with([
                 'assets' => $assets,
