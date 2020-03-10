@@ -37,7 +37,7 @@ module.exports = function(mix, publicDirectory) {
 
     mix.copyDirectory('node_modules/ckeditor/', path.resolve(publicDirectory, 'ckeditor'));
     mix.copyDirectory(path.resolve(assetPath, 'js/ckeditor_plugins/'), path.resolve(publicDirectory, 'ckeditor/plugins'));
-    // mix.copyDirectory(path.resolve(assetPath, 'images/'), path.resolve(publicDirectory, 'images'));
+    mix.copyDirectory(path.resolve(assetPath, 'images/'), path.resolve(publicDirectory, 'images'));
     mix.copyDirectory(path.resolve(assetPath, 'fonts/'), path.resolve(publicDirectory, 'fonts'));
 
     mix.version();
