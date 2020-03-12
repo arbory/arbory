@@ -83,6 +83,11 @@ class Column
     protected $exportColumnDisplay;
 
     /**
+     * @var bool
+     */
+    protected $inlineEdit = false;
+
+    /**
      * Column constructor.
      * @param string $name
      * @param string $label
@@ -396,5 +401,44 @@ class Column
         $filterManager = $this->grid->getFilterManager();
 
         return $filterManager->getFilters()->findByOwner($this);
+    }
+
+    /**
+     * @param Model $model
+     * @return Element
+     */
+    public function inlineEditDisplay(Model $model)
+    {
+        $elements = [
+            Html::div($this->callDisplayCallback($model))->addClass('inline-edit__value js-value'),
+            Html::div()->addClass('inline-edit__field js-field')
+        ];
+
+        return Html::div($elements)
+            ->addClass('inline-edit js-inline-edit')
+            ->addAttributes([
+                'data-column' => $this->getName(),
+                'data-edit-url' => $this->grid->getModule()->url('inline.edit', $model->getKey()),
+                'data-update-url' => $this->grid->getModule()->url('inline.update', $model->getKey()),
+            ]);
+    }
+
+    /**
+     * @param bool $inlineEdit
+     * @return Column
+     */
+    public function inlineEditable(?bool $inlineEdit = true): self
+    {
+        $this->inlineEdit = $inlineEdit;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInlineEditable(): bool
+    {
+        return $this->inlineEdit;
     }
 }

@@ -871,6 +871,204 @@ jQuery(document).ready(function () {
 
 /***/ }),
 
+/***/ "./resources/assets/js/include/inline_edit.js":
+/*!****************************************************!*\
+  !*** ./resources/assets/js/include/inline_edit.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(jQuery) {function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var config = {
+  selectors: {
+    value: '.js-value',
+    field: '.js-field'
+  },
+  element: {
+    loading: 'loading'
+  },
+  field: {
+    loaded: 'loaded',
+    error: 'has-error'
+  },
+  error: 'error-box',
+  loader: 'loader',
+  hidden: '-hidden'
+};
+
+var InlineEdit =
+/*#__PURE__*/
+function () {
+  function InlineEdit(element) {
+    _classCallCheck(this, InlineEdit);
+
+    this.element = jQuery(element);
+    this.value = this.element.find(config.selectors.value);
+    this.field = this.element.find(config.selectors.field);
+    this.initialize();
+  }
+
+  _createClass(InlineEdit, [{
+    key: "initialize",
+    value: function initialize() {
+      this.value.on('click', this.showInlineEdit.bind(this));
+    }
+  }, {
+    key: "showInlineEdit",
+    value: function showInlineEdit() {
+      if (this.element.hasClass(config.element.loading)) {
+        return;
+      }
+
+      if (!this.field.data(config.field.loaded)) {
+        this.loadField();
+        return;
+      }
+
+      this.showField();
+    }
+  }, {
+    key: "showField",
+    value: function showField() {
+      this.value.addClass(config.hidden);
+      this.field.removeClass(config.hidden).find(':input').focus();
+    }
+  }, {
+    key: "hideField",
+    value: function hideField() {
+      this.field.addClass(config.hidden);
+      this.value.removeClass(config.hidden);
+    }
+  }, {
+    key: "loadField",
+    value: function loadField() {
+      var self = this;
+      jQuery.ajax({
+        type: 'get',
+        url: this.element.data('edit-url'),
+        data: {
+          column: this.element.data('column')
+        },
+        beforeSend: function beforeSend() {
+          return self.showLoader();
+        },
+        success: function success(response) {
+          return self.fieldLoaded(response);
+        },
+        complete: function complete() {
+          return self.hideLoader();
+        }
+      });
+    }
+  }, {
+    key: "fieldLoaded",
+    value: function fieldLoaded(response) {
+      this.field.data(config.field.loaded, true).html(response.field);
+      this.field.find(':input').on('blur', this.hideField.bind(this)).on('change paste', this.saveValue.bind(this));
+      this.showField();
+    }
+  }, {
+    key: "saveValue",
+    value: function saveValue() {
+      var self = this;
+      var changedField = jQuery(event.target);
+      var data = {
+        _method: 'put',
+        _token: InlineEdit.getToken(),
+        column: this.element.data('column')
+      };
+      data[changedField.attr('name')] = changedField.val();
+      jQuery.ajax({
+        type: 'post',
+        url: this.element.data('update-url') + location.search,
+        data: data,
+        beforeSend: function beforeSend() {
+          self.showLoader();
+          self.hideValidationErrors();
+        },
+        success: function success(response) {
+          return self.updateValue(response.columnValue);
+        },
+        error: function error(response) {
+          if (response.status === 422) {
+            self.showField();
+            self.showValidationErrors(response.responseJSON.errors, changedField);
+          }
+        },
+        complete: function complete() {
+          return self.hideLoader();
+        }
+      });
+    }
+  }, {
+    key: "updateValue",
+    value: function updateValue(value) {
+      this.value.html(value);
+    }
+  }, {
+    key: "showValidationErrors",
+    value: function showValidationErrors(errors, field) {
+      var errorBox;
+      var message = [];
+      jQuery.each(errors, function (fieldName, fieldErrors) {
+        message.push(fieldErrors.join('<br>'));
+      });
+      errorBox = InlineEdit.errorBox(message.join('<br>'));
+      field.after(errorBox).closest('.field').addClass(config.field.error);
+    }
+  }, {
+    key: "hideValidationErrors",
+    value: function hideValidationErrors() {
+      this.element.find('.' + config.error).remove();
+      this.element.find('.' + config.field.error).removeClass(config.field.error);
+    }
+  }, {
+    key: "showLoader",
+    value: function showLoader() {
+      this.element.addClass(config.element.loading).prepend(InlineEdit.loader());
+    }
+  }, {
+    key: "hideLoader",
+    value: function hideLoader() {
+      this.element.removeClass(config.element.loading).find('.' + config.loader).remove();
+    }
+  }], [{
+    key: "errorBox",
+    value: function errorBox(errorMessage) {
+      return jQuery('<div></div>').addClass(config.error).append('<div class="error"><div>').html(errorMessage);
+    }
+  }, {
+    key: "loader",
+    value: function loader() {
+      return jQuery('<i class="fa fa-spin fa-spinner" />').addClass(config.loader);
+    }
+  }, {
+    key: "getToken",
+    value: function getToken() {
+      return jQuery('meta[name="csrf-token"]').attr('content');
+    }
+  }]);
+
+  return InlineEdit;
+}();
+
+jQuery(function () {
+  var body = jQuery('body');
+  body.on('contentloaded', function (event) {
+    jQuery(event.target).find('.js-inline-edit').each(function (index, element) {
+      new InlineEdit(element);
+    });
+  });
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
 /***/ "./resources/assets/js/include/loader.js":
 /*!***********************************************!*\
   !*** ./resources/assets/js/include/loader.js ***!
@@ -2992,9 +3190,9 @@ function () {
 /***/ }),
 
 /***/ 1:
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** multi ./resources/assets/js/include/accordion.js ./resources/assets/js/include/ajax.js ./resources/assets/js/include/ajaxbox.js ./resources/assets/js/include/constructor.js ./resources/assets/js/include/dialogs.js ./resources/assets/js/include/field.type_associated_set.js ./resources/assets/js/include/field.type_date_or_datetime_or_time.js ./resources/assets/js/include/filter.js ./resources/assets/js/include/loader.js ./resources/assets/js/include/localization.js ./resources/assets/js/include/mass.js ./resources/assets/js/include/menu.js ./resources/assets/js/include/nested_fields.js ./resources/assets/js/include/nodes.js ./resources/assets/js/include/notifications.js ./resources/assets/js/include/pagination.js ./resources/assets/js/include/remote_validator.js ./resources/assets/js/include/search.js ./resources/assets/js/include/sidebar.js ./resources/assets/js/include/sortable.js ./resources/assets/js/include/store_settings.js ./resources/assets/js/include/toolbox.js ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** multi ./resources/assets/js/include/accordion.js ./resources/assets/js/include/ajax.js ./resources/assets/js/include/ajaxbox.js ./resources/assets/js/include/constructor.js ./resources/assets/js/include/dialogs.js ./resources/assets/js/include/field.type_associated_set.js ./resources/assets/js/include/field.type_date_or_datetime_or_time.js ./resources/assets/js/include/filter.js ./resources/assets/js/include/inline_edit.js ./resources/assets/js/include/loader.js ./resources/assets/js/include/localization.js ./resources/assets/js/include/mass.js ./resources/assets/js/include/menu.js ./resources/assets/js/include/nested_fields.js ./resources/assets/js/include/nodes.js ./resources/assets/js/include/notifications.js ./resources/assets/js/include/pagination.js ./resources/assets/js/include/remote_validator.js ./resources/assets/js/include/search.js ./resources/assets/js/include/sidebar.js ./resources/assets/js/include/sortable.js ./resources/assets/js/include/store_settings.js ./resources/assets/js/include/toolbox.js ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3006,6 +3204,7 @@ __webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/i
 __webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/include/field.type_associated_set.js */"./resources/assets/js/include/field.type_associated_set.js");
 __webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/include/field.type_date_or_datetime_or_time.js */"./resources/assets/js/include/field.type_date_or_datetime_or_time.js");
 __webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/include/filter.js */"./resources/assets/js/include/filter.js");
+__webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/include/inline_edit.js */"./resources/assets/js/include/inline_edit.js");
 __webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/include/loader.js */"./resources/assets/js/include/loader.js");
 __webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/include/localization.js */"./resources/assets/js/include/localization.js");
 __webpack_require__(/*! /Users/sabineabele/Projects/arbory/resources/assets/js/include/mass.js */"./resources/assets/js/include/mass.js");

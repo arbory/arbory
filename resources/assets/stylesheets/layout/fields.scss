@@ -107,19 +107,18 @@ input.text
     .value
     {
         position: relative;
-
-        .error-box
-        {
-            position: absolute;
-            right:  steps(0.5);
-            bottom: steps(-2);
-            color: $color-alert;
-
-            @include font-size-smaller;
-            font-style: italic;
-        }
     }
 
+    .error-box
+    {
+        position: absolute;
+        right:  steps(0.5);
+        bottom: steps(-2);
+        color: $color-alert;
+
+        @include font-size-smaller;
+        font-style: italic;
+    }
 
     &.type-item {
         img {

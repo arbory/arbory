@@ -1,0 +1,40 @@
+.inline-edit {
+  position: relative;
+
+  :hover:not(.loading) {
+    cursor: pointer;
+  }
+
+  &__value {
+    padding: steps(0.5) steps(1);
+    min-height: steps(3);
+    width: 100%;
+
+    :hover:not(.loading) > & {
+      text-decoration: underline;
+    }
+
+    .loading > & {
+      opacity: 0.2;
+    }
+  }
+
+  &__field {
+    .field {
+      padding: steps(0.5);
+      margin: 0;
+      min-height: auto;
+      width: 100%;
+    }
+  }
+
+  .-hidden {
+    display:none;
+  }
+
+  .loader {
+    position: absolute;
+    top: steps(0.5);
+    left: steps(1);
+  }
+}

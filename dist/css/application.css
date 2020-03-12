@@ -2050,7 +2050,7 @@ input.text {
   position: relative;
 }
 
-.field .value .error-box {
+.field .error-box {
   position: absolute;
   right: 6px;
   bottom: -24px;
@@ -3482,6 +3482,45 @@ form.search .extras .ui-widget button,
 .ui-widget .saved-filter button.delete:hover {
   background: #b94a48;
   color: #ffffff;
+}
+
+.inline-edit {
+  position: relative;
+}
+
+.inline-edit :hover:not(.loading) {
+  cursor: pointer;
+}
+
+.inline-edit__value {
+  padding: 6px 12px;
+  min-height: 36px;
+  width: 100%;
+}
+
+:hover:not(.loading) > .inline-edit__value {
+  text-decoration: underline;
+}
+
+.loading > .inline-edit__value {
+  opacity: 0.2;
+}
+
+.inline-edit__field .field {
+  padding: 6px;
+  margin: 0;
+  min-height: auto;
+  width: 100%;
+}
+
+.inline-edit .-hidden {
+  display: none;
+}
+
+.inline-edit .loader {
+  position: absolute;
+  top: 6px;
+  left: 12px;
 }
 
 section.error .description {

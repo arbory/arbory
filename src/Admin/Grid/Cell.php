@@ -77,14 +77,25 @@ class Cell implements Renderable
      */
     public function render(): Element
     {
-        $grid = $this->row->getGrid();
+        return Html::td($this->getColumnDisplay());
+    }
+
+    /**
+     * @return Element
+     */
+    protected function getColumnDisplay(): Element
+    {
         $model = $this->getModel();
         $column = $this->getColumn();
 
-        $value = $grid->isExportEnabled() ?
-            $column->getExportColumnDisplay($model) :
-            $column->callDisplayCallback($model);
+        if ($this->getRow()->getGrid()->isExportEnabled()) {
+            return $column->getExportColumnDisplay($model);
+        }
 
-        return Html::td($value);
+        if ($column->isInlineEditable()) {
+            return $column->inlineEditDisplay($model);
+        }
+
+        return $column->callDisplayCallback($model);
     }
 }
