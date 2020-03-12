@@ -243,7 +243,7 @@ class TranslationsController extends Controller
     protected function buildLanguageFilter(FilterManager $filterManager): FilterItem
     {
         $options = $this->getLanguageFilterOptions();
-        
+
         return $filterManager
             ->addFilter(
                 'language',
