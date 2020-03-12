@@ -411,7 +411,7 @@ class Column
     {
         $elements = [
             Html::div($this->callDisplayCallback($model))->addClass('inline-edit__value js-value'),
-            Html::div()->addClass('inline-edit__field js-field')
+            Html::div()->addClass('inline-edit__field js-field'),
         ];
 
         return Html::div($elements)

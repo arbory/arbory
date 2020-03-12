@@ -10,7 +10,6 @@ use Arbory\Base\Http\Requests\InlineEditRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
 /**
@@ -36,7 +35,7 @@ trait InlineEdit
         $form = $this->buildInlineForm($resource, $fieldName);
 
         return response()->json([
-            'field' => (string) $form->fields()->render()
+            'field' => (string) $form->fields()->render(),
         ]);
     }
 
@@ -56,7 +55,7 @@ trait InlineEdit
         $form->update($request);
 
         return response()->json([
-            'columnValue' => $this->getInlineUpdateColumnValue($resourceId, $fieldName)
+            'columnValue' => $this->getInlineUpdateColumnValue($resourceId, $fieldName),
         ]);
     }
 

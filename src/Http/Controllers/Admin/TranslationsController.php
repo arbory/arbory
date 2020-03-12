@@ -14,11 +14,9 @@ use Arbory\Base\Admin\Tools\ToolboxMenu;
 use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Admin\Traits\HasHighlightedText;
 use Arbory\Base\Admin\Traits\InlineEdit;
-use Arbory\Base\Translations\Admin\Grid\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
@@ -29,7 +27,6 @@ use Waavi\Translation\Models\Language;
 use Waavi\Translation\Models\Translation;
 use Waavi\Translation\Repositories\LanguageRepository;
 use Waavi\Translation\Repositories\TranslationRepository;
-use Waavi\Translation\Cache\CacheRepositoryInterface;
 
 /**
  * Class TranslationsController.
@@ -199,7 +196,7 @@ class TranslationsController extends Controller
             $fieldName = $this->fieldName($language);
             unset($translation->$fieldName);
 
-            if (!Arr::has($resource, $fieldName)) {
+            if (! Arr::has($resource, $fieldName)) {
                 continue;
             }
 
@@ -278,7 +275,7 @@ class TranslationsController extends Controller
     {
         $searchBy = "%$search%";
 
-        foreach(self::KEY_FIELDS as $field) {
+        foreach (self::KEY_FIELDS as $field) {
             $query->orHaving($field, 'like', $searchBy);
         }
 
@@ -292,7 +289,7 @@ class TranslationsController extends Controller
      */
     protected function buildLanguageQuery(Builder $query, ?array $languageIds = [])
     {
-        foreach($this->getLanguages($languageIds) as $language) {
+        foreach ($this->getLanguages($languageIds) as $language) {
             $locale = $language->locale;
             $field = $this->fieldName($language);
 
@@ -327,7 +324,7 @@ class TranslationsController extends Controller
     {
         $languages = $this->languageRepository->all();
 
-        if (!empty($languageIds)) {
+        if (! empty($languageIds)) {
             return $languages->whereIn('id', $languageIds);
         }
 
@@ -360,7 +357,7 @@ class TranslationsController extends Controller
     protected function findOrCreate(Language $language, Translation $translation): Translation
     {
         $fields = ['locale' => $language->locale];
-        foreach(self::KEY_FIELDS as $field) {
+        foreach (self::KEY_FIELDS as $field) {
             $fields[$field] = $translation->$field;
         }
 
