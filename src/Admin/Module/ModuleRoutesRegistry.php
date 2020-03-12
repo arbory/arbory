@@ -43,6 +43,15 @@ class ModuleRoutesRegistry
 
         $router->resource($slug, '\\'.$class);
 
+        $router->get($slug.'/{resourceId}/inline-edit', [
+            'as' => $slug.'.inline.edit',
+            'uses' => '\\'.$class.'@inlineEdit',
+        ]);
+        $router->put($slug.'/{resourceId}/inline-update', [
+            'as' => $slug.'.inline.update',
+            'uses' => '\\'.$class.'@inlineUpdate',
+        ]);
+
         $router->post($slug.'/bulkupdate', [
             'as' => $slug.'.bulkupdate',
             'uses' => '\\'.$class.'@bulkUpdate',
