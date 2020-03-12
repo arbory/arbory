@@ -70,6 +70,11 @@
         display: block;
     }
 
+    td .highlight
+    {
+        background-color: $color-highlight-lighter;
+    }
+
     td.only-icon
     {
         text-align: center;

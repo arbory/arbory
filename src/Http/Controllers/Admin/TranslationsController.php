@@ -2,290 +2,372 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Illuminate\View\View;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Admin\Filter\FilterManager;
+use Arbory\Base\Admin\Filter\Parameters\Transformers\DefaultValueTransformer;
+use Arbory\Base\Admin\Filter\Parameters\Transformers\QueryStringTransformer;
+use Arbory\Base\Admin\Filter\Types\MultiCheckboxFilterType;
+use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Admin\Traits\HasHighlightedText;
+use Arbory\Base\Admin\Traits\InlineEdit;
+use Arbory\Base\Translations\Admin\Grid\Filter;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Routing\Redirector;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Waavi\Translation\Cache\SimpleRepository;
 use Waavi\Translation\Models\Language;
-use Illuminate\Database\Query\JoinClause;
 use Waavi\Translation\Models\Translation;
-use Arbory\Base\Admin\Widgets\Breadcrumbs;
-use Arbory\Base\Admin\Widgets\SearchField;
-use Waavi\Translation\Cache\CacheRepositoryInterface;
-use Arbory\Base\Http\Requests\TranslationStoreRequest;
 use Waavi\Translation\Repositories\LanguageRepository;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Waavi\Translation\Repositories\TranslationRepository;
+use Waavi\Translation\Cache\CacheRepositoryInterface;
 
 /**
  * Class TranslationsController.
  */
 class TranslationsController extends Controller
 {
+    use Crudify;
+    use InlineEdit;
+    use HasHighlightedText;
+
+    protected const TRANSLATION_FIELD = 'text';
+    protected const KEY_FIELDS = [
+        'namespace',
+        'group',
+        'item',
+    ];
+
     /**
-     * @var TranslationRepository
+     * @var string
      */
-    protected $translationsRepository;
+    protected $resource = Translation::class;
 
     /**
      * @var LanguageRepository
      */
-    protected $languagesRepository;
+    protected $languageRepository;
 
     /**
-     * @var Request
+     * @var TranslationRepository
      */
-    protected $request;
-
-    /** @noinspection PhpMissingParentConstructorInspection */
+    protected $translationRepository;
 
     /**
+     * @var SimpleRepository
+     */
+    protected $translationCache;
+
+    /**
+     * TranslationsController constructor.
+     * @param LanguageRepository $languageRepository
      * @param TranslationRepository $translationRepository
-     * @param LanguageRepository $languagesRepository
      */
     public function __construct(
-        TranslationRepository $translationRepository,
-        LanguageRepository $languagesRepository
+        LanguageRepository $languageRepository,
+        TranslationRepository $translationRepository
     ) {
-        $this->translationsRepository = $translationRepository;
-        $this->languagesRepository = $languagesRepository;
+        $this->languageRepository = $languageRepository;
+        $this->translationRepository = $translationRepository;
+        $this->translationCache = app('translation.cache.repository');
+    }
+
+    /**
+     * @param Grid $grid
+     * @return Grid
+     */
+    public function grid(Grid $grid)
+    {
+        $search = request()->get('search');
+
+        $this->buildResourceQuery($grid->getFilter()->getQuery());
+        $this->buildFilterManager($grid->getFilterManager());
+        $languageFilter = $this->buildLanguageFilter($grid->getFilterManager());
+
+        $grid->setColumns(function (Grid $grid) use ($search, $languageFilter) {
+            $grid->column('group', trans('arbory::translations.group'))
+                ->display($this->highlightedTextDisplay($search))
+                ->setCustomSearchQuery(function (Builder $query, string $string) use ($grid) {
+                    $this->buildSearchQuery($grid->getFilter()->getQuery(), $string);
+                })
+                ->addFilter(MultiCheckboxFilterType::class, ['options' => $this->getGroupFilterOptions()]);
+
+            $grid->column('item', trans('arbory::translations.item'))
+                ->display($this->highlightedTextDisplay($search))
+                ->searchable(false);
+
+            $languageIds = $grid->getFilterManager()
+                ->getParameters()
+                ->getFromFilter($languageFilter);
+
+            foreach ($this->getLanguages($languageIds) as $language) {
+                $grid->column($this->fieldName($language), $this->fieldLabel($language))
+                    ->display($this->highlightedTextDisplay($search))
+                    ->setCustomSearchQuery(function (Builder $query) use ($language) {
+                        $query->orWhere('locale', $language->locale);
+                    })
+                    ->inlineEditable();
+            }
+        });
+
+        $grid->tools(['search', 'filter']);
+
+        return $grid;
+    }
+
+    /**
+     * @param ToolboxMenu $tools
+     */
+    protected function toolbox(ToolboxMenu $tools)
+    {
+        $model = $tools->model();
+
+        $tools->add('edit', $this->url('edit', $model->getKey()));
+    }
+
+    /**
+     * @param Form $form
+     * @return Form
+     */
+    protected function form(Form $form)
+    {
+        $translation = $form->getModel();
+
+        $form->title($translation->code);
+        $form->setFields(function (FieldSet $fields) use ($translation) {
+            foreach ($this->getLanguages() as $language) {
+                $fields->text($this->fieldName($language))
+                    ->setLabel($this->fieldLabel($language))
+                    ->setDefaultValue($translation->code)
+                    ->rules('required');
+            }
+        });
+
+        $form->addEventListener('update.before', function (Request $request) use ($form) {
+            $this->beforeUpdate($request, $form);
+        });
+
+        return $form;
+    }
+
+    /**
+     * @param Form $form
+     * @return Form
+     */
+    protected function inlineForm(Form $form): Form
+    {
+        $form->addEventListener('update.before', function (Request $request) use ($form) {
+            $this->beforeUpdate($request, $form);
+        });
+
+        return $form;
+    }
+
+    /**
+     * @param FieldSet $fields
+     * @return FieldSet
+     */
+    protected function inlineFormFields(FieldSet $fields): FieldSet
+    {
+        foreach ($this->getLanguages() as $language) {
+            $fields->text($this->fieldName($language))
+                ->rules('required');
+        }
+
+        return $fields;
     }
 
     /**
      * @param Request $request
-     * @return Factory|View
+     * @param Form $form
      */
-    public function index(Request $request)
+    protected function beforeUpdate(Request $request, Form $form): void
     {
-        $this->request = $request;
+        $translation = $form->getModel();
+        $resource = $request->get($form->getNamespace(), []);
 
-        $languages = $this->languagesRepository->all();
+        foreach ($this->getLanguages() as $language) {
+            $fieldName = $this->fieldName($language);
+            unset($translation->$fieldName);
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        /* @var $allItems Builder */
-        $allItems = Translation::distinct()->select('item', 'group', 'namespace');
-
-        $translationsQuery = \DB::table(\DB::raw('('.$allItems->toSql().') as d1'));
-
-        $translationsQuery->addSelect('d1.*');
-
-        $translationsTableName = (new Translation())->getTable();
-
-        foreach ($languages as $language) {
-            $locale = $language->locale;
-
-            $joinAlias = 'l_'.$locale;
-
-            $translationsQuery->addSelect($joinAlias.'.text AS '.$locale.'_text');
-            $translationsQuery->addSelect($joinAlias.'.locked AS '.$locale.'_locked');
-            $translationsQuery->addSelect($joinAlias.'.unstable AS '.$locale.'_unstable');
-
-            $translationsQuery->leftJoin(
-                $translationsTableName.' as l_'.$locale,
-                function (JoinClause $join) use ($joinAlias, $locale) {
-                    $join
-                        ->on($joinAlias.'.group', '=', 'd1.group')
-                        ->on($joinAlias.'.item', '=', 'd1.item')
-                        ->on($joinAlias.'.locale', '=', \DB::raw('\''.$locale.'\''));
-                }
-            );
-        }
-
-        $searchString = $request->get('search');
-
-        if ($searchString) {
-            $translationsQuery->where('d1.group', 'LIKE', '%'.$searchString.'%');
-            $translationsQuery->orWhere('d1.namespace', 'LIKE', '%'.$searchString.'%');
-            $translationsQuery->orWhere('d1.item', 'LIKE', '%'.$searchString.'%');
-
-            foreach ($languages as $language) {
-                $translationsQuery->orWhere('l_'.$language->locale.'.text', 'LIKE', '%'.$searchString.'%');
-            }
-        }
-
-        $paginatedItems = $this->getPaginatedItems($translationsQuery);
-
-        return view(
-            'arbory::controllers.translations.index',
-            [
-                'header' => Html::header([$this->getIndexBreadcrumbs(), (new SearchField(''))->render()]),
-                'languages' => $languages,
-                'translations' => $paginatedItems,
-                'paginator' => $paginatedItems,
-                'search' => $request->get('search'),
-                'highlight' => function ($text) use ($searchString) {
-                    $format = '<span style="background-color: lime; font-weight:bold">%s</span>';
-                    $resultHtml = sprintf($format, htmlentities($searchString));
-
-                    return str_replace($searchString, $resultHtml, htmlentities($text));
-                },
-            ]
-        );
-    }
-
-    /**
-     * @param Request $request
-     * @param string $namespace
-     * @param string $group
-     * @param string $item
-     * @return View
-     */
-    public function edit(Request $request, $namespace, $group, $item)
-    {
-        $group = str_replace('.', '/', $group);
-        $translationKey = $namespace.'::'.$group.'.'.$item;
-        $this->request = $request;
-
-        /* @var $languages Language[] */
-        $languages = $this->languagesRepository->all();
-
-        $translations = [];
-        foreach ($languages as $language) {
-            /** @noinspection PhpUndefinedFieldInspection */
-            $locale = $language->locale;
-
-            $translation = $this->translationsRepository->findByCode(
-                $locale,
-                $namespace,
-                $group,
-                $item
-            );
-
-            if (! $translation) {
-                $translation = new Translation([
-                    'locale' => $locale,
-                    'namespace' => $namespace,
-                    'group' => $group,
-                    'item' => $item,
-                    'text' => $translationKey,
-                ]);
-                $translation->save();
+            if (!Arr::has($resource, $fieldName)) {
+                continue;
             }
 
-            $translations[$locale] = $translation;
-        }
+            $langTranslation = $this->findOrCreate($language, $translation);
+            $this->translationRepository->updateAndLock(
+                $langTranslation->getKey(),
+                Arr::get($resource, $fieldName)
+            );
 
-        return view(
-            'arbory::controllers.translations.edit',
-            [
-                'header' => Html::header([$this->getEditBreadcrumbs($translationKey)]),
-                'input' => $request,
-                'languages' => $languages,
-                'namespace' => $namespace,
-                'group' => $group,
-                'item' => $item,
-                'translations' => $translations,
-                'back_to_index_url' => route('admin.translations.index', $this->getContext()),
-                'update_url' => route('admin.translations.update', $this->getContext()),
-            ]
-        );
+            $this->translationCache->flush($language->locale, $translation->group, $translation->namespace);
+        }
     }
 
     /**
-     * @param TranslationStoreRequest $request
-     * @return RedirectResponse|Redirector
+     * @param mixed $resourceId
+     * @return Model
      */
-    public function store(TranslationStoreRequest $request)
+    protected function findOrNew($resourceId): Model
     {
-        $this->request = $request;
+        $resource = $this->resource();
 
-        /* @var $languages Language[] */
-        $languages = $this->languagesRepository->all();
+        $query = $resource->newQuery();
+        $this->buildResourceQuery($query);
+        $this->buildLanguageQuery($query);
+        $query->having($resource->getKeyName(), $resourceId);
 
-        /** @var CacheRepositoryInterface $cache */
-        $cache = \App::make('translation.cache.repository');
 
-        foreach ($languages as $language) {
-            /** @noinspection PhpUndefinedFieldInspection */
+        return $query->first() ?? $resource->setAttribute($resource->getKeyName(), $resourceId);
+    }
+
+    /**
+     * @param FilterManager $filterManager
+     */
+    protected function buildFilterManager(FilterManager $filterManager): void
+    {
+        $filterManager
+            ->addTransformer(QueryStringTransformer::class)
+            ->addTransformer(new DefaultValueTransformer($filterManager));
+    }
+
+    /**
+     * @param FilterManager $filterManager
+     * @return FilterItem
+     */
+    protected function buildLanguageFilter(FilterManager $filterManager): FilterItem
+    {
+        $options = $this->getLanguageFilterOptions();
+        return $filterManager
+            ->addFilter(
+                'language',
+                trans('arbory::translations.language'),
+                MultiCheckboxFilterType::class,
+                ['options' => $options]
+            )
+            ->setExecutor(function (FilterItem $filterItem, Builder $query) {
+                $this->buildLanguageQuery($query, $filterItem->getType()->getValue());
+            })
+            ->setDefaultValue(array_keys($options));
+    }
+
+    /**
+     * @param Builder|QueryBuilder $query
+     */
+    protected function buildResourceQuery(Builder $query)
+    {
+        $query->selectRaw('min(`id`) as `id`')
+            ->addSelect(self::KEY_FIELDS)
+            ->groupBy(self::KEY_FIELDS);
+    }
+
+    /**
+     * @param Builder|QueryBuilder $query
+     * @param string $search
+     */
+    protected function buildSearchQuery(Builder $query, string $search)
+    {
+        $searchBy = "%$search%";
+
+        foreach(self::KEY_FIELDS as $field) {
+            $query->orHaving($field, 'like', $searchBy);
+        }
+
+        $field = self::TRANSLATION_FIELD;
+        $query->orHavingRaw("group_concat(`$field`) like ?", [$searchBy]);
+    }
+
+    /**
+     * @param Builder $query
+     * @param array|null $languageIds
+     */
+    protected function buildLanguageQuery(Builder $query, ?array $languageIds = [])
+    {
+        foreach($this->getLanguages($languageIds) as $language) {
             $locale = $language->locale;
+            $field = $this->fieldName($language);
 
-            $translation = $this->translationsRepository->findByCode(
-                $locale,
-                $request->get('namespace'),
-                $request->get('group'),
-                $request->get('item')
-            );
-
-            /* @noinspection PhpUndefinedFieldInspection */
-            $this->translationsRepository->updateAndLock(
-                $translation->id,
-                $request->get('text_'.$locale)
-            );
-
-            $cache->flush($locale, $request->get('group'), $request->get('namespace'));
+            $query->addSelect(DB::raw("group_concat(if(`locale` = '$locale', `text`, null)) as $field"));
         }
-
-        return redirect(route('admin.translations.index', $this->getContext()));
-    }
-
-    /**
-     * @return Breadcrumbs
-     */
-    protected function getIndexBreadcrumbs(): Breadcrumbs
-    {
-        $module = \Admin::modules()->findModuleByController($this);
-
-        return (new Breadcrumbs)->addItem(
-            $module->getConfiguration()->getName(),
-            route('admin.translations.index', $this->getContext())
-        );
-    }
-
-    /**
-     * @param string $editTitle
-     * @return Breadcrumbs
-     */
-    protected function getEditBreadcrumbs(string $editTitle): Breadcrumbs
-    {
-        $breadcrumbs = $this->getIndexBreadcrumbs();
-        $breadcrumbs->addItem($editTitle, '');
-
-        return $breadcrumbs;
-    }
-
-    /**
-     * @param \stdClass $item
-     * @param LengthAwarePaginator $paginator
-     * @return string
-     */
-    private function getEditUrl($item, LengthAwarePaginator $paginator)
-    {
-        return route(
-            'admin.translations.edit',
-            [
-                'namespace' => $item->namespace,
-                'group' => str_replace('/', '.', $item->group),
-                'item' => $item->item,
-                'page' => $paginator->currentPage(),
-                'search' => $this->request->get('search'),
-            ]
-        );
-    }
-
-    /**
-     * @param Builder $translationsQueryBuilder
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    private function getPaginatedItems(Builder $translationsQueryBuilder)
-    {
-        $paginator = $translationsQueryBuilder->paginate(10000);
-
-        foreach ($paginator->items() as $item) {
-            $item->edit_url = $this->getEditUrl($item, $paginator);
-        }
-
-        return $paginator;
     }
 
     /**
      * @return array
      */
-    private function getContext()
+    protected function getLanguageFilterOptions(): array
     {
-        return ['page' => $this->request->get('page'), 'search' => $this->request->get('search')];
+        return $this->getLanguages()->pluck('locale', 'id')->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getGroupFilterOptions(): array
+    {
+        return $this->translationRepository->getModel()
+            ->groupBy('group')
+            ->pluck('group', 'group')
+            ->toArray();
+    }
+
+    /**
+     * @param array|null $languageIds
+     * @return Language[]|Collection
+     */
+    protected function getLanguages(?array $languageIds = []): Collection
+    {
+        $languages = $this->languageRepository->all();
+
+        if (!empty($languageIds)) {
+            return $languages->whereIn('id', $languageIds);
+        }
+
+        return $languages;
+    }
+
+    /**
+     * @param Language $language
+     * @return string
+     */
+    protected function fieldName(Language $language): string
+    {
+        return sprintf('%s_%s', $language->locale, self::TRANSLATION_FIELD);
+    }
+
+    /**
+     * @param Language $language
+     * @return string
+     */
+    protected function fieldLabel(Language $language): string
+    {
+        return trans('arbory::translations.text', ['locale' => $language->locale]);
+    }
+
+    /**
+     * @param Language $language
+     * @param Translation $translation
+     * @return Translation
+     */
+    protected function findOrCreate(Language $language, Translation $translation): Translation
+    {
+        $fields = ['locale' => $language->locale];
+        foreach(self::KEY_FIELDS as $field) {
+            $fields[$field] = $translation->$field;
+        }
+
+        return $this->translationRepository->getModel()
+            ->firstOrCreate(
+                $fields,
+                [self::TRANSLATION_FIELD => $translation->code]
+            );
     }
 }

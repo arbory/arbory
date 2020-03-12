@@ -2390,6 +2390,10 @@ input.text {
   display: block;
 }
 
+.table td .highlight {
+  background-color: #40cf83;
+}
+
 .table td.only-icon {
   text-align: center;
   width: 36px;
