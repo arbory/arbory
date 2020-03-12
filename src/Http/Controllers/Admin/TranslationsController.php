@@ -223,7 +223,6 @@ class TranslationsController extends Controller
         $this->buildLanguageQuery($query);
         $query->having($resource->getKeyName(), $resourceId);
 
-
         return $query->first() ?? $resource->setAttribute($resource->getKeyName(), $resourceId);
     }
 
@@ -244,6 +243,7 @@ class TranslationsController extends Controller
     protected function buildLanguageFilter(FilterManager $filterManager): FilterItem
     {
         $options = $this->getLanguageFilterOptions();
+        
         return $filterManager
             ->addFilter(
                 'language',
