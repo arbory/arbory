@@ -87,7 +87,7 @@ class ConstructorFieldRenderer implements RendererInterface
             $fieldSet = $this->field->getRelationFieldSet($this->field->buildFromBlock($object), '_template_');
 
             $select->append(
-                Html::option($object->name())->setValue($type)->addAttributes(
+                Html::option($object->title())->setValue($type)->addAttributes(
                     [
                         'data-template' => $this->getRelationItemHtml($object, $fieldSet, '_template_'),
                     ]
