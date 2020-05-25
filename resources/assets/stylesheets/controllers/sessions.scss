@@ -14,7 +14,7 @@
 
         > .box
         {
-            width: steps(26);
+            width: steps(30);
             margin: 0 auto;
             position: relative;
             top: 15%;
@@ -24,15 +24,18 @@
                 width:  steps(24);
                 height: steps(11);
                 background-repeat: no-repeat;
-                background-image: url("/arbory/images/logo-login.svg");
-                margin-left: steps(1);
+                background-image: url("/vendor/arbory/images/logo-login.svg");
+                margin: 0 auto;
             }
         }
     }
 
+    .logo {
+
+    }
+
     .field
     {
-        margin-left: steps(1);
         width: steps(30);
         min-height: auto;
         margin-bottom: steps(1);
@@ -80,7 +83,7 @@
             text-align: center;
 
             a {
-                color: white;
+                color: $color-white;
                 text-decoration: none;
             }
 
