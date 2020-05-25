@@ -1,3 +1,4 @@
+$color-white: #ffffff;
 // basic text and background colors:
 $color-text-darkest:        #111111;
 $color-text-normal:         #3E3F42;
@@ -9,7 +10,8 @@ $color-background-darkest:  #c5c5c5;
 $color-background-darker:   #EAEDF3;
 $color-background-normal:   #EEF2FC;
 $color-background-lighter:  #FBFBFD;
-$color-background-lightest: #ffffff;
+$color-background-lightest: $color-white;
+
 
 $color-labels: #9EA0A5;
 
@@ -31,7 +33,7 @@ $color-background-inverted-lightest:    #3c3c3c;
 $color-text-inverted-darkest:           #636363;
 $color-text-inverted-darker:            #a6a6a6;
 $color-text-inverted-normal:            #d4d4d4;
-$color-text-inverted-lightest:          #ffffff;
+$color-text-inverted-lightest:          $color-white;
 
 // border colors:
 $color-border-darkest:          #636363;

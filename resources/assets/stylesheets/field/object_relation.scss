@@ -36,7 +36,7 @@
         .relations, .related {
             .item {
                 &[data-inactive=false]:hover {
-                    color: white;
+                    color: $color-white;
                     background-color: $color-highlight-normal;
                 }
             }
