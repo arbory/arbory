@@ -15,7 +15,9 @@ mix.webpackConfig({
     ],
 });
 
-mix.js('resources/assets/js/controllers/*', 'js/controllers/');
+mix.js('resources/assets/js/controllers/nodes.js', 'js/controllers/nodes.js');
+mix.js('resources/assets/js/controllers/roles.js', 'js/controllers/roles.js');
+mix.js('resources/assets/js/controllers/sessions.js', 'js/controllers/sessions.js');
 
 mix.js('resources/assets/js/include/**/*.js', 'js/includes.js');
 
