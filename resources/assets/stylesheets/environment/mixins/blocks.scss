@@ -90,14 +90,15 @@
     .button.secondary
     {
         background-color: inherit;
-        color: $color-highlight-normal;
+        color: $text-color;
+        @include font-bold;
 
         &:hover,
         &:focus,
         &:active
         {
             background-color: inherit;
-            color: $text-color;
+           color: $color-white;
         }
 
         &.danger
@@ -113,6 +114,7 @@
             &:active
             {
                 background-color: $color-alert;
+                color: $color-white;
             }
         }
     }
@@ -121,13 +123,26 @@
 
 @mixin section-header
 {
-    @include inverted;
-
-    padding: steps(0.5) steps(2);
+    //@include inverted;
+    margin: 0 steps(2);
+    padding-right: steps(2);
     position: relative;
+
+    .title {
+        @include font-bold;
+        font-size: 18px;
+        line-height: 23px;
+
+    }
+
+    .toolbox {
+        .trigger {
+            height: 40px;
+        }
+    }
 }
 
 @mixin pop-up-shadow
 {
-    box-shadow: 1px 3px 5px 0px $color-shadow-normal;
+    box-shadow: 1px 3px 5px 0 $color-shadow-normal;
 }

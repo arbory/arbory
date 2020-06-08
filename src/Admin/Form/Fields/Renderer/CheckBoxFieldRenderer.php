@@ -32,8 +32,9 @@ class CheckBoxFieldRenderer extends ControlFieldRenderer
         );
 
         return Html::div([
-            $control->render($element),
-            Html::label($this->field->getLabel())->addAttributes(['for' => $this->field->getFieldId()]),
+            Html::label($this->field->getLabel())->addAttributes(['for' => $this->field->getFieldId()])
+                ->append($control->render($element))
+                ->append(Html::span()),
         ])->addClass('value');
     }
 }

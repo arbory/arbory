@@ -3,10 +3,11 @@ textarea,
 input.text
 {
     color: $color-text-normal;
-    background-color: $color-background-lighter;
+    background-color: $color-background-lightest;
     border: 1px solid $color-border-normal;
+    border-radius: $border-radius;
     outline: none;
-    font-weight: bold;
+    @include font-bold;
 
     &:hover
     {
@@ -16,7 +17,7 @@ input.text
     &:focus
     {
         background-color: $color-background-lightest;
-        border: 1px solid $color-border-darkest;
+        border: 1px solid $color-highlight-normal;
     }
 
     .field &
@@ -59,7 +60,7 @@ input.text
     position: relative;
     min-height: steps(7);
     margin: 0 $form-gutter-half;
-    
+
     &.i18n > .field {
         margin-left: 0;
         width: 100%;
@@ -92,15 +93,22 @@ input.text
     .label-wrap
     {
         padding: steps(0.5) 0;
-        
+
         .required {
             color: red;
-            font-weight: bold;
+            @include font-bold;
         }
 
         .description
         {
             @include font-size-smaller;
+        }
+
+        label {
+            color: $color-labels;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 500;
         }
     }
 
