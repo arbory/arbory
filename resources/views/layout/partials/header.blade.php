@@ -15,7 +15,7 @@
         {{csrf_field()}}
         <input type="hidden" name="_method" value="post"/>
         <button class="button only-icon" type="submit" title="Sign out">
-            <i class="fa fa-power-off fa-icon-header"></i>
+            <i class="mt-icon">power_settings_new</i>
         </button>
     </form>
 </header>

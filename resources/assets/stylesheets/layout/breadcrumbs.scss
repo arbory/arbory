@@ -6,7 +6,8 @@
 
     li
     {
-        display: inline;
+        display: inline-flex;
+        align-items: center;
 
         a
         {
@@ -33,12 +34,9 @@
             }
         }
 
-        .fa
+        .mt-icon
         {
             @include icon-small;
-            vertical-align: top;
-            position: relative;
-            top: 1px;
         }
 
     }

@@ -58,7 +58,7 @@ class Pagination implements Renderable
             ? Html::link()->addAttributes(['href' => $this->paginator->url($this->paginator->currentPage() - 1)])
             : Html::button()->addAttributes(['type' => 'button', 'disabled' => 'disabled']);
 
-        $previousPage->append(Html::i()->addClass('fa fa-chevron-left'));
+        $previousPage->append(Html::i('arrow_left')->addClass('mt-icon'));
         $previousPage->addClass('button only-icon secondary previous');
         $previousPage->addAttributes(['title' => trans('arbory::pagination.previous_page')]);
 
@@ -99,7 +99,7 @@ class Pagination implements Renderable
             ? Html::link()->addAttributes(['href' => $this->paginator->url($this->paginator->currentPage() + 1)])
             : Html::button()->addAttributes(['type' => 'button', 'disabled' => 'disabled']);
 
-        $nextPage->append(Html::i()->addClass('fa fa-chevron-right'));
+        $nextPage->append(Html::i('arrow_right')->addClass('mt-icon'));
         $nextPage->addClass('button only-icon secondary next');
         $nextPage->addAttributes(['title' => trans('arbory::pagination.next_page')]);
 

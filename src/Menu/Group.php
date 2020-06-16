@@ -51,7 +51,7 @@ class Group extends AbstractItem
                     Html::span([
                         Html::abbr($this->getAbbreviation())->addAttributes(['title' => $this->getTitle()]),
                         Html::span($this->getTitle())->addClass('name'),
-                        Html::span(Html::button(Html::i()->addClass('fa fa-chevron-up'))
+                        Html::span(Html::button(Html::i('arrow_drop_up')->addClass('mt-icon'))
                             ->addAttributes(['type' => 'button']))
                             ->addClass('collapser'),
                     ])->addClass('trigger '.($this->isActive() ? 'active' : ''))

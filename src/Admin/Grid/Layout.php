@@ -78,7 +78,7 @@ class Layout extends AbstractLayout implements LayoutInterface
                     'filter_id' => $savedFilter->id,
                 ]))
                     ->asButton('delete only-icon')
-                    ->withIcon('times')
+                    ->withIcon('delete_outline')
                     ->asAjaxbox()
             );
 

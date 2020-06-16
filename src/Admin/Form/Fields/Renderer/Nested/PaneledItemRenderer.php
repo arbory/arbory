@@ -60,7 +60,7 @@ class PaneledItemRenderer implements ItemInterface
         $button = Button::create()
                         ->title(trans('arbory::fields.relation.remove'))
                         ->type('button', 'only-icon danger remove-nested-item')
-                        ->withIcon('trash-o')
+                        ->withIcon('delete_outline')
                         ->iconOnly();
 
         $input = Html::input()
@@ -92,7 +92,7 @@ class PaneledItemRenderer implements ItemInterface
             Button::create()
                   ->title(trans('arbory::fields.relation.moveDown'))
                   ->type('button', 'only-icon secondary sortable-navigation move-down')
-                  ->withIcon('chevron-down')
+                  ->withIcon('keyboard_arrow_down')
                   ->iconOnly()
         );
 
@@ -100,7 +100,7 @@ class PaneledItemRenderer implements ItemInterface
             Button::create()
                   ->title(trans('arbory::fields.relation.moveUp'))
                   ->type('button', 'only-icon secondary sortable-navigation move-up')
-                  ->withIcon('chevron-up')
+                  ->withIcon('keyboard_arrow_up')
                   ->iconOnly()
         );
     }

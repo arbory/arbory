@@ -149,7 +149,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
                 Link::create($this->getModalUrl())
                     ->asButton('primary new-constructor-item')
                     ->asAjaxbox(true)
-                    ->withIcon('plus')
+                    ->withIcon('add')
                     ->title(trans('arbory::constructor.new_block_btn'))
             )->addClass('constructor-button-wrapper'),
         ]))->addClass('overview-panel');

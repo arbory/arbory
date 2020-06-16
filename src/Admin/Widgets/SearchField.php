@@ -73,7 +73,7 @@ class SearchField implements Renderable
             ->addAttributes(['autofocus' => 'autofocus'])
             ->setValue(request()->get($this->name));
 
-        $submitButton = Html::button(Html::i()->addClass('fa fa-search'))
+        $submitButton = Html::button(Html::i('search')->addClass('mt-icon'))
             ->addClass('button only-icon')
             ->addAttributes([
                 'type' => 'submit',

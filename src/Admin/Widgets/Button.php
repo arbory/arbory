@@ -74,7 +74,7 @@ class Button implements Renderable
     public function withIcon($name)
     {
         $this->element->addClass('with-icon');
-        $this->element->append(Html::i()->addClass('fa fa-'.$name));
+        $this->element->append(Html::i($name)->addClass('mt-icon'));
 
         return $this;
     }

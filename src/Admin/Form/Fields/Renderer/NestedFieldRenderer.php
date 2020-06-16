@@ -76,7 +76,7 @@ class NestedFieldRenderer implements RendererInterface
 
         return Html::footer(
             Html::button([
-                Html::i()->addClass('fa fa-plus'),
+                Html::i('add')->addClass('mt-icon'),
                 $title,
             ])
                 ->addClass('button with-icon primary add-nested-item')
