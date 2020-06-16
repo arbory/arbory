@@ -26,6 +26,7 @@ class LayoutServiceProvider extends ServiceProvider
 
         $view->composer('arbory::layout.main', function (View $view) use ($assets, $admin) {
             $assets->css(mix('css/application.css', 'vendor/arbory'));
+            $assets->css(mix('css/material-icons.css', 'vendor/arbory'));
 
             $assets->prependJs(mix('js/application.js', 'vendor/arbory'));
             $assets->prependJs(mix('js/includes.js', 'vendor/arbory'));

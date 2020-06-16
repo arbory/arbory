@@ -2,10 +2,15 @@
     "/js/manifest.js": "/js/manifest.js?id=7db827d654313dce4250",
     "/js/vendor.js": "/js/vendor.js?id=780e7f41737ad7838974",
     "/js/application.js": "/js/application.js?id=dc2e163894b8502b80c4",
-    "/js/controllers/nodes.js": "/js/controllers/nodes.js?id=9038dd07c8e5179519f4",
-    "/css/application.css": "/css/application.css?id=e64239f7ef8a9f1c8a64",
+    "/js/controllers/nodes.js": "/js/controllers/nodes.js?id=3835659475faa5e8e077",
+    "/css/application.css": "/css/application.css?id=474424be293de51cf2b2",
+    "/css/material-icons.css": "/css/material-icons.css?id=687c71ac73e3335a75c7",
     "/css/controllers/sessions.css": "/css/controllers/sessions.css?id=e399d77a541f43d87e69",
     "/js/controllers/roles.js": "/js/controllers/roles.js?id=0e6d08afa9d9ddcd3f88",
     "/js/controllers/sessions.js": "/js/controllers/sessions.js?id=0892df80de49ed04d087",
-    "/js/includes.js": "/js/includes.js?id=f56d5dc3630a112c2605"
+    "/js/includes.js": "/js/includes.js?id=f56d5dc3630a112c2605",
+    "/fonts/MaterialIcons-Regular.woff2": "/fonts/MaterialIcons-Regular.woff2?id=83274381e4fb45e92cd8",
+    "/fonts/MaterialIcons-Regular.woff": "/fonts/MaterialIcons-Regular.woff?id=64185b0233aa18643d5b",
+    "/fonts/MaterialIcons-Regular.eot": "/fonts/MaterialIcons-Regular.eot?id=651d68eb86f51c252c40",
+    "/fonts/MaterialIcons-Regular.ttf": "/fonts/MaterialIcons-Regular.ttf?id=1d8d6e96cfcfb36129c6"
 }

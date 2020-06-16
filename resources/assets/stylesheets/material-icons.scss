@@ -1,0 +1,22 @@
+@import "~material-icons/iconfont/variables";
+@import "~material-icons/iconfont/mixins";
+
+$material-icons-font-file: "../fonts/MaterialIcons-Regular";
+$font-size: inherit;
+
+@font-face {
+    font-family: $material-icons-font-family;
+    font-style: normal;
+    font-weight: 400;
+    src: local($material-icons-font-family),
+    local($material-icons-font-name),
+    url("#{$material-icons-font-file}.eot") format("eot"),
+    url("#{$material-icons-font-file}.woff2") format("woff2"),
+    url("#{$material-icons-font-file}.woff") format("woff"),
+    url("#{$material-icons-font-file}.ttf") format("truetype")
+;
+}
+
+.mt-icon {
+    @include material-icons($font-size);
+}
