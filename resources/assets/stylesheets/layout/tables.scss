@@ -143,6 +143,11 @@
         text-align: center;
         width: steps(3);
     }
+
+    td .highlight
+    {
+        background-color: $color-highlight-lighter;
+    }
 }
 
 

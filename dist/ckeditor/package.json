@@ -2,7 +2,7 @@
   "_args": [
     [
       "ckeditor@4.12.1",
-      "/mnt/c/www/arbory"
+      "/Users/sabineabele/Projects/arbory"
     ]
   ],
   "_from": "ckeditor@4.12.1",
@@ -26,7 +26,7 @@
   ],
   "_resolved": "https://registry.npmjs.org/ckeditor/-/ckeditor-4.12.1.tgz",
   "_spec": "4.12.1",
-  "_where": "/mnt/c/www/arbory",
+  "_where": "/Users/sabineabele/Projects/arbory",
   "author": {
     "name": "CKSource",
     "url": "http://cksource.com/"
