@@ -31,6 +31,23 @@
             float: left;
         }
 
+        ul[data-level="1"] > li:first-child {
+
+            >.node-cell {
+                border-radius: $border-radius $border-radius 0 0;
+                border: 1px solid $color-border-normal;
+            }
+        }
+
+        ul[data-level="1"]  ul {
+
+            background-color: $color-background-lighter;
+
+             ul {
+                background-color: $color-background-normal;
+            }
+        }
+
         .toolbox-cell
         {
             border-left: 1px solid $color-border-normal;
@@ -43,20 +60,23 @@
             .trigger
             {
                 background: transparent;
+                height: 52px;
             }
         }
 
         .node-cell
         {
             border-bottom: 1px solid $color-border-normal;
+            border-right: 1px solid $color-border-normal;
+            border-left: 1px solid $color-border-normal;
 
             .trigger
             {
                 display: block;
                 color: $color-text-lightest;
                 text-decoration: none;
-                padding: steps(0.5) steps(3);
-                font-weight: bold;
+                padding: steps(1)+2 steps(3);
+                @include font-bold;
 
                 &.selected,
                 &:hover
@@ -85,13 +105,7 @@
             {
                 display: none;
             }
-    
-            .content-type {
-                float: right;
-                color: $color-text-lightest;
-                padding-right: steps(1);
-                font-weight: bold;
-            }
+
         }
 
         // nested item indentation
@@ -102,13 +116,20 @@
                 & > .collapser-cell
                 {
                     $previous: $i - 1;
-                    position: absolute;
-                    left: $previous * steps(2);
                 }
 
                 & > .node-cell span
                 {
                     margin-left: ($i - 1) * steps(2);
+                }
+
+                & > .collapser-cell {
+
+                    margin-left: ($i - 1) * steps(2);
+
+                    button {
+                        text-align: if($i != 1, right, center);
+                    }
                 }
             }
         }
@@ -117,11 +138,6 @@
         {
             padding: steps(0.5) steps(2);
         }
-    }
-
-    main .collection li ul ul
-    {
-        background: $color-background-normal;
     }
 
     .dialog .collection > ul li
@@ -149,7 +165,6 @@
 
             .body
             {
-                padding: steps(2) steps(3);
                 text-align: center;
 
                 .description
@@ -195,8 +210,6 @@
     &.view-edit
     {
         @include clear-inside;
-
-        background: $color-background-lighter;
 
         .field[data-name="active"]
         {

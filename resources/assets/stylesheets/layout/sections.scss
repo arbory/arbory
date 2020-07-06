@@ -9,7 +9,22 @@ section
 
     > form .body
     {
-        padding-bottom: steps(1);
+        background-color: $color-background-lighter;
+        padding: steps(2) steps(3);
+
+        &:empty {
+            padding: 0;
+        }
+    }
+
+    > .body
+    {
+        background-color: $color-background-lighter;
+        padding: steps(2) steps(3);
+
+        &:empty {
+            padding: 0;
+        }
     }
 
 }
@@ -26,10 +41,14 @@ section > form
 {
     > header
     {
-        @include section-header;
+        //@include section-header;
         @include clear-inside;
 
-        margin-top: steps(2);
+        border-bottom: 1px solid $color-border-normal;
+        background-color: $color-background-lightest;
+        padding: steps(1)+2 steps(3);
+        box-shadow: 0 2px 3px 0 rgba(0,0,0,0.05);
+        position: relative;
 
         h1
         {
@@ -49,18 +68,6 @@ section > form
 
 }
 
-section:not(.nested):not(.dialog),
-section:not(.dialog) > form
-{
-    > .body
-    {
-        border-width: 0 1px 1px 1px;
-        border-style: solid;
-        border-color: $color-border-normal;
-        margin-bottom: -1px;
-    }
-}
-
 section.nested
 {
     clear: both;
@@ -69,11 +76,6 @@ section.nested
     h1
     {
         margin-bottom: steps(1);
-    }
-
-    .body
-    {
-        padding-bottom: 0;
     }
 
     .list
@@ -86,11 +88,11 @@ section.nested
             position: relative;
             background: $color-background-lightest;
             @include clear-inside;
-    
+
             &:not(.with-title) {
                 padding-top: steps(3);
             }
-            
+
             > header {
                 @include heading-text;
                 padding-left: steps(2);
@@ -148,7 +150,7 @@ section.nested
         top:   0;
         width: auto;
     }
-    
+
     &.type-sortable .sortable-navigation:not(.button) {
         display: block;
     }

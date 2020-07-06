@@ -8,7 +8,7 @@
 
 @mixin body-font
 {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
     font-weight: normal;
 }
 
@@ -17,8 +17,6 @@
     font-family: Roboto;
     font-weight: normal;
 }
-
-
 
 
 // use pixels for font-sizes
@@ -54,8 +52,12 @@
 
 @mixin heading-text
 {
-    @include brand-font;
     @include font-size-largest;
+}
+
+@mixin font-bold
+{
+    font-weight: 600;
 }
 
 

@@ -4,22 +4,20 @@
     <form class="login" action="{{route('admin.login.attempt')}}" accept-charset="UTF-8" method="post">
         {!!csrf_field()!!}
         <div class="field @if($errors->has('user.email'))has-error @endif">
-            <label for="email">{{ trans('arbory::security.email') }}</label>
             <input autofocus="autofocus" id="email" class="text" type="email"
-                   value="{{ $input->old('user.email') }}" name="user[email]">
+                   value="{{ $input->old('user.email') }}" name="user[email]" placeholder="{{ trans('arbory::security.email') }}">
         </div>
         <div class="field @if($errors->has('user.password'))has-error @endif">
-            <label for="password">{{ trans('arbory::security.password') }}</label>
-            <input id="password" class="text" type="password" name="user[password]">
-        </div>
-        <div class="field">
-            <label>
-                <input type="checkbox" name="remember" value="1" {{ $input->old('remember') ? 'checked' : '' }} />
-                {{ trans('arbory::security.remember') }}
-            </label>
+            <input id="password" class="text" type="password" name="user[password]" placeholder="{{ trans('arbory::security.password') }}">
         </div>
         <div class="field">
             <button class="button" type="submit">{{ trans('arbory::security.submit') }}</button>
+        </div>
+
+
+        <div class="field info">
+            <p><a href=""><b>{{ trans('arbory::security.lost_password') }}</b></a></p>
+            <p><a href="">{{ trans('arbory::security.contact_admin') }}</a></p>
         </div>
     </form>
 @endsection

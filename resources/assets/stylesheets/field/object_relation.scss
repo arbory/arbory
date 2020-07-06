@@ -36,7 +36,7 @@
         .relations, .related {
             .item {
                 &[data-inactive=false]:hover {
-                    color: white;
+                    color: $color-white;
                     background-color: $color-highlight-normal;
                 }
             }
@@ -46,7 +46,7 @@
     .relations {
         .group {
             & > .title {
-                font-weight: bold;
+                @include font-bold;
                 padding-left: steps(1);
             }
             
