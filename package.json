@@ -16,7 +16,7 @@
   },
   "homepage": "https://www.arborycms.com/",
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery-ui": "^1.12.1",
     "ckeditor": "^4.12.1",
     "magnific-popup": "^1.1.0",
