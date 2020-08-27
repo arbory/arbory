@@ -1,5 +1,4 @@
-@mixin clickable-element
-{
+@mixin clickable-element {
     // resets native button/link styles
     // and unifies outlines
 
@@ -13,20 +12,17 @@
     color: inherit;
     font-size: inherit;
 
-    &:focus
-    {
+    &:focus {
         outline-width: 1px;
         outline-style: dotted;
         outline-color: $color-highlight-normal;
     }
 
-    &:active
-    {
+    &:active {
         outline: none;
     }
 
-    &::-moz-focus-inner
-    {
+    &::-moz-focus-inner {
         border: 0;
         padding: 0;
     }
@@ -34,28 +30,22 @@
 }
 
 
-@mixin icon-small
-{
-    display: inline;
-    font-size:      10px;
-    line-height:    steps(2);
+@mixin icon-small {
+    font-size: 16px;
+    line-height: 1;
 }
 
-@mixin icon
-{
-    display: inline;
-    font-size:      14px;
-    line-height:    steps(2);
+@mixin icon {
+    font-size: 18px;
+    line-height: 1;
 }
 
-@mixin icon-large
-{
-    display: inline;
-    font-size:      18px;
-    line-height:    steps(2);
+@mixin icon-large {
+    font-size: 22px;
+    line-height: 1;
 }
 
-@mixin triangle($direction, $sizeH, $sizeV, $color){
+@mixin triangle($direction, $sizeH, $sizeV, $color) {
     content: '';
     display: block;
     width: 0;
@@ -67,31 +57,31 @@
         border-width: 0 $sizeV $sizeH $sizeV;
         border-color: transparent transparent $color transparent;
     }
-    @if $direction == bottom{
+    @if $direction == bottom {
         border-width: $sizeV $sizeH 0 $sizeV;
         border-color: $color transparent transparent transparent;
     }
-    @if $direction == left{
+    @if $direction == left {
         border-width: $sizeV $sizeH $sizeV 0;
         border-color: transparent $color transparent transparent;
     }
-    @if $direction == right{
+    @if $direction == right {
         border-width: $sizeV 0 $sizeV $sizeH;
         border-color: transparent transparent transparent $color;
     }
-    @if $direction == topright{
+    @if $direction == topright {
         border-width: 0 $sizeH $sizeV 0;
         border-color: transparent $color transparent transparent;
     }
-    @if $direction == bottomright{
+    @if $direction == bottomright {
         border-width: 0 0 $sizeH $sizeV;
         border-color: transparent transparent $color transparent;
     }
-    @if $direction == bottomleft{
+    @if $direction == bottomleft {
         border-width: $sizeH 0 0 $sizeV;
         border-color: transparent transparent transparent $color;
     }
-    @if $direction == topleft{
+    @if $direction == topleft {
         border-width: $sizeH $sizeV 0 0;
         border-color: $color transparent transparent transparent;
     }

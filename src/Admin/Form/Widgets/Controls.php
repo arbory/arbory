@@ -58,7 +58,7 @@ class Controls implements Renderable
             $secondary->push(
                 Link::create($this->backUrl)
                     ->asButton('secondary')
-                    ->withIcon('caret-left')
+                    ->withIcon('arrow_left')
                     ->title(trans('arbory::resources.back_to_list'))
             );
         }

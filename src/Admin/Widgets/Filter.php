@@ -39,7 +39,7 @@ class Filter implements Renderable
             Html::h2(trans('arbory::filter.filter')),
             Button::create()
                 ->type('button', 'js-filter-trigger')
-                ->withIcon('times')
+                ->withIcon('delete_outline')
                 ->iconOnly(),
         ])->addClass('title-block');
     }
@@ -79,7 +79,7 @@ class Filter implements Renderable
                 Html::div([
                     Html::h3($column->getLabel()),
                     Button::create()
-                        ->withIcon('minus')
+                        ->withIcon('remove')
                         ->iconOnly()
                         ->withoutBackground(),
                 ])->addClass('js-accordion-trigger heading'),

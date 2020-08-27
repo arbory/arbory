@@ -143,7 +143,7 @@ class Renderer
     {
         $createButton = Link::create($this->url('create'))
             ->asButton('primary')
-            ->withIcon('plus')
+            ->withIcon('add')
             ->title(trans('arbory::resources.create_new'));
 
         $tools = new Tools();

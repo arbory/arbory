@@ -95,12 +95,7 @@ class MenuItem {
     updateIcon() {
         let icon = this.getIconElement();
 
-        icon.toggleClass('fa-chevron-right', this.menu.isCompact());
-
-        if (! this.menu.isCompact()) {
-            icon.toggleClass('fa-chevron-down', this.isCollapsed());
-            icon.toggleClass('fa-chevron-up', !this.isCollapsed());
-        }
+        icon.toggleClass('collapsed', this.menu.isCompact());
     }
 }
 

@@ -64,7 +64,7 @@ class Breadcrumbs implements Renderable
             );
 
             if ($key !== $total - 1) {
-                $listItem->append(Html::i()->addClass('fa fa-small fa-chevron-right'));
+                $listItem->append(Html::i('arrow_right')->addClass('mt-icon'));
             }
 
             return $listItem;

@@ -98,7 +98,7 @@ class TranslatableFieldRenderer implements RendererInterface
             Html::span($this->field->getCurrentLocale())->addClass('label')
         );
         $trigger->append(
-            Html::i()->addClass('fa fa-chevron-down')
+            Html::i('arrow_drop_down')->addClass('mt-icon')
         );
 
         $localizationSwitch = Html::div()

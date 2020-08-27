@@ -68,7 +68,7 @@ class BulkEditFormBuilder extends Builder
             Html::link()
                 ->addClass('button secondary with-icon')
                 ->addAttributes(['data-type' => 'cancel'])
-                ->append(Html::i()->addClass('fa fa-ban'))
+                ->append(Html::i('not_interested')->addClass('mt-icon'))
                 ->append(trans('arbory::resources.cancel'))
         );
 

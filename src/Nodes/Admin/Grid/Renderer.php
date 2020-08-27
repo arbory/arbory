@@ -82,7 +82,7 @@ class Renderer implements Renderable
         $list = Html::ul()->addAttributes(['data-level' => $level]);
 
         $collapser = Html::div(
-            Html::button(Html::i()->addClass('fa fa-chevron-right'))
+            Html::button(Html::i('keyboard_arrow_right')->addClass('mt-icon'))
                 ->addClass('button only-icon secondary collapser trigger')
                 ->addAttributes(['type' => 'button'])
         )->addClass('collapser-cell');
@@ -154,7 +154,7 @@ class Renderer implements Renderable
     {
         $createButton = Link::create($this->url('dialog', 'content_types'))
             ->asButton('primary ajaxbox')
-            ->withIcon('plus')
+            ->withIcon('add')
             ->title(trans('arbory::resources.create_new'));
 
         $tools = new Tools();

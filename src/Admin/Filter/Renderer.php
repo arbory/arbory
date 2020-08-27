@@ -49,7 +49,7 @@ class Renderer
             Html::h2(trans('arbory::filter.filter')),
             Button::create()
                 ->type('button', 'js-filter-trigger')
-                ->withIcon('times')
+                ->withIcon('delete_outline')
                 ->iconOnly(),
         ])->addClass('title-block');
     }
@@ -131,7 +131,7 @@ class Renderer
             Html::div([
                 Html::h3($filterItem->getTitle()),
                 Button::create()
-                    ->withIcon($isOpen ? 'minus' : 'plus')
+                    ->withIcon($isOpen ? 'add' : 'remove')
                     ->iconOnly()
                     ->withoutBackground(),
             ])->addClass('js-accordion-trigger heading'),

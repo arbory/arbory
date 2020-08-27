@@ -50,7 +50,7 @@ class Toolbox implements Renderable
 
         return Html::div(
             Html::div([
-                Html::button(Html::i()->addClass('fa fa-cog'))
+                Html::button(Html::i('settings')->addClass('mt-icon'))
                     ->addClass('button trigger only-icon')
                     ->addAttributes(['type' => 'button']),
                 Html::menu([

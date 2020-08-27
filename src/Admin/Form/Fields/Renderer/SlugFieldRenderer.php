@@ -48,7 +48,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
         $button = Button::create()
             ->type('button', 'secondary generate')
             ->title(trans('arbory::fields.slug.suggest_slug'))
-            ->withIcon('keyboard-o')
+            ->withIcon('keyboard')
             ->iconOnly()
             ->render();
 

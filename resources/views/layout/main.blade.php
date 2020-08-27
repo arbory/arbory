@@ -6,8 +6,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="icon" href="/vendor/arbory/images/favicon.ico">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
         @include('arbory::layout.partials.assets-css')
 
     </head>
