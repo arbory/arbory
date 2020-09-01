@@ -18,23 +18,21 @@ class SuccessReply extends Reply
     protected $success = true;
 
     /**
-     * @var string $url
+     * @var string
      * @return JsonResponse|RedirectResponse
      */
-    public function dispatch( $url = '/' )
+    public function dispatch($url = '/')
     {
-        $request = app( 'request' );
+        $request = app('request');
 
-        if( $request->ajax() || $request->wantsJson() )
-        {
-            return new JsonResponse( $this->toArray(), $this->statusCode );
+        if ($request->ajax() || $request->wantsJson()) {
+            return new JsonResponse($this->toArray(), $this->statusCode);
         }
 
-        if( $this->has( 'message' ) )
-        {
-            session()->flash( 'success', $this->message );
+        if ($this->has('message')) {
+            session()->flash('success', $this->message);
         }
 
-        return redirect( $url );
+        return redirect($url);
     }
 }

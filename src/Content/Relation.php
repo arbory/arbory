@@ -14,7 +14,7 @@ class Relation extends Model
         'owner_id',
         'owner_type',
         'related_id',
-        'related_type'
+        'related_type',
     ];
 
     /**

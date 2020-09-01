@@ -4,14 +4,13 @@ namespace Arbory\Base\Nodes\Routing;
 
 use Closure;
 use Arbory\Base\Nodes\Node;
-use Arbory\Base\Repositories\NodesRepository;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Foundation\Application;
+use Arbory\Base\Repositories\NodesRepository;
 
 /**
- * Class Router
- * @package Arbory\Base\Nodes\Routing
+ * Class Router.
  */
 class Router
 {
@@ -33,13 +32,13 @@ class Router
     /**
      * @var array|Closure[]
      */
-    protected $contentTypes = [ ];
+    protected $contentTypes = [];
 
     /**
      * Router constructor.
      * @param Application $app
      */
-    public function __construct( Application $app )
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
@@ -49,7 +48,7 @@ class Router
      * @param Closure $callback
      * @return $this
      */
-    public function add( $contentType, $callback )
+    public function add($contentType, $callback)
     {
         $this->contentTypes[$contentType] = $callback;
 
@@ -69,9 +68,8 @@ class Router
      */
     protected function getNodes()
     {
-        if( $this->nodes === null )
-        {
-            $this->nodes = $this->app->make( NodesRepository::class );
+        if ($this->nodes === null) {
+            $this->nodes = $this->app->make(NodesRepository::class);
         }
 
         return $this->nodes;
@@ -81,11 +79,11 @@ class Router
      * @param Request $request
      * @return Node|null
      */
-    public function findNode( Request $request )
+    public function findNode(Request $request)
     {
-        $path = $request->path() === '/' ? '/' : '/' . $request->path();
+        $path = $request->path() === '/' ? '/' : '/'.$request->path();
 
-        $this->currentNode = $this->getNodes()->findBySlug( $path );
+        $this->currentNode = $this->getNodes()->findBySlug($path);
 
         return $this->currentNode;
     }
@@ -93,52 +91,49 @@ class Router
     /**
      * @param Request $request
      */
-    public function register( Request $request )
+    public function register(Request $request)
     {
-        $this->registerContentTypes( $this->getContentTypes() );
+        $this->registerContentTypes($this->getContentTypes());
 
-        $node = $this->findNode( $request );
+        $node = $this->findNode($request);
 
-        if( $node )
-        {
-            $this->registerRouteForNode( $node );
+        if ($node) {
+            $this->registerRouteForNode($node);
         }
     }
 
     /**
      * @param array $contentTypes
      */
-    protected function registerContentTypes( array $contentTypes )
+    protected function registerContentTypes(array $contentTypes)
     {
-        foreach( $contentTypes as $contentType )
-        {
+        foreach ($contentTypes as $contentType) {
             $attributes = [
-                'as' => $contentType . '::',
+                'as' => $contentType.'::',
                 'prefix' => '{slug}',
             ];
 
-            $this->getRouter()->group( $attributes, $this->getContentTypeHandler( $contentType ) );
+            $this->getRouter()->group($attributes, $this->getContentTypeHandler($contentType));
         }
     }
 
     /**
      * @param Node $node
      */
-    protected function registerRouteForNode( Node $node )
+    protected function registerRouteForNode(Node $node)
     {
-        $routes = $this->findRoutesForNode( $node );
+        $routes = $this->findRoutesForNode($node);
         $slug = $node->getUri();
 
         $routesCollection = $this->getRouter()->getRoutes();
         $request = $this->app['request'];
 
-        foreach( $routes as $route )
-        {
+        foreach ($routes as $route) {
             $clone = clone $route;
-            $clone->setUri( str_replace( '{slug}', $slug, $route->uri() ) );
-            $clone->bind( $request );
+            $clone->setUri(str_replace('{slug}', $slug, $route->uri()));
+            $clone->bind($request);
 
-            $routesCollection->add( $clone );
+            $routesCollection->add($clone);
         }
     }
 
@@ -146,17 +141,15 @@ class Router
      * @param Node $node
      * @return Collection|\Illuminate\Routing\Route[]
      */
-    protected function findRoutesForNode( Node $node )
+    protected function findRoutesForNode(Node $node)
     {
         $routes = $this->getRouter()->getRoutes()->getIterator();
 
         $nodeRoutes = new Collection();
 
-        foreach( $routes as $route )
-        {
-            if( starts_with( $route->getName(), $node->getContentType() ) )
-            {
-                $nodeRoutes->push( $route );
+        foreach ($routes as $route) {
+            if (starts_with($route->getName(), $node->getContentType())) {
+                $nodeRoutes->push($route);
             }
         }
 
@@ -168,18 +161,17 @@ class Router
      */
     public function getContentTypes()
     {
-        return array_keys( $this->contentTypes );
+        return array_keys($this->contentTypes);
     }
 
     /**
      * @param $contentType
      * @return Closure|null
      */
-    public function getContentTypeHandler( $contentType )
+    public function getContentTypeHandler($contentType)
     {
-        if( !array_key_exists( $contentType, $this->contentTypes ) )
-        {
-            return null;
+        if (! array_key_exists($contentType, $this->contentTypes)) {
+            return;
         }
 
         return $this->contentTypes[$contentType];

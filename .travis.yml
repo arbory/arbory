@@ -1,20 +1,19 @@
 language: php
 php:
-- '7.1'
 - '7.2'
-- nightly
+- '7.3'
 branches:
   only:
   - master
+  - 1.0
+env:
+- LARAVEL_VERSION=5.6.*
+- LARAVEL_VERSION=5.8.*
+matrix:
+  fast_finish: true
+before_install:
+- composer require "laravel/framework:${LARAVEL_VERSION}"
 install:
-- composer install
-notifications:
-  slack:
-    matrix:
-    - cubelv:huC6mhnwYitchPrnxvfnT3hL
-    rooms:
-      secure: nInDvwnvEna8sI7ahwaV/kRMHg7CMhignf8iy5zOnrlxvB/PycfVOI2d9OASOlu/irpqqPaxm97TIKHcYCVvTQaJIh7yKK/fEJre14lqPAVdwqBKzGYEBNIGnOCPTIf6fPqK3vjJPTjurdbP8oJZNVR9MpIGM0uwlHJBI7zwdZgoZlD+zM/woje22C8vmVnbph6Qnh/Tz/4awM9Bpc8TtSBSMx3NjnuoMRRPmkBhuGdxCl/vmRrmBpw5hCLCfD+svgLH4eu8fchnUitt9EorjzaO8akdiW6uuQsi+gOY0VgNpFU381X1Mw7rZVj8vtzgc4/6wqvmszeQJricdoor5II+hR6DaeQjcUAzcQv2IzHkaa3tBK9CqDPScSDIZZLEBE9pWQPa4hM2o5ZDcOD1D9H3YOxy0C3jGaesO4Lad0PvtZzCgPdKrVMJ1fzZvz93lejhze6WsUWe3PB01pMhGg+ct9GwqDvqa4vh3PvakMg5+IIIHe2VB/t+KpqrriCc2EI0/nqJbtEy8LS5sRgCbhgYNP74rfJafUhqWeFFDXVkhEBAWa5L23djMYRPyTB+GCamO+ZALObHQPCasLXRTKvSb2lUuWik8eQ5wxDcYdWtXaAiL1WaNn82mUduQxBU4RIwNP51ZNHebpiOFFgLLXn+YLHO75H/vm/bX1G3/fI=
-    on_success: change
-    on_failure: always
+- composer update --prefer-source --no-interaction --dev
 after_success:
 - travis_retry php vendor/bin/coveralls

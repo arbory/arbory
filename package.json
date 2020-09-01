@@ -1,0 +1,28 @@
+{
+  "name": "arbory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.mix.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arbory/arbory/issues"
+  },
+  "homepage": "https://www.arborycms.com/",
+  "dependencies": {
+    "jquery": "^3.5.0",
+    "jquery-ui": "^1.12.1",
+    "ckeditor": "^4.12.1",
+    "magnific-popup": "^1.1.0",
+    "is-in-viewport": "^3.0.4",
+    "js-cookie": "^2.2.1",
+    "jquery-ui-timepicker-addon": "^1.6.3"
+  },
+  "private": true
+}

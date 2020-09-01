@@ -2,53 +2,38 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 
 /**
- * Class CheckBoxFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class CheckBoxFieldRenderer.
  */
-class CheckBoxFieldRenderer extends InputFieldRenderer
+class CheckBoxFieldRenderer extends ControlFieldRenderer
 {
-    /**
-     * @var string
-     */
-    protected $type = 'boolean';
-
     /**
      * @var \Arbory\Base\Admin\Form\Fields\Checkbox
      */
     protected $field;
 
     /**
-     * @return CheckBox
-     */
-    protected function getInput()
-    {
-        $checkBox = Html::checkbox()->setName( $this->field->getNameSpacedName() );
-
-        if( $this->field->getValue() )
-        {
-            $checkBox->select();
-        }
-
-        return $checkBox;
-    }
-
-    /**
      * @return Element
      */
     public function render()
     {
-        $input = $this->getInput();
+        $control = $this->getControl();
+        $control = $this->configureControl($control);
 
-        return Html::div(
-            Html::div( [
-                $input,
-                $input->getLabel( $this->field->getLabel() )
-            ] )->addClass( 'value' )
-        )->addClass( 'field type-boolean' );
+        $element = $control->element();
+
+        $element->setValue($this->field->getCheckedValue());
+
+        $control->setChecked(
+            $this->field->getValue() == true
+        );
+
+        return Html::div([
+            $control->render($element),
+            Html::label($this->field->getLabel())->addAttributes(['for' => $this->field->getFieldId()]),
+        ])->addClass('value');
     }
 }

@@ -2,17 +2,16 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
+use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Row
- * @package Arbory\Base\Admin\Grid
+ * Class Row.
  */
 class Row implements Renderable
 {
@@ -31,7 +30,7 @@ class Row implements Renderable
      * @param Grid $grid
      * @param Model $model
      */
-    public function __construct( Grid $grid, Model $model )
+    public function __construct(Grid $grid, Model $model)
     {
         $this->grid = $grid;
         $this->model = $model;
@@ -62,19 +61,21 @@ class Row implements Renderable
     {
         $cells = $this->getCells();
 
-        $cells->push(
-            Html::td(
-                Toolbox::create(
-                    $this->grid->getModule()->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $this->model->getKey() ] )
-                )->render()
-            )->addClass( 'only-icon toolbox-cell' )
-        );
+        if ($this->grid->isToolboxEnable()) {
+            $cells->push(
+                Html::td(
+                    Toolbox::create(
+                        $this->grid->getModule()->url('dialog', ['dialog' => 'toolbox', 'id' => $this->model->getKey()])
+                    )->render()
+                )->addClass('only-icon toolbox-cell')
+            );
+        }
 
-        return Html::tr( $cells->toArray() )
-            ->addAttributes( [
+        return Html::tr($cells->toArray())
+            ->addAttributes([
                 'data-id' => $this->model->getKey(),
-            ] )
-            ->addClass( 'row' );
+            ])
+            ->addClass('row');
     }
 
     /**
@@ -82,9 +83,9 @@ class Row implements Renderable
      */
     public function toArray(): array
     {
-        return $this->getCells()->mapWithKeys( function( Cell $cell ) {
-            return [ $cell->getColumn()->getName() => strip_tags( $cell ) ];
-        } )->toArray();
+        return $this->getCells()->mapWithKeys(function (Cell $cell) {
+            return [$cell->getColumn()->getName() => strip_tags($cell)];
+        })->toArray();
     }
 
     /**

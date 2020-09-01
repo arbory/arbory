@@ -2,17 +2,16 @@
 
 namespace Arbory\Base\Console\Commands;
 
+use ArboryDatabaseSeeder;
 use Illuminate\Console\Command;
-use Illuminate\Database\DatabaseManager;
+use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\ConfirmableTrait;
-use Illuminate\Database\Seeder;
-use ArboryDatabaseSeeder;
+use Illuminate\Database\DatabaseManager;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * Class SeedCommand
- * @package Arbory\Base\Console\Commands
+ * Class SeedCommand.
  */
 class SeedCommand extends Command
 {
@@ -36,7 +35,7 @@ class SeedCommand extends Command
     /**
      * @param DatabaseManager $resolver
      */
-    public function __construct( DatabaseManager $resolver )
+    public function __construct(DatabaseManager $resolver)
     {
         parent::__construct();
 
@@ -49,17 +48,15 @@ class SeedCommand extends Command
      */
     public function handle()
     {
-        if( !$this->confirmToProceed() )
-        {
+        if (! $this->confirmToProceed()) {
             return;
         }
 
-        $this->resolver->setDefaultConnection( $this->getDatabase() );
+        $this->resolver->setDefaultConnection($this->getDatabase());
 
-        Model::unguarded( function ()
-        {
+        Model::unguarded(function () {
             $this->getSeeder()->run();
-        } );
+        });
     }
 
     /**
@@ -68,9 +65,9 @@ class SeedCommand extends Command
      */
     protected function getSeeder()
     {
-        $class = $this->laravel->make( $this->input->getOption( 'class' ) );
+        $class = $this->laravel->make($this->input->getOption('class'));
 
-        return $class->setContainer( $this->laravel )->setCommand( $this );
+        return $class->setContainer($this->laravel)->setCommand($this);
     }
 
     /**
@@ -79,7 +76,7 @@ class SeedCommand extends Command
      */
     protected function getDatabase()
     {
-        $database = $this->input->getOption( 'database' );
+        $database = $this->input->getOption('database');
 
         return $database ?: $this->laravel['config']['database.default'];
     }
@@ -90,11 +87,17 @@ class SeedCommand extends Command
     protected function getOptions()
     {
         return [
-            [ 'class', null, InputOption::VALUE_OPTIONAL, 'The class name of the root seeder', ArboryDatabaseSeeder::class ],
+            [
+                'class',
+                null,
+                InputOption::VALUE_OPTIONAL, '
+                The class name of the root seeder',
+                ArboryDatabaseSeeder::class,
+            ],
 
-            [ 'database', null, InputOption::VALUE_OPTIONAL, 'The database connection to seed' ],
+            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to seed'],
 
-            [ 'force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production.' ],
+            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production.'],
         ];
     }
 }

@@ -2,15 +2,15 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Filter\FilterManager;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
 /**
- * Class Filter
- * @package Arbory\Base\Admin\Grid
+ * Class Filter.
  */
 class Filter implements FilterInterface
 {
@@ -40,10 +40,20 @@ class Filter implements FilterInterface
     protected $perPage;
 
     /**
+     * @var FilterManager
+     */
+    protected $filterManager;
+
+    /**
+     * @var array
+     */
+    protected $defaultOrderOptions;
+
+    /**
      * Filter constructor.
      * @param Model $model
      */
-    public function __construct( Model $model )
+    public function __construct(Model $model)
     {
         $this->model = $model;
         $this->query = $model->newQuery();
@@ -54,22 +64,22 @@ class Filter implements FilterInterface
      * @param Collection|Column[] $columns
      * @return void
      */
-    protected function order(Collection $columns)
+    public function order(Collection $columns)
     {
         $orderBy = $this->request->get('_order_by');
         $orderDirection = $this->request->get('_order', 'asc');
 
-        if (!$orderBy) {
+        if (! $orderBy) {
             return;
         }
 
         $column = $columns->filter(function (Column $column) {
             return $column->isSortable();
-        })->filter(function (Column $column) use ($orderBy) {
+        })->filter(static function (Column $column) use ($orderBy) {
             return $column->getName() === $orderBy;
         })->first();
 
-        if (!$column) {
+        if (! $column) {
             return;
         }
 
@@ -77,34 +87,40 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param $phrase
-     * @param Collection|Column[] $columns
+     * @return void
      */
-    protected function search( $phrase, $columns )
+    public function filter(): void
     {
-        $keywords = explode( ' ', $phrase );
-
-        foreach( $keywords as $string )
-        {
-            $this->query->where( function ( QueryBuilder $query ) use ( $string, $columns )
-            {
-                foreach( $columns as $column )
-                {
-                    if( !$column->isSearchable() )
-                    {
-                        continue;
-                    }
-
-                    $column->searchConditions( $query, $string );
-                }
-            } );
+        if ($filterManager = $this->getFilterManager()) {
+            $filterManager->apply($this->query);
         }
     }
 
     /**
-     * @return Collection|LengthAwarePaginator
+     * @param $phrase
+     * @param Collection|Column[] $columns
      */
-    protected function loadItems()
+    public function search($phrase, $columns)
+    {
+        $keywords = explode(' ', $phrase);
+
+        foreach ($keywords as $string) {
+            $this->query->where(function (QueryBuilder $query) use ($string, $columns) {
+                foreach ($columns as $column) {
+                    if (! $column->isSearchable()) {
+                        continue;
+                    }
+
+                    $column->searchConditions($query, $string);
+                }
+            });
+        }
+    }
+
+    /**
+     * @return QueryBuilder|QueryBuilder[]|\Illuminate\Database\Eloquent\Collection|LengthAwarePaginator|mixed
+     */
+    public function loadItems()
     {
         $result = $this->query;
 
@@ -113,20 +129,18 @@ class Filter implements FilterInterface
         }
 
         /** @var LengthAwarePaginator $result */
-        $result = $this->query->paginate( $this->getPerPage() );
+        $result = $this->query->paginate($this->getPerPage());
 
-        if( $this->request->has( 'search' ) )
-        {
+        if ($this->request->has('search')) {
             $result->appends([
-                'search' => $this->request->get( 'search' ),
+                'search' => $this->request->get('search'),
             ]);
         }
 
-        if( $this->request->has( '_order_by' ) && $this->request->has( '_order' ) )
-        {
+        if ($this->request->has('_order_by') && $this->request->has('_order')) {
             $result->appends([
-                '_order_by' => $this->request->get( '_order_by' ),
-                '_order' => $this->request->get( '_order' ),
+                '_order_by' => $this->request->get('_order_by'),
+                '_order' => $this->request->get('_order'),
             ]);
         }
 
@@ -134,27 +148,28 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Collection|Column[] $columns
-     * @return Collection|LengthAwarePaginator
+     * @param Collection $columns
+     * @return self
      */
-    public function execute( Collection $columns )
+    public function execute(Collection $columns): self
     {
-        if( $this->request->has( 'search' ) )
-        {
-            $this->search( $this->request->get( 'search' ), $columns );
+        if ($this->request->has('search') && ! empty($this->request->get('search'))) {
+            $this->search($this->request->get('search'), $columns);
         }
 
-        $this->order( $columns );
+        $this->filter();
 
-        return $this->loadItems();
+        $this->order($columns);
+
+        return $this;
     }
 
     /**
-     * @param $relationName
+     * @param string $relationName
      */
-    public function withRelation( $relationName )
+    public function withRelation(string $relationName)
     {
-        $this->query->with( $relationName );
+        $this->query->with($relationName);
     }
 
     /**
@@ -176,7 +191,7 @@ class Filter implements FilterInterface
     /**
      * @param bool $paginated
      */
-    public function setPaginated( bool $paginated )
+    public function setPaginated(bool $paginated)
     {
         $this->paginated = $paginated;
     }
@@ -186,14 +201,71 @@ class Filter implements FilterInterface
      */
     public function getPerPage()
     {
-        return $this->perPage;
+        return $this->perPage ?? config('arbory.pagination.items_per_page');
+    }
+
+    /**
+     * @param Column $column
+     * @return array
+     */
+    public function getFilterTypeAction(Column $column): array
+    {
+        return $column->getFilterType()->getAction();
     }
 
     /**
      * @param int $perPage
      */
-    public function setPerPage( int $perPage )
+    public function setPerPage(int $perPage)
     {
         $this->perPage = $perPage;
+    }
+
+    /**
+     * @param FilterManager $filterManager
+     * @return Filter
+     */
+    public function setFilterManager(FilterManager $filterManager): self
+    {
+        $this->filterManager = $filterManager;
+
+        return $this;
+    }
+
+    /**
+     * @return FilterManager|null
+     */
+    public function getFilterManager(): ?FilterManager
+    {
+        return $this->filterManager;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultOrderOptions(): array
+    {
+        return $this->defaultOrderOptions;
+    }
+
+    /**
+     * @param string $orderBy
+     * @param string $orderDirection
+     * @return Filter
+     */
+    public function setDefaultOrderBy(string $orderBy, string $orderDirection = 'desc'): self
+    {
+        $this->defaultOrderOptions = [$orderBy, $orderDirection];
+
+        $isOrderBySpecified = $this->request->get('_order_by');
+
+        if (! $isOrderBySpecified) {
+            $this->request->merge([
+                '_order_by' => $orderBy,
+                '_order' => $orderDirection,
+            ]);
+        }
+
+        return $this;
     }
 }

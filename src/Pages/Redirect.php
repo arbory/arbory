@@ -6,12 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Redirect extends Model
 {
+    public const AVAILABLE_STATUSES = [
+        301,
+        302,
+    ];
+
     /**
      * @var array
      */
     protected $fillable = [
         'from_url',
-        'to_url'
+        'to_url',
+        'status',
     ];
 
     /**

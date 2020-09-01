@@ -3,8 +3,8 @@
 namespace Arbory\Base\Services\Content;
 
 use Closure;
-use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 
 class PageBuilder
@@ -31,8 +31,7 @@ class PageBuilder
     public function __construct(
         ContentTypeRegister $contentTypeRegister,
         ContentTypeRoutesRegister $contentTypeRoutesRegister
-    )
-    {
+    ) {
         $this->contentTypeRegister = $contentTypeRegister;
         $this->contentTypeRoutesRegister = $contentTypeRoutesRegister;
     }
@@ -42,22 +41,23 @@ class PageBuilder
      * @return $this
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
-    public function register( string $model )
+    public function register(string $model)
     {
-        $this->definition = new ContentTypeDefinition( $model );
+        $this->definition = new ContentTypeDefinition($model);
 
-        $this->contentTypeRegister->register( $this->definition );
+        $this->contentTypeRegister->register($this->definition);
 
-        return $this->fields( function() {} );
+        return $this->fields(function () {
+        });
     }
 
     /**
      * @param string $model
      * @return $this
      */
-    public function get( string $model )
+    public function get(string $model)
     {
-        $this->definition = $this->contentTypeRegister->findByModelClass( $model );
+        $this->definition = $this->contentTypeRegister->findByModelClass($model);
 
         return $this;
     }
@@ -67,9 +67,9 @@ class PageBuilder
      * @return $this
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
-    public function routes( Closure $routes )
+    public function routes(Closure $routes)
     {
-        $this->contentTypeRoutesRegister->register( $this->definition->getModel(), $routes );
+        $this->contentTypeRoutesRegister->register($this->definition->getModel(), $routes);
 
         return $this;
     }
@@ -79,9 +79,21 @@ class PageBuilder
      * @return $this
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
-    public function fields( Closure $fieldSet )
+    public function fields(Closure $fieldSet)
     {
-        $this->definition->setFieldSetHandler( $fieldSet );
+        $this->definition->setFieldSetHandler($fieldSet);
+
+        return $this;
+    }
+
+    /**
+     * @param Closure $layout
+     *
+     * @return $this
+     */
+    public function layout(Closure $layout)
+    {
+        $this->definition->setLayoutHandler($layout);
 
         return $this;
     }

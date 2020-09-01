@@ -1,4 +1,7 @@
-/* global UrlBuilder */
+import 'magnific-popup';
+import 'jquery-ui/ui/widgets/draggable';
+
+import UrlBuilder from '../modules/UrlBuilder';
 
 jQuery(document).ready( function()
 {
@@ -7,6 +10,8 @@ jQuery(document).ready( function()
     var xhr;
 
     var body = jQuery('body');
+
+    var cached_modals = {};
 
     var open_ajax_box = function( params )
     {
@@ -105,9 +110,10 @@ jQuery(document).ready( function()
             var link = jQuery(this);
             var params =
             {
-                url     : new UrlBuilder( link.attr('href') ).add( { ajax: 1 } ).getUrl(),
+                url     : new UrlBuilder(link.attr('href')).add( { ajax: 1 } ).getUrl(),
                 modal   : link.is('[data-modal]'),
-                trigger : link
+                trigger : link,
+                cache   : link.is('[data-cache]'),
             };
             if (link.attr('rel') === 'image')
             {
@@ -123,6 +129,14 @@ jQuery(document).ready( function()
 
     body.on('ajaxboxopen', function(e, params)
     {
+        if('cache' in params && params.cache === true) {
+            var cached = params.url in cached_modals;
+
+            if(cached) {
+                params.content = cached_modals[params.url];
+            }
+        }
+
         // params expects either url or content
         if ('content' in params)
         {
@@ -148,6 +162,10 @@ jQuery(document).ready( function()
                 {
                     params.content = data;
                     open_ajax_box( params );
+
+                    if(params.cache) {
+                        cached_modals[params.url] = data;
+                    }
                 }
             });
         }

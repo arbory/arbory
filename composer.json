@@ -1,8 +1,13 @@
 {
     "name": "arbory/arbory",
     "description": "Administration interface for Laravel",
+    "keywords": ["laravel", "admin", "cms", "arbory"],
     "type": "library",
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/arbory/arbory/issues",
+        "source": "https://github.com/arbory/arbory"
+    },
     "authors": [
         {
             "name": "Roberts",
@@ -10,15 +15,12 @@
         }
     ],
     "require": {
-        "php": "^7.1",
-        "laravel/framework": "^5.5.0|^5.6.0",
-        "laravelcollective/html": "^5.5.0|^5.6.0",
+        "php": "^7.2",
+        "ext-json": "*",
+        "laravel/framework": "~5.6.0|~5.8.0",
+        "laravelcollective/html": "~5.6.0|~5.8.0",
         "doctrine/dbal": "^2.5",
         "gazsp/baum": "~1.1",
-        "components/jquery": "^3.2",
-        "components/jqueryui": "1.12.*",
-        "components/jquery-cookie": "1.4.*",
-        "ckeditor/ckeditor": "^4.5",
         "alsofronie/eloquent-uuid": "^1.0.5",
         "dimsav/laravel-translatable": "8.*|9.*",
         "waavi/translation": "^2.1.5",
@@ -26,11 +28,11 @@
         "roboc/laravel-glide": "^1.1.0",
         "spatie/laravel-sluggable": "^2.1.0",
         "maatwebsite/excel": "^3.0.5",
-        "unisharp/laravel-filemanager": "^1.8.0"
+        "unisharp/laravel-filemanager": "^1.8.5"
     },
     "require-dev" : {
         "satooshi/php-coveralls": "^1.0",
-        "phpunit/phpunit" : "^6.1",
+        "phpunit/phpunit" : "^6",
         "mockery/mockery": "dev-master",
         "diablomedia/phpunit-pretty-printer": "^2"
     },
@@ -42,12 +44,33 @@
         "laravel": {
             "providers": [
                 "Arbory\\Base\\Providers\\ArboryServiceProvider",
-                "Arbory\\Base\\Providers\\NodeServiceProvider"
+                "Arbory\\Base\\Providers\\NodeServiceProvider",
+                "Arbory\\Base\\Providers\\TranslationServiceProvider",
+                "Dimsav\\Translatable\\TranslatableServiceProvider",
+                "Arbory\\Base\\Providers\\FileServiceProvider",
+                "Arbory\\Base\\Providers\\AuthServiceProvider",
+                "Roboc\\Glide\\GlideImageServiceProvider",
+                "Arbory\\Base\\Providers\\SettingsServiceProvider",
+                "Maatwebsite\\Excel\\ExcelServiceProvider",
+                "Arbory\\Base\\Providers\\FormBuilderServiceProvider",
+                "Arbory\\Base\\Providers\\FileManagerServiceProvider",
+                "Arbory\\Base\\Providers\\RoutesServiceProvider",
+                "Arbory\\Base\\Providers\\LayoutServiceProvider",
+                "Arbory\\Base\\Providers\\ValidationRulesServiceProvider",
+                "Arbory\\Base\\Providers\\ConstructorServiceProvider"
             ],
+            "aliases": {
+                "Activation": "Cartalyst\\Sentinel\\Laravel\\Facades\\Activation",
+                "Reminder": "Cartalyst\\Sentinel\\Laravel\\Facades\\Reminde",
+                "Sentinel": "Cartalyst\\Sentinel\\Laravel\\Facades\\Sentinel",
+                "GlideImage": "Roboc\\Glide\\Support\\Facades\\GlideImage",
+                "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+            },
             "dont-discover": [
                 "waavi/translation",
                 "cartalyst/sentinel"
             ]
-        }
+        },
+        "foxy": true
     }
 }

@@ -2,30 +2,27 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Admin\Widgets\Breadcrumbs;
-use Arbory\Base\Admin\Widgets\SearchField;
+use Illuminate\View\View;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Http\Requests\TranslationStoreRequest;
-use Arbory\Base\Menu\Menu;
-use Arbory\Base\Services\ModuleRegistry;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Query\JoinClause;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
-use Illuminate\View\View;
-use Waavi\Translation\Cache\CacheRepositoryInterface;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Query\Builder;
 use Waavi\Translation\Models\Language;
+use Illuminate\Database\Query\JoinClause;
 use Waavi\Translation\Models\Translation;
+use Arbory\Base\Admin\Widgets\Breadcrumbs;
+use Arbory\Base\Admin\Widgets\SearchField;
+use Waavi\Translation\Cache\CacheRepositoryInterface;
+use Arbory\Base\Http\Requests\TranslationStoreRequest;
 use Waavi\Translation\Repositories\LanguageRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Waavi\Translation\Repositories\TranslationRepository;
 
 /**
- * Class TranslationsController
- * @package Arbory\Base\Http\Controllers\Admin
+ * Class TranslationsController.
  */
 class TranslationsController extends Controller
 {
@@ -45,6 +42,7 @@ class TranslationsController extends Controller
     protected $request;
 
     /** @noinspection PhpMissingParentConstructorInspection */
+
     /**
      * @param TranslationRepository $translationRepository
      * @param LanguageRepository $languagesRepository
@@ -52,8 +50,7 @@ class TranslationsController extends Controller
     public function __construct(
         TranslationRepository $translationRepository,
         LanguageRepository $languagesRepository
-    )
-    {
+    ) {
         $this->translationsRepository = $translationRepository;
         $this->languagesRepository = $languagesRepository;
     }
@@ -62,7 +59,7 @@ class TranslationsController extends Controller
      * @param Request $request
      * @return Factory|View
      */
-    public function index( Request $request )
+    public function index(Request $request)
     {
         $this->request = $request;
 
@@ -70,64 +67,62 @@ class TranslationsController extends Controller
 
         /** @noinspection PhpUndefinedMethodInspection */
         /* @var $allItems Builder */
-        $allItems = Translation::distinct()->select( 'item', 'group', 'namespace' );
+        $allItems = Translation::distinct()->select('item', 'group', 'namespace');
 
-        $translationsQuery = \DB::table( \DB::raw( '(' . $allItems->toSql() . ') as d1' ) );
+        $translationsQuery = \DB::table(\DB::raw('('.$allItems->toSql().') as d1'));
 
-        $translationsQuery->addSelect( 'd1.*' );
+        $translationsQuery->addSelect('d1.*');
 
-        $translationsTableName = ( new Translation() )->getTable();
+        $translationsTableName = (new Translation())->getTable();
 
-        foreach( $languages as $language )
-        {
+        foreach ($languages as $language) {
             $locale = $language->locale;
 
-            $joinAlias = 'l_' . $locale;
+            $joinAlias = 'l_'.$locale;
 
-            $translationsQuery->addSelect( $joinAlias . '.text AS ' . $locale . '_text' );
-            $translationsQuery->addSelect( $joinAlias . '.locked AS ' . $locale . '_locked' );
-            $translationsQuery->addSelect( $joinAlias . '.unstable AS ' . $locale . '_unstable' );
+            $translationsQuery->addSelect($joinAlias.'.text AS '.$locale.'_text');
+            $translationsQuery->addSelect($joinAlias.'.locked AS '.$locale.'_locked');
+            $translationsQuery->addSelect($joinAlias.'.unstable AS '.$locale.'_unstable');
 
             $translationsQuery->leftJoin(
-                $translationsTableName . ' as l_' . $locale,
-                function ( JoinClause $join ) use ( $joinAlias, $locale )
-                {
+                $translationsTableName.' as l_'.$locale,
+                function (JoinClause $join) use ($joinAlias, $locale) {
                     $join
-                        ->on( $joinAlias . '.group', '=', 'd1.group' )
-                        ->on( $joinAlias . '.item', '=', 'd1.item' )
-                        ->on( $joinAlias . '.locale', '=', \DB::raw( '\'' . $locale . '\'' ) );
+                        ->on($joinAlias.'.group', '=', 'd1.group')
+                        ->on($joinAlias.'.item', '=', 'd1.item')
+                        ->on($joinAlias.'.locale', '=', \DB::raw('\''.$locale.'\''));
                 }
             );
         }
 
-        $searchString = $request->get( 'search' );
+        $searchString = $request->get('search');
 
-        if( $searchString )
-        {
-            $translationsQuery->where( 'd1.group', 'LIKE', '%' . $searchString . '%' );
-            $translationsQuery->orWhere( 'd1.namespace', 'LIKE', '%' . $searchString . '%' );
-            $translationsQuery->orWhere( 'd1.item', 'LIKE', '%' . $searchString . '%' );
+        if ($searchString) {
+            $translationsQuery->where('d1.group', 'LIKE', '%'.$searchString.'%');
+            $translationsQuery->orWhere('d1.namespace', 'LIKE', '%'.$searchString.'%');
+            $translationsQuery->orWhere('d1.item', 'LIKE', '%'.$searchString.'%');
 
-            foreach( $languages as $language )
-            {
-                $translationsQuery->orWhere( 'l_' . $language->locale . '.text', 'LIKE', '%' . $searchString . '%' );
+            foreach ($languages as $language) {
+                $translationsQuery->orWhere('l_'.$language->locale.'.text', 'LIKE', '%'.$searchString.'%');
             }
         }
 
-        $paginatedItems = $this->getPaginatedItems( $translationsQuery );
+        $paginatedItems = $this->getPaginatedItems($translationsQuery);
 
         return view(
             'arbory::controllers.translations.index',
             [
-                'header' => Html::header( [ $this->getIndexBreadcrumbs(), ( new SearchField( '' ) )->render() ] ),
+                'header' => Html::header([$this->getIndexBreadcrumbs(), (new SearchField(''))->render()]),
                 'languages' => $languages,
                 'translations' => $paginatedItems,
                 'paginator' => $paginatedItems,
-                'search' => $request->get( 'search' ),
-                'highlight' => function ( $text ) use ( $searchString )
-                {
-                    return str_replace( $searchString, '<span style="background-color: lime; font-weight:bold">' . htmlentities( $searchString ) . '</span>', htmlentities( $text ) );
-                }
+                'search' => $request->get('search'),
+                'highlight' => function ($text) use ($searchString) {
+                    $format = '<span style="background-color: lime; font-weight:bold">%s</span>';
+                    $resultHtml = sprintf($format, htmlentities($searchString));
+
+                    return str_replace($searchString, $resultHtml, htmlentities($text));
+                },
             ]
         );
     }
@@ -139,18 +134,17 @@ class TranslationsController extends Controller
      * @param string $item
      * @return View
      */
-    public function edit( Request $request, $namespace, $group, $item )
+    public function edit(Request $request, $namespace, $group, $item)
     {
         $group = str_replace('.', '/', $group);
-        $translationKey = $namespace . '::' . $group . '.' . $item;
+        $translationKey = $namespace.'::'.$group.'.'.$item;
         $this->request = $request;
 
         /* @var $languages Language[] */
         $languages = $this->languagesRepository->all();
 
         $translations = [];
-        foreach( $languages as $language )
-        {
+        foreach ($languages as $language) {
             /** @noinspection PhpUndefinedFieldInspection */
             $locale = $language->locale;
 
@@ -161,15 +155,14 @@ class TranslationsController extends Controller
                 $item
             );
 
-            if( !$translation )
-            {
-                $translation = new Translation( [
+            if (! $translation) {
+                $translation = new Translation([
                     'locale' => $locale,
                     'namespace' => $namespace,
                     'group' => $group,
                     'item' => $item,
-                    'text' => $translationKey
-                ] );
+                    'text' => $translationKey,
+                ]);
                 $translation->save();
             }
 
@@ -179,15 +172,15 @@ class TranslationsController extends Controller
         return view(
             'arbory::controllers.translations.edit',
             [
-                'header' => Html::header( [ $this->getEditBreadcrumbs( $translationKey ) ] ),
+                'header' => Html::header([$this->getEditBreadcrumbs($translationKey)]),
                 'input' => $request,
                 'languages' => $languages,
                 'namespace' => $namespace,
                 'group' => $group,
                 'item' => $item,
                 'translations' => $translations,
-                'back_to_index_url' => route( 'admin.translations.index', $this->getContext() ),
-                'update_url' => route( 'admin.translations.update', $this->getContext() )
+                'back_to_index_url' => route('admin.translations.index', $this->getContext()),
+                'update_url' => route('admin.translations.update', $this->getContext()),
             ]
         );
     }
@@ -196,7 +189,7 @@ class TranslationsController extends Controller
      * @param TranslationStoreRequest $request
      * @return RedirectResponse|Redirector
      */
-    public function store( TranslationStoreRequest $request )
+    public function store(TranslationStoreRequest $request)
     {
         $this->request = $request;
 
@@ -204,30 +197,29 @@ class TranslationsController extends Controller
         $languages = $this->languagesRepository->all();
 
         /** @var CacheRepositoryInterface $cache */
-        $cache = \App::make( 'translation.cache.repository' );
+        $cache = \App::make('translation.cache.repository');
 
-        foreach( $languages as $language )
-        {
+        foreach ($languages as $language) {
             /** @noinspection PhpUndefinedFieldInspection */
             $locale = $language->locale;
 
             $translation = $this->translationsRepository->findByCode(
                 $locale,
-                $request->get( 'namespace' ),
-                $request->get( 'group' ),
-                $request->get( 'item' )
+                $request->get('namespace'),
+                $request->get('group'),
+                $request->get('item')
             );
 
-            /** @noinspection PhpUndefinedFieldInspection */
+            /* @noinspection PhpUndefinedFieldInspection */
             $this->translationsRepository->updateAndLock(
                 $translation->id,
-                $request->get( 'text_' . $locale )
+                $request->get('text_'.$locale)
             );
 
-            $cache->flush( $locale, $request->get( 'group' ), $request->get( 'namespace' ) );
+            $cache->flush($locale, $request->get('group'), $request->get('namespace'));
         }
 
-        return redirect( route( 'admin.translations.index', $this->getContext() ) );
+        return redirect(route('admin.translations.index', $this->getContext()));
     }
 
     /**
@@ -235,11 +227,11 @@ class TranslationsController extends Controller
      */
     protected function getIndexBreadcrumbs(): Breadcrumbs
     {
-        $module = \Admin::modules()->findModuleByController( $this );
+        $module = \Admin::modules()->findModuleByController($this);
 
-        return ( new Breadcrumbs )->addItem(
+        return (new Breadcrumbs)->addItem(
             $module->getConfiguration()->getName(),
-            route( 'admin.translations.index', $this->getContext() )
+            route('admin.translations.index', $this->getContext())
         );
     }
 
@@ -247,10 +239,10 @@ class TranslationsController extends Controller
      * @param string $editTitle
      * @return Breadcrumbs
      */
-    protected function getEditBreadcrumbs( string $editTitle ): Breadcrumbs
+    protected function getEditBreadcrumbs(string $editTitle): Breadcrumbs
     {
         $breadcrumbs = $this->getIndexBreadcrumbs();
-        $breadcrumbs->addItem( $editTitle, '' );
+        $breadcrumbs->addItem($editTitle, '');
 
         return $breadcrumbs;
     }
@@ -260,7 +252,7 @@ class TranslationsController extends Controller
      * @param LengthAwarePaginator $paginator
      * @return string
      */
-    private function getEditUrl( $item, LengthAwarePaginator $paginator )
+    private function getEditUrl($item, LengthAwarePaginator $paginator)
     {
         return route(
             'admin.translations.edit',
@@ -269,21 +261,21 @@ class TranslationsController extends Controller
                 'group' => str_replace('/', '.', $item->group),
                 'item' => $item->item,
                 'page' => $paginator->currentPage(),
-                'search' => $this->request->get( 'search' )
-            ] );
+                'search' => $this->request->get('search'),
+            ]
+        );
     }
 
     /**
      * @param Builder $translationsQueryBuilder
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    private function getPaginatedItems( Builder $translationsQueryBuilder )
+    private function getPaginatedItems(Builder $translationsQueryBuilder)
     {
-        $paginator = $translationsQueryBuilder->paginate( 10000 );
+        $paginator = $translationsQueryBuilder->paginate(10000);
 
-        foreach( $paginator->items() as $item )
-        {
-            $item->edit_url = $this->getEditUrl( $item, $paginator );
+        foreach ($paginator->items() as $item) {
+            $item->edit_url = $this->getEditUrl($item, $paginator);
         }
 
         return $paginator;
@@ -294,6 +286,6 @@ class TranslationsController extends Controller
      */
     private function getContext()
     {
-        return [ 'page' => $this->request->get( 'page' ), 'search' => $this->request->get( 'search' ) ];
+        return ['page' => $this->request->get('page'), 'search' => $this->request->get('search')];
     }
 }

@@ -2,13 +2,15 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\ObjectRelation;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Database\Eloquent\Collection;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\ObjectRelation;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
-class ObjectRelationRenderer
+class ObjectRelationRenderer implements RendererInterface
 {
     /**
      * @var ObjectRelation
@@ -16,9 +18,9 @@ class ObjectRelationRenderer
     protected $field;
 
     /**
-     * @param ObjectRelation $field
+     * @param FieldInterface $field
      */
-    public function __construct( ObjectRelation $field )
+    public function __construct(FieldInterface $field)
     {
         $this->field = $field;
     }
@@ -28,62 +30,37 @@ class ObjectRelationRenderer
      */
     public function render()
     {
-        $name = $this->field->getName();
         $limit = $this->field->getLimit();
-        $label = $this->field->getLabel();
-        $relates = strtolower( class_basename( $this->field->getRelatedModelType() ) );
-        $class = 'field type-object-relation relates-' . $relates;
+
         $attributes = [
-            'data-name' => $name,
-            'data-limit' => $limit
+            'data-limit' => $limit,
         ];
 
-        $contents = Html::div( $this->getAvailableRelationElement() )->addClass( 'contents' );
+        $contents = Html::div($this->getAvailableRelationElement())->addClass('contents');
         $relatedItemsElement = $this->getRelatedItemsElement();
-        $block = Html::div();
+        $block = Html::div()->addClass('object-relation');
 
-        if( $this->field->hasIndentation() )
-        {
-            $attributes += [ 'data-indent' => $this->field->getIndentAttribute() ];
+        if ($this->field->hasIndentation()) {
+            $attributes += ['data-indent' => $this->field->getIndentAttribute()];
         }
 
-        if( $this->field->isSingular() )
-        {
-            $contents->append( $relatedItemsElement );
-        }
-        else
-        {
-            $contents->prepend( $relatedItemsElement );
+        if ($this->field->isSingular()) {
+            $contents->append($relatedItemsElement);
+        } else {
+            $contents->prepend($relatedItemsElement);
         }
 
-        foreach( $this->field->getInnerFieldSet()->getFields() as $field )
-        {
-            $block->append( $field->render() );
+        $block->append($this->field->getInnerFieldSet()->render());
+
+        if ($this->field->isSingular()) {
+            $block->append($contents);
+
+            return $block->addAttributes($attributes);
         }
 
-        if( $this->field->isSingular() )
-        {
-            $block->append( $contents );
+        $block->append($contents);
 
-            $field = new FieldRenderer();
-            $field->setType( 'select' );
-            $field->setName( $name );
-            $field->setLabel( $label );
-
-            $field->setValue( $block );
-
-            return $field->render()->addClass( $class . ' single' )->addAttributes( $attributes );
-        }
-
-        if( $limit > 1 )
-        {
-            $label .= Html::strong( sprintf( ' (%s)', $limit ) );
-        }
-
-        $block->prepend( Html::div( Html::label( $label ) )->addClass( 'label-wrap' ) );
-        $block->append( $contents );
-
-        return $block->addClass( $class . ' multiple' )->addAttributes( $attributes );
+        return $block->addAttributes($attributes);
     }
 
     /**
@@ -94,22 +71,19 @@ class ObjectRelationRenderer
         $items = [];
         $values = $this->field->getValue();
 
-        if( $values )
-        {
-            $values = $values instanceof Collection ? $values : new Collection( [ $values ] );
+        if ($values) {
+            $values = $values instanceof Collection ? $values : new Collection([$values]);
 
-            foreach( $values as $value )
-            {
+            foreach ($values as $value) {
                 $relation = $value->related()->first();
 
-                if( $relation )
-                {
-                    $items[] = $this->buildRelationalItemElement( $relation );
+                if ($relation) {
+                    $items[] = $this->buildRelationalItemElement($relation);
                 }
             }
         }
 
-        return Html::div( $items )->addClass( 'related' );
+        return Html::div($items)->addClass('related');
     }
 
     /**
@@ -117,7 +91,7 @@ class ObjectRelationRenderer
      */
     protected function getAvailableRelationElement()
     {
-        return Html::div( $this->getAvailableRelationalItemsElement() )->addClass( 'relations' );
+        return Html::div($this->getAvailableRelationalItemsElement())->addClass('relations');
     }
 
     /**
@@ -128,15 +102,13 @@ class ObjectRelationRenderer
         $items = [];
         $relational = $this->field->getOptions();
 
-        foreach( $relational as $relation )
-        {
-            if ( $relation instanceof Model )
-            {
-                $items[] = $this->buildRelationalItemElement( $relation, $this->field->hasRelationWith( $relation ) );
-            }
-            else
-            {
-                $items[] = $this->buildRelationalItemElement( $relation );
+        $relational = $this->field->isSingular() ? $relational->prepend('', '') : $relational;
+
+        foreach ($relational as $relation) {
+            if ($relation instanceof Model) {
+                $items[] = $this->buildRelationalItemElement($relation, $this->field->hasRelationWith($relation));
+            } else {
+                $items[] = $this->buildRelationalItemElement($relation);
             }
         }
 
@@ -148,23 +120,60 @@ class ObjectRelationRenderer
      * @param bool $isRelated
      * @return Element
      */
-    protected function buildRelationalItemElement( $value, bool $isRelated = false )
+    protected function buildRelationalItemElement($value, bool $isRelated = false)
     {
         $element = Html::div(
             Html::span(
                 (string) $value
-            )->addClass( 'title' )
-        )->addClass( 'item' );
+            )->addClass('title')
+        )->addClass('item');
 
-        if( $value instanceof Model )
-        {
-            $element->addAttributes( [
+        if ($value instanceof Model) {
+            $element->addAttributes([
                 'data-key' => $value->getKey(),
-                'data-level' => $value->getAttributeValue( $this->field->getIndentAttribute() ),
-                'data-inactive' => $isRelated && $this->field->hasIndentation() ? 'true' : 'false'
-            ] );
+                'data-level' => $value->getAttributeValue($this->field->getIndentAttribute()),
+                'data-inactive' => $isRelated && $this->field->hasIndentation() ? 'true' : 'false',
+            ]);
         }
 
         return $element;
+    }
+
+    /**
+     * @param FieldInterface $field
+     *
+     * @return mixed
+     */
+    public function setField(FieldInterface $field): RendererInterface
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * @return FieldInterface
+     */
+    public function getField(): FieldInterface
+    {
+        return $this->field;
+    }
+
+    /**
+     * Configure the style before rendering the field.
+     *
+     * @param StyleOptionsInterface $options
+     *
+     * @return StyleOptionsInterface
+     */
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
+    {
+        if (! $this->field->isInteractive() || $this->field->isDisabled()) {
+            $options->addClass('disabled');
+        } else {
+            $options->addClass('interactive');
+        }
+
+        return $options;
     }
 }

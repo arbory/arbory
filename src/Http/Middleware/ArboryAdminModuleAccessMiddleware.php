@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Http\Middleware;
 
-use Cartalyst\Sentinel\Sentinel;
 use Closure;
+use Illuminate\Http\Request;
+use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 /**
- * Class ArboryAdminModuleAccessMiddleware
- * @package Arbory\Base\Http\Middleware
+ * Class ArboryAdminModuleAccessMiddleware.
  */
 class ArboryAdminModuleAccessMiddleware
 {
@@ -23,7 +22,7 @@ class ArboryAdminModuleAccessMiddleware
      * ArboryAdminModuleAccessMiddleware constructor.
      * @param Sentinel $sentinel
      */
-    public function __construct( Sentinel $sentinel )
+    public function __construct(Sentinel $sentinel)
     {
         $this->sentinel = $sentinel;
     }
@@ -35,49 +34,46 @@ class ArboryAdminModuleAccessMiddleware
      * @param \Closure $next
      * @return mixed
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
-        $targetModule = $this->resolveTargetModule( $request );
+        $targetModule = $this->resolveTargetModule($request);
 
-        if( !$targetModule )
-        {
-            throw new \RuntimeException( 'Could not find target module for route controller' );
+        if (! $targetModule) {
+            throw new \RuntimeException('Could not find target module for route controller');
         }
 
-        if( !$targetModule->isAuthorized() )
-        {
-            return $this->denied( $request );
+        if (! $targetModule->isAuthorized()) {
+            return $this->denied($request);
         }
 
-        return $next( $request );
+        return $next($request);
     }
 
     /**
      * @param Request $request
      * @return JsonResponse|RedirectResponse
      */
-    private function denied( Request $request )
+    private function denied(Request $request)
     {
         $message = 'Unauthorized';
 
-        if( $request->ajax() )
-        {
-            return response()->json( [ 'error' => $message ], 401 );
+        if ($request->ajax()) {
+            return response()->json(['error' => $message], 401);
         }
 
         return redirect()
-            ->guest( route( 'admin.login.form' ) )
-            ->with( 'error', $message );
+            ->guest(route('admin.login.form'))
+            ->with('error', $message);
     }
 
     /**
      * @param Request $request
      * @return \Arbory\Base\Admin\Module|null
      */
-    private function resolveTargetModule( Request $request )
+    private function resolveTargetModule(Request $request)
     {
         $controller = $request->route()->getController();
 
-        return \Admin::modules()->findModuleByController( $controller );
+        return \Admin::modules()->findModuleByController($controller);
     }
 }

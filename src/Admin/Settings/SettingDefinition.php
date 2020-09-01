@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Admin\Settings;
 
+use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\ArboryFile;
 use Arbory\Base\Admin\Form\Fields\ArboryImage;
-use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\Translatable;
 
 class SettingDefinition
@@ -42,9 +42,12 @@ class SettingDefinition
      * @param Setting|null $databaseEntry
      */
     public function __construct(
-        string $key, $value = null, string $type = null, $configEntry = null, Setting $databaseEntry = null
-    )
-    {
+        string $key,
+        $value = null,
+        string $type = null,
+        $configEntry = null,
+        Setting $databaseEntry = null
+    ) {
         $this->key = $key;
         $this->value = $value;
         $this->type = $type ?? Text::class;
@@ -52,21 +55,17 @@ class SettingDefinition
         $this->model = $databaseEntry;
     }
 
-
     /**
      * @return void
      */
     public function save()
     {
-        $setting = new Setting( $this->toArray() );
+        $setting = new Setting($this->toArray());
 
-        if( $this->isInDatabase() )
-        {
+        if ($this->isInDatabase()) {
             $setting->exists = true;
             $setting->update();
-        }
-        else
-        {
+        } else {
             $setting->save();
         }
     }
@@ -82,7 +81,7 @@ class SettingDefinition
     /**
      * @param string $key
      */
-    public function setKey( string $key )
+    public function setKey(string $key)
     {
         $this->key = $key;
     }
@@ -98,7 +97,7 @@ class SettingDefinition
     /**
      * @param string $type
      */
-    public function setType( string $type )
+    public function setType(string $type)
     {
         $this->type = $type;
     }
@@ -114,7 +113,7 @@ class SettingDefinition
     /**
      * @param mixed $value
      */
-    public function setValue( $value )
+    public function setValue($value)
     {
         $this->value = $value;
     }
@@ -138,7 +137,7 @@ class SettingDefinition
     /**
      * @param Setting|null $model
      */
-    public function setModel( $model )
+    public function setModel($model)
     {
         $this->model = $model;
     }
@@ -148,7 +147,7 @@ class SettingDefinition
      */
     public function isInDatabase(): bool
     {
-        return Setting::query()->where( 'name', $this->getKey() )->exists();
+        return Setting::query()->where('name', $this->getKey())->exists();
     }
 
     /**
@@ -156,10 +155,10 @@ class SettingDefinition
      */
     public function isFile(): bool
     {
-        return in_array( $this->getType(), [
+        return in_array($this->getType(), [
             ArboryFile::class,
-            ArboryImage::class
-        ], true );
+            ArboryImage::class,
+        ], true);
     }
 
     /**
@@ -186,7 +185,7 @@ class SettingDefinition
         return [
             'name' => $this->key,
             'value' => $this->value,
-            'type' => $this->type
+            'type' => $this->type,
         ];
     }
 }

@@ -27,7 +27,7 @@ input.text
 
 select
 {
-    height: steps(3);
+    height: $input-height;
     padding: steps(0.5) 0 steps(0.5) steps(1);
 
     option
@@ -39,13 +39,13 @@ select
 
 textarea
 {
-    height:  steps(10);
+    height:  $textarea-height;
     padding: steps(0.5) steps(1);
 }
 
 input.text
 {
-    height: steps(3);
+    height: $input-height;
     padding: 0 steps(1);
     -webkit-appearance: textfield;
 }
@@ -55,10 +55,15 @@ input.text
 {
     padding: steps(0.5) 0;
     float: left;
-    width: steps(36);
+    width: calc(100% - #{$form-gutter-width});
     position: relative;
     min-height: steps(7);
-    margin-left: steps(2);
+    margin: 0 $form-gutter-half;
+    
+    &.i18n > .field {
+        margin-left: 0;
+        width: 100%;
+    }
 
     &.has-error:not(.i18n),
     &.i18n.has-error .localization.has-error
@@ -69,16 +74,6 @@ input.text
         .mceLayout
         {
              border: 1px solid $color-alert;
-        }
-    }
-
-    &.type-boolean .value
-    {
-        padding-top: steps(3);
-
-        label
-        {
-            margin-left: steps(1);
         }
     }
 
@@ -94,23 +89,14 @@ input.text
         }
     }
 
-    &.type-richtext
-    {
-        width: steps(74);
-    }
-
-
-    &.type-richtext,
-    &.type-textarea:not(.i18n)
-    {
-        float: none;
-        clear: both;
-    }
-
-
     .label-wrap
     {
         padding: steps(0.5) 0;
+        
+        .required {
+            color: red;
+            font-weight: bold;
+        }
 
         .description
         {
@@ -134,15 +120,6 @@ input.text
         }
     }
 
-    .link-body {
-        & > fieldset {
-            margin: 0;
-
-            .field {
-                margin-left: 0;
-            }
-        }
-    }
 
     &.type-item {
         img {
@@ -152,333 +129,10 @@ input.text
         }
     }
 
-    &.type-icon-picker {
-        select {
-            display: none;
-        }
-
-        .value > .contents {
-            position: relative;
-
-            .icon {
-                svg {
-                    width: steps(2);
-                    height: steps(2);
-                }
-            }
-
-            .element {
-                height: steps(2);
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: steps(1);
-                right: steps(1);
-                margin: auto;
-
-                & > span:last-child {
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    margin: auto;
-                    padding-left: steps(1);
-                }
-            }
-
-            .selected {
-                user-select: none;
-                height: steps(3);
-                border: 1px solid $color-border-normal;
-            }
-
-            .items {
-                margin-top: -1px;
-                position: absolute;
-                left: 0;
-                right: 0;
-                z-index: 10;
-                padding: 0;
-                border: 1px solid $color-border-normal;
-                background-color: white;
-                height: steps(24);
-                overflow-x: auto;
-                display: none;
-
-                &.active {
-                    display: block;
-                }
-
-                li {
-                    cursor: default;
-                    position: relative;
-                    list-style: none;
-                    height: steps(3);
-
-                    &:hover {
-                        color: white;
-                        background-color: $color-highlight-normal;
-                    }
-                }
-            }
-        }
-    }
 
     &[data-name="file"] {
         word-wrap: break-word;
     }
 
-    &[data-name="slug"], .localization[data-name="slug"]
-    {
-        .button.generate
-        {
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
-
-        input[type="text"]
-        {
-            padding-right: steps(4);
-        }
-
-        .link
-        {
-            padding: steps(0.5) 0;
-            span
-            {
-                color: $color-text-normal;
-            }
-        }
-    }
 }
-
-
-.link-body {
-    & > fieldset {
-        margin: 0;
-
-        .field {
-            margin-left: 0;
-
-            &.type-text {
-                width: 48%;
-
-                &:not(:first-child) {
-                    float: right;
-                }
-
-                .content-fields > .nested > .nested > .list > .item > .nested > & {
-                    width: 396px;
-                    float: left;
-
-                    &:not(:first-child) {
-                        margin-left: steps(2);
-                    }
-                }
-
-                section.nested section.nested & {
-                    width: 360px;
-                    float: left;
-
-                    &:not(:first-child) {
-                        margin-left: steps(2);
-                    }
-                }
-            }
-
-            &.type-boolean {
-                min-height: 0;
-
-                .value {
-                    padding-top: 0;
-                }
-            }
-        }
-    }
-}
-
-
-section.nested
-{
-    // :TODO: figure out a way to avoid having to re-specify explicit widths for nested fields
-    .field
-    {
-        width: steps(33);
-
-        &.type-richtext
-        {
-            width: steps(68);
-        }
-    }
-
-    section.nested .field
-    {
-        width: steps(30);
-        &.type-richtext
-        {
-            width: steps(62);
-        }
-    }
-}
-
-
-section.coordinate_picker {
-    padding-top: steps(3.5);
-
-    .canvas {
-        width: 100%;
-        height: 420px;
-    }
-
-    .field {
-        position: absolute;
-        top: steps(1.5);
-        right: steps(2);
-        width: 432px;
-    }
-}
-
-
-.ui-widget
-{
-    @include reset-font;
-    @include pop-up-shadow;
-
-    padding: 0;
-    border: 0;
-    width: auto;
-    background-color: $color-background-lightest;
-
-    button, select
-    {
-        @include reset-font;
-        @include font-size-normal;
-    }
-
-    .ui-corner-all
-    {
-        border-radius: 0;
-    }
-
-    .ui-widget-header
-    {
-        @include section-header;
-
-        .next, .previous
-        {
-            position: absolute;
-        }
-        .next
-        {
-            right: 0;
-        }
-
-        .previous
-        {
-            left: 0;
-        }
-
-        .ui-datepicker-title select
-        {
-            width: auto;
-            margin: 0 2px;
-        }
-    }
-
-    .ui-datepicker-calendar
-    {
-        width: 100%;
-        border-collapse: collapse;
-
-        td
-        {
-            border: 1px solid $color-border-normal;
-            text-align: center;
-            vertical-align: middle;
-            padding: steps(0.5);
-
-            a
-            {
-                display: inline;
-                color: $color-text-darkest;
-                border: 0;
-                text-decoration: none;
-                text-align: center;
-                @include font-size-normal;
-                font-weight: bold;
-                background: 0;
-                padding: 0;
-            }
-
-            &.ui-datepicker-current-day
-            {
-                background-color: $color-background-darker;
-            }
-
-            &:hover,
-            &.ui-datepicker-current-day:hover
-            {
-                background-color: $color-highlight-normal;
-                text-shadow: 0px -1px 1px $color-shadow-normal;
-
-                a
-                {
-                    color: $color-background-lightest;
-                }
-            }
-
-        }
-
-    }
-
-    thead
-    {
-        color: $color-text-lighter;
-        background-color: $color-background-normal;
-        border: 1px solid $color-border-light;
-
-        th
-        {
-            @include font-size-smaller;
-            text-transform: uppercase;
-            padding: 0;
-        }
-
-    }
-
-    .ui-timepicker-div
-    {
-        > dl
-        {
-            margin: steps(0.5) 0 0 0;
-        }
-
-        dt, dd
-        {
-            margin: 0 steps(0.5);
-        }
-
-        dt
-        {
-            display: inline-block;
-            @include font-size-smaller;
-            text-transform: uppercase;
-        }
-
-        dd
-        {
-            display: inline-block;
-            @include font-size-larger;
-        }
-
-        .ui_tpicker_time
-        {
-            margin-right: steps(0.5);
-            margin-left:  steps(0.5);
-        }
-
-    }
-
-}
-
 

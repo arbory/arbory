@@ -1,0 +1,147 @@
+.form-filter
+{
+  position: fixed;
+  width: steps(35);
+  right: steps(-35);
+  top: steps(10);
+  transition: right 0.3s ease;
+  height: calc(100vh - 120px);
+  box-shadow: -2px 4px 8px 0 $color-shadow-lightest;
+  background: white;
+  z-index: 20;
+  overflow-y: auto;
+
+  &.show
+  {
+    right: 0;
+  }
+
+  .title-block
+  {
+    padding: 22px 20px 19px 20px;
+    background: $color-background-normal;
+    display: flex;
+    align-items: center;
+
+    .button
+    {
+      margin-left: auto;
+    }
+  }
+
+  h2
+  {
+    font-size: 16px;
+    letter-spacing: 0.9px;
+    float: left;
+  }
+
+  .accordion
+  {
+    border-bottom: 1px solid $color-border-light;
+    padding: 0 20px;
+    margin: 0;
+
+    &:after
+    {
+      content: none;
+    }
+
+    .heading
+    {
+      position: relative;
+      padding: 20px 0;
+
+      h3
+      {
+        color: $color-text-light;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.79px;
+        line-height: 16px;
+      }
+
+      .button{
+        position: absolute;
+        right: 0;
+        top: 10px;
+      }
+    }
+
+    .body
+    {
+      margin-bottom: 20px;
+
+      &.hidden {
+        display: none;
+      }
+
+      .select, .text
+      {
+        select, input
+        {
+          height: 40px;
+          width: 100%;
+          border: 1px solid $color-border-normal;
+          border-radius: 3px;
+        }
+      }
+
+      .multiselect,
+      .checkbox
+      {
+        label
+        {
+          display: block;
+          margin-bottom: 10px;
+          color: $color-background-inverted-normal;
+          font-size: 14px;
+          letter-spacing: 0.79px;
+          line-height: 16px;
+
+          &:last-child
+          {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      .date-range,
+      .range
+      {
+        display: flex;
+        .column
+        {
+          width: calc(50% - 10px);
+          margin-right: 20px;
+
+          &:last-child
+          {
+            margin-right: 0;
+          }
+
+          h4
+          {
+            font-size: 14px;
+            letter-spacing: 0.79px;
+            line-height: 16px;
+            opacity: 0.6;
+            color: $color-background-inverted-normal;
+            padding-bottom: steps(0.5);
+          }
+
+          input{
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .full-width{
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+  }
+}

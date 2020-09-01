@@ -1,9 +1,0 @@
-Page::register( {{pageClassName}}::class )
-    ->fields( function( FieldSet $fieldSet )
-    {
-        {{fieldSet}}
-    } )
-    ->routes( function()
-    {
-        Route::get( '/', {{controllerClassName}}::class . '@index' )->name( 'index' );
-    } );

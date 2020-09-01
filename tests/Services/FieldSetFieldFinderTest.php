@@ -2,19 +2,21 @@
 
 namespace Tests\Services;
 
-use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Form\Fields\AbstractField;
-use Arbory\Base\Admin\Form\Fields\HasMany;
-use Arbory\Base\Admin\Form\Fields\Text;
-use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Services\FieldSetFieldFinder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Mockery;
 use Mockery\Mock;
+use Arbory\Base\Admin\Form;
 use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Foundation\Application;
 use Waavi\Translation\Models\Language;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Admin\Form\Fields\HasMany;
+use Arbory\Base\Services\FieldSetFieldFinder;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Form\Fields\AbstractField;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 final class FieldSetFieldFinderTest extends TestCase
@@ -29,9 +31,23 @@ final class FieldSetFieldFinderTest extends TestCase
      */
     protected function setUp()
     {
-        $this->model = Mockery::mock( Model::class );
-        $this->model->shouldReceive( 'translateOrNew' )->andReturn( $this->model );
-        $this->model->shouldReceive( 'toArray' )->andReturn( [] );
+        app()->singleton(StyleManager::class, static function () {
+            $styles = [
+                'normal' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\LabeledFieldStyle::class,
+                'basic' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\BasicFieldStyle::class,
+                'raw' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\RawFieldStyle::class,
+                'nested' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\NestedFieldStyle::class,
+                'section' => \Arbory\Base\Admin\Form\Fields\Renderer\Styles\SectionFieldStyle::class,
+            ];
+
+            $app = Mockery::mock(Application::class);
+
+            return new StyleManager($app, $styles, 'normal');
+        });
+
+        $this->model = Mockery::mock(Model::class);
+        $this->model->shouldReceive('translateOrNew')->andReturn($this->model);
+        $this->model->shouldReceive('toArray')->andReturn([]);
     }
 
     /**
@@ -48,16 +64,15 @@ final class FieldSetFieldFinderTest extends TestCase
      */
     public function itShouldFindFieldInRoot()
     {
-        $text = new Text( 'name' );
+        $text = new Text('name');
 
-        $finder = $this->getFinderForFields( function( Form $form ) use ( $text )
-        {
-            $form->addField( $text );
-        } );
+        $finder = $this->getFinderForFields(function (FieldSet $fields) use ($text) {
+            $fields->add($text);
+        });
 
-        $result = $finder->find( 'name' );
+        $result = $finder->find('name');
 
-        $this->assertContainsField( $result, $text );
+        $this->assertContainsField($result, $text);
     }
 
     /**
@@ -67,20 +82,19 @@ final class FieldSetFieldFinderTest extends TestCase
     public function itShouldFindNestedField()
     {
         /**
-         * @var Mock|HasMany $many
+         * @var Mock|HasMany
          */
-        $text = new Text( 'name' );
-        $many = $this->getHasManyField( 'many_names.0', $text );
+        $text = new Text('name');
+        $many = $this->getHasManyField('many_names.0', $text);
 
-        $finder = $this->getFinderForFields( function( Form $form ) use ( $many )
-        {
-            $form->addField( $many );
-        } );
+        $finder = $this->getFinderForFields(function (FieldSet $fields) use ($many) {
+            $fields->add($many);
+        });
 
-        $result = $finder->find( 'many_names.0.name' );
+        $result = $finder->find('many_names.0.name');
 
-        $this->assertContainsField( $result, $many );
-        $this->assertContainsField( $result, $text );
+        $this->assertContainsField($result, $many);
+        $this->assertContainsField($result, $text);
     }
 
     /**
@@ -90,31 +104,30 @@ final class FieldSetFieldFinderTest extends TestCase
     public function itShouldFindCorrectFieldInTranslatables()
     {
         /**
-         * @var Mock|Translatable $translatable1
+         * @var Mock|Translatable
          * @var Mock|Translatable $translatable2
          */
-        $text1 = new Text( 'foo' );
-        $text2 = new Text( 'bar' );
-        $translatable1 = $this->getTranslatableField( 'field_translation.en.foo', $text1 );
-        $translatable2 = $this->getTranslatableField( 'field_translation.en.bar', $text2 );
+        $text1 = new Text('foo');
+        $text2 = new Text('bar');
+        $translatable1 = $this->getTranslatableField('field_translation.en.foo', $text1);
+        $translatable2 = $this->getTranslatableField('field_translation.en.bar', $text2);
 
-        $finder = $this->getFinderForFields( function( Form $form ) use ( $translatable1, $translatable2 )
-        {
-            $form->addField( $translatable1 );
-            $form->addField( $translatable2 );
-        } );
+        $finder = $this->getFinderForFields(function (FieldSet $fields) use ($translatable1, $translatable2) {
+            $fields->add($translatable1);
+            $fields->add($translatable2);
+        });
 
-        $result = $finder->find( 'field_translation.en.foo' );
+        $result = $finder->find('field_translation.en.foo');
 
-        $this->assertNotContains( 'en', $result );
-        $this->assertContainsField( $result, $translatable1 );
-        $this->assertContainsField( $result, $text1 );
+        $this->assertNotContains('en', $result);
+        $this->assertContainsField($result, $translatable1);
+        $this->assertContainsField($result, $text1);
 
-        $result = $finder->find( 'field_translation.en.bar' );
+        $result = $finder->find('field_translation.en.bar');
 
-        $this->assertNotContains( 'en', $result );
-        $this->assertContainsField( $result, $translatable2 );
-        $this->assertContainsField( $result, $text2 );
+        $this->assertNotContains('en', $result);
+        $this->assertContainsField($result, $translatable2);
+        $this->assertContainsField($result, $text2);
     }
 
     /**
@@ -122,19 +135,19 @@ final class FieldSetFieldFinderTest extends TestCase
      * @param AbstractField $innerField
      * @return Mockery\MockInterface
      */
-    private function getTranslatableField( string $relationalNamespace, AbstractField $innerField )
+    private function getTranslatableField(string $relationalNamespace, AbstractField $innerField)
     {
-        $mock = Mockery::mock( Translatable::class );
+        $mock = Mockery::mock(Translatable::class);
 
-        $mock->shouldReceive( 'setFieldSet' )->andReturn();
-        $mock->shouldReceive( 'getName' )->andReturn( 'field_translation' );
-        $mock->shouldReceive( 'getLocales' )->andReturn( [ 'en' ] );
-        $mock->shouldReceive( 'getModel' )->andReturn( $this->model );
+        $mock->shouldReceive('setFieldSet')->andReturn();
+        $mock->shouldReceive('getName')->andReturn('field_translation');
+        $mock->shouldReceive('getLocales')->andReturn(['en']);
+        $mock->shouldReceive('getModel')->andReturn($this->model);
 
-        $fieldSet = new FieldSet( $this->model, $relationalNamespace );
-        $fieldSet->add( $innerField );
+        $fieldSet = new FieldSet($this->model, $relationalNamespace);
+        $fieldSet->add($innerField);
 
-        $mock->shouldReceive( 'getLocaleFieldSet' )->andReturn( $fieldSet );
+        $mock->shouldReceive('getLocaleFieldSet')->andReturn($fieldSet);
 
         return $mock;
     }
@@ -144,18 +157,18 @@ final class FieldSetFieldFinderTest extends TestCase
      * @param AbstractField $innerField
      * @return Mockery\MockInterface
      */
-    private function getHasManyField( string $relationalNamespace, AbstractField $innerField )
+    private function getHasManyField(string $relationalNamespace, AbstractField $innerField)
     {
-        $mock = Mockery::mock( HasMany::class );
+        $mock = Mockery::mock(HasMany::class);
 
-        $mock->shouldReceive( 'setFieldSet' )->andReturn();
-        $mock->shouldReceive( 'getName' )->andReturn( 'many_names' );
-        $mock->shouldReceive( 'getValue' )->andReturn( new Collection( [ $this->model ] ) );
+        $mock->shouldReceive('setFieldSet')->andReturn();
+        $mock->shouldReceive('getName')->andReturn('many_names');
+        $mock->shouldReceive('getValue')->andReturn(new Collection([$this->model]));
 
-        $fieldSet = new FieldSet( $this->model, $relationalNamespace );
-        $fieldSet->add( $innerField );
+        $fieldSet = new FieldSet($this->model, $relationalNamespace);
+        $fieldSet->add($innerField);
 
-        $mock->shouldReceive( 'getRelationFieldSet' )->once()->andReturn( $fieldSet );
+        $mock->shouldReceive('getRelationFieldSet')->once()->andReturn($fieldSet);
 
         return $mock;
     }
@@ -165,18 +178,21 @@ final class FieldSetFieldFinderTest extends TestCase
      * @param AbstractField $field
      * @return void
      */
-    private function assertContainsField( array $haystack, AbstractField $field )
+    private function assertContainsField(array $haystack, AbstractField $field)
     {
-        $this->assertEquals( $field, array_get( $haystack, $field->getName() ) );
+        $this->assertEquals($field, array_get($haystack, $field->getName()));
     }
 
     /**
      * @param \Closure $callback
      * @return FieldSetFieldFinder
      */
-    private function getFinderForFields( \Closure $callback )
+    private function getFinderForFields(\Closure $callback)
     {
-        return new FieldSetFieldFinder( $this->getLanguageRepository(), ( new Form( $this->model, $callback ) )->fields() );
+        $form = new Form($this->model);
+        $form->setFields($callback);
+
+        return new FieldSetFieldFinder($this->getLanguageRepository(), $form->fields());
     }
 
     /**
@@ -184,11 +200,11 @@ final class FieldSetFieldFinderTest extends TestCase
      */
     private function getLanguageRepository()
     {
-        $language = Mockery::mock( Language::class);
-        $language->shouldReceive( 'getAttribute' )->andReturn( $this->model );
+        $language = Mockery::mock(Language::class);
+        $language->shouldReceive('getAttribute')->andReturn($this->model);
 
-        $languageRepository = Mockery::mock( LanguageRepository::class );
-        $languageRepository->shouldReceive( 'all' )->andReturn( new Collection( [ $language ] ) );
+        $languageRepository = Mockery::mock(LanguageRepository::class);
+        $languageRepository->shouldReceive('all')->andReturn(new Collection([$language]));
 
         return $languageRepository;
     }

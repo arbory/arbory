@@ -1,0 +1,37 @@
+.panel {
+  > header {
+    @include section-header;
+    @include clear-inside;
+
+    margin-top: steps(2);
+
+    .title
+    {
+      float: left;
+    }
+
+    .extras
+    {
+      float: right;
+
+
+      &:not(.only-text)
+      {
+        margin: steps(-0.5) steps(-2) steps(-0.5) 0;
+
+        > * {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  > .content {
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: $color-border-normal;
+    margin-bottom: -1px;
+
+    @include clear-inside;
+  }
+}

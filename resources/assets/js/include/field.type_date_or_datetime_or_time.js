@@ -1,3 +1,6 @@
+import "jquery-ui/ui/widgets/datepicker";
+import 'jquery-ui-timepicker-addon';
+
 jQuery(document).ready(function()
 {
     var body = jQuery('body');

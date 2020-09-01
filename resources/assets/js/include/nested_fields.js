@@ -5,9 +5,9 @@ jQuery( document ).ready(function()
     jQuery(document).bind('nestedfieldsinit', function( e )
     {
         var target = jQuery(e.target);
-        if (!target.is('section.nested'))
+        if (!target.is('.nested'))
         {
-            target = target.find('section.nested');
+            target = target.find('.nested');
         }
 
         target.each(function()
@@ -44,7 +44,7 @@ jQuery( document ).ready(function()
                     return;
                 }
 
-                var target_block = trigger.parents('section.nested').first();
+                var target_block = trigger.parents('.nested').first();
 
                 if (target_block.attr('data-name') !== block_name)
                 {
@@ -53,111 +53,149 @@ jQuery( document ).ready(function()
 
                 if (trigger.is('.add-nested-item'))
                 {
-                    var template = jQuery(target_block.data('arbory-template'));
-                    if (template.length !== 1)
-                    {
-                        return null;
+                    var template = null;
+
+                    if (target_block.is('.polymorphic')) {
+                        var type_select = target_block.find('footer select.template-types');
+                        template = jQuery(type_select.find('option:selected').data('template'));
+                    }
+                    else {
+                        template = jQuery(target_block.data('arbory-template'));
                     }
 
-
-                    var new_item = template;
-
-                    new_item.addClass('new');
-
-                    new_item.appendTo( list );
-
-                    new_item.trigger( 'nestedfieldsreindex', event_params );
-
-                    if (event_params && event_params.no_animation)
-                    {
-                        new_item.trigger( 'nestedfieldsitemadd', event_params);
-                        new_item.trigger( 'contentloaded', event_params );
-                    }
-                    else
-                    {
-                        if (new_item.is('tr, td') )
-                        {
-                            new_item.css({ opacity: 1 }).hide();
-                            new_item.fadeIn( 'normal', function()
-                            {
-                                new_item.trigger( 'nestedfieldsitemadd', event_params);
-                                new_item.trigger( 'contentloaded', event_params );
-                            });
-                        }
-                        else
-                        {
-                            new_item.css({ opacity: 0 });
-                            new_item.slideDown( 'fast', function()
-                            {
-                                new_item.css({ opacity: 1 }).hide();
-                                new_item.fadeIn( 'fast', function()
-                                {
-                                    new_item.trigger( 'nestedfieldsitemadd', event_params );
-                                    new_item.trigger( 'contentloaded', event_params );
-                                });
-                            });
-                        }
-                    }
-
+                    block.trigger('nestedfieldscreate', {
+                        target_block: target_block,
+                        original_params: event_params,
+                        template: template
+                    });
                 }
                 else if (trigger.is('.remove-nested-item'))
                 {
-                    var item = trigger.parents(item_selector).first();
-
-                    var removeItem = function( item )
-                    {
-                        item.trigger( 'contentbeforeremove', event_params );
-
-                        var parent = item.parent();
-
-                        var destroy_inputs = item.find('input.destroy');
-
-                        if (destroy_inputs.length > 0)
-                        {
-                            // mark as destroyable and hide
-                            destroy_inputs.val( true );
-
-                            item.hide();
-                        }
-                        else
-                        {
-                            item.remove();
-                        }
-
-                        target_block.trigger( 'nestedfieldsreindex', event_params );
-                        parent.trigger( 'contentremoved', event_params );
-                    };
-
-                    item.addClass( 'removed' );
-
-                    item.trigger( 'nestedfieldsitemremove', event_params );
-
-                    if (event_params && event_params.no_animation)
-                    {
-                        removeItem( item );
-                    }
-                    else
-                    {
-                        item.fadeOut( 'fast', function()
-                        {
-                            if (item.is('tr,td'))
-                            {
-                                removeItem( item );
-                            }
-                            else
-                            {
-                                item.css({ opacity: 0 }).show().slideUp( 'fast', function()
-                                {
-                                    removeItem( item );
-                                });
-                            }
-                        });
-                    }
+                    block.trigger('nestedfieldsremove', {
+                        target_block: target_block,
+                        item: trigger.parents(item_selector).first(),
+                        original_params: event_params
+                    });
                 }
 
                 return;
             });
 
+            block.on('nestedfieldscreate', function(e, params)
+            {
+                var target_block = params.target_block;
+                var event_params = params.original_params;
+                var template = params.template;
+
+                if (target_block.attr('data-name') !== block_name)
+                {
+                    return;   // only react to own clicks
+                }
+
+                if (template.length !== 1)
+                {
+                    return null;
+                }
+
+                var new_item = template;
+
+                new_item.addClass('new');
+                new_item.appendTo( list );
+                new_item.trigger( 'nestedfieldsreindex', event_params );
+
+                if (event_params && event_params.no_animation)
+                {
+                    new_item.trigger( 'nestedfieldsitemadd', event_params);
+                    new_item.trigger( 'contentloaded', event_params );
+                }
+                else
+                {
+                    if (new_item.is('tr, td') )
+                    {
+                        new_item.css({ opacity: 1 }).hide();
+                        new_item.fadeIn( 'normal', function()
+                        {
+                            new_item.trigger( 'nestedfieldsitemadd', event_params);
+                            new_item.trigger( 'contentloaded', event_params );
+                        });
+                    }
+                    else
+                    {
+                        new_item.css({ opacity: 0 });
+                        new_item.slideDown( 'fast', function()
+                        {
+                            new_item.css({ opacity: 1 }).hide();
+                            new_item.fadeIn( 'fast', function()
+                            {
+                                new_item.trigger( 'nestedfieldsitemadd', event_params );
+                                new_item.trigger( 'contentloaded', event_params );
+                            });
+                        });
+                    }
+                }
+            });
+
+            block.on('nestedfieldsremove', function(e, params)
+            {
+                var target_block = params.target_block;
+                var item = params.item;
+                var event_params = params.original_params;
+
+                if (target_block.attr('data-name') !== block_name)
+                {
+                    return;   // only react to own clicks
+                }
+
+                var removeItem = function( item )
+                {
+                    item.trigger( 'contentbeforeremove', event_params );
+
+                    var parent = item.parent();
+
+                    var destroy_inputs = item.find('input.destroy');
+
+                    if (destroy_inputs.length > 0)
+                    {
+                        // mark as destroyable and hide
+                        destroy_inputs.val( true );
+
+                        item.hide();
+                    }
+                    else
+                    {
+                        item.remove();
+                    }
+
+                    target_block.trigger( 'nestedfieldsreindex', event_params );
+                    parent.trigger( 'contentremoved', event_params );
+                };
+
+                item.addClass( 'removed' );
+
+                item.trigger( 'nestedfieldsitemremove', event_params );
+
+                if (event_params && event_params.no_animation)
+                {
+                    removeItem( item );
+                }
+                else
+                {
+                    item.fadeOut( 'fast', function()
+                    {
+                        if (item.is('tr,td'))
+                        {
+                            removeItem( item );
+                        }
+                        else
+                        {
+                            item.css({ opacity: 0 }).show().slideUp( 'fast', function()
+                            {
+                                removeItem( item );
+                            });
+                        }
+                    });
+                }
+            });
 
             block.on('nestedfieldsreindex', function()
             {

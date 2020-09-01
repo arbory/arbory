@@ -1,21 +1,20 @@
-<?php declare( strict_types=1 );
+<?php
+
+declare(strict_types=1);
 
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\Fields\Renderer\ImageFieldRenderer;
-use Arbory\Base\Html\Elements\Element;
 
 /**
- * Class ArboryImage
- * @package Arbory\Base\Admin\Form\Fields
+ * Class ArboryImage.
  */
 final class ArboryImage extends ArboryFile
 {
-    /**
-     * @return Element
-     */
-    public function render(): Element
-    {
-        return ( new ImageFieldRenderer( $this ) )->render();
-    }
+    protected $attributes = [
+        'type' => 'file',
+        'accept' => 'image/*',
+    ];
+
+    protected $rendererClass = ImageFieldRenderer::class;
 }

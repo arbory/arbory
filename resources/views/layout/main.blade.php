@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Arbory</title>
+        <title>{{ config('arbory.title', 'Arbory') }}</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-        <link href="{{ mix('/arbory/css/application.css') }}" media="all" rel="stylesheet"/>
-        <link href="{{ mix('/arbory/css/controllers/nodes.css') }}" media="all" rel="stylesheet"/>
+        <link href="{{ mix('/css/application.css', 'arbory') }}" media="all" rel="stylesheet"/>
+        <link href="{{ mix('/css/controllers/nodes.css', 'arbory') }}" media="all" rel="stylesheet"/>
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @foreach($assetsCss as $asset)
-            <link href="{{ mix( $asset ) }}" media="all" rel="stylesheet"/>
+        @foreach($assets->getCss() as $css)
+            <link href="{{ $css }}" media="all" rel="stylesheet"/>
         @endforeach
 
-        @if($inlineCss)
+        @foreach($assets->getInlineCss() as $style)
             <style>
-                {!! $inlineCss !!}
+                {!! $style !!}
             </style>
-        @endif
+        @endforeach
     </head>
     <body class="view-index @if(isset($body_class)) {{ $body_class }}  @endif">
 
@@ -26,6 +26,8 @@
 
         <main id="main">
             @yield('content.header')
+            @include('arbory::layout.partials.message')
+
             @yield('content')
         </main>
 
@@ -33,18 +35,21 @@
 
         <script src="https://maps.googleapis.com/maps/api/js?key={{ config('arbory.services.google.maps_api_key') }}&libraries=places"></script>
 
-        <script src="{{ mix('/arbory/js/application.js') }}"></script>
-        <script src="{{ mix('/arbory/js/controllers/nodes.js') }}"></script>
-        <script src="{{ mix('/arbory/js/admin.js') }}"></script>
+        @include('arbory::layout.partials.environment')
 
-        @foreach($assetsJs as $asset)
-            <script src="{{ mix( $asset ) }}"></script>
+        <script src="{{ mix('js/manifest.js', 'arbory') }}"></script>
+        <script src="{{ mix('js/vendor.js', 'arbory') }}"></script>
+        <script src="{{ mix('js/application.js', 'arbory') }}"></script>
+        <script src="{{ mix('js/controllers/nodes.js', 'arbory') }}"></script>
+
+        @foreach($assets->getJs() as $script)
+            <script src="{{ mix($script, 'arbory') }}"></script>
         @endforeach
 
-        @if($inlineJs)
+        @foreach($assets->getInlineJs() as $inlineJs)
             <script type="text/javascript">
                 {!! $inlineJs !!}
             </script>
-        @endif
+        @endforeach
     </body>
 </html>

@@ -5,8 +5,7 @@ namespace Arbory\Base\Auth\Activations;
 use Cartalyst\Sentinel\Activations\EloquentActivation;
 
 /**
- * Class Activation
- * @package Arbory\Base\Auth\Activations
+ * Class Activation.
  */
 class Activation extends EloquentActivation
 {

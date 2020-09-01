@@ -1,13 +1,15 @@
-<?php declare( strict_types=1 );
+<?php
+
+declare(strict_types=1);
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Inputs\Input;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 /**
- * Class ImageFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class ImageFieldRenderer.
  */
 final class ImageFieldRenderer extends FileFieldRenderer
 {
@@ -16,29 +18,26 @@ final class ImageFieldRenderer extends FileFieldRenderer
      */
     public function render()
     {
-        $input = $this->getInput();
-        $label = $input->getLabel( $this->field->getLabel() );
         $image = $this->field->getValue();
 
         $value = Html::div();
 
         $arboryFile = $this->getFile();
 
-        if( $arboryFile )
-        {
+        if ($arboryFile) {
             $value->append(
                 Html::image()
                     ->addAttributes([
-                        'src' => $image->getUrl($this->getManipulationParameters())
+                        'src' => $image->getUrl($this->getManipulationParameters()),
                     ])
                     ->addClass('thumbnail')
             );
-            $value->append( $this->createFileDetails( $arboryFile ) );
+            $value->append($this->createFileDetails($arboryFile));
         }
 
-        $value->append( $input );
+        $value->append($this->getInput());
 
-        return $this->buildField( $label, $value );
+        return $value;
     }
 
     /**
@@ -46,11 +45,13 @@ final class ImageFieldRenderer extends FileFieldRenderer
      */
     protected function getInput(): Input
     {
-        return parent::getInput()->addAttributes( [
-            'accept' => 'image/*'
-        ] );
-    }
+        $control = $this->getControl();
+        $control = $this->configureControl($control);
 
+        $element = $control->element();
+
+        return $control->render($element);
+    }
 
     /**
      * @return array
@@ -62,7 +63,15 @@ final class ImageFieldRenderer extends FileFieldRenderer
             'w' => 64,
             'q' => 40,
             'fm' => 'jpg',
-            'fit' => 'crop'
+            'fit' => 'crop',
         ];
+    }
+
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
+    {
+        // Use file Javascript
+        $options->addClass('type-item type-file');
+
+        return $options;
     }
 }

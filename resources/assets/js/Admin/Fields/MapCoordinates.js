@@ -16,13 +16,12 @@ export default class MapCoordinates {
      */
     registerEventHandlers() {
         let field = this.getField();
-        let name = field.data('name');
-
+        
         this.canvas = field.find('.canvas');
-        this.coordinatesInput = field.find('input[data-name=\'' + name + '\']');
-
+        this.coordinatesInput = this.getInput();
+        
         this.map = new google.maps.Map(this.canvas[0], {
-            zoom: field.data('zoom'),
+            zoom: this.coordinatesInput.data('zoom'),
             center: this.getCenterPosition()
         });
 
@@ -30,7 +29,10 @@ export default class MapCoordinates {
             e.stopPropagation();
         });
 
-        this.marker = new google.maps.Marker({map: this.map, draggable: true});
+        this.marker = new google.maps.Marker({
+            map: this.map,
+            draggable: this.isInteractive() ,
+        });
 
         this.search = new google.maps.places.SearchBox(this.getSearchField()[0]);
 
@@ -40,6 +42,10 @@ export default class MapCoordinates {
 
     bindEvents() {
         google.maps.event.addListener(this.map, 'click', event => {
+            if(!this.isInteractive()) {
+                return false;
+            }
+            
             this.clearSearch();
             this.marker.setPosition(event.latLng);
             this.writeCoordinates(this.marker);
@@ -59,6 +65,10 @@ export default class MapCoordinates {
         });
 
         this.search.addListener('places_changed', () => {
+            if(!this.isInteractive()) {
+                return false;
+            }
+
             let places = this.search.getPlaces();
 
             if (places.length === 0) {
@@ -99,6 +109,7 @@ export default class MapCoordinates {
 
     getCenterPosition() {
         let field = this.getField();
+        let input = this.getInput();
 
         if (this.hasValidInputLatLng()) {
             let coordinates = this.getInputLatLng();
@@ -110,8 +121,8 @@ export default class MapCoordinates {
         }
 
         return {
-            lat: field.data('latitude'),
-            lng: field.data('longitude')
+            lat: input.data('latitude'),
+            lng: input.data('longitude')
         };
     }
 
@@ -136,10 +147,23 @@ export default class MapCoordinates {
     }
 
     getSearchField() {
-        return this.getField().find('.search_address input');
+        return this.getField().find('.search-input');
     }
 
     getField() {
         return jQuery(this.element);
+    }
+
+    getInput() {
+        let field = this.getField();
+
+        return field.find(`input.coordinates-input`);
+    }
+
+    isInteractive() {
+        let disabled = this.getInput().prop('disabled');
+        let interactive = $(this.element).data('interactive');
+
+        return interactive && !disabled;
     }
 }

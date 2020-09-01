@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Admin;
 
-use Cartalyst\Sentinel\Sentinel;
-use Arbory\Base\Admin\Module\ModuleRoutesRegistry;
-use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Menu\Menu;
+use Arbory\Base\Auth\Roles\Role;
+use Cartalyst\Sentinel\Sentinel;
+use Illuminate\Support\Collection;
 use Arbory\Base\Services\AssetPipeline;
 use Arbory\Base\Services\ModuleRegistry;
-use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Module\ModuleRoutesRegistry;
 
 class Admin
 {
@@ -48,11 +48,11 @@ class Admin
      * @param Menu $menu
      * @param AssetPipeline $assets
      */
-    public function __construct( Sentinel $sentinel, Menu $menu, AssetPipeline $assets )
+    public function __construct(Sentinel $sentinel, Menu $menu, AssetPipeline $assets)
     {
         $this->sentinel = $sentinel;
         $this->routes = new ModuleRoutesRegistry();
-        $this->modules = new ModuleRegistry( $this );
+        $this->modules = new ModuleRegistry($this);
         $this->menu = $menu;
         $this->assets = $assets;
     }
@@ -102,8 +102,7 @@ class Admin
      */
     public function isAuthorized()
     {
-        if( $this->authorized === null )
-        {
+        if ($this->authorized === null) {
             $this->authorized = (bool) $this->sentinel()->check();
         }
 
@@ -114,23 +113,21 @@ class Admin
      * @param $module
      * @return bool
      */
-    public function isAuthorizedFor( $module )
+    public function isAuthorizedFor($module)
     {
-        if( !$this->isAuthorized() )
-        {
+        if (! $this->isAuthorized()) {
             return false;
         }
 
         /**
-         * @var $roles Role[]|Collection
+         * @var Role[]|Collection
          */
         $roles = $this->sentinel()->getUser()->roles;
 
-        $permissions = $roles->mapWithKeys( function ( Role $role )
-        {
+        $permissions = $roles->mapWithKeys(function (Role $role) {
             return $role->getPermissions();
-        } )->toArray();
+        })->toArray();
 
-        return in_array( $module, $permissions, true );
+        return in_array($module, $permissions, true);
     }
 }

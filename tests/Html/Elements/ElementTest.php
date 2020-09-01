@@ -2,8 +2,8 @@
 
 namespace Tests\Html\Elements;
 
-use Arbory\Base\Html\Elements\Element;
 use PHPUnit\Framework\TestCase;
+use Arbory\Base\Html\Elements\Element;
 
 final class ElementTest extends TestCase
 {
@@ -28,7 +28,7 @@ final class ElementTest extends TestCase
             'data-length' => '10',
         ];
     }
-    
+
     /**
      * @test
      * @return void
@@ -37,10 +37,10 @@ final class ElementTest extends TestCase
     {
         $element = $this->getElement();
 
-        $element->addClass( 'box' );
-        $element->addClass( 'bright_green' );
+        $element->addClass('box');
+        $element->addClass('bright_green');
 
-        $this->assertEquals( 'box bright_green', array_get( $element->attributes()->toArray(), 'class' ) );
+        $this->assertEquals('box bright_green', array_get($element->attributes()->toArray(), 'class'));
     }
 
     /**
@@ -51,15 +51,15 @@ final class ElementTest extends TestCase
     {
         $existingElement = $this->getElement();
         $newElement = $this->getElement();
-        $element = $this->getElement( [ $existingElement ] );
+        $element = $this->getElement([$existingElement]);
 
-        $element->append( $newElement );
+        $element->append($newElement);
 
         $content = $element->content();
 
-        $this->assertEquals( 2, $content->count() );
-        $this->assertEquals( $existingElement, $content->get( 0 ) );
-        $this->assertEquals( $newElement, $content->get( 1 ) );
+        $this->assertEquals(2, $content->count());
+        $this->assertEquals($existingElement, $content->get(0));
+        $this->assertEquals($newElement, $content->get(1));
     }
 
     /**
@@ -70,15 +70,15 @@ final class ElementTest extends TestCase
     {
         $existingElement = $this->getElement();
         $newElement = $this->getElement();
-        $element = $this->getElement( [ $existingElement ] );
+        $element = $this->getElement([$existingElement]);
 
-        $element->prepend( $newElement );
+        $element->prepend($newElement);
 
         $content = $element->content();
 
-        $this->assertEquals( 2, $content->count() );
-        $this->assertEquals( $newElement, $content->get( 0 ) );
-        $this->assertEquals( $existingElement, $content->get( 1 ) );
+        $this->assertEquals(2, $content->count());
+        $this->assertEquals($newElement, $content->get(0));
+        $this->assertEquals($existingElement, $content->get(1));
     }
 
     /**
@@ -89,9 +89,9 @@ final class ElementTest extends TestCase
     {
         $element = $this->getElement();
 
-        $element->addAttributes( $this->attributes );
+        $element->addAttributes($this->attributes);
 
-        $this->assertEquals( $this->attributes, $element->attributes()->toArray() );
+        $this->assertEquals($this->attributes, $element->attributes()->toArray());
     }
 
     /**
@@ -100,9 +100,10 @@ final class ElementTest extends TestCase
      */
     public function itShouldFormatNameWithMultipleValues()
     {
-        foreach( Element::FIELD_NAME_MULTIPLE_ENDINGS as $ending )
-        {
-            $this->assertEquals( 'resources[field_name][]', Element::formatName( 'resources.field_name' . $ending ) );
+        $supportedEndingFormats = ['[]', '[ ]'];
+
+        foreach ($supportedEndingFormats as $ending) {
+            $this->assertEquals('resources[field_name][]', Element::formatName('resources.field_name'.$ending));
         }
     }
 
@@ -110,8 +111,8 @@ final class ElementTest extends TestCase
      * @param array|null $content
      * @return Element
      */
-    private function getElement( array $content = null )
+    private function getElement(array $content = null)
     {
-        return new Element( uniqid( '', true ), $content );
+        return new Element(uniqid('', true), $content);
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Admin\Exports\DataSetExport;
 use Arbory\Base\Admin\Grid as AdminGrid;
-use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Exports\DataSetExport;
+use Illuminate\Contracts\Support\Renderable;
 
-class ExportBuilder
+class ExportBuilder implements Renderable
 {
     /**
      * @var AdminGrid
@@ -23,6 +23,20 @@ class ExportBuilder
     }
 
     /**
+     * @return array
+     */
+    private function getColumns()
+    {
+        $columns = [];
+
+        foreach ($this->grid->getColumns() as $column) {
+            $columns[] = $column->getLabel();
+        }
+
+        return $columns;
+    }
+
+    /**
      * @return DataSetExport
      */
     public function render()
@@ -31,6 +45,8 @@ class ExportBuilder
             return $row->toArray();
         });
 
-        return new DataSetExport($items);
+        $columns = $this->getColumns();
+
+        return new DataSetExport($items, $columns);
     }
 }

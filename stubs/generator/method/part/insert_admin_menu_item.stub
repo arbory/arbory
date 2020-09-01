@@ -1,4 +1,0 @@
-DB::table( 'admin_menu_items' )->insert( [
-    'title' => '{{title}}',
-    'module' => {{controllerClass}}::class,
-] );
