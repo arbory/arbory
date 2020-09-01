@@ -88,6 +88,7 @@ class TranslationsController extends Controller
                 $translationsTableName.' as l_'.$locale,
                 function (JoinClause $join) use ($joinAlias, $locale) {
                     $join
+                        ->on($joinAlias.'.namespace', '=', 'd1.namespace')
                         ->on($joinAlias.'.group', '=', 'd1.group')
                         ->on($joinAlias.'.item', '=', 'd1.item')
                         ->on($joinAlias.'.locale', '=', \DB::raw('\''.$locale.'\''));
