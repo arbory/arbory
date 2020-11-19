@@ -14,10 +14,16 @@ class AddActivationColumnsToNodesTable extends Migration
      */
     public function up()
     {
-        Schema::table('nodes', function (Blueprint $table) {
-            $table->dateTime('activate_at')->nullable();
-            $table->dateTime('expire_at')->nullable();
-        });
+        if (!Schema::hasColumns('nodes', ['activate_at', 'expire_at'])) {
+            Schema::table('nodes', function (Blueprint $table) {
+                $table->dateTime('activate_at')->nullable();
+                $table->dateTime('expire_at')->nullable();
+            });
+        }
+
+        if (!Schema::hasColumn('nodes', 'active')) {
+            return;
+        }
 
         DB::table('nodes')->where('active', 1)->update([
             'activate_at' => date('Y-m-d H:i'),

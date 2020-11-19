@@ -13,6 +13,10 @@ class CreateConstructorPagesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('constructor_pages')) {
+            return;
+        }
+
         Schema::create('constructor_pages', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();

@@ -13,6 +13,10 @@ class CreateConstructorBlocksTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('constructor_blocks')) {
+            return;
+        }
+
         Schema::create('constructor_blocks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->index();
