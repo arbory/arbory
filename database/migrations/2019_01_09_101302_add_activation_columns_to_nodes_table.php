@@ -14,14 +14,14 @@ class AddActivationColumnsToNodesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasColumns('nodes', ['activate_at', 'expire_at'])) {
+        if (! Schema::hasColumns('nodes', ['activate_at', 'expire_at'])) {
             Schema::table('nodes', function (Blueprint $table) {
                 $table->dateTime('activate_at')->nullable();
                 $table->dateTime('expire_at')->nullable();
             });
         }
 
-        if (!Schema::hasColumn('nodes', 'active')) {
+        if (! Schema::hasColumn('nodes', 'active')) {
             return;
         }
 
