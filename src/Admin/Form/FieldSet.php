@@ -322,7 +322,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      */
     public function offsetGet($key)
     {
-        return $this->all()[$key];
+        return $this->items[$key];
     }
 
     /**
@@ -334,7 +334,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      */
     public function offsetUnset($key)
     {
-        unset($this->all()[$key]);
+        unset($this->items[$key]);
     }
 
     /**
