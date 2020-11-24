@@ -32,9 +32,9 @@
     },
     "require-dev" : {
         "satooshi/php-coveralls": "^1.0",
-        "phpunit/phpunit" : "^6",
-        "mockery/mockery": "dev-master",
-        "diablomedia/phpunit-pretty-printer": "^2"
+        "phpunit/phpunit" : "~8.0",
+        "mockery/mockery": "1.3.*",
+        "diablomedia/phpunit-pretty-printer": "~4.0"
     },
     "autoload": {
         "psr-4": { "Arbory\\Base\\": "src" },
