@@ -26,7 +26,7 @@
                         title="@lang('arbory::dialog.nodes_content_type.cancel')"
                         data-type="cancel"
                         href="/admin/nodes"
-                ><i class="fa fa-ban"></i>@lang('arbory::dialog.nodes_content_type.cancel')</a>
+                ><i class="mt-icon">cancel</i>@lang('arbory::dialog.nodes_content_type.cancel')</a>
             </div>
             <div class="secondary">
             </div>

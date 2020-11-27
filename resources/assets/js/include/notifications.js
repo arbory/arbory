@@ -16,7 +16,7 @@ jQuery(function()
 
     var notifications = {};
 
-    var close_icon   = jQuery('<i />').addClass('fa fa-times');
+    var close_icon   = jQuery('<i />').addClass('mt-icon').html('close');
     var close_button = jQuery('<button type="button" />').addClass('close button only-icon').append(close_icon).attr('title', container.attr('data-close-text'));
     close_button.click(function()
     {
