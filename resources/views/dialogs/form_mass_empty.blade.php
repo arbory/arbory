@@ -6,7 +6,7 @@
 </header>
 
 <div class="body">
-    <i class="fa fa-ban"></i>
+    <i class="mt-icon">cancel</i>
     <div class="question">@lang('arbory::dialog.bulk.question')</div>
 </div>
 
@@ -14,7 +14,7 @@
     <div class="tools">
         <div class="primary">
             <a class="button with-icon primary" title="@lang('arbory::dialog.bulk.ok')" data-type="cancel">
-                <i class="fa fa-check"></i>@lang('arbory::dialog.bulk.ok')
+                <i class="mt-icon">check</i>@lang('arbory::dialog.bulk.ok')
             </a>
         </div>
     </div>

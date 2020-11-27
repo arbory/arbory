@@ -66,7 +66,7 @@ class FileFieldRenderer extends ControlFieldRenderer
 
         if ($this->field->isInteractive() && ! $this->field->isDisabled()) {
             $removeButton =
-                Html::button()->addClass('remove fa fa-times')->addAttributes([
+                Html::button('delete')->addClass('remove mt-icon')->addAttributes([
                     'type' => 'button',
                 ]);
 

@@ -47,13 +47,13 @@
                 <div class="tools">
                     <div class="primary">
                         <button class="button with-icon primary" title="{{trans('arbory.translations.save')}}" type="submit" data-type="ok">
-                            <i class="fa fa-check"></i>{{trans('arbory.translations.save')}}
+                            <i class="mt-icon">check</i>{{trans('arbory.translations.save')}}
                         </button>
                     </div>
                     <div class="secondary">
                         <a class="button with-icon secondary"
                            title="{{trans('arbory.translations.back_to_index')}}"
-                           href="{{$back_to_index_url}}"><i class="fa fa-caret-left"></i>{{trans('arbory.translations.back_to_index')}}
+                           href="{{$back_to_index_url}}"><i class="mt-icon">arrow_left</i>{{trans('arbory.translations.back_to_index')}}
                         </a></div>
                 </div>
             </footer>

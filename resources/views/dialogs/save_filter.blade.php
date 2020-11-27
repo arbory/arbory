@@ -25,7 +25,7 @@
             <div class="tools">
                 <div class="primary">
                     <button class="button with-icon" title="Yes" type="submit" name="save">
-                        <i class="fa fa-check"></i>{{ trans('arbory::dialog.save_filter.save') }}
+                        <i class="mt-icon">check</i>{{ trans('arbory::dialog.save_filter.save') }}
                     </button>
                 </div>
             </div>

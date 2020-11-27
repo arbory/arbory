@@ -9,8 +9,8 @@ jQuery(document).ready(function()
     {
         // Set timeout to execute this after datepicker has been initialized
         setTimeout( function() {
-            jQuery(instance.dpDiv[0]).find('.ui-datepicker-prev').removeClass().addClass('button only-icon previous').html('<i class="fa fa-chevron-left"></i>');
-            jQuery(instance.dpDiv[0]).find('.ui-datepicker-next').removeClass().addClass('button only-icon next').html('<i class="fa fa-chevron-right"></i>');
+            jQuery(instance.dpDiv[0]).find('.ui-datepicker-prev').removeClass().addClass('button only-icon previous').html('<i class="mt-icon">chevron_left</i>');
+            jQuery(instance.dpDiv[0]).find('.ui-datepicker-next').removeClass().addClass('button only-icon next').html('<i class="mt-icon">chevron_right</i>');
         }, 0);
     };
 
