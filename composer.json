@@ -50,7 +50,6 @@
                 "Arbory\\Base\\Providers\\ArboryServiceProvider",
                 "Arbory\\Base\\Providers\\NodeServiceProvider",
                 "Arbory\\Base\\Providers\\TranslationServiceProvider",
-                "Dimsav\\Translatable\\TranslatableServiceProvider",
                 "Arbory\\Base\\Providers\\FileServiceProvider",
                 "Arbory\\Base\\Providers\\AuthServiceProvider",
                 "Roboc\\Glide\\GlideImageServiceProvider",
