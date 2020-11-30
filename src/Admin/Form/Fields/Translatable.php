@@ -4,7 +4,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
-use Dimsav\Translatable\Translatable as TranslatableModel;
+use Astrotomic\Translatable\Translatable as TranslatableModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Waavi\Translation\Models\Language;
@@ -43,7 +43,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     {
         /** @var LanguageRepository $languages */
         $languages = \App::make( LanguageRepository::class );
-        
+
         $this->field = $field;
         $this->currentLocale = \App::getLocale();
 
