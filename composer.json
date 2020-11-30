@@ -38,7 +38,7 @@
         "satooshi/php-coveralls": "^1.0",
         "phpunit/phpunit" : "^6.1",
         "mockery/mockery": "^1.3.3",
-        "diablomedia/phpunit-pretty-printer": "^2",
+        "diablomedia/phpunit-pretty-printer": "^2"
     },
     "autoload": {
         "psr-4": { "Arbory\\Base\\": "src" },
