@@ -3,6 +3,7 @@
 namespace Arbory\Base\Services;
 
 use Arbory\Base\Admin\Module;
+use Illuminate\Support\Str;
 
 /**
  * Class ModuleConfig
@@ -156,6 +157,6 @@ class ModuleConfiguration
         $slug = str_replace( '\\', '', $matches['name'] );
         $slug = preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1 ', $slug );
 
-        return str_slug( $slug );
+        return Str::slug( $slug );
     }
 }

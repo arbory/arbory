@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 
 class ModifyPrimaryKeyInSettingsTable extends Migration
@@ -42,7 +43,7 @@ class ModifyPrimaryKeyInSettingsTable extends Migration
     {
         $schema = Schema::getConnection()->getDoctrineSchemaManager();
         $indexes = $schema->listTableIndexes('settings');
-        $primaryIndex = array_get($indexes, 'primary');
+        $primaryIndex = Arr::get($indexes, 'primary');
 
         if ($primaryIndex) {
             Schema::table('settings', function (Blueprint $table) use ($primaryIndex) {

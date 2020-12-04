@@ -7,6 +7,7 @@ use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\HtmlString;
+use Illuminate\Support\Arr;
 
 class IconPickerRenderer extends SelectFieldRenderer
 {
@@ -65,7 +66,7 @@ class IconPickerRenderer extends SelectFieldRenderer
         }
 
         $node = simplexml_load_string($iconNode->asXML());
-        $path = array_first($node->xpath('/symbol//path[@d]'));
+        $path = Arr::first($node->xpath('/symbol//path[@d]'));
 
         if( $path )
         {

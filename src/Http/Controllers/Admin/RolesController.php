@@ -10,7 +10,9 @@ use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Admin\Module;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * Class RoleController
@@ -55,7 +57,7 @@ class RolesController extends Controller
         $form->addEventListener('validate.before', function (Request $request) {
             $resource = $request->input('resource');
 
-            if (array_get($resource, 'permissions')) {
+            if (Arr::get($resource, 'permissions')) {
                 return;
             }
 
@@ -63,7 +65,7 @@ class RolesController extends Controller
         });
 
         $form->addEventListener('create.before', function () use ($model) {
-            $model->slug = str_slug($model->name);
+            $model->slug = Str::slug($model->name);
         });
 
         return $form;

@@ -16,6 +16,7 @@ use Arbory\Base\Admin\Exports\DataSetExport;
 use Arbory\Base\Admin\Exports\ExportInterface;
 use Arbory\Base\Admin\Exports\Type\ExcelExport;
 use Arbory\Base\Admin\Exports\Type\JsonExport;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Crudify
@@ -108,7 +109,7 @@ trait Crudify
             $layout->body($this->buildGrid($this->resource()));
         });
 
-        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-index');
+        $layout->bodyClass('controller-' . Str::slug($this->module()->name()) . ' view-index');
 
         return $layout;
     }
@@ -131,7 +132,7 @@ trait Crudify
             $layout->body($this->buildForm($this->resource()));
         });
 
-        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+        $layout->bodyClass('controller-' . Str::slug($this->module()->name()) . ' view-edit');
 
         return $layout;
     }
@@ -169,7 +170,7 @@ trait Crudify
             $layout->body($this->buildForm($resource));
         });
 
-        $layout->bodyClass('controller-' . str_slug($this->module()->name()) . ' view-edit');
+        $layout->bodyClass('controller-' . Str::slug($this->module()->name()) . ' view-edit');
 
         return $layout;
     }
@@ -217,7 +218,7 @@ trait Crudify
      */
     public function dialog(Request $request, string $name)
     {
-        $method = camel_case($name) . 'Dialog';
+        $method = Str::camel($name) . 'Dialog';
 
         if (!$name || !method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
@@ -314,7 +315,7 @@ trait Crudify
      */
     public function api(Request $request, string $name)
     {
-        $method = camel_case($name) . 'Api';
+        $method = Str::camel($name) . 'Api';
 
         if (!$name || !method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
@@ -364,7 +365,7 @@ trait Crudify
     public function slugGeneratorApi(Request $request)
     {
         /** @var \Illuminate\Database\Query\Builder $query */
-        $slug = str_slug($request->input('from'));
+        $slug = Str::slug($request->input('from'));
         $column = $request->input('column_name');
 
         $query = \DB::table($request->input('model_table'))->where($column, $slug);

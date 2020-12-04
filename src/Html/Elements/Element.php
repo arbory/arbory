@@ -2,6 +2,9 @@
 
 namespace Arbory\Base\Html\Elements;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+
 /**
  * Class Element
  * @package Arbory\Base\Html\Elements
@@ -155,7 +158,7 @@ class Element
      */
     public static function formatName( $name ): string
     {
-        $multiple = ends_with( $name, self::FIELD_NAME_MULTIPLE_ENDINGS );
+        $multiple = Str::endsWith( $name, self::FIELD_NAME_MULTIPLE_ENDINGS );
 
         if( $multiple )
         {
@@ -164,7 +167,7 @@ class Element
 
         $nameParts = preg_split( '/\./', $name, NULL, PREG_SPLIT_NO_EMPTY );
 
-        $inputName = array_pull( $nameParts, 0 );
+        $inputName = Arr::pull( $nameParts, 0 );
 
         if( count( $nameParts ) > 0 )
         {

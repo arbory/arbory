@@ -3,6 +3,8 @@
 namespace Arbory\Base\Admin\Form;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 /**
  * Class Validator
@@ -50,15 +52,15 @@ class Validator extends FormRequest
         $input = $this->all();
         $destroyed = [];
 
-        foreach( array_dot( $input ) as $namespace => $value )
+        foreach( Arr::dot( $input ) as $namespace => $value )
         {
-            if( ends_with( $namespace, '._destroy' ) && $value === 'true' )
+            if( Str::endsWith( $namespace, '._destroy' ) && $value === 'true' )
             {
                 $destroyed[] = substr( $namespace, 0, strrpos( $namespace, "." ) );
             }
         }
 
-        array_forget( $input, $destroyed );
+        Arr::forget( $input, $destroyed );
 
         $this->replace( $input );
     }

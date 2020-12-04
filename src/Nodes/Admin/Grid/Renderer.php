@@ -12,6 +12,7 @@ use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**
@@ -191,8 +192,8 @@ class Renderer implements Renderable
      */
     protected function getNodeCookie( $nodeId )
     {
-        $cookie = (array) json_decode( array_get( $_COOKIE, self::COOKIE_NAME_NODES ) );
+        $cookie = (array) json_decode( Arr::get( $_COOKIE, self::COOKIE_NAME_NODES ) );
 
-        return array_get( $cookie, $nodeId, true );
+        return Arr::get( $cookie, $nodeId, true );
     }
 }

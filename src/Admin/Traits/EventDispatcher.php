@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Traits;
 
 use Closure;
+use Illuminate\Support\Arr;
 
 /**
  * Class EventDispatcher
@@ -63,7 +64,7 @@ trait EventDispatcher
      */
     public function getEventListeners( $event )
     {
-        return array_get( $this->eventListeners, $event, [] );
+        return Arr::get( $this->eventListeners, $event, [] );
     }
 
 }

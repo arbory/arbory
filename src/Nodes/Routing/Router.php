@@ -8,6 +8,7 @@ use Arbory\Base\Repositories\NodesRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * Class Router
@@ -154,7 +155,7 @@ class Router
 
         foreach( $routes as $route )
         {
-            if( starts_with( $route->getName(), $node->getContentType() ) )
+            if( Str::startsWith( $route->getName(), $node->getContentType() ) )
             {
                 $nodeRoutes->push( $route );
             }

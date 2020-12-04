@@ -6,6 +6,7 @@ use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Services\SettingRegistry;
 use Arbory\Base\Support\Translate\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Setting extends Model
 {
@@ -61,7 +62,7 @@ class Setting extends Model
      */
     public function fill( array $attributes )
     {
-        $name = array_get( $attributes, 'name' );
+        $name = Arr::get( $attributes, 'name' );
 
         return $this->isTranslatable( $name ) ? $this->translatableFill( $attributes ) : parent::fill( $attributes );
     }

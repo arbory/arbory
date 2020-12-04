@@ -10,6 +10,7 @@ use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Services\FieldSetFieldFinder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Mockery;
 use Mockery\Mock;
@@ -164,7 +165,7 @@ final class FieldSetFieldFinderTest extends TestCase
      */
     private function assertContainsField(array $haystack, AbstractField $field)
     {
-        $this->assertEquals($field, array_get($haystack, $field->getName()));
+        $this->assertEquals($field, Arr::get($haystack, $field->getName()));
     }
 
     /**

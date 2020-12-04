@@ -3,6 +3,7 @@
 namespace Tests\Html\Elements;
 
 use Arbory\Base\Html\Elements\Element;
+use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
 
 final class ElementTest extends TestCase
@@ -28,7 +29,7 @@ final class ElementTest extends TestCase
             'data-length' => '10',
         ];
     }
-    
+
     /**
      * @test
      * @return void
@@ -40,7 +41,7 @@ final class ElementTest extends TestCase
         $element->addClass( 'box' );
         $element->addClass( 'bright_green' );
 
-        $this->assertEquals( 'box bright_green', array_get( $element->attributes()->toArray(), 'class' ) );
+        $this->assertEquals( 'box bright_green', Arr::get( $element->attributes()->toArray(), 'class' ) );
     }
 
     /**

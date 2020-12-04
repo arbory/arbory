@@ -26,6 +26,7 @@ use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
 
 class NodesController extends Controller
 {
@@ -150,7 +151,7 @@ class NodesController extends Controller
             $layout->body( $this->buildForm( $node ) );
         } );
 
-        $layout->bodyClass( 'controller-' . str_slug( $this->module()->name() ) . ' view-edit' );
+        $layout->bodyClass( 'controller-' . Str::slug( $this->module()->name() ) . ' view-edit' );
 
         return $layout;
     }
@@ -260,16 +261,16 @@ class NodesController extends Controller
         }
 
         $from = $request->get( 'from' );
-        $slug = str_slug( $from );
+        $slug = Str::slug( $from );
 
         if( in_array( $slug, $reservedSlugs, true ) && $request->has( 'id' ) )
         {
-            $slug = str_slug( $request->get( 'id' ) . '-' . $from );
+            $slug = Str::slug( $request->get( 'id' ) . '-' . $from );
         }
 
         if( in_array( $slug, $reservedSlugs, true ) )
         {
-            $slug = str_slug( $from . '-' . random_int( 0, 9999 ) );
+            $slug = Str::slug( $from . '-' . random_int( 0, 9999 ) );
         }
 
         return $slug;

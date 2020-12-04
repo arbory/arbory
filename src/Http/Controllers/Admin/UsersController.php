@@ -10,6 +10,7 @@ use Arbory\Base\Html\Html;
 use Arbory\Base\Auth\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**
@@ -86,7 +87,7 @@ class UsersController extends Controller
             if ($active) {
                 $activation = $this->getActivations()->create($model);
 
-                $this->getActivations()->complete($model, array_get($activation, 'code'));
+                $this->getActivations()->complete($model, Arr::get($activation, 'code'));
             } else {
                 $this->getActivations()->remove($model);
             }

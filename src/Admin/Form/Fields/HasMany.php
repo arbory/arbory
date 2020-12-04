@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 /**
  * Class HasMany
@@ -116,7 +117,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
         foreach ($items as $index => $item) {
             $relatedModel = $this->findRelatedModel($item);
 
-            if (filter_var(array_get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
+            if (filter_var(Arr::get($item, '_destroy'), FILTER_VALIDATE_BOOLEAN)) {
                 $relatedModel->delete();
 
                 continue;
@@ -125,7 +126,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
             $relation = $this->getRelation();
 
             if ($relation instanceof MorphMany) {
-                $relatedModel->fill(array_only($item, $relatedModel->getFillable()));
+                $relatedModel->fill(Arr::get($item, $relatedModel->getFillable()));
                 $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
             }
 
@@ -163,7 +164,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface
     {
         $relation = $this->getRelation();
 
-        $relatedModelId = array_get( $variables, $relation->getRelated()->getKeyName() );
+        $relatedModelId = Arr::get( $variables, $relation->getRelated()->getKeyName() );
 
         return $relation->getRelated()->findOrNew( $relatedModelId );
     }

@@ -9,6 +9,7 @@ use Arbory\Base\Admin\Form\FieldSet;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 /**
@@ -119,7 +120,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      */
     public function getFieldTypeName()
     {
-        return 'type-' . camel_case(class_basename(static::class));
+        return 'type-' . Str::camel(class_basename(static::class));
     }
 
     /**
@@ -300,7 +301,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     public function setRendererClass( ?string $rendererClass = null ): FieldInterface
     {
         $this->rendererClass = $rendererClass;
-        
+
         $this->setRenderer(null);
 
         return $this;
@@ -408,7 +409,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         return $this;
     }
 
-    /**                 
+    /**
      * @return RendererInterface
      */
     public function newRenderer()

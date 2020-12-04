@@ -4,6 +4,7 @@ namespace Arbory\Base\Menu;
 
 use Arbory\Base\Html\Elements;
 use Arbory\Base\Html\Html;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class Menu
@@ -82,7 +83,7 @@ class Menu
      */
     protected function getMenuCookie()
     {
-        $menuCookie = array_get($_COOKIE, self::COOKIE_NAME_MENU);
+        $menuCookie = Arr::get($_COOKIE, self::COOKIE_NAME_MENU);
 
         if (is_array($menuCookie)) {
             return $menuCookie;
@@ -97,7 +98,7 @@ class Menu
      */
     protected function hasMenuItemCookie( string $name )
     {
-        return array_has( $this->getMenuCookie(), $name );
+        return Arr::has( $this->getMenuCookie(), $name );
     }
 
     /**
@@ -106,6 +107,6 @@ class Menu
      */
     protected function getMenuItemCookie( string $name )
     {
-        return array_get( $this->getMenuCookie(), $name );
+        return Arr::get( $this->getMenuCookie(), $name );
     }
 }

@@ -16,6 +16,7 @@ use Arbory\Base\Html\Html;
 use Arbory\Base\Services\SettingFactory;
 use Arbory\Base\Services\SettingRegistry;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class SettingsController extends Controller
@@ -119,7 +120,7 @@ class SettingsController extends Controller
 
         if( $type === Translatable::class )
         {
-            $inner = array_get( $definition->getConfigEntry(), 'value' );
+            $inner = Arr::get( $definition->getConfigEntry(), 'value' );
             $innerType = $inner[ 'type' ] ?? Text::class;
             $innerField = new $innerType( 'value' );
 
@@ -128,7 +129,7 @@ class SettingsController extends Controller
 
             if( !$field->getValue() || $field->getValue()->isEmpty() )
             {
-                $localized = array_get( $inner, 'value', [] );
+                $localized = Arr::get( $inner, 'value', [] );
                 $fieldValue = new Collection();
 
                 foreach( $localized as $locale => $value )

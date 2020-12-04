@@ -8,6 +8,7 @@ use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Elements\Inputs\Option;
 use Arbory\Base\Html\Elements\Inputs\Select;
 use Arbory\Base\Html\Elements\Inputs\Textarea;
+use Illuminate\Support\Arr;
 
 /**
  * Class Html
@@ -127,7 +128,7 @@ class Html
      */
     public static function __callStatic( $name, $arguments )
     {
-        $content = array_first( $arguments );
+        $content = Arr::first( $arguments );
 
         return new Element( $name, $content );
     }

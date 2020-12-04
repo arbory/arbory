@@ -9,6 +9,7 @@ use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Services\FieldSetFieldFinder;
 use Arbory\Base\Services\FieldTypeRegistry;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Waavi\Translation\Repositories\LanguageRepository;
 
@@ -97,7 +98,7 @@ class FieldSet extends Collection
         $inputNameParts = explode( '.', $inputName );
         $fields = $this->findFieldsByInputName( $inputName );
 
-        return array_get( $fields, end( $inputNameParts ) );
+        return Arr::get( $fields, end( $inputNameParts ) );
     }
 
     /**
@@ -278,7 +279,7 @@ class FieldSet extends Collection
                 $this->fieldTypeRegister->resolve($method, $parameters)
             );
         }
-        
+
         return parent::__call($method, $parameters);
     }
 
