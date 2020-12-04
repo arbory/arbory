@@ -78,7 +78,7 @@ class MenuItemFactory
 
         if( $translated === $key )
         {
-            $generatedText = title_case( str_replace( '_', ' ', $name ) );
+            $generatedText = Str::title( str_replace( '_', ' ', $name ) );
 
             $this->translations->create( [
                 'locale' => \App::getLocale(),
