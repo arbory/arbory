@@ -2,6 +2,7 @@
 
 use Arbory\Base\Console\Commands\TranslationsCacheFlushCommand;
 use Arbory\Base\Console\Commands\TranslationsLoaderCommand;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Translation\FileLoader as LaravelFileLoader;
@@ -18,14 +19,8 @@ use Waavi\Translation\Repositories\TranslationRepository;
  * Class TranslationServiceProvider
  * @package Arbory\Base\Providers
  */
-class TranslationServiceProvider extends ServiceProvider
+class TranslationServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = true;
 
     /**
      * Register the service provider.
