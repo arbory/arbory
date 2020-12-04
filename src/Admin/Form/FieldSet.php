@@ -130,7 +130,7 @@ class FieldSet extends Collection
     {
         $fields = [];
 
-        foreach( $this->getFields()->toArray() as $field )
+        foreach( $this->getFields() as $field )
         {
             /** @var AbstractField $field */
 
@@ -198,8 +198,10 @@ class FieldSet extends Collection
      * @param FieldInterface $field
      * @return FieldInterface
      */
-    public function add( FieldInterface $field )
+    public function add( $field )
     {
+        $field->setFieldSet($this);
+
         $this->push( $field );
 
         return $field;

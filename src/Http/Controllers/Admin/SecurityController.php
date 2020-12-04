@@ -12,9 +12,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Redirect;
 use View;
-use Illuminate\Routing\Controller as BaseController;
 
 class SecurityController extends BaseController
 {
@@ -53,7 +54,7 @@ class SecurityController extends BaseController
      */
     public function postLogin( LoginRequest $request )
     {
-        $credentials = array_only( $request->get( 'user' ), [ 'email', 'password' ] );
+        $credentials = Arr::only( $request->get( 'user' ), [ 'email', 'password' ] );
         $remember = (bool) $request->get( 'remember', false );
 
         $result = $this->security->authenticate( $credentials, $remember );

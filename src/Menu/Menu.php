@@ -6,6 +6,7 @@ use Arbory\Base\Html\Elements;
 use Arbory\Base\Html\Html;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Menu
 {
@@ -50,7 +51,7 @@ class Menu
 
         foreach( $this->getItems() as $item )
         {
-            $name = snake_case( $item->getTitle() );
+            $name = Str::snake( $item->getTitle() );
             $collapsed = $this->getMenuItemCookie( $name );
 
             if( !$this->hasMenuItemCookie( $name ) )

@@ -4,6 +4,7 @@ namespace Arbory\Base\Auth\Roles;
 
 use Cartalyst\Sentinel\Roles\EloquentRole;
 use Arbory\Base\Auth\Users\User;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Role
@@ -42,7 +43,7 @@ class Role extends EloquentRole
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany( static::$usersModel, 'admin_role_users', 'role_id', 'user_id' )->withTimestamps();
     }

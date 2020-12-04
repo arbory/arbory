@@ -372,7 +372,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      */
     public function getFieldClasses():array
     {
-        $type = snake_case(class_basename(get_class($this)), '-');
+        $type = Str::snake(class_basename(get_class($this)), '-');
 
         return ["type-{$type}"];
     }
