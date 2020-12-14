@@ -32,9 +32,9 @@
         </main>
 
         <div class="notifications" data-close-text="Close"></div>
-
+        @if(! empty(config('arbory.services.google.maps_api_key', null)))
         <script src="https://maps.googleapis.com/maps/api/js?key={{ config('arbory.services.google.maps_api_key') }}&libraries=places"></script>
-
+        @endif
         @include('arbory::layout.partials.environment')
 
         <script src="{{ mix('js/manifest.js', 'arbory') }}"></script>
