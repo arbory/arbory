@@ -180,7 +180,7 @@ class Node extends Model
      */
     public function isDirectlyActive()
     {
-        return $this->hasActivated() && !$this->hasExpired();
+        return $this->hasActivated() && ! $this->hasExpired();
     }
 
     /**
