@@ -176,6 +176,14 @@ class Node extends Model
     }
 
     /**
+     * @return bool
+     */
+    public function isDirectlyActive()
+    {
+        return $this->hasActivated() && !$this->hasExpired();
+    }
+
+    /**
      * Return parent id (legacy support).
      *
      * @return mixed
