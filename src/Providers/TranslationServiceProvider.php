@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Providers;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Translation\Translator;
 use Illuminate\Support\ServiceProvider;
@@ -19,7 +20,7 @@ use Arbory\Base\Console\Commands\TranslationsCacheFlushCommand;
 /**
  * Class TranslationServiceProvider.
  */
-class TranslationServiceProvider extends ServiceProvider
+class TranslationServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -58,7 +59,7 @@ class TranslationServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['translation.cache.repository', 'translation.loader'];
+        return ['translator', 'translation.cache.repository', 'translation.loader'];
     }
 
     /**
