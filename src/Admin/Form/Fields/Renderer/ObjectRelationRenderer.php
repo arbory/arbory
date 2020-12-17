@@ -5,7 +5,6 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\ObjectRelation;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
@@ -77,7 +76,6 @@ class ObjectRelationRenderer implements RendererInterface
                 }
             })
             ->toArray();
-
 
         return Html::div($items)->addClass('related');
     }

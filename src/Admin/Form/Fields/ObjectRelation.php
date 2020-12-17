@@ -165,7 +165,7 @@ class ObjectRelation extends AbstractField
         if ($this->isSingular()) {
             $id = reset($relationIds);
 
-            if (!$id && $value->first() instanceof Model) {
+            if (! $id && $value->first() instanceof Model) {
                 $this->deleteOldRelations();
 
                 return;
@@ -234,7 +234,7 @@ class ObjectRelation extends AbstractField
     protected function deleteOldRelations($updatedRelationIds = [])
     {
         $this->getValue()->each(function ($relation) use ($updatedRelationIds) {
-            if (!in_array($relation->related_id, $updatedRelationIds)) {
+            if (! in_array($relation->related_id, $updatedRelationIds)) {
                 $relation->delete();
             }
         });
