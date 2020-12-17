@@ -164,7 +164,7 @@ class Node extends Model
      */
     public function getActiveAttribute()
     {
-        if (! $this->hasActivated() || $this->hasExpired()) {
+        if (! $this->isPublic()) {
             return false;
         }
 
@@ -178,7 +178,7 @@ class Node extends Model
     /**
      * @return bool
      */
-    public function isDirectlyActive()
+    public function isPublic()
     {
         return $this->hasActivated() && ! $this->hasExpired();
     }
