@@ -80,7 +80,13 @@ class Menu
      */
     protected function getMenuCookie()
     {
-        return (array) json_decode(Arr::get($_COOKIE, self::COOKIE_NAME_MENU));
+        $menuCookie = Arr::get($_COOKIE, self::COOKIE_NAME_MENU);
+
+        if (is_array($menuCookie)) {
+            return $menuCookie;
+        }
+
+        return (array)json_decode($menuCookie);
     }
 
     /**
