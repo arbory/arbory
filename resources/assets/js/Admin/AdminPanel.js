@@ -49,10 +49,10 @@ export default class AdminPanel {
      * @return {void}
      */
     initializeFields(scope) {
-        for (let [_, definition] of Object.entries(this.registry.definitions)) {
+        jQuery.each(this.registry.definitions, function(_, definition) {
             jQuery(scope).find(definition.selector).each((key, element) => {
                 new definition.handler(element, definition.config);
             });
-        }
+        });
     }
 }
