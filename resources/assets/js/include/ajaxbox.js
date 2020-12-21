@@ -72,7 +72,7 @@ jQuery(document).ready( function()
 
             if (close_container.length > 0)
             {
-                var close_icon   = jQuery('<i />').addClass('fa fa-times');
+                var close_icon   = jQuery('<i />').addClass('mt-icon').html('close');
                 var close_button = jQuery('<button />').attr('type', 'button').addClass('button secondary close only-icon').append(close_icon);
                 close_button.on('click', function()
                 {

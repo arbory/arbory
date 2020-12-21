@@ -116,7 +116,7 @@ class Renderer implements Renderable
                 $li->append($collapser);
             }
 
-            $cell = Html::div()->addClass('node-cell '.($item->isActive() ? 'active' : ''));
+            $cell = Html::div()->addClass('node-cell ' . ($item->isPublic() ? 'active' : ''));
 
             $link = str_replace('__ID__', $item->getKey(), $url);
 
