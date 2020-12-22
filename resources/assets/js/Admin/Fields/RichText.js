@@ -32,10 +32,10 @@ export default class RichText {
         let config = Object.assign(this.getDefaultConfig(), {
             width: '100%',
             height: textarea.outerHeight(),
-            filebrowserImageBrowseUrl: '/admin/filemanager?type=Images',
-            filebrowserImageUploadUrl: '/admin/file-manager/upload?type=Images&responseType=json&_token=' + token,
-            filebrowserBrowseUrl: '/admin/filemanager?type=Files',
-            filebrowserUploadUrl: '/admin/file-manager/upload?type=Files&responseType=json&_token=' + token
+            filebrowserImageBrowseUrl: window.FILE_BROWSER_BROWSE_BASEPATH + '?type=Images',
+            filebrowserImageUploadUrl: window.FILE_BROWSER_UPLOAD_BASEPATH + '?type=Images&responseType=json&_token=' + token,
+            filebrowserBrowseUrl: window.FILE_BROWSER_BROWSE_BASEPATH + '?type=Files',
+            filebrowserUploadUrl: window.FILE_BROWSER_UPLOAD_BASEPATH + '?type=Files&responseType=json&_token=' + token
         });
 
         if (!textarea.attr('id')) {

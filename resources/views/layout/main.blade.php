@@ -4,7 +4,7 @@
         <title>{{ config('arbory.title', 'Arbory') }}</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="icon" href="/vendor/arbory/images/favicon.ico">
+        <link rel="icon" href="{{asset('/vendor/arbory/images/favicon.ico')}}">
 
         @include('arbory::layout.partials.assets-css')
 
