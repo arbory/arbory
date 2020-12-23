@@ -8,7 +8,7 @@ jQuery(document).ready(() => {
     const collection = jQuery('body.controller-nodes .collection');
     const tree = new Tree(
         collection,
-        collection.data('reposition-url') || '/admin/nodes/api/node_reposition',
+        collection.data('reposition-url') || window.NODE_REPOSITION_BASEPATH,
         collection.data('store-name') || COOKIE_NAME_NODES
     );
 });
