@@ -86,7 +86,7 @@ class Menu
             return $menuCookie;
         }
 
-        return (array) json_decode($menuCookie);
+        return (array) json_decode($menuCookie, true);
     }
 
     /**
