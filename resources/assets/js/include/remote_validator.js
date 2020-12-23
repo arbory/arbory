@@ -9,7 +9,6 @@ var RemoteValidator = function( form )
 
     v.form = form;
     v.clicked_button = null;
-    v.clicked_button_registered = false;
 
     v.form.on('click', submit_elements_selector, function( event ) {
         var target = jQuery( event.target );
@@ -30,7 +29,6 @@ var RemoteValidator = function( form )
             return;
         }
         v.clicked_button = target;
-        v.clicked_button_registered = true;
     });
 
     v.form.on( 'ajax:beforeSend', function( event, xhr )
@@ -38,19 +36,10 @@ var RemoteValidator = function( form )
         xhr.validation_id = 'v' + new Date().getTime() + Math.random();
         v.form.attr( 'data-validation-id', xhr.validation_id );
 
-        let interval = setInterval(() => {
-            if (!v.clicked_button_registered) {
-                return;
-            }
-
-            if (v.clicked_button)
-            {
-                v.clicked_button.trigger('loadingstart');
-            }
-            v.clicked_button_registered = false;
-
-            clearInterval(interval);
-        }, 10);
+        if (v.clicked_button)
+        {
+            v.clicked_button.trigger('loadingstart');
+        }
     });
 
     v.form.on('ajax:complete', function( event, xhr )
