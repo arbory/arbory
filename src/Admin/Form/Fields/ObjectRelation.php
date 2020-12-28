@@ -132,9 +132,10 @@ class ObjectRelation extends AbstractField
     public function getValue()
     {
         if (! $this->value) {
-            $relation = $this->getModel()->morphMany(Relation::class, 'owner')->where('name', $this->getName());
-
-            $this->value = $this->isSingular() ? $relation->first() : $relation->get();
+            $this->value = $this->getModel()
+                ->morphMany(Relation::class, 'owner')
+                ->where('name', $this->getName())
+                ->get();
         }
 
         return $this->value;
@@ -164,7 +165,7 @@ class ObjectRelation extends AbstractField
         if ($this->isSingular()) {
             $id = reset($relationIds);
 
-            if (! $id && $value instanceof Model) {
+            if (! $id && $value->first() instanceof Model) {
                 $this->deleteOldRelations();
 
                 return;
@@ -232,17 +233,11 @@ class ObjectRelation extends AbstractField
      */
     protected function deleteOldRelations($updatedRelationIds = [])
     {
-        $relations = $this->getValue();
-
-        if ($this->isSingular()) {
-            $relations = [$relations];
-        }
-
-        foreach ($relations as $relation) {
+        $this->getValue()->each(function ($relation) use ($updatedRelationIds) {
             if (! in_array($relation->related_id, $updatedRelationIds)) {
                 $relation->delete();
             }
-        }
+        });
     }
 
     /**
@@ -251,18 +246,7 @@ class ObjectRelation extends AbstractField
      */
     public function hasRelationWith(Model $model): bool
     {
-        $key = $model->getKey();
-        $value = $this->getValue();
-
-        if (! $value) {
-            return false;
-        }
-
-        if ($this->isSingular()) {
-            return $value->related_id === $key;
-        }
-
-        return $value->contains('related_id', $key);
+        return $this->getValue()->contains('related_id', $model->getKey());
     }
 
     /**
@@ -318,18 +302,9 @@ class ObjectRelation extends AbstractField
     {
         $fieldSet = new FieldSet($this->getModel(), $this->getNameSpacedName());
 
-        $value = $this->getValue();
-        $ids = null;
-
-        if ($value) {
-            if ($this->isSingular()) {
-                $ids = $value->related_id;
-            } else {
-                $ids = $value->map(function ($item) {
-                    return $item->related_id;
-                })->implode(',');
-            }
-        }
+        $ids = $this->getValue()->map(function ($item) {
+            return $item->related_id;
+        })->implode(',');
 
         $fieldSet->hidden('related_id')
             ->setValue($ids)->rules(implode('|', $this->rules))

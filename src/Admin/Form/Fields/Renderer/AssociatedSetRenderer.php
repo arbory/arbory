@@ -85,7 +85,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
 
         return Html::div([
             $checkbox->render($checkbox->element()),
-            Html::label($label)->addAttributes([
+            Html::label((string) $label)->addAttributes([
                 'for' => $checkbox->getAttributes()['id'] ?? $this->field->getFieldId(),
             ]),
         ])

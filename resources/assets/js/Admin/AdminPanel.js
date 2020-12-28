@@ -36,7 +36,7 @@ export default class AdminPanel {
     registerEventHandlers() {
         let body = jQuery('body');
 
-        body.on('nestedfieldsitemadd', 'section.nested', event => {
+        body.on('nestedfieldsitemadd', 'section.nested .new', event => {
             this.initializeFields(event.target);
         });
 

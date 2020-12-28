@@ -6,6 +6,7 @@ use Arbory\Base\Nodes\Mixins\Collection as NodesCollectionMixin;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Support\Facades\Page;
 use Arbory\Base\Support\Facades\Admin;
+use File;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
@@ -18,6 +19,7 @@ use Arbory\Base\Services\Content\PageBuilder;
 use Arbory\Base\Support\Facades\ArboryRouter;
 use Illuminate\Routing\Router as LaravelRouter;
 use Arbory\Base\Nodes\ContentTypeRoutesRegister;
+use Schema;
 
 /**
  * Class NodeServiceProvider.
@@ -92,7 +94,7 @@ class NodeServiceProvider extends ServiceProvider
     {
         $path = base_path('routes/pages.php');
 
-        if (! \File::exists($path)) {
+        if (! File::exists($path)) {
             return;
         }
 
@@ -139,7 +141,7 @@ class NodeServiceProvider extends ServiceProvider
             return false;
         }
 
-        return \Schema::hasTable('nodes');
+        return Schema::hasTable('nodes');
     }
 
     /**
@@ -149,12 +151,40 @@ class NodeServiceProvider extends ServiceProvider
     {
         if ($this->app->routesAreCached()) {
             $path = $this->app->getCachedRoutesPath();
-            $modified = \File::lastModified($path);
 
-            if ($modified < (new NodesRepository)->getLastUpdateTimestamp()) {
-                \File::delete($path);
+            if ($this->canReadSettings() && $this->isRouteCacheOutdated($path)) {
+                File::delete($path);
             }
         }
+    }
+
+    /**
+     * @param string $path
+     * @return bool
+     */
+    protected function isRouteCacheOutdated(string $path)
+    {
+        $modified = File::lastModified($path);
+
+        return $modified < $this->getNodeModificationTimestamp();
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getNodeModificationTimestamp()
+    {
+        $repository = new NodesRepository;
+
+        return $repository->getLastUpdateTimestamp();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function canReadSettings(): bool
+    {
+        return Schema::hasTable('settings');
     }
 
     /**

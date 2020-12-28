@@ -432,6 +432,7 @@ jQuery(function(){
         jQuery('.main .primary .button[name=save], .main .primary .button[name=save_and_return], .edit-resources .primary .button[name=save]').click(event => {
             event.preventDefault();
 
+            form.data('validator').clicked_button = jQuery(event.target);
             form.trigger('beforevalidation');
 
             let formData = new FormData(this);

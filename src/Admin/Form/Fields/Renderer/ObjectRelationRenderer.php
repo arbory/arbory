@@ -5,7 +5,6 @@ namespace Arbory\Base\Admin\Form\Fields\Renderer;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\ObjectRelation;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
@@ -68,20 +67,15 @@ class ObjectRelationRenderer implements RendererInterface
      */
     protected function getRelatedItemsElement()
     {
-        $items = [];
-        $values = $this->field->getValue();
-
-        if ($values) {
-            $values = $values instanceof Collection ? $values : new Collection([$values]);
-
-            foreach ($values as $value) {
+        $items = $this->field->getValue()
+            ->map(function ($value) {
                 $relation = $value->related()->first();
 
                 if ($relation) {
-                    $items[] = $this->buildRelationalItemElement($relation);
+                    return $this->buildRelationalItemElement($relation);
                 }
-            }
-        }
+            })
+            ->toArray();
 
         return Html::div($items)->addClass('related');
     }
