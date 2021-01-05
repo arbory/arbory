@@ -50,16 +50,23 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     public function __construct($name = 'blocks')
     {
         $this->name = $name;
-
         $this->fieldConfigurator = function () {
             $this->field->setItemRenderer(new Form\Fields\Renderer\Nested\PaneledItemRenderer);
             $this->field->addClass('in-layout');
-            $this->field->sortable();
+            $this->field->sortable($this->getFieldOrderBy());
 
             $this->field->setHidden(true);
             $this->field->setLabel('');
             $this->field->setAllowToAdd(false);
         };
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFieldOrderBy(): string
+    {
+        return $this->field->getOrderBy() ?? 'position';
     }
 
     /**
