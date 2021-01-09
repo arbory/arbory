@@ -6,6 +6,8 @@ use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Admin;
+use Cartalyst\Sentinel\Activations\ActivationRepositoryInterface;
+use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Http\Request;
 use Arbory\Base\Auth\Users\User;
 use Illuminate\Routing\Controller;
@@ -50,7 +52,7 @@ class UsersController extends Controller
             $fields->text('last_name');
             $fields->text('email')->rules('required|unique:admin_users,email,'.$user->getKey());
             $fields->password('password')->rules('min:6|'.($user->exists ? 'nullable' : 'required'));
-            $fields->checkbox('active')->setValue($this->getActivations()->completed($user));
+            $fields->checkbox('active')->setValue($this->isActivated($user));
             $fields->belongsToMany('roles');
         });
 
@@ -127,10 +129,19 @@ class UsersController extends Controller
     }
 
     /**
-     * @return \Cartalyst\Sentinel\Activations\ActivationRepositoryInterface
+     * @return ActivationRepositoryInterface
      */
     protected function getActivations()
     {
         return $this->admin->sentinel()->getActivationRepository();
+    }
+
+    /**
+     * @param EloquentUser $user
+     * @return bool
+     */
+    protected function isActivated(EloquentUser $user): bool
+    {
+        return $user->exists && $this->getActivations()->completed($user);
     }
 }
