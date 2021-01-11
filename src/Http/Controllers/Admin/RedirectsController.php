@@ -35,6 +35,7 @@ class RedirectsController extends Controller
                 ->setLabel(trans('arbory::redirect.to_url'));
 
             $fieldSet->add(new Select('status'))
+                ->rules('required')
                 ->options($this->getStatusOptions())
                 ->setLabel(trans('arbory::redirect.status.name'));
         });
