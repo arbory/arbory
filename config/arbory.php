@@ -40,7 +40,6 @@ return [
     'field_types' => [
         'belongsTo' => Arbory\Base\Admin\Form\Fields\BelongsTo::class,
         'belongsToMany' => Arbory\Base\Admin\Form\Fields\BelongsToMany::class,
-        'boolean' => Arbory\Base\Admin\Form\Fields\Boolean::class,
         'checkbox' => Arbory\Base\Admin\Form\Fields\Checkbox::class,
         'dateTime' => Arbory\Base\Admin\Form\Fields\DateTime::class,
         'file' => Arbory\Base\Admin\Form\Fields\ArboryFile::class,
