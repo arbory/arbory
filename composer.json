@@ -34,7 +34,9 @@
         "php-coveralls/php-coveralls": "^2.0",
         "phpunit/phpunit" : "^8.3",
         "mockery/mockery": "dev-master",
-        "diablomedia/phpunit-pretty-printer": "^4"
+        "diablomedia/phpunit-pretty-printer": "^4",
+        "cubesystems/static-analysers": "^2.1",
+        "orchestra/testbench-core": "4.10.0"
     },
     "autoload": {
         "psr-4": { "Arbory\\Base\\": "src" },

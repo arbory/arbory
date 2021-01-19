@@ -124,14 +124,20 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
         $minAttribute = $attributeResolver(static::KEY_MIN);
         $maxAttribute = $attributeResolver(static::KEY_MAX);
 
-        $validator->sometimes($attributeResolver(static::KEY_MIN), "lte:{$maxAttribute}",
+        $validator->sometimes(
+            $attributeResolver(static::KEY_MIN),
+            "lte:{$maxAttribute}",
             static function (Fluent $fluent) use ($maxAttribute) {
                 return ! blank(Arr::get($fluent->getAttributes(), $maxAttribute));
-            });
+            }
+        );
 
-        $validator->sometimes($attributeResolver(static::KEY_MAX), "gte:{$minAttribute}",
+        $validator->sometimes(
+            $attributeResolver(static::KEY_MAX),
+            "gte:{$minAttribute}",
             static function (Fluent $fluent) use ($minAttribute) {
                 return ! blank(Arr::get($fluent->getAttributes(), $minAttribute));
-            });
+            }
+        );
     }
 }

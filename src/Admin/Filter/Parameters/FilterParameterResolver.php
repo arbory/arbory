@@ -21,8 +21,10 @@ class FilterParameterResolver
      * @param ParameterTransformerPipeline $transformerPipeline
      * @param FilterValidatorBuilder $filterValidator
      */
-    public function __construct(ParameterTransformerPipeline $transformerPipeline, FilterValidatorBuilder $filterValidator)
-    {
+    public function __construct(
+        ParameterTransformerPipeline $transformerPipeline,
+        FilterValidatorBuilder $filterValidator
+    ) {
         $this->transformerPipeline = $transformerPipeline;
         $this->filterValidator = $filterValidator;
     }
@@ -47,8 +49,10 @@ class FilterParameterResolver
      *
      * @return FilterParameters
      */
-    protected function filterInvalidParameterValues(FilterParameters $parameters, FilterManager $filterManager): FilterParameters
-    {
+    protected function filterInvalidParameterValues(
+        FilterParameters $parameters,
+        FilterManager $filterManager
+    ): FilterParameters {
         $filterCollection = $filterManager->getFilters();
         $errors = $this->filterValidator->build($filterCollection, $parameters)->getMessageBag();
 

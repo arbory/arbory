@@ -1,0 +1,35 @@
+grumphp:
+    process_timeout: 120
+    testsuites:
+      static:
+          tasks:
+            - composer
+            - git_blacklist
+            - git_commit_message
+            - securitychecker
+            - phpcs
+            - phpmd
+            - phpmnd
+            - phpstan
+    tasks:
+      composer:
+      securitychecker:
+      git_commit_message:
+      git_blacklist:
+          keywords:
+          - '(;| |^)(die|dd|dump|var_dump|exit|eval)\('
+          - '(;| |^)exit;'
+          regexp_type: E
+      phpcs:
+          standard: PSR2
+          whitelist_patterns: ['/^src(.*)/', '/^config(.*)/', '/^recources(.*)/']
+      phpstan:
+          ignore_patterns: ['/^tests(.*)/', '/^database(.*)/', '/^config(.*)/', '/^routes(.*)/']
+          force_patterns: ['/^src/']
+          level: 1
+      phpmd:
+          whitelist_patterns: ['/^src(.*)/', '/^config(.*)/', '/^recources(.*)/']
+          ruleset: ['vendor/cubesystems/static-analysers/phpdm-ruleset.xml']
+      phpmnd:
+        directory: 'src'
+        hint: false

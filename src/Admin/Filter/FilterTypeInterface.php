@@ -3,7 +3,8 @@
 namespace Arbory\Base\Admin\Filter;
 
 /**
- * TODO: Figure out if filter type should interact with parameters directly or already filtered specifically for this filter?
+ * TODO: Figure out if filter type should interact with parameters directly
+ * or already filtered specifically for this filter?
  *
  *
  * Interface FilterTypeInterface

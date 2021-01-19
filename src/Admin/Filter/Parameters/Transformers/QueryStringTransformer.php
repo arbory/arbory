@@ -29,10 +29,10 @@ class QueryStringTransformer implements ParameterTransformerInterface
     public function transform(FilterParameters $parameters, callable $next)
     {
         $parameters->add(
-           (array) $this->request->input(
-               $parameters->getNamespace()
-           )
-       );
+            (array) $this->request->input(
+                $parameters->getNamespace()
+            )
+        );
 
         return $next($parameters);
     }

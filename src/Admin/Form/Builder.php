@@ -78,8 +78,7 @@ class Builder implements Renderable, WrappableInterface
             $form->append(Html::input()
                 ->setName(Form::INPUT_RETURN_URL)
                 ->setValue($returnUrl)
-                ->setType('hidden')
-            );
+                ->setType('hidden'));
         }
 
         return $form;

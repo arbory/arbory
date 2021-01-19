@@ -57,14 +57,20 @@ class DateRangeFilterType extends RangeFilterType
         $minAttribute = $attributeResolver(static::KEY_MIN);
         $maxAttribute = $attributeResolver(static::KEY_MAX);
 
-        $validator->sometimes($attributeResolver(static::KEY_MIN), "before_or_equal:{$maxAttribute}",
+        $validator->sometimes(
+            $attributeResolver(static::KEY_MIN),
+            "before_or_equal:{$maxAttribute}",
             static function (Fluent $fluent) use ($maxAttribute) {
                 return ! blank(Arr::get($fluent->getAttributes(), $maxAttribute));
-            });
+            }
+        );
 
-        $validator->sometimes($attributeResolver(static::KEY_MAX), "after_or_equal:{$minAttribute}",
+        $validator->sometimes(
+            $attributeResolver(static::KEY_MAX),
+            "after_or_equal:{$minAttribute}",
             static function (Fluent $fluent) use ($minAttribute) {
                 return ! blank(Arr::get($fluent->getAttributes(), $minAttribute));
-            });
+            }
+        );
     }
 }

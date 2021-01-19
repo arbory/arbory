@@ -52,7 +52,9 @@ class FilterValidatorBuilder
         }
 
         $validator = $this->validatorFactory->make(
-            $filterParameters->toArray(), $validationObject->getRules(), $validationObject->getMessages(),
+            $filterParameters->toArray(),
+            $validationObject->getRules(),
+            $validationObject->getMessages(),
             $validationObject->getAttributes()
         );
 

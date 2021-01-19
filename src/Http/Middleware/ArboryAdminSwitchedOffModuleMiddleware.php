@@ -44,7 +44,8 @@ class ArboryAdminSwitchedOffModuleMiddleware
         }
 
         return Admin::modules()->first(function (Module $module) use ($switchedOffModule) {
-            return $module->isAuthorized() && $module->getControllerClass() !== $switchedOffModule->getControllerClass();
+            return $module->isAuthorized()
+                && $module->getControllerClass() !== $switchedOffModule->getControllerClass();
         });
     }
 
