@@ -28,7 +28,12 @@
 
         .collapser-cell
         {
-            float: left;
+            position: relative;
+
+            .trigger
+            {
+                position: absolute;
+            }
         }
 
         ul[data-level="1"] > li:first-child {
@@ -40,12 +45,7 @@
         }
 
         ul[data-level="1"]  ul {
-
             background-color: $color-background-lighter;
-
-             ul {
-                background-color: $color-background-normal;
-            }
         }
 
         .toolbox-cell
@@ -81,12 +81,19 @@
                 &.selected,
                 &:hover
                 {
-                    background: $color-highlight-lightest;
+                    background: $color-highlight-lighter;
                 }
 
                 span
                 {
                     position: relative;
+                }
+
+                .content-type
+                {
+                    color: $color-text-lightest;
+                    float: right;
+                    padding-right: steps(1);
                 }
             }
 
