@@ -40,7 +40,16 @@ class ArboryFileFactory
             throw new \InvalidArgumentException('Unsupported relation');
         }
 
-        $localKey = explode('.', $relation->getQualifiedForeignKey())[1];
+        // ensure support for both laravel versions 5.6 and 5.8
+        // method name for laravel 5.6
+        $methodName = 'getQualifiedForeignKey';
+        if (method_exists($relation, 'getQualifiedForeignKeyName'))
+        {
+            // method name for laravel 5.8
+            $methodName = 'getQualifiedForeignKeyName';
+        }
+
+        $localKey = explode('.', $relation->{$methodName}())[1];
 
         $model->setAttribute($localKey, $arboryFile->getKey());
         $model->setRelation($relationName, $arboryFile);
