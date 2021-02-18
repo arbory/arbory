@@ -3,12 +3,11 @@
 namespace Arbory\Base\Admin\Layout\Footer;
 
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Tools
- * @package Arbory\Base\Admin\Layout\Footer
+ * Class Tools.
  */
 class Tools implements Renderable
 {
@@ -37,14 +36,13 @@ class Tools implements Renderable
      * @param $name
      * @return Collection
      */
-    public function getBlock( $name )
+    public function getBlock($name)
     {
-        if( !$this->blocks()->has( $name ) )
-        {
-            $this->blocks()->put( $name, new Collection() );
+        if (! $this->blocks()->has($name)) {
+            $this->blocks()->put($name, new Collection());
         }
 
-        return $this->blocks()->get( $name );
+        return $this->blocks()->get($name);
     }
 
     /**
@@ -54,12 +52,11 @@ class Tools implements Renderable
      */
     public function render()
     {
-        $tools = Html::div()->addClass( 'tools' );
+        $tools = Html::div()->addClass('tools');
 
-        foreach( $this->blocks() as $name => $content )
-        {
+        foreach ($this->blocks() as $name => $content) {
             $tools->append(
-                Html::div( $content->toArray() )->addClass( $name )
+                Html::div($content->toArray())->addClass($name)
             );
         }
 

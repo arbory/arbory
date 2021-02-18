@@ -2,14 +2,13 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Cell
- * @package Arbory\Base\Admin\Grid
+ * Class Cell.
  */
 class Cell implements Renderable
 {
@@ -46,7 +45,7 @@ class Cell implements Renderable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -76,9 +75,16 @@ class Cell implements Renderable
     /**
      * @return Element
      */
-    public function render()
+    public function render(): Element
     {
-        return Html::td($this->getColumn()->callDisplayCallback($this->getModel()));
-    }
+        $grid = $this->row->getGrid();
+        $model = $this->getModel();
+        $column = $this->getColumn();
 
+        $value = $grid->isExportEnabled() ?
+            $column->getExportColumnDisplay($model) :
+            $column->callDisplayCallback($model);
+
+        return Html::td($value);
+    }
 }

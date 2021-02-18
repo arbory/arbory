@@ -1,12 +1,10 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
-
+use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Collection;
 
 class Slot implements Renderable
 {
@@ -35,7 +33,7 @@ class Slot implements Renderable
      */
     public function __construct($name, $contents = null)
     {
-        $this->name     = $name;
+        $this->name = $name;
         $this->contents = $contents;
         $this->children = collect();
     }
@@ -77,6 +75,9 @@ class Slot implements Renderable
         return $this->children->get($name);
     }
 
+    /**
+     * @return Content|string
+     */
     public function render()
     {
         if (is_callable($this->contents)) {
@@ -94,7 +95,7 @@ class Slot implements Renderable
 
         $contents = $contents->merge(
             $this->children->map(
-                function (Slot $value) {
+                static function (self $value) {
                     return $value->render();
                 }
             )

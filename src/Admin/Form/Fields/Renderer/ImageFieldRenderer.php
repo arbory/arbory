@@ -1,14 +1,15 @@
-<?php declare( strict_types=1 );
+<?php
+
+declare(strict_types=1);
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Inputs\Input;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 /**
- * Class ImageFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class ImageFieldRenderer.
  */
 final class ImageFieldRenderer extends FileFieldRenderer
 {
@@ -23,19 +24,18 @@ final class ImageFieldRenderer extends FileFieldRenderer
 
         $arboryFile = $this->getFile();
 
-        if( $arboryFile )
-        {
+        if ($arboryFile) {
             $value->append(
                 Html::image()
                     ->addAttributes([
-                        'src' => $image->getUrl($this->getManipulationParameters())
+                        'src' => $image->getUrl($this->getManipulationParameters()),
                     ])
                     ->addClass('thumbnail')
             );
-            $value->append( $this->createFileDetails( $arboryFile ) );
+            $value->append($this->createFileDetails($arboryFile));
         }
 
-        $value->append( $this->getInput() );
+        $value->append($this->getInput());
 
         return $value;
     }
@@ -53,7 +53,6 @@ final class ImageFieldRenderer extends FileFieldRenderer
         return $control->render($element);
     }
 
-
     /**
      * @return array
      */
@@ -64,11 +63,11 @@ final class ImageFieldRenderer extends FileFieldRenderer
             'w' => 64,
             'q' => 40,
             'fm' => 'jpg',
-            'fit' => 'crop'
+            'fit' => 'crop',
         ];
     }
 
-    public function configure( StyleOptionsInterface $options ): StyleOptionsInterface
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         // Use file Javascript
         $options->addClass('type-item type-file');

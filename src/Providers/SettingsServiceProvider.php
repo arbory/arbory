@@ -9,36 +9,32 @@ use Arbory\Base\Services\SettingRegistry;
 class SettingsServiceProvider extends ServiceProvider
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function register()
     {
-        $this->app->singleton( SettingRegistry::class, function()
-        {
+        $this->app->singleton(SettingRegistry::class, function () {
             return new SettingRegistry();
-        } );
+        });
 
-        $this->app->singleton( 'arbory_settings', function()
-        {
-            return new Settings( $this->app[ SettingRegistry::class ] );
-        } );
+        $this->app->singleton('arbory_settings', function () {
+            return new Settings($this->app[SettingRegistry::class]);
+        });
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function boot()
     {
         $paths = [
-            __DIR__ . '/../../config/settings.php',
-            config_path( 'settings.php' )
+            __DIR__.'/../../config/settings.php',
+            config_path('settings.php'),
         ];
 
-        foreach( $paths as $path )
-        {
-            if( file_exists( $path ) )
-            {
-                $this->app[ SettingRegistry::class ]->importFromConfig( include $path );
+        foreach ($paths as $path) {
+            if (file_exists($path)) {
+                $this->app[SettingRegistry::class]->importFromConfig(include $path);
             }
         }
     }

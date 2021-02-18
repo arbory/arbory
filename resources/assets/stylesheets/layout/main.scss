@@ -39,5 +39,16 @@ main
             float: left;
         }
     }
+
+    > section
+    {
+        margin-right: 0;
+        transition: margin 0.3s ease;
+
+        &.show-filter
+        {
+            margin-right: steps(35);
+        }
+    }
 }
 

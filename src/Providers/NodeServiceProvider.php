@@ -2,24 +2,23 @@
 
 namespace Arbory\Base\Providers;
 
-use Arbory\Base\Nodes\ContentTypeRegister;
-use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 use Arbory\Base\Nodes\Node;
-use Arbory\Base\Repositories\NodesRepository;
-use Arbory\Base\Services\Content\PageBuilder;
-use Arbory\Base\Support\Facades\Admin;
-use Arbory\Base\Support\Facades\ArboryRouter;
 use Arbory\Base\Support\Facades\Page;
-use Arbory\Base\Support\Facades\Settings;
+use Arbory\Base\Support\Facades\Admin;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
-use Illuminate\Routing\Events\RouteMatched;
-use Illuminate\Routing\Router as LaravelRouter;
 use Illuminate\Support\ServiceProvider;
+use Arbory\Base\Support\Facades\Settings;
+use Arbory\Base\Nodes\ContentTypeRegister;
+use Illuminate\Routing\Events\RouteMatched;
+use Arbory\Base\Repositories\NodesRepository;
+use Arbory\Base\Services\Content\PageBuilder;
+use Arbory\Base\Support\Facades\ArboryRouter;
+use Illuminate\Routing\Router as LaravelRouter;
+use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 
 /**
- * Class NodeServiceProvider
- * @package Arbory\Base\Providers
+ * Class NodeServiceProvider.
  */
 class NodeServiceProvider extends ServiceProvider
 {
@@ -40,39 +39,35 @@ class NodeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        AliasLoader::getInstance()->alias( 'ArboryRouter', ArboryRouter::class );
-        AliasLoader::getInstance()->alias( 'Admin', Admin::class );
-        AliasLoader::getInstance()->alias( 'Page', Page::class );
-        AliasLoader::getInstance()->alias( 'Settings', Settings::class );
+        AliasLoader::getInstance()->alias('ArboryRouter', ArboryRouter::class);
+        AliasLoader::getInstance()->alias('Admin', Admin::class);
+        AliasLoader::getInstance()->alias('Page', Page::class);
+        AliasLoader::getInstance()->alias('Settings', Settings::class);
 
-        $this->app->singleton( NodesRepository::class, function()
-        {
+        $this->app->singleton(NodesRepository::class, function () {
             $repository = new NodesRepository();
 
-            $repository->setQueryOnlyActiveNodes( true );
+            $repository->setQueryOnlyActiveNodes(true);
 
             return $repository;
-        } );
+        });
 
-        $this->app->singleton( ContentTypeRegister::class, function ()
-        {
+        $this->app->singleton(ContentTypeRegister::class, function () {
             return new ContentTypeRegister();
-        } );
+        });
 
-        $this->app->singleton( 'arbory_router', function ()
-        {
-            return $this->app->make( ContentTypeRoutesRegister::class );
-        } );
+        $this->app->singleton('arbory_router', function () {
+            return $this->app->make(ContentTypeRoutesRegister::class);
+        });
 
-        $this->app->singleton( 'arbory_page_builder', function()
-        {
+        $this->app->singleton('arbory_page_builder', function () {
             return new PageBuilder(
-                $this->app->make( ContentTypeRegister::class ),
-                $this->app->make( 'arbory_router' )
+                $this->app->make(ContentTypeRegister::class),
+                $this->app->make('arbory_router')
             );
-        } );
+        });
 
-        $this->routes = $this->app->make( 'arbory_router' );
+        $this->routes = $this->app->make('arbory_router');
     }
 
     /**
@@ -82,7 +77,7 @@ class NodeServiceProvider extends ServiceProvider
     {
         $this->registerContentTypes();
         $this->registerNodes();
-        $this->detectCurrentLocaleFromRoute( $this->app[ 'router' ] );
+        $this->detectCurrentLocaleFromRoute($this->app['router']);
         $this->purgeOutdatedRouteCache();
     }
 
@@ -91,20 +86,18 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function registerContentTypes()
     {
-        $path = base_path( 'routes/pages.php' );
+        $path = base_path('routes/pages.php');
 
-        if( !\File::exists( $path ) )
-        {
+        if (! \File::exists($path)) {
             return;
         }
 
-        $this->app[ 'router' ]->group( [
+        $this->app['router']->group([
             'middleware' => 'web',
             'namespace' => 'App\Http\Controllers',
-        ], function() use ( $path )
-        {
+        ], function () use ($path) {
             include $path;
-        } );
+        });
     }
 
     /**
@@ -112,20 +105,21 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function registerNodes()
     {
-        if( !app()->runningInConsole() )
-        {
-            $this->app->booted( function()
-            {
-                $this->app->singleton( Node::class, function()
-                {
-                    return $this->routes->getCurrentNode();
-                } );
-            } );
+        if (app()->runningInConsole()) {
+            if ($this->isDbConfigured() && ! $this->app->routesAreCached()) {
+                $this->routes->registerNodes();
+            }
 
-            $this->routes->registerNodes();
+            return;
         }
-        elseif( !$this->app->routesAreCached() && $this->isDbConfigured() )
-        {
+
+        $this->app->booted(function () {
+            $this->app->singleton(Node::class, function () {
+                return $this->routes->getCurrentNode();
+            });
+        });
+
+        if (! $this->app->routesAreCached()) {
             $this->routes->registerNodes();
         }
     }
@@ -149,14 +143,12 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function purgeOutdatedRouteCache()
     {
-        if ( $this->app->routesAreCached() )
-        {
+        if ($this->app->routesAreCached()) {
             $path = $this->app->getCachedRoutesPath();
-            $modified = \File::lastModified( $path );
+            $modified = \File::lastModified($path);
 
-            if ( $modified < ( new NodesRepository )->getLastUpdateTimestamp() )
-            {
-                \File::delete( $path );
+            if ($modified < (new NodesRepository)->getLastUpdateTimestamp()) {
+                \File::delete($path);
             }
         }
     }
@@ -164,18 +156,16 @@ class NodeServiceProvider extends ServiceProvider
     /**
      * @param LaravelRouter $router
      */
-    protected function detectCurrentLocaleFromRoute( LaravelRouter $router )
+    protected function detectCurrentLocaleFromRoute(LaravelRouter $router)
     {
-        $router->matched( function ( RouteMatched $event )
-        {
-            $locales = config( 'translatable.locales' );
-            $firstSegment = $event->request->segment( 1 );
+        $router->matched(function (RouteMatched $event) {
+            $locales = config('translatable.locales');
+            $firstSegment = $event->request->segment(1);
 
-            if( in_array( $firstSegment, $locales, true ) )
-            {
-                $this->app->setLocale( $firstSegment );
-                $this->app['request']->setLocale( $firstSegment );
+            if (in_array($firstSegment, $locales, true)) {
+                $this->app->setLocale($firstSegment);
+                $this->app['request']->setLocale($firstSegment);
             }
-        } );
+        });
     }
 }

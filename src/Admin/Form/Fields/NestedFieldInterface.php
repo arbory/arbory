@@ -1,10 +1,13 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields;
-
 
 interface NestedFieldInterface
 {
-    public function getNestedFieldSet( $model );
+    /**
+     * @param $model
+     *
+     * @return mixed
+     */
+    public function getNestedFieldSet($model);
 }

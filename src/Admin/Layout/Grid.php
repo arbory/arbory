@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
-
-use Arbory\Base\Admin\Layout\Grid\Column;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Layout\Grid\Row;
 use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Layout\Grid\Column;
 use Illuminate\Contracts\Support\Renderable;
 
 class Grid implements Renderable
@@ -26,12 +24,10 @@ class Grid implements Renderable
 
     public function __construct(?callable $callable = null)
     {
-        if($callable)
-        {
+        if ($callable) {
             $callable($this);
         }
     }
-
 
     /**
      * @return Row
@@ -46,8 +42,8 @@ class Grid implements Renderable
     }
 
     /**
-     * @param int         $size
-     * @param mixed       $content
+     * @param int $size
+     * @param mixed $content
      *
      * @param string|null $breakpoint
      *
@@ -63,7 +59,7 @@ class Grid implements Renderable
     }
 
     /**
-     * Returns the maximum grid row size
+     * Returns the maximum grid row size.
      *
      * @return int
      */

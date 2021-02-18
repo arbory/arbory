@@ -25,10 +25,10 @@ abstract class AbstractItem
      * @param Element $parentElement
      * @return Element
      */
-    abstract public function render( Element $parentElement ): Element;
+    abstract public function render(Element $parentElement): Element;
 
     /**
-     * @return boolean
+     * @return bool
      */
     abstract public function isAccessible(): bool;
 
@@ -41,7 +41,7 @@ abstract class AbstractItem
      * @param string $title
      * @return $this
      */
-    public function setTitle( $title )
+    public function setTitle($title)
     {
         $this->title = $title;
 
@@ -52,7 +52,7 @@ abstract class AbstractItem
      * @param string $abbreviation
      * @return $this
      */
-    public function setAbbreviation( $abbreviation )
+    public function setAbbreviation($abbreviation)
     {
         $this->abbreviation = $abbreviation;
 
@@ -72,9 +72,8 @@ abstract class AbstractItem
      */
     public function getAbbreviation()
     {
-        if( $this->abbreviation === null )
-        {
-            $this->abbreviation = substr( $this->getTitle(), 0, 2 );
+        if ($this->abbreviation === null) {
+            $this->abbreviation = substr($this->getTitle(), 0, 2);
         }
 
         return $this->abbreviation;

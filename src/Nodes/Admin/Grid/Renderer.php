@@ -2,21 +2,20 @@
 
 namespace Arbory\Base\Nodes\Admin\Grid;
 
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Layout\Footer;
-use Arbory\Base\Admin\Layout\Footer\Tools;
-use Arbory\Base\Admin\Tools\Toolbox;
+use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Widgets\Link;
+use Arbory\Base\Admin\Layout\Footer;
+use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
-use Illuminate\Contracts\Pagination\Paginator;
+use Arbory\Base\Admin\Layout\Footer\Tools;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Pagination\Paginator;
 
 /**
- * Class Renderer
- * @package Arbory\Base\Nodes\Admin\Grid
+ * Class Renderer.
  */
 class Renderer implements Renderable
 {
@@ -36,7 +35,7 @@ class Renderer implements Renderable
      * Renderer constructor.
      * @param Grid $grid
      */
-    public function __construct( Grid $grid )
+    public function __construct(Grid $grid)
     {
         $this->grid = $grid;
     }
@@ -54,18 +53,18 @@ class Renderer implements Renderable
      */
     protected function table()
     {
-        return new Content( [
-            Html::header( [
-                Html::h1( trans( 'arbory::resources.all_resources' ) ),
-                Html::span( trans( 'arbory::pagination.items_found', [ 'total' => $this->page->total() ] ) )
-                    ->addClass( 'extras totals only-text' )
-            ] ),
+        return new Content([
+            Html::header([
+                Html::h1(trans('arbory::resources.all_resources')),
+                Html::span(trans('arbory::pagination.items_found', ['total' => $this->page->total()]))
+                    ->addClass('extras totals only-text'),
+            ]),
             Html::div(
                 Html::div(
-                    $this->buildTree( $this->page->getCollection(), 1 )
-                )->addClass( 'collection' )
-            )->addClass( 'body' )
-        ] );
+                    $this->buildTree($this->page->getCollection(), 1)
+                )->addClass('collection')
+            )->addClass('body'),
+        ]);
     }
 
     /**
@@ -73,69 +72,63 @@ class Renderer implements Renderable
      * @param int $level
      * @return Element
      */
-    protected function buildTree( Collection $items, $level = 1 )
+    protected function buildTree(Collection $items, $level = 1)
     {
-        $url = $this->url( 'edit', '__ID__' );
+        $url = $this->url('edit', '__ID__');
 
-        $list = Html::ul()->addAttributes( [ 'data-level' => $level ] );
+        $list = Html::ul()->addAttributes(['data-level' => $level]);
 
         $collapser = Html::div(
-            Html::button( Html::i()->addClass( 'fa fa-chevron-right' ) )
-                ->addClass( 'button only-icon secondary collapser trigger' )
-                ->addAttributes( [ 'type' => 'button' ] )
-        )->addClass( 'collapser-cell' );
+            Html::button(Html::i()->addClass('fa fa-chevron-right'))
+                ->addClass('button only-icon secondary collapser trigger')
+                ->addAttributes(['type' => 'button'])
+        )->addClass('collapser-cell');
 
         $items = $items->sortBy('lft');
 
-        foreach( $items as $item )
-        {
-            $collapsed = $this->getNodeCookie( $item->getKey() );
+        foreach ($items as $item) {
+            $collapsed = $this->getNodeCookie($item->getKey());
             $children = $item->children;
-            $hasChildren = ( $children && $children->count() );
+            $hasChildren = ($children && $children->count());
 
             $li = Html::li()
-                ->addAttributes( [
+                ->addAttributes([
                     'data-level' => $level,
                     'data-id' => $item->getKey(),
-                ] )
-                ->addClass( ( ( $hasChildren ) ? 'has-children' : null ) );
+                ])
+                ->addClass((($hasChildren) ? 'has-children' : null));
 
-            if( $collapsed )
-            {
-                $li->addClass( 'collapsed' );
+            if ($collapsed) {
+                $li->addClass('collapsed');
             }
 
             $li->append(
-                Toolbox::create( $this->url( 'dialog', [ 'dialog' => 'toolbox', 'id' => $item->getKey() ] ) )->render()
+                Toolbox::create($this->url('dialog', ['dialog' => 'toolbox', 'id' => $item->getKey()]))->render()
             );
 
-            if( $hasChildren )
-            {
-                $li->append( $collapser );
+            if ($hasChildren) {
+                $li->append($collapser);
             }
 
-            $cell = Html::div()->addClass( 'node-cell ' . ( $item->isActive() ? 'active'  : '' ) );
+            $cell = Html::div()->addClass('node-cell '.($item->isActive() ? 'active' : ''));
 
-            $link = str_replace( '__ID__', $item->getKey(), $url );
+            $link = str_replace('__ID__', $item->getKey(), $url);
 
-            foreach( $this->grid()->getColumns() as $column )
-            {
-                $cell->append( Html::link(
-                    Html::span( $item->{$column->getName()} )
+            foreach ($this->grid()->getColumns() as $column) {
+                $cell->append(Html::link(
+                    Html::span($item->{$column->getName()})
                 )
-                    ->addClass( 'trigger' )
-                    ->addAttributes( [ 'href' => $link ] )
-                );
+                    ->addClass('trigger')
+                    ->addAttributes(['href' => $link]));
             }
 
-            $li->append( $cell );
+            $li->append($cell);
 
-            if( $hasChildren )
-            {
-                $li->append( $this->buildTree( $children, $level + 1 ) );
+            if ($hasChildren) {
+                $li->append($this->buildTree($children, $level + 1));
             }
 
-            $list->append( $li );
+            $list->append($li);
         }
 
         return $list;
@@ -146,17 +139,17 @@ class Renderer implements Renderable
      */
     protected function footer()
     {
-        $createButton = Link::create( $this->url( 'dialog', 'content_types' ) )
-            ->asButton( 'primary ajaxbox' )
-            ->withIcon( 'plus' )
-            ->title( trans( 'arbory::resources.create_new' ) );
+        $createButton = Link::create($this->url('dialog', 'content_types'))
+            ->asButton('primary ajaxbox')
+            ->withIcon('plus')
+            ->title(trans('arbory::resources.create_new'));
 
         $tools = new Tools();
 
-        $tools->getBlock( 'primary' )->push( $createButton );
+        $tools->getBlock('primary')->push($createButton);
 
-        $footer = new Footer( 'main' );
-        $footer->getRows()->prepend( $tools );
+        $footer = new Footer('main');
+        $footer->getRows()->prepend($tools);
 
         return $footer->render();
     }
@@ -166,9 +159,9 @@ class Renderer implements Renderable
      * @param array $parameters
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url($route, $parameters = [])
     {
-        return $this->grid()->getModule()->url( $route, $parameters );
+        return $this->grid()->getModule()->url($route, $parameters);
     }
 
     /**
@@ -178,20 +171,20 @@ class Renderer implements Renderable
     {
         $this->page = $this->grid->getItems();
 
-        return Html::section( [
+        return Html::section([
             $this->table(),
             $this->footer(),
-        ] );
+        ]);
     }
 
     /**
      * @param string $nodeId
      * @return bool
      */
-    protected function getNodeCookie( $nodeId )
+    protected function getNodeCookie($nodeId)
     {
-        $cookie = (array) json_decode( array_get( $_COOKIE, self::COOKIE_NAME_NODES ) );
+        $cookie = (array) json_decode(array_get($_COOKIE, self::COOKIE_NAME_NODES));
 
-        return array_get( $cookie, $nodeId, true );
+        return array_get($cookie, $nodeId, true);
     }
 }

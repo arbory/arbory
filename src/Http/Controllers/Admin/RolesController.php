@@ -2,19 +2,18 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Admin\Admin;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Auth\Roles\Role;
-use Arbory\Base\Admin\Module;
+use Arbory\Base\Admin\Admin;
 use Illuminate\Http\Request;
+use Arbory\Base\Admin\Module;
+use Arbory\Base\Auth\Roles\Role;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Traits\Crudify;
 
 /**
- * Class RoleController
- * @package App\Http\Controllers
+ * Class RoleController.
  */
 class RolesController extends Controller
 {
@@ -87,7 +86,7 @@ class RolesController extends Controller
     protected function getPermissionOptions()
     {
         return $this->admin->modules()->mapWithKeys(function (Module $value) {
-            return [$value->getControllerClass() => (string)$value];
+            return [$value->getControllerClass() => (string) $value];
         })->sort();
     }
 }

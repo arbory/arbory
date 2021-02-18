@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
-
 
 interface SlotInterface
 {
     /**
-     * Name of the slot
+     * Name of the slot.
      *
      * @return mixed
      */

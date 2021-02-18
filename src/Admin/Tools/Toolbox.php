@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Tools;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Toolbox
- * @package Arbory\Base\Admin\Widgets
+ * Class Toolbox.
  */
 class Toolbox implements Renderable
 {
@@ -25,12 +24,12 @@ class Toolbox implements Renderable
     /**
      * Toolbox constructor.
      *
-     * @param string           $url
+     * @param string $url
      * @param ToolboxMenu|null $menu
      */
     public function __construct($url = null, ToolboxMenu $menu = null)
     {
-        $this->url  = $url;
+        $this->url = $url;
         $this->menu = $menu;
     }
 
@@ -39,8 +38,8 @@ class Toolbox implements Renderable
      */
     public function render()
     {
-        if(!$this->url && !$this->menu) {
-            return null;
+        if (! $this->url && ! $this->menu) {
+            return;
         }
 
         $attributes = [];
@@ -51,16 +50,16 @@ class Toolbox implements Renderable
 
         return Html::div(
             Html::div([
-                          Html::button(Html::i()->addClass('fa fa-ellipsis-v'))
-                              ->addClass('button trigger only-icon')
-                              ->addAttributes(['type' => 'button']),
-                          Html::menu([
-                                         Html::i()->addClass('fa fa-caret-up'),
-                                         Html::ul($this->menu),
-                                     ])
-                              ->addClass('toolbox-items')
-                              ->addAttributes(['type' => 'toolbar']),
-                      ])
+                Html::button(Html::i()->addClass('fa fa-ellipsis-v'))
+                    ->addClass('button trigger only-icon')
+                    ->addAttributes(['type' => 'button']),
+                Html::menu([
+                    Html::i()->addClass('fa fa-caret-up'),
+                    Html::ul($this->menu),
+                ])
+                    ->addClass('toolbox-items')
+                    ->addAttributes(['type' => 'toolbar']),
+            ])
                 ->addClass('toolbox')
                 ->addAttributes($attributes)
         )->addClass('only-icon toolbox-cell');

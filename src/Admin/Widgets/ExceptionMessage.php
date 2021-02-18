@@ -2,14 +2,13 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 use Exception;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class ExceptionMessage
- * @package Arbory\Base\Admin\Widgets
+ * Class ExceptionMessage.
  */
 class ExceptionMessage implements Renderable
 {
@@ -22,7 +21,7 @@ class ExceptionMessage implements Renderable
      * ExceptionMessage constructor.
      * @param Exception $exception
      */
-    public function __construct( Exception $exception )
+    public function __construct(Exception $exception)
     {
         $this->exception = $exception;
     }
@@ -32,15 +31,15 @@ class ExceptionMessage implements Renderable
      */
     public function render()
     {
-        return Html::div( $this->exception->getMessage() )->addClass('error');
+        return Html::div($this->exception->getMessage())->addClass('error');
     }
 
     /**
      * @param Exception $exception
      * @return static
      */
-    public static function create( Exception $exception )
+    public static function create(Exception $exception)
     {
-        return new static( $exception );
+        return new static($exception);
     }
 }

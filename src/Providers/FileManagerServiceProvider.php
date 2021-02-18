@@ -14,13 +14,16 @@ class FileManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes( [
-            __DIR__ . '/../../../../unisharp/laravel-filemanager/src/lang' => base_path( 'resources/lang/vendor/laravel-filemanager' )
-        ], 'file_manager' );
+        $fileManagerFileSource = __DIR__.'/../../../../unisharp/laravel-filemanager/src/lang';
+        $fileManagerFileDest = base_path('resources/lang/vendor/laravel-filemanager');
 
-        $this->publishes( [
-            __DIR__ . '/../../config/lfm.php' => config_path( 'lfm.php' ),
-        ], 'file_manager' );
+        $this->publishes([
+            $fileManagerFileSource => $fileManagerFileDest,
+        ], 'file_manager');
+
+        $this->publishes([
+            __DIR__.'/../../config/lfm.php' => config_path('lfm.php'),
+        ], 'file_manager');
 
         $this->registerServiceProviders();
         $this->registerAliases();
@@ -31,8 +34,8 @@ class FileManagerServiceProvider extends ServiceProvider
      */
     protected function registerServiceProviders()
     {
-        $this->app->register( LaravelFilemanagerServiceProvider::class );
-        $this->app->register( ImageServiceProvider::class );
+        $this->app->register(LaravelFilemanagerServiceProvider::class);
+        $this->app->register(ImageServiceProvider::class);
     }
 
     /**
@@ -40,6 +43,6 @@ class FileManagerServiceProvider extends ServiceProvider
      */
     protected function registerAliases()
     {
-        AliasLoader::getInstance()->alias( 'Image', \Intervention\Image\Facades\Image::class );
+        AliasLoader::getInstance()->alias('Image', \Intervention\Image\Facades\Image::class);
     }
 }

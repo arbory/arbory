@@ -2,17 +2,12 @@
 
 namespace Arbory\Base\Admin;
 
-use Closure;
-use Arbory\Base\Admin\Module\ResourceRoutes;
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
-use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Admin\Module\ResourceRoutes;
 use Arbory\Base\Services\ModuleConfiguration;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 /**
- * Class Module
- * @package Arbory\Base\Services
+ * Class Module.
  */
 class Module
 {
@@ -35,15 +30,13 @@ class Module
      */
     protected $routes;
 
-
     protected $breadcrumbs;
-
 
     /**
      * @param Admin $admin
      * @param ModuleConfiguration $configuration
      */
-    public function __construct( Admin $admin, ModuleConfiguration $configuration )
+    public function __construct(Admin $admin, ModuleConfiguration $configuration)
     {
         $this->admin = $admin;
         $this->configuration = $configuration;
@@ -73,9 +66,9 @@ class Module
     /**
      * @return bool
      */
-    public function isAuthorized( )
+    public function isAuthorized()
     {
-        return $this->admin->isAuthorizedFor( $this->getControllerClass() );
+        return $this->admin->isAuthorizedFor($this->getControllerClass());
     }
 
     /**
@@ -83,10 +76,9 @@ class Module
      */
     public function breadcrumbs()
     {
-        if( $this->breadcrumbs === null )
-        {
+        if ($this->breadcrumbs === null) {
             $this->breadcrumbs = new Breadcrumbs();  // TODO: Move this to menu
-            $this->breadcrumbs->addItem( $this->name(), $this->url( 'index' ) );
+            $this->breadcrumbs->addItem($this->name(), $this->url('index'));
         }
 
         return $this->breadcrumbs;
@@ -105,14 +97,12 @@ class Module
      * @param array $parameters
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url($route, $parameters = [])
     {
-        if( $this->routes === null)
-        {
-            $this->routes = $this->admin->routes()->findByModule( $this );
+        if ($this->routes === null) {
+            $this->routes = $this->admin->routes()->findByModule($this);
         }
 
-        return $this->routes->getUrl( $route, $parameters );
+        return $this->routes->getUrl($route, $parameters);
     }
-
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class ModifyPrimaryKeyInSettingsTable extends Migration
 {
@@ -17,6 +17,7 @@ class ModifyPrimaryKeyInSettingsTable extends Migration
 
         Schema::table('settings', function (Blueprint $table) {
             $table->dropColumn('id');
+            $table->dropUnique('settings_name_unique');
             $table->string('name')->primary()->change();
         });
     }

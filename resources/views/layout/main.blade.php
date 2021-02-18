@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Arbory</title>
+        <title>{{ config('arbory.title', 'Arbory') }}</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link href="{{ mix('/css/application.css', 'arbory') }}" media="all" rel="stylesheet"/>
@@ -26,13 +26,19 @@
 
         <main id="main">
             @yield('content.header')
+            @include('arbory::layout.partials.message')
+
             @yield('content')
         </main>
 
         <div class="notifications" data-close-text="Close"></div>
-
+        @if(! empty(config('arbory.services.google.maps_api_key', null)))
         <script src="https://maps.googleapis.com/maps/api/js?key={{ config('arbory.services.google.maps_api_key') }}&libraries=places"></script>
+        @endif
+        @include('arbory::layout.partials.environment')
 
+        <script src="{{ mix('js/manifest.js', 'arbory') }}"></script>
+        <script src="{{ mix('js/vendor.js', 'arbory') }}"></script>
         <script src="{{ mix('js/application.js', 'arbory') }}"></script>
         <script src="{{ mix('js/controllers/nodes.js', 'arbory') }}"></script>
 

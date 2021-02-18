@@ -1,14 +1,11 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Concerns;
-
 
 use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 
 trait HasRenderOptions
 {
-
     /**
      * @var callable|null
      */
@@ -29,7 +26,7 @@ trait HasRenderOptions
      *
      * @return mixed
      */
-    public function addAttributes( array $attributes ):RenderOptionsInterface
+    public function addAttributes(array $attributes): RenderOptionsInterface
     {
         $this->attributes = array_merge($this->attributes, $attributes);
 
@@ -41,7 +38,7 @@ trait HasRenderOptions
      *
      * @return RenderOptionsInterface
      */
-    public function setAttributes( array $attributes ):RenderOptionsInterface
+    public function setAttributes(array $attributes): RenderOptionsInterface
     {
         $this->attributes = $attributes;
 
@@ -53,9 +50,9 @@ trait HasRenderOptions
      *
      * @return RenderOptionsInterface
      */
-    public function removeAttributes( array $attributeKeys ):RenderOptionsInterface
+    public function removeAttributes(array $attributeKeys): RenderOptionsInterface
     {
-        foreach($attributeKeys as $key) {
+        foreach ($attributeKeys as $key) {
             unset($this->attributes[$key]);
         }
 
@@ -63,14 +60,13 @@ trait HasRenderOptions
     }
 
     /**
-     *
      * @param string|array $classes
      *
      * @return mixed
      */
-    public function addClass( $classes ):RenderOptionsInterface
+    public function addClass($classes): RenderOptionsInterface
     {
-        $classes = explode(" ", $classes);
+        $classes = explode(' ', $classes);
 
         $this->classes = array_unique(
             array_merge(
@@ -87,7 +83,7 @@ trait HasRenderOptions
      *
      * @return RenderOptionsInterface
      */
-    public function setClasses( $classes ):RenderOptionsInterface
+    public function setClasses($classes): RenderOptionsInterface
     {
         $this->classes = array_wrap($classes);
 
@@ -99,12 +95,12 @@ trait HasRenderOptions
      *
      * @return RenderOptionsInterface
      */
-    public function removeClasses( $classes ):RenderOptionsInterface
+    public function removeClasses($classes): RenderOptionsInterface
     {
         $classes = array_wrap($classes);
 
-        $this->classes = array_filter($this->classes, function ($value) use($classes) {
-            return !in_array($value, $classes, true);
+        $this->classes = array_filter($this->classes, function ($value) use ($classes) {
+            return ! in_array($value, $classes, true);
         });
 
         return $this;
@@ -129,7 +125,7 @@ trait HasRenderOptions
     /**
      * @return callable|null
      */
-    public function getWrapper():?callable
+    public function getWrapper(): ?callable
     {
         return $this->wrapper;
     }
@@ -139,7 +135,7 @@ trait HasRenderOptions
      *
      * @return RenderOptionsInterface
      */
-    public function setWrapper( ?callable $value ): RenderOptionsInterface
+    public function setWrapper(?callable $value): RenderOptionsInterface
     {
         $this->wrapper = $value;
 

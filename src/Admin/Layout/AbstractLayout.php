@@ -1,19 +1,21 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
 
-
-use Arbory\Base\Admin\Traits\EventDispatcher;
-use Arbory\Base\Html\Elements\Content;
 use Closure;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Admin\Traits\EventDispatcher;
 
 abstract class AbstractLayout
 {
     use EventDispatcher;
 
+    const EVENT_APPLY = 'apply';
+    const EVENT_RENDER = 'render';
+
+    const SLOTS = [];
 
     /**
      * @var Slot
@@ -60,7 +62,7 @@ abstract class AbstractLayout
     }
 
     /**
-     * Returns defined slots
+     * Returns defined slots.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -74,14 +76,14 @@ abstract class AbstractLayout
     }
 
     /**
-     * Executes every time before render
+     * Executes every time before render.
      *
      * @return mixed
      */
-    abstract function build();
+    abstract public function build();
 
     /**
-     * Executes when the layout is applied
+     * Executes when the layout is applied.
      *
      * @param PageInterface $page
      */
@@ -90,7 +92,7 @@ abstract class AbstractLayout
     }
 
     /**
-     * Renders the layout in its transformed state
+     * Renders the layout in its transformed state.
      *
      * @return Content
      */
@@ -127,21 +129,23 @@ abstract class AbstractLayout
     }
 
     /**
-     * Adds an transformer to the layout
+     * Adds an transformer to the layout.
      *
      * @param LayoutInterface|string $layout
      *
      * @return $this
      */
-    public function use($layout)
+    public function use($layout): LayoutResolver
     {
+        $resolver = new LayoutResolver(app(), $layout);
+
         $this->layouts[] = $layout;
 
-        return $this;
+        return $resolver;
     }
 
     /**
-     * Transform the content
+     * Transform the content.
      *
      * @param $content
      *
@@ -163,7 +167,7 @@ abstract class AbstractLayout
     }
 
     /**
-     * Transformer pipeline
+     * Transformer pipeline.
      *
      * @return Pipeline
      */
@@ -179,7 +183,7 @@ abstract class AbstractLayout
     }
 
     /**
-     * Set inner content of the layout
+     * Set inner content of the layout.
      *
      * @param mixed $content
      *
@@ -193,7 +197,7 @@ abstract class AbstractLayout
     }
 
     /**
-     * Returns layout content without any transformation
+     * Returns layout content without any transformation.
      *
      * @return mixed
      */
@@ -203,18 +207,18 @@ abstract class AbstractLayout
     }
 
     /**
-     * @return LayoutManager
+     * @return LayoutInterface[]
      */
-    public function manager():LayoutManager
+    protected function getPipes(): array
     {
-        return app(LayoutManager::class);
+        return $this->layouts;
     }
 
     /**
-     * @return LayoutInterface[]
+     * @return LayoutManager
      */
-    protected function getPipes()
+    public function manager(): LayoutManager
     {
-        return $this->layouts;
+        return app(LayoutManager::class);
     }
 }

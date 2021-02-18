@@ -2,11 +2,11 @@
 
 namespace Arbory\Base\Providers;
 
+use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Http\Request;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
 class ValidationRulesServiceProvider extends ServiceProvider
@@ -27,7 +27,7 @@ class ValidationRulesServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register validation rules
+     * Register validation rules.
      */
     private function registerValidationRules()
     {
@@ -75,8 +75,8 @@ class ValidationRulesServiceProvider extends ServiceProvider
                 return true;
             }
 
-            if (!$field) {
-                return (bool)$file;
+            if (! $field) {
+                return (bool) $file;
             }
 
             return $field->getValue() || $file;
@@ -102,8 +102,8 @@ class ValidationRulesServiceProvider extends ServiceProvider
                 }
             }
 
-            if (!$translatable || $value) {
-                return (bool)$value;
+            if (! $translatable || $value) {
+                return (bool) $value;
             }
 
             $attributeLocale = null;
@@ -121,7 +121,9 @@ class ValidationRulesServiceProvider extends ServiceProvider
                 $checkByAttribute = str_replace($attributeLocale, $checkLocale, $attribute);
                 $field = $fieldSet->findFieldByInputName($checkByAttribute);
 
-                if ($request->input($checkByAttribute) || ($field->getValue() && $request->input($checkByAttribute) !== null)) {
+                $valueNotNull = ($field->getValue() && $request->input($checkByAttribute) !== null);
+
+                if ($request->input($checkByAttribute) || $valueNotNull) {
                     return true;
                 }
             }

@@ -1,36 +1,33 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Controls;
 
-
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Html\Elements\Element;
-use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 
 interface InputControlInterface extends RenderOptionsInterface
 {
     public function element(): Element;
 
-    public function render( Element $control );
+    public function render(Element $control);
 
     /**
      * @param $value
      *
      * @return InputControlInterface
      */
-    public function setValue( $value ): self;
+    public function setValue($value): self;
 
     /**
      * @return mixed
      */
     public function getValue();
 
-    public function setDisabled( bool $value ): self;
+    public function setDisabled(bool $value): self;
 
     public function isDisabled(): bool;
 
-    public function setReadOnly( bool $value ): self;
+    public function setReadOnly(bool $value): self;
 
     public function isReadOnly(): bool;
 
@@ -44,5 +41,5 @@ interface InputControlInterface extends RenderOptionsInterface
      *
      * @return InputControlInterface
      */
-    public function setName( ?string $name ): InputControlInterface;
+    public function setName(?string $name): self;
 }

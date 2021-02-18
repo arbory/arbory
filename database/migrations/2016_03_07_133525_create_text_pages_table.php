@@ -12,12 +12,11 @@ class CreateTextPagesTable extends Migration
      */
     public function up()
     {
-        Schema::create( 'text_pages', function ( Blueprint $table )
-        {
-            $table->increments( 'id' );
-            $table->text( 'html' );
+        Schema::create('text_pages', function (Blueprint $table) {
+            $table->increments('id');
+            $table->text('html');
             $table->timestamps();
-        } );
+        });
     }
 
     /**

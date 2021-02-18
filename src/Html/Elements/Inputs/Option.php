@@ -4,14 +4,14 @@ namespace Arbory\Base\Html\Elements\Inputs;
 
 class Option extends AbstractInputField
 {
-    public function __construct( $content = null )
+    public function __construct($content = null)
     {
-        parent::__construct( 'option', $content );
+        parent::__construct('option', $content);
     }
 
     public function select()
     {
-        $this->attributes()->put( 'selected', 'selected' );
+        $this->attributes()->put('selected', 'selected');
 
         return $this;
     }

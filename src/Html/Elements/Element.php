@@ -2,15 +2,15 @@
 
 namespace Arbory\Base\Html\Elements;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+
 /**
- * Class Element
- * @package Arbory\Base\Html\Elements
+ * Class Element.
  */
 class Element
 {
-    const FIELD_NAME_MULTIPLE_ENDINGS = [
-        '[]', '[ ]'
-    ];
+    private const FIELD_NAME_MULTIPLE_ENDING = '[]';
 
     /**
      * @var Tag
@@ -27,13 +27,12 @@ class Element
      * @param $tag
      * @param null $content
      */
-    public function __construct( $tag, $content = null )
+    public function __construct($tag, $content = null)
     {
-        $this->tag = new Tag( $tag );
+        $this->tag = new Tag($tag);
 
-        if( $content !== null )
-        {
-            $this->append( $content );
+        if ($content !== null) {
+            $this->append($content);
         }
     }
 
@@ -42,7 +41,7 @@ class Element
      */
     public function __toString()
     {
-        return $this->tag->setContent( $this->content )->__toString();
+        return $this->tag->setContent($this->content)->__toString();
     }
 
     /**
@@ -57,11 +56,10 @@ class Element
      * @param array $attributes
      * @return $this
      */
-    public function addAttributes( array $attributes )
+    public function addAttributes(array $attributes)
     {
-        foreach( $attributes as $name => $value )
-        {
-            $this->attributes()->put( $name, $value );
+        foreach ($attributes as $name => $value) {
+            $this->attributes()->put($name, $value);
         }
 
         return $this;
@@ -72,8 +70,7 @@ class Element
      */
     public function content()
     {
-        if( $this->content === null )
-        {
+        if ($this->content === null) {
             $this->content = new Content;
         }
 
@@ -85,22 +82,22 @@ class Element
      * @param string|null $content
      * @return Tag
      */
-    public function tag( $name, $content = null )
+    public function tag($name, $content = null)
     {
-        return ( new Tag( $name ) )
-            ->setAttributes( $this->attributes() )
-            ->setContent( $content );
+        return (new Tag($name))
+            ->setAttributes($this->attributes())
+            ->setContent($content);
     }
 
     /**
      * @param string $class
      * @return $this
      */
-    public function addClass( $class )
+    public function addClass($class)
     {
-        $currentClass = $this->attributes()->get( 'class' );
+        $currentClass = $this->attributes()->get('class');
 
-        $this->attributes()->put( 'class', $currentClass ? implode( ' ', [ $currentClass, $class ] ) : $class );
+        $this->attributes()->put('class', $currentClass ? implode(' ', [$currentClass, $class]) : $class);
 
         return $this;
     }
@@ -109,21 +106,21 @@ class Element
      * @param Element|array|string $content
      * @return $this
      */
-    public function append( $content )
+    public function append($content)
     {
-        if( is_array( $content ) )
-        {
-            foreach( $content as $item )
-            {
-                $this->append( $item );
+        if (is_array($content)) {
+            foreach ($content as $item) {
+                $this->append($item);
             }
 
             return $this;
-        } else if (is_string($content)) {
+        }
+
+        if (is_string($content)) {
             $content = e($content);
         }
 
-        $this->content()->push( $content );
+        $this->content()->push($content);
 
         return $this;
     }
@@ -132,19 +129,17 @@ class Element
      * @param Element|array|string $content
      * @return $this
      */
-    public function prepend( $content )
+    public function prepend($content)
     {
-        if( is_array( $content ) )
-        {
-            foreach( $content as $item )
-            {
-                $this->prepend( $item );
+        if (is_array($content)) {
+            foreach ($content as $item) {
+                $this->prepend($item);
             }
 
             return $this;
         }
 
-        $this->content()->prepend( $content );
+        $this->content()->prepend($content);
 
         return $this;
     }
@@ -153,24 +148,25 @@ class Element
      * @param string $name
      * @return string
      */
-    public static function formatName( $name ): string
+    public static function formatName($name): string
     {
-        $multiple = ends_with( $name, self::FIELD_NAME_MULTIPLE_ENDINGS );
+        // Normalize multiple ending pattern
+        $name = str_replace('[ ]', self::FIELD_NAME_MULTIPLE_ENDING, $name);
 
-        if( $multiple )
-        {
-            $name = rtrim( $name, implode( '', self::FIELD_NAME_MULTIPLE_ENDINGS ) );
+        $multiple = Str::endsWith($name, [self::FIELD_NAME_MULTIPLE_ENDING]);
+
+        if ($multiple) {
+            $name = Str::substr($name, 0, strlen(self::FIELD_NAME_MULTIPLE_ENDING) * -1);
         }
 
-        $nameParts = preg_split( '/\./', $name, NULL, PREG_SPLIT_NO_EMPTY );
+        $nameParts = preg_split('/\./', $name, null, PREG_SPLIT_NO_EMPTY);
 
-        $inputName = array_pull( $nameParts, 0 );
+        $inputName = Arr::pull($nameParts, 0);
 
-        if( count( $nameParts ) > 0 )
-        {
-            $inputName .= '[' . implode( '][', $nameParts ) . ']';
+        if (count($nameParts) > 0) {
+            $inputName .= '['.implode('][', $nameParts).']';
         }
 
-        return $inputName . ( $multiple ? '[]' : '' );
+        return $inputName.($multiple ? self::FIELD_NAME_MULTIPLE_ENDING : '');
     }
 }

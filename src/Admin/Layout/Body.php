@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
-
 
 use Arbory\Base\Html\Elements\Content;
 
@@ -45,14 +43,14 @@ class Body
         $this->page = $page;
 
         $this->prepended = new Content();
-        $this->appended  = new Content();
-        $this->wrapper   = function ($content) {
+        $this->appended = new Content();
+        $this->wrapper = function ($content) {
             return $content;
         };
     }
 
     /**
-     * Adds a new wrapper for content
+     * Adds a new wrapper for content.
      *
      * @param callable $wrapper
      *
@@ -103,12 +101,12 @@ class Body
         $call = $this->wrapper;
 
         return $this->prepended->render()
-            . $call($content)
-            . $this->appended->render();
+            .$call($content)
+            .$this->appended->render();
     }
 
     /**
-     * The target layout for this template
+     * The target layout for this template.
      *
      * @return LayoutInterface
      */
@@ -130,7 +128,7 @@ class Body
     }
 
     /**
-     * @return PageInterface|null   
+     * @return PageInterface|null
      */
     public function getPage(): ?PageInterface
     {
@@ -142,7 +140,7 @@ class Body
      *
      * @return Body
      */
-    public function setPage(PageInterface $page): Body
+    public function setPage(PageInterface $page): self
     {
         $this->page = $page;
 

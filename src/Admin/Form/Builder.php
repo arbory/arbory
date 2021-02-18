@@ -2,17 +2,15 @@
 
 namespace Arbory\Base\Admin\Form;
 
-use Arbory\Base\Admin\Layout\WrappableInterface;
-use Arbory\Base\Admin\Panels\Renderer;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
+use Arbory\Base\Admin\Layout\WrappableInterface;
 
 /**
- * Class Builder
- * @package Arbory\Base\Admin\Form
+ * Class Builder.
  */
 class Builder implements Renderable, WrappableInterface
 {
@@ -36,7 +34,7 @@ class Builder implements Renderable, WrappableInterface
      *
      * @param Form $form
      */
-    public function __construct( Form $form )
+    public function __construct(Form $form)
     {
         $this->form = $form;
     }
@@ -47,7 +45,7 @@ class Builder implements Renderable, WrappableInterface
      *
      * @return string
      */
-    public function url( $route, $parameters = [] )
+    public function url($route, $parameters = [])
     {
         return $this->form->getModule()->url($route, $parameters);
     }
@@ -58,22 +56,30 @@ class Builder implements Renderable, WrappableInterface
     protected function form()
     {
         $form = Html::form()->addAttributes([
-            'id'                     => $this->getId(),
-            'class'                  => 'edit-resource',
-            'novalidate'             => 'novalidate',
-            'enctype'                => 'multipart/form-data',
-            'accept-charset'         => 'UTF-8',
-            'method'                 => 'post',
-            'action'                 => $this->form->getAction(),
-            'data-remote'            => 'true',
+            'id' => $this->getId(),
+            'class' => 'edit-resource',
+            'novalidate' => 'novalidate',
+            'enctype' => 'multipart/form-data',
+            'accept-charset' => 'UTF-8',
+            'method' => 'post',
+            'action' => $this->form->getAction(),
+            'data-remote' => 'true',
             'data-remote-validation' => 'true',
-            'data-type'              => 'json',
+            'data-type' => 'json',
         ]);
 
         $form->append(csrf_field());
 
-        if ( $this->form->getModel()->getKey() ) {
+        if ($this->form->getModel()->getKey()) {
             $form->append(Html::input()->setName('_method')->setType('hidden')->setValue('PUT'));
+        }
+
+        if ($returnUrl = $this->form->getReturnUrl()) {
+            $form->append(Html::input()
+                ->setName(Form::INPUT_RETURN_URL)
+                ->setValue($returnUrl)
+                ->setType('hidden')
+            );
         }
 
         return $form;
@@ -88,7 +94,7 @@ class Builder implements Renderable, WrappableInterface
         $content->append(new Content($this->getContent()));
 
         return $this->form()
-                    ->append($content);
+            ->append($content);
     }
 
     /**
@@ -130,5 +136,4 @@ class Builder implements Renderable, WrappableInterface
 
         return $this;
     }
-
 }

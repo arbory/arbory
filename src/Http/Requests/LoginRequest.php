@@ -5,8 +5,7 @@ namespace Arbory\Base\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class LoginRequest
- * @package Arbory\Base\Http\Requests
+ * Class LoginRequest.
  */
 class LoginRequest extends FormRequest
 {
@@ -17,7 +16,18 @@ class LoginRequest extends FormRequest
     {
         return [
             'user.email' => 'required|email',
-            'user.password' => 'required'
+            'user.password' => 'required',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'user.email' => trans('arbory::security.email'),
+            'user.password' => trans('arbory::security.password'),
         ];
     }
 

@@ -15,31 +15,25 @@ class Attributes extends Collection
     {
         $html = [];
 
-        foreach( $this->all() as $key => $value )
-        {
-            $element = $this->attributeElement( $key, $value );
+        foreach ($this->all() as $key => $value) {
+            $element = $this->attributeElement($key, $value);
 
-            if( !is_null( $element ) )
-            {
+            if (! is_null($element)) {
                 $html[] = $element;
             }
         }
 
-        return count( $html ) > 0 ? implode( ' ', $html ) : '';
+        return count($html) > 0 ? implode(' ', $html) : '';
     }
 
-    protected function attributeElement( $key, $value )
+    protected function attributeElement($key, $value)
     {
-        if( is_numeric( $key ) )
-        {
+        if (is_numeric($key)) {
             $key = $value;
         }
 
-        if( !is_null( $value ) )
-        {
-            return $key . '="' . htmlspecialchars( $value, ENT_QUOTES, 'UTF-8', true ) . '"';
+        if (! is_null($value)) {
+            return $key.'="'.htmlspecialchars($value, ENT_QUOTES, 'UTF-8', true).'"';
         }
-
-        return null;
     }
 }

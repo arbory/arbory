@@ -2,19 +2,18 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Admin\Admin;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Html\Html;
-use Arbory\Base\Auth\Users\User;
+use Arbory\Base\Admin\Admin;
 use Illuminate\Http\Request;
+use Arbory\Base\Auth\Users\User;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Traits\Crudify;
 
 /**
- * Class UsersController
- * @package Arbory\Base\Http\Controllers\Admin
+ * Class UsersController.
  */
 class UsersController extends Controller
 {
@@ -48,8 +47,8 @@ class UsersController extends Controller
         $form->setFields(function (Form\FieldSet $fields, User $user) {
             $fields->text('first_name')->rules('required');
             $fields->text('last_name');
-            $fields->text('email')->rules('required|unique:admin_users,email,' . $user->getKey());
-            $fields->password('password')->rules('min:6|' . ($user->exists ? 'nullable' : 'required'));
+            $fields->text('email')->rules('required|unique:admin_users,email,'.$user->getKey());
+            $fields->password('password')->rules('min:6|'.($user->exists ? 'nullable' : 'required'));
             $fields->checkbox('active')->setValue($this->getActivations()->completed($user));
             $fields->belongsToMany('roles');
         });
@@ -67,7 +66,7 @@ class UsersController extends Controller
         });
 
         $form->addEventListener('update.before', function (Request $request) use ($model) {
-            if ($model->exists && !$request->has('resource.password')) {
+            if ($model->exists && ! $request->has('resource.password')) {
                 $parameters = $request->except(['resource.password']);
 
                 $request->request->replace($parameters);
@@ -105,7 +104,7 @@ class UsersController extends Controller
                 ->display(function ($value) {
                     return Html::span(
                         Html::image()->addAttributes([
-                            'src' => '//www.gravatar.com/avatar/' . md5($value) . '?d=retro',
+                            'src' => '//www.gravatar.com/avatar/'.md5($value).'?d=retro',
                             'width' => 32,
                             'alt' => $value,
                         ])
@@ -118,7 +117,7 @@ class UsersController extends Controller
                 ->display(function (Collection $value) {
                     return Html::ul(
                         $value->map(function ($role) {
-                            return Html::li((string)$role);
+                            return Html::li((string) $role);
                         })->toArray()
                     );
                 });
@@ -133,6 +132,4 @@ class UsersController extends Controller
     {
         return $this->admin->sentinel()->getActivationRepository();
     }
-
 }
-

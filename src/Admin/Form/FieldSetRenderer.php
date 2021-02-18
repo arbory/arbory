@@ -1,15 +1,13 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form;
 
-
+use Closure;
+use Arbory\Base\Admin\Layout\Grid;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Admin\Layout\Grid\Column;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
-use Arbory\Base\Admin\Layout\Grid;
-use Arbory\Base\Admin\Layout\Grid\Column;
-use Arbory\Base\Html\Elements\Content;
-use Closure;
 
 class FieldSetRenderer implements FieldSetRendererInterface
 {
@@ -31,12 +29,12 @@ class FieldSetRenderer implements FieldSetRendererInterface
     /**
      * FieldSetRenderer constructor.
      *
-     * @param FieldSet     $fieldSet
+     * @param FieldSet $fieldSet
      * @param StyleManager $styleManager
      */
-    public function __construct( FieldSet $fieldSet, StyleManager $styleManager )
+    public function __construct(FieldSet $fieldSet, StyleManager $styleManager)
     {
-        $this->fieldSet     = $fieldSet;
+        $this->fieldSet = $fieldSet;
         $this->styleManager = $styleManager;
     }
 
@@ -53,9 +51,11 @@ class FieldSetRenderer implements FieldSetRendererInterface
      *
      * @return FieldSetRendererInterface
      */
-    public function setDefaultStyle( string $value ): FieldSetRendererInterface
+    public function setDefaultStyle(string $value): FieldSetRendererInterface
     {
-        return $this->setDefaultStyle($value);
+        $this->defaultStyle = $value;
+
+        return $this;
     }
 
     /**
@@ -66,46 +66,47 @@ class FieldSetRenderer implements FieldSetRendererInterface
     public function render()
     {
         $collection = $this->fieldSet->getFields();
-        $grid       = new Grid();
-        $columns    = 0;
+        $grid = new Grid();
+        $columns = 0;
 
-        $hasRows = $collection->filter(function ( $field ) {
+        $hasRows = $collection->filter(function ($field) {
             return $field->getRows();
         })->count();
 
-        if ( ! $hasRows ) {
+        if (! $hasRows) {
             return new Content(
                 $collection
-                    ->map(Closure::fromCallable([ $this, 'renderField' ]))
+                    ->map(Closure::fromCallable([$this, 'renderField']))
             );
         }
 
         $currentRow = $grid->row();
 
-        foreach ( $this->fieldSet->all() as $field ) {
-            if($field->isHidden()) continue;
+        foreach ($this->fieldSet->all() as $field) {
+            if ($field->isHidden()) {
+                continue;
+            }
 
             $rendered = $this->renderField($field);
 
-            if(blank($rendered)) {
+            if (blank($rendered)) {
                 continue;
             }
 
             $rows = $field->getRows() ?? [
-                'size'        => $grid->getRowSize(),
+                'size' => $grid->getRowSize(),
                 'breakpoints' => [],
             ];
 
             $columnsExpected = $columns + $rows['size'];
 
-            if ( $columnsExpected > $grid->getRowSize() ) {
+            if ($columnsExpected > $grid->getRowSize()) {
                 $currentRow = $grid->row();
 
                 $columns = $rows['size'];
             } else {
                 $columns = $columnsExpected;
             }
-
 
             $currentRow->addColumn($this->createColumn($rows, $rendered));
         }
@@ -118,9 +119,11 @@ class FieldSetRenderer implements FieldSetRendererInterface
      *
      * @return mixed|null
      */
-    protected function renderField( FieldInterface $field )
+    protected function renderField(FieldInterface $field)
     {
-        if($field->isHidden()) return null;
+        if ($field->isHidden()) {
+            return;
+        }
 
         $style = $field->getStyle() ?: $this->getDefaultStyle();
 
@@ -135,12 +138,12 @@ class FieldSetRenderer implements FieldSetRendererInterface
      *
      * @return Column
      */
-    protected function createColumn( array $rows, $content )
+    protected function createColumn(array $rows, $content)
     {
         $column = new Column($rows['size'], $content);
 
         $column->breakpoints(array_merge(
-            [ Column::BREAKPOINT_DEFAULT => $rows['size'] ],
+            [Column::BREAKPOINT_DEFAULT => $rows['size']],
             $rows['breakpoints']
         ));
 

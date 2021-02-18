@@ -2,13 +2,12 @@
 
 namespace Arbory\Base\Admin\Layout;
 
+use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Collection;
 
 /**
- * Class Row
- * @package Arbory\Base\Admin\Layout
+ * Class Row.
  */
 class Row implements Renderable
 {
@@ -19,12 +18,12 @@ class Row implements Renderable
 
     /**
      * Row constructor.
-     * @param null $content
+     * @param mixed|null $content
      */
-    public function __construct( $content = null )
+    public function __construct($content = null)
     {
         $this->content = new Collection();
-        $this->content->push( $content );
+        $this->content->push($content);
     }
 
     /**
@@ -36,15 +35,14 @@ class Row implements Renderable
     }
 
     /**
-     * @return Body
+     * @return Content|string
      */
     public function render()
     {
         $content = new Content();
 
-        foreach( $this->content as $item )
-        {
-            $content->prepend( $item->render() );
+        foreach ($this->content as $item) {
+            $content->prepend($item->render());
         }
 
         return $content;

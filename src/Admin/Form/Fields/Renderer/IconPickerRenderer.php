@@ -2,11 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Admin\Form\Fields\IconPicker;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\HtmlString;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Form\Fields\IconPicker;
 
 class IconPickerRenderer extends SelectFieldRenderer
 {
@@ -17,7 +17,7 @@ class IconPickerRenderer extends SelectFieldRenderer
     {
         $input = parent::render();
 
-        $content = [ $input, $this->getIconSelectElement() ];
+        $content = [$input, $this->getIconSelectElement()];
 
         return new Content($content);
     }
@@ -29,18 +29,17 @@ class IconPickerRenderer extends SelectFieldRenderer
     {
         /** @var IconPicker $field */
         $field = $this->field;
-        $items = Html::ul()->addClass( 'items' );
+        $items = Html::ul()->addClass('items');
 
-        foreach( $field->getOptions()->prepend('', '') as $option )
-        {
-            $items->append( Html::li( $this->getSvgIconElement( $option ) ) );
+        foreach ($field->getOptions()->prepend('', '') as $option) {
+            $items->append(Html::li($this->getSvgIconElement($option)));
         }
 
         return Html::div([
             Html::div(
                 $this->getSvgIconElement($field->getValue())
             )->addClass('selected'),
-            $items
+            $items,
         ])->addClass('contents');
     }
 
@@ -48,32 +47,31 @@ class IconPickerRenderer extends SelectFieldRenderer
      * @param string $id
      * @return Element
      */
-    protected function getSvgIconElement( $id )
+    protected function getSvgIconElement($id)
     {
-        if( !$id )
-        {
+        if (! $id) {
             return Html::svg();
         }
 
         /** @var IconPicker $field */
         $field = $this->field;
-        $iconNode = $field->getIconContent( $id );
+        $iconNode = $field->getIconContent($id);
 
-        if ( !$iconNode )
-        {
-            return Html::div()->addClass( 'element' );
+        if (! $iconNode) {
+            return Html::div()->addClass('element');
         }
 
         $node = simplexml_load_string($iconNode->asXML());
-        $path = array_first($node->xpath('/symbol//path[@d]'));
+        $paths = $node->xpath('/symbol//path[@d]');
 
-        if( $path )
-        {
-            $content = $path->asXML();
+        if (! $paths) {
+            return Html::div()->addClass('element');
         }
-        else
-        {
-            return Html::div()->addClass( 'element' );
+
+        $content = '';
+
+        foreach ($paths as $path) {
+            $content .= $path->asXML();
         }
 
         $attributes = $iconNode->attributes();
@@ -83,29 +81,29 @@ class IconPickerRenderer extends SelectFieldRenderer
         $width = $dimensions ? $dimensions[0] : (int) $attributes->width;
         $height = $dimensions ? $dimensions[1] : (int) $attributes->height;
 
-        $icon = Html::span( Html::svg( new HtmlString($content) )
-            ->addAttributes( [
+        $icon = Html::span(Html::svg(new HtmlString($content))
+            ->addAttributes([
                 'width' => $width,
                 'height' => $height,
                 'viewBox' => $this->resolveViewBox($iconNode, $width, $height),
                 'role' => 'presentation',
-            ] ) )->addClass( 'icon' );
+            ]))->addClass('icon');
 
-        return Html::div( [ $icon, Html::span( $id ) ] )->addClass( 'element' );
+        return Html::div([$icon, Html::span($id)])->addClass('element');
     }
 
     /**
      * @param \SimpleXMLElement $iconNode
-     * @param  int              $width
-     * @param  int              $height
+     * @param  int $width
+     * @param  int $height
      *
      * @return string
      */
-    protected function resolveViewBox( \SimpleXMLElement $iconNode, $width, $height )
+    protected function resolveViewBox(\SimpleXMLElement $iconNode, $width, $height)
     {
         $resolver = $this->field->getViewboxResolver();
 
-        if ( $resolver ) {
+        if ($resolver) {
             return $resolver($iconNode, $width, $height);
         }
 

@@ -2,12 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Html\Elements\Element;
 
 /**
- * Class CheckBoxFieldRenderer
- * @package Arbory\Base\Admin\Form\Fields\Renderer
+ * Class CheckBoxFieldRenderer.
  */
 class CheckBoxFieldRenderer extends ControlFieldRenderer
 {
@@ -15,6 +14,7 @@ class CheckBoxFieldRenderer extends ControlFieldRenderer
      * @var \Arbory\Base\Admin\Form\Fields\Checkbox
      */
     protected $field;
+
     /**
      * @return Element
      */
@@ -31,9 +31,9 @@ class CheckBoxFieldRenderer extends ControlFieldRenderer
             $this->field->getValue() == true
         );
 
-        return Html::div( [
+        return Html::div([
             $control->render($element),
-            Html::label($this->field->getLabel())->addAttributes(['for' => $this->field->getFieldId()])
-        ] )->addClass('value');
+            Html::label($this->field->getLabel())->addAttributes(['for' => $this->field->getFieldId()]),
+        ])->addClass('value');
     }
 }

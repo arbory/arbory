@@ -1,16 +1,14 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
-use Arbory\Base\Admin\Form\Fields\Slug;
+use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\Slug;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterface
 {
@@ -39,15 +37,13 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
         $control = $this->getControl();
         $control = $this->configureControl($control);
 
-
         $control->addAttributes([
-                                    'data-generator-url'   => $this->field->getApiUrl(),
-                                    'data-from-field-name' => $this->field->getFromFieldName(),
-                                    'data-node-parent-id'  => $this->field->getParentId(),
-                                    'data-model-table'     => $this->field->getModel()->getTable(),
-                                    'data-object-id'       => $this->field->getModel()->getKey(),
-                                ]);
-
+            'data-generator-url' => $this->field->getApiUrl(),
+            'data-from-field-name' => $this->field->getFromFieldName(),
+            'data-node-parent-id' => $this->field->getParentId(),
+            'data-model-table' => $this->field->getModel()->getTable(),
+            'data-object-id' => $this->field->getModel()->getKey(),
+        ]);
 
         $button = Button::create()
             ->type('button', 'secondary generate')
@@ -68,14 +64,13 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
         return $content;
     }
 
-
     /**
      * @return Element|null
      */
     protected function getLinkElement()
     {
-        if (!$this->field->hasUriToSlug()) {
-            return null;
+        if (! $this->field->hasUriToSlug()) {
+            return;
         }
 
         return Html::div(
@@ -85,14 +80,13 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
         )->addClass('link');
     }
 
-
     /**
      * @return Element|null
      */
     protected function getPreviewLinkElement()
     {
-        if (!$this->field->hasUriToSlug() || $this->field->getModel()->isActive() || !$this->field->getValue()) {
-            return null;
+        if (! $this->field->hasUriToSlug() || $this->field->getModel()->isActive() || ! $this->field->getValue()) {
+            return;
         }
 
         return Html::div(
@@ -107,7 +101,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
      */
     protected function getLinkValue()
     {
-        $urlToSlug        = ltrim($this->field->getUriToSlug(), "/");
+        $urlToSlug = ltrim($this->field->getUriToSlug(), '/');
         $urlToSlugElement = Html::span($urlToSlug);
 
         return [
@@ -120,7 +114,6 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
             Html::span($this->field->getValue()),
         ];
     }
-
 
     /**
      * @param FieldInterface $field
@@ -141,7 +134,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
     }
 
     /**
-     * Configure the style before rendering the field
+     * Configure the style before rendering the field.
      *
      * @param StyleOptionsInterface $options
      *

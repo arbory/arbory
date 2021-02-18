@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Repositories;
 
-use Arbory\Base\Files\ArboryFile;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
-use RuntimeException;
 use Storage;
+use RuntimeException;
+use Arbory\Base\Files\ArboryFile;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ArboryFilesRepository
- * @package Arbory\Base\Repositories
+ * Class ArboryFilesRepository.
  */
 class ArboryFilesRepository extends AbstractModelsRepository
 {
@@ -34,7 +33,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
      * @param string $diskName
      * @param string $modelClass
      */
-    public function __construct( $diskName, $modelClass = ArboryFile::class )
+    public function __construct($diskName, $modelClass = ArboryFile::class)
     {
         $this->diskName = $diskName;
         $this->modelClass = $modelClass;
@@ -47,9 +46,8 @@ class ArboryFilesRepository extends AbstractModelsRepository
      */
     public function getDisk()
     {
-        if( !$this->disk )
-        {
-            $this->disk = Storage::disk( $this->diskName );
+        if (! $this->disk) {
+            $this->disk = Storage::disk($this->diskName);
         }
 
         return $this->disk;
@@ -61,38 +59,34 @@ class ArboryFilesRepository extends AbstractModelsRepository
      * @return ArboryFile|null
      * @throws RuntimeException
      */
-    public function createFromUploadedFile( UploadedFile $file, Model $owner )
+    public function createFromUploadedFile(UploadedFile $file, Model $owner)
     {
-        if( !$file->getRealPath() )
-        {
-            throw new RuntimeException( 'Uploaded file does not have real path' );
+        if (! $file->getRealPath()) {
+            throw new RuntimeException('Uploaded file does not have real path');
         }
 
-        if( !$file->getSize() )
-        {
-            throw new RuntimeException( sprintf(
+        if (! $file->getSize()) {
+            throw new RuntimeException(sprintf(
                 'The uploaded file size must be between 1 and %d (see "upload_max_filesize" in "php.ini") bytes',
-                UploadedFile::getMaxFilesize() )
-            );
+                UploadedFile::getMaxFilesize()
+            ));
         }
 
-        $localFileName = $this->getLocalFilenameForUploadedFile( $file );
+        $localFileName = $this->getLocalFilenameForUploadedFile($file);
 
-        if( !$this->getDisk()->put( $localFileName, file_get_contents( $file->getRealPath() ) ) )
-        {
-            throw new RuntimeException( 'Could not store local file "' . $localFileName . '"' );
+        if (! $this->getDisk()->put($localFileName, file_get_contents($file->getRealPath()))) {
+            throw new RuntimeException('Could not store local file "'.$localFileName.'"');
         }
 
         $modelClass = $this->modelClass;
         $arboryFile = new $modelClass(
-            $this->getCreateAttributesForCreatedFile( $file, $localFileName, $owner ),
+            $this->getCreateAttributesForCreatedFile($file, $localFileName, $owner),
             $localFileName
         );
 
         /* @var $arboryFile ArboryFile */
-        if( !$arboryFile->save() )
-        {
-            throw new RuntimeException( 'Could not save "' . $modelClass . '" to database' );
+        if (! $arboryFile->save()) {
+            throw new RuntimeException('Could not save "'.$modelClass.'" to database');
         }
 
         return $arboryFile;
@@ -105,24 +99,22 @@ class ArboryFilesRepository extends AbstractModelsRepository
      * @return ArboryFile|null
      * @throws RuntimeException
      */
-    public function createFromBlob( $fileName, $fileContents, Model $owner )
+    public function createFromBlob($fileName, $fileContents, Model $owner)
     {
-        $localFileName = $this->getLocalFilenameForBlob( $fileContents );
+        $localFileName = $this->getLocalFilenameForBlob($fileContents);
 
-        if( !$this->getDisk()->put( $localFileName, $fileContents ) )
-        {
-            throw new RuntimeException( 'Could not store local file "' . $localFileName . '"' );
+        if (! $this->getDisk()->put($localFileName, $fileContents)) {
+            throw new RuntimeException('Could not store local file "'.$localFileName.'"');
         }
 
         $modelClass = $this->modelClass;
         $arboryFile = new $modelClass(
-            $this->getCreateAttributesForBlob( $fileName, $fileContents, $localFileName, $owner )
+            $this->getCreateAttributesForBlob($fileName, $fileContents, $localFileName, $owner)
         );
 
         /* @var $arboryFile ArboryFile */
-        if( !$arboryFile->save() )
-        {
-            throw new RuntimeException( 'Could not save "' . $modelClass . '" to database' );
+        if (! $arboryFile->save()) {
+            throw new RuntimeException('Could not save "'.$modelClass.'" to database');
         }
 
         return $arboryFile;
@@ -132,18 +124,16 @@ class ArboryFilesRepository extends AbstractModelsRepository
      * @param string $fileName
      * @return string
      */
-    protected function getFreeFileName( $fileName )
+    protected function getFreeFileName($fileName)
     {
         $uploadsDisk = $this->getDisk();
 
-        while( $uploadsDisk->exists( $fileName ) )
-        {
-            $fileNameParts = pathinfo( $fileName );
-            $fileName = $fileNameParts['filename'] . '-' . str_random( 10 );
+        while ($uploadsDisk->exists($fileName)) {
+            $fileNameParts = pathinfo($fileName);
+            $fileName = $fileNameParts['filename'].'-'.str_random(10);
 
-            if (( $extension = array_get( $fileNameParts, 'extension', false ) ))
-            {
-                $fileName .= '.' . $extension;
+            if (($extension = array_get($fileNameParts, 'extension', false))) {
+                $fileName .= '.'.$extension;
             }
         }
 
@@ -155,18 +145,18 @@ class ArboryFilesRepository extends AbstractModelsRepository
      * @param string $localFileName
      * @return array
      */
-    protected function getCreateAttributesForCreatedFile( UploadedFile $file, $localFileName, Model $owner )
+    protected function getCreateAttributesForCreatedFile(UploadedFile $file, $localFileName, Model $owner)
     {
         $realPath = $file->getRealPath();
 
         return [
             'disk' => $this->diskName,
-            'sha1' => sha1_file( $realPath ),
+            'sha1' => sha1_file($realPath),
             'original_name' => $file->getClientOriginalName(),
             'local_name' => $localFileName,
             'size' => $file->getClientSize(),
             'owner_id' => $owner->getKey(),
-            'owner_type' => $owner->getMorphClass()
+            'owner_type' => $owner->getMorphClass(),
         ];
     }
 
@@ -176,16 +166,16 @@ class ArboryFilesRepository extends AbstractModelsRepository
      * @param string $localFileName
      * @return array
      */
-    protected function getCreateAttributesForBlob( $originalFileName, $fileContents, $localFileName, Model $owner )
+    protected function getCreateAttributesForBlob($originalFileName, $fileContents, $localFileName, Model $owner)
     {
         return [
             'disk' => $this->diskName,
-            'sha1' => sha1( $fileContents ),
+            'sha1' => sha1($fileContents),
             'original_name' => $originalFileName,
             'local_name' => $localFileName,
-            'size' => strlen( $fileContents ),
+            'size' => strlen($fileContents),
             'owner_id' => $owner->getKey(),
-            'owner_type' => $owner->getMorphClass()
+            'owner_type' => $owner->getMorphClass(),
         ];
     }
 
@@ -193,30 +183,30 @@ class ArboryFilesRepository extends AbstractModelsRepository
      * @param $fileContents
      * @return string
      */
-    protected function getLocalFilenameForBlob( $fileContents ): string
+    protected function getLocalFilenameForBlob($fileContents): string
     {
-        return $this->getFreeFileName( sha1( $fileContents ) );
+        return $this->getFreeFileName(sha1($fileContents));
     }
 
     /**
      * @param UploadedFile $file
      * @return string
      */
-    protected function getLocalFilenameForUploadedFile( UploadedFile $file ): string
+    protected function getLocalFilenameForUploadedFile(UploadedFile $file): string
     {
-        return $this->getFreeFileName( sha1_file( $file->getRealPath() ) . '.' . $file->getClientOriginalExtension() );
+        return $this->getFreeFileName(sha1_file($file->getRealPath()).'.'.$file->getClientOriginalExtension());
     }
 
     /**
      * @param string $arboryFileId
      * @return int
      */
-    public function delete( $arboryFileId )
+    public function delete($arboryFileId)
     {
-        $arboryFile = $this->find( $arboryFileId );
+        $arboryFile = $this->find($arboryFileId);
 
-        $this->getDisk()->delete( $arboryFile->getLocalName() );
+        $this->getDisk()->delete($arboryFile->getLocalName());
 
-        return parent::delete( $arboryFileId );
+        return parent::delete($arboryFileId);
     }
 }

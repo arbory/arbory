@@ -1,12 +1,13 @@
 [![Packagist](https://img.shields.io/packagist/v/arbory/arbory.svg)](https://packagist.org/packages/arbory/arbory)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arbory/arbory/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arbory/arbory/?branch=master)
 [![Build Status](https://travis-ci.org/arbory/arbory.svg?branch=master)](https://travis-ci.org/arbory/arbory)
+[![StyleCI](https://github.styleci.io/repos/44740139/shield?branch=master&style=flat)](https://github.styleci.io/repos/44740139)
 [![Coverage Status](https://coveralls.io/repos/github/arbory/arbory/badge.svg?branch=master)](https://coveralls.io/github/arbory/arbory?branch=master)
 
 ## Installation
 #### Create new Laravel project
 ```bash
-composer create-project --prefer-dist laravel/laravel my-project "5.6.*"
+composer create-project --prefer-dist laravel/laravel=5.6 my-project
 ```
 
 #### Go to project root
@@ -16,7 +17,7 @@ cd my-project
 
 #### Require Arbory package
 ```bash
-composer require arbory/arbory "0.2.*"
+composer require arbory/arbory
 ```
 
 #### Fill in database info
@@ -27,6 +28,11 @@ vi .env
 #### Run installer and follow instructions
 ```bash
 php artisan arbory:install
+```
+
+#### That's it!
+```bash
+Visit http://localhost/admin
 ```
 
 ## Usage
@@ -177,29 +183,15 @@ return [
 ]
 ```
 
-## Generators
-
-### Quick generator
+## Generate admin User 
 
 ```bash
-php artisan arbory:generate {type?} {--T|table=}
-```
-
-Generators available for
-
-* Model
-* Page
-* Controller
-* View
-* AdminController - appends a new route to `routes/admin.php`
-
-### Verbose Generator
-
-```bash
-php artisan arbory:generator
+php artisan arbory:create-user 
 ```
 
 ## Coding style
+
+Use PSR-1/2
 
 ### JS
 
@@ -223,6 +215,7 @@ or project's `package.json` file (`jscsConfig` section).
 * JS - [https://github.com/airbnb/javascript](https://github.com/airbnb/javascript)
 * CSS / SASS - [https://github.com/airbnb/css](https://github.com/airbnb/css)
 
+
 ## Development
 
-See [TODO.md](TODO.md) for more information.
+(Roadmap in progress)

@@ -1,7 +1,8 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Layout;
+
+use Arbory\Base\Admin\Layout\Grid\Column;
 
 class GridLayout extends AbstractLayout implements LayoutInterface
 {
@@ -10,17 +11,20 @@ class GridLayout extends AbstractLayout implements LayoutInterface
      */
     protected $grid;
 
-
     /**
      * @var int
      */
     protected $width = 12;
 
     /**
-     * @var Body
+     * @var array
+     */
+    protected $breakpoints = [];
+
+    /**
+     * @var Column
      */
     protected $column;
-
 
     /**
      * GridTemplate constructor.
@@ -37,6 +41,10 @@ class GridLayout extends AbstractLayout implements LayoutInterface
     public function build()
     {
         $this->column->size($this->getWidth());
+
+        if ($this->breakpoints) {
+            $this->column->breakpoints($this->breakpoints);
+        }
     }
 
     /**
@@ -54,13 +62,19 @@ class GridLayout extends AbstractLayout implements LayoutInterface
      * @param      $content
      * @param null $breakpoint
      *
-     * @return $this
+     * @return Column
      */
-    public function addColumn($size, $content, $breakpoint = null)
+    public function addColumn($size, $content, $breakpoint = null): Column
     {
-        $this->grid->column($size, $content, $breakpoint);
+        return $this->grid->column($size, $content, $breakpoint);
+    }
 
-        return $this;
+    /**
+     * @return Column
+     */
+    public function getColumn(): Column
+    {
+        return $this->column;
     }
 
     /**
@@ -72,13 +86,38 @@ class GridLayout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param int $width
+     * @param int        $width
+     * @param array|null $breakpoints
      *
      * @return GridLayout
      */
-    public function setWidth(int $width): GridLayout
+    public function setWidth(int $width, ?array $breakpoints = null): self
     {
         $this->width = $width;
+        $this->breakpoints = array_merge(
+            [Column::BREAKPOINT_DEFAULT => $width],
+            array_wrap($breakpoints)
+        );
+
+        return $this;
+    }
+
+    /**
+     * @return null|array
+     */
+    public function getBreakpoints(): ?array
+    {
+        return $this->breakpoints;
+    }
+
+    /**
+     * @param array $breakpoints
+     *
+     * @return GridLayout
+     */
+    public function setBreakpoints(array $breakpoints): self
+    {
+        $this->breakpoints = $breakpoints;
 
         return $this;
     }

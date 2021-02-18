@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateLinksTable extends Migration
 {
@@ -10,14 +10,13 @@ class CreateLinksTable extends Migration
      */
     public function up()
     {
-        Schema::create( 'links', function( Blueprint $table )
-        {
-            $table->increments( 'id' );
-            $table->string( 'title' );
-            $table->string( 'href' );
-            $table->boolean( 'new_tab' );
+        Schema::create('links', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->string('href');
+            $table->boolean('new_tab');
             $table->timestamps();
-        } );
+        });
     }
 
     /**
@@ -25,6 +24,6 @@ class CreateLinksTable extends Migration
      */
     public function down()
     {
-        Schema::drop( 'links' );
+        Schema::drop('links');
     }
 }

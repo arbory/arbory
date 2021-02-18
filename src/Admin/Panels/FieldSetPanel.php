@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Arbory\Base\Admin\Panels;
-
 
 use Arbory\Base\Admin\Form\FieldSet;
 
@@ -13,7 +11,7 @@ class FieldSetPanel extends Panel
      */
     protected $fieldSet;
 
-    public function fields():FieldSet
+    public function fields(): FieldSet
     {
         return $this->fieldSet;
     }

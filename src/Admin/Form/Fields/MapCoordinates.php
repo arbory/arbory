@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
-use Arbory\Base\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
 use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasNestedFieldSet;
+use Arbory\Base\Admin\Form\Fields\Renderer\MapCoordinatesFieldRenderer;
 
-class MapCoordinates extends AbstractField implements NestedFieldInterface,RenderOptionsInterface
+class MapCoordinates extends AbstractField implements NestedFieldInterface, RenderOptionsInterface
 {
     use HasNestedFieldSet;
     use HasRenderOptions;
@@ -31,13 +31,13 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface,Rende
 
     protected $style = 'nested';
 
-    public function __construct( string $name )
+    public function __construct(string $name)
     {
         parent::__construct($name);
 
-        $this->zoom = config( 'arbory.fields.map_coordinates.zoom' );
-        $this->latitude = config( 'arbory.fields.map_coordinates.coordinates.lat' );
-        $this->longitude = config( 'arbory.fields.map_coordinates.coordinates.lng' );
+        $this->zoom = config('arbory.fields.map_coordinates.zoom');
+        $this->latitude = config('arbory.fields.map_coordinates.coordinates.lat');
+        $this->longitude = config('arbory.fields.map_coordinates.coordinates.lng');
     }
 
     /**
@@ -48,7 +48,7 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface,Rende
         return [
             'data-zoom' => $this->zoom,
             'data-latitude' => $this->latitude,
-            'data-longitude' => $this->longitude
+            'data-longitude' => $this->longitude,
         ];
     }
 
@@ -56,7 +56,7 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface,Rende
      * @param int $zoom
      * @return self
      */
-    public function zoom( int $zoom )
+    public function zoom(int $zoom)
     {
         $this->zoom = $zoom;
 
@@ -67,7 +67,7 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface,Rende
      * @param float $latitude
      * @return self
      */
-    public function latitude( float $latitude )
+    public function latitude(float $latitude)
     {
         $this->latitude = $latitude;
 
@@ -78,33 +78,32 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface,Rende
      * @param float $longitude
      * @return self
      */
-    public function longitude( float $longitude )
+    public function longitude(float $longitude)
     {
         $this->longitude = $longitude;
 
         return $this;
     }
 
-    public function configureFieldSet( FieldSet $fieldSet )
+    public function configureFieldSet(FieldSet $fieldSet)
     {
         $namespace = $fieldSet->getNamespace();
 
-        $namespace = substr($namespace,  0, strrpos($namespace, '.') );
+        $namespace = substr($namespace, 0, strrpos($namespace, '.'));
         $fieldSet = new FieldSet($fieldSet->getModel(), $namespace);
 
         $fieldSet->hidden($this->getName())
-                 ->addAttributes($this->getData())
-                 ->addClass('coordinates-input')
-                 ->setDisabled($this->isDisabled())
-                 ->setInteractive($this->isInteractive());
-        $fieldSet->text("search")
-                 ->setName('')
-                 ->setLabel('')
-                 ->addClass('search-input')
-                 ->setDisabled($this->isDisabled())
-                 ->setInteractive($this->isInteractive());
+            ->addAttributes($this->getData())
+            ->addClass('coordinates-input')
+            ->setDisabled($this->isDisabled())
+            ->setInteractive($this->isInteractive());
+        $fieldSet->text('search')
+            ->setName('')
+            ->setLabel('')
+            ->addClass('search-input')
+            ->setDisabled($this->isDisabled())
+            ->setInteractive($this->isInteractive());
 
         return $fieldSet;
     }
-
 }

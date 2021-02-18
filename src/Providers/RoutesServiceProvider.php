@@ -2,22 +2,22 @@
 
 namespace Arbory\Base\Providers;
 
+use Illuminate\Routing\Router;
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Http\Middleware\ArboryAdminAuthMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminGuestMiddleware;
+use Arbory\Base\Http\Middleware\ArboryAdminInRoleMiddleware;
+use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminHasAccessMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminHasAllowedIpMiddleware;
-use Arbory\Base\Http\Middleware\ArboryAdminInRoleMiddleware;
 use Arbory\Base\Http\Middleware\ArboryAdminModuleAccessMiddleware;
-use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Routing\Router;
-use Illuminate\Support\ServiceProvider;
 
 class RoutesServiceProvider extends ServiceProvider
 {
     /**
-     * @var Filesystem $filesystem
+     * @var Filesystem
      */
     protected $filesystem;
 
@@ -42,7 +42,7 @@ class RoutesServiceProvider extends ServiceProvider
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            ArboryAdminHasAllowedIpMiddleware::class
+            ArboryAdminHasAllowedIpMiddleware::class,
         ]);
 
         $router->aliasMiddleware('arbory.admin_auth', ArboryAdminAuthMiddleware::class);
@@ -67,9 +67,9 @@ class RoutesServiceProvider extends ServiceProvider
             'as' => 'admin.',
             'middleware' => 'admin',
             'namespace' => '\Arbory\Base\Http\Controllers',
-            'prefix' => config('arbory.uri')
+            'prefix' => config('arbory.uri'),
         ], function () {
-            include __DIR__ . '/../../routes/admin.php';
+            include __DIR__.'/../../routes/admin.php';
         });
     }
 
@@ -77,7 +77,7 @@ class RoutesServiceProvider extends ServiceProvider
     {
         $adminRoutes = base_path('routes/admin.php');
 
-        if (!$this->filesystem->exists($adminRoutes)) {
+        if (! $this->filesystem->exists($adminRoutes)) {
             return;
         }
 
@@ -85,7 +85,7 @@ class RoutesServiceProvider extends ServiceProvider
             'as' => 'admin.',
             'middleware' => ['admin', 'arbory.admin_auth', 'arbory.admin_module_access'],
             'namespace' => '',
-            'prefix' => config('arbory.uri')
+            'prefix' => config('arbory.uri'),
         ], function () use ($adminRoutes) {
             include $adminRoutes;
         });

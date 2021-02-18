@@ -2,10 +2,11 @@
 
 namespace Arbory\Base\Services;
 
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Admin\Form\FieldSetFactory;
+use ReflectionClass;
 use Illuminate\Support\Collection;
+use Illuminate\Container\Container;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
 
 class FieldTypeRegistry
 {
@@ -18,14 +19,23 @@ class FieldTypeRegistry
      * @var
      */
     protected $reservedTypes = [];
+    /**
+     * @var Container
+     */
+    protected $app;
 
     /**
      * FieldTypeRegistry constructor.
+     *
+     * @param Container $app
+     *
+     * @throws \ReflectionException
      */
-    public function __construct()
+    public function __construct(Container $app)
     {
         $this->fieldTypes = new Collection();
         $this->reservedTypes = $this->getReservedMethods(FieldSet::class);
+        $this->app = $app;
     }
 
     /**
@@ -35,8 +45,9 @@ class FieldTypeRegistry
      */
     public function register(string $type, string $class): self
     {
-        if(in_array(strtolower($type), $this->reservedTypes, true)) {
-            throw new \InvalidArgumentException("The name '{$type}' is already being used by FieldSet class for a method");
+        if (in_array(strtolower($type), $this->reservedTypes, true)) {
+            $message = 'The name '.$type.' is already being used by FieldSet class for a method';
+            throw new \InvalidArgumentException($message);
         }
 
         $this->fieldTypes->put($type, $class);
@@ -72,7 +83,7 @@ class FieldTypeRegistry
     }
 
     /**
-     * Resolves a field class instance
+     * Resolves a field class instance.
      *
      * @param string $type
      * @param array $parameters
@@ -83,15 +94,15 @@ class FieldTypeRegistry
     {
         $fieldClass = $this->findByType($type);
 
-        if(!$fieldClass || !class_exists($fieldClass)) {
+        if (! $fieldClass || ! class_exists($fieldClass)) {
             throw new \InvalidArgumentException("Could not resolve a field for a type '{$type}'");
         }
 
-        return new $fieldClass(...$parameters);
+        return $this->app->make($fieldClass, $this->bindParametersByIndex($fieldClass, $parameters));
     }
 
     /**
-     * Finds any accessible functions which are defined in class
+     * Finds any accessible functions which are defined in class.
      *
      * @param mixed $class
      *
@@ -100,16 +111,42 @@ class FieldTypeRegistry
      */
     protected function getReservedMethods($class)
     {
-        $reflection = new \ReflectionClass($class);
+        $reflection = new ReflectionClass($class);
 
         $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
 
         $reservedMethods = [];
 
-        foreach($methods as $method) {
+        foreach ($methods as $method) {
             $reservedMethods[] = strtolower($method->getName());
         }
 
         return $reservedMethods;
+    }
+
+    /**
+     * Builds an dictionary of parameters by name for an class from index based parameter list.
+     *
+     * @param string $class
+     * @param array  $parameters
+     *
+     * @return array
+     * @throws \ReflectionException
+     */
+    protected function bindParametersByIndex(string $class, array $parameters)
+    {
+        $reflection = new ReflectionClass($class);
+        $constructor = $reflection->getConstructor();
+        $reflectionParameters = $constructor->getParameters();
+
+        $out = [];
+
+        foreach ($parameters as $key => $parameter) {
+            $reflectionParameter = $reflectionParameters[$key];
+
+            $out[$reflectionParameter->getName()] = $parameter;
+        }
+
+        return $out;
     }
 }
