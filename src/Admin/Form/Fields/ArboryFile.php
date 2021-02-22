@@ -68,7 +68,7 @@ class ArboryFile extends ControlField
     }
 
     /**
-     * @return void
+     * @return void|int
      */
     protected function deleteCurrentFileIfExists()
     {
@@ -81,8 +81,28 @@ class ArboryFile extends ControlField
         $currentFile = $this->getValue();
 
         if ($currentFile) {
-            $arboryFilesRepository->delete($currentFile->getKey());
+            return $arboryFilesRepository->delete($currentFile->getKey());
         }
+    }
+
+    /**
+     * @param null|int $fileWasDeleted
+     * @return void
+     */
+    protected function removeRelationKey($fileWasDeleted)
+    {
+        if (!$fileWasDeleted) {
+            return;
+        }
+
+        $model = $this->getModel();
+        /**
+         * @var BelongsTo
+         */
+        $relation = $model->{$this->getName()}();
+
+        $model->{$relation->getForeignKeyName()} = null;
+        $model->save();
     }
 
     /**
@@ -106,7 +126,8 @@ class ArboryFile extends ControlField
         $uploadedFile = $request->file($this->getNameSpacedName());
 
         if (Arr::get($input, 'remove')) {
-            $this->deleteCurrentFileIfExists();
+            $fileWasDeleted = $this->deleteCurrentFileIfExists();
+            $this->removeRelationKey($fileWasDeleted);
         }
 
         if ($uploadedFile) {
