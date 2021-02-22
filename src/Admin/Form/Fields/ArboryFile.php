@@ -91,7 +91,7 @@ class ArboryFile extends ControlField
      */
     protected function removeRelationKey($fileWasDeleted)
     {
-        if (!$fileWasDeleted) {
+        if (! $fileWasDeleted) {
             return;
         }
 
