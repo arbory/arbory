@@ -68,7 +68,7 @@ class ArboryFile extends ControlField
     }
 
     /**
-     * @return void|int
+     * @return void
      */
     protected function deleteCurrentFileIfExists()
     {
@@ -80,7 +80,7 @@ class ArboryFile extends ControlField
 
         $currentFile = $this->getValue();
 
-        if (!$currentFile) {
+        if (! $currentFile) {
             return;
         }
 
