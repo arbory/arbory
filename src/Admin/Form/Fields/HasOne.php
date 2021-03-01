@@ -84,7 +84,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
 
             $this->getModel()->fill([
                 $relation->getMorphType() => get_class($relatedModel),
-                $relation->getForeignKey() => $relatedModel->{$relatedModel->getKeyName()},
+                $relation->getForeignKeyName() => $relatedModel->{$relatedModel->getKeyName()},
             ])->save();
         } elseif ($relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo) {
             $relatedModel->save();
@@ -122,7 +122,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
             }
 
             $model->setAttribute($relation->getMorphType(), $value);
-            $model->setAttribute($relation->getForeignKey(), 0);
+            $model->setAttribute($relation->getForeignKeyName(), 0);
 
             $relatedModel = $model->{$this->getName()}()->getRelated();
         } else {
