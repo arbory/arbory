@@ -80,9 +80,28 @@ class ArboryFile extends ControlField
 
         $currentFile = $this->getValue();
 
-        if ($currentFile) {
-            $arboryFilesRepository->delete($currentFile->getKey());
+        if (! $currentFile) {
+            return;
         }
+
+        if ($arboryFilesRepository->delete($currentFile->getKey())) {
+            $this->removeRelationKey();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function removeRelationKey()
+    {
+        $model = $this->getModel();
+        /**
+         * @var BelongsTo
+         */
+        $relation = $model->{$this->getName()}();
+
+        $model->{$relation->getForeignKeyName()} = null;
+        $model->save();
     }
 
     /**
