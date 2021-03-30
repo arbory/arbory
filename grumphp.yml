@@ -6,14 +6,12 @@ grumphp:
             - composer
             - git_blacklist
             - git_commit_message
-            - securitychecker
             - phpcs
             - phpmd
             - phpmnd
             - phpstan
     tasks:
       composer:
-      securitychecker:
       git_commit_message:
       git_blacklist:
           keywords:
