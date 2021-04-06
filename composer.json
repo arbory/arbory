@@ -28,12 +28,12 @@
         "roboc/laravel-glide": "^1.1.0",
         "spatie/laravel-sluggable": "^2.1.0",
         "maatwebsite/excel": "^3.0.5",
-        "unisharp/laravel-filemanager": "^1.8.5"
+        "unisharp/laravel-filemanager": "^2.0"
     },
     "require-dev" : {
         "satooshi/php-coveralls": "^1.0",
         "phpunit/phpunit" : "^6",
-        "mockery/mockery": "dev-master",
+        "mockery/mockery": "^1.3",
         "diablomedia/phpunit-pretty-printer": "^2"
     },
     "autoload": {
