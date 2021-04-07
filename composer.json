@@ -68,6 +68,7 @@
             },
             "dont-discover": [
                 "waavi/translation",
+                "unisharp/laravel-filemanager",
                 "cartalyst/sentinel"
             ]
         },
