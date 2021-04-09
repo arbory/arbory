@@ -35,6 +35,9 @@ return [
         'sprite_icon' => [
             'path' => base_path('resources/assets/svg/icons.svg'),
         ],
+        'richtext' => [
+            'allowed_tags' => null // either null to allow all or array of allowed tags
+        ],
     ],
 
     'field_types' => [
