@@ -28,7 +28,7 @@ class Richtext extends Textarea
     /**
      * @var null|array
      */
-    protected $allowed_tags = null;
+    protected $allowedTags = null;
 
 
     public function __construct(string $name)
@@ -51,8 +51,8 @@ class Richtext extends Textarea
             ? $request->input($this->getNameSpacedName())
             : null;
 
-        if(is_string($value) && is_array($this->allowed_tags)) {
-            $value = strip_tags($value, $this->allowed_tags);
+        if(is_string($value) && is_array($this->allowedTags)) {
+            $value = strip_tags($value, $this->allowedTags);
         }
 
         $this->getModel()->setAttribute($this->getName(), $value);
