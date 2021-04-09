@@ -35,7 +35,7 @@ class Richtext extends Textarea
     {
         parent::__construct($name);
 
-        $this->allowed_tags = config('arbory.fields.richtext.allowed_tags');
+        $this->allowedTags = config('arbory.fields.richtext.allowed_tags');
     }
 
     /**
