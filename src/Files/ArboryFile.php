@@ -8,14 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
- * @property string id
- * @property string original_name
- * @property string disk
- * @property string sha1
- * @property int size
- * @property int|string owner_id
- * @property string owner_class
- * @property string local_name
+ * Class ArboryFile
+ * @package Arbory\Base\Files
+ *
+ * @property string $id
+ * @property string $original_name
+ * @property string $disk
+ * @property string $sha1
+ * @property int $size
+ * @property int|string $owner_id
+ * @property string $owner_class
+ * @property string $local_name
  */
 class ArboryFile extends Model
 {

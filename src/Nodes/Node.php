@@ -11,7 +11,14 @@ use Arbory\Base\Repositories\NodesRepository;
 use Arbory\Base\Support\Activation\HasActivationDates;
 
 /**
- * Class Node.
+ * Class Node
+ * @package Arbory\Base\Nodes
+ *
+ * @property string $name
+ * @property string $id
+ * @property string $content_type
+ * @property string $slug
+ * @property bool $active
  */
 class Node extends Model
 {
