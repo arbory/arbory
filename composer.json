@@ -44,8 +44,11 @@
         "orchestra/testbench-core": "4.10.0"
     },
     "autoload": {
-        "psr-4": { "Arbory\\Base\\": "src" },
-        "classmap": ["database/seeds/"]
+        "psr-4": {
+            "Arbory\\Base\\": "src",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
     },
     "extra": {
         "laravel": {

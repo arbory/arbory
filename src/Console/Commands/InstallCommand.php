@@ -3,7 +3,7 @@
 namespace Arbory\Base\Console\Commands;
 
 use Exception;
-use ArboryDatabaseSeeder;
+use Database\Seeders\ArboryDatabaseSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\ConfirmableTrait;
