@@ -14,6 +14,7 @@ use Arbory\Base\Support\Activation\HasActivationDates;
  * Class Node
  * @package Arbory\Base\Nodes
  *
+ * @property Model|null $content
  * @property string $name
  * @property string $id
  * @property string $content_type
