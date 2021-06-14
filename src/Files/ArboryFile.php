@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Files;
 
-use Storage;
-use Alsofronie\Uuid\UuidModelTrait;
+use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -19,8 +19,21 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class ArboryFile extends Model
 {
-    use UuidModelTrait;
+    use Uuid;
 
+    /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * @var string
+     */
+    public $keyType = 'string';
+
+    /**
+     * @var string
+     */
     protected $table = 'files';
 
     /**
