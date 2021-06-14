@@ -124,4 +124,9 @@ return [
         'prefix' => 'admin/filemanager',
         'middleware' => ['admin', 'arbory.admin_auth'],
     ],
+
+    'glide' => [
+        'output_disk_name' => 'public',
+        'presets' => []
+    ]
 ];
