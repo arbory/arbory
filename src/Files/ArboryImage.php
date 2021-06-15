@@ -40,6 +40,6 @@ class ArboryImage extends ArboryFile
 
         $imagePath = $image->save($configuration->getOutputDisk()->path($this->getLocalName()));
 
-        return $configuration->getOutputDisk()->url(File::name($imagePath));
+        return $configuration->getOutputDisk()->url(File::basename($imagePath));
     }
 }
