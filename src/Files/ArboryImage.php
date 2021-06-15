@@ -3,6 +3,7 @@
 namespace Arbory\Base\Files;
 
 use Arbory\Base\Services\ImageModificationConfiguration;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Glide\GlideImage;
 
@@ -37,6 +38,8 @@ class ArboryImage extends ArboryFile
             $image->modify($presetConfiguration);
         }
 
-        return $image->save($configuration->getOutputDisk()->path($this->getLocalName()));
+        $imagePath = $image->save($configuration->getOutputDisk()->path($this->getLocalName()));
+
+        return $configuration->getOutputDisk()->url(File::name($imagePath));
     }
 }

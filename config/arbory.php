@@ -127,6 +127,14 @@ return [
 
     'glide' => [
         'output_disk_name' => 'public',
-        'presets' => []
+        'presets' => [
+            'thumbnail_small' => [
+                'h' => 64,
+                'w' => 64,
+                'q' => 40,
+                'fm' => 'jpg',
+                'fit' => 'crop',
+            ]
+        ]
     ]
 ];
