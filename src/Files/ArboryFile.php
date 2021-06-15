@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
- * Class ArboryFile
- * @package Arbory\Base\Files
+ * Class ArboryFile.
  *
  * @property string $id
  * @property string $original_name
