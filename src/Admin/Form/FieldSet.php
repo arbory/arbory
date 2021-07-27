@@ -204,7 +204,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     {
         $field->setFieldSet($this);
 
-        $parameters = array_filter([$field, $key], fn($item) => ! is_null($item));
+        $parameters = array_filter([$field, $key], fn ($item) => ! is_null($item));
 
         return $this->items->prepend(...$parameters);
     }
