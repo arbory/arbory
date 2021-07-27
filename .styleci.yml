@@ -4,6 +4,8 @@ disabled:
   - alpha_ordered_imports
   - concat_without_spaces
 
+version: 8
+
 finder:
   exclude:
     - "dist"
