@@ -197,15 +197,16 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
     /**
      * @param FieldInterface $field
-     * @param null $key
-     *
-     * @return FieldSet|Collection
+     * @param string|int|null $key
+     * @return Collection
      */
-    public function prepend($field, $key = null)
+    public function prepend(FieldInterface $field, string | int $key = null): Collection
     {
         $field->setFieldSet($this);
 
-        return $this->items->prepend($field, $key);
+        $parameters = array_filter([$field, $key], fn($item) => ! is_null($item));
+
+        return $this->items->prepend(...$parameters);
     }
 
     /**
