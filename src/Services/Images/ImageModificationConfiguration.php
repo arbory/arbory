@@ -1,9 +1,10 @@
 <?php
 
-namespace Arbory\Base\Services;
+namespace Arbory\Base\Services\Images;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use function config;
 
 class ImageModificationConfiguration
 {

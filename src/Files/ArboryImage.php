@@ -2,10 +2,7 @@
 
 namespace Arbory\Base\Files;
 
-use Arbory\Base\Services\ImageModificationConfiguration;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Glide\GlideImage;
+use Arbory\Base\Services\Images\ImageModificationService;
 
 /**
  * Class ArboryImage.
@@ -26,20 +23,17 @@ class ArboryImage extends ArboryFile
      */
     public function getUrl(string $preset = ''): string
     {
-        /** @var ImageModificationConfiguration $configuration */
-        $configuration = app(ImageModificationConfiguration::class);
+        /** @var ImageModificationService $modificationService */
+        $modificationService = app(ImageModificationService::class);
 
-        $pathToFile = Storage::disk($this->getDisk())->path($this->getLocalName());
-        $image = GlideImage::create($pathToFile);
+        return $modificationService->modify($this, $preset);
+    }
 
-        $presetConfiguration = $configuration->getPreset($preset);
-
-        if ($presetConfiguration) {
-            $image->modify($presetConfiguration);
-        }
-
-        $imagePath = $image->save($configuration->getOutputDisk()->path($this->getLocalName()));
-
-        return $configuration->getOutputDisk()->url(File::basename($imagePath));
+    /**
+     * @return string
+     */
+    public function getSourceUrl(): string
+    {
+        return parent::getUrl();
     }
 }
