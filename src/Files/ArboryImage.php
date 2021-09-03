@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Files;
 
+use Arbory\Base\Services\Images\ImageModificationService;
+
 /**
  * Class ArboryImage.
  */
@@ -16,17 +18,22 @@ class ArboryImage extends ArboryFile
     }
 
     /**
-     * @param null $parameters
+     * @param string $preset
      * @return string
      */
-    public function getUrl($parameters = null)
+    public function getUrl(string $preset = ''): string
     {
-        try {
-            return \GlideImage::from($this->getLocalName())
-                ->setSourceDisk($this->disk)
-                ->getImageUrl($parameters);
-        } catch (\Exception $e) {
-            \Log::warning($e);
-        }
+        /** @var ImageModificationService $modificationService */
+        $modificationService = app(ImageModificationService::class);
+
+        return $modificationService->modify($this, $preset);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourceUrl(): string
+    {
+        return parent::getUrl();
     }
 }
