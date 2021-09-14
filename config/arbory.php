@@ -36,8 +36,8 @@ return [
             'path' => base_path('resources/assets/svg/icons.svg'),
         ],
         'richtext' => [
-             // either null to allow all or array of allowed tags
-            'allowed_tags' => null
+            // either null to allow all or array of allowed tags
+            'allowed_tags' => null,
         ],
     ],
 
@@ -131,6 +131,7 @@ return [
 
     'glide' => [
         'output_disk_name' => 'public',
+        'modifiable_image_extensions' => ['jpeg', 'jpg', 'png', 'webp'],
         'presets' => [
             'thumbnail_small' => [
                 'h' => 64,
