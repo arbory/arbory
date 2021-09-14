@@ -36,7 +36,7 @@ return [
             'path' => base_path('resources/assets/svg/icons.svg'),
         ],
         'richtext' => [
-             // either null to allow all or array of allowed tags
+            // either null to allow all or array of allowed tags
             'allowed_tags' => null,
         ],
     ],

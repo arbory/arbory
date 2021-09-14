@@ -31,6 +31,7 @@ class ImageModificationService
 
         if ($presetConfiguration = $this->modificationConfiguration->getPreset($preset)) {
             $localImageName = $this->getModifiedImageName($preset, $imageModel);
+
             return $this->getModifiedImageUrl($imageModel, $presetConfiguration, $localImageName);
         }
 
@@ -54,9 +55,9 @@ class ImageModificationService
     private function getModifiedImageName(string $presetName, ArboryImage $imageModel): string
     {
         $name = File::name($imageModel->getLocalName());
+
         return $name .'/'. $name . '_' . $presetName . '.' . File::extension($imageModel);
     }
-
 
     /**
      * @param  ArboryImage  $imageModel
@@ -72,6 +73,7 @@ class ImageModificationService
         if (! $this->modificationConfiguration->getOutputDisk()->exists($localImageName)) {
             $this->createModifiedImage($imageModel, $presetConfiguration, $localImageName);
         }
+
         return $this->modificationConfiguration->getOutputDisk()->url($localImageName);
     }
 
@@ -84,6 +86,7 @@ class ImageModificationService
     {
         $outputDisk = $this->modificationConfiguration->getOutputDisk();
         $outputDisk->makeDirectory(File::name($imageModel->getLocalName()));
+
         return $outputDisk->path($localImageName);
     }
 
