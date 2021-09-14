@@ -131,6 +131,7 @@ return [
 
     'glide' => [
         'output_disk_name' => 'public',
+        'modifiable_image_extensions' => ['jpeg', 'jpg', 'png', 'webp'],
         'presets' => [
             'thumbnail_small' => [
                 'h' => 64,
