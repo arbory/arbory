@@ -37,7 +37,7 @@ return [
         ],
         'richtext' => [
              // either null to allow all or array of allowed tags
-            'allowed_tags' => null
+            'allowed_tags' => null,
         ],
     ],
 

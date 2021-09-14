@@ -9,7 +9,7 @@ use function config;
 class ImageModificationConfiguration
 {
     /**
-     * @param string $preset
+     * @param  string  $preset
      * @return array|null
      */
     public function getPreset(string $preset = ''): ?array

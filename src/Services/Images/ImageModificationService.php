@@ -15,17 +15,17 @@ class ImageModificationService
     }
 
     /**
-     * @param ArboryImage $imageModel
-     * @param string $preset
+     * @param  ArboryImage  $imageModel
+     * @param  string  $preset
      * @return string
      */
     public function modify(ArboryImage $imageModel, string $preset): string
     {
-        if (!Storage::disk($imageModel->getDisk())->exists($imageModel->getLocalName())) {
+        if (! Storage::disk($imageModel->getDisk())->exists($imageModel->getLocalName())) {
             return '';
         }
 
-        if (!$this->isModifiable($imageModel)) {
+        if (! $this->isModifiable($imageModel)) {
             return $imageModel->getSourceUrl();
         }
 
@@ -38,7 +38,7 @@ class ImageModificationService
     }
 
     /**
-     * @param ArboryImage $image
+     * @param  ArboryImage  $image
      * @return bool
      */
     private function isModifiable(ArboryImage $image): bool
@@ -47,8 +47,8 @@ class ImageModificationService
     }
 
     /**
-     * @param string $presetName
-     * @param ArboryImage $imageModel
+     * @param  string  $presetName
+     * @param  ArboryImage  $imageModel
      * @return string
      */
     private function getModifiedImageName(string $presetName, ArboryImage $imageModel): string
@@ -59,9 +59,9 @@ class ImageModificationService
 
 
     /**
-     * @param ArboryImage $imageModel
-     * @param array $presetConfiguration
-     * @param string $localImageName
+     * @param  ArboryImage  $imageModel
+     * @param  array  $presetConfiguration
+     * @param  string  $localImageName
      * @return string
      */
     public function getModifiedImageUrl(
@@ -69,15 +69,15 @@ class ImageModificationService
         array $presetConfiguration,
         string $localImageName
     ): string {
-        if (!$this->modificationConfiguration->getOutputDisk()->exists($localImageName)) {
+        if (! $this->modificationConfiguration->getOutputDisk()->exists($localImageName)) {
             $this->createModifiedImage($imageModel, $presetConfiguration, $localImageName);
         }
         return $this->modificationConfiguration->getOutputDisk()->url($localImageName);
     }
 
     /**
-     * @param ArboryImage $imageModel
-     * @param string $localImageName
+     * @param  ArboryImage  $imageModel
+     * @param  string  $localImageName
      * @return string
      */
     private function getModifiedImageOutputPath(ArboryImage $imageModel, string $localImageName): string
@@ -88,9 +88,9 @@ class ImageModificationService
     }
 
     /**
-     * @param ArboryImage $imageModel
-     * @param array $presetConfiguration
-     * @param string $localImageName
+     * @param  ArboryImage  $imageModel
+     * @param  array  $presetConfiguration
+     * @param  string  $localImageName
      */
     private function createModifiedImage(ArboryImage $imageModel, array $presetConfiguration, string $localImageName)
     {
