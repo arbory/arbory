@@ -180,7 +180,7 @@ class TranslationsController extends Controller
                 'item' => $item,
                 'translations' => $translations,
                 'back_to_index_url' => route('admin.translations.index', $this->getContext()),
-                'update_url' => route('admin.translations.update', $this->getContext()),
+                'update_url' => route('admin.translations.update.locales', $this->getContext()),
             ]
         );
     }
@@ -255,7 +255,7 @@ class TranslationsController extends Controller
     private function getEditUrl($item, LengthAwarePaginator $paginator)
     {
         return route(
-            'admin.translations.edit',
+            'admin.translations.edit.locales',
             [
                 'namespace' => $item->namespace,
                 'group' => str_replace('/', '.', $item->group),
