@@ -17,7 +17,12 @@ class FileManagerServiceProvider extends ServiceProvider
     {
         $this->registerServiceProviders();
         $this->registerAliases();
-        $this->publishAssets();
+
+
+        $langSourcePath = base_path('vendor/unisharp/laravel-filemanager/src/lang');
+        $langDestPath = base_path('resources/lang/vendor/laravel-filemanager');
+
+        $this->publishes([$langSourcePath => $langDestPath], 'lfm_lang');
 
         if (config('arbory.lfm.register_routes')) {
             Route::group([
@@ -44,30 +49,5 @@ class FileManagerServiceProvider extends ServiceProvider
     protected function registerAliases(): void
     {
         AliasLoader::getInstance()->alias('Image', \Intervention\Image\Facades\Image::class);
-    }
-
-    /**
-     * @return void
-     */
-    protected function publishAssets(): void
-    {
-        $lfmVendorPath = __DIR__.'/../../../../unisharp/laravel-filemanager/';
-        $fileManagerFileDest = base_path('resources/lang/vendor/laravel-filemanager');
-
-        $this->publishes([
-            $lfmVendorPath.'src/lang' => $fileManagerFileDest,
-        ], 'file_manager');
-
-        $this->publishes([
-            __DIR__.'/../../config/lfm.php' => config_path('lfm.php'),
-        ], 'file_manager');
-
-        $this->loadTranslationsFrom($lfmVendorPath.'/lang', 'laravel-filemanager');
-        $this->loadViewsFrom(__DIR__.'/../../resources/views/lfm/', 'laravel-filemanager');
-
-        // Add fallback to original LFM views for other views which are not extended
-        $this->app['view']->addNamespace('laravel-filemanager', [
-            $lfmVendorPath.'src/views',
-        ]);
     }
 }
