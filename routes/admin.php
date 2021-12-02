@@ -16,12 +16,12 @@ Route::group(['middleware' => 'arbory.admin_auth'], function () {
         Admin::modules()->register(\Arbory\Base\Http\Controllers\Admin\LanguageController::class);
 
         Route::get('translations/edit/{namespace}/{group}/{item}', [
-            'as' => 'translations.edit',
+            'as' => 'translations.edit.locales',
             'uses' => 'Admin\TranslationsController@edit',
         ]);
 
         Route::post('translations/update', [
-            'as' => 'translations.update',
+            'as' => 'translations.update.locales',
             'uses' => 'Admin\TranslationsController@store',
         ]);
 
