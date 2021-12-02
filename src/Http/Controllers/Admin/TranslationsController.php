@@ -44,8 +44,8 @@ class TranslationsController extends Controller
     /** @noinspection PhpMissingParentConstructorInspection */
 
     /**
-     * @param TranslationRepository $translationRepository
-     * @param LanguageRepository $languagesRepository
+     * @param  TranslationRepository  $translationRepository
+     * @param  LanguageRepository  $languagesRepository
      */
     public function __construct(
         TranslationRepository $translationRepository,
@@ -56,7 +56,7 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Factory|View
      */
     public function index(Request $request)
@@ -128,10 +128,10 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param string $namespace
-     * @param string $group
-     * @param string $item
+     * @param  Request  $request
+     * @param  string  $namespace
+     * @param  string  $group
+     * @param  string  $item
      * @return View
      */
     public function edit(Request $request, $namespace, $group, $item)
@@ -186,7 +186,7 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param TranslationStoreRequest $request
+     * @param  TranslationStoreRequest  $request
      * @return RedirectResponse|Redirector
      */
     public function store(TranslationStoreRequest $request)
@@ -236,7 +236,7 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param string $editTitle
+     * @param  string  $editTitle
      * @return Breadcrumbs
      */
     protected function getEditBreadcrumbs(string $editTitle): Breadcrumbs
@@ -248,8 +248,8 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param \stdClass $item
-     * @param LengthAwarePaginator $paginator
+     * @param  \stdClass  $item
+     * @param  LengthAwarePaginator  $paginator
      * @return string
      */
     private function getEditUrl($item, LengthAwarePaginator $paginator)
@@ -267,7 +267,7 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param Builder $translationsQueryBuilder
+     * @param  Builder  $translationsQueryBuilder
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     private function getPaginatedItems(Builder $translationsQueryBuilder)
