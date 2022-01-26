@@ -63,6 +63,7 @@
                 "Arbory\\Base\\Providers\\FormBuilderServiceProvider",
                 "Arbory\\Base\\Providers\\FileManagerServiceProvider",
                 "Arbory\\Base\\Providers\\RoutesServiceProvider",
+                "Arbory\\Base\\Providers\\RedirectsServiceProvider",
                 "Arbory\\Base\\Providers\\LayoutServiceProvider",
                 "Arbory\\Base\\Providers\\ValidationRulesServiceProvider",
                 "Arbory\\Base\\Providers\\ConstructorServiceProvider",
