@@ -7,7 +7,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Http\Middleware\ArboryRouteRedirectMiddleware;
 
-class RoutesServiceProvider extends ServiceProvider
+class RedirectsServiceProvider extends ServiceProvider
 {
     public function boot(Router $router)
     {
