@@ -1,42 +1,40 @@
 {
-  "_args": [
-    [
-      "ckeditor@4.12.1",
-      "/Users/miks/code/arbory"
-    ]
-  ],
-  "_from": "ckeditor@4.12.1",
-  "_id": "ckeditor@4.12.1",
+  "_from": "ckeditor4@^4.15.1",
+  "_id": "ckeditor4@4.17.2",
   "_inBundle": false,
-  "_integrity": "sha512-pH2Su4oi0D4iN/3U8nUcwI7/lXHoOJi0aiN8e2zxnm4Ow5kq8eZP2ZGmpYyuqRyKZ2tHaU8+OyYi7laXcjiq9Q==",
-  "_location": "/ckeditor",
+  "_integrity": "sha512-YgBaKNJbWvYbgTNhKDLTjsqCLBNwzDbN5OhsMm+I/mtDCuO/Nu6S/jAvlwHozy12uFPMCeOM7n4rGZ4gEJgOgg==",
+  "_location": "/ckeditor4",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "ckeditor@4.12.1",
-    "name": "ckeditor",
-    "escapedName": "ckeditor",
-    "rawSpec": "4.12.1",
+    "raw": "ckeditor4@^4.15.1",
+    "name": "ckeditor4",
+    "escapedName": "ckeditor4",
+    "rawSpec": "^4.15.1",
     "saveSpec": null,
-    "fetchSpec": "4.12.1"
+    "fetchSpec": "^4.15.1"
   },
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/ckeditor/-/ckeditor-4.12.1.tgz",
-  "_spec": "4.12.1",
+  "_resolved": "https://registry.npmjs.org/ckeditor4/-/ckeditor4-4.17.2.tgz",
+  "_shasum": "b751f3e0ac0eef613a5576689dcf37852c23096e",
+  "_spec": "ckeditor4@^4.15.1",
   "_where": "/Users/miks/code/arbory",
   "author": {
     "name": "CKSource",
-    "url": "http://cksource.com/"
+    "url": "https://cksource.com/"
   },
   "bugs": {
-    "url": "http://dev.ckeditor.com"
+    "url": "https://github.com/ckeditor/ckeditor4/issues"
   },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "JavaScript WYSIWYG web text editor.",
-  "homepage": "http://ckeditor.com",
+  "homepage": "https://ckeditor.com/ckeditor-4/",
   "keywords": [
+    "ckeditor4",
     "ckeditor",
     "fckeditor",
     "editor",
@@ -48,10 +46,10 @@
   ],
   "license": "(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)",
   "main": "ckeditor.js",
-  "name": "ckeditor",
+  "name": "ckeditor4",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ckeditor/ckeditor-releases.git"
+    "url": "git+https://github.com/ckeditor/ckeditor4-releases.git"
   },
-  "version": "4.12.1"
+  "version": "4.17.2"
 }

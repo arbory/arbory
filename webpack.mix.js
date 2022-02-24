@@ -37,7 +37,7 @@ mix.sass('resources/assets/stylesheets/material-icons.scss', 'css/material-icons
 mix.sass('resources/assets/stylesheets/controllers/sessions.scss', 'css/controllers/');
 
 
-mix.copyDirectory('node_modules/ckeditor/', 'dist/ckeditor/');
+mix.copyDirectory('node_modules/ckeditor4/', 'dist/ckeditor/');
 
 mix.copyDirectory('resources/assets/js/ckeditor_plugins/', 'dist/ckeditor/plugins/');
 
