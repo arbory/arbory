@@ -72,7 +72,6 @@
             "aliases": {
                 "Activation": "Cartalyst\\Sentinel\\Laravel\\Facades\\Activation",
                 "Reminder": "Cartalyst\\Sentinel\\Laravel\\Facades\\Reminde",
-                "Sentinel": "Cartalyst\\Sentinel\\Laravel\\Facades\\Sentinel",
                 "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
             },
             "dont-discover": [

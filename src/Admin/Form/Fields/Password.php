@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use Illuminate\Http\Request;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 /**
  * Class Password.
@@ -28,7 +29,7 @@ class Password extends ControlField
     public function beforeModelSave(Request $request)
     {
         $password = $request->input($this->getNameSpacedName());
-        $hasher = \Sentinel::getUserRepository()->getHasher();
+        $hasher = Sentinel::getUserRepository()->getHasher();
 
         if ($password) {
             $this->getModel()->setAttribute($this->getName(), $hasher->hash($password));
