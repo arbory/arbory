@@ -20,7 +20,8 @@ class ArboryAdminHasAccessMiddleware
 
     /**
      * ArboryAdminHasAccessMiddleware constructor.
-     * @param Sentinel $sentinel
+     *
+     * @param  Sentinel  $sentinel
      */
     public function __construct(Sentinel $sentinel)
     {
@@ -28,9 +29,9 @@ class ArboryAdminHasAccessMiddleware
     }
 
     /**
-     * @param Request $request
-     * @param Closure $next
-     * @param string $permission
+     * @param  Request  $request
+     * @param  Closure  $next
+     * @param  string  $permission
      * @return JsonResponse|RedirectResponse
      */
     public function handle(Request $request, Closure $next, $permission)
@@ -48,7 +49,7 @@ class ArboryAdminHasAccessMiddleware
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return JsonResponse|RedirectResponse
      */
     public function denied(Request $request)

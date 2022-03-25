@@ -3,7 +3,6 @@
 namespace Arbory\Base\Providers;
 
 use Illuminate\Routing\Router;
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Http\Middleware\ArboryAdminAuthMiddleware;
@@ -27,8 +26,8 @@ class RoutesServiceProvider extends ServiceProvider
     protected $router;
 
     /**
-     * @param Filesystem $filesystem
-     * @param Router $router
+     * @param  Filesystem  $filesystem
+     * @param  Router  $router
      */
     public function boot(Filesystem $filesystem, Router $router)
     {

@@ -17,7 +17,7 @@ class ObjectRelationRenderer implements RendererInterface
     protected $field;
 
     /**
-     * @param FieldInterface $field
+     * @param  FieldInterface  $field
      */
     public function __construct(FieldInterface $field)
     {
@@ -110,8 +110,8 @@ class ObjectRelationRenderer implements RendererInterface
     }
 
     /**
-     * @param mixed $value
-     * @param bool $isRelated
+     * @param  mixed  $value
+     * @param  bool  $isRelated
      * @return Element
      */
     protected function buildRelationalItemElement($value, bool $isRelated = false)
@@ -134,8 +134,7 @@ class ObjectRelationRenderer implements RendererInterface
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -156,8 +155,7 @@ class ObjectRelationRenderer implements RendererInterface
     /**
      * Configure the style before rendering the field.
      *
-     * @param StyleOptionsInterface $options
-     *
+     * @param  StyleOptionsInterface  $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

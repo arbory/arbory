@@ -32,8 +32,9 @@ class ArboryFilesRepository extends AbstractModelsRepository
 
     /**
      * ArboryFilesRepository constructor.
-     * @param string $diskName
-     * @param string $modelClass
+     *
+     * @param  string  $diskName
+     * @param  string  $modelClass
      */
     public function __construct($diskName, $modelClass = ArboryFile::class)
     {
@@ -56,9 +57,10 @@ class ArboryFilesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param UploadedFile $file
-     * @param Model $owner
+     * @param  UploadedFile  $file
+     * @param  Model  $owner
      * @return ArboryFile|null
+     *
      * @throws RuntimeException
      */
     public function createFromUploadedFile(UploadedFile $file, Model $owner)
@@ -97,8 +99,9 @@ class ArboryFilesRepository extends AbstractModelsRepository
     /**
      * @param $fileName
      * @param $fileContents
-     * @param Model $owner
+     * @param  Model  $owner
      * @return ArboryFile|null
+     *
      * @throws RuntimeException
      */
     public function createFromBlob($fileName, $fileContents, Model $owner)
@@ -123,7 +126,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param string $fileName
+     * @param  string  $fileName
      * @return string
      */
     protected function getFreeFileName($fileName)
@@ -143,8 +146,8 @@ class ArboryFilesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param UploadedFile $file
-     * @param string $localFileName
+     * @param  UploadedFile  $file
+     * @param  string  $localFileName
      * @return array
      */
     protected function getCreateAttributesForCreatedFile(UploadedFile $file, $localFileName, Model $owner)
@@ -163,9 +166,9 @@ class ArboryFilesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param string $originalFileName
-     * @param string $fileContents
-     * @param string $localFileName
+     * @param  string  $originalFileName
+     * @param  string  $fileContents
+     * @param  string  $localFileName
      * @return array
      */
     protected function getCreateAttributesForBlob($originalFileName, $fileContents, $localFileName, Model $owner)
@@ -191,7 +194,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param UploadedFile $file
+     * @param  UploadedFile  $file
      * @return string
      */
     protected function getLocalFilenameForUploadedFile(UploadedFile $file): string
@@ -200,7 +203,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param string $arboryFileId
+     * @param  string  $arboryFileId
      * @return int
      */
     public function delete($arboryFileId)

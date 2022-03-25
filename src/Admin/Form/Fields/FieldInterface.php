@@ -57,7 +57,7 @@ interface FieldInterface
     public function getLabel();
 
     /**
-     * @param string $label
+     * @param  string  $label
      * @return $this
      */
     public function setLabel($label);
@@ -68,7 +68,7 @@ interface FieldInterface
     public function getFieldSet();
 
     /**
-     * @param FieldSet $fieldSet
+     * @param  FieldSet  $fieldSet
      * @return $this
      */
     public function setFieldSet(FieldSet $fieldSet);
@@ -79,7 +79,7 @@ interface FieldInterface
     public function getModel();
 
     /**
-     * @param string $rules
+     * @param  string  $rules
      * @return FieldInterface
      */
     public function rules(string $rules): self;
@@ -90,12 +90,12 @@ interface FieldInterface
     public function getRules(): array;
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request);
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function afterModelSave(Request $request);
 
@@ -110,8 +110,7 @@ interface FieldInterface
     public function getRendererClass(): ?string;
 
     /**
-     * @param string|null $renderable
-     *
+     * @param  string|null  $renderable
      * @return FieldInterface
      */
     public function setRendererClass(?string $renderable = null): self;
@@ -124,8 +123,7 @@ interface FieldInterface
     /**
      * Set a render class override.
      *
-     * @param RendererInterface|null $renderer
-     *
+     * @param  RendererInterface|null  $renderer
      * @return FieldInterface
      */
     public function setRenderer(?RendererInterface $renderer): self;
@@ -136,16 +134,14 @@ interface FieldInterface
     public function getTooltip();
 
     /**
-     * @param string|null $content
-     *
+     * @param  string|null  $content
      * @return FieldInterface
      */
     public function setTooltip($content = null): self;
 
     /**
-     * @param int $rows
-     * @param array $breakpoints
-     *
+     * @param  int  $rows
+     * @param  array  $breakpoints
      * @return FieldInterface
      */
     public function setRows(int $rows, $breakpoints = []): self;
@@ -161,8 +157,7 @@ interface FieldInterface
     public function getStyle();
 
     /**
-     * @param string $style
-     *
+     * @param  string  $style
      * @return mixed
      */
     public function setStyle(string $style): self;
@@ -180,8 +175,7 @@ interface FieldInterface
     public function getFieldId();
 
     /**
-     * @param RendererInterface $renderer
-     *
+     * @param  RendererInterface  $renderer
      * @return mixed
      */
     public function beforeRender(RendererInterface $renderer);
@@ -192,8 +186,7 @@ interface FieldInterface
     public function isHidden(): bool;
 
     /**
-     * @param bool $value
-     *
+     * @param  bool  $value
      * @return FieldInterface
      */
     public function setHidden(bool $value): self;

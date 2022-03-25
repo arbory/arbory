@@ -40,7 +40,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
     }
 
     /**
-     * @param Model $relatedModel
+     * @param  Model  $relatedModel
      * @return FieldSet
      */
     public function getRelationFieldSet(Model $relatedModel)
@@ -54,14 +54,15 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request)
     {
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
+     *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function afterModelSave(Request $request)

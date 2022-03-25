@@ -19,7 +19,8 @@ class ExceptionMessage implements Renderable
 
     /**
      * ExceptionMessage constructor.
-     * @param Exception $exception
+     *
+     * @param  Exception  $exception
      */
     public function __construct(Exception $exception)
     {
@@ -35,7 +36,7 @@ class ExceptionMessage implements Renderable
     }
 
     /**
-     * @param Exception $exception
+     * @param  Exception  $exception
      * @return static
      */
     public static function create(Exception $exception)

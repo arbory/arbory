@@ -98,7 +98,7 @@ class Grid
     protected $hasToolbox = true;
 
     /**
-     * @param Model $model
+     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
@@ -116,7 +116,7 @@ class Grid
     }
 
     /**
-     * @param Closure $constructor
+     * @param  Closure  $constructor
      * @return $this
      */
     public function setColumns(Closure $constructor): self
@@ -138,7 +138,7 @@ class Grid
     }
 
     /**
-     * @param FilterInterface $filter
+     * @param  FilterInterface  $filter
      * @return Grid
      */
     public function setFilter(FilterInterface $filter)
@@ -165,8 +165,8 @@ class Grid
     }
 
     /**
-     * @param RenderableInterface $tool
-     * @param string|null $side
+     * @param  RenderableInterface  $tool
+     * @param  string|null  $side
      * @return void
      */
     public function addTool(RenderableInterface $tool, string $side = null)
@@ -211,7 +211,7 @@ class Grid
     }
 
     /**
-     * @param string[] $tools
+     * @param  string[]  $tools
      * @return Grid
      */
     public function tools(array $tools)
@@ -222,7 +222,7 @@ class Grid
     }
 
     /**
-     * @param array|Collection $items
+     * @param  array|Collection  $items
      * @return Grid
      */
     public function items($items)
@@ -249,7 +249,7 @@ class Grid
     }
 
     /**
-     * @param bool $paginate
+     * @param  bool  $paginate
      * @return Grid
      */
     public function paginate(bool $paginate = true)
@@ -276,8 +276,8 @@ class Grid
     }
 
     /**
-     * @param string|null $name
-     * @param string|null $label
+     * @param  string|null  $name
+     * @param  string|null  $label
      * @return Column
      */
     public function column($name = null, $label = null): Column
@@ -286,8 +286,8 @@ class Grid
     }
 
     /**
-     * @param string|null $name
-     * @param string|null $label
+     * @param  string|null  $name
+     * @param  string|null  $label
      * @return Column
      */
     public function appendColumn($name = null, $label = null): Column
@@ -301,8 +301,8 @@ class Grid
     }
 
     /**
-     * @param string|null $name
-     * @param string|null $label
+     * @param  string|null  $name
+     * @param  string|null  $label
      * @return Column
      */
     public function prependColumn($name = null, $label = null): Column
@@ -316,8 +316,8 @@ class Grid
     }
 
     /**
-     * @param string $column
-     * @param string $name
+     * @param  string  $column
+     * @param  string  $name
      * @return mixed
      */
     protected function setColumnRelation($column, $name): Column
@@ -333,8 +333,8 @@ class Grid
     }
 
     /**
-     * @param string|null $name
-     * @param string|null $label
+     * @param  string|null  $name
+     * @param  string|null  $label
      * @return Column
      */
     protected function createColumn($name = null, $label = null): Column
@@ -346,7 +346,7 @@ class Grid
     }
 
     /**
-     * @param Collection|LengthAwarePaginator $items
+     * @param  Collection|LengthAwarePaginator  $items
      */
     protected function buildRows($items)
     {
@@ -360,7 +360,7 @@ class Grid
     }
 
     /**
-     * @param Closure $callback
+     * @param  Closure  $callback
      */
     public function filter(Closure $callback)
     {
@@ -414,7 +414,7 @@ class Grid
     }
 
     /**
-     * @param string $tool
+     * @param  string  $tool
      * @return bool
      */
     public function hasTool(string $tool): bool
@@ -423,8 +423,7 @@ class Grid
     }
 
     /**
-     * @param Model $model
-     *
+     * @param  Model  $model
      * @return string|null
      */
     public function getRowUrl(Model $model): ?string
@@ -458,8 +457,7 @@ class Grid
     }
 
     /**
-     * @param callable $rowUrlCallback
-     *
+     * @param  callable  $rowUrlCallback
      * @return Grid
      */
     public function setRowUrlCallback(callable $rowUrlCallback): self
@@ -470,7 +468,7 @@ class Grid
     }
 
     /**
-     * @param Column $column
+     * @param  Column  $column
      * @return string|null
      */
     public function getColumnOrderUrl(Column $column): ?string
@@ -495,8 +493,7 @@ class Grid
     }
 
     /**
-     * @param callable $orderUrlCallback
-     *
+     * @param  callable  $orderUrlCallback
      * @return Grid
      */
     public function setOrderUrlCallback(callable $orderUrlCallback): self
@@ -559,7 +556,7 @@ class Grid
     }
 
     /**
-     * @param FilterManager $filterManager
+     * @param  FilterManager  $filterManager
      * @return Grid
      */
     public function setFilterManager(FilterManager $filterManager): self
@@ -571,7 +568,7 @@ class Grid
     }
 
     /**
-     * @param bool $rememberFilters
+     * @param  bool  $rememberFilters
      * @return Grid
      */
     public function setRememberFilters(bool $rememberFilters): self

@@ -14,7 +14,7 @@ class BulkEditFormBuilder extends Builder
 {
     /**
      * @param $route
-     * @param array $parameters
+     * @param  array  $parameters
      * @return string
      */
     public function url($route, $parameters = [])

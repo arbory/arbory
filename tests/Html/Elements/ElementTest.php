@@ -37,6 +37,7 @@ final class ElementTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldAddClass()
@@ -51,6 +52,7 @@ final class ElementTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldAppendElementToContents()
@@ -70,6 +72,7 @@ final class ElementTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldPrependElementToContents()
@@ -89,6 +92,7 @@ final class ElementTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldHaveAttributes()
@@ -102,6 +106,7 @@ final class ElementTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldFormatNameWithMultipleValues()
@@ -114,7 +119,7 @@ final class ElementTest extends TestCase
     }
 
     /**
-     * @param array|null $content
+     * @param  array|null  $content
      * @return Element
      */
     private function getElement(array $content = null)

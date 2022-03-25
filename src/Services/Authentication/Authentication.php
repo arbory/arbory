@@ -12,7 +12,7 @@ class Authentication
     private $driver;
 
     /**
-     * @param AuthenticationMethod $driver
+     * @param  AuthenticationMethod  $driver
      */
     public function __construct(AuthenticationMethod $driver)
     {
@@ -20,9 +20,9 @@ class Authentication
     }
 
     /**
-     * @param array $credentials
-     * @param bool $remember
-     * @param bool $login
+     * @param  array  $credentials
+     * @param  bool  $remember
+     * @param  bool  $login
      * @return bool
      */
     public function authenticate(array $credentials, $remember = false, $login = true): bool
@@ -31,8 +31,8 @@ class Authentication
     }
 
     /**
-     * @param UserInterface|null $user
-     * @param bool $everywhere
+     * @param  UserInterface|null  $user
+     * @param  bool  $everywhere
      * @return bool
      */
     public function logout(UserInterface $user = null, $everywhere = false): bool

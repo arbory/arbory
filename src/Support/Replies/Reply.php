@@ -41,9 +41,9 @@ abstract class Reply implements Jsonable, Arrayable
     protected $redirectUrl = null;
 
     /**
-     * @param string $message
-     * @param array $payload
-     * @param Exception $exception
+     * @param  string  $message
+     * @param  array  $payload
+     * @param  Exception  $exception
      */
     public function __construct($message = '', array $payload = [], Exception $exception = null)
     {
@@ -54,6 +54,7 @@ abstract class Reply implements Jsonable, Arrayable
 
     /**
      * @var string
+     *
      * @return Response|Redirect
      */
     abstract public function dispatch($url = '/');
@@ -75,7 +76,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @param string $message
+     * @param  string  $message
      */
     public function setMessage($message)
     {
@@ -99,7 +100,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return bool
      */
     public function has($key)
@@ -116,7 +117,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return void
      */
     public function remove($key)
@@ -143,7 +144,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @param Exception $e
+     * @param  Exception  $e
      * @return Exception
      */
     public function setException(Exception $e)
@@ -171,7 +172,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @param int $options
+     * @param  int  $options
      * @return string
      */
     public function toJson($options = 0)
@@ -180,7 +181,7 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return mixed|null
      */
     public function __get($key)

@@ -11,7 +11,6 @@ interface PanelInterface extends Renderable, RenderOptionsInterface
 {
     /**
      * @param  Toolbox  $toolbox
-     *
      * @return Toolbox
      */
     public function toolbox(Toolbox $toolbox): Toolbox;

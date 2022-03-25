@@ -84,8 +84,9 @@ class Column
 
     /**
      * Column constructor.
-     * @param string $name
-     * @param string $label
+     *
+     * @param  string  $name
+     * @param  string  $label
      */
     public function __construct($name = null, $label = null)
     {
@@ -155,7 +156,7 @@ class Column
     }
 
     /**
-     * @param Grid $grid
+     * @param  Grid  $grid
      * @return Column
      */
     public function setGrid(Grid $grid)
@@ -166,7 +167,7 @@ class Column
     }
 
     /**
-     * @param Closure $callable
+     * @param  Closure  $callable
      * @return Column
      */
     public function display(Closure $callable)
@@ -177,7 +178,7 @@ class Column
     }
 
     /**
-     * @param bool $isSortable
+     * @param  bool  $isSortable
      * @return Column
      */
     public function sortable($isSortable = true)
@@ -188,7 +189,7 @@ class Column
     }
 
     /**
-     * @param bool $isCheckable
+     * @param  bool  $isCheckable
      * @return $this
      */
     public function checkable($isCheckable = true)
@@ -199,7 +200,7 @@ class Column
     }
 
     /**
-     * @param bool $isSearchable
+     * @param  bool  $isSearchable
      * @return Column
      */
     public function searchable($isSearchable = true)
@@ -210,7 +211,7 @@ class Column
     }
 
     /**
-     * @param string|null $type
+     * @param  string|null  $type
      * @return $this
      */
     public function setFilter($type = null)
@@ -246,7 +247,7 @@ class Column
     }
 
     /**
-     * @param callable $query
+     * @param  callable  $query
      * @return $this
      */
     public function setCustomSearchQuery(callable $query)
@@ -265,7 +266,7 @@ class Column
     }
 
     /**
-     * @param QueryBuilder $query
+     * @param  QueryBuilder  $query
      * @param $string
      * @return QueryBuilder
      */
@@ -285,7 +286,7 @@ class Column
     }
 
     /**
-     * @param Model $model
+     * @param  Model  $model
      * @return mixed
      */
     protected function getValue(Model $model)
@@ -314,7 +315,7 @@ class Column
     }
 
     /**
-     * @param Model $model
+     * @param  Model  $model
      * @return Element
      */
     public function callDisplayCallback(Model $model)
@@ -338,7 +339,6 @@ class Column
 
     /**
      * @param  \Closure  $closure
-     *
      * @return $this
      */
     public function setExportColumnDisplay(Closure $closure): self
@@ -350,7 +350,6 @@ class Column
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     *
      * @return mixed
      */
     public function getExportColumnDisplay(Model $model)
@@ -375,8 +374,8 @@ class Column
     }
 
     /**
-     * @param string $filterType
-     * @param iterable $filterTypeConfig
+     * @param  string  $filterType
+     * @param  iterable  $filterTypeConfig
      * @return FilterItem
      */
     public function addFilter(string $filterType, iterable $filterTypeConfig = []): FilterItem

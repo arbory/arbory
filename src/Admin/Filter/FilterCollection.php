@@ -12,7 +12,7 @@ class FilterCollection extends Collection
     protected $items = [];
 
     /**
-     * @param string[] $concerns
+     * @param  string[]  $concerns
      * @return FilterCollection|FilterItem[]
      */
     public function findByConcerns(array $concerns): self

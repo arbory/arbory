@@ -20,7 +20,8 @@ class ArboryAdminAuthMiddleware
 
     /**
      * ArboryAdminAuthMiddleware constructor.
-     * @param Sentinel $sentinel
+     *
+     * @param  Sentinel  $sentinel
      */
     public function __construct(Sentinel $sentinel)
     {
@@ -30,8 +31,8 @@ class ArboryAdminAuthMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -44,7 +45,7 @@ class ArboryAdminAuthMiddleware
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return JsonResponse|RedirectResponse
      */
     private function denied(Request $request)

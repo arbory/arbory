@@ -24,8 +24,9 @@ class Element
 
     /**
      * Element constructor.
+     *
      * @param $tag
-     * @param null $content
+     * @param  null  $content
      */
     public function __construct($tag, $content = null)
     {
@@ -53,7 +54,7 @@ class Element
     }
 
     /**
-     * @param array $attributes
+     * @param  array  $attributes
      * @return $this
      */
     public function addAttributes(array $attributes)
@@ -78,8 +79,8 @@ class Element
     }
 
     /**
-     * @param string $name
-     * @param string|null $content
+     * @param  string  $name
+     * @param  string|null  $content
      * @return Tag
      */
     public function tag($name, $content = null)
@@ -90,7 +91,7 @@ class Element
     }
 
     /**
-     * @param string $class
+     * @param  string  $class
      * @return $this
      */
     public function addClass($class)
@@ -103,7 +104,7 @@ class Element
     }
 
     /**
-     * @param Element|array|string $content
+     * @param  Element|array|string  $content
      * @return $this
      */
     public function append($content)
@@ -126,7 +127,7 @@ class Element
     }
 
     /**
-     * @param Element|array|string $content
+     * @param  Element|array|string  $content
      * @return $this
      */
     public function prepend($content)
@@ -145,7 +146,7 @@ class Element
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return string
      */
     public static function formatName($name): string

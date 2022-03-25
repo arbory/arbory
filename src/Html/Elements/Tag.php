@@ -44,6 +44,7 @@ class Tag
 
     /**
      * Tag constructor.
+     *
      * @param $name
      */
     public function __construct($name)
@@ -100,7 +101,7 @@ class Tag
     }
 
     /**
-     * @param Attributes $attributes
+     * @param  Attributes  $attributes
      * @return $this
      */
     public function setAttributes(Attributes $attributes)

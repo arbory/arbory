@@ -27,7 +27,6 @@ class TextBlock extends AbstractBlock implements BlockInterface
 
     /**
      * @param  FieldSet  $fields
-     *
      * @return mixed
      */
     public function fields(FieldSet $fields)
@@ -38,7 +37,6 @@ class TextBlock extends AbstractBlock implements BlockInterface
 
     /**
      * @param  AssetPipeline  $pipeline
-     *
      * @return mixed
      */
     public function assets(AssetPipeline $pipeline)

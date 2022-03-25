@@ -20,9 +20,8 @@ trait Translatable
     /**
      * Alias for getTranslation().
      *
-     * @param string|null $locale
-     * @param bool $withFallback
-     *
+     * @param  string|null  $locale
+     * @param  bool  $withFallback
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function translate($locale = null, $withFallback = false)
@@ -33,8 +32,7 @@ trait Translatable
     /**
      * Alias for getTranslation().
      *
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function translateOrDefault($locale)
@@ -45,8 +43,7 @@ trait Translatable
     /**
      * Alias for getTranslationOrNew().
      *
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function translateOrNew($locale)
@@ -55,9 +52,8 @@ trait Translatable
     }
 
     /**
-     * @param string|null $locale
-     * @param bool $withFallback
-     *
+     * @param  string|null  $locale
+     * @param  bool  $withFallback
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function getTranslation($locale = null, $withFallback = null)
@@ -80,7 +76,7 @@ trait Translatable
     }
 
     /**
-     * @param string|null $locale
+     * @param  string|null  $locale
      * @return bool
      */
     public function hasTranslation($locale = null)
@@ -145,7 +141,7 @@ trait Translatable
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     public function getAttribute($key)
@@ -173,9 +169,8 @@ trait Translatable
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
-     *
+     * @param  string  $key
+     * @param  mixed  $value
      * @return $this
      */
     public function setAttribute($key, $value)
@@ -192,8 +187,7 @@ trait Translatable
     }
 
     /**
-     * @param array $options
-     *
+     * @param  array  $options
      * @return bool
      */
     public function save(array $options = [])
@@ -228,8 +222,7 @@ trait Translatable
     }
 
     /**
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     protected function getTranslationOrNew($locale)
@@ -242,10 +235,11 @@ trait Translatable
     }
 
     /**
-     * @param array $attributes
+     * @param  array  $attributes
+     * @return $this
+     *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      * @throws \ErrorException
-     * @return $this
      */
     public function fill(array $attributes)
     {
@@ -266,7 +260,7 @@ trait Translatable
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return Model|null
      */
     private function getTranslationByLocaleKey($key)
@@ -279,8 +273,7 @@ trait Translatable
     }
 
     /**
-     * @param string|null $locale
-     *
+     * @param  string|null  $locale
      * @return string
      */
     private function getFallbackLocale($locale = null)
@@ -294,7 +287,6 @@ trait Translatable
 
     /**
      * @param $locale
-     *
      * @return bool
      */
     private function isLocaleCountryBased($locale)
@@ -304,7 +296,6 @@ trait Translatable
 
     /**
      * @param $locale
-     *
      * @return string
      */
     private function getLanguageFromCountryBasedLocale($locale)
@@ -327,8 +318,7 @@ trait Translatable
     }
 
     /**
-     * @param string $key
-     *
+     * @param  string  $key
      * @return bool
      */
     public function isTranslatableAttribute($key)
@@ -337,8 +327,9 @@ trait Translatable
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return bool
+     *
      * @throws \ErrorException
      */
     protected function isLocale($key)
@@ -349,8 +340,9 @@ trait Translatable
     }
 
     /**
-     * @throws \ErrorException
      * @return array
+     *
+     * @throws \ErrorException
      */
     protected function getLocales()
     {
@@ -403,8 +395,7 @@ trait Translatable
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Model $translation
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $translation
      * @return bool
      */
     protected function isTranslationDirty(Model $translation)
@@ -416,8 +407,7 @@ trait Translatable
     }
 
     /**
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function getNewTranslation($locale)
@@ -432,7 +422,6 @@ trait Translatable
 
     /**
      * @param $key
-     *
      * @return bool
      */
     public function __isset($key)
@@ -441,9 +430,8 @@ trait Translatable
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $locale
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $locale
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeTranslatedIn(Builder $query, $locale = null)
@@ -456,9 +444,8 @@ trait Translatable
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $locale
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $locale
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeNotTranslatedIn(Builder $query, $locale = null)
@@ -471,8 +458,7 @@ trait Translatable
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeTranslated(Builder $query)
@@ -489,8 +475,8 @@ trait Translatable
      *      'name' => 'Griechenland'    // The translated name
      *  ].
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $translationField
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $translationField
      */
     public function scopeListsTranslations(Builder $query, $translationField)
     {
@@ -526,7 +512,7 @@ trait Translatable
      * This scope eager loads the translations for the default and the fallback locale only.
      * We can use this as a shortcut to improve performance in our application.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      */
     public function scopeWithTranslation(Builder $query)
     {
@@ -547,11 +533,10 @@ trait Translatable
     /**
      * This scope filters results by checking the translation fields.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $key
-     * @param string $value
-     * @param string $locale
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $key
+     * @param  string  $value
+     * @param  string  $locale
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeWhereTranslation(Builder $query, $key, $value, $locale = null)
@@ -567,11 +552,10 @@ trait Translatable
     /**
      * This scope filters results by checking the translation fields.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $key
-     * @param string $value
-     * @param string $locale
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $key
+     * @param  string  $value
+     * @param  string  $locale
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeWhereTranslationLike(Builder $query, $key, $value, $locale = null)
@@ -636,7 +620,6 @@ trait Translatable
      * Set the default locale on the model.
      *
      * @param $locale
-     *
      * @return $this
      */
     public function setDefaultLocale($locale)
@@ -659,8 +642,8 @@ trait Translatable
     /**
      * Deletes all translations for this model.
      *
-     * @param string|array|null $locales The locales to be deleted (array or single string)
-     *                                   (e.g., ["en", "de"] would remove these translations).
+     * @param  string|array|null  $locales  The locales to be deleted (array or single string)
+     *                                      (e.g., ["en", "de"] would remove these translations).
      */
     public function deleteTranslations($locales = null)
     {
@@ -678,7 +661,6 @@ trait Translatable
 
     /**
      * @param $key
-     *
      * @return array
      */
     private function getAttributeAndLocale($key)

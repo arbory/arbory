@@ -15,7 +15,8 @@ class ExportBuilder implements Renderable
 
     /**
      * ExportBuilder constructor.
-     * @param AdminGrid $grid
+     *
+     * @param  AdminGrid  $grid
      */
     public function __construct(AdminGrid $grid)
     {

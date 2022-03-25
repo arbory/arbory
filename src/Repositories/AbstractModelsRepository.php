@@ -36,7 +36,7 @@ abstract class AbstractModelsRepository
     }
 
     /**
-     * @param array $columns
+     * @param  array  $columns
      * @return mixed
      */
     public function all(array $columns = ['*'])
@@ -45,8 +45,8 @@ abstract class AbstractModelsRepository
     }
 
     /**
-     * @param int $perPage
-     * @param array $columns
+     * @param  int  $perPage
+     * @param  array  $columns
      * @return mixed
      */
     public function paginate($perPage = 15, array $columns = ['*'])
@@ -55,7 +55,7 @@ abstract class AbstractModelsRepository
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @return mixed
      */
     public function create(array $data)
@@ -64,9 +64,9 @@ abstract class AbstractModelsRepository
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @param $itemId
-     * @param string $attribute
+     * @param  string  $attribute
      * @return mixed
      */
     public function update(array $data, $itemId, $attribute = 'id')
@@ -85,7 +85,7 @@ abstract class AbstractModelsRepository
 
     /**
      * @param $itemId
-     * @param array $columns
+     * @param  array  $columns
      * @return mixed
      */
     public function find($itemId, array $columns = ['*'])
@@ -96,7 +96,7 @@ abstract class AbstractModelsRepository
     /**
      * @param $attribute
      * @param $value
-     * @param array $columns
+     * @param  array  $columns
      * @return mixed
      */
     public function findBy($attribute, $value, array $columns = ['*'])
@@ -107,7 +107,7 @@ abstract class AbstractModelsRepository
     /**
      * @param $attribute
      * @param $value
-     * @param array $columns
+     * @param  array  $columns
      * @return mixed
      */
     public function findOneBy($attribute, $value, array $columns = ['*'])
@@ -117,7 +117,7 @@ abstract class AbstractModelsRepository
 
     /**
      * @param $itemId
-     * @param array $columns
+     * @param  array  $columns
      * @return Model
      */
     public function findOrNew($itemId, array $columns = ['*'])

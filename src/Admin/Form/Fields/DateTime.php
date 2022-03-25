@@ -26,8 +26,7 @@ class DateTime extends Text
     }
 
     /**
-     * @param string $format
-     *
+     * @param  string  $format
      * @return DateTime
      */
     public function setFormat(string $format): self

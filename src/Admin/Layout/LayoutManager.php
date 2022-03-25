@@ -27,7 +27,7 @@ class LayoutManager
     /**
      * LayoutManager constructor.
      *
-     * @param Container $container
+     * @param  Container  $container
      */
     public function __construct(Container $container)
     {
@@ -39,7 +39,6 @@ class LayoutManager
      * Creates a new main page.
      *
      * @param $pageClass
-     *
      * @return LayoutInterface|PageInterface
      */
     public function page($pageClass)
@@ -58,9 +57,8 @@ class LayoutManager
     }
 
     /**
-     * @param string|null $name
-     * @param string $layoutClass
-     *
+     * @param  string|null  $name
+     * @param  string  $layoutClass
      * @return LayoutInterface
      */
     public function make($layoutClass, $name = null): LayoutInterface

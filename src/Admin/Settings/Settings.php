@@ -13,7 +13,7 @@ class Settings
     protected $settingRegistry;
 
     /**
-     * @param SettingRegistry $settingRegistry
+     * @param  SettingRegistry  $settingRegistry
      */
     public function __construct(SettingRegistry $settingRegistry)
     {
@@ -22,8 +22,8 @@ class Settings
     }
 
     /**
-     * @param string $key
-     * @param mixed $default
+     * @param  string  $key
+     * @param  mixed  $default
      * @return mixed
      */
     public function get(string $key, $default = null)
@@ -52,7 +52,7 @@ class Settings
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return bool
      */
     public function has(string $key)
@@ -61,9 +61,9 @@ class Settings
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
-     * @param mixed $type
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  mixed  $type
      * @return void
      */
     public function set(string $key, $value, string $type = null)

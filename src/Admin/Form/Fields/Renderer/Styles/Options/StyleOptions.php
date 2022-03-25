@@ -25,8 +25,7 @@ class StyleOptions implements StyleOptionsInterface
     }
 
     /**
-     * @param array $data
-     *
+     * @param  array  $data
      * @return StyleOptionsInterface
      */
     public function setAdditional(array $data): StyleOptionsInterface
@@ -37,8 +36,7 @@ class StyleOptions implements StyleOptionsInterface
     }
 
     /**
-     * @param array $data
-     *
+     * @param  array  $data
      * @return StyleOptionsInterface
      */
     public function addAdditional(array $data): StyleOptionsInterface
@@ -67,9 +65,8 @@ class StyleOptions implements StyleOptionsInterface
     }
 
     /**
-     * @param int $rows
-     * @param array $breakpoints
-     *
+     * @param  int  $rows
+     * @param  array  $breakpoints
      * @return StyleOptionsInterface
      */
     public function setRows(int $rows, array $breakpoints = []): StyleOptionsInterface

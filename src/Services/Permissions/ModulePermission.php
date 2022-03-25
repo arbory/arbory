@@ -21,7 +21,8 @@ class ModulePermission
 
     /**
      * ModulePermission constructor.
-     * @param string $name
+     *
+     * @param  string  $name
      */
     public function __construct(string $name)
     {
@@ -45,7 +46,7 @@ class ModulePermission
     }
 
     /**
-     * @param bool $allowed
+     * @param  bool  $allowed
      */
     public function setAllowed(bool $allowed)
     {

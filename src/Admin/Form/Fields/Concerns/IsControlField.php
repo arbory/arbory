@@ -30,8 +30,7 @@ trait IsControlField
     }
 
     /**
-     * @param bool $disabled
-     *
+     * @param  bool  $disabled
      * @return FieldInterface
      */
     public function setDisabled(bool $disabled = false): FieldInterface
@@ -50,8 +49,7 @@ trait IsControlField
     }
 
     /**
-     * @param bool $interactive
-     *
+     * @param  bool  $interactive
      * @return FieldInterface
      */
     public function setInteractive(bool $interactive = false): FieldInterface
@@ -70,8 +68,7 @@ trait IsControlField
     }
 
     /**
-     * @param bool $required
-     *
+     * @param  bool  $required
      * @return FieldInterface
      */
     public function setRequired(bool $required = false): FieldInterface

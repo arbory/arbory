@@ -87,8 +87,7 @@ class SelectControl extends AbstractControl
     }
 
     /**
-     * @param bool $multiple
-     *
+     * @param  bool  $multiple
      * @return SelectControl
      */
     public function setMultiple(bool $multiple): self
@@ -107,8 +106,7 @@ class SelectControl extends AbstractControl
     }
 
     /**
-     * @param array $options
-     *
+     * @param  array  $options
      * @return SelectControl
      */
     public function setOptions(array $options): self
@@ -127,8 +125,7 @@ class SelectControl extends AbstractControl
     }
 
     /**
-     * @param mixed $selected
-     *
+     * @param  mixed  $selected
      * @return SelectControl
      */
     public function setSelected($selected): self

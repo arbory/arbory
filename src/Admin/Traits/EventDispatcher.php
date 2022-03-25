@@ -17,7 +17,7 @@ trait EventDispatcher
 
     /**
      * @param $event
-     * @param array ...$parameters
+     * @param  array  ...$parameters
      */
     protected function trigger($event, ...$parameters)
     {
@@ -28,7 +28,7 @@ trait EventDispatcher
 
     /**
      * @param $event
-     * @param Closure $callback
+     * @param  Closure  $callback
      */
     public function on($event, Closure $callback)
     {
@@ -36,8 +36,8 @@ trait EventDispatcher
     }
 
     /**
-     * @param array $events
-     * @param Closure $callback
+     * @param  array  $events
+     * @param  Closure  $callback
      */
     public function addEventListeners(array $events, Closure $callback)
     {
@@ -48,7 +48,7 @@ trait EventDispatcher
 
     /**
      * @param $event
-     * @param Closure $callback
+     * @param  Closure  $callback
      */
     public function addEventListener($event, Closure $callback)
     {

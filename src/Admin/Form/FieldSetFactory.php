@@ -15,7 +15,7 @@ class FieldSetFactory
     /**
      * FieldSetFactory constructor.
      *
-     * @param StyleManager $styleManager
+     * @param  StyleManager  $styleManager
      */
     public function __construct(StyleManager $styleManager)
     {
@@ -23,10 +23,9 @@ class FieldSetFactory
     }
 
     /**
-     * @param Model $model
-     * @param string|null $namespace
-     * @param string|null $defaultStyle
-     *
+     * @param  Model  $model
+     * @param  string|null  $namespace
+     * @param  string|null  $defaultStyle
      * @return FieldSet
      */
     public function make($model, $namespace = null, $defaultStyle = null)

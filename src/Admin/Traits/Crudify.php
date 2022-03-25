@@ -60,9 +60,8 @@ trait Crudify
     }
 
     /**
-     * @param Form $form
-     * @param Layout\FormLayoutInterface|null $layout
-     *
+     * @param  Form  $form
+     * @param  Layout\FormLayoutInterface|null  $layout
      * @return Form
      */
     protected function form(Form $form, ?Layout\FormLayoutInterface $layout = null)
@@ -71,9 +70,8 @@ trait Crudify
     }
 
     /**
-     * @param Model $model
-     * @param Layout\FormLayoutInterface|null $layout
-     *
+     * @param  Model  $model
+     * @param  Layout\FormLayoutInterface|null  $layout
      * @return Form
      */
     protected function buildForm(Model $model, ?Layout\FormLayoutInterface $layout = null)
@@ -90,7 +88,7 @@ trait Crudify
     }
 
     /**
-     * @param Grid $grid
+     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)
@@ -99,7 +97,7 @@ trait Crudify
     }
 
     /**
-     * @param Model $model
+     * @param  Model  $model
      * @return Grid
      */
     protected function buildGrid(Model $model)
@@ -114,8 +112,7 @@ trait Crudify
     }
 
     /**
-     * @param Layout\LayoutManager $manager
-     *
+     * @param  Layout\LayoutManager  $manager
      * @return Layout
      */
     public function index(Layout\LayoutManager $manager)
@@ -147,8 +144,7 @@ trait Crudify
     }
 
     /**
-     * @param Layout\LayoutManager $manager
-     *
+     * @param  Layout\LayoutManager  $manager
      * @return Layout
      */
     public function create(Layout\LayoutManager $manager)
@@ -165,7 +161,7 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
@@ -187,9 +183,8 @@ trait Crudify
     }
 
     /**
-     * @param                      $resourceId
-     * @param Layout\LayoutManager $manager
-     *
+     * @param  $resourceId
+     * @param  Layout\LayoutManager  $manager
      * @return Layout
      */
     public function edit($resourceId, Layout\LayoutManager $manager)
@@ -206,7 +201,7 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @param $resourceId
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -246,8 +241,8 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
-     * @param string $name
+     * @param  Request  $request
+     * @param  string  $name
      * @return mixed
      */
     public function dialog(Request $request, string $name)
@@ -262,8 +257,9 @@ trait Crudify
     }
 
     /**
-     * @param string $type
+     * @param  string  $type
      * @return BinaryFileResponse
+     *
      * @throws \Exception
      */
     public function export(string $type): BinaryFileResponse
@@ -283,9 +279,10 @@ trait Crudify
     }
 
     /**
-     * @param string $type
-     * @param DataSetExport $dataSet
+     * @param  string  $type
+     * @param  DataSetExport  $dataSet
      * @return ExportInterface
+     *
      * @throws \Exception
      */
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
@@ -298,7 +295,7 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return string
      */
     protected function toolboxDialog(Request $request): string
@@ -313,7 +310,7 @@ trait Crudify
     }
 
     /**
-     * @param \Arbory\Base\Admin\Tools\ToolboxMenu $tools
+     * @param  \Arbory\Base\Admin\Tools\ToolboxMenu  $tools
      */
     protected function toolbox(ToolboxMenu $tools)
     {
@@ -327,7 +324,7 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\View\View
      */
     protected function confirmDeleteDialog(Request $request)
@@ -343,8 +340,8 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
-     * @param string $name
+     * @param  Request  $request
+     * @param  string  $name
      * @return null
      */
     public function api(Request $request, string $name)
@@ -361,8 +358,8 @@ trait Crudify
     }
 
     /**
-     * @param string $route
-     * @param array $parameters
+     * @param  string  $route
+     * @param  array  $parameters
      * @return string
      */
     public function url(string $route, $parameters = [])
@@ -371,7 +368,7 @@ trait Crudify
     }
 
     /**
-     * @param mixed $resourceId
+     * @param  mixed  $resourceId
      * @return Model
      */
     protected function findOrNew($resourceId): Model
@@ -392,8 +389,9 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return string
+     *
      * @throws \Exception
      */
     public function slugGeneratorApi(Request $request)
@@ -420,9 +418,8 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
-     * @param Model $model
-     *
+     * @param  Request  $request
+     * @param  Model  $model
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     protected function getAfterEditResponse(Request $request, $model)
@@ -434,9 +431,8 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
-     * @param Model $model
-     *
+     * @param  Request  $request
+     * @param  Model  $model
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     protected function getAfterCreateResponse(Request $request, $model)
@@ -452,9 +448,8 @@ trait Crudify
     /**
      * Creates a layout instance.
      *
-     * @param string $component
-     * @param mixed $with
-     *
+     * @param  string  $component
+     * @param  mixed  $with
      * @return LayoutInterface
      */
     protected function layout($component, $with = null)

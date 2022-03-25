@@ -42,7 +42,8 @@ class ModuleConfiguration
 
     /**
      * ModuleConfiguration constructor.
-     * @param string $controllerClass
+     *
+     * @param  string  $controllerClass
      */
     public function __construct(string $controllerClass)
     {
@@ -59,7 +60,7 @@ class ModuleConfiguration
     }
 
     /**
-     * @param string $controllerClass
+     * @param  string  $controllerClass
      * @return $this
      */
     public function setControllerClass($controllerClass)
@@ -70,7 +71,7 @@ class ModuleConfiguration
     }
 
     /**
-     * @param string $authorizationType
+     * @param  string  $authorizationType
      * @return $this
      */
     public function setAuthorizationType($authorizationType)
@@ -81,7 +82,7 @@ class ModuleConfiguration
     }
 
     /**
-     * @param \array[] $authorizedRoles
+     * @param  \array[]  $authorizedRoles
      * @return $this
      */
     public function setAuthorizedRoles($authorizedRoles)
@@ -92,7 +93,7 @@ class ModuleConfiguration
     }
 
     /**
-     * @param array $requiredPermissions
+     * @param  array  $requiredPermissions
      * @return $this
      */
     public function setRequiredPermissions($requiredPermissions)

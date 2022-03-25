@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 trait BulkEdit
 {
     /**
-     * @param Form $form
+     * @param  Form  $form
      * @return Form
      */
     protected function bulkEditForm(Form $form): Form
@@ -19,7 +19,7 @@ trait BulkEdit
     }
 
     /**
-     * @param Model $model
+     * @param  Model  $model
      * @return Form
      */
     protected function buildBulkEditForm(Model $model): Form
@@ -34,7 +34,7 @@ trait BulkEdit
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      * @return Form
      */
     protected function additionalFormControls(Form $form): Form
@@ -51,7 +51,7 @@ trait BulkEdit
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     protected function confirmBulkEditDialog(Request $request): View
@@ -71,7 +71,7 @@ trait BulkEdit
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function bulkUpdate(Request $request)
@@ -89,7 +89,7 @@ trait BulkEdit
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      * @return Form
      */
     protected function addCheckboxesToEachInput(Form $form): Form
@@ -135,7 +135,7 @@ trait BulkEdit
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      * @return Form
      */
     protected function prepareBulkFields(Form $form): Form
@@ -158,7 +158,7 @@ trait BulkEdit
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     protected function getAfterBulkEditResponse(Request $request)

@@ -22,7 +22,7 @@
   },
   "homepage": "https://www.arborycms.com/",
   "dependencies": {
-    "ckeditor4": "^4.15.1",
+    "ckeditor4": "^4.18.0",
     "is-in-viewport": "^3.0.4",
     "jquery": "^3.6.0",
     "jquery-ui": "^1.13.1",

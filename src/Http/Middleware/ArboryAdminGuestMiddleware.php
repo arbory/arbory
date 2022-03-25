@@ -21,6 +21,7 @@ class ArboryAdminGuestMiddleware
 
     /**
      * ArboryAdminGuestMiddleware constructor.
+     *
      * @param $sentinel
      */
     public function __construct(Sentinel $sentinel)
@@ -31,8 +32,8 @@ class ArboryAdminGuestMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
-     * @param \Closure $next
+     * @param  Request  $request
+     * @param  \Closure  $next
      * @return JsonResponse|RedirectResponse
      */
     public function handle($request, Closure $next)

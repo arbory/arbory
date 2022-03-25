@@ -46,6 +46,7 @@ final class FileSizeTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldHaveSizeInBytes()
@@ -59,6 +60,7 @@ final class FileSizeTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldConvertSizeInBytesToReadableValue()
@@ -72,8 +74,8 @@ final class FileSizeTest extends TestCase
     }
 
     /**
-     * @param int $sizeInBytes
-     * @param string $expectedValue
+     * @param  int  $sizeInBytes
+     * @param  string  $expectedValue
      * @return void
      */
     private function assertSizeGetsConvertedToReadableValue(int $sizeInBytes, string $expectedValue)

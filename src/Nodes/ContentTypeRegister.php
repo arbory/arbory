@@ -28,7 +28,7 @@ class ContentTypeRegister
     }
 
     /**
-     * @param ContentTypeDefinition $definition
+     * @param  ContentTypeDefinition  $definition
      * @return void
      */
     public function register(ContentTypeDefinition $definition)
@@ -37,7 +37,7 @@ class ContentTypeRegister
     }
 
     /**
-     * @param string $class
+     * @param  string  $class
      * @return ContentTypeDefinition|null
      */
     public function findByModelClass(string $class)
@@ -46,7 +46,7 @@ class ContentTypeRegister
     }
 
     /**
-     * @param Node $parent
+     * @param  Node  $parent
      * @return Collection
      */
     public function getAllowedChildTypes(Node $parent): Collection
@@ -82,7 +82,7 @@ class ContentTypeRegister
     }
 
     /**
-     * @param Collection $mappable
+     * @param  Collection  $mappable
      * @return Collection
      */
     protected function mapToDefinitions(Collection $mappable): Collection

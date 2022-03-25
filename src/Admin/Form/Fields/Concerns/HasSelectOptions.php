@@ -15,7 +15,7 @@ trait HasSelectOptions
     protected $options;
 
     /**
-     * @param Collection|array $options
+     * @param  Collection|array  $options
      * @return $this
      */
     public function options($options)

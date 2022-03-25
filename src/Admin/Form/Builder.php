@@ -32,7 +32,7 @@ class Builder implements Renderable, WrappableInterface
     /**
      * Builder constructor.
      *
-     * @param Form $form
+     * @param  Form  $form
      */
     public function __construct(Form $form)
     {
@@ -40,9 +40,8 @@ class Builder implements Renderable, WrappableInterface
     }
 
     /**
-     * @param       $route
-     * @param array $parameters
-     *
+     * @param  $route
+     * @param  array  $parameters
      * @return string
      */
     public function url($route, $parameters = [])
@@ -105,8 +104,7 @@ class Builder implements Renderable, WrappableInterface
     }
 
     /**
-     * @param mixed $content
-     *
+     * @param  mixed  $content
      * @return Builder
      */
     public function setContent($content): self
@@ -125,8 +123,7 @@ class Builder implements Renderable, WrappableInterface
     }
 
     /**
-     * @param string|null $id
-     *
+     * @param  string|null  $id
      * @return Builder
      */
     public function setId(?string $id): self

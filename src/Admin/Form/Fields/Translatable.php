@@ -36,7 +36,8 @@ class Translatable extends AbstractField implements ProxyFieldInterface
 
     /**
      * Translatable constructor.
-     * @param FieldInterface $field
+     *
+     * @param  FieldInterface  $field
      */
     public function __construct(FieldInterface $field)
     {
@@ -70,8 +71,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     }
 
     /**
-     * @param array $locales
-     *
+     * @param  array  $locales
      * @return $this
      */
     public function setLocales(array $locales = [])
@@ -150,7 +150,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request)
     {
@@ -162,7 +162,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function afterModelSave(Request $request)
     {

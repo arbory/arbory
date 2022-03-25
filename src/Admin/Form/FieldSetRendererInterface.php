@@ -12,8 +12,7 @@ interface FieldSetRendererInterface extends Renderable
     public function getDefaultStyle(): ?string;
 
     /**
-     * @param string $value
-     *
+     * @param  string  $value
      * @return FieldSetRendererInterface
      */
     public function setDefaultStyle(string $value): self;

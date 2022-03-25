@@ -44,14 +44,14 @@ class BelongsToMany extends AbstractField
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request)
     {
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function afterModelSave(Request $request)
     {

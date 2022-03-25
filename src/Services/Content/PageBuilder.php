@@ -25,8 +25,8 @@ class PageBuilder
     protected $contentTypeRoutesRegister;
 
     /**
-     * @param ContentTypeRegister $contentTypeRegister
-     * @param ContentTypeRoutesRegister $contentTypeRoutesRegister
+     * @param  ContentTypeRegister  $contentTypeRegister
+     * @param  ContentTypeRoutesRegister  $contentTypeRoutesRegister
      */
     public function __construct(
         ContentTypeRegister $contentTypeRegister,
@@ -37,8 +37,9 @@ class PageBuilder
     }
 
     /**
-     * @param string $model
+     * @param  string  $model
      * @return $this
+     *
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function register(string $model)
@@ -52,7 +53,7 @@ class PageBuilder
     }
 
     /**
-     * @param string $model
+     * @param  string  $model
      * @return $this
      */
     public function get(string $model)
@@ -63,8 +64,9 @@ class PageBuilder
     }
 
     /**
-     * @param Closure $routes
+     * @param  Closure  $routes
      * @return $this
+     *
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function routes(Closure $routes)
@@ -75,8 +77,9 @@ class PageBuilder
     }
 
     /**
-     * @param Closure $fieldSet
+     * @param  Closure  $fieldSet
      * @return $this
+     *
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function fields(Closure $fieldSet)
@@ -87,8 +90,7 @@ class PageBuilder
     }
 
     /**
-     * @param Closure $layout
-     *
+     * @param  Closure  $layout
      * @return $this
      */
     public function layout(Closure $layout)

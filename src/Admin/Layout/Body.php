@@ -34,8 +34,8 @@ class Body
     /**
      * Body constructor.
      *
-     * @param                 $page
-     * @param LayoutInterface $target
+     * @param  $page
+     * @param  LayoutInterface  $target
      */
     public function __construct($page, $target = null)
     {
@@ -52,8 +52,7 @@ class Body
     /**
      * Adds a new wrapper for content.
      *
-     * @param callable $wrapper
-     *
+     * @param  callable  $wrapper
      * @return Body
      */
     public function wrap(callable $wrapper): self
@@ -69,7 +68,6 @@ class Body
 
     /**
      * @param $content
-     *
      * @return Body
      */
     public function append($content): self
@@ -81,7 +79,6 @@ class Body
 
     /**
      * @param $content
-     *
      * @return Body
      */
     public function prepend($content): self
@@ -93,7 +90,6 @@ class Body
 
     /**
      * @param $content
-     *
      * @return string
      */
     public function render($content)
@@ -116,8 +112,7 @@ class Body
     }
 
     /**
-     * @param LayoutInterface $target
-     *
+     * @param  LayoutInterface  $target
      * @return Body
      */
     public function setTarget(LayoutInterface $target): self
@@ -136,8 +131,7 @@ class Body
     }
 
     /**
-     * @param PageInterface $page
-     *
+     * @param  PageInterface  $page
      * @return Body
      */
     public function setPage(PageInterface $page): self

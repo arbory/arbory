@@ -20,7 +20,8 @@ class Pagination implements Renderable
 
     /**
      * Pagination constructor.
-     * @param LengthAwarePaginator $paginator
+     *
+     * @param  LengthAwarePaginator  $paginator
      */
     public function __construct(LengthAwarePaginator $paginator)
     {

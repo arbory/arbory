@@ -12,7 +12,7 @@ class SettingFactory
     protected $settingRegistry;
 
     /**
-     * @param SettingRegistry $settingRegistry
+     * @param  SettingRegistry  $settingRegistry
      */
     public function __construct(SettingRegistry $settingRegistry)
     {
@@ -20,7 +20,7 @@ class SettingFactory
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return Setting
      */
     public function build(string $key): Setting

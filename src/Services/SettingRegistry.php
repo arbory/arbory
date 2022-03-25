@@ -24,7 +24,7 @@ class SettingRegistry
     }
 
     /**
-     * @param SettingDefinition $definition
+     * @param  SettingDefinition  $definition
      * @return void
      */
     public function register(SettingDefinition $definition)
@@ -33,7 +33,7 @@ class SettingRegistry
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return SettingDefinition|null
      */
     public function find(string $key)
@@ -42,7 +42,7 @@ class SettingRegistry
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return bool
      */
     public function contains(string $key)
@@ -74,8 +74,8 @@ class SettingRegistry
     }
 
     /**
-     * @param array $properties
-     * @param string $before
+     * @param  array  $properties
+     * @param  string  $before
      */
     public function importFromConfig(array $properties, $before = '')
     {

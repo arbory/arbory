@@ -25,7 +25,8 @@ class ToolboxMenu implements Renderable
 
     /**
      * Toolbox constructor.
-     * @param Model $model
+     *
+     * @param  Model  $model
      */
     public function __construct(?Model $model)
     {
@@ -50,8 +51,8 @@ class ToolboxMenu implements Renderable
     }
 
     /**
-     * @param string $name
-     * @param string $url
+     * @param  string  $name
+     * @param  string  $url
      * @return ToolboxMenuItem
      */
     public function add($name, $url)

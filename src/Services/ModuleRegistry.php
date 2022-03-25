@@ -24,7 +24,8 @@ class ModuleRegistry
 
     /**
      * ModuleRegistry constructor.
-     * @param Admin $admin
+     *
+     * @param  Admin  $admin
      */
     public function __construct(Admin $admin)
     {
@@ -33,8 +34,8 @@ class ModuleRegistry
     }
 
     /**
-     * @param string $controllerClass
-     * @param \Closure|null $routes
+     * @param  string  $controllerClass
+     * @param  \Closure|null  $routes
      * @return Module
      */
     public function register(string $controllerClass, \Closure $routes = null)
@@ -55,7 +56,7 @@ class ModuleRegistry
     }
 
     /**
-     * @param string $controllerClass
+     * @param  string  $controllerClass
      * @return Module
      */
     public function findModuleByControllerClass($controllerClass)

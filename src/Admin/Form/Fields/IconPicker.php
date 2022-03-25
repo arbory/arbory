@@ -29,7 +29,7 @@ class IconPicker extends Select
     protected $dimensions;
 
     /**
-     * @param string $name
+     * @param  string  $name
      */
     public function __construct($name)
     {
@@ -39,8 +39,7 @@ class IconPicker extends Select
     }
 
     /**
-     * @param string $path
-     *
+     * @param  string  $path
      * @return IconPicker
      */
     public function sprite(string $path): self
@@ -62,6 +61,7 @@ class IconPicker extends Select
 
     /**
      * @return Collection
+     *
      * @throws \InvalidArgumentException
      */
     public function getOptions(): Collection
@@ -72,7 +72,7 @@ class IconPicker extends Select
     }
 
     /**
-     * @param string $iconId
+     * @param  string  $iconId
      * @return null|\SimpleXMLElement
      */
     public function getIconContent($iconId)
@@ -97,6 +97,7 @@ class IconPicker extends Select
 
     /**
      * @return Collection
+     *
      * @throws \InvalidArgumentException
      */
     protected function getIconIds(): Collection
@@ -133,8 +134,9 @@ class IconPicker extends Select
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return void
+     *
      * @throws \InvalidArgumentException
      */
     public function beforeModelSave(Request $request)
@@ -153,8 +155,7 @@ class IconPicker extends Select
     }
 
     /**
-     * @param mixed $viewboxResolver
-     *
+     * @param  mixed  $viewboxResolver
      * @return IconPicker
      */
     public function setViewboxResolver(callable $viewboxResolver)
@@ -173,8 +174,7 @@ class IconPicker extends Select
     }
 
     /**
-     * @param array|null $dimensions
-     *
+     * @param  array|null  $dimensions
      * @return IconPicker
      */
     public function setDimensions(?array $dimensions)

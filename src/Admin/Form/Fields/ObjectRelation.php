@@ -56,9 +56,9 @@ class ObjectRelation extends AbstractField
     protected $groupedRendererClass = ObjectRelationGroupedRenderer::class;
 
     /**
-     * @param string $name
-     * @param string|Collection $relatedModelTypeOrCollection
-     * @param int $limit
+     * @param  string  $name
+     * @param  string|Collection  $relatedModelTypeOrCollection
+     * @param  int  $limit
      */
     public function __construct($name, $relatedModelTypeOrCollection, $limit = 0)
     {
@@ -97,7 +97,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param string $indentAttribute
+     * @param  string  $indentAttribute
      * @return self
      */
     public function setIndentAttribute(string $indentAttribute = null)
@@ -108,8 +108,8 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param string $attribute
-     * @param Closure $groupName
+     * @param  string  $attribute
+     * @param  Closure  $groupName
      * @return self
      */
     public function groupBy(string $attribute, Closure $groupName = null)
@@ -142,7 +142,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return void
      */
     public function beforeModelSave(Request $request)
@@ -151,8 +151,9 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return void
+     *
      * @throws \Exception
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
@@ -179,8 +180,9 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param int $relationId
+     * @param  int  $relationId
      * @return void
+     *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     protected function saveOne($relationId)
@@ -204,7 +206,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param int[] $relationIds
+     * @param  int[]  $relationIds
      * @return void
      */
     protected function saveMany($relationIds)
@@ -227,8 +229,9 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param array $updatedRelationIds
+     * @param  array  $updatedRelationIds
      * @return void
+     *
      * @throws \Exception
      */
     protected function deleteOldRelations($updatedRelationIds = [])
@@ -241,7 +244,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param Model $model
+     * @param  Model  $model
      * @return bool
      */
     public function hasRelationWith(Model $model): bool
@@ -264,7 +267,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param Collection $options
+     * @param  Collection  $options
      */
     public function setOptions(Collection $options)
     {
@@ -400,8 +403,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param string $groupedRendererClass
-     *
+     * @param  string  $groupedRendererClass
      * @return ObjectRelation
      */
     public function setGroupedRendererClass(string $groupedRendererClass): self

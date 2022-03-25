@@ -28,8 +28,8 @@ class ConstructorFieldRenderer implements RendererInterface
     /**
      * NestedFieldRenderer constructor.
      *
-     * @param Constructor   $field
-     * @param ItemInterface $itemRenderer
+     * @param  Constructor  $field
+     * @param  ItemInterface  $itemRenderer
      */
     public function __construct(Constructor $field, ItemInterface $itemRenderer)
     {
@@ -113,11 +113,11 @@ class ConstructorFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param BlockInterface $block
-     * @param FieldSet       $fieldSet
-     * @param                $index
-     *
+     * @param  BlockInterface  $block
+     * @param  FieldSet  $fieldSet
+     * @param  $index
      * @return Panel|string
+     *
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     protected function getRelationItemHtml(BlockInterface $block, FieldSet $fieldSet, $index)
@@ -141,8 +141,7 @@ class ConstructorFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -163,8 +162,7 @@ class ConstructorFieldRenderer implements RendererInterface
     /**
      * Configure the style before rendering the field.
      *
-     * @param StyleOptionsInterface $options
-     *
+     * @param  StyleOptionsInterface  $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

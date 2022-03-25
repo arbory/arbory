@@ -29,9 +29,10 @@ class Cell implements Renderable
 
     /**
      * Cell constructor.
-     * @param Column $column
-     * @param Row $row
-     * @param Model $model
+     *
+     * @param  Column  $column
+     * @param  Row  $row
+     * @param  Model  $model
      */
     public function __construct(Column $column, Row $row, Model $model)
     {

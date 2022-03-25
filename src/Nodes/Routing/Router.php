@@ -37,7 +37,8 @@ class Router
 
     /**
      * Router constructor.
-     * @param Application $app
+     *
+     * @param  Application  $app
      */
     public function __construct(Application $app)
     {
@@ -45,8 +46,8 @@ class Router
     }
 
     /**
-     * @param string $contentType
-     * @param Closure $callback
+     * @param  string  $contentType
+     * @param  Closure  $callback
      * @return $this
      */
     public function add($contentType, $callback)
@@ -77,7 +78,7 @@ class Router
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Node|null
      */
     public function findNode(Request $request)
@@ -90,7 +91,7 @@ class Router
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function register(Request $request)
     {
@@ -104,7 +105,7 @@ class Router
     }
 
     /**
-     * @param array $contentTypes
+     * @param  array  $contentTypes
      */
     protected function registerContentTypes(array $contentTypes)
     {
@@ -119,7 +120,7 @@ class Router
     }
 
     /**
-     * @param Node $node
+     * @param  Node  $node
      */
     protected function registerRouteForNode(Node $node)
     {
@@ -139,7 +140,7 @@ class Router
     }
 
     /**
-     * @param Node $node
+     * @param  Node  $node
      * @return Collection|\Illuminate\Routing\Route[]
      */
     protected function findRoutesForNode(Node $node)
