@@ -29,9 +29,8 @@ class Page extends Layout implements PageInterface
     }
 
     /**
-     * @param string $title
-     * @param string $url
-     *
+     * @param  string  $title
+     * @param  string  $url
      * @return $this
      */
     public function addBreadcrumb($title, $url)
@@ -50,8 +49,7 @@ class Page extends Layout implements PageInterface
     }
 
     /**
-     * @param Breadcrumbs|null $breadcrumbs
-     *
+     * @param  Breadcrumbs|null  $breadcrumbs
      * @return Page
      */
     public function setBreadcrumbs(?Breadcrumbs $breadcrumbs): PageInterface
@@ -62,9 +60,9 @@ class Page extends Layout implements PageInterface
     }
 
     /**
-     * @param mixed $content
-     *
+     * @param  mixed  $content
      * @return string
+     *
      * @throws \Throwable
      */
     public function contents($content)
@@ -102,8 +100,7 @@ class Page extends Layout implements PageInterface
     }
 
     /**
-     * @param string $view
-     *
+     * @param  string  $view
      * @return Page
      */
     public function setView(string $view): self

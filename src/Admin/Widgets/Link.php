@@ -18,6 +18,7 @@ class Link implements Renderable
 
     /**
      * Link constructor.
+     *
      * @param $url
      */
     public function __construct($url)
@@ -46,7 +47,7 @@ class Link implements Renderable
     }
 
     /**
-     * @param string|null $type
+     * @param  string|null  $type
      * @return Link
      */
     public function asButton($type = null)
@@ -57,8 +58,7 @@ class Link implements Renderable
     }
 
     /**
-     * @param bool $cache
-     *
+     * @param  bool  $cache
      * @return $this
      */
     public function asAjaxbox($cache = false)

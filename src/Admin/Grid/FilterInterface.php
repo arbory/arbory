@@ -12,12 +12,13 @@ interface FilterInterface
 {
     /**
      * FilterInterface constructor.
-     * @param Model $model
+     *
+     * @param  Model  $model
      */
     public function __construct(Model $model);
 
     /**
-     * @param Collection $columns
+     * @param  Collection  $columns
      * @return self
      */
     public function execute(Collection $columns);

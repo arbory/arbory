@@ -147,6 +147,7 @@ class AuthServiceProvider extends ServiceProvider
      * Registers the checkpoints.
      *
      * @return void
+     *
      * @throws \InvalidArgumentException
      */
     protected function registerCheckpoints()
@@ -351,8 +352,8 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Sweep expired codes.
      *
-     * @param  mixed $repository
-     * @param  array $lottery
+     * @param  mixed  $repository
+     * @param  array  $lottery
      * @return void
      */
     protected function sweep($repository, array $lottery)
@@ -368,7 +369,7 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Determine if the configuration odds hit the lottery.
      *
-     * @param  array $lottery
+     * @param  array  $lottery
      * @return bool
      */
     protected function configHitsLottery(array $lottery)

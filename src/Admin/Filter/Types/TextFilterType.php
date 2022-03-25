@@ -23,7 +23,7 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
     protected $config;
 
     /**
-     * @param FilterItem $filterItem
+     * @param  FilterItem  $filterItem
      * @return \Arbory\Base\Html\Elements\Element
      */
     public function render(FilterItem $filterItem): Element
@@ -37,8 +37,8 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
     }
 
     /**
-     * @param FilterItem $filterItem
-     * @param Builder $builder
+     * @param  FilterItem  $filterItem
+     * @param  Builder  $builder
      */
     public function execute(FilterItem $filterItem, Builder $builder): void
     {
@@ -51,8 +51,8 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
     }
 
     /**
-     * @param string $type
-     * @param string $value
+     * @param  string  $type
+     * @param  string  $value
      * @return string
      */
     protected function resolveLikeQuery(string $type, string $value): string

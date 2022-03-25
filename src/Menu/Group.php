@@ -23,7 +23,7 @@ class Group extends AbstractItem
     }
 
     /**
-     * @param Elements\Element $parentElement
+     * @param  Elements\Element  $parentElement
      * @return Elements\Element
      */
     public function render(Elements\Element $parentElement): Elements\Element
@@ -70,7 +70,7 @@ class Group extends AbstractItem
     }
 
     /**
-     * @param AbstractItem $child
+     * @param  AbstractItem  $child
      * @return void
      */
     public function addChild(AbstractItem $child)
@@ -87,7 +87,7 @@ class Group extends AbstractItem
     }
 
     /**
-     * @param Collection $children
+     * @param  Collection  $children
      */
     public function setChildren(Collection $children)
     {

@@ -19,7 +19,7 @@ class Sentinel implements AuthenticationMethod
     private $sentinel;
 
     /**
-     * @param SentinelService $sentinel
+     * @param  SentinelService  $sentinel
      */
     public function __construct(SentinelService $sentinel)
     {
@@ -27,9 +27,9 @@ class Sentinel implements AuthenticationMethod
     }
 
     /**
-     * @param array $credentials
-     * @param bool $remember
-     * @param bool $login
+     * @param  array  $credentials
+     * @param  bool  $remember
+     * @param  bool  $login
      * @return bool
      */
     public function authenticate(array $credentials, $remember = false, $login = true): bool
@@ -40,8 +40,8 @@ class Sentinel implements AuthenticationMethod
     }
 
     /**
-     * @param UserInterface|null $user
-     * @param bool $everywhere
+     * @param  UserInterface|null  $user
+     * @param  bool  $everywhere
      * @return bool
      */
     public function logout(UserInterface $user = null, $everywhere = false): bool

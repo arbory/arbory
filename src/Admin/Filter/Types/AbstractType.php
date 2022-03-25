@@ -23,7 +23,7 @@ abstract class AbstractType
     protected $config;
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return mixed
      */
     public function setValue($value)
@@ -40,7 +40,7 @@ abstract class AbstractType
     }
 
     /**
-     * @param FilterItem $filterItem
+     * @param  FilterItem  $filterItem
      * @return Element
      */
     abstract public function render(FilterItem $filterItem): Element;
@@ -54,7 +54,7 @@ abstract class AbstractType
     }
 
     /**
-     * @param iterable $config
+     * @param  iterable  $config
      * @return FilterTypeInterface
      */
     public function setConfig(iterable $config): FilterTypeInterface

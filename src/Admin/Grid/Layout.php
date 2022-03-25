@@ -41,8 +41,7 @@ class Layout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param Grid $grid
-     *
+     * @param  Grid  $grid
      * @return Layout
      */
     public function setGrid(Grid $grid): self
@@ -112,8 +111,7 @@ class Layout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param mixed $content
-     *
+     * @param  mixed  $content
      * @return Content|mixed
      */
     public function contents($content)

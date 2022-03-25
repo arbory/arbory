@@ -27,10 +27,9 @@ class Row
     }
 
     /**
-     * @param int $size
-     * @param mixed $body
-     * @param string|null $breakpoint
-     *
+     * @param  int  $size
+     * @param  mixed  $body
+     * @param  string|null  $breakpoint
      * @return Column
      */
     public function column($size, $body, $breakpoint = null)

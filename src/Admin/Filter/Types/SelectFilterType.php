@@ -20,7 +20,7 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
     protected $config;
 
     /**
-     * @param FilterItem $filterItem
+     * @param  FilterItem  $filterItem
      * @return \Arbory\Base\Html\Elements\Element
      */
     public function render(FilterItem $filterItem): Element
@@ -40,8 +40,8 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
     /**
      * TODO: Laravel validator & Validation support for multi level parameters.
      *
-     * @param FilterParameters $parameters
-     * @param callable $attributeResolver
+     * @param  FilterParameters  $parameters
+     * @param  callable  $attributeResolver
      * @return array
      */
     public function rules(FilterParameters $parameters, callable $attributeResolver): array
@@ -53,9 +53,8 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
     }
 
     /**
-     * @param FilterParameters $filterParameters
-     * @param callable $attributeResolver
-     *
+     * @param  FilterParameters  $filterParameters
+     * @param  callable  $attributeResolver
      * @return array
      */
     public function messages(FilterParameters $filterParameters, callable $attributeResolver): array
@@ -64,9 +63,8 @@ class SelectFilterType extends AbstractType implements FilterTypeInterface, With
     }
 
     /**
-     * @param FilterParameters $filterParameters
-     * @param callable $attributeResolver
-     *
+     * @param  FilterParameters  $filterParameters
+     * @param  callable  $attributeResolver
      * @return array
      */
     public function attributes(FilterParameters $filterParameters, callable $attributeResolver): array

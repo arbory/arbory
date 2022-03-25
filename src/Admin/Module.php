@@ -46,9 +46,10 @@ class Module
 
     /**
      * Module constructor.
-     * @param Admin $admin
-     * @param ModuleConfiguration $configuration
-     * @param ModulePermissionsRegistry $permissions
+     *
+     * @param  Admin  $admin
+     * @param  ModuleConfiguration  $configuration
+     * @param  ModulePermissionsRegistry  $permissions
      */
     public function __construct(
         Admin $admin,
@@ -69,7 +70,7 @@ class Module
     }
 
     /**
-     * @param string|null $permission
+     * @param  string|null  $permission
      * @return bool
      */
     public function isAuthorized(?string $permission = self::INDEX_PERMISSION_KEY): bool
@@ -78,7 +79,7 @@ class Module
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return bool
      */
     public function isRequestAuthorized(Request $request): bool
@@ -128,7 +129,7 @@ class Module
 
     /**
      * @param $route
-     * @param array $parameters
+     * @param  array  $parameters
      * @return string
      */
     public function url($route, $parameters = [])
@@ -141,7 +142,7 @@ class Module
     }
 
     /**
-     * @param Role|null $role
+     * @param  Role|null  $role
      * @return Collection|ModulePermission[]
      */
     public function getPermissions(?Role $role = null): Collection
@@ -150,7 +151,7 @@ class Module
     }
 
     /**
-     * @param callable $callback
+     * @param  callable  $callback
      * @return Module
      */
     public function registerCustomPermissions(callable $callback): self

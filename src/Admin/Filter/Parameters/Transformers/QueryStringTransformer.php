@@ -14,7 +14,8 @@ class QueryStringTransformer implements ParameterTransformerInterface
 
     /**
      * QueryStringTransformer constructor.
-     * @param Request $request
+     *
+     * @param  Request  $request
      */
     public function __construct(Request $request)
     {
@@ -22,8 +23,8 @@ class QueryStringTransformer implements ParameterTransformerInterface
     }
 
     /**
-     * @param FilterParameters $parameters
-     * @param callable $next
+     * @param  FilterParameters  $parameters
+     * @param  callable  $next
      * @return mixed
      */
     public function transform(FilterParameters $parameters, callable $next)
@@ -38,7 +39,7 @@ class QueryStringTransformer implements ParameterTransformerInterface
     }
 
     /**
-     * @param FilterParameters $parameters
+     * @param  FilterParameters  $parameters
      * @return string|null
      */
     public function stringify(FilterParameters $parameters): ?string

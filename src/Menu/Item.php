@@ -29,8 +29,9 @@ class Item extends AbstractItem
     }
 
     /**
-     * @param Elements\Element $parentElement
+     * @param  Elements\Element  $parentElement
      * @return Elements\Element
+     *
      * @throws \InvalidArgumentException
      */
     public function render(Elements\Element $parentElement): Elements\Element
@@ -56,6 +57,7 @@ class Item extends AbstractItem
 
     /**
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     protected function getUrl()
@@ -82,7 +84,7 @@ class Item extends AbstractItem
     }
 
     /**
-     * @param \Arbory\Base\Admin\Module $module
+     * @param  \Arbory\Base\Admin\Module  $module
      */
     public function setModule(Module $module)
     {

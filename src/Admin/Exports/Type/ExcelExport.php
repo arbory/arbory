@@ -21,7 +21,8 @@ class ExcelExport implements FromCollection, WithHeadings, ExportInterface
 
     /**
      * ExcelExport constructor.
-     * @param DataSetExport $export
+     *
+     * @param  DataSetExport  $export
      */
     public function __construct(DataSetExport $export)
     {
@@ -45,7 +46,7 @@ class ExcelExport implements FromCollection, WithHeadings, ExportInterface
     }
 
     /**
-     * @param string $fileName
+     * @param  string  $fileName
      * @return BinaryFileResponse
      */
     public function download(string $fileName): BinaryFileResponse

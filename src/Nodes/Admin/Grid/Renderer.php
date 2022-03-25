@@ -36,7 +36,8 @@ class Renderer implements Renderable
 
     /**
      * Renderer constructor.
-     * @param Grid $grid
+     *
+     * @param  Grid  $grid
      */
     public function __construct(Grid $grid)
     {
@@ -71,8 +72,8 @@ class Renderer implements Renderable
     }
 
     /**
-     * @param Collection $items
-     * @param int $level
+     * @param  Collection  $items
+     * @param  int  $level
      * @return Element
      */
     protected function buildTree(Collection $items, $level = 1)
@@ -169,7 +170,7 @@ class Renderer implements Renderable
 
     /**
      * @param $route
-     * @param array $parameters
+     * @param  array  $parameters
      * @return string
      */
     public function url($route, $parameters = [])
@@ -191,7 +192,7 @@ class Renderer implements Renderable
     }
 
     /**
-     * @param string $nodeId
+     * @param  string  $nodeId
      * @return bool
      */
     protected function getNodeCookie($nodeId)
@@ -202,7 +203,7 @@ class Renderer implements Renderable
     }
 
     /**
-     * @param string $type
+     * @param  string  $type
      * @return string
      */
     protected function makeNameFromType($type): string

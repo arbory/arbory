@@ -18,7 +18,7 @@ class Menu
     protected $items;
 
     /**
-     * @param Collection|null $items
+     * @param  Collection|null  $items
      */
     public function __construct(Collection $items = null)
     {
@@ -26,7 +26,7 @@ class Menu
     }
 
     /**
-     * @param AbstractItem $item
+     * @param  AbstractItem  $item
      * @return void
      */
     public function addItem(AbstractItem $item)
@@ -90,7 +90,7 @@ class Menu
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return bool
      */
     protected function hasMenuItemCookie(string $name)
@@ -99,7 +99,7 @@ class Menu
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return bool
      */
     protected function getMenuItemCookie(string $name)

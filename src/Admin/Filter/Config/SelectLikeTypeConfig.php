@@ -15,7 +15,7 @@ class SelectLikeTypeConfig extends BaseConfig
     public const CONFIG_MULTIPLE = 'multiple';
 
     /**
-     * @param iterable $options
+     * @param  iterable  $options
      * @return SelectLikeTypeConfig
      */
     public function setOptions(iterable $options): self
@@ -34,7 +34,7 @@ class SelectLikeTypeConfig extends BaseConfig
     }
 
     /**
-     * @param bool $options
+     * @param  bool  $options
      * @return SelectLikeTypeConfig
      */
     public function setMultiple(?bool $options): self

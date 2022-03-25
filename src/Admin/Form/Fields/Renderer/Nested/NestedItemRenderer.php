@@ -13,12 +13,12 @@ class NestedItemRenderer implements ItemInterface
     use HasRenderOptions;
 
     /**
-     * @param FieldInterface $field
-     * @param FieldSet       $fieldSet
-     * @param null           $index
-     * @param array          $parameters
-     *
+     * @param  FieldInterface  $field
+     * @param  FieldSet  $fieldSet
+     * @param  null  $index
+     * @param  array  $parameters
      * @return \Arbory\Base\Html\Elements\Element|mixed
+     *
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function __invoke(FieldInterface $field, FieldSet $fieldSet, $index = null, array $parameters = [])
@@ -52,7 +52,6 @@ class NestedItemRenderer implements ItemInterface
 
     /**
      * @param $field
-     *
      * @return \Arbory\Base\Html\Elements\Element|null
      */
     protected function getSortableNavigation($field)
@@ -79,10 +78,10 @@ class NestedItemRenderer implements ItemInterface
     }
 
     /**
-     * @param FieldInterface $field
-     * @param                $name
-     *
+     * @param  FieldInterface  $field
+     * @param  $name
      * @return \Arbory\Base\Html\Elements\Element|null
+     *
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     protected function getFieldSetRemoveButton(FieldInterface $field, $name)

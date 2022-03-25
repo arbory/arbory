@@ -20,6 +20,7 @@ class ExceptionReply extends Reply
 
     /**
      * @var string
+     *
      * @return JsonResponse|RedirectResponse
      */
     public function dispatch($url = '/')

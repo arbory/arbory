@@ -39,7 +39,8 @@ class ModulePermissionsRegistry
 
     /**
      * ModulePermissionsRegistry constructor.
-     * @param string $controllerClass
+     *
+     * @param  string  $controllerClass
      */
     public function __construct(string $controllerClass)
     {
@@ -51,8 +52,8 @@ class ModulePermissionsRegistry
     }
 
     /**
-     * @param string $permission
-     * @param Role|null $role
+     * @param  string  $permission
+     * @param  Role|null  $role
      * @return bool
      */
     public function accessible(string $permission, ?Role $role = null): bool
@@ -72,7 +73,7 @@ class ModulePermissionsRegistry
     }
 
     /**
-     * @param Role|null $role
+     * @param  Role|null  $role
      * @return Collection
      */
     public function getPermissions(?Role $role = null): Collection
@@ -85,7 +86,7 @@ class ModulePermissionsRegistry
     }
 
     /**
-     * @param ModulePermission $permission
+     * @param  ModulePermission  $permission
      */
     public function register(ModulePermission $permission)
     {
@@ -93,7 +94,7 @@ class ModulePermissionsRegistry
     }
 
     /**
-     * @param string $permission
+     * @param  string  $permission
      * @return string
      */
     protected function getUnderlyingPermission(string $permission): string

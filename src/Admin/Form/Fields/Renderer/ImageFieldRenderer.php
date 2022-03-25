@@ -56,7 +56,7 @@ final class ImageFieldRenderer extends FileFieldRenderer
     }
 
     /**
-     * @param StyleOptionsInterface $options
+     * @param  StyleOptionsInterface  $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

@@ -19,7 +19,7 @@ class UpdatePermissionsStructure extends Migration
     }
 
     /**
-     * @param Role $role
+     * @param  Role  $role
      * @return array
      */
     private function transformPermissions(Role $role): array
@@ -33,7 +33,7 @@ class UpdatePermissionsStructure extends Migration
     }
 
     /**
-     * @param string $controllerClass
+     * @param  string  $controllerClass
      * @return array
      */
     private function getSplitControllerPermissions(string $controllerClass): array

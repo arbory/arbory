@@ -43,8 +43,8 @@ class NodesController extends Controller
     protected $contentTypeRegister;
 
     /**
-     * @param Container           $container
-     * @param ContentTypeRegister $contentTypeRegister
+     * @param  Container  $container
+     * @param  ContentTypeRegister  $contentTypeRegister
      */
     public function __construct(
         Container $container,
@@ -55,9 +55,8 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Form            $form
-     * @param LayoutInterface $layout
-     *
+     * @param  Form  $form
+     * @param  LayoutInterface  $layout
      * @return Form
      */
     protected function form(Form $form, ?LayoutInterface $layout)
@@ -103,8 +102,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Grid $grid
-     *
+     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)
@@ -119,7 +117,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param \Arbory\Base\Admin\Tools\ToolboxMenu $tools
+     * @param  \Arbory\Base\Admin\Tools\ToolboxMenu  $tools
      */
     protected function toolbox(ToolboxMenu $tools)
     {
@@ -136,9 +134,8 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Request       $request
-     * @param LayoutManager $manager
-     *
+     * @param  Request  $request
+     * @param  LayoutManager  $manager
      * @return RedirectResponse|Layout
      */
     public function create(Request $request, LayoutManager $manager)
@@ -168,7 +165,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      */
     protected function afterSave(Form $form)
     {
@@ -200,8 +197,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\View\View
      */
     public function contentTypesDialog(Request $request)
@@ -224,15 +220,14 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     protected function nodeRepositionApi(Request $request)
     {
         /**
          * @var NodesRepository
-         * @var Node            $node
+         * @var Node $node
          */
         $nodes = new NodesRepository;
         $node = $nodes->findOneBy('id', $request->input('id'));
@@ -249,8 +244,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return string
      */
     protected function slugGeneratorApi(Request $request)
@@ -300,9 +294,8 @@ class NodesController extends Controller
     /**
      * Creates a closure for content field.
      *
-     * @param ContentTypeDefinition $definition
-     * @param LayoutInterface|null  $layout
-     *
+     * @param  ContentTypeDefinition  $definition
+     * @param  LayoutInterface|null  $layout
      * @return \Closure
      */
     protected function contentResolver(ContentTypeDefinition $definition, ?LayoutInterface $layout)
@@ -317,8 +310,7 @@ class NodesController extends Controller
     /**
      * Resolves content type based on the current model & form data.
      *
-     * @param Form $form
-     *
+     * @param  Form  $form
      * @return ContentTypeDefinition
      */
     protected function resolveContentDefinition(Form $form): ContentTypeDefinition
@@ -340,7 +332,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param string $type
+     * @param  string  $type
      * @return string
      */
     protected function makeNameFromType($type): string

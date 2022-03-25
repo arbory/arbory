@@ -37,8 +37,8 @@ class Button implements Renderable
     protected $value;
 
     /**
-     * @param string|null $name
-     * @param null $value
+     * @param  string|null  $name
+     * @param  null  $value
      */
     public function __construct(string $name = null, $value = null)
     {
@@ -91,8 +91,7 @@ class Button implements Renderable
     }
 
     /**
-     * @param bool $cache
-     *
+     * @param  bool  $cache
      * @return $this
      */
     public function asAjaxbox($cache = false)
@@ -108,7 +107,7 @@ class Button implements Renderable
 
     /**
      * @param $inputType
-     * @param string|null $visualType
+     * @param  string|null  $visualType
      * @return Button
      */
     public function type($inputType, $visualType = null)
@@ -162,8 +161,8 @@ class Button implements Renderable
     }
 
     /**
-     * @param string|null $name
-     * @param string|null $value
+     * @param  string|null  $name
+     * @param  string|null  $value
      * @return Button
      */
     public static function create(string $name = null, $value = null)

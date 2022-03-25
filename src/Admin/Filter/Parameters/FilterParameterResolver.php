@@ -18,8 +18,9 @@ class FilterParameterResolver
 
     /**
      * ParameterResolver constructor.
-     * @param ParameterTransformerPipeline $transformerPipeline
-     * @param FilterValidatorBuilder $filterValidator
+     *
+     * @param  ParameterTransformerPipeline  $transformerPipeline
+     * @param  FilterValidatorBuilder  $filterValidator
      */
     public function __construct(
         ParameterTransformerPipeline $transformerPipeline,
@@ -30,7 +31,7 @@ class FilterParameterResolver
     }
 
     /**
-     * @param FilterManager $filterManager
+     * @param  FilterManager  $filterManager
      * @return FilterParameters
      */
     public function resolve(FilterManager $filterManager): FilterParameters
@@ -44,9 +45,8 @@ class FilterParameterResolver
     }
 
     /**
-     * @param FilterParameters $parameters
-     * @param FilterManager $filterManager
-     *
+     * @param  FilterParameters  $parameters
+     * @param  FilterManager  $filterManager
      * @return FilterParameters
      */
     protected function filterInvalidParameterValues(

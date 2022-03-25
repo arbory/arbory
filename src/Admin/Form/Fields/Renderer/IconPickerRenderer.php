@@ -45,7 +45,7 @@ class IconPickerRenderer extends SelectFieldRenderer
     }
 
     /**
-     * @param string $id
+     * @param  string  $id
      * @return Element
      */
     protected function getSvgIconElement($id)
@@ -90,10 +90,9 @@ class IconPickerRenderer extends SelectFieldRenderer
     }
 
     /**
-     * @param \SimpleXMLElement $iconNode
-     * @param  int $width
-     * @param  int $height
-     *
+     * @param  \SimpleXMLElement  $iconNode
+     * @param  int  $width
+     * @param  int  $height
      * @return string
      */
     protected function resolveViewBox(\SimpleXMLElement $iconNode, $width, $height)

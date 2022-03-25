@@ -52,7 +52,8 @@ class Filter implements FilterInterface
 
     /**
      * Filter constructor.
-     * @param Model $model
+     *
+     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
@@ -62,7 +63,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Collection|Column[] $columns
+     * @param  Collection|Column[]  $columns
      * @return void
      */
     public function order(Collection $columns)
@@ -99,7 +100,7 @@ class Filter implements FilterInterface
 
     /**
      * @param $phrase
-     * @param Collection|Column[] $columns
+     * @param  Collection|Column[]  $columns
      */
     public function search($phrase, $columns)
     {
@@ -150,7 +151,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Collection $columns
+     * @param  Collection  $columns
      * @return self
      */
     public function execute(Collection $columns): self
@@ -167,7 +168,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string $relationName
+     * @param  string  $relationName
      */
     public function withRelation(string $relationName)
     {
@@ -191,7 +192,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param bool $paginated
+     * @param  bool  $paginated
      */
     public function setPaginated(bool $paginated)
     {
@@ -207,7 +208,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Column $column
+     * @param  Column  $column
      * @return array
      */
     public function getFilterTypeAction(Column $column): array
@@ -216,7 +217,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param int $perPage
+     * @param  int  $perPage
      */
     public function setPerPage(int $perPage)
     {
@@ -224,7 +225,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param FilterManager $filterManager
+     * @param  FilterManager  $filterManager
      * @return Filter
      */
     public function setFilterManager(FilterManager $filterManager): self
@@ -251,8 +252,8 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string $orderBy
-     * @param string $orderDirection
+     * @param  string  $orderBy
+     * @param  string  $orderDirection
      * @return Filter
      */
     public function setDefaultOrderBy(string $orderBy, string $orderDirection = 'desc'): self

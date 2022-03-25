@@ -11,7 +11,6 @@ interface NavigableInterface
 
     /**
      * @param  Navigator  $navigator
-     *
      * @return mixed
      */
     public function navigator(Navigator $navigator);

@@ -13,7 +13,6 @@ abstract class AbstractBlock
      *
      * @param  Request  $request
      * @param  HasOne  $field
-     *
      * @return void
      */
     public function beforeModelSave(Request $request, HasOne $field)
@@ -27,7 +26,6 @@ abstract class AbstractBlock
      *
      * @param  Request  $request
      * @param  HasOne  $field
-     *
      * @return void
      */
     public function afterModelSave(Request $request, HasOne $field)

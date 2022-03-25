@@ -28,7 +28,7 @@ class ContentTypeDefinition
     protected $layoutHandler;
 
     /**
-     * @param string $model
+     * @param  string  $model
      */
     public function __construct(string $model)
     {
@@ -48,7 +48,7 @@ class ContentTypeDefinition
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      */
     public function setName(string $name)
     {
@@ -72,7 +72,7 @@ class ContentTypeDefinition
     }
 
     /**
-     * @param Closure $fieldSetHandler
+     * @param  Closure  $fieldSetHandler
      */
     public function setFieldSetHandler(Closure $fieldSetHandler)
     {
@@ -80,7 +80,7 @@ class ContentTypeDefinition
     }
 
     /**
-     * @param Closure $layoutHandler
+     * @param  Closure  $layoutHandler
      */
     public function setLayoutHandler(Closure $layoutHandler): void
     {
@@ -96,7 +96,7 @@ class ContentTypeDefinition
     }
 
     /**
-     * @param string $type
+     * @param  string  $type
      * @return string
      */
     protected function makeNameFromType($type): string

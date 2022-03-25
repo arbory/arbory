@@ -53,9 +53,10 @@ class RolesController extends Controller
 
     /**
      * RolesController constructor.
-     * @param Admin $admin
-     * @param Request $request
-     * @param PropertyRemover $propertyRemover
+     *
+     * @param  Admin  $admin
+     * @param  Request  $request
+     * @param  PropertyRemover  $propertyRemover
      */
     public function __construct(Admin $admin, Request $request, PropertyRemover $propertyRemover)
     {
@@ -65,9 +66,10 @@ class RolesController extends Controller
     }
 
     /**
-     * @param Form $form
-     * @param PanelLayout $layout
+     * @param  Form  $form
+     * @param  PanelLayout  $layout
      * @return Form
+     *
      * @throws \Exception
      */
     protected function form(Form $form, PanelLayout $layout)
@@ -109,7 +111,7 @@ class RolesController extends Controller
     }
 
     /**
-     * @param Grid $grid
+     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)
@@ -122,8 +124,8 @@ class RolesController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param Form $form
+     * @param  Request  $request
+     * @param  Form  $form
      */
     protected function setRolePermissions(Request $request, Form $form): void
     {
@@ -134,7 +136,7 @@ class RolesController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return array
      */
     protected function getPermissions(Request $request): array
@@ -156,9 +158,9 @@ class RolesController extends Controller
     }
 
     /**
-     * @param PanelLayout $layout
-     * @param Module $module
-     * @param Role $role
+     * @param  PanelLayout  $layout
+     * @param  Module  $module
+     * @param  Role  $role
      * @return LayoutGrid
      */
     protected function getModuleFieldSet(PanelLayout $layout, Module $module, Role $role)
@@ -174,8 +176,8 @@ class RolesController extends Controller
     }
 
     /**
-     * @param Module $module
-     * @param ModulePermission $permission
+     * @param  Module  $module
+     * @param  ModulePermission  $permission
      * @return Form\Fields\Checkbox
      */
     protected function getPermissionCheckbox(Module $module, ModulePermission $permission): Form\Fields\Checkbox
@@ -195,8 +197,8 @@ class RolesController extends Controller
     }
 
     /**
-     * @param Module $module
-     * @param ModulePermission $permission
+     * @param  Module  $module
+     * @param  ModulePermission  $permission
      * @return string
      */
     protected function getPermissionFieldName(Module $module, ModulePermission $permission): string

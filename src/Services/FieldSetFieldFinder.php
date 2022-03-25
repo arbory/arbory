@@ -36,9 +36,9 @@ class FieldSetFieldFinder
     protected $languageRepository;
 
     /**
-     * @param LanguageRepository $languageRepository
-     * @param FieldSet $fieldSet
-     * @param AbstractField|null $initialField
+     * @param  LanguageRepository  $languageRepository
+     * @param  FieldSet  $fieldSet
+     * @param  AbstractField|null  $initialField
      */
     public function __construct(
         LanguageRepository $languageRepository,
@@ -51,7 +51,7 @@ class FieldSetFieldFinder
     }
 
     /**
-     * @param string $attribute
+     * @param  string  $attribute
      * @return bool
      */
     public function contains(string $attribute): bool
@@ -70,7 +70,7 @@ class FieldSetFieldFinder
     }
 
     /**
-     * @param string $attribute
+     * @param  string  $attribute
      * @return array
      */
     public function find(string $attribute)
@@ -134,7 +134,7 @@ class FieldSetFieldFinder
     }
 
     /**
-     * @param string $attribute
+     * @param  string  $attribute
      * @return array
      */
     protected function getActualFieldNames($attribute)
@@ -154,8 +154,8 @@ class FieldSetFieldFinder
     }
 
     /**
-     * @param Collection $fields
-     * @param string $attribute
+     * @param  Collection  $fields
+     * @param  string  $attribute
      * @return AbstractField|null
      */
     protected function resolveMultipleFields($fields, $attribute)
@@ -187,8 +187,8 @@ class FieldSetFieldFinder
     }
 
     /**
-     * @param AbstractField $field
-     * @param string $fieldName
+     * @param  AbstractField  $field
+     * @param  string  $fieldName
      * @return FieldSet|null
      */
     protected function resolveFieldSet(AbstractField $field, string $fieldName)

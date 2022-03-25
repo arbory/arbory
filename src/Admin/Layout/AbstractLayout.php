@@ -43,9 +43,8 @@ abstract class AbstractLayout
     protected $content;
 
     /**
-     * @param string $name
-     * @param mixed  $content
-     *
+     * @param  string  $name
+     * @param  mixed  $content
      * @return Slot
      */
     public function slot($name, $content = null)
@@ -85,7 +84,7 @@ abstract class AbstractLayout
     /**
      * Executes when the layout is applied.
      *
-     * @param PageInterface $page
+     * @param  PageInterface  $page
      */
     public function applyToPage(PageInterface $page)
     {
@@ -131,8 +130,7 @@ abstract class AbstractLayout
     /**
      * Adds an transformer to the layout.
      *
-     * @param LayoutInterface|string $layout
-     *
+     * @param  LayoutInterface|string  $layout
      * @return $this
      */
     public function use($layout): LayoutResolver
@@ -148,7 +146,6 @@ abstract class AbstractLayout
      * Transform the content.
      *
      * @param $content
-     *
      * @return mixed
      */
     public function transform($content)
@@ -185,8 +182,7 @@ abstract class AbstractLayout
     /**
      * Set inner content of the layout.
      *
-     * @param mixed $content
-     *
+     * @param  mixed  $content
      * @return LayoutInterface
      */
     public function setContent($content): LayoutInterface

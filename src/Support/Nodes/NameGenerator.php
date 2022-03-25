@@ -6,7 +6,6 @@ class NameGenerator
 {
     /**
      * @param  string  $type
-     *
      * @return string
      */
     public function generate(string $type): string

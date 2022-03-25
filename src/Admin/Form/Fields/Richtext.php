@@ -30,7 +30,6 @@ class Richtext extends Textarea
      */
     protected $allowedTags = null;
 
-
     public function __construct(string $name)
     {
         parent::__construct($name);
@@ -39,7 +38,7 @@ class Richtext extends Textarea
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request)
     {
@@ -51,7 +50,7 @@ class Richtext extends Textarea
             ? $request->input($this->getNameSpacedName())
             : null;
 
-        if(is_string($value) && is_array($this->allowedTags)) {
+        if (is_string($value) && is_array($this->allowedTags)) {
             $value = strip_tags($value, $this->allowedTags);
         }
 
@@ -67,8 +66,7 @@ class Richtext extends Textarea
     }
 
     /**
-     * @param mixed $attachmentsUploadUrl
-     *
+     * @param  mixed  $attachmentsUploadUrl
      * @return Richtext
      */
     public function setAttachmentsUploadUrl($attachmentsUploadUrl): self
@@ -87,8 +85,7 @@ class Richtext extends Textarea
     }
 
     /**
-     * @param bool $isCompact
-     *
+     * @param  bool  $isCompact
      * @return Richtext
      */
     public function setCompact(bool $isCompact): self

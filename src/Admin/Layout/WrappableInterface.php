@@ -13,7 +13,6 @@ interface WrappableInterface
      * Set the inner content.
      *
      * @param $content
-     *
      * @return mixed
      */
     public function setContent($content);

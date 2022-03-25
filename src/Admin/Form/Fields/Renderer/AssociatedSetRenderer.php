@@ -28,7 +28,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
     /**
      * AssociatedSetRenderer constructor.
      *
-     * @param FieldInterface $field
+     * @param  FieldInterface  $field
      */
     public function __construct(FieldInterface $field)
     {
@@ -59,10 +59,9 @@ class AssociatedSetRenderer extends ControlFieldRenderer
     }
 
     /**
-     * @param string $name
-     * @param string $value
-     * @param string $label
-     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  string  $label
      * @return Element
      */
     protected function getAssociatedItem($name, $value, $label)
@@ -101,8 +100,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
     }
 
     /**
-     * @param StyleOptionsInterface $options
-     *
+     * @param  StyleOptionsInterface  $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

@@ -13,7 +13,6 @@ interface InputControlInterface extends RenderOptionsInterface
 
     /**
      * @param $value
-     *
      * @return InputControlInterface
      */
     public function setValue($value): self;
@@ -37,8 +36,7 @@ interface InputControlInterface extends RenderOptionsInterface
     public function getName(): ?string;
 
     /**
-     * @param string|null $name
-     *
+     * @param  string|null  $name
      * @return InputControlInterface
      */
     public function setName(?string $name): self;

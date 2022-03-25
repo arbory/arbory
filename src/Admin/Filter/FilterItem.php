@@ -49,7 +49,7 @@ class FilterItem
     protected $owner;
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return FilterItem
      */
     public function setName(string $name): self
@@ -68,7 +68,7 @@ class FilterItem
     }
 
     /**
-     * @param string $title
+     * @param  string  $title
      * @return FilterItem
      */
     public function setTitle(string $title): self
@@ -87,7 +87,7 @@ class FilterItem
     }
 
     /**
-     * @param FilterTypeInterface $type
+     * @param  FilterTypeInterface  $type
      * @return FilterItem
      */
     public function setType(FilterTypeInterface $type): self
@@ -106,7 +106,7 @@ class FilterItem
     }
 
     /**
-     * @param mixed $defaultValue
+     * @param  mixed  $defaultValue
      * @return FilterItem
      */
     public function setDefaultValue($defaultValue): self
@@ -141,7 +141,7 @@ class FilterItem
     }
 
     /**
-     * @param callable|null $executor
+     * @param  callable|null  $executor
      * @return FilterItem
      */
     public function setExecutor(?callable $executor): self
@@ -160,7 +160,7 @@ class FilterItem
     }
 
     /**
-     * @param FilterManager $manager
+     * @param  FilterManager  $manager
      * @return FilterItem
      */
     public function setManager(FilterManager $manager): self
@@ -179,7 +179,7 @@ class FilterItem
     }
 
     /**
-     * @param bool $isOpen
+     * @param  bool  $isOpen
      * @return FilterItem
      */
     public function setIsOpen(?bool $isOpen): self
@@ -198,7 +198,7 @@ class FilterItem
     }
 
     /**
-     * @param object $owner
+     * @param  object  $owner
      * @return FilterItem
      */
     public function setOwner($owner): self

@@ -23,7 +23,7 @@ class ContentTypeRoutesRegister
     protected $contentTypesRegister;
 
     /**
-     * @param ContentTypeRegister $contentTypeRegister
+     * @param  ContentTypeRegister  $contentTypeRegister
      */
     public function __construct(ContentTypeRegister $contentTypeRegister)
     {
@@ -32,8 +32,9 @@ class ContentTypeRoutesRegister
 
     /**
      * @param $contentType
-     * @param Closure $handler
+     * @param  Closure  $handler
      * @return $this
+     *
      * @throws BadMethodCallException
      */
     public function register($contentType, Closure $handler)
@@ -82,7 +83,7 @@ class ContentTypeRoutesRegister
     }
 
     /**
-     * @param Route $route
+     * @param  Route  $route
      * @return Node|null
      */
     public function getNodeFromRoute(Route $route)
@@ -105,8 +106,8 @@ class ContentTypeRoutesRegister
     }
 
     /**
-     * @param NodeCollection|Node[] $items
-     * @param string $base
+     * @param  NodeCollection|Node[]  $items
+     * @param  string  $base
      */
     protected function registerRoutesForNodeCollection(Collection $items, $base = '')
     {
@@ -129,8 +130,8 @@ class ContentTypeRoutesRegister
     }
 
     /**
-     * @param Node $item
-     * @param string $slug
+     * @param  Node  $item
+     * @param  string  $slug
      */
     protected function registerPreviewRoutes(Node $item, $slug)
     {
@@ -142,8 +143,8 @@ class ContentTypeRoutesRegister
     }
 
     /**
-     * @param NodeCollection|Node[] $items
-     * @param string $base
+     * @param  NodeCollection|Node[]  $items
+     * @param  string  $base
      */
     protected function registerPreviewRoutesForNodeCollection(Collection $items, $base = '')
     {
@@ -159,7 +160,7 @@ class ContentTypeRoutesRegister
     }
 
     /**
-     * @param Node $node
+     * @param  Node  $node
      * @param $slug
      */
     protected function registerNodeRoutes(Node $node, $slug)

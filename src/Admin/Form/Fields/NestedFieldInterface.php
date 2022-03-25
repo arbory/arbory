@@ -6,7 +6,6 @@ interface NestedFieldInterface
 {
     /**
      * @param $model
-     *
      * @return mixed
      */
     public function getNestedFieldSet($model);

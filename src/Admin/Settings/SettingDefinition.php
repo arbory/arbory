@@ -35,11 +35,11 @@ class SettingDefinition
     protected $model;
 
     /**
-     * @param string $key
-     * @param mixed $value
-     * @param string|null $type
-     * @param mixed $configEntry
-     * @param Setting|null $databaseEntry
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  string|null  $type
+     * @param  mixed  $configEntry
+     * @param  Setting|null  $databaseEntry
      */
     public function __construct(
         string $key,
@@ -79,7 +79,7 @@ class SettingDefinition
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      */
     public function setKey(string $key)
     {
@@ -95,7 +95,7 @@ class SettingDefinition
     }
 
     /**
-     * @param string $type
+     * @param  string  $type
      */
     public function setType(string $type)
     {
@@ -111,7 +111,7 @@ class SettingDefinition
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function setValue($value)
     {
@@ -135,7 +135,7 @@ class SettingDefinition
     }
 
     /**
-     * @param Setting|null $model
+     * @param  Setting|null  $model
      */
     public function setModel($model)
     {

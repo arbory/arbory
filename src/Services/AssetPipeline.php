@@ -35,7 +35,7 @@ class AssetPipeline
     }
 
     /**
-     * @param string $filePath
+     * @param  string  $filePath
      * @return void
      */
     public function js(string $filePath): void
@@ -44,7 +44,7 @@ class AssetPipeline
     }
 
     /**
-     * @param string $filePath
+     * @param  string  $filePath
      * @return void
      */
     public function css(string $filePath): void
@@ -53,7 +53,7 @@ class AssetPipeline
     }
 
     /**
-     * @param string $filePath
+     * @param  string  $filePath
      * @return void
      */
     public function prependJs(string $filePath): void
@@ -62,7 +62,7 @@ class AssetPipeline
     }
 
     /**
-     * @param string $filePath
+     * @param  string  $filePath
      * @return void
      */
     public function prependCss(string $filePath): void
@@ -71,7 +71,7 @@ class AssetPipeline
     }
 
     /**
-     * @param string $inlineContent
+     * @param  string  $inlineContent
      */
     public function inlineJs(string $inlineContent): void
     {
@@ -79,7 +79,7 @@ class AssetPipeline
     }
 
     /**
-     * @param string $inlineContent
+     * @param  string  $inlineContent
      */
     public function inlineCss(string $inlineContent): void
     {

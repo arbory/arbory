@@ -12,7 +12,6 @@ class NestedFieldStyle extends AbstractFieldStyle implements FieldStyleInterface
 {
     /**
      * @param $label
-     *
      * @return Element
      */
     protected function getHeader($label)

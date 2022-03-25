@@ -17,8 +17,8 @@ class LayoutServiceProvider extends ServiceProvider
     protected const GOOGLE_MAPS_SRC = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=';
 
     /**
-     * @param ViewFactory $view
-     * @param Admin $admin
+     * @param  ViewFactory  $view
+     * @param  Admin  $admin
      */
     public function boot(ViewFactory $view, Admin $admin): void
     {
@@ -55,7 +55,7 @@ class LayoutServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param AssetPipeline $assets
+     * @param  AssetPipeline  $assets
      * @return void
      */
     protected function loadThirdPartyAssets(AssetPipeline $assets): void

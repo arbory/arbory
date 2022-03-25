@@ -30,7 +30,6 @@ class BlockRegistry
 
     /**
      * @param  string  $resource
-     *
      * @return BlockInterface|null
      */
     public function findByResource(string $resource): ?BlockInterface
@@ -42,7 +41,6 @@ class BlockRegistry
 
     /**
      * @param  string  $block
-     *
      * @return BlockRegistry
      */
     public function register(string $block): self
@@ -56,7 +54,6 @@ class BlockRegistry
 
     /**
      * @param  string  $block
-     *
      * @return BlockInterface|null
      */
     public function resolve(string $block): ?BlockInterface

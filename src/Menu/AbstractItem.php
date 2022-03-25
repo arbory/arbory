@@ -22,7 +22,7 @@ abstract class AbstractItem
     protected $model;
 
     /**
-     * @param Element $parentElement
+     * @param  Element  $parentElement
      * @return Element
      */
     abstract public function render(Element $parentElement): Element;
@@ -38,7 +38,7 @@ abstract class AbstractItem
     abstract public function isActive(): bool;
 
     /**
-     * @param string $title
+     * @param  string  $title
      * @return $this
      */
     public function setTitle($title)
@@ -49,7 +49,7 @@ abstract class AbstractItem
     }
 
     /**
-     * @param string $abbreviation
+     * @param  string  $abbreviation
      * @return $this
      */
     public function setAbbreviation($abbreviation)

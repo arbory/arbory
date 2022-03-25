@@ -26,9 +26,8 @@ class Navigator implements Renderable
 
     /**
      * @param  NavigableInterface  $navigable
-     * @param                    $title
+     * @param  $title
      * @param  null  $anchor
-     *
      * @return Item
      */
     public function addItem(NavigableInterface $navigable, $title, $anchor = null): Item

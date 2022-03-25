@@ -14,6 +14,7 @@ class BaseConfig extends ExtendedFluent
      * Returns defined config options.
      *
      * @return array
+     *
      * @throws \ReflectionException
      */
     public static function getAvailable(): array

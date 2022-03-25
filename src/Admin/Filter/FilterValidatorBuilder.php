@@ -20,7 +20,8 @@ class FilterValidatorBuilder
 
     /**
      * FilterValidator constructor.
-     * @param ValidatorFactory $validatorFactory
+     *
+     * @param  ValidatorFactory  $validatorFactory
      */
     public function __construct(ValidatorFactory $validatorFactory)
     {
@@ -28,9 +29,8 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param FilterCollection $filterCollection
-     * @param FilterParameters $filterParameters
-     *
+     * @param  FilterCollection  $filterCollection
+     * @param  FilterParameters  $filterParameters
      * @return bool
      */
     public function validate(FilterCollection $filterCollection, FilterParameters $filterParameters): bool
@@ -39,8 +39,8 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param FilterCollection $filterCollection
-     * @param FilterParameters $filterParameters
+     * @param  FilterCollection  $filterCollection
+     * @param  FilterParameters  $filterParameters
      * @return Validator
      */
     public function build(FilterCollection $filterCollection, FilterParameters $filterParameters): Validator
@@ -64,9 +64,9 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param FilterValidationObject $validationObject
-     * @param FilterItem $filterItem
-     * @param FilterParameters $filterParameters
+     * @param  FilterValidationObject  $validationObject
+     * @param  FilterItem  $filterItem
+     * @param  FilterParameters  $filterParameters
      * @return void
      */
     protected function buildFilterItem(
@@ -89,9 +89,9 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param array $transformers
+     * @param  array  $transformers
      * @param $validator
-     * @param FilterParameters $filterParameters
+     * @param  FilterParameters  $filterParameters
      */
     protected function applyTransformers(array $transformers, $validator, FilterParameters $filterParameters): void
     {
@@ -103,8 +103,8 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param FilterItem $filterItem
-     * @param FilterParameters $filterParameters
+     * @param  FilterItem  $filterItem
+     * @param  FilterParameters  $filterParameters
      * @return array
      */
     public function buildRules(FilterItem $filterItem, FilterParameters $filterParameters): array
@@ -113,8 +113,8 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param FilterItem $filterItem
-     * @param FilterParameters $filterParameters
+     * @param  FilterItem  $filterItem
+     * @param  FilterParameters  $filterParameters
      * @return array
      */
     public function buildMessages(FilterItem $filterItem, FilterParameters $filterParameters): array
@@ -123,8 +123,8 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param FilterItem $filterItem
-     * @param FilterParameters $filterParameters
+     * @param  FilterItem  $filterItem
+     * @param  FilterParameters  $filterParameters
      * @return array
      */
     public function buildAttributes(FilterItem $filterItem, FilterParameters $filterParameters): array
@@ -133,10 +133,9 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param FilterItem $filterItem
-     * @param array $data
-     * @param bool $prependName
-     *
+     * @param  FilterItem  $filterItem
+     * @param  array  $data
+     * @param  bool  $prependName
      * @return array
      */
     protected function normalize(FilterItem $filterItem, array $data, bool $prependName = true): array
@@ -164,9 +163,9 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param string $method
-     * @param FilterItem $filterItem
-     * @param FilterParameters $filterParameters
+     * @param  string  $method
+     * @param  FilterItem  $filterItem
+     * @param  FilterParameters  $filterParameters
      * @return mixed
      */
     protected function resolveMethod(string $method, FilterItem $filterItem, FilterParameters $filterParameters)
@@ -180,7 +179,7 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param FilterItem $filterItem
+     * @param  FilterItem  $filterItem
      * @return callable
      */
     protected function getAttributeResolver(FilterItem $filterItem): callable

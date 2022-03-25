@@ -30,7 +30,7 @@ class GridLayout extends AbstractLayout implements LayoutInterface
     /**
      * GridTemplate constructor.
      *
-     * @param Grid $grid
+     * @param  Grid  $grid
      */
     public function __construct(Grid $grid)
     {
@@ -59,10 +59,9 @@ class GridLayout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param      $size
-     * @param      $content
-     * @param null $breakpoint
-     *
+     * @param  $size
+     * @param  $content
+     * @param  null  $breakpoint
      * @return Column
      */
     public function addColumn($size, $content, $breakpoint = null): Column
@@ -87,9 +86,8 @@ class GridLayout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param int        $width
-     * @param array|null $breakpoints
-     *
+     * @param  int  $width
+     * @param  array|null  $breakpoints
      * @return GridLayout
      */
     public function setWidth(int $width, ?array $breakpoints = null): self
@@ -112,8 +110,7 @@ class GridLayout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param array $breakpoints
-     *
+     * @param  array  $breakpoints
      * @return GridLayout
      */
     public function setBreakpoints(array $breakpoints): self

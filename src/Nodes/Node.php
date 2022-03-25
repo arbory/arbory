@@ -154,9 +154,9 @@ class Node extends Model
     }
 
     /**
-     * @param       $name
-     * @param array $parameters
-     * @param bool $absolute
+     * @param  $name
+     * @param  array  $parameters
+     * @param  bool  $absolute
      * @return string|null
      */
     public function getUrl($name, array $parameters = [], $absolute = true)

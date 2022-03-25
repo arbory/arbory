@@ -20,7 +20,7 @@ class Deactivator extends Checkbox
     protected $style = 'basic';
 
     /**
-     * @param string $name
+     * @param  string  $name
      */
     public function __construct($name = 'deactivate')
     {

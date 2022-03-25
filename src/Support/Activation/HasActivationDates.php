@@ -34,7 +34,7 @@ trait HasActivationDates
     }
 
     /**
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeActive(Builder $query)

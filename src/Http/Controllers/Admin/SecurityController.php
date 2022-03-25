@@ -23,7 +23,7 @@ class SecurityController extends BaseController
     protected $security;
 
     /**
-     * @param AuthenticationMethod $security
+     * @param  AuthenticationMethod  $security
      */
     public function __construct(AuthenticationMethod $security)
     {
@@ -35,7 +35,7 @@ class SecurityController extends BaseController
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function getLogin(Request $request)
@@ -57,8 +57,8 @@ class SecurityController extends BaseController
     }
 
     /**
-     * @param array $credentials
-     * @param bool $remember
+     * @param  array  $credentials
+     * @param  bool  $remember
      * @return RedirectResponse
      */
     protected function attemptLogin(array $credentials, bool $remember): RedirectResponse

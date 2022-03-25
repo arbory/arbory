@@ -11,7 +11,6 @@ interface LayoutInterface extends Renderable, TransformableInterface
 {
     /**
      * @param $content
-     *
      * @return LayoutInterface
      */
     public function setContent($content): self;
@@ -22,15 +21,13 @@ interface LayoutInterface extends Renderable, TransformableInterface
     public function getContent();
 
     /**
-     * @param mixed $content
-     *
+     * @param  mixed  $content
      * @return mixed
      */
     public function contents($content);
 
     /**
-     * @param LayoutInterface|TransformableInterface|string $layout
-     *
+     * @param  LayoutInterface|TransformableInterface|string  $layout
      * @return mixed
      */
     public function use($layout);

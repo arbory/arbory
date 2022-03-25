@@ -66,6 +66,7 @@ final class FieldSetFieldFinderTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldFindFieldInRoot()
@@ -83,6 +84,7 @@ final class FieldSetFieldFinderTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldFindNestedField()
@@ -105,6 +107,7 @@ final class FieldSetFieldFinderTest extends TestCase
 
     /**
      * @test
+     *
      * @return void
      */
     public function itShouldFindCorrectFieldInTranslatables()
@@ -137,8 +140,8 @@ final class FieldSetFieldFinderTest extends TestCase
     }
 
     /**
-     * @param string $relationalNamespace
-     * @param AbstractField $innerField
+     * @param  string  $relationalNamespace
+     * @param  AbstractField  $innerField
      * @return Mockery\MockInterface
      */
     private function getTranslatableField(string $relationalNamespace, AbstractField $innerField)
@@ -159,8 +162,8 @@ final class FieldSetFieldFinderTest extends TestCase
     }
 
     /**
-     * @param string $relationalNamespace
-     * @param AbstractField $innerField
+     * @param  string  $relationalNamespace
+     * @param  AbstractField  $innerField
      * @return Mockery\MockInterface
      */
     private function getHasManyField(string $relationalNamespace, AbstractField $innerField)
@@ -180,8 +183,8 @@ final class FieldSetFieldFinderTest extends TestCase
     }
 
     /**
-     * @param array $haystack
-     * @param AbstractField $field
+     * @param  array  $haystack
+     * @param  AbstractField  $field
      * @return void
      */
     private function assertContainsField(array $haystack, AbstractField $field)
@@ -190,7 +193,7 @@ final class FieldSetFieldFinderTest extends TestCase
     }
 
     /**
-     * @param \Closure $callback
+     * @param  \Closure  $callback
      * @return FieldSetFieldFinder
      */
     private function getFinderForFields(\Closure $callback)

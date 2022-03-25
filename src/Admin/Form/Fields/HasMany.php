@@ -53,8 +53,9 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface, Rep
 
     /**
      * AbstractRelationField constructor.
-     * @param string $name
-     * @param Closure $fieldSetCallback
+     *
+     * @param  string  $name
+     * @param  Closure  $fieldSetCallback
      */
     public function __construct($name, Closure $fieldSetCallback)
     {
@@ -90,7 +91,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface, Rep
 
     /**
      * @param $index
-     * @param Model $model
+     * @param  Model  $model
      * @return FieldSet
      */
     public function getRelationFieldSet($model, $index)
@@ -115,14 +116,14 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface, Rep
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request)
     {
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function afterModelSave(Request $request)
     {
@@ -199,7 +200,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface, Rep
     }
 
     /**
-     * @param string $orderBy
+     * @param  string  $orderBy
      * @return $this
      */
     public function setOrderBy(string $orderBy)
@@ -231,8 +232,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface, Rep
     /**
      * Make this field sortable.
      *
-     * @param string $field
-     *
+     * @param  string  $field
      * @return $this
      */
     public function sortable($field = 'position')
@@ -266,8 +266,7 @@ class HasMany extends AbstractRelationField implements NestedFieldInterface, Rep
     }
 
     /**
-     * @param ItemInterface $itemRenderer
-     *
+     * @param  ItemInterface  $itemRenderer
      * @return HasMany
      */
     private function setItemRenderer(ItemInterface $itemRenderer): self

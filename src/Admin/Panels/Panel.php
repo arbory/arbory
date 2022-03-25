@@ -47,7 +47,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
 
     /**
      * @param  Toolbox  $toolbox
-     *
      * @return Toolbox
      */
     public function toolbox(Toolbox $toolbox): Toolbox
@@ -81,7 +80,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
 
     /**
      * @param  mixed  $content
-     *
      * @return Panel
      */
     public function setContent($content)
@@ -93,7 +91,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
 
     /**
      * @param  mixed  $title
-     *
      * @return Panel
      */
     public function setTitle($title)
@@ -105,7 +102,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
 
     /**
      * @param  mixed  $buttons
-     *
      * @return Panel
      */
     public function setButtons($buttons): self
@@ -118,7 +114,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     /**
      * @param $name
      * @param $url
-     *
      * @return Panel
      */
     public function addToolbox($name, $url)
@@ -134,7 +129,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
 
     /**
      * @param  Button  $button
-     *
      * @return $this
      */
     public function addButton(Button $button)
@@ -172,7 +166,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
 
     /**
      * @param  Navigator  $navigator
-     *
      * @return void
      */
     public function navigator(Navigator $navigator)
@@ -197,7 +190,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
 
     /**
      * @param  bool  $navigable
-     *
      * @return Panel
      */
     public function setNavigable(bool $navigable): self

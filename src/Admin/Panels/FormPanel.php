@@ -42,7 +42,6 @@ class FormPanel extends Panel
 
     /**
      * @param  Form  $form
-     *
      * @return FormPanel
      */
     public function setForm(Form $form): self

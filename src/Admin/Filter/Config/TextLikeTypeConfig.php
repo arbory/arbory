@@ -7,7 +7,7 @@ class TextLikeTypeConfig extends BaseConfig
     public const CONFIG_TYPE = 'type';
 
     /**
-     * @param string $type
+     * @param  string  $type
      * @return TextLikeTypeConfig
      */
     public function setType(string $type): self

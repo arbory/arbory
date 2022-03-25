@@ -7,7 +7,7 @@ use Arbory\Base\Admin\Form\FieldSet;
 interface PageInterface
 {
     /**
-     * @param FieldSet $fieldSet
+     * @param  FieldSet  $fieldSet
      * @return void
      */
     public function prepareFieldSet(FieldSet $fieldSet);

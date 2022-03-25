@@ -66,8 +66,8 @@ class Constructor extends AbstractRelationField implements
     /**
      * AbstractRelationField constructor.
      *
-     * @param string        $name
-     * @param BlockRegistry $registry
+     * @param  string  $name
+     * @param  BlockRegistry  $registry
      */
     public function __construct($name, BlockRegistry $registry)
     {
@@ -118,9 +118,8 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * @param ConstructorBlock $model
-     * @param                  $index
-     *
+     * @param  ConstructorBlock  $model
+     * @param  $index
      * @return FieldSet
      */
     public function getRelationFieldSet($model, $index)
@@ -157,14 +156,14 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request)
     {
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function afterModelSave(Request $request)
     {
@@ -210,7 +209,6 @@ class Constructor extends AbstractRelationField implements
 
     /**
      * @param $variables
-     *
      * @return ConstructorBlock
      */
     private function findRelatedModel($variables)
@@ -239,8 +237,7 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * @param string $orderBy
-     *
+     * @param  string  $orderBy
      * @return $this
      */
     public function setOrderBy(string $orderBy)
@@ -284,7 +281,6 @@ class Constructor extends AbstractRelationField implements
 
     /**
      * @param $name
-     *
      * @return BlockInterface|null
      */
     public function resolveBlockByName($name): ?BlockInterface
@@ -293,8 +289,7 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * @param BlockInterface $block
-     *
+     * @param  BlockInterface  $block
      * @return ConstructorBlock|Model
      */
     public function buildFromBlock(BlockInterface $block): Model
@@ -312,7 +307,6 @@ class Constructor extends AbstractRelationField implements
 
     /**
      * @param $model
-     *
      * @return FieldInterface|FieldSet
      */
     public function getNestedFieldSet($model)
@@ -323,8 +317,7 @@ class Constructor extends AbstractRelationField implements
     /**
      * Make this field sortable.
      *
-     * @param string $field
-     *
+     * @param  string  $field
      * @return $this
      */
     public function sortable($field = 'position')
@@ -336,8 +329,7 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return bool
      */
     protected function isContentField(FieldInterface $field): bool
@@ -346,8 +338,7 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * @param array $item
-     *
+     * @param  array  $item
      * @return bool
      */
     protected function verifyBlockFromRequest(array $item, Model $model)
@@ -368,8 +359,7 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * @param array $item
-     *
+     * @param  array  $item
      * @return ConstructorBlock
      */
     protected function createRelatedModelFromRequest(array $item): Model
@@ -397,8 +387,7 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * @param ItemInterface $itemRenderer
-     *
+     * @param  ItemInterface  $itemRenderer
      * @return Constructor
      */
     public function setItemRenderer(ItemInterface $itemRenderer): self
@@ -423,8 +412,7 @@ class Constructor extends AbstractRelationField implements
     }
 
     /**
-     * @param bool $allowToAdd
-     *
+     * @param  bool  $allowToAdd
      * @return Constructor
      */
     public function setAllowToAdd(bool $allowToAdd): self

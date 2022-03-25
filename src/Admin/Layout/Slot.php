@@ -28,8 +28,8 @@ class Slot implements Renderable
     /**
      * Slot constructor.
      *
-     * @param      $name
-     * @param null $contents
+     * @param  $name
+     * @param  null  $contents
      */
     public function __construct($name, $contents = null)
     {
@@ -54,7 +54,6 @@ class Slot implements Renderable
     /**
      * @param $name
      * @param $contents
-     *
      * @return Slot
      */
     public function setChild($name, $contents)
@@ -67,7 +66,6 @@ class Slot implements Renderable
 
     /**
      * @param $name
-     *
      * @return Slot
      */
     public function getChild($name)
@@ -113,8 +111,7 @@ class Slot implements Renderable
     }
 
     /**
-     * @param mixed $wrap
-     *
+     * @param  mixed  $wrap
      * @return Slot
      */
     public function setWrap(?callable $wrap): self
@@ -133,8 +130,7 @@ class Slot implements Renderable
     }
 
     /**
-     * @param mixed $contents
-     *
+     * @param  mixed  $contents
      * @return Slot
      */
     public function setContents($contents)

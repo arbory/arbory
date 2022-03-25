@@ -22,6 +22,7 @@ use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
  * Class FieldSet.
+ *
  * @method \Arbory\Base\Admin\Form\Fields\BelongsTo belongsTo(string $relationName)
  * @method \Arbory\Base\Admin\Form\Fields\BelongsToMany belongsToMany(string $relationName)
  * @method \Arbory\Base\Admin\Form\Fields\Checkbox checkbox(string $fieldName)
@@ -86,9 +87,9 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * Resource constructor.
      *
-     * @param Model $model
-     * @param string $namespace
-     * @param StyleManager $styleManager
+     * @param  Model  $model
+     * @param  string  $namespace
+     * @param  StyleManager  $styleManager
      */
     public function __construct(Model $model, $namespace, StyleManager $styleManager = null)
     {
@@ -107,8 +108,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string $inputName
-     *
+     * @param  string  $inputName
      * @return AbstractField|null
      */
     public function findFieldByInputName(string $inputName)
@@ -120,8 +120,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string $inputName
-     *
+     * @param  string  $inputName
      * @return array
      */
     public function findFieldsByInputName(string $inputName)
@@ -130,8 +129,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string $fieldName
-     *
+     * @param  string  $fieldName
      * @return AbstractField|null
      */
     public function getFieldByName(string $fieldName)
@@ -142,8 +140,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string $fieldName
-     *
+     * @param  string  $fieldName
      * @return Collection
      */
     public function getFieldsByName(string $fieldName)
@@ -196,11 +193,11 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param FieldInterface $field
-     * @param string|int|null $key
+     * @param  FieldInterface  $field
+     * @param  string|int|null  $key
      * @return Collection
      */
-    public function prepend(FieldInterface $field, string | int $key = null): Collection
+    public function prepend(FieldInterface $field, string|int $key = null): Collection
     {
         $field->setFieldSet($this);
 
@@ -210,8 +207,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return FieldInterface
      */
     public function add(FieldInterface $field)
@@ -224,8 +220,8 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string $key
-     * @param FieldInterface $field
+     * @param  string  $key
+     * @param  FieldInterface  $field
      */
     public function offsetSet($key, $field)
     {
@@ -261,8 +257,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param StyleManager $styleManager
-     *
+     * @param  StyleManager  $styleManager
      * @return FieldSet
      */
     public function setStyleManager(StyleManager $styleManager): self
@@ -281,8 +276,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string $defaultStyle
-     *
+     * @param  string  $defaultStyle
      * @return FieldSet
      */
     public function setDefaultStyle(string $defaultStyle): self
@@ -305,8 +299,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * Determine if an item exists at an offset.
      *
-     * @param  mixed $key
-     *
+     * @param  mixed  $key
      * @return bool
      */
     public function offsetExists($key)
@@ -317,8 +310,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * Get an item at a given offset.
      *
-     * @param  mixed $key
-     *
+     * @param  mixed  $key
      * @return mixed
      */
     public function offsetGet($key)
@@ -329,8 +321,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * Unset the item at a given offset.
      *
-     * @param  string $key
-     *
+     * @param  string  $key
      * @return void
      */
     public function offsetUnset($key)
@@ -367,8 +358,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param FieldSetRendererInterface $renderer
-     *
+     * @param  FieldSetRendererInterface  $renderer
      * @return FieldSet
      */
     public function setRenderer(FieldSetRendererInterface $renderer): self
@@ -379,9 +369,8 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string $method
-     * @param array $parameters
-     *
+     * @param  string  $method
+     * @param  array  $parameters
      * @return FieldInterface|mixed
      */
     public function __call($method, $parameters)

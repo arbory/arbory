@@ -40,9 +40,8 @@ class Layout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param       $route
-     * @param array $parameters
-     *
+     * @param  $route
+     * @param  array  $parameters
      * @return string
      */
     public function url($route, $parameters = [])
@@ -59,8 +58,7 @@ class Layout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param Form $form
-     *
+     * @param  Form  $form
      * @return $this
      */
     public function setForm(Form $form)
@@ -112,8 +110,7 @@ class Layout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param Widgets\Controls $controls
-     *
+     * @param  Widgets\Controls  $controls
      * @return Layout
      */
     public function setControls(Widgets\Controls $controls): self

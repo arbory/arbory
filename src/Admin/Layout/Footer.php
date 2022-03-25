@@ -24,7 +24,8 @@ class Footer implements Renderable
 
     /**
      * Footer constructor.
-     * @param string|null $type
+     *
+     * @param  string|null  $type
      */
     public function __construct($type = null)
     {

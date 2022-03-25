@@ -47,7 +47,7 @@ class FileFieldRenderer extends ControlFieldRenderer
     }
 
     /**
-     * @param ArboryFile $file
+     * @param  ArboryFile  $file
      * @return Element
      */
     public function createFileDetails(ArboryFile $file): Element

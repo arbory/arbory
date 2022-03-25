@@ -16,9 +16,9 @@ class CheckboxControl extends InputControl
     protected $checked = false;
 
     /**
-     * @param Element $control
-     *
+     * @param  Element  $control
      * @return Content
+     *
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function render(Element $control)
@@ -63,8 +63,7 @@ class CheckboxControl extends InputControl
     }
 
     /**
-     * @param bool $checked
-     *
+     * @param  bool  $checked
      * @return CheckboxControl
      */
     public function setChecked(bool $checked): self

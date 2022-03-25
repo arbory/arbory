@@ -34,7 +34,7 @@ class BelongsTo extends Select
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request)
     {

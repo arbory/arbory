@@ -55,7 +55,7 @@ class VirtualHasOne extends HasOne
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
@@ -94,8 +94,7 @@ class VirtualHasOne extends HasOne
     }
 
     /**
-     * @param Model $relatedModel
-     *
+     * @param  Model  $relatedModel
      * @return FieldSet
      */
     public function getRelationFieldSet(Model $relatedModel)
