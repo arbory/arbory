@@ -23,8 +23,7 @@ trait HasRenderOptions
     protected $classes = [];
 
     /**
-     * @param array $attributes
-     *
+     * @param  array  $attributes
      * @return mixed
      */
     public function addAttributes(array $attributes): RenderOptionsInterface
@@ -35,8 +34,7 @@ trait HasRenderOptions
     }
 
     /**
-     * @param array $attributes
-     *
+     * @param  array  $attributes
      * @return RenderOptionsInterface
      */
     public function setAttributes(array $attributes): RenderOptionsInterface
@@ -47,8 +45,7 @@ trait HasRenderOptions
     }
 
     /**
-     * @param array $attributeKeys
-     *
+     * @param  array  $attributeKeys
      * @return RenderOptionsInterface
      */
     public function removeAttributes(array $attributeKeys): RenderOptionsInterface
@@ -61,8 +58,7 @@ trait HasRenderOptions
     }
 
     /**
-     * @param string|array $classes
-     *
+     * @param  string|array  $classes
      * @return mixed
      */
     public function addClass($classes): RenderOptionsInterface
@@ -81,7 +77,6 @@ trait HasRenderOptions
 
     /**
      * @param $classes
-     *
      * @return RenderOptionsInterface
      */
     public function setClasses($classes): RenderOptionsInterface
@@ -92,8 +87,7 @@ trait HasRenderOptions
     }
 
     /**
-     * @param string|array $classes
-     *
+     * @param  string|array  $classes
      * @return RenderOptionsInterface
      */
     public function removeClasses($classes): RenderOptionsInterface
@@ -132,8 +126,7 @@ trait HasRenderOptions
     }
 
     /**
-     * @param callable|null $value
-     *
+     * @param  callable|null  $value
      * @return RenderOptionsInterface
      */
     public function setWrapper(?callable $value): RenderOptionsInterface

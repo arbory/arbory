@@ -4,7 +4,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\Fields\Renderer\CheckBoxFieldRenderer;
-use Arbory\Base\Admin\Form\Controls\CheckboxControl as CheckboxControl;
+use Arbory\Base\Admin\Form\Controls\CheckboxControl;
 
 /**
  * Class Checkbox.
@@ -28,7 +28,7 @@ class Checkbox extends ControlField
     protected $uncheckedValue = false;
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request)
     {
@@ -40,9 +40,8 @@ class Checkbox extends ControlField
     /**
      * Use custom checked/unchecked values.
      *
-     * @param mixed $checkedValue
-     * @param mixed $uncheckedValue
-     *
+     * @param  mixed  $checkedValue
+     * @param  mixed  $uncheckedValue
      * @return $this
      */
     public function values($checkedValue = true, $uncheckedValue = false)

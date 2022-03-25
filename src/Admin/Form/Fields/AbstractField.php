@@ -82,7 +82,8 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
 
     /**
      * AbstractField constructor.
-     * @param string $name
+     *
+     * @param  string  $name
      */
     public function __construct($name)
     {
@@ -98,7 +99,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return $this
      */
     public function setName($name)
@@ -152,7 +153,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return bool
      */
     private function isEmptyCollection($value)
@@ -161,7 +162,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param string $value
+     * @param  string  $value
      * @return $this
      */
     public function setValue($value)
@@ -180,7 +181,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param mixed $defaultValue
+     * @param  mixed  $defaultValue
      * @return $this
      */
     public function setDefaultValue($defaultValue)
@@ -203,7 +204,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param string $label
+     * @param  string  $label
      * @return $this
      */
     public function setLabel($label)
@@ -230,7 +231,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param FieldSet $fieldSet
+     * @param  FieldSet  $fieldSet
      * @return $this
      */
     public function setFieldSet(FieldSet $fieldSet)
@@ -241,7 +242,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function beforeModelSave(Request $request)
     {
@@ -257,7 +258,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param string $rules
+     * @param  string  $rules
      * @return FieldInterface
      */
     public function rules(string $rules): FieldInterface
@@ -276,7 +277,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function afterModelSave(Request $request)
     {
@@ -299,8 +300,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param string|null $rendererClass
-     *
+     * @param  string|null  $rendererClass
      * @return FieldInterface
      */
     public function setRendererClass(?string $rendererClass = null): FieldInterface
@@ -321,8 +321,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param string|null $content
-     *
+     * @param  string|null  $content
      * @return FieldInterface
      */
     public function setTooltip($content = null): FieldInterface
@@ -341,9 +340,8 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param int $rows
-     * @param array $breakpoints
-     *
+     * @param  int  $rows
+     * @param  array  $breakpoints
      * @return FieldInterface
      */
     public function setRows(int $rows, $breakpoints = []): FieldInterface
@@ -362,8 +360,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param string $style
-     *
+     * @param  string  $style
      * @return FieldInterface
      */
     public function setStyle(string $style): FieldInterface
@@ -403,8 +400,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param RendererInterface|null $renderer
-     *
+     * @param  RendererInterface|null  $renderer
      * @return FieldInterface
      */
     public function setRenderer(?RendererInterface $renderer): FieldInterface
@@ -428,8 +424,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param RendererInterface $renderer
-     *
+     * @param  RendererInterface  $renderer
      * @return mixed|void
      */
     public function beforeRender(RendererInterface $renderer)
@@ -445,8 +440,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param bool $hidden
-     *
+     * @param  bool  $hidden
      * @return FieldInterface
      */
     public function setHidden(bool $hidden): FieldInterface

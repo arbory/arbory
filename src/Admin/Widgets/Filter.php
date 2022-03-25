@@ -22,7 +22,8 @@ class Filter implements Renderable
 
     /**
      * Filter constructor.
-     * @param Grid $grid
+     *
+     * @param  Grid  $grid
      */
     public function __construct(Grid $grid)
     {
@@ -68,8 +69,8 @@ class Filter implements Renderable
     }
 
     /**
-     * @param object $column
-     * @param null|object $content
+     * @param  object  $column
+     * @param  null|object  $content
      * @return Content
      */
     protected function addField($column, $content = null): Content
@@ -92,9 +93,9 @@ class Filter implements Renderable
     }
 
     /**
-     * @param object $type
-     * @param object $column
-     * @param null|object $content
+     * @param  object  $type
+     * @param  object  $column
+     * @param  null|object  $content
      * @return object
      */
     protected function createField($type, $column, $content = null)

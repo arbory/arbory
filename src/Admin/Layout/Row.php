@@ -18,7 +18,8 @@ class Row implements Renderable
 
     /**
      * Row constructor.
-     * @param mixed|null $content
+     *
+     * @param  mixed|null  $content
      */
     public function __construct($content = null)
     {

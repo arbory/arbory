@@ -20,7 +20,7 @@ class WrapTransformer
     /**
      * Wrap constructor.
      *
-     * @param WrappableInterface $wrappable
+     * @param  WrappableInterface  $wrappable
      */
     public function __construct(WrappableInterface $wrappable)
     {

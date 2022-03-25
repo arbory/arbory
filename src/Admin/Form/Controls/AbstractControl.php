@@ -27,8 +27,7 @@ abstract class AbstractControl implements InputControlInterface
     abstract public function render(Element $control);
 
     /**
-     * @param Element $element
-     *
+     * @param  Element  $element
      * @return Element
      */
     public function applyAttributesAndClasses(Element $element)
@@ -57,7 +56,6 @@ abstract class AbstractControl implements InputControlInterface
 
     /**
      * @param $value
-     *
      * @return InputControlInterface
      */
     public function setValue($value): InputControlInterface
@@ -108,8 +106,7 @@ abstract class AbstractControl implements InputControlInterface
     }
 
     /**
-     * @param string|null $name
-     *
+     * @param  string|null  $name
      * @return InputControlInterface
      */
     public function setName(?string $name): InputControlInterface
@@ -125,7 +122,6 @@ abstract class AbstractControl implements InputControlInterface
      * Converts dot donation name to a input name.
      *
      * @param $namespacedName
-     *
      * @return string
      */
     public function getInputName($namespacedName)
@@ -137,7 +133,6 @@ abstract class AbstractControl implements InputControlInterface
      * Creates Input ID from input name.
      *
      * @param $inputName
-     *
      * @return string
      */
     public function getInputId($inputName)
@@ -147,7 +142,6 @@ abstract class AbstractControl implements InputControlInterface
 
     /**
      * @param $namespacedName
-     *
      * @return string
      */
     public function getInputIdFromNamespace($namespacedName)

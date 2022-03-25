@@ -33,7 +33,8 @@ class Select extends ControlField
     protected $optionTitleKey;
 
     /**
-     * @param Request $request
+     * @param  Request  $request
+     *
      * @throws \RuntimeException
      */
     public function beforeModelSave(Request $request)
@@ -68,7 +69,7 @@ class Select extends ControlField
     }
 
     /**
-     * @param bool $multiple
+     * @param  bool  $multiple
      * @return self
      */
     public function setMultiple(bool $multiple)
@@ -79,7 +80,7 @@ class Select extends ControlField
     }
 
     /**
-     * @param mixed $input
+     * @param  mixed  $input
      * @return bool
      */
     public function containsValidValues($input): bool
@@ -158,7 +159,6 @@ class Select extends ControlField
 
     /**
      * @param $optionTitleKey
-     *
      * @return $this
      */
     public function setOptionTitleKey($optionTitleKey)

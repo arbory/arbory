@@ -70,7 +70,7 @@ class Select implements Renderable
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return self
      */
     public function selected($value)
@@ -81,7 +81,7 @@ class Select implements Renderable
     }
 
     /**
-     * @param array $attributes
+     * @param  array  $attributes
      * @return self
      */
     public function attributes(array $attributes)

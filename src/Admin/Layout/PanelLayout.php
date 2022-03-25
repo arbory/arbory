@@ -42,7 +42,7 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param Closure $closure
+     * @param  Closure  $closure
      */
     public function setPanels(Closure $closure)
     {
@@ -54,7 +54,6 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
      *
      * @param $title
      * @param $contents
-     *
      * @return Panel
      */
     public function panel($title, $contents)
@@ -72,8 +71,7 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
     /**
      * Creates a new grid instance.
      *
-     * @param callable|null $closure
-     *
+     * @param  callable|null  $closure
      * @return Grid
      */
     public function grid(?callable $closure = null)
@@ -84,9 +82,8 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
     /**
      * Creates a new fieldset and attaches its fields to the form.
      *
-     * @param callable $closure
-     * @param mixed    ...$parameters
-     *
+     * @param  callable  $closure
+     * @param  mixed  ...$parameters
      * @return FieldSet
      */
     public function fields(callable $closure, ...$parameters): FieldSet
@@ -148,8 +145,7 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param Form $form
-     *
+     * @param  Form  $form
      * @return PanelLayout
      */
     public function setForm(Form $form): self

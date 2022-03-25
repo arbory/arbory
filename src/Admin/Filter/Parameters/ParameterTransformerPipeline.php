@@ -43,8 +43,7 @@ class ParameterTransformerPipeline
     }
 
     /**
-     * @param callable|ParameterTransformerInterface $transformer
-     *
+     * @param  callable|ParameterTransformerInterface  $transformer
      * @return ParameterTransformerPipeline
      */
     public function addTransformer($transformer): self
@@ -55,7 +54,7 @@ class ParameterTransformerPipeline
     }
 
     /**
-     * @param ParameterTransformerInterface[] $transformers
+     * @param  ParameterTransformerInterface[]  $transformers
      * @return ParameterTransformerPipeline
      */
     public function setTransformers(array $transformers): self
@@ -66,7 +65,7 @@ class ParameterTransformerPipeline
     }
 
     /**
-     * @param FilterParameters $parameters
+     * @param  FilterParameters  $parameters
      * @return ParameterTransformerPipeline
      */
     public function setParameters(FilterParameters $parameters): self

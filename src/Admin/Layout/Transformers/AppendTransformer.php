@@ -11,7 +11,7 @@ class AppendTransformer
     /**
      * AppendTransformer constructor.
      *
-     * @param string|\Closure $content
+     * @param  string|\Closure  $content
      */
     public function __construct($content)
     {

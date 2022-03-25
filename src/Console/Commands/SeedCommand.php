@@ -33,7 +33,7 @@ class SeedCommand extends Command
     protected $resolver;
 
     /**
-     * @param DatabaseManager $resolver
+     * @param  DatabaseManager  $resolver
      */
     public function __construct(DatabaseManager $resolver)
     {
@@ -44,6 +44,7 @@ class SeedCommand extends Command
 
     /**
      * @return void
+     *
      * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
     public function handle()
@@ -61,6 +62,7 @@ class SeedCommand extends Command
 
     /**
      * @return Seeder
+     *
      * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
     protected function getSeeder()
@@ -72,6 +74,7 @@ class SeedCommand extends Command
 
     /**
      * @return string
+     *
      * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
     protected function getDatabase()

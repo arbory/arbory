@@ -18,7 +18,7 @@ class SavedFilterRepository extends AbstractModelsRepository
     protected $modelClass = SavedFilter::class;
 
     /**
-     * @param Module $module
+     * @param  Module  $module
      * @return SavedFilter[]|Collection
      */
     public function findByModule(Module $module): Collection
@@ -27,8 +27,8 @@ class SavedFilterRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param int $filterId
-     * @param Module $module
+     * @param  int  $filterId
+     * @param  Module  $module
      * @return SavedFilter
      */
     public function findOrFail(int $filterId, Module $module): SavedFilter

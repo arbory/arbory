@@ -24,8 +24,9 @@ class ToolboxMenuItem
 
     /**
      * Item constructor.
-     * @param string $title
-     * @param string $url
+     *
+     * @param  string  $title
+     * @param  string  $url
      */
     public function __construct($title, $url)
     {

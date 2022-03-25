@@ -12,8 +12,7 @@ interface FormLayoutInterface extends LayoutInterface
     public function getForm();
 
     /**
-     * @param Form $form
-     *
+     * @param  Form  $form
      * @return mixed
      */
     public function setForm(Form $form);

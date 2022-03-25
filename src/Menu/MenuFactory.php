@@ -10,7 +10,7 @@ class MenuFactory
     protected $menuItemFactory;
 
     /**
-     * @param MenuItemFactory $menuItemFactory
+     * @param  MenuItemFactory  $menuItemFactory
      */
     public function __construct(MenuItemFactory $menuItemFactory)
     {
@@ -18,8 +18,9 @@ class MenuFactory
     }
 
     /**
-     * @param mixed[] $items
+     * @param  mixed[]  $items
      * @return Menu
+     *
      * @throws \DomainException
      */
     public function build(array $items)

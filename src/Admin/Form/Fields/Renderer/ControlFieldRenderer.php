@@ -19,7 +19,7 @@ class ControlFieldRenderer implements RendererInterface
     /**
      * ControlFieldRenderer constructor.
      *
-     * @param ControlFieldInterface $field
+     * @param  ControlFieldInterface  $field
      */
     public function __construct(ControlFieldInterface $field)
     {
@@ -35,8 +35,7 @@ class ControlFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param InputControlInterface $control
-     *
+     * @param  InputControlInterface  $control
      * @return InputControlInterface
      */
     public function configureControl(InputControlInterface $control)
@@ -77,8 +76,7 @@ class ControlFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return self
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -97,8 +95,7 @@ class ControlFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param StyleOptionsInterface $options
-     *
+     * @param  StyleOptionsInterface  $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

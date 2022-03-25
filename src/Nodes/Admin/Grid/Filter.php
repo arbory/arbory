@@ -22,7 +22,8 @@ class Filter implements FilterInterface
 
     /**
      * Filter constructor.
-     * @param Model $model
+     *
+     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
@@ -31,7 +32,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param Collection $columns
+     * @param  Collection  $columns
      * @return $this
      */
     public function execute(Collection $columns): self
@@ -51,7 +52,7 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string $relationName
+     * @param  string  $relationName
      * @return void
      */
     public function withRelation(string $relationName)

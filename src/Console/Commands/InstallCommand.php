@@ -39,8 +39,8 @@ class InstallCommand extends Command
     protected $databaseManager;
 
     /**
-     * @param Filesystem $filesystem
-     * @param DatabaseManager $databaseManager
+     * @param  Filesystem  $filesystem
+     * @param  DatabaseManager  $databaseManager
      */
     public function __construct(
         Filesystem $filesystem,

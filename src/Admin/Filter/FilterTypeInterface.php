@@ -33,13 +33,13 @@ interface FilterTypeInterface
     public function getConfig(): iterable;
 
     /**
-     * @param iterable $config
+     * @param  iterable  $config
      * @return FilterTypeInterface
      */
     public function setConfig(iterable $config): self;
 
     /**
-     * @param FilterItem $filterItem
+     * @param  FilterItem  $filterItem
      * @return mixed
      */
     public function render(FilterItem $filterItem);

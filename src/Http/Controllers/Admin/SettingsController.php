@@ -34,7 +34,7 @@ class SettingsController extends Controller
     protected $settingRegistry;
 
     /**
-     * @param SettingRegistry $settingRegistry
+     * @param  SettingRegistry  $settingRegistry
      */
     public function __construct(
         SettingRegistry $settingRegistry
@@ -44,7 +44,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      * @return Form
      */
     protected function form(Form $form)
@@ -60,7 +60,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param Grid $grid
+     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)
@@ -105,8 +105,8 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param Form\FieldSet $fields
-     * @param SettingDefinition $definition
+     * @param  Form\FieldSet  $fields
+     * @param  SettingDefinition  $definition
      * @return Form\Fields\AbstractField|Translatable
      */
     protected function getField(Form\FieldSet $fields, SettingDefinition $definition)
@@ -163,7 +163,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param \Arbory\Base\Admin\Tools\ToolboxMenu $tools
+     * @param  \Arbory\Base\Admin\Tools\ToolboxMenu  $tools
      */
     protected function toolbox(ToolboxMenu $tools)
     {

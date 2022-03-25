@@ -53,7 +53,7 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface, Rend
     }
 
     /**
-     * @param int $zoom
+     * @param  int  $zoom
      * @return self
      */
     public function zoom(int $zoom)
@@ -64,7 +64,7 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface, Rend
     }
 
     /**
-     * @param float $latitude
+     * @param  float  $latitude
      * @return self
      */
     public function latitude(float $latitude)
@@ -75,7 +75,7 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface, Rend
     }
 
     /**
-     * @param float $longitude
+     * @param  float  $longitude
      * @return self
      */
     public function longitude(float $longitude)

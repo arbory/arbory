@@ -20,7 +20,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
     /**
      * SlugRenderer constructor.
      *
-     * @param FieldInterface $field
+     * @param  FieldInterface  $field
      */
     public function __construct(FieldInterface $field)
     {
@@ -116,8 +116,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -136,8 +135,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
     /**
      * Configure the style before rendering the field.
      *
-     * @param StyleOptionsInterface $options
-     *
+     * @param  StyleOptionsInterface  $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

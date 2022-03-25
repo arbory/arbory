@@ -16,7 +16,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     protected $field;
 
     /**
-     * @param MapCoordinates $field
+     * @param  MapCoordinates  $field
      */
     public function __construct(MapCoordinates $field)
     {
@@ -41,8 +41,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -63,8 +62,7 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     /**
      * Configure the style before rendering the field.
      *
-     * @param StyleOptionsInterface $options
-     *
+     * @param  StyleOptionsInterface  $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

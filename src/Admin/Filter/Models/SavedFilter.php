@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $filter
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter query()

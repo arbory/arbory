@@ -22,8 +22,9 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     protected $inputType = 'number';
 
     /**
-     * @param FilterItem $filterItem
+     * @param  FilterItem  $filterItem
      * @return \Arbory\Base\Html\Elements\Element
+     *
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     public function render(FilterItem $filterItem): Element
@@ -49,7 +50,7 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return string|null
      */
     protected function getRangeValue(string $key): ?string
@@ -58,8 +59,8 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param FilterItem $filterItem
-     * @param Builder $builder
+     * @param  FilterItem  $filterItem
+     * @param  Builder  $builder
      * @return void
      */
     public function execute(FilterItem $filterItem, Builder $builder): void
@@ -77,8 +78,8 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param FilterParameters $parameters
-     * @param callable $attributeResolver
+     * @param  FilterParameters  $parameters
+     * @param  callable  $attributeResolver
      * @return array
      */
     public function rules(FilterParameters $parameters, callable $attributeResolver): array
@@ -90,9 +91,8 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param FilterParameters $filterParameters
-     * @param callable $attributeResolver
-     *
+     * @param  FilterParameters  $filterParameters
+     * @param  callable  $attributeResolver
      * @return array
      */
     public function messages(FilterParameters $filterParameters, callable $attributeResolver): array
@@ -101,9 +101,8 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param FilterParameters $filterParameters
-     * @param callable $attributeResolver
-     *
+     * @param  FilterParameters  $filterParameters
+     * @param  callable  $attributeResolver
      * @return array
      */
     public function attributes(FilterParameters $filterParameters, callable $attributeResolver): array
@@ -112,9 +111,9 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param Validator $validator
-     * @param FilterParameters $filterParameters
-     * @param callable $attributeResolver
+     * @param  Validator  $validator
+     * @param  FilterParameters  $filterParameters
+     * @param  callable  $attributeResolver
      */
     public function withValidator(
         Validator $validator,

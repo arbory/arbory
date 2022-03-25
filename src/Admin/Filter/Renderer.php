@@ -30,7 +30,7 @@ class Renderer
     }
 
     /**
-     * @param FilterManager $manager
+     * @param  FilterManager  $manager
      * @return Renderer
      */
     public function setManager(FilterManager $manager): self
@@ -105,7 +105,7 @@ class Renderer
     }
 
     /**
-     * @param string $action
+     * @param  string  $action
      * @return Renderer
      */
     public function setAction(string $action): self
@@ -116,7 +116,7 @@ class Renderer
     }
 
     /**
-     * @param FilterItem $filterItem
+     * @param  FilterItem  $filterItem
      * @return Element
      */
     protected function renderFilter(FilterItem $filterItem)

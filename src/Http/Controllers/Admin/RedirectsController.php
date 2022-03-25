@@ -20,7 +20,7 @@ class RedirectsController extends Controller
     protected $resource = Redirect::class;
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      * @return Form
      */
     protected function form(Form $form)
@@ -42,7 +42,7 @@ class RedirectsController extends Controller
     }
 
     /**
-     * @param Grid $grid
+     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)

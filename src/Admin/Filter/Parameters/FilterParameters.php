@@ -27,8 +27,7 @@ class FilterParameters extends ExtendedFluent
     }
 
     /**
-     * @param string|null $namespace
-     *
+     * @param  string|null  $namespace
      * @return FilterParameters
      */
     public function setNamespace(?string $namespace): self
@@ -39,7 +38,7 @@ class FilterParameters extends ExtendedFluent
     }
 
     /**
-     * @param FilterItem $filterItem
+     * @param  FilterItem  $filterItem
      * @return mixed
      */
     public function getFromFilter(FilterItem $filterItem)
@@ -48,7 +47,7 @@ class FilterParameters extends ExtendedFluent
     }
 
     /**
-     * @param string|null $fieldName
+     * @param  string|null  $fieldName
      * @return array
      */
     public function getErrors(?string $fieldName = null): array
@@ -61,8 +60,7 @@ class FilterParameters extends ExtendedFluent
     }
 
     /**
-     * @param array $errors
-     *
+     * @param  array  $errors
      * @return FilterParameters
      */
     public function setErrors(array $errors): self
@@ -73,8 +71,8 @@ class FilterParameters extends ExtendedFluent
     }
 
     /**
-     * @param string $fieldName
-     * @param array $errors
+     * @param  string  $fieldName
+     * @param  array  $errors
      * @return FilterParameters
      */
     public function addErrors(string $fieldName, array $errors): self
@@ -85,7 +83,7 @@ class FilterParameters extends ExtendedFluent
     }
 
     /**
-     * @param string $fieldName
+     * @param  string  $fieldName
      * @return bool
      */
     public function hasError(string $fieldName): bool

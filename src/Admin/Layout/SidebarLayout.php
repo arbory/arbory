@@ -38,7 +38,7 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param mixed $content
+     * @param  mixed  $content
      * @return Content
      */
     public function contents($content)
@@ -55,8 +55,7 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param int $width
-     *
+     * @param  int  $width
      * @return SidebarLayout
      */
     public function setWidth(int $width): self
@@ -75,8 +74,7 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param Slot $sidebar
-     *
+     * @param  Slot  $sidebar
      * @return SidebarLayout
      */
     public function setSidebar($sidebar): self

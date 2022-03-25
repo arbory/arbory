@@ -12,7 +12,7 @@ trait Renderable
     protected $renderer;
 
     /**
-     * @param RenderableInterface $renderer
+     * @param  RenderableInterface  $renderer
      * @return self
      */
     public function setRenderer(RenderableInterface $renderer)

@@ -24,8 +24,8 @@ class Toolbox implements Renderable
     /**
      * Toolbox constructor.
      *
-     * @param string $url
-     * @param ToolboxMenu|null $menu
+     * @param  string  $url
+     * @param  ToolboxMenu|null  $menu
      */
     public function __construct($url = null, ToolboxMenu $menu = null)
     {
@@ -73,8 +73,7 @@ class Toolbox implements Renderable
     }
 
     /**
-     * @param ToolboxMenu|null $menu
-     *
+     * @param  ToolboxMenu|null  $menu
      * @return Toolbox
      */
     public function setMenu(?ToolboxMenu $menu): self
@@ -93,8 +92,7 @@ class Toolbox implements Renderable
     }
 
     /**
-     * @param string $url
-     *
+     * @param  string  $url
      * @return Toolbox
      */
     public function setUrl(string $url): self
@@ -106,7 +104,6 @@ class Toolbox implements Renderable
 
     /**
      * @param $url
-     *
      * @return Toolbox
      */
     public static function create($url)

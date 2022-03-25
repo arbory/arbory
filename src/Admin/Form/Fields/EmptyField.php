@@ -14,7 +14,8 @@ class EmptyField extends AbstractField
 
     /**
      * EmptyField constructor.
-     * @param string|null $name
+     *
+     * @param  string|null  $name
      */
     public function __construct(?string $name = '')
     {
@@ -30,7 +31,7 @@ class EmptyField extends AbstractField
     }
 
     /**
-     * @param Element $element
+     * @param  Element  $element
      * @return $this
      */
     public function append(Element $element): self

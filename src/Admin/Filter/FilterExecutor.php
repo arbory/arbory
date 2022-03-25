@@ -9,9 +9,8 @@ use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 class FilterExecutor
 {
     /**
-     * @param FilterManager $filterManager
-     * @param Builder $builder
-     *
+     * @param  FilterManager  $filterManager
+     * @param  Builder  $builder
      * @return Builder
      */
     public function execute(FilterManager $filterManager, Builder $builder): Builder
@@ -26,9 +25,9 @@ class FilterExecutor
     }
 
     /**
-     * @param FilterItem $filterItem
-     * @param FilterParameters $parameters
-     * @param Builder $builder
+     * @param  FilterItem  $filterItem
+     * @param  FilterParameters  $parameters
+     * @param  Builder  $builder
      */
     protected function executeForItem(FilterItem $filterItem, FilterParameters $parameters, Builder $builder): void
     {
@@ -55,9 +54,9 @@ class FilterExecutor
     }
 
     /**
-     * @param FilterParameters $parameters
-     * @param FilterItem $filterItem
-     * @param Builder $builder
+     * @param  FilterParameters  $parameters
+     * @param  FilterItem  $filterItem
+     * @param  Builder  $builder
      */
     protected function applyQuery(FilterParameters $parameters, FilterItem $filterItem, Builder $builder): void
     {

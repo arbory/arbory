@@ -27,7 +27,7 @@ class FieldTypeRegistry
     /**
      * FieldTypeRegistry constructor.
      *
-     * @param Container $app
+     * @param  Container  $app
      *
      * @throws \ReflectionException
      */
@@ -39,8 +39,8 @@ class FieldTypeRegistry
     }
 
     /**
-     * @param string $type
-     * @param string $class
+     * @param  string  $type
+     * @param  string  $class
      * @return $this
      */
     public function register(string $type, string $class): self
@@ -64,7 +64,7 @@ class FieldTypeRegistry
     }
 
     /**
-     * @param string $type
+     * @param  string  $type
      * @return string|null
      */
     public function findByType($type): ?string
@@ -73,8 +73,7 @@ class FieldTypeRegistry
     }
 
     /**
-     * @param string $type
-     *
+     * @param  string  $type
      * @return bool
      */
     public function has($type): bool
@@ -85,9 +84,8 @@ class FieldTypeRegistry
     /**
      * Resolves a field class instance.
      *
-     * @param string $type
-     * @param array $parameters
-     *
+     * @param  string  $type
+     * @param  array  $parameters
      * @return FieldInterface
      */
     public function resolve($type, array $parameters): FieldInterface
@@ -104,9 +102,9 @@ class FieldTypeRegistry
     /**
      * Finds any accessible functions which are defined in class.
      *
-     * @param mixed $class
-     *
+     * @param  mixed  $class
      * @return array
+     *
      * @throws \ReflectionException
      */
     protected function getReservedMethods($class)
@@ -127,10 +125,10 @@ class FieldTypeRegistry
     /**
      * Builds an dictionary of parameters by name for an class from index based parameter list.
      *
-     * @param string $class
-     * @param array  $parameters
-     *
+     * @param  string  $class
+     * @param  array  $parameters
      * @return array
+     *
      * @throws \ReflectionException
      */
     protected function bindParametersByIndex(string $class, array $parameters)

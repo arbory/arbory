@@ -34,7 +34,7 @@ class CreateUserCommand extends Command
     protected $sentinel;
 
     /**
-     * @param Sentinel $sentinel
+     * @param  Sentinel  $sentinel
      */
     public function __construct(Sentinel $sentinel)
     {
@@ -104,7 +104,7 @@ class CreateUserCommand extends Command
     }
 
     /**
-     * @param UserInterface $user
+     * @param  UserInterface  $user
      * @return bool
      */
     protected function activateUser(UserInterface $user): bool

@@ -11,6 +11,7 @@ use Illuminate\Support\Arr;
 
 /**
  * Class ArboryFile.
+ *
  * @method \Arbory\Base\Files\ArboryFile getModel
  */
 class ArboryFile extends ControlField
@@ -46,7 +47,7 @@ class ArboryFile extends ControlField
     }
 
     /**
-     * @param string $disk
+     * @param  string  $disk
      */
     public function setDisk(string $disk)
     {
@@ -105,7 +106,7 @@ class ArboryFile extends ControlField
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return void
      */
     public function beforeModelSave(Request $request)
@@ -113,8 +114,9 @@ class ArboryFile extends ControlField
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return void
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \RuntimeException
      * @throws \InvalidArgumentException

@@ -23,6 +23,7 @@ class SearchField implements Renderable
 
     /**
      * SearchField constructor.
+     *
      * @param $action
      */
     public function __construct($action)

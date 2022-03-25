@@ -34,9 +34,9 @@ class Column implements Renderable
     /**
      * Row constructor.
      *
-     * @param int $size
-     * @param mixed $content
-     * @param string $breakpoint
+     * @param  int  $size
+     * @param  mixed  $content
+     * @param  string  $breakpoint
      */
     public function __construct($size, $content, $breakpoint = self::BREAKPOINT_DEFAULT)
     {
@@ -54,8 +54,7 @@ class Column implements Renderable
      * Expected format:
      *  Breakpoint => Size.
      *
-     * @param array $breakpoints
-     *
+     * @param  array  $breakpoints
      * @return Column
      */
     public function breakpoints(array $breakpoints): self
@@ -67,7 +66,6 @@ class Column implements Renderable
 
     /**
      * @param $content
-     *
      * @return Column
      */
     public function push($content): self
@@ -79,7 +77,6 @@ class Column implements Renderable
 
     /**
      * @param $content
-     *
      * @return Column
      */
     public function set($content): self
@@ -100,10 +97,8 @@ class Column implements Renderable
     /**
      * Column size.
      *
-     * @param int $size
-     *
-     * @param string $breakpoint
-     *
+     * @param  int  $size
+     * @param  string  $breakpoint
      * @return Column
      */
     public function size($size, $breakpoint = self::BREAKPOINT_XS): self

@@ -16,7 +16,8 @@ class ResourceRoutes
 
     /**
      * ResourceRoutes constructor.
-     * @param Module $module
+     *
+     * @param  Module  $module
      */
     public function __construct(Module $module)
     {
@@ -25,7 +26,7 @@ class ResourceRoutes
 
     /**
      * @param $name
-     * @param array $parameters
+     * @param  array  $parameters
      * @return string
      */
     public function getUrl($name, $parameters = [])

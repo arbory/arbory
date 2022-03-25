@@ -30,7 +30,8 @@ final class FileSize
 
     /**
      * FileSize constructor.
-     * @param ArboryFile $file
+     *
+     * @param  ArboryFile  $file
      */
     public function __construct(ArboryFile $file)
     {
@@ -63,8 +64,8 @@ final class FileSize
     }
 
     /**
-     * @param int $sizeInBytes
-     * @param string $unit
+     * @param  int  $sizeInBytes
+     * @param  string  $unit
      * @return float
      */
     private function roundToUnit(int $sizeInBytes, string $unit): float

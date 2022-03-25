@@ -55,8 +55,9 @@ class Setting extends Model
     }
 
     /**
-     * @param array $attributes
+     * @param  array  $attributes
      * @return Model|self
+     *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      * @throws \ErrorException
      */
@@ -68,7 +69,7 @@ class Setting extends Model
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     public function getAttribute($key)
@@ -85,8 +86,8 @@ class Setting extends Model
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      * @return Model|self
      */
     public function setAttribute($key, $value)
@@ -99,7 +100,7 @@ class Setting extends Model
     }
 
     /**
-     * @param array $options
+     * @param  array  $options
      * @return bool
      */
     public function save(array $options = [])
@@ -112,7 +113,7 @@ class Setting extends Model
     }
 
     /**
-     * @param mixed $column
+     * @param  mixed  $column
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function value($column = null)
@@ -129,7 +130,7 @@ class Setting extends Model
     }
 
     /**
-     * @param string|null $settingName
+     * @param  string|null  $settingName
      * @return bool
      */
     public function isTranslatable(string $settingName = null): bool

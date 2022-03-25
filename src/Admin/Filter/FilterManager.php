@@ -52,10 +52,11 @@ class FilterManager
 
     /**
      * FilterManager constructor.
-     * @param FilterFactory $filterTypeFactory
-     * @param FilterExecutor $filterExecutor
-     * @param FilterParameterResolver $filterParameterResolver
-     * @param SavedFilterRepository $savedFilterRepository
+     *
+     * @param  FilterFactory  $filterTypeFactory
+     * @param  FilterExecutor  $filterExecutor
+     * @param  FilterParameterResolver  $filterParameterResolver
+     * @param  SavedFilterRepository  $savedFilterRepository
      */
     public function __construct(
         FilterFactory $filterTypeFactory,
@@ -71,11 +72,10 @@ class FilterManager
     }
 
     /**
-     * @param string $name
-     * @param string $title
-     * @param string $filterType
-     * @param iterable $filterTypeConfig
-     *
+     * @param  string  $name
+     * @param  string  $title
+     * @param  string  $filterType
+     * @param  iterable  $filterTypeConfig
      * @return FilterItem
      */
     public function addFilter(
@@ -114,7 +114,7 @@ class FilterManager
     }
 
     /**
-     * @param Builder $builder
+     * @param  Builder  $builder
      * @return Builder
      */
     public function apply(Builder $builder): Builder

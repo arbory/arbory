@@ -27,8 +27,9 @@ class Row implements Renderable
 
     /**
      * Row constructor.
-     * @param Grid $grid
-     * @param Model $model
+     *
+     * @param  Grid  $grid
+     * @param  Model  $model
      */
     public function __construct(Grid $grid, Model $model)
     {

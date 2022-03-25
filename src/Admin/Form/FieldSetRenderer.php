@@ -29,8 +29,8 @@ class FieldSetRenderer implements FieldSetRendererInterface
     /**
      * FieldSetRenderer constructor.
      *
-     * @param FieldSet $fieldSet
-     * @param StyleManager $styleManager
+     * @param  FieldSet  $fieldSet
+     * @param  StyleManager  $styleManager
      */
     public function __construct(FieldSet $fieldSet, StyleManager $styleManager)
     {
@@ -47,8 +47,7 @@ class FieldSetRenderer implements FieldSetRendererInterface
     }
 
     /**
-     * @param string $value
-     *
+     * @param  string  $value
      * @return FieldSetRendererInterface
      */
     public function setDefaultStyle(string $value): FieldSetRendererInterface
@@ -115,8 +114,7 @@ class FieldSetRenderer implements FieldSetRendererInterface
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return mixed|null
      */
     protected function renderField(FieldInterface $field)
@@ -133,9 +131,8 @@ class FieldSetRenderer implements FieldSetRendererInterface
     }
 
     /**
-     * @param array $rows
-     * @param       $content
-     *
+     * @param  array  $rows
+     * @param  $content
      * @return Column
      */
     protected function createColumn(array $rows, $content)

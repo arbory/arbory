@@ -18,7 +18,8 @@ class JsonExport implements ExportInterface
 
     /**
      * ExcelExport constructor.
-     * @param DataSetExport $export
+     *
+     * @param  DataSetExport  $export
      */
     public function __construct(DataSetExport $export)
     {
@@ -26,7 +27,7 @@ class JsonExport implements ExportInterface
     }
 
     /**
-     * @param string $fileName
+     * @param  string  $fileName
      * @return BinaryFileResponse
      */
     public function download(string $fileName): BinaryFileResponse

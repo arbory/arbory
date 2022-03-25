@@ -26,7 +26,7 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
     /**
      * Layout constructor.
      *
-     * @param Closure|null $callback
+     * @param  Closure|null  $callback
      */
     public function __construct(Closure $callback = null)
     {
@@ -46,8 +46,7 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
     }
 
     /**
-     * @param mixed $content
-     *
+     * @param  mixed  $content
      * @return Layout
      */
     public function body($content)
@@ -57,7 +56,6 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
 
     /**
      * @param $content
-     *
      * @return $this
      */
     public function row($content)
@@ -69,7 +67,6 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
 
     /**
      * @param $content
-     *
      * @return Row
      */
     protected function createRow($content)
@@ -86,7 +83,6 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
 
     /**
      * @param $class
-     *
      * @return Layout
      */
     public function bodyClass($class)
@@ -102,9 +98,9 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
     }
 
     /**
-     * @param                      $content
-     *
+     * @param  $content
      * @return string
+     *
      * @throws \Throwable
      */
     public function contents($content)

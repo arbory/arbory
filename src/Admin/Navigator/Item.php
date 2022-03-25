@@ -61,7 +61,6 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
 
     /**
      * @param  string  $title
-     *
      * @return Item
      */
     public function setTitle(string $title): self
@@ -81,7 +80,6 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
 
     /**
      * @param  string  $anchor
-     *
      * @return Item
      */
     public function setAnchor(string $anchor): self
@@ -119,7 +117,6 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
 
     /**
      * @param  NavigableInterface  $navigable
-     *
      * @return Item
      */
     public function setNavigable(NavigableInterface $navigable): self
@@ -169,7 +166,6 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
      * Convert the object to its JSON representation.
      *
      * @param  int  $options
-     *
      * @return string
      */
     public function toJson($options = 0)
@@ -197,8 +193,10 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
      * Specify data which should be serialized to JSON.
      *
      * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource.
+     *
      * @since 5.4.0
      */
     public function jsonSerialize()
@@ -216,7 +214,6 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
 
     /**
      * @param  int  $order
-     *
      * @return Item
      */
     public function setOrder(int $order): self

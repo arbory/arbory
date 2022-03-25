@@ -10,7 +10,7 @@ use Illuminate\Support\Fluent;
 class ExtendedFluent extends Fluent implements IteratorAggregate
 {
     /**
-     * @param array $data
+     * @param  array  $data
      * @return static
      */
     public function replace(array $data = []): self
@@ -21,7 +21,7 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @return static
      */
     public function add(array $data = []): self
@@ -32,7 +32,7 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param string $attribute
+     * @param  string  $attribute
      * @return bool
      */
     public function has(string $attribute): bool
@@ -41,7 +41,7 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param string $attribute
+     * @param  string  $attribute
      * @param $value
      * @return static
      */
@@ -53,7 +53,7 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param string|null $attribute
+     * @param  string|null  $attribute
      * @return bool
      */
     public function isEmpty(?string $attribute = null): bool
@@ -66,7 +66,7 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     protected function isEmptyDeep($item): bool
@@ -82,9 +82,12 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
 
     /**
      * Retrieve an external iterator.
+     *
      * @link https://php.net/manual/en/iteratoraggregate.getiterator.php
+     *
      * @return Traversable An instance of an object implementing <b>Iterator</b> or
-     * <b>Traversable</b>
+     *                     <b>Traversable</b>
+     *
      * @since 5.0.0
      */
     public function getIterator()

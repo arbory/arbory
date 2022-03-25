@@ -159,7 +159,7 @@ class NodeServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param string $path
+     * @param  string  $path
      * @return bool
      */
     protected function isRouteCacheOutdated(string $path)
@@ -188,7 +188,7 @@ class NodeServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param LaravelRouter $router
+     * @param  LaravelRouter  $router
      */
     protected function detectCurrentLocaleFromRoute(LaravelRouter $router)
     {

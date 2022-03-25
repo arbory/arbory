@@ -8,15 +8,13 @@ use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 interface StyleOptionsInterface extends RenderOptionsInterface
 {
     /**
-     * @param array $data
-     *
+     * @param  array  $data
      * @return StyleOptionsInterface
      */
     public function setAdditional(array $data): self;
 
     /**
-     * @param array $data
-     *
+     * @param  array  $data
      * @return StyleOptionsInterface
      */
     public function addAdditional(array $data): self;
@@ -27,9 +25,8 @@ interface StyleOptionsInterface extends RenderOptionsInterface
     public function getAdditional(): Fluent;
 
     /**
-     * @param mixed $rows
-     * @param array $breakpoints
-     *
+     * @param  mixed  $rows
+     * @param  array  $breakpoints
      * @return StyleOptionsInterface
      */
     public function setRows(int $rows, array $breakpoints = []): self;

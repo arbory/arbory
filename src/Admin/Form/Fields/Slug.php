@@ -24,9 +24,9 @@ class Slug extends Text
     protected $rendererClass = SlugFieldRenderer::class;
 
     /**
-     * @param string $name
-     * @param string $fromFieldName
-     * @param string $apiUrl
+     * @param  string  $name
+     * @param  string  $fromFieldName
+     * @param  string  $apiUrl
      */
     public function __construct($name, $fromFieldName, $apiUrl)
     {

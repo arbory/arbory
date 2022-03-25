@@ -30,8 +30,8 @@ class NestedFieldRenderer implements RendererInterface
     /**
      * NestedFieldRenderer constructor.
      *
-     * @param HasMany       $field
-     * @param ItemInterface $itemRenderer
+     * @param  HasMany  $field
+     * @param  ItemInterface  $itemRenderer
      */
     public function __construct(HasMany $field, ItemInterface $itemRenderer)
     {
@@ -96,8 +96,7 @@ class NestedFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param NestedItemRenderer $itemRenderer
-     *
+     * @param  NestedItemRenderer  $itemRenderer
      * @return NestedFieldRenderer
      */
     public function setItemRenderer(NestedItemRenderer $itemRenderer): self
@@ -108,7 +107,7 @@ class NestedFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param FieldSet $fieldSet
+     * @param  FieldSet  $fieldSet
      * @param $index
      * @return Element
      */
@@ -139,8 +138,7 @@ class NestedFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -161,8 +159,7 @@ class NestedFieldRenderer implements RendererInterface
     /**
      * Configure the style before rendering the field.
      *
-     * @param StyleOptionsInterface $options
-     *
+     * @param  StyleOptionsInterface  $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

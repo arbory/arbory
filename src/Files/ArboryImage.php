@@ -18,7 +18,7 @@ class ArboryImage extends ArboryFile
     }
 
     /**
-     * @param string $preset
+     * @param  string  $preset
      * @return string
      */
     public function getUrl(string $preset = ''): string

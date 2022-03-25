@@ -16,7 +16,7 @@ class SessionSecurityService implements SecurityStrategy
     private $sentinel;
 
     /**
-     * @param Sentinel $sentinel
+     * @param  Sentinel  $sentinel
      */
     public function __construct(Sentinel $sentinel)
     {
@@ -24,9 +24,9 @@ class SessionSecurityService implements SecurityStrategy
     }
 
     /**
-     * @param array $credentials
-     * @param bool $remember
-     * @param bool $login
+     * @param  array  $credentials
+     * @param  bool  $remember
+     * @param  bool  $login
      * @return Reply
      */
     public function authenticate(array $credentials, $remember = false, $login = true): Reply
@@ -41,8 +41,8 @@ class SessionSecurityService implements SecurityStrategy
     }
 
     /**
-     * @param UserInterface|null $user
-     * @param bool $everywhere
+     * @param  UserInterface|null  $user
+     * @param  bool  $everywhere
      * @return Reply
      */
     public function logout(UserInterface $user = null, $everywhere = false): Reply

@@ -16,8 +16,8 @@ class ArboryAdminSwitchedOffModuleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
-     * @param Closure $next
+     * @param  Request  $request
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -32,7 +32,7 @@ class ArboryAdminSwitchedOffModuleMiddleware
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Module|null
      */
     protected function getFirstAvailableModule(Request $request): ?Module
@@ -50,7 +50,7 @@ class ArboryAdminSwitchedOffModuleMiddleware
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Module|null
      */
     private function resolveSwitchedOffModule(Request $request): ?Module

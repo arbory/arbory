@@ -29,9 +29,9 @@ class StyleManager
     /**
      * StyleManager constructor.
      *
-     * @param Application $app
-     * @param array $styles
-     * @param             $defaultStyle
+     * @param  Application  $app
+     * @param  array  $styles
+     * @param  $defaultStyle
      */
     public function __construct(Application $app, array $styles, $defaultStyle)
     {
@@ -41,9 +41,8 @@ class StyleManager
     }
 
     /**
-     * @param string $name
-     * @param        $class
-     *
+     * @param  string  $name
+     * @param  $class
      * @return $this
      */
     public function addStyle(string $name, $class)
@@ -54,8 +53,7 @@ class StyleManager
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return $this
      */
     public function removeStyle(string $name)
@@ -66,10 +64,9 @@ class StyleManager
     }
 
     /**
-     * @param string $name
-     * @param FieldInterface $field
-     * @param StyleOptionsInterface|null $options
-     *
+     * @param  string  $name
+     * @param  FieldInterface  $field
+     * @param  StyleOptionsInterface|null  $options
      * @return mixed|null
      */
     public function render(string $name, FieldInterface $field, ?StyleOptionsInterface $options = null)
@@ -107,7 +104,7 @@ class StyleManager
     }
 
     /**
-     * @param string $defaultStyle
+     * @param  string  $defaultStyle
      */
     public function setDefaultStyle(string $defaultStyle): void
     {

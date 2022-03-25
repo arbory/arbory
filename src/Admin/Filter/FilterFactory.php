@@ -14,7 +14,8 @@ class FilterFactory
 
     /**
      * FilterTypeFactory constructor.
-     * @param Container $container
+     *
+     * @param  Container  $container
      */
     public function __construct(Container $container)
     {
@@ -22,8 +23,8 @@ class FilterFactory
     }
 
     /**
-     * @param string $type
-     * @param iterable $config
+     * @param  string  $type
+     * @param  iterable  $config
      * @return FilterTypeInterface
      */
     public function makeType(string $type, iterable $config): FilterTypeInterface
@@ -39,9 +40,9 @@ class FilterFactory
     }
 
     /**
-     * @param string $typeClass
-     * @param string $name
-     * @param iterable $config
+     * @param  string  $typeClass
+     * @param  string  $name
+     * @param  iterable  $config
      * @return FilterItem
      */
     public function makeSimpleFilter(string $typeClass, string $name, iterable $config): FilterItem

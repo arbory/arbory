@@ -85,8 +85,8 @@ class ArboryServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param string $containerKey
-     * @param string $commandClass
+     * @param  string  $containerKey
+     * @param  string  $commandClass
      * @return void
      */
     private function registerCommand(string $containerKey, string $commandClass)

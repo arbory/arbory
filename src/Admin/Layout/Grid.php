@@ -42,11 +42,9 @@ class Grid implements Renderable
     }
 
     /**
-     * @param int $size
-     * @param mixed $content
-     *
-     * @param string|null $breakpoint
-     *
+     * @param  int  $size
+     * @param  mixed  $content
+     * @param  string|null  $breakpoint
      * @return Column
      */
     public function column($size, $content, $breakpoint = null)

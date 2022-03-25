@@ -29,7 +29,6 @@ class Content extends Collection implements Renderable
 
     /**
      * @param $value
-     *
      * @return string
      */
     public function evaluate($value)
@@ -63,7 +62,6 @@ class Content extends Collection implements Renderable
 
     /**
      * @param  Renderable  $value
-     *
      * @return string
      */
     protected function renderable(Renderable $value)

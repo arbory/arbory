@@ -21,7 +21,8 @@ class ArboryAdminInRoleMiddleware
 
     /**
      * ArboryAdminInRoleMiddleware constructor.
-     * @param Sentinel $sentinel
+     *
+     * @param  Sentinel  $sentinel
      */
     public function __construct(Sentinel $sentinel)
     {
@@ -29,9 +30,9 @@ class ArboryAdminInRoleMiddleware
     }
 
     /**
-     * @param Request $request
-     * @param Closure $next
-     * @param string|int|RoleInterface $role
+     * @param  Request  $request
+     * @param  Closure  $next
+     * @param  string|int|RoleInterface  $role
      * @return JsonResponse|RedirectResponse|mixed
      */
     public function handle(Request $request, Closure $next, $role)
@@ -49,7 +50,7 @@ class ArboryAdminInRoleMiddleware
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return JsonResponse|RedirectResponse
      */
     public function denied(Request $request)

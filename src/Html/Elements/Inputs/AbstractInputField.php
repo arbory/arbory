@@ -8,7 +8,7 @@ use Arbory\Base\Html\Elements\Element;
 abstract class AbstractInputField extends Element
 {
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return self
      */
     public function setValue($value)
@@ -19,7 +19,7 @@ abstract class AbstractInputField extends Element
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return self
      */
     public function setName($name)
@@ -31,7 +31,7 @@ abstract class AbstractInputField extends Element
     }
 
     /**
-     * @param string $text
+     * @param  string  $text
      * @return Element
      */
     public function getLabel($text)

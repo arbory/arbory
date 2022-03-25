@@ -19,8 +19,8 @@ class MenuItemFactory
     protected $translations;
 
     /**
-     * @param Admin $admin
-     * @param TranslationRepository $translations
+     * @param  Admin  $admin
+     * @param  TranslationRepository  $translations
      */
     public function __construct(Admin $admin, TranslationRepository $translations)
     {
@@ -29,8 +29,8 @@ class MenuItemFactory
     }
 
     /**
-     * @param array|string $definition
-     * @param null $title
+     * @param  array|string  $definition
+     * @param  null  $title
      * @return AbstractItem
      */
     public function build($definition, $title = null): AbstractItem
@@ -59,7 +59,7 @@ class MenuItemFactory
     }
 
     /**
-     * @param array|string $definition
+     * @param  array|string  $definition
      * @return string
      */
     protected function getMenuItemName($definition): string

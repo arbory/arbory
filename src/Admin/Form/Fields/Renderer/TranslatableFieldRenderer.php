@@ -20,7 +20,8 @@ class TranslatableFieldRenderer implements RendererInterface
 
     /**
      * TranslatableFieldRenderer constructor.
-     * @param Translatable $field
+     *
+     * @param  Translatable  $field
      */
     public function __construct(Translatable $field)
     {
@@ -127,8 +128,7 @@ class TranslatableFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param FieldInterface $field
-     *
+     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -149,8 +149,7 @@ class TranslatableFieldRenderer implements RendererInterface
     /**
      * Configure the style before rendering the field.
      *
-     * @param StyleOptionsInterface $options
-     *
+     * @param  StyleOptionsInterface  $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

@@ -23,7 +23,7 @@ class Password extends ControlField
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return void
      */
     public function beforeModelSave(Request $request)

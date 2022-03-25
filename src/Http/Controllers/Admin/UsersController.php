@@ -34,7 +34,8 @@ class UsersController extends Controller
 
     /**
      * UsersController constructor.
-     * @param Admin $admin
+     *
+     * @param  Admin  $admin
      */
     public function __construct(Admin $admin)
     {
@@ -42,7 +43,7 @@ class UsersController extends Controller
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      * @return Form
      */
     protected function form(Form $form)
@@ -137,7 +138,7 @@ class UsersController extends Controller
     }
 
     /**
-     * @param EloquentUser $user
+     * @param  EloquentUser  $user
      * @return bool
      */
     protected function isActivated(EloquentUser $user): bool

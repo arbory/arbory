@@ -79,7 +79,6 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 
     /**
      * @param  Form  $form
-     *
      * @return FormLayoutInterface
      */
     public function setForm(Form $form): FormLayoutInterface
@@ -106,7 +105,6 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 
     /**
      * @param  mixed  $content
-     *
      * @return mixed
      */
     public function contents($content)
@@ -201,7 +199,6 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 
     /**
      * @param $url
-     *
      * @return ConstructorLayout
      */
     public function setModalUrl($url): self

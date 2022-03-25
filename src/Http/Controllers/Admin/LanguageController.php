@@ -27,7 +27,7 @@ class LanguageController extends Controller
     protected $repository;
 
     /**
-     * @param LanguageRepository $repository
+     * @param  LanguageRepository  $repository
      */
     public function __construct(LanguageRepository $repository)
     {
@@ -35,7 +35,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      * @return Form
      */
     public function form(Form $form)
@@ -47,7 +47,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param Grid $grid
+     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)
@@ -67,8 +67,9 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param int $resourceId
+     * @param  int  $resourceId
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
      * @throws \Exception
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
@@ -83,8 +84,9 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param int $resourceId
+     * @param  int  $resourceId
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
      * @throws \Exception
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
@@ -112,7 +114,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param \Arbory\Base\Admin\Tools\ToolboxMenu $tools
+     * @param  \Arbory\Base\Admin\Tools\ToolboxMenu  $tools
      */
     protected function toolbox(ToolboxMenu $tools)
     {
@@ -134,7 +136,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     protected function confirmDisableDialog(Request $request)
@@ -150,7 +152,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     protected function confirmRestoreDialog(Request $request)

@@ -14,8 +14,8 @@ class DateRangeFilterType extends RangeFilterType
     protected $inputType = 'date';
 
     /**
-     * @param FilterItem $filterItem
-     * @param Builder $builder
+     * @param  FilterItem  $filterItem
+     * @param  Builder  $builder
      */
     public function execute(FilterItem $filterItem, Builder $builder): void
     {
@@ -32,8 +32,8 @@ class DateRangeFilterType extends RangeFilterType
     }
 
     /**
-     * @param FilterParameters $parameters
-     * @param callable $attributeResolver
+     * @param  FilterParameters  $parameters
+     * @param  callable  $attributeResolver
      * @return array
      */
     public function rules(FilterParameters $parameters, callable $attributeResolver): array
@@ -45,9 +45,9 @@ class DateRangeFilterType extends RangeFilterType
     }
 
     /**
-     * @param Validator $validator
-     * @param FilterParameters $filterParameters
-     * @param callable $attributeResolver
+     * @param  Validator  $validator
+     * @param  FilterParameters  $filterParameters
+     * @param  callable  $attributeResolver
      */
     public function withValidator(
         Validator $validator,

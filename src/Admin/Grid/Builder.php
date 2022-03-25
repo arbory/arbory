@@ -33,7 +33,8 @@ class Builder implements Renderable
 
     /**
      * Builder constructor.
-     * @param Grid $grid
+     *
+     * @param  Grid  $grid
      */
     public function __construct(Grid $grid)
     {
@@ -120,7 +121,7 @@ class Builder implements Renderable
     }
 
     /**
-     * @param Column $column
+     * @param  Column  $column
      * @return Element
      */
     protected function getColumnHeader(Column $column)
@@ -263,7 +264,7 @@ class Builder implements Renderable
     }
 
     /**
-     * @param Tools $toolset
+     * @param  Tools  $toolset
      * @return void
      */
     protected function addCustomToolsToFooterToolset(Tools $toolset)
@@ -289,7 +290,7 @@ class Builder implements Renderable
 
     /**
      * @param $route
-     * @param array $parameters
+     * @param  array  $parameters
      * @return string
      */
     public function url($route, $parameters = [])

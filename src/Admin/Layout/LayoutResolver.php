@@ -38,8 +38,8 @@ class LayoutResolver
     /**
      * LayoutResolver constructor.
      *
-     * @param Container $container
-     * @param           $layout
+     * @param  Container  $container
+     * @param  $layout
      */
     public function __construct(Container $container, $layout)
     {
@@ -54,8 +54,7 @@ class LayoutResolver
     }
 
     /**
-     * @param callable $handler
-     *
+     * @param  callable  $handler
      * @return $this
      */
     public function handle(callable $handler)
@@ -68,7 +67,6 @@ class LayoutResolver
     /**
      * @param $layout
      * @param $parameters
-     *
      * @return LayoutResolver
      */
     public function with($layout): self
@@ -81,8 +79,8 @@ class LayoutResolver
     }
 
     /**
-     * @param string $name
-     * @param mixed $content
+     * @param  string  $name
+     * @param  mixed  $content
      * @return $this
      */
     public function slot($name, $content)
@@ -100,10 +98,9 @@ class LayoutResolver
     }
 
     /**
-     * @param Body  $body
-     * @param       $next
-     * @param array ...$parameters
-     *
+     * @param  Body  $body
+     * @param  $next
+     * @param  array  ...$parameters
      * @return mixed
      */
     public function __invoke(Body $body, $next, array ...$parameters)

@@ -14,7 +14,7 @@ class LazyRenderer implements Renderable
     /**
      * LazyRenderer constructor.
      *
-     * @param callable $callable
+     * @param  callable  $callable
      */
     public function __construct(callable $callable)
     {

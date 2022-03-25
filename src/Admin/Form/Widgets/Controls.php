@@ -22,8 +22,8 @@ class Controls implements Renderable
     /**
      * Controls constructor.
      *
-     * @param Tools $tools
-     * @param null $backUrl
+     * @param  Tools  $tools
+     * @param  null  $backUrl
      */
     public function __construct(Tools $tools, $backUrl = null)
     {
@@ -83,8 +83,7 @@ class Controls implements Renderable
     }
 
     /**
-     * @param Tools $tools
-     *
+     * @param  Tools  $tools
      * @return Controls
      */
     public function setTools(Tools $tools): self

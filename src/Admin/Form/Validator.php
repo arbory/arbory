@@ -25,7 +25,7 @@ class Validator extends FormRequest
     }
 
     /**
-     * @param array $rules
+     * @param  array  $rules
      * @return $this
      */
     public function setRules(array $rules)

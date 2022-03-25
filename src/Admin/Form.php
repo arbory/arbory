@@ -60,8 +60,8 @@ class Form
     /**
      * Form constructor.
      *
-     * @param Model $model
-     * @param string $namespace
+     * @param  Model  $model
+     * @param  string  $namespace
      */
     public function __construct(Model $model, $namespace = 'resource')
     {
@@ -142,7 +142,7 @@ class Form
     }
 
     /**
-     * @param \Closure $fieldConstructor
+     * @param  \Closure  $fieldConstructor
      * @return $this
      */
     public function setFields(\Closure $fieldConstructor)
@@ -153,7 +153,7 @@ class Form
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function store(Request $request)
     {
@@ -167,7 +167,7 @@ class Form
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function update(Request $request)
     {
@@ -215,7 +215,7 @@ class Form
     }
 
     /**
-     * @param string|null $returnUrl
+     * @param  string|null  $returnUrl
      * @return Form
      */
     public function setReturnUrl(?string $returnUrl): self

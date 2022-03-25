@@ -30,7 +30,6 @@ class ControlField extends AbstractField implements ControlFieldInterface, Rende
      * Converts dot donation name to a input name.
      *
      * @param $namespacedName
-     *
      * @return string
      */
     public function getInputName($namespacedName)
@@ -42,7 +41,6 @@ class ControlField extends AbstractField implements ControlFieldInterface, Rende
      * Creates Input ID from input name.
      *
      * @param $inputName
-     *
      * @return string
      */
     public function getInputId($inputName)
@@ -52,7 +50,6 @@ class ControlField extends AbstractField implements ControlFieldInterface, Rende
 
     /**
      * @param $namespacedName
-     *
      * @return string
      */
     public function getInputIdFromNamespace($namespacedName)
@@ -71,8 +68,7 @@ class ControlField extends AbstractField implements ControlFieldInterface, Rende
     }
 
     /**
-     * @param mixed $control
-     *
+     * @param  mixed  $control
      * @return ControlField
      */
     public function setControl($control): self

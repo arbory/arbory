@@ -37,9 +37,10 @@ class Admin
 
     /**
      * Admin constructor.
-     * @param Sentinel $sentinel
-     * @param Menu $menu
-     * @param AssetPipeline $assets
+     *
+     * @param  Sentinel  $sentinel
+     * @param  Menu  $menu
+     * @param  AssetPipeline  $assets
      */
     public function __construct(Sentinel $sentinel, Menu $menu, AssetPipeline $assets)
     {

@@ -15,7 +15,7 @@ class ArboryFileFactory
     private $repository;
 
     /**
-     * @param ArboryFilesRepository $repository
+     * @param  ArboryFilesRepository  $repository
      */
     public function __construct(ArboryFilesRepository $repository)
     {
@@ -23,10 +23,11 @@ class ArboryFileFactory
     }
 
     /**
-     * @param Model $model
-     * @param UploadedFile|ArboryFile $file
-     * @param string $relationName
+     * @param  Model  $model
+     * @param  UploadedFile|ArboryFile  $file
+     * @param  string  $relationName
      * @return ArboryFile
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
@@ -50,9 +51,10 @@ class ArboryFileFactory
     }
 
     /**
-     * @param Model $model
-     * @param UploadedFile|ArboryFile $file
+     * @param  Model  $model
+     * @param  UploadedFile|ArboryFile  $file
      * @return ArboryFile|null
+     *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException

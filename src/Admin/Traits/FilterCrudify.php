@@ -25,7 +25,7 @@ trait FilterCrudify
     }
 
     /**
-     * @param FilterStoreRequest $request
+     * @param  FilterStoreRequest  $request
      * @return RedirectResponse
      */
     public function storeFilter(FilterStoreRequest $request): RedirectResponse
@@ -40,7 +40,7 @@ trait FilterCrudify
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return
      */
     public function deleteFilterDialog(Request $request): View
@@ -56,7 +56,7 @@ trait FilterCrudify
     }
 
     /**
-     * @param int $filterId
+     * @param  int  $filterId
      * @return RedirectResponse
      */
     public function destroyFilter(int $filterId): RedirectResponse

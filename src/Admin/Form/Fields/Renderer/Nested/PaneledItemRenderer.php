@@ -43,12 +43,12 @@ class PaneledItemRenderer implements ItemInterface
     }
 
     /**
-     * @param FieldInterface $field
-     * @param Panel          $panel
-     * @param Content        $content
-     * @param                $name
-     *
+     * @param  FieldInterface  $field
+     * @param  Panel  $panel
+     * @param  Content  $content
+     * @param  $name
      * @return Element|null
+     *
      * @throws \Arbory\Base\Exceptions\BadMethodCallException
      */
     protected function addRemoveButton(FieldInterface $field, Panel $panel, Content $content, $name)
@@ -77,9 +77,8 @@ class PaneledItemRenderer implements ItemInterface
     }
 
     /**
-     * @param FieldInterface $field
-     * @param Panel          $panel
-     *
+     * @param  FieldInterface  $field
+     * @param  Panel  $panel
      * @return Element
      */
     protected function addSortableNavigation(FieldInterface $field, Panel $panel)

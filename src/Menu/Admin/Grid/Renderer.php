@@ -27,7 +27,8 @@ class Renderer
 
     /**
      * Renderer constructor.
-     * @param Grid $grid
+     *
+     * @param  Grid  $grid
      */
     public function __construct(Grid $grid)
     {
@@ -62,8 +63,8 @@ class Renderer
     }
 
     /**
-     * @param Collection $items
-     * @param int $level
+     * @param  Collection  $items
+     * @param  int  $level
      * @return Element
      */
     protected function buildTree(Collection $items, $level = 1)
@@ -112,7 +113,7 @@ class Renderer
     }
 
     /**
-     * @param Collection $items
+     * @param  Collection  $items
      * @return void
      */
     protected function reorderItems(Collection $items)
@@ -157,7 +158,7 @@ class Renderer
 
     /**
      * @param $route
-     * @param array $parameters
+     * @param  array  $parameters
      * @return string
      */
     public function url($route, $parameters = [])
@@ -166,7 +167,7 @@ class Renderer
     }
 
     /**
-     * @param Paginator $page
+     * @param  Paginator  $page
      * @return Element
      */
     public function render(Paginator $page)
