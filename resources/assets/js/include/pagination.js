@@ -1,4 +1,4 @@
-import url from "url";
+import UrlBuilder from '../modules/UrlBuilder';
 
 jQuery(function()
 {
@@ -10,13 +10,8 @@ jQuery(function()
             var val = jQuery(this).val();
             if (val)
             {
-                window.location.href = url.format({
-                    query: {
-                        page: val
-                    }
-                });
+                window.location.href = new UrlBuilder(window.location.href).add({page: val}).getUrl();
             }
         });
     });
-
 });
