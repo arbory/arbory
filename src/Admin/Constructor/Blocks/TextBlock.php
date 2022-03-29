@@ -36,15 +36,6 @@ class TextBlock extends AbstractBlock implements BlockInterface
     }
 
     /**
-     * @param  AssetPipeline  $pipeline
-     * @return mixed
-     */
-    public function assets(AssetPipeline $pipeline)
-    {
-        // TODO: Implement assets() method.
-    }
-
-    /**
      * @return mixed
      */
     public function title()

@@ -53,9 +53,4 @@ interface BlockInterface
      * @param  FieldSet  $fields
      */
     public function fields(FieldSet $fields);
-
-    /**
-     * @param  AssetPipeline  $pipeline
-     */
-    public function assets(AssetPipeline $pipeline);
 }
