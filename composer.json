@@ -80,5 +80,10 @@
             ]
         },
         "foxy": true
+    },
+    "config": {
+        "allow-plugins": {
+            "phpro/grumphp": true
+        }
     }
 }
