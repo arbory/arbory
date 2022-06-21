@@ -223,7 +223,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      * @param  string  $key
      * @param  FieldInterface  $field
      */
-    public function offsetSet($key, $field)
+    public function offsetSet($key, $field): void
     {
         $field->setFieldSet($this);
 
@@ -291,7 +291,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return ArrayIterator|Traversable
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->all());
     }
@@ -302,7 +302,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      * @param  mixed  $key
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return array_key_exists($key, $this->all());
     }
@@ -313,7 +313,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      * @param  mixed  $key
      * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return $this->items[$key];
     }
@@ -324,7 +324,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      * @param  string  $key
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         unset($this->items[$key]);
     }
@@ -334,7 +334,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->items->count();
     }
