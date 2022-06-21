@@ -118,7 +118,7 @@ class TranslationsController extends Controller
                 'paginator' => $paginatedItems,
                 'search' => $request->get('search'),
                 'highlight' => function ($text) use ($searchString) {
-                    if (!$searchString) {
+                    if (! $searchString) {
                         return $text;
                     }
 
