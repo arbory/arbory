@@ -1,4 +1,3 @@
-
 /**
  * Grid setup
  *
@@ -17,7 +16,6 @@ $fg-gutter: 0.5rem !default;
 $fg-class-row: 'grid-row' !default;
 $fg-class-col: 'col' !default;
 $fg-class-off: 'off' !default;
-
 
 
 /**
@@ -53,7 +51,7 @@ $fg-breakpoints: (
  */
 @function get-col-percent($column-num) {
 
-  @return $column-num / $fg-columns * 100%;
+    @return calc($column-num / $fg-columns) * 100%;
 
 }
 
@@ -61,42 +59,42 @@ $fg-breakpoints: (
  * Spacing mixin to create uniform margin/padding
  */
 @mixin spacing( $value, $type: margin, $orientation: vertical ) {
-  @if $orientation == vertical {
-    #{ $type }-top: $value;
-    #{ $type }-bottom: $value;
-  } @else {
-    #{ $type }-left: $value;
-    #{ $type }-right: $value;
-  }
+    @if $orientation == vertical {
+        #{ $type }-top: $value;
+        #{ $type }-bottom: $value;
+    } @else {
+        #{ $type }-left: $value;
+        #{ $type }-right: $value;
+    }
 }
 
 /**
  * Row wrapper class, flex box parent.
  */
 .#{ $fg-class-row } {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  @include spacing( ( -$fg-gutter ), margin, horizontal );
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    @include spacing((-$fg-gutter), margin, horizontal);
 }
 
 
 %#{ $fg-class-col } {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 0;
-  flex-shrink: 0;
-  min-height: 1px;
-  @include spacing( ( $fg-gutter ), padding, horizontal );
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 0;
+    min-height: 1px;
+    @include spacing(($fg-gutter), padding, horizontal);
 }
 
 %#{ $fg-class-col }-flex {
-  @extend %#{ $fg-class-col };
-  flex-grow: 1;
-  flex-basis: 0;
-  max-width: 100%;
+    @extend %#{ $fg-class-col };
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
 }
 
 
@@ -110,41 +108,41 @@ $fg-breakpoints: (
  */
 
 @mixin grid-base( $namespace ) {
-  .#{ $fg-class-col }-#{$namespace} {
-    @extend %#{ $fg-class-col }-flex;
-  }
-
-  @for $i from 1 through $fg-columns {
-    .#{ $fg-class-col }-#{$namespace}-#{$i} {
-      @extend %#{ $fg-class-col };
+    .#{ $fg-class-col }-#{$namespace} {
+        @extend %#{ $fg-class-col }-flex;
     }
-  }
+
+    @for $i from 1 through $fg-columns {
+        .#{ $fg-class-col }-#{$namespace}-#{$i} {
+            @extend %#{ $fg-class-col };
+        }
+    }
 }
 
 @mixin grid-sizes( $namespace ) {
 
-  // Run the loop for as many columns as speficied
-  @for $i from 1 through $fg-columns {
-    .#{ $fg-class-col }-#{$namespace}-#{$i} {
-      flex-basis: get-col-percent($i);
-      max-width:  get-col-percent($i);
-    }
-  }
-
-  @for $i from 1 through $fg-columns {
-
-    // Don't include the .off class for the last column
-    @if ( $i != $fg-columns ) {
-      .#{ $fg-class-off }-#{$namespace}-#{$i} {
-        margin-left: get-col-percent($i);
-      }
+    // Run the loop for as many columns as speficied
+    @for $i from 1 through $fg-columns {
+        .#{ $fg-class-col }-#{$namespace}-#{$i} {
+            flex-basis: get-col-percent($i);
+            max-width: get-col-percent($i);
+        }
     }
 
-  }
+    @for $i from 1 through $fg-columns {
 
-  .#{ $fg-class-off }-#{$namespace}-reset {
-    margin-left: 0;
-  }
+        // Don't include the .off class for the last column
+        @if ($i != $fg-columns) {
+            .#{ $fg-class-off }-#{$namespace}-#{$i} {
+                margin-left: get-col-percent($i);
+            }
+        }
+
+    }
+
+    .#{ $fg-class-off }-#{$namespace}-reset {
+        margin-left: 0;
+    }
 
 }
 
@@ -156,24 +154,24 @@ $fg-breakpoints: (
  */
 @each $val in $fg-breakpoints {
 
-  $namespace: nth($val, 1);
-  @include grid-base( $namespace );
+    $namespace: nth($val, 1);
+    @include grid-base($namespace);
 
 }
 
 @each $val in $fg-breakpoints {
-  @if length($val) == 1 {
+    @if length($val) == 1 {
 
-    $namespace: nth($val, 1);
-    @include grid-sizes( $namespace );
+        $namespace: nth($val, 1);
+        @include grid-sizes($namespace);
 
-  } @else {
+    } @else {
 
-    $namespace: nth($val, 1);
-    $size: nth($val, 2);
+        $namespace: nth($val, 1);
+        $size: nth($val, 2);
 
-    @media only screen and (min-width: #{$size}) {
-      @include grid-sizes( $namespace );
+        @media only screen and (min-width: #{$size}) {
+            @include grid-sizes($namespace);
+        }
     }
-  }
 }
