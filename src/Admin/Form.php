@@ -117,7 +117,7 @@ class Form
         }
 
         if ($this->getModel()->getKey()) {
-            return $this->getModule()->url('update', $this->getModel()->getKey());
+            return $this->getModule()->url('update', [$this->getModel()->getKey()]);
         }
 
         return $this->getModule()->url('store');

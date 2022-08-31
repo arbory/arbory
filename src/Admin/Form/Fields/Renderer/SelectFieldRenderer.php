@@ -3,15 +3,14 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Admin\Form\Controls\SelectControl;
+use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
+use Arbory\Base\Html\Elements\Content;
 
 class SelectFieldRenderer extends ControlFieldRenderer
 {
-    /**
-     * @var \Arbory\Base\Admin\Form\Fields\Select
-     */
-    protected $field;
+    protected ControlFieldInterface $field;
 
-    public function render()
+    public function render(): Content
     {
         /**
          * @var SelectControl
@@ -30,7 +29,7 @@ class SelectFieldRenderer extends ControlFieldRenderer
             $name = $control->getName();
             $element->addAttributes([
                 'multiple' => '',
-                'name' => $name.'[]',
+                'name' => $name . '[]',
             ]);
         }
 

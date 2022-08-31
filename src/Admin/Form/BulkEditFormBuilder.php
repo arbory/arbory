@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Admin\Form;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 /**
  * Class BulkEditFormBuilder.
@@ -13,29 +13,16 @@ use Arbory\Base\Html\Elements\Element;
 class BulkEditFormBuilder extends Builder
 {
     /**
-     * @param $route
-     * @param  array  $parameters
-     * @return string
-     */
-    public function url($route, $parameters = [])
-    {
-        return $this->form->getModule()->url($route, $parameters);
-    }
-
-    /**
      * @return Element
      */
-    protected function header()
+    protected function header(): Element
     {
         return Html::header([
             Html::h1($this->form->getTitle()),
         ]);
     }
 
-    /**
-     * @return Element
-     */
-    protected function form()
+    protected function form(): Element
     {
         $form = Html::form()->addAttributes([
             'id' => 'edit-resources',
@@ -57,10 +44,7 @@ class BulkEditFormBuilder extends Builder
         return $form;
     }
 
-    /**
-     * @return Element
-     */
-    protected function footer()
+    protected function footer(): Element
     {
         $primary = Html::div()->addClass('primary');
 
@@ -87,7 +71,7 @@ class BulkEditFormBuilder extends Builder
         return Html::footer($footerTools);
     }
 
-    public function render(): \Arbory\Base\Html\Elements\Content|\Arbory\Base\Html\Elements\Element
+    public function render(): Content
     {
         $content = Html::div()->addClass('body');
 

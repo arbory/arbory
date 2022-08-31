@@ -6,7 +6,6 @@ use Arbory\Base\Admin\Module\ResourceRoutes;
 use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Services\ModuleConfiguration;
-use Arbory\Base\Services\Permissions\ModulePermission;
 use Arbory\Base\Services\Permissions\ModulePermissionsRegistry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -57,10 +56,7 @@ class Module
         return $this->isAuthorized($routeName);
     }
 
-    /**
-     * @return string
-     */
-    public function getControllerClass()
+    public function getControllerClass(): string
     {
         return $this->configuration->getControllerClass();
     }
@@ -70,10 +66,7 @@ class Module
         return $this->configuration;
     }
 
-    /**
-     * @return Breadcrumbs
-     */
-    public function breadcrumbs()
+    public function breadcrumbs(): Breadcrumbs
     {
         if ($this->breadcrumbs === null) {
             $this->breadcrumbs = new Breadcrumbs();  // TODO: Move this to menu
@@ -83,20 +76,12 @@ class Module
         return $this->breadcrumbs;
     }
 
-    /**
-     * @return string
-     */
-    public function name()
+    public function name(): string
     {
         return $this->getConfiguration()->getName();
     }
 
-    /**
-     * @param $route
-     * @param array $parameters
-     * @return string
-     */
-    public function url($route, array $parameters = [])
+    public function url(string $route, array $parameters = []): string
     {
         if ($this->routes === null) {
             $this->routes = $this->admin->routes()->findByModule($this);
@@ -105,9 +90,6 @@ class Module
         return $this->routes->getUrl($route, $parameters);
     }
 
-    /**
-     * @return Collection|ModulePermission[]
-     */
     public function getPermissions(?Role $role = null): Collection
     {
         return $this->permissions->getPermissions($role);

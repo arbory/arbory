@@ -22,9 +22,9 @@ class ModulePermissionsRegistry
         'store' => 'create',
     ];
 
-    private \Illuminate\Support\Collection $modulePermissions;
+    private Collection $modulePermissions;
 
-    private \Cartalyst\Sentinel\Sentinel $sentinel;
+    private Sentinel $sentinel;
 
     /**
      * ModulePermissionsRegistry constructor.

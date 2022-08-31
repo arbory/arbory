@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Form;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Layout\WrappableInterface;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
-use Arbory\Base\Admin\Layout\WrappableInterface;
 
 /**
  * Class Builder.
@@ -17,7 +17,7 @@ class Builder implements Renderable, WrappableInterface
     /**
      * @var string
      */
-    protected $id = 'edit-resource';
+    protected string $id = 'edit-resource';
 
     /**
      * @var mixed
@@ -31,20 +31,12 @@ class Builder implements Renderable, WrappableInterface
     {
     }
 
-    /**
-     * @param  $route
-     * @param  array  $parameters
-     * @return string
-     */
-    public function url($route, $parameters = [])
+    public function url(string $route, array $parameters = []): string
     {
         return $this->form->getModule()->url($route, $parameters);
     }
 
-    /**
-     * @return Element
-     */
-    protected function form()
+    protected function form(): Element
     {
         $form = Html::form()->addAttributes([
             'id' => $this->getId(),
@@ -75,10 +67,7 @@ class Builder implements Renderable, WrappableInterface
         return $form;
     }
 
-    /**
-     * @return Element
-     */
-    public function render()
+    public function render(): mixed
     {
         $content = Html::div()->addClass('body');
         $content->append(new Content($this->getContent()));
@@ -96,7 +85,7 @@ class Builder implements Renderable, WrappableInterface
     }
 
     /**
-     * @param  mixed  $content
+     * @param mixed $content
      */
     public function setContent($content): self
     {

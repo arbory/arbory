@@ -2,16 +2,17 @@
 
 namespace Arbory\Base\Menu\Admin\Grid;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Nodes\MenuItem;
-use Illuminate\Support\Collection;
-use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Layout\Footer;
+use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Nodes\MenuItem;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Renderer
 {
@@ -54,13 +55,9 @@ class Renderer
         ]);
     }
 
-    /**
-     * @param  int  $level
-     * @return Element
-     */
-    protected function buildTree(Collection $items, $level = 1)
+    protected function buildTree(Collection $items, int $level = 1): Element
     {
-        $url = $this->url('edit', '__ID__');
+        $url = $this->url('edit', ['__ID__']);
 
         $list = Html::ul()->addAttributes(['data-level' => $level]);
 
@@ -109,12 +106,12 @@ class Renderer
     protected function reorderItems(Collection $items)
     {
         foreach ($items as $model) {
-            /** @var MenuItem $model */
-            if (! $model->isAfter()) {
+            /** @var Model $model */
+            if (!$model->isAfter()) {
                 continue;
             }
 
-            $afterItem = $items->filter(fn(MenuItem $item) => $item->getId() === $model->getAfterId())->first();
+            $afterItem = $items->filter(fn(Model $item) => $item->getId() === $model->getAfterId())->first();
 
             $currentPosition = $items->search($model);
             $afterKey = $items->search($afterItem);
@@ -125,10 +122,7 @@ class Renderer
         }
     }
 
-    /**
-     * @return Element
-     */
-    protected function footer()
+    protected function footer(): Element
     {
         $createButton = Link::create($this->url('create'))
             ->asButton('primary')
@@ -144,20 +138,12 @@ class Renderer
         return $footer->render();
     }
 
-    /**
-     * @param $route
-     * @param  array  $parameters
-     * @return string
-     */
-    public function url($route, $parameters = [])
+    public function url(string $route, array $parameters = []): string
     {
         return $this->grid()->getModule()->url($route, $parameters);
     }
 
-    /**
-     * @return Element
-     */
-    public function render(Paginator $page)
+    public function render(Paginator $page): Element
     {
         $this->page = $page;
 

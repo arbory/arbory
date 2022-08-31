@@ -2,15 +2,15 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Http\Request;
 
 /**
  * Class Password.
  */
 class Password extends ControlField
 {
-    protected $classes = [
+    protected array $classes = [
         'text',
     ];
 

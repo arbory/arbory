@@ -9,10 +9,6 @@ use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 
 interface PanelInterface extends Renderable, RenderOptionsInterface
 {
-    /**
-     * @param  Toolbox  $toolbox
-     * @return Toolbox
-     */
     public function toolbox(Toolbox $toolbox): Toolbox;
 
     /**

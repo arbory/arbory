@@ -32,19 +32,14 @@ class Layout extends AbstractLayout implements FormLayoutInterface
         $breadcrumbs->addItem(
             $this->form->getTitle(),
             $this->form->getModel()->getKey()
-                ? $this->form->getModule()->url('edit', $this->form->getModel()->getKey())
+                ? $this->form->getModule()->url('edit', [$this->form->getModel()->getKey()])
                 : $this->form->getModule()->url('create')
         );
 
         return $breadcrumbs;
     }
 
-    /**
-     * @param  $route
-     * @param  array  $parameters
-     * @return string
-     */
-    public function url($route, $parameters = [])
+    public function url(string $route, array $parameters = []): string
     {
         return $this->form->getModule()->url($route, $parameters);
     }

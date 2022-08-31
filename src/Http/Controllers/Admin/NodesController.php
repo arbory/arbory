@@ -25,6 +25,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Arbory\Base\Support\Nodes\NameGenerator;
+use Illuminate\View\View;
 
 class NodesController extends Controller
 {
@@ -236,15 +237,12 @@ class NodesController extends Controller
         return $slug;
     }
 
-    /**
-     * @return string
-     */
-    protected function getSlugGeneratorUrl()
+    protected function getSlugGeneratorUrl(): string
     {
-        return $this->url('api', 'slug_generator');
+        return $this->url('api', ['slug_generator']);
     }
 
-    protected function constructorTypesDialog(Request $request)
+    protected function constructorTypesDialog(Request $request): View
     {
         return view('arbory::dialogs.constructor_types', [
             'types' => app(BlockRegistry::class)->all(),
@@ -259,7 +257,7 @@ class NodesController extends Controller
      */
     protected function contentResolver(ContentTypeDefinition $definition, ?LayoutInterface $layout)
     {
-        return function (FieldSet $fieldSet) use ($layout, $definition) {
+        return static function (FieldSet $fieldSet) use ($layout, $definition) {
             $content = $fieldSet->getModel();
 
             $definition->getFieldSetHandler()->call($content, $fieldSet, $layout);
@@ -282,15 +280,11 @@ class NodesController extends Controller
         }
 
         $class = ( new \ReflectionClass($attribute) )->getName();
-        $definition = $this->contentTypeRegister->findByModelClass($class);
 
-        return $definition;
+        return $this->contentTypeRegister->findByModelClass($class);
     }
 
-    /**
-     * @param  string  $type
-     */
-    protected function makeNameFromType($type): string
+    protected function makeNameFromType(string $type): string
     {
         return $this->container->get(NameGenerator::class)->generate($type);
     }

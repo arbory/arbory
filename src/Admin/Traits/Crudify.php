@@ -2,30 +2,30 @@
 
 namespace Arbory\Base\Admin\Traits;
 
-use Admin;
+use Arbory\Base\Admin\Exports\DataSetExport;
+use Arbory\Base\Admin\Exports\ExportInterface;
+use Arbory\Base\Admin\Exports\Type\ExcelExport;
+use Arbory\Base\Admin\Exports\Type\JsonExport;
 use Arbory\Base\Admin\Filter\FilterManager;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Grid\ExportBuilder;
+use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Module;
 use Arbory\Base\Admin\Page;
-use DB;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Support\Facades\Admin;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Arbory\Base\Admin\Layout;
-use Arbory\Base\Admin\Module;
 use Illuminate\Http\Response;
-use Illuminate\Database\Eloquent\Model;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
-use Arbory\Base\Admin\Grid\ExportBuilder;
-use Illuminate\Database\Eloquent\Builder;
-use Arbory\Base\Admin\Exports\DataSetExport;
-use Arbory\Base\Admin\Layout\LayoutInterface;
-use Arbory\Base\Admin\Exports\ExportInterface;
-use Arbory\Base\Admin\Exports\Type\JsonExport;
-use Arbory\Base\Admin\Exports\Type\ExcelExport;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -45,7 +45,7 @@ trait Crudify
      */
     protected $module;
 
-    public function resource(): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
+    public function resource(): Model|\Illuminate\Database\Eloquent\Builder
     {
         $class = $this->resource;
 
@@ -110,7 +110,7 @@ trait Crudify
 
         $page->setBreadcrumbs($this->module()->breadcrumbs());
         $page->use($layout);
-        $page->bodyClass('controller-'.Str::slug($this->module()->name()).' view-index'.$bulkEditClass);
+        $page->bodyClass('controller-' . Str::slug($this->module()->name()) . ' view-index' . $bulkEditClass);
 
         return $page;
     }
@@ -120,7 +120,7 @@ trait Crudify
      */
     public function show($resourceId): RedirectResponse
     {
-        return redirect($this->module()->url('edit', $resourceId));
+        return redirect($this->module()->url('edit', [$resourceId]));
     }
 
     /**
@@ -134,7 +134,7 @@ trait Crudify
         $page = $manager->page(Page::class);
 
         $page->use($layout);
-        $page->bodyClass('controller-'.Str::slug($this->module()->name()).' view-edit');
+        $page->bodyClass('controller-' . Str::slug($this->module()->name()) . ' view-edit');
 
         return $page;
     }
@@ -170,7 +170,7 @@ trait Crudify
 
         $page = $manager->page(Page::class);
         $page->use($layout);
-        $page->bodyClass('controller-'.Str::slug($this->module()->name()).' view-edit');
+        $page->bodyClass('controller-' . Str::slug($this->module()->name()) . ' view-edit');
 
         return $page;
     }
@@ -178,7 +178,7 @@ trait Crudify
     /**
      * @param $resourceId
      */
-    public function update(Request $request, $resourceId): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    public function update(Request $request, $resourceId): JsonResponse|RedirectResponse|Redirector
     {
         $resource = $this->findOrNew($resourceId);
         $layout = $this->layout('form');
@@ -200,7 +200,7 @@ trait Crudify
     /**
      * @param $resourceId
      */
-    public function destroy($resourceId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    public function destroy($resourceId): RedirectResponse|Redirector
     {
         $resource = $this->resource()->findOrFail($resourceId);
         $layout = $this->layout('form');
@@ -215,9 +215,9 @@ trait Crudify
      */
     public function dialog(Request $request, string $name)
     {
-        $method = Str::camel($name).'Dialog';
+        $method = Str::camel($name) . 'Dialog';
 
-        if (! $name || ! method_exists($this, $method)) {
+        if (!$name || !method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
         }
 
@@ -250,8 +250,8 @@ trait Crudify
      */
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
-        if (! isset(self::$exportTypes[$type])) {
-            throw new Exception('Export Type not found - '.$type);
+        if (!isset(self::$exportTypes[$type])) {
+            throw new Exception('Export Type not found - ' . $type);
         }
 
         return new self::$exportTypes[$type]($dataSet);
@@ -272,7 +272,7 @@ trait Crudify
     {
         $model = $tools->model();
 
-        $tools->add('edit', $this->url('edit', $model->getKey()));
+        $tools->add('edit', $this->url('edit', [$model->getKey()]));
         $tools->add(
             'delete',
             $this->url('dialog', ['dialog' => 'confirm_delete', 'id' => $model->getKey()])
@@ -290,7 +290,7 @@ trait Crudify
         return view('arbory::dialogs.confirm_delete', [
             'form_target' => $this->url('destroy', [$resourceId]),
             'list_url' => $this->url('index'),
-            'object_name' => (string) $model,
+            'object_name' => (string)$model,
         ]);
     }
 
@@ -299,9 +299,9 @@ trait Crudify
      */
     public function api(Request $request, string $name)
     {
-        $method = Str::camel($name).'Api';
+        $method = Str::camel($name) . 'Api';
 
-        if (! $name || ! method_exists($this, $method)) {
+        if (!$name || !method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
 
             return;
@@ -310,11 +310,7 @@ trait Crudify
         return $this->{$method}($request);
     }
 
-    /**
-     * @param  array  $parameters
-     * @return string
-     */
-    public function url(string $route, $parameters = [])
+    public function url(string $route, array $parameters = []): string
     {
         return $this->module()->url($route, $parameters);
     }
@@ -342,7 +338,7 @@ trait Crudify
      */
     public function slugGeneratorApi(Request $request)
     {
-        /** @var \Illuminate\Database\Query\Builder $query */
+        /** @var Builder $query */
         $slug = Str::slug($request->input('from'));
         $column = $request->input('column_name');
 
@@ -357,16 +353,16 @@ trait Crudify
         }
 
         if ($column && $query->exists()) {
-            $slug .= '-'.random_int(0, 9999);
+            $slug .= '-' . random_int(0, 9999);
         }
 
         return $slug;
     }
 
     /**
-     * @param  Model  $model
+     * @param Model $model
      */
-    protected function getAfterEditResponse(Request $request, $model): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    protected function getAfterEditResponse(Request $request, $model): RedirectResponse|Redirector
     {
         $defaultReturnUrl = $this->module()->url('index');
         $returnUrl = $request->has(Form::INPUT_RETURN_URL) ? $request->get(Form::INPUT_RETURN_URL) : $defaultReturnUrl;
@@ -374,32 +370,26 @@ trait Crudify
         return redirect($request->has('save_and_return') ? $returnUrl : $request->url());
     }
 
-    /**
-     * @param  Model  $model
-     */
-    protected function getAfterCreateResponse(Request $request, $model): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    protected function getAfterCreateResponse(Request $request, Model $model): RedirectResponse|Redirector
     {
         $defaultReturnUrl = $this->module()->url('index');
         $returnUrl = $request->has(Form::INPUT_RETURN_URL) ? $request->get(Form::INPUT_RETURN_URL) : $defaultReturnUrl;
 
-        $url = $this->url('edit', $model);
+        $url = $this->url('edit', [$model]);
 
         return redirect($request->has('save_and_return') ? $returnUrl : $url);
     }
 
     /**
      * Creates a layout instance.
-     *
-     * @param  string  $component
-     * @return LayoutInterface
      */
-    protected function layout($component, mixed $with = null)
+    protected function layout(string $component, mixed $with = null): LayoutInterface
     {
         $layouts = $this->layouts() ?: [];
 
         $class = $layouts[$component] ?? null;
 
-        if (! $class && ! class_exists($class)) {
+        if (!$class && !class_exists($class)) {
             throw new RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
         }
 
@@ -411,7 +401,7 @@ trait Crudify
      *
      * @return array
      */
-    public function layouts()
+    public function layouts(): array
     {
         return [
             'grid' => Grid\Layout::class,

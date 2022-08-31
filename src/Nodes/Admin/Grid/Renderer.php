@@ -27,7 +27,7 @@ class Renderer implements Renderable
     /**
      * @var Paginator
      */
-    protected $page;
+    protected Paginator $page;
 
     /**
      * Renderer constructor.
@@ -36,10 +36,7 @@ class Renderer implements Renderable
     {
     }
 
-    /**
-     * @return Grid
-     */
-    public function grid()
+    public function grid(): Grid
     {
         return $this->grid;
     }
@@ -63,13 +60,9 @@ class Renderer implements Renderable
         ]);
     }
 
-    /**
-     * @param int $level
-     * @return Element
-     */
-    protected function buildTree(Collection $items, $level = 1)
+    protected function buildTree(Collection $items, int $level = 1): Element
     {
-        $url = $this->url('edit', '__ID__');
+        $url = $this->url('edit', ['__ID__']);
 
         $list = Html::ul()->addAttributes(['data-level' => $level]);
 
@@ -139,12 +132,9 @@ class Renderer implements Renderable
         return $list;
     }
 
-    /**
-     * @return Element
-     */
-    protected function footer()
+    protected function footer(): Element
     {
-        $createButton = Link::create($this->url('dialog', 'content_types'))
+        $createButton = Link::create($this->url('dialog', ['content_types']))
             ->asButton('primary ajaxbox')
             ->withIcon('add')
             ->title(trans('arbory::resources.create_new'));
@@ -159,19 +149,11 @@ class Renderer implements Renderable
         return $footer->render();
     }
 
-    /**
-     * @param $route
-     * @param array $parameters
-     * @return string
-     */
-    public function url($route, array $parameters = []): string
+    public function url(string $route, array $parameters = []): string
     {
         return $this->grid()->getModule()->url($route, $parameters);
     }
 
-    /**
-     * @return Element
-     */
     public function render(): Element
     {
         $this->page = $this->grid->getItems();
@@ -182,10 +164,6 @@ class Renderer implements Renderable
         ]);
     }
 
-    /**
-     * @param string $nodeId
-     * @return bool
-     */
     protected function getNodeCookie(string $nodeId)
     {
         $cookie = (array)json_decode(Arr::get($_COOKIE, self::COOKIE_NAME_NODES));
@@ -193,9 +171,6 @@ class Renderer implements Renderable
         return Arr::get($cookie, $nodeId, true);
     }
 
-    /**
-     * @param string $type
-     */
     protected function makeNameFromType(string $type): string
     {
         return app(NameGenerator::class)->generate($type);

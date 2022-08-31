@@ -79,15 +79,8 @@ interface FieldInterface
      */
     public function getModel();
 
-    /**
-     * @param  string  $rules
-     * @return FieldInterface
-     */
     public function rules(string $rules): self;
 
-    /**
-     * @return array
-     */
     public function getRules(): array;
 
     public function beforeModelSave(Request $request);
@@ -96,27 +89,14 @@ interface FieldInterface
 
     public function render(): mixed;
 
-    /**
-     * @return string|null
-     */
     public function getRendererClass(): ?string;
 
-    /**
-     * @param  string|null  $renderable
-     * @return FieldInterface
-     */
     public function setRendererClass(?string $renderable = null): self;
 
-    /**
-     * @return RendererInterface|null
-     */
     public function getRenderer(): ?RendererInterface;
 
     /**
      * Set a render class override.
-     *
-     * @param  RendererInterface|null  $renderer
-     * @return FieldInterface
      */
     public function setRenderer(?RendererInterface $renderer): self;
 
@@ -127,14 +107,11 @@ interface FieldInterface
 
     /**
      * @param  string|null  $content
-     * @return FieldInterface
      */
     public function setTooltip($content = null): self;
 
     /**
-     * @param  int  $rows
      * @param  array  $breakpoints
-     * @return FieldInterface
      */
     public function setRows(int $rows, $breakpoints = []): self;
 
@@ -149,14 +126,10 @@ interface FieldInterface
     public function getStyle();
 
     /**
-     * @param  string  $style
      * @return mixed
      */
     public function setStyle(string $style): self;
 
-    /**
-     * @return array
-     */
     public function getFieldClasses(): array;
 
     /**
@@ -171,14 +144,7 @@ interface FieldInterface
      */
     public function beforeRender(RendererInterface $renderer);
 
-    /**
-     * @return bool
-     */
     public function isHidden(): bool;
 
-    /**
-     * @param  bool  $value
-     * @return FieldInterface
-     */
     public function setHidden(bool $value): self;
 }
