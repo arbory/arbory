@@ -427,7 +427,6 @@ trait Translatable
 
     /**
      * @param  string  $locale
-     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeTranslatedIn(Builder $query, $locale = null): \Illuminate\Database\Eloquent\Builder|static
     {
@@ -440,7 +439,6 @@ trait Translatable
 
     /**
      * @param  string  $locale
-     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeNotTranslatedIn(Builder $query, $locale = null): \Illuminate\Database\Eloquent\Builder|static
     {
@@ -451,9 +449,6 @@ trait Translatable
         });
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Builder|static
-     */
     public function scopeTranslated(Builder $query): \Illuminate\Database\Eloquent\Builder|static
     {
         return $query->has('translations');
@@ -526,7 +521,6 @@ trait Translatable
      * @param  string  $key
      * @param  string  $value
      * @param  string  $locale
-     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeWhereTranslation(Builder $query, $key, $value, $locale = null): \Illuminate\Database\Eloquent\Builder|static
     {
@@ -544,7 +538,6 @@ trait Translatable
      * @param  string  $key
      * @param  string  $value
      * @param  string  $locale
-     * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function scopeWhereTranslationLike(Builder $query, $key, $value, $locale = null): \Illuminate\Database\Eloquent\Builder|static
     {

@@ -54,7 +54,6 @@ class Element
     }
 
     /**
-     * @param array $attributes
      * @return $this
      */
     public function addAttributes(array $attributes): self
@@ -129,7 +128,6 @@ class Element
     }
 
     /**
-     * @param string $name
      * @return string
      */
     public static function formatName(string $name): string
@@ -147,7 +145,7 @@ class Element
 
         $inputName = Arr::pull($nameParts, 0);
 
-        if (count($nameParts) > 0) {
+        if ((is_countable($nameParts) ? count($nameParts) : 0) > 0) {
             $inputName .= '[' . implode('][', $nameParts) . ']';
         }
 

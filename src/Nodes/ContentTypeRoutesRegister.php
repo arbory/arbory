@@ -85,9 +85,6 @@ class ContentTypeRoutesRegister
         return Node::with('content')->find($matches['id']);
     }
 
-    /**
-     * @return void
-     */
     public function registerNodes(): void
     {
         $this->registerRoutesForNodeCollection(Node::all()->unorderedHierarchicalList());

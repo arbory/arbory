@@ -29,9 +29,6 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function has(string $attribute): bool
     {
         return $this->offsetExists($attribute);
@@ -48,9 +45,6 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isEmpty(?string $attribute = null): bool
     {
         if ($attribute) {
@@ -60,9 +54,6 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
         return $this->isEmptyDeep($this->attributes);
     }
 
-    /**
-     * @return bool
-     */
     protected function isEmptyDeep(mixed $item): bool
     {
         if (! is_array($item)) {

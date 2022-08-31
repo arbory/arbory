@@ -115,7 +115,6 @@ class Html
 
     /**
      * @param $name
-     * @param array $arguments
      * @return Element
      */
     public static function __callStatic($name, array $arguments)

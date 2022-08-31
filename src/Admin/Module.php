@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin;
 
-use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Admin\Module\ResourceRoutes;
+use Arbory\Base\Admin\Widgets\Breadcrumbs;
 use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Services\ModuleConfiguration;
 use Arbory\Base\Services\Permissions\ModulePermission;
@@ -93,10 +93,10 @@ class Module
 
     /**
      * @param $route
-     * @param  array  $parameters
+     * @param array $parameters
      * @return string
      */
-    public function url($route, $parameters = [])
+    public function url($route, array $parameters = [])
     {
         if ($this->routes === null) {
             $this->routes = $this->admin->routes()->findByModule($this);

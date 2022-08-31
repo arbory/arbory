@@ -2,20 +2,20 @@
 
 namespace Arbory\Base\Nodes\Admin\Grid;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Nodes\Node;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Admin\Layout\Footer;
+use Arbory\Base\Admin\Layout\Footer\Tools;
 use Arbory\Base\Admin\Tools\Toolbox;
+use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Admin\Layout\Footer\Tools;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Nodes\Node;
 use Arbory\Base\Support\Nodes\NameGenerator;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 /**
  * Class Renderer.
@@ -64,7 +64,7 @@ class Renderer implements Renderable
     }
 
     /**
-     * @param  int  $level
+     * @param int $level
      * @return Element
      */
     protected function buildTree(Collection $items, $level = 1)
@@ -161,10 +161,10 @@ class Renderer implements Renderable
 
     /**
      * @param $route
-     * @param  array  $parameters
+     * @param array $parameters
      * @return string
      */
-    public function url($route, $parameters = [])
+    public function url($route, array $parameters = []): string
     {
         return $this->grid()->getModule()->url($route, $parameters);
     }
@@ -183,20 +183,20 @@ class Renderer implements Renderable
     }
 
     /**
-     * @param  string  $nodeId
+     * @param string $nodeId
      * @return bool
      */
-    protected function getNodeCookie($nodeId)
+    protected function getNodeCookie(string $nodeId)
     {
-        $cookie = (array) json_decode(Arr::get($_COOKIE, self::COOKIE_NAME_NODES));
+        $cookie = (array)json_decode(Arr::get($_COOKIE, self::COOKIE_NAME_NODES));
 
         return Arr::get($cookie, $nodeId, true);
     }
 
     /**
-     * @param  string  $type
+     * @param string $type
      */
-    protected function makeNameFromType($type): string
+    protected function makeNameFromType(string $type): string
     {
         return app(NameGenerator::class)->generate($type);
     }

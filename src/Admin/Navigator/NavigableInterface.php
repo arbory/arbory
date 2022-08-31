@@ -4,9 +4,6 @@ namespace Arbory\Base\Admin\Navigator;
 
 interface NavigableInterface
 {
-    /**
-     * @return bool
-     */
     public function isNavigable(): bool;
 
     /**

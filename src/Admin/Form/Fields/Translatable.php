@@ -45,9 +45,6 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         parent::__construct('translations');
     }
 
-    /**
-     * @return TranslatableModel|Model
-     */
     public function getModel(): TranslatableModel|\Illuminate\Database\Eloquent\Model
     {
         return parent::getModel();

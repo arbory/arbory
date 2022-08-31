@@ -292,7 +292,6 @@ class Constructor extends AbstractRelationField implements RepeatableNestedField
     /**
      * Make this field sortable.
      *
-     * @param string $field
      * @return $this
      */
     public function sortable(string $field = 'position')

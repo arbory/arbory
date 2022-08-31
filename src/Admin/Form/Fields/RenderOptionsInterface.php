@@ -39,7 +39,6 @@ interface RenderOptionsInterface
     public function getAttributes(): array;
 
     /**
-     * @param string|array $classes
      * @return mixed
      */
     public function addClass(string|array $classes);
