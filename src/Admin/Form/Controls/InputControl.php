@@ -11,9 +11,8 @@ class InputControl extends AbstractControl
     {
         $input = Html::input();
         $input->setValue($this->getValue());
-        $input = $this->applyAttributesAndClasses($input);
 
-        return $input;
+        return $this->applyAttributesAndClasses($input);
     }
 
     /**

@@ -36,10 +36,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         return $block;
     }
 
-    /**
-     * @return FieldSet
-     */
-    public function getRelationFieldSet(Model $relatedModel)
+    public function getRelationFieldSet(Model $relatedModel): FieldSet
     {
         $fieldSet = $this->getNestedFieldSet($relatedModel);
 

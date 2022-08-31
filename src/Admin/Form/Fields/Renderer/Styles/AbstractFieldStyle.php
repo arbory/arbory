@@ -11,10 +11,8 @@ abstract class AbstractFieldStyle
     {
         $content = $field->render();
 
-        if ($field instanceof RenderOptionsInterface) {
-            if ($wrapper = $field->getWrapper()) {
-                return $wrapper($content);
-            }
+        if ($field instanceof RenderOptionsInterface && ($wrapper = $field->getWrapper())) {
+            return $wrapper($content);
         }
 
         return $content;

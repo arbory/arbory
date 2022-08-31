@@ -100,9 +100,7 @@ class FieldSetRenderer implements FieldSetRendererInterface
 
         $style = $field->getStyle() ?: $this->getDefaultStyle();
 
-        $rendered = $this->styleManager->render($style, $field);
-
-        return $rendered;
+        return $this->styleManager->render($style, $field);
     }
 
     /**

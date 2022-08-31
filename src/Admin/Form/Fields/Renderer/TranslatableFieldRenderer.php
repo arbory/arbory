@@ -50,9 +50,7 @@ class TranslatableFieldRenderer implements RendererInterface
             $options->addClass('active');
         }
 
-        $block = $styleManager->render($field->getStyle() ?: $styleManager->getDefaultStyle(), $field, $options);
-
-        return $block;
+        return $styleManager->render($field->getStyle() ?: $styleManager->getDefaultStyle(), $field, $options);
     }
 
     /**
@@ -94,12 +92,10 @@ class TranslatableFieldRenderer implements RendererInterface
             Html::i('arrow_drop_down')->addClass('mt-icon')
         );
 
-        $localizationSwitch = Html::div()
+        return Html::div()
             ->addClass('localization-switch')
             ->append($trigger)
             ->append($this->getLocalizationMenu());
-
-        return $localizationSwitch;
     }
 
     /**

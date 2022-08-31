@@ -40,7 +40,7 @@ class FilterValidationObject
      */
     public function addRules(array $rules): self
     {
-        array_push($this->rules, $rules);
+        $this->rules[] = $rules;
 
         return $this;
     }
@@ -50,7 +50,7 @@ class FilterValidationObject
      */
     public function addMessages(array $messages): self
     {
-        array_push($this->messages, $messages);
+        $this->messages[] = $messages;
 
         return $this;
     }
@@ -60,7 +60,7 @@ class FilterValidationObject
      */
     public function addAttributes(array $attributes): self
     {
-        array_push($this->attributes, $attributes);
+        $this->attributes[] = $attributes;
 
         return $this;
     }
@@ -70,7 +70,7 @@ class FilterValidationObject
      */
     public function addTransformers(array $transformers): self
     {
-        array_push($this->transformers, $transformers);
+        $this->transformers[] = $transformers;
 
         return $this;
     }

@@ -34,7 +34,7 @@ class Sentinel implements AuthenticationMethod
      */
     public function logout(UserInterface $user = null, $everywhere = false): bool
     {
-        return $this->sentinel->logout($user, $everywhere) ? true : false;
+        return $this->sentinel->logout($user, $everywhere);
     }
 
     public function getFormRequest(): FormRequest

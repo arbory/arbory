@@ -270,7 +270,7 @@ class AuthServiceProvider extends ServiceProvider
                     return;
                 }
 
-                return compact('login', 'password');
+                return ['login' => $login, 'password' => $password];
             });
 
             $sentinel->creatingBasicResponse(function () {

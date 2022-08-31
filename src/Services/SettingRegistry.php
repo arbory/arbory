@@ -84,11 +84,9 @@ class SettingRegistry
                     $value = Arr::get($data, 'value');
                 }
 
-                if (is_array($value)) {
-                    if ($type === Translatable::class) {
-                        $value = Arr::get($value, 'value');
-                        $value = Arr::get($value, request()->getLocale(), $value);
-                    }
+                if (is_array($value) && $type === Translatable::class) {
+                    $value = Arr::get($value, 'value');
+                    $value = Arr::get($value, request()->getLocale(), $value);
                 }
 
                 $definition = new SettingDefinition($key, $value, $type, $data);

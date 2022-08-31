@@ -13,9 +13,7 @@ class TextareaControl extends AbstractControl
             $this->getValue()
         );
 
-        $textarea = $this->applyAttributesAndClasses($textarea);
-
-        return $textarea;
+        return $this->applyAttributesAndClasses($textarea);
     }
 
     /**

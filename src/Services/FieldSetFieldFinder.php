@@ -86,10 +86,8 @@ class FieldSetFieldFinder
 
             if (! $field && $previousField) {
                 $previousFieldSet = $this->resolveFieldSet($previousField, $fieldName);
-            } else {
-                if ($field instanceof Link) {
-                    $previousFieldSet = $field->getRelationFieldSet($previousField->getModel());
-                }
+            } elseif ($field instanceof Link) {
+                $previousFieldSet = $field->getRelationFieldSet($previousField->getModel());
             }
 
             if ($field) {

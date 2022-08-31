@@ -107,7 +107,7 @@ class Renderer
             ])->addClass('js-accordion-trigger heading'),
             Html::div([
                 $filterItem->getType()->render($filterItem),
-            ])->addClass('body'.(! $isOpen ? ' hidden' : '')),
+            ])->addClass('body'.($isOpen ? '' : ' hidden')),
         ])->addClass('accordion');
     }
 

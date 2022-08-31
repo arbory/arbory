@@ -36,7 +36,7 @@ class Renderer implements Renderable
     {
         $toolbox = $this->panel->toolbox($this->panel->getToolbox());
 
-        $header = Html::header(
+        return Html::header(
             [
                 Html::div(
                     $this->panel->getTitle()
@@ -49,7 +49,5 @@ class Renderer implements Renderable
                 )->addClass('extras toolbox-wrap'),
             ]
         );
-
-        return $header;
     }
 }

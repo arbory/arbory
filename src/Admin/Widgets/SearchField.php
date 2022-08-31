@@ -14,7 +14,7 @@ class SearchField implements Renderable
     /**
      * @var string
      */
-    protected string $name;
+    protected string $name = 'search';
 
     /**
      * SearchField constructor.
@@ -23,7 +23,6 @@ class SearchField implements Renderable
      */
     public function __construct(protected $action)
     {
-        $this->name = 'search';
     }
 
     /**

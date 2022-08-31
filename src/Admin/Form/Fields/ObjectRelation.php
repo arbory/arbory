@@ -344,11 +344,7 @@ class ObjectRelation extends AbstractField
 
         $classes[] = $class;
 
-        if ($this->isSingular()) {
-            $classes[] = 'single';
-        } else {
-            $classes[] = 'multiple';
-        }
+        $classes[] = $this->isSingular() ? 'single' : 'multiple';
 
         return $classes;
     }

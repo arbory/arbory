@@ -93,8 +93,6 @@ class VirtualHasOne extends HasOne
      */
     public function getRelationFieldSet(Model $relatedModel)
     {
-        $fieldSet = $this->getNestedFieldSet($relatedModel);
-
-        return $fieldSet;
+        return $this->getNestedFieldSet($relatedModel);
     }
 }
