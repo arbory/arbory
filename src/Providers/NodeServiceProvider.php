@@ -56,20 +56,14 @@ class NodeServiceProvider extends ServiceProvider
             return $repository;
         });
 
-        $this->app->singleton(ContentTypeRegister::class, function () {
-            return new ContentTypeRegister();
-        });
+        $this->app->singleton(ContentTypeRegister::class, fn() => new ContentTypeRegister());
 
-        $this->app->singleton('arbory_router', function () {
-            return $this->app->make(ContentTypeRoutesRegister::class);
-        });
+        $this->app->singleton('arbory_router', fn() => $this->app->make(ContentTypeRoutesRegister::class));
 
-        $this->app->singleton('arbory_page_builder', function () {
-            return new PageBuilder(
-                $this->app->make(ContentTypeRegister::class),
-                $this->app->make('arbory_router')
-            );
-        });
+        $this->app->singleton('arbory_page_builder', fn() => new PageBuilder(
+            $this->app->make(ContentTypeRegister::class),
+            $this->app->make('arbory_router')
+        ));
 
         Collection::mixin(new NodesCollectionMixin);
 
@@ -120,9 +114,7 @@ class NodeServiceProvider extends ServiceProvider
         }
 
         $this->app->booted(function () {
-            $this->app->singleton(Node::class, function () {
-                return $this->routes->getCurrentNode();
-            });
+            $this->app->singleton(Node::class, fn() => $this->routes->getCurrentNode());
         });
 
         if (! $this->app->routesAreCached()) {
@@ -130,14 +122,11 @@ class NodeServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return bool
-     */
     protected function isDbConfigured(): bool
     {
         try {
             \DB::connection()->getPdo();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
 
@@ -159,7 +148,6 @@ class NodeServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param  string  $path
      * @return bool
      */
     protected function isRouteCacheOutdated(string $path)
@@ -179,17 +167,11 @@ class NodeServiceProvider extends ServiceProvider
         return $repository->getLastUpdateTimestamp();
     }
 
-    /**
-     * @return bool
-     */
     protected function canReadSettings(): bool
     {
         return Schema::hasTable('settings');
     }
 
-    /**
-     * @param  LaravelRouter  $router
-     */
     protected function detectCurrentLocaleFromRoute(LaravelRouter $router)
     {
         $router->matched(function (RouteMatched $event) {

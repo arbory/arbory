@@ -11,7 +11,6 @@ use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 class RichtextFieldRenderer extends ControlFieldRenderer
 {
     /**
-     * @param  RenderOptionsInterface  $options
      * @return RenderOptionsInterface
      */
     public function configureOptions(RenderOptionsInterface $options)

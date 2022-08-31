@@ -90,7 +90,6 @@ class IconPickerRenderer extends SelectFieldRenderer
     }
 
     /**
-     * @param  \SimpleXMLElement  $iconNode
      * @param  int  $width
      * @param  int  $height
      * @return string

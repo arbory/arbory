@@ -20,10 +20,8 @@ class ExceptionReply extends Reply
 
     /**
      * @var string
-     *
-     * @return JsonResponse|RedirectResponse
      */
-    public function dispatch($url = '/')
+    public function dispatch($url = '/'): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
     {
         $request = app('request');
 

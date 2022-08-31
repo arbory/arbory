@@ -20,7 +20,7 @@ use Arbory\Base\Support\Activation\HasActivationDates;
  * @property string $slug
  * @property bool $active
  */
-class Node extends Model
+class Node extends Model 
 {
     use Uuid;
     use HasActivationDates;
@@ -67,7 +67,7 @@ class Node extends Model
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->name;
     }
@@ -82,10 +82,7 @@ class Node extends Model
         return parent::save($options);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo|PageInterface
-     */
-    public function content()
+    public function content(): \Illuminate\Database\Eloquent\Relations\MorphTo|\Arbory\Base\Pages\PageInterface
     {
         return $this->morphTo();
     }
@@ -93,7 +90,7 @@ class Node extends Model
     /**
      * @return \Illuminate\Support\Collection|Node[]
      */
-    public function parents()
+    public function parents(): \Illuminate\Support\Collection|array
     {
         return $this->ancestors()->get();
     }
@@ -155,7 +152,6 @@ class Node extends Model
 
     /**
      * @param  $name
-     * @param  array  $parameters
      * @param  bool  $absolute
      * @return string|null
      */

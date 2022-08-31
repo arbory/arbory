@@ -12,36 +12,22 @@ use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 class StyleManager
 {
     /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
      * @var \Illuminate\Support\Collection
      */
     protected $styles;
 
     /**
-     * @var string
-     */
-    protected $defaultStyle;
-
-    /**
      * StyleManager constructor.
      *
-     * @param  Application  $app
-     * @param  array  $styles
      * @param  $defaultStyle
+     * @param string $defaultStyle
      */
-    public function __construct(Application $app, array $styles, $defaultStyle)
+    public function __construct(protected Application $app, array $styles, protected $defaultStyle)
     {
-        $this->app = $app;
         $this->styles = collect($styles);
-        $this->defaultStyle = $defaultStyle;
     }
 
     /**
-     * @param  string  $name
      * @param  $class
      * @return $this
      */
@@ -53,7 +39,6 @@ class StyleManager
     }
 
     /**
-     * @param  string  $name
      * @return $this
      */
     public function removeStyle(string $name)
@@ -64,9 +49,6 @@ class StyleManager
     }
 
     /**
-     * @param  string  $name
-     * @param  FieldInterface  $field
-     * @param  StyleOptionsInterface|null  $options
      * @return mixed|null
      */
     public function render(string $name, FieldInterface $field, ?StyleOptionsInterface $options = null)
@@ -95,17 +77,11 @@ class StyleManager
         }
     }
 
-    /**
-     * @return string
-     */
     public function getDefaultStyle(): string
     {
         return $this->defaultStyle;
     }
 
-    /**
-     * @param  string  $defaultStyle
-     */
     public function setDefaultStyle(string $defaultStyle): void
     {
         $this->defaultStyle = $defaultStyle;

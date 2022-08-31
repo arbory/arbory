@@ -15,18 +15,8 @@ use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 /**
  * Class Column.
  */
-class Column
+class Column 
 {
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    protected $label;
-
     /**
      * @var string
      */
@@ -88,16 +78,14 @@ class Column
      * @param  string  $name
      * @param  string  $label
      */
-    public function __construct($name = null, $label = null)
+    public function __construct(protected $name = null, protected $label = null)
     {
-        $this->name = $name;
-        $this->label = $label;
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->getName();
     }
@@ -115,9 +103,6 @@ class Column
         return $this->filterType;
     }
 
-    /**
-     * @return bool
-     */
     public function getHasFilter(): bool
     {
         return $this->hasFilter;
@@ -147,16 +132,12 @@ class Column
         return $this->label ?: $this->name;
     }
 
-    /**
-     * @return Grid
-     */
     public function getGrid(): Grid
     {
         return $this->grid;
     }
 
     /**
-     * @param  Grid  $grid
      * @return Column
      */
     public function setGrid(Grid $grid)
@@ -167,7 +148,6 @@ class Column
     }
 
     /**
-     * @param  Closure  $callable
      * @return Column
      */
     public function display(Closure $callable)
@@ -247,7 +227,6 @@ class Column
     }
 
     /**
-     * @param  callable  $query
      * @return $this
      */
     public function setCustomSearchQuery(callable $query)
@@ -266,7 +245,6 @@ class Column
     }
 
     /**
-     * @param  QueryBuilder  $query
      * @param $string
      * @return QueryBuilder
      */
@@ -286,7 +264,6 @@ class Column
     }
 
     /**
-     * @param  Model  $model
      * @return mixed
      */
     protected function getValue(Model $model)
@@ -315,7 +292,6 @@ class Column
     }
 
     /**
-     * @param  Model  $model
      * @return Element
      */
     public function callDisplayCallback(Model $model)
@@ -338,7 +314,6 @@ class Column
     }
 
     /**
-     * @param  \Closure  $closure
      * @return $this
      */
     public function setExportColumnDisplay(Closure $closure): self
@@ -349,7 +324,6 @@ class Column
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return mixed
      */
     public function getExportColumnDisplay(Model $model)
@@ -373,11 +347,6 @@ class Column
         $this->relationColumn = $relationColumn;
     }
 
-    /**
-     * @param  string  $filterType
-     * @param  iterable  $filterTypeConfig
-     * @return FilterItem
-     */
     public function addFilter(string $filterType, iterable $filterTypeConfig = []): FilterItem
     {
         $filterManager = $this->grid->getFilterManager();

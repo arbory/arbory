@@ -14,25 +14,16 @@ use Illuminate\Http\RedirectResponse;
 class ArboryAdminAuthMiddleware
 {
     /**
-     * @var Sentinel
-     */
-    protected $sentinel;
-
-    /**
      * ArboryAdminAuthMiddleware constructor.
-     *
-     * @param  Sentinel  $sentinel
      */
-    public function __construct(Sentinel $sentinel)
+    public function __construct(protected Sentinel $sentinel)
     {
-        $this->sentinel = $sentinel;
     }
 
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -44,11 +35,7 @@ class ArboryAdminAuthMiddleware
         return $next($request);
     }
 
-    /**
-     * @param  Request  $request
-     * @return JsonResponse|RedirectResponse
-     */
-    private function denied(Request $request)
+    private function denied(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
     {
         $message = 'Unauthorized';
 

@@ -9,19 +9,9 @@ use Illuminate\Contracts\Support\Renderable;
 class Slot implements Renderable
 {
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @var \Illuminate\Support\Collection|Slot[]
      */
     protected $children;
-
-    /**
-     * @var mixed
-     */
-    protected $contents;
 
     protected $wrap;
 
@@ -30,11 +20,10 @@ class Slot implements Renderable
      *
      * @param  $name
      * @param  null  $contents
+     * @param string $name
      */
-    public function __construct($name, $contents = null)
+    public function __construct(protected $name, protected $contents = null)
     {
-        $this->name = $name;
-        $this->contents = $contents;
         $this->children = collect();
     }
 
@@ -43,9 +32,6 @@ class Slot implements Renderable
         return $this->name;
     }
 
-    /**
-     * @return Collection
-     */
     public function children(): Collection
     {
         return $this->children;
@@ -73,10 +59,7 @@ class Slot implements Renderable
         return $this->children->get($name);
     }
 
-    /**
-     * @return Content|string
-     */
-    public function render()
+    public function render(): \Arbory\Base\Html\Elements\Content|string
     {
         if (is_callable($this->contents)) {
             $content = $this->contents;
@@ -93,9 +76,7 @@ class Slot implements Renderable
 
         $contents = $contents->merge(
             $this->children->map(
-                static function (self $value) {
-                    return $value->render();
-                }
+                static fn(self $value) => $value->render()
             )
         );
 
@@ -112,7 +93,6 @@ class Slot implements Renderable
 
     /**
      * @param  mixed  $wrap
-     * @return Slot
      */
     public function setWrap(?callable $wrap): self
     {
@@ -130,10 +110,9 @@ class Slot implements Renderable
     }
 
     /**
-     * @param  mixed  $contents
      * @return Slot
      */
-    public function setContents($contents)
+    public function setContents(mixed $contents)
     {
         $this->contents = $contents;
 

@@ -11,16 +11,6 @@ use Illuminate\Contracts\Support\Arrayable;
 abstract class Reply implements Jsonable, Arrayable
 {
     /**
-     * @var array
-     */
-    protected $payload = [];
-
-    /**
-     * @var string
-     */
-    protected $message = '';
-
-    /**
      * @var int
      */
     protected $statusCode = 400;
@@ -31,25 +21,16 @@ abstract class Reply implements Jsonable, Arrayable
     protected $success = false;
 
     /**
-     * @var Exception|null
-     */
-    protected $exception = null;
-
-    /**
      * @var string|null
      */
     protected $redirectUrl = null;
 
     /**
      * @param  string  $message
-     * @param  array  $payload
      * @param  Exception  $exception
      */
-    public function __construct($message = '', array $payload = [], Exception $exception = null)
+    public function __construct(protected $message = '', protected array $payload = [], protected ?\Exception $exception = null)
     {
-        $this->message = $message;
-        $this->payload = $payload;
-        $this->exception = $exception;
     }
 
     /**
@@ -144,7 +125,6 @@ abstract class Reply implements Jsonable, Arrayable
     }
 
     /**
-     * @param  Exception  $e
      * @return Exception
      */
     public function setException(Exception $e)

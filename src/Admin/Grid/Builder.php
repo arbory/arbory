@@ -22,23 +22,15 @@ use Arbory\Base\Admin\Filter\Renderer as FilterRenderer;
 class Builder implements Renderable
 {
     /**
-     * @var Grid
-     */
-    protected $grid;
-
-    /**
      * @var Collection|LengthAwarePaginator
      */
     protected $items;
 
     /**
      * Builder constructor.
-     *
-     * @param  Grid  $grid
      */
-    public function __construct(Grid $grid)
+    public function __construct(protected Grid $grid)
     {
-        $this->grid = $grid;
     }
 
     /**
@@ -49,9 +41,6 @@ class Builder implements Renderable
         return $this->grid;
     }
 
-    /**
-     * @return Element|null
-     */
     protected function bulkEdit(): ?Element
     {
         if (! $this->grid->hasTool('bulk-edit')) {
@@ -70,12 +59,9 @@ class Builder implements Renderable
         return Html::div($button->render())->addClass('bulk-actions');
     }
 
-    /**
-     * @return Column
-     */
     protected function addBulkColumn(): Column
     {
-        return $this->grid->prependColumn('id', trans('arbory::resources.nr'), 1)
+        return $this->grid->prependColumn('id', trans('arbory::resources.nr'))
             ->checkable(true)
             ->display(function ($value, Column $column) {
                 $cellContent = Html::span();
@@ -109,9 +95,7 @@ class Builder implements Renderable
      */
     protected function getTableColumns()
     {
-        $tableColumns = $this->grid()->getColumns()->map(function (Column $column) {
-            return $this->getColumnHeader($column);
-        });
+        $tableColumns = $this->grid()->getColumns()->map(fn(Column $column) => $this->getColumnHeader($column));
 
         if ($this->grid->isToolboxEnable()) {
             $tableColumns->push(Html::th(Html::span(' ')));
@@ -121,7 +105,6 @@ class Builder implements Renderable
     }
 
     /**
-     * @param  Column  $column
      * @return Element
      */
     protected function getColumnHeader(Column $column)
@@ -162,9 +145,6 @@ class Builder implements Renderable
             );
     }
 
-    /**
-     * @return Element
-     */
     protected function tableHeader(): Element
     {
         $header = Html::header([
@@ -192,9 +172,7 @@ class Builder implements Renderable
                         Html::tr($this->getTableColumns()->toArray())
                     ),
                     Html::tbody(
-                        $this->grid()->getRows()->map(function (Row $row) {
-                            return $row->render();
-                        })->toArray()
+                        $this->grid()->getRows()->map(fn(Row $row) => $row->render())->toArray()
                     )->addClass('tbody'),
                 ])->addClass('table')
             )->addClass('body'),
@@ -264,7 +242,6 @@ class Builder implements Renderable
     }
 
     /**
-     * @param  Tools  $toolset
      * @return void
      */
     protected function addCustomToolsToFooterToolset(Tools $toolset)

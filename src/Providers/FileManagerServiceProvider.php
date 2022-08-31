@@ -33,18 +33,12 @@ class FileManagerServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return void
-     */
     protected function registerServiceProviders(): void
     {
         $this->app->register(LaravelFilemanagerServiceProvider::class);
         $this->app->register(ImageServiceProvider::class);
     }
 
-    /**
-     * @return void
-     */
     protected function registerAliases(): void
     {
         AliasLoader::getInstance()->alias('Image', \Intervention\Image\Facades\Image::class);

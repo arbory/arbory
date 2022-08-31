@@ -19,14 +19,7 @@ interface PageInterface extends LayoutInterface
      */
     public function addBreadcrumb($title, $url);
 
-    /**
-     * @param  Breadcrumbs|null  $breadcrumbs
-     * @return self
-     */
     public function setBreadcrumbs(?Breadcrumbs $breadcrumbs): self;
 
-    /**
-     * @return Breadcrumbs|null
-     */
     public function getBreadcrumbs(): ?Breadcrumbs;
 }

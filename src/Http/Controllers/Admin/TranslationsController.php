@@ -27,39 +27,15 @@ use Waavi\Translation\Repositories\TranslationRepository;
 class TranslationsController extends Controller
 {
     /**
-     * @var TranslationRepository
-     */
-    protected $translationsRepository;
-
-    /**
-     * @var LanguageRepository
-     */
-    protected $languagesRepository;
-
-    /**
      * @var Request
      */
     protected $request;
 
-    /** @noinspection PhpMissingParentConstructorInspection */
-
-    /**
-     * @param  TranslationRepository  $translationRepository
-     * @param  LanguageRepository  $languagesRepository
-     */
-    public function __construct(
-        TranslationRepository $translationRepository,
-        LanguageRepository $languagesRepository
-    ) {
-        $this->translationsRepository = $translationRepository;
-        $this->languagesRepository = $languagesRepository;
+    public function __construct(protected TranslationRepository $translationsRepository, protected LanguageRepository $languagesRepository)
+    {
     }
 
-    /**
-     * @param  Request  $request
-     * @return Factory|View
-     */
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
     {
         $this->request = $request;
 
@@ -132,7 +108,6 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param  Request  $request
      * @param  string  $namespace
      * @param  string  $group
      * @param  string  $item
@@ -189,11 +164,7 @@ class TranslationsController extends Controller
         );
     }
 
-    /**
-     * @param  TranslationStoreRequest  $request
-     * @return RedirectResponse|Redirector
-     */
-    public function store(TranslationStoreRequest $request)
+    public function store(TranslationStoreRequest $request): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $this->request = $request;
 
@@ -226,9 +197,6 @@ class TranslationsController extends Controller
         return redirect(route('admin.translations.index', $this->getContext()));
     }
 
-    /**
-     * @return Breadcrumbs
-     */
     protected function getIndexBreadcrumbs(): Breadcrumbs
     {
         $module = \Admin::modules()->findModuleByController($this);
@@ -239,10 +207,6 @@ class TranslationsController extends Controller
         );
     }
 
-    /**
-     * @param  string  $editTitle
-     * @return Breadcrumbs
-     */
     protected function getEditBreadcrumbs(string $editTitle): Breadcrumbs
     {
         $breadcrumbs = $this->getIndexBreadcrumbs();
@@ -253,7 +217,6 @@ class TranslationsController extends Controller
 
     /**
      * @param  \stdClass  $item
-     * @param  LengthAwarePaginator  $paginator
      * @return string
      */
     private function getEditUrl($item, LengthAwarePaginator $paginator)
@@ -271,7 +234,6 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param  Builder  $translationsQueryBuilder
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     private function getPaginatedItems(Builder $translationsQueryBuilder)

@@ -16,11 +16,6 @@ use Arbory\Base\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
 class Translatable extends AbstractField implements ProxyFieldInterface
 {
     /**
-     * @var FieldInterface
-     */
-    protected $field;
-
-    /**
      * @var array
      */
     protected $locales = [];
@@ -39,17 +34,13 @@ class Translatable extends AbstractField implements ProxyFieldInterface
      *
      * @param  FieldInterface  $field
      */
-    public function __construct(FieldInterface $field)
+    public function __construct(protected FieldInterface $field)
     {
         /** @var LanguageRepository $languages */
         $languages = \App::make(LanguageRepository::class);
-
-        $this->field = $field;
         $this->currentLocale = \App::getLocale();
 
-        $this->locales = $languages->all()->map(function (Language $language) {
-            return $language->locale;
-        })->toArray();
+        $this->locales = $languages->all()->map(fn(Language $language) => $language->locale)->toArray();
 
         parent::__construct('translations');
     }
@@ -57,7 +48,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     /**
      * @return TranslatableModel|Model
      */
-    public function getModel()
+    public function getModel(): TranslatableModel|\Illuminate\Database\Eloquent\Model
     {
         return parent::getModel();
     }
@@ -71,7 +62,6 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     }
 
     /**
-     * @param  array  $locales
      * @return $this
      */
     public function setLocales(array $locales = [])
@@ -149,9 +139,6 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         return $resource;
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function beforeModelSave(Request $request)
     {
         foreach ($this->locales as $locale) {
@@ -161,9 +148,6 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         }
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function afterModelSave(Request $request)
     {
         foreach ($this->locales as $locale) {
@@ -173,9 +157,6 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         }
     }
 
-    /**
-     * @return array
-     */
     public function getRules(): array
     {
         $rules = [];
@@ -197,9 +178,6 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         return $this->field->getFieldTypeName();
     }
 
-    /**
-     * @return FieldInterface
-     */
     public function getField(): FieldInterface
     {
         return $this->field;

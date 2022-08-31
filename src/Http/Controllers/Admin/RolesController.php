@@ -37,37 +37,20 @@ class RolesController extends Controller
     protected $resource = Role::class;
 
     /**
-     * @var Admin
-     */
-    protected $admin;
-
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
-     * @var
-     */
-    protected $propertyRemover;
-
-    /**
      * RolesController constructor.
-     *
-     * @param  Admin  $admin
-     * @param  Request  $request
-     * @param  PropertyRemover  $propertyRemover
      */
-    public function __construct(Admin $admin, Request $request, PropertyRemover $propertyRemover)
+    public function __construct(
+        protected Admin $admin,
+        protected Request $request,
+        /**
+         * @var
+         */
+        protected PropertyRemover $propertyRemover
+    )
     {
-        $this->admin = $admin;
-        $this->request = $request;
-        $this->propertyRemover = $propertyRemover;
     }
 
     /**
-     * @param  Form  $form
-     * @param  PanelLayout  $layout
      * @return Form
      *
      * @throws \Exception
@@ -111,7 +94,6 @@ class RolesController extends Controller
     }
 
     /**
-     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)
@@ -123,10 +105,6 @@ class RolesController extends Controller
         });
     }
 
-    /**
-     * @param  Request  $request
-     * @param  Form  $form
-     */
     protected function setRolePermissions(Request $request, Form $form): void
     {
         $role = $form->getModel();
@@ -135,10 +113,6 @@ class RolesController extends Controller
         $role->permissions = $this->getPermissions($request);
     }
 
-    /**
-     * @param  Request  $request
-     * @return array
-     */
     protected function getPermissions(Request $request): array
     {
         $permissionsInput = $request->input('resource.permissions');
@@ -158,9 +132,6 @@ class RolesController extends Controller
     }
 
     /**
-     * @param  PanelLayout  $layout
-     * @param  Module  $module
-     * @param  Role  $role
      * @return LayoutGrid
      */
     protected function getModuleFieldSet(PanelLayout $layout, Module $module, Role $role)
@@ -175,11 +146,6 @@ class RolesController extends Controller
         });
     }
 
-    /**
-     * @param  Module  $module
-     * @param  ModulePermission  $permission
-     * @return Form\Fields\Checkbox
-     */
     protected function getPermissionCheckbox(Module $module, ModulePermission $permission): Form\Fields\Checkbox
     {
         return (new Checkbox($permission->getName()))
@@ -188,19 +154,11 @@ class RolesController extends Controller
             ->setLabel(trans('arbory::permissions.' . $permission->getName()));
     }
 
-    /**
-     * @return bool
-     */
     protected function isCreationRequest(): bool
     {
         return $this->request->url() === $this->module->url('create');
     }
 
-    /**
-     * @param  Module  $module
-     * @param  ModulePermission  $permission
-     * @return string
-     */
     protected function getPermissionFieldName(Module $module, ModulePermission $permission): string
     {
         return sprintf(
@@ -210,9 +168,6 @@ class RolesController extends Controller
         );
     }
 
-    /**
-     * @return Form\Fields\EmptyField
-     */
     protected function getSelectionField(): Form\Fields\EmptyField
     {
         $selectAllButton = Html::link(trans('arbory::permissions.select_all'))

@@ -10,18 +10,10 @@ use Arbory\Base\Admin\Module;
 class ResourceRoutes
 {
     /**
-     * @var Module
-     */
-    protected $module;
-
-    /**
      * ResourceRoutes constructor.
-     *
-     * @param  Module  $module
      */
-    public function __construct(Module $module)
+    public function __construct(protected Module $module)
     {
-        $this->module = $module;
     }
 
     /**

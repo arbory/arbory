@@ -10,7 +10,6 @@ use Illuminate\Support\Fluent;
 class ExtendedFluent extends Fluent implements IteratorAggregate
 {
     /**
-     * @param  array  $data
      * @return static
      */
     public function replace(array $data = []): self
@@ -21,7 +20,6 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param  array  $data
      * @return static
      */
     public function add(array $data = []): self
@@ -32,7 +30,6 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param  string  $attribute
      * @return bool
      */
     public function has(string $attribute): bool
@@ -41,7 +38,6 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param  string  $attribute
      * @param $value
      * @return static
      */
@@ -53,7 +49,6 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param  string|null  $attribute
      * @return bool
      */
     public function isEmpty(?string $attribute = null): bool
@@ -66,18 +61,15 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param  mixed  $item
      * @return bool
      */
-    protected function isEmptyDeep($item): bool
+    protected function isEmptyDeep(mixed $item): bool
     {
         if (! is_array($item)) {
             return blank($item);
         }
 
-        return count(array_filter($item, function ($item) {
-            return ! $this->isEmptyDeep($item);
-        }, ARRAY_FILTER_USE_BOTH)) === 0;
+        return count(array_filter($item, fn($item) => ! $this->isEmptyDeep($item), ARRAY_FILTER_USE_BOTH)) === 0;
     }
 
     /**

@@ -15,8 +15,6 @@ class FileServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('arbory_files', function () {
-            return new ArboryFilesRepository('local', ArboryFile::class);
-        });
+        $this->app->singleton('arbory_files', fn() => new ArboryFilesRepository('local', ArboryFile::class));
     }
 }

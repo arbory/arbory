@@ -6,16 +6,13 @@ use Arbory\Base\Admin\Layout\Body;
 
 class AppendTransformer
 {
-    protected $content;
-
     /**
      * AppendTransformer constructor.
      *
      * @param  string|\Closure  $content
      */
-    public function __construct($content)
+    public function __construct(protected $content)
     {
-        $this->content = $content;
     }
 
     public function __invoke(Body $body, $next)

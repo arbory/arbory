@@ -42,9 +42,6 @@ final class ImageFieldRenderer extends FileFieldRenderer
         return $value;
     }
 
-    /**
-     * @return Input
-     */
     protected function getInput(): Input
     {
         $control = $this->getControl();
@@ -55,10 +52,6 @@ final class ImageFieldRenderer extends FileFieldRenderer
         return $control->render($element);
     }
 
-    /**
-     * @param  StyleOptionsInterface  $options
-     * @return StyleOptionsInterface
-     */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
         // Use file Javascript

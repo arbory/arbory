@@ -19,7 +19,7 @@ class UploadController extends LfmUploadController
     {
         $response = parent::upload();
 
-        return count($this->errors) > 0 ? $this->errorResponse() : $response;
+        return (is_countable($this->errors) ? count($this->errors) : 0) > 0 ? $this->errorResponse() : $response;
     }
 
     /**

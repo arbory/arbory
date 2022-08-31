@@ -32,18 +32,11 @@ class Layout extends AbstractLayout implements LayoutInterface
         return $this->grid->getModule()->breadcrumbs();
     }
 
-    /**
-     * @return Grid
-     */
     public function getGrid(): Grid
     {
         return $this->grid;
     }
 
-    /**
-     * @param  Grid  $grid
-     * @return Layout
-     */
     public function setGrid(Grid $grid): self
     {
         $this->grid = $grid;

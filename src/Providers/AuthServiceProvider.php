@@ -61,13 +61,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerSession();
         $this->registerCookie();
 
-        $this->app->singleton('sentinel.persistence', function ($app) {
-            return new IlluminatePersistenceRepository(
-                $app['sentinel.session'],
-                $app['sentinel.cookie'],
-                Persistence::class
-            );
-        });
+        $this->app->singleton('sentinel.persistence', fn($app) => new IlluminatePersistenceRepository(
+            $app['sentinel.session'],
+            $app['sentinel.cookie'],
+            Persistence::class
+        ));
     }
 
     /**
@@ -77,12 +75,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerSession()
     {
-        $this->app->singleton('sentinel.session', function ($app) {
-            return new IlluminateSession(
-                $app['session.store'],
-                'arbory_admin'
-            );
-        });
+        $this->app->singleton('sentinel.session', fn($app) => new IlluminateSession(
+            $app['session.store'],
+            'arbory_admin'
+        ));
     }
 
     /**
@@ -92,13 +88,11 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerCookie()
     {
-        $this->app->singleton('sentinel.cookie', function ($app) {
-            return new IlluminateCookie(
-                $app['request'],
-                $app['cookie'],
-                'arbory_admin'
-            );
-        });
+        $this->app->singleton('sentinel.cookie', fn($app) => new IlluminateCookie(
+            $app['request'],
+            $app['cookie'],
+            'arbory_admin'
+        ));
     }
 
     /**
@@ -110,13 +104,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerHasher();
 
-        $this->app->singleton('sentinel.users', function ($app) {
-            return new IlluminateUserRepository(
-                $app['sentinel.hasher'],
-                $app['events'],
-                User::class
-            );
-        });
+        $this->app->singleton('sentinel.users', fn($app) => new IlluminateUserRepository(
+            $app['sentinel.hasher'],
+            $app['events'],
+            User::class
+        ));
     }
 
     /**
@@ -126,9 +118,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerHasher()
     {
-        $this->app->singleton('sentinel.hasher', function () {
-            return new NativeHasher;
-        });
+        $this->app->singleton('sentinel.hasher', fn() => new NativeHasher);
     }
 
     /**
@@ -138,9 +128,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerRoles()
     {
-        $this->app->singleton('sentinel.roles', function () {
-            return new IlluminateRoleRepository(Role::class);
-        });
+        $this->app->singleton('sentinel.roles', fn() => new IlluminateRoleRepository(Role::class));
     }
 
     /**
@@ -156,12 +144,10 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->registerThrottleCheckpoint();
 
-        $this->app->singleton('sentinel.checkpoints', function ($app) {
-            return [
-                $app['sentinel.checkpoint.throttle'],
-                $app['sentinel.checkpoint.activation'],
-            ];
-        });
+        $this->app->singleton('sentinel.checkpoints', fn($app) => [
+            $app['sentinel.checkpoint.throttle'],
+            $app['sentinel.checkpoint.activation'],
+        ]);
     }
 
     /**
@@ -173,9 +159,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerActivations();
 
-        $this->app->singleton('sentinel.checkpoint.activation', function ($app) {
-            return new ActivationCheckpoint($app['sentinel.activations']);
-        });
+        $this->app->singleton('sentinel.checkpoint.activation', fn($app) => new ActivationCheckpoint($app['sentinel.activations']));
     }
 
     /**
@@ -185,12 +169,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerActivations()
     {
-        $this->app->singleton('sentinel.activations', function ($app) {
-            return new IlluminateActivationRepository(
-                Activation::class,
-                $app['config']->get('arbory.auth.activations.expires', 259200)
-            );
-        });
+        $this->app->singleton('sentinel.activations', fn($app) => new IlluminateActivationRepository(
+            Activation::class,
+            $app['config']->get('arbory.auth.activations.expires', 259200)
+        ));
     }
 
     /**
@@ -202,12 +184,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerThrottling();
 
-        $this->app->singleton('sentinel.checkpoint.throttle', function ($app) {
-            return new ThrottleCheckpoint(
-                $app['sentinel.throttling'],
-                $app['request']->getClientIp()
-            );
-        });
+        $this->app->singleton('sentinel.checkpoint.throttle', fn($app) => new ThrottleCheckpoint(
+            $app['sentinel.throttling'],
+            $app['request']->getClientIp()
+        ));
     }
 
     /**
@@ -248,13 +228,11 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerReminders()
     {
-        $this->app->singleton('sentinel.reminders', function ($app) {
-            return new IlluminateReminderRepository(
-                $app['sentinel.users'],
-                Reminder::class,
-                $app['config']->get('arbory.auth.reminders.expires', 14400)
-            );
-        });
+        $this->app->singleton('sentinel.reminders', fn($app) => new IlluminateReminderRepository(
+            $app['sentinel.users'],
+            Reminder::class,
+            $app['config']->get('arbory.auth.reminders.expires', 14400)
+        ));
     }
 
     /**
@@ -304,7 +282,7 @@ class AuthServiceProvider extends ServiceProvider
             return $sentinel;
         });
 
-        $this->app->alias('sentinel', 'Cartalyst\Sentinel\Sentinel');
+        $this->app->alias('sentinel', \Cartalyst\Sentinel\Sentinel::class);
     }
 
     /**
@@ -352,16 +330,14 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Sweep expired codes.
      *
-     * @param  mixed  $repository
-     * @param  array  $lottery
      * @return void
      */
-    protected function sweep($repository, array $lottery)
+    protected function sweep(mixed $repository, array $lottery)
     {
         if ($this->configHitsLottery($lottery)) {
             try {
                 $repository->removeExpired();
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
         }
     }
@@ -369,11 +345,10 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Determine if the configuration odds hit the lottery.
      *
-     * @param  array  $lottery
      * @return bool
      */
     protected function configHitsLottery(array $lottery)
     {
-        return mt_rand(1, $lottery[1]) <= $lottery[0];
+        return random_int(1, $lottery[1]) <= $lottery[0];
     }
 }

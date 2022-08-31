@@ -8,11 +8,6 @@ use Illuminate\Contracts\Container\Container;
 class LayoutManager
 {
     /**
-     * @var Container
-     */
-    protected $container;
-
-    /**
      * Current layout.
      *
      * @var PageInterface
@@ -26,12 +21,9 @@ class LayoutManager
 
     /**
      * LayoutManager constructor.
-     *
-     * @param  Container  $container
      */
-    public function __construct(Container $container)
+    public function __construct(protected Container $container)
     {
-        $this->container = $container;
         $this->layouts = new Collection();
     }
 
@@ -39,18 +31,14 @@ class LayoutManager
      * Creates a new main page.
      *
      * @param $pageClass
-     * @return LayoutInterface|PageInterface
      */
-    public function page($pageClass)
+    public function page($pageClass): \Arbory\Base\Admin\Layout\LayoutInterface|\Arbory\Base\Admin\Layout\PageInterface
     {
         $this->page = $this->make($pageClass, 'page');
 
         return $this->page;
     }
 
-    /**
-     * @return PageInterface|null
-     */
     public function getPage(): ?PageInterface
     {
         return $this->page;
@@ -59,7 +47,6 @@ class LayoutManager
     /**
      * @param  string|null  $name
      * @param  string  $layoutClass
-     * @return LayoutInterface
      */
     public function make($layoutClass, $name = null): LayoutInterface
     {

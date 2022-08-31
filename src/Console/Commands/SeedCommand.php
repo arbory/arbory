@@ -28,18 +28,11 @@ class SeedCommand extends Command
     protected $description = 'Seed the database with initial records for Arbory admin interface';
 
     /**
-     * @var DatabaseManager
-     */
-    protected $resolver;
-
-    /**
      * @param  DatabaseManager  $resolver
      */
-    public function __construct(DatabaseManager $resolver)
+    public function __construct(protected DatabaseManager $resolver)
     {
         parent::__construct();
-
-        $this->resolver = $resolver;
     }
 
     /**

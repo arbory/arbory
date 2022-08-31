@@ -24,7 +24,6 @@ class SettingRegistry
     }
 
     /**
-     * @param  SettingDefinition  $definition
      * @return void
      */
     public function register(SettingDefinition $definition)
@@ -33,7 +32,6 @@ class SettingRegistry
     }
 
     /**
-     * @param  string  $key
      * @return SettingDefinition|null
      */
     public function find(string $key)
@@ -42,7 +40,6 @@ class SettingRegistry
     }
 
     /**
-     * @param  string  $key
      * @return bool
      */
     public function contains(string $key)
@@ -50,9 +47,6 @@ class SettingRegistry
         return $this->settings->has($key);
     }
 
-    /**
-     * @return Collection
-     */
     public function getSettings(): Collection
     {
         return $this->settings;
@@ -74,7 +68,6 @@ class SettingRegistry
     }
 
     /**
-     * @param  array  $properties
      * @param  string  $before
      */
     public function importFromConfig(array $properties, $before = '')

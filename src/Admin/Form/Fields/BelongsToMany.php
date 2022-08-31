@@ -43,16 +43,10 @@ class BelongsToMany extends AbstractField
         return $this->getRelatedItems();
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function beforeModelSave(Request $request)
     {
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function afterModelSave(Request $request)
     {
         $relation = $this->getRelation();

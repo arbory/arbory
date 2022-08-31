@@ -16,44 +16,17 @@ use Arbory\Base\Admin\Form\Fields\RepeatableNestedFieldInterface;
 class FieldSetFieldFinder
 {
     /**
-     * @var FieldSet
-     */
-    protected $fieldSet;
-
-    /**
-     * @var AbstractField
-     */
-    protected $initialField;
-
-    /**
      * @var string
      */
     protected $attribute;
 
     /**
-     * @var LanguageRepository
-     */
-    protected $languageRepository;
-
-    /**
-     * @param  LanguageRepository  $languageRepository
-     * @param  FieldSet  $fieldSet
      * @param  AbstractField|null  $initialField
      */
-    public function __construct(
-        LanguageRepository $languageRepository,
-        FieldSet $fieldSet,
-        $initialField = null
-    ) {
-        $this->languageRepository = $languageRepository;
-        $this->fieldSet = $fieldSet;
-        $this->initialField = $initialField;
+    public function __construct(protected LanguageRepository $languageRepository, protected FieldSet $fieldSet, protected $initialField = null)
+    {
     }
 
-    /**
-     * @param  string  $attribute
-     * @return bool
-     */
     public function contains(string $attribute): bool
     {
         $names = $this->getActualFieldNames($attribute);
@@ -70,7 +43,6 @@ class FieldSetFieldFinder
     }
 
     /**
-     * @param  string  $attribute
      * @return array
      */
     public function find(string $attribute)
@@ -140,9 +112,7 @@ class FieldSetFieldFinder
     protected function getActualFieldNames($attribute)
     {
         $parts = explode('.', $attribute);
-        $locales = $this->languageRepository->all()->map(function (Language $language) {
-            return $language->locale;
-        })->toArray();
+        $locales = $this->languageRepository->all()->map(fn(Language $language) => $language->locale)->toArray();
 
         foreach ($parts as $index => $part) {
             if (is_numeric($part) || in_array($part, $locales, false)) {
@@ -187,8 +157,6 @@ class FieldSetFieldFinder
     }
 
     /**
-     * @param  AbstractField  $field
-     * @param  string  $fieldName
      * @return FieldSet|null
      */
     protected function resolveFieldSet(AbstractField $field, string $fieldName)

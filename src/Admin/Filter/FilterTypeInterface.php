@@ -11,9 +11,6 @@ namespace Arbory\Base\Admin\Filter;
  */
 interface FilterTypeInterface
 {
-    /**
-     * @return bool
-     */
     public function isEmpty(): bool;
 
     /**
@@ -27,19 +24,11 @@ interface FilterTypeInterface
      */
     public function getValue();
 
-    /**
-     * @return iterable
-     */
     public function getConfig(): iterable;
 
-    /**
-     * @param  iterable  $config
-     * @return FilterTypeInterface
-     */
     public function setConfig(iterable $config): self;
 
     /**
-     * @param  FilterItem  $filterItem
      * @return mixed
      */
     public function render(FilterItem $filterItem);

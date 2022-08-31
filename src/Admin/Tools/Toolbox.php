@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Tools;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
@@ -12,25 +12,10 @@ use Illuminate\Contracts\Support\Renderable;
 class Toolbox implements Renderable
 {
     /**
-     * @var string
-     */
-    protected $url;
-
-    /**
-     * @var ToolboxMenu
-     */
-    protected $menu;
-
-    /**
      * Toolbox constructor.
-     *
-     * @param  string  $url
-     * @param  ToolboxMenu|null  $menu
      */
-    public function __construct($url = null, ToolboxMenu $menu = null)
+    public function __construct(protected ?string $url = null, protected ?ToolboxMenu $menu = null)
     {
-        $this->url = $url;
-        $this->menu = $menu;
     }
 
     /**
@@ -38,7 +23,7 @@ class Toolbox implements Renderable
      */
     public function render()
     {
-        if (! $this->url && ! $this->menu) {
+        if (!$this->url && !$this->menu) {
             return;
         }
 
@@ -64,18 +49,11 @@ class Toolbox implements Renderable
         )->addClass('only-icon toolbox-cell');
     }
 
-    /**
-     * @return ToolboxMenu|null
-     */
     public function getMenu(): ?ToolboxMenu
     {
         return $this->menu;
     }
 
-    /**
-     * @param  ToolboxMenu|null  $menu
-     * @return Toolbox
-     */
     public function setMenu(?ToolboxMenu $menu): self
     {
         $this->menu = $menu;
@@ -83,18 +61,11 @@ class Toolbox implements Renderable
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @param  string  $url
-     * @return Toolbox
-     */
     public function setUrl(string $url): self
     {
         $this->url = $url;

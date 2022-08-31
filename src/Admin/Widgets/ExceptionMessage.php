@@ -13,18 +13,10 @@ use Illuminate\Contracts\Support\Renderable;
 class ExceptionMessage implements Renderable
 {
     /**
-     * @var Exception
-     */
-    protected $exception;
-
-    /**
      * ExceptionMessage constructor.
-     *
-     * @param  Exception  $exception
      */
-    public function __construct(Exception $exception)
+    public function __construct(protected Exception $exception)
     {
-        $this->exception = $exception;
     }
 
     /**
@@ -36,7 +28,6 @@ class ExceptionMessage implements Renderable
     }
 
     /**
-     * @param  Exception  $exception
      * @return static
      */
     public static function create(Exception $exception)

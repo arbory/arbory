@@ -13,7 +13,6 @@ trait ModuleComponent
     protected $module;
 
     /**
-     * @param  Module  $module
      * @return $this
      */
     public function setModule(Module $module)

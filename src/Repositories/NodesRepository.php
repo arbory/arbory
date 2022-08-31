@@ -36,7 +36,6 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param  Node  $node
      * @param  string|null  $key
      * @param  mixed|null  $value
      * @return Builder
@@ -55,7 +54,6 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param  Node  $node
      * @param  string|null  $key
      * @param  mixed|null  $value
      * @return Builder
@@ -112,7 +110,6 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param  int  $time
      * @return void
      */
     public function setLastUpdateTimestamp(int $time)
@@ -120,17 +117,11 @@ class NodesRepository extends AbstractModelsRepository
         Settings::set('nodes.last_update', $time);
     }
 
-    /**
-     * @return bool
-     */
     public function isQueryingOnlyActiveNodes(): bool
     {
         return $this->onlyActiveNodes;
     }
 
-    /**
-     * @param  bool  $onlyActiveNodes
-     */
     public function setQueryOnlyActiveNodes(bool $onlyActiveNodes)
     {
         $this->onlyActiveNodes = $onlyActiveNodes;

@@ -16,10 +16,6 @@ class LayoutServiceProvider extends ServiceProvider
 {
     protected const GOOGLE_MAPS_SRC = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=';
 
-    /**
-     * @param  ViewFactory  $view
-     * @param  Admin  $admin
-     */
     public function boot(ViewFactory $view, Admin $admin): void
     {
         $assets = $admin->assets();
@@ -54,10 +50,6 @@ class LayoutServiceProvider extends ServiceProvider
         $this->app->singleton(LayoutManager::class);
     }
 
-    /**
-     * @param  AssetPipeline  $assets
-     * @return void
-     */
     protected function loadThirdPartyAssets(AssetPipeline $assets): void
     {
         $googleMapsAPIKey = config('arbory.services.google.maps_api_key');
@@ -67,9 +59,6 @@ class LayoutServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return Menu
-     */
     protected function buildMenu(): Menu
     {
         $itemFactory = $this->app->make(MenuItemFactory::class);

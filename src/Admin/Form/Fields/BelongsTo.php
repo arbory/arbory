@@ -33,9 +33,6 @@ class BelongsTo extends Select
         return $this->getRelatedItems();
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function beforeModelSave(Request $request)
     {
         $this->getModel()->setAttribute(

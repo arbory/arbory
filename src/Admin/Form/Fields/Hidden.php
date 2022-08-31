@@ -11,7 +11,7 @@ class Hidden extends ControlField
 {
     protected $style = 'raw';
 
-    protected $attributes = [
+    protected array $attributes = [
         'type' => 'hidden',
     ];
 

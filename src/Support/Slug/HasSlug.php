@@ -16,9 +16,6 @@ trait HasSlug
         return $this->slug;
     }
 
-    /**
-     * @return string
-     */
     public function getSluggableFieldName(): string
     {
         /** @noinspection PhpUndefinedFieldInspection */
@@ -34,9 +31,6 @@ trait HasSlug
         return null;
     }
 
-    /**
-     * @return SlugOptions
-     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

@@ -16,18 +16,8 @@ use Illuminate\Support\Collection;
  */
 class Module
 {
-    const AUTHORIZATION_TYPE_NONE = 'none';
+    public const AUTHORIZATION_TYPE_NONE = 'none';
     private const INDEX_PERMISSION_KEY = 'index';
-
-    /**
-     * @var Admin
-     */
-    protected $admin;
-
-    /**
-     * @var ModuleConfiguration
-     */
-    private $configuration;
 
     /**
      * @var ResourceRoutes
@@ -40,48 +30,25 @@ class Module
     protected $breadcrumbs;
 
     /**
-     * @var ModulePermissionsRegistry
-     */
-    private $permissions;
-
-    /**
      * Module constructor.
-     *
-     * @param  Admin  $admin
-     * @param  ModuleConfiguration  $configuration
-     * @param  ModulePermissionsRegistry  $permissions
      */
-    public function __construct(
-        Admin $admin,
-        ModuleConfiguration $configuration,
-        ModulePermissionsRegistry $permissions
-    ) {
-        $this->admin = $admin;
-        $this->configuration = $configuration;
-        $this->permissions = $permissions;
+    public function __construct(protected Admin $admin, private ModuleConfiguration $configuration, private ModulePermissionsRegistry $permissions)
+    {
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name();
     }
 
-    /**
-     * @param  string|null  $permission
-     * @return bool
-     */
     public function isAuthorized(?string $permission = self::INDEX_PERMISSION_KEY): bool
     {
         return $this->permissions->accessible($permission);
     }
 
-    /**
-     * @param  Request  $request
-     * @return bool
-     */
     public function isRequestAuthorized(Request $request): bool
     {
         $routeName = explode('.', $request->route()->getName());
@@ -98,9 +65,6 @@ class Module
         return $this->configuration->getControllerClass();
     }
 
-    /**
-     * @return ModuleConfiguration
-     */
     public function getConfiguration(): ModuleConfiguration
     {
         return $this->configuration;
@@ -142,7 +106,6 @@ class Module
     }
 
     /**
-     * @param  Role|null  $role
      * @return Collection|ModulePermission[]
      */
     public function getPermissions(?Role $role = null): Collection
@@ -150,10 +113,6 @@ class Module
         return $this->permissions->getPermissions($role);
     }
 
-    /**
-     * @param  callable  $callback
-     * @return Module
-     */
     public function registerCustomPermissions(callable $callback): self
     {
         $callback($this->permissions);

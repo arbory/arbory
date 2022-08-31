@@ -14,11 +14,6 @@ class ImageModificationService
     ) {
     }
 
-    /**
-     * @param  ArboryImage  $imageModel
-     * @param  string  $preset
-     * @return string
-     */
     public function modify(ArboryImage $imageModel, string $preset): string
     {
         if (! Storage::disk($imageModel->getDisk())->exists($imageModel->getLocalName())) {
@@ -38,20 +33,11 @@ class ImageModificationService
         return $imageModel->getSourceUrl();
     }
 
-    /**
-     * @param  ArboryImage  $image
-     * @return bool
-     */
     private function isModifiable(ArboryImage $image): bool
     {
         return in_array($image->getExtension(), $this->modificationConfiguration->getModifiableExtensions());
     }
 
-    /**
-     * @param  string  $presetName
-     * @param  ArboryImage  $imageModel
-     * @return string
-     */
     private function getModifiedImageName(string $presetName, ArboryImage $imageModel): string
     {
         $name = File::name($imageModel->getLocalName());
@@ -59,12 +45,6 @@ class ImageModificationService
         return $name .'/'. $name . '_' . $presetName . '.' . File::extension($imageModel);
     }
 
-    /**
-     * @param  ArboryImage  $imageModel
-     * @param  array  $presetConfiguration
-     * @param  string  $localImageName
-     * @return string
-     */
     public function getModifiedImageUrl(
         ArboryImage $imageModel,
         array $presetConfiguration,
@@ -77,11 +57,6 @@ class ImageModificationService
         return $this->modificationConfiguration->getOutputDisk()->url($localImageName);
     }
 
-    /**
-     * @param  ArboryImage  $imageModel
-     * @param  string  $localImageName
-     * @return string
-     */
     private function getModifiedImageOutputPath(ArboryImage $imageModel, string $localImageName): string
     {
         $outputDisk = $this->modificationConfiguration->getOutputDisk();
@@ -90,11 +65,6 @@ class ImageModificationService
         return $outputDisk->path($localImageName);
     }
 
-    /**
-     * @param  ArboryImage  $imageModel
-     * @param  array  $presetConfiguration
-     * @param  string  $localImageName
-     */
     private function createModifiedImage(ArboryImage $imageModel, array $presetConfiguration, string $localImageName)
     {
         $pathToFile = Storage::disk($imageModel->getDisk())->path($imageModel->getLocalName());

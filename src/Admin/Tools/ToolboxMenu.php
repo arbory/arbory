@@ -14,11 +14,6 @@ use Illuminate\Contracts\Support\Renderable;
 class ToolboxMenu implements Renderable
 {
     /**
-     * @var Model
-     */
-    protected $model;
-
-    /**
      * @var Collection
      */
     protected $items;
@@ -28,9 +23,8 @@ class ToolboxMenu implements Renderable
      *
      * @param  Model  $model
      */
-    public function __construct(?Model $model)
+    public function __construct(protected ?Model $model)
     {
-        $this->model = $model;
         $this->items = new Collection();
     }
 

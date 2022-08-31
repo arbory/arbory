@@ -13,28 +13,19 @@ use Illuminate\Support\Collection;
 class ModuleRegistry
 {
     /**
-     * @var Admin
-     */
-    protected $admin;
-
-    /**
      * @var Collection
      */
     protected $modules;
 
     /**
      * ModuleRegistry constructor.
-     *
-     * @param  Admin  $admin
      */
-    public function __construct(Admin $admin)
+    public function __construct(protected Admin $admin)
     {
-        $this->admin = $admin;
         $this->modules = new Collection();
     }
 
     /**
-     * @param  string  $controllerClass
      * @param  \Closure|null  $routes
      * @return Module
      */
@@ -70,7 +61,7 @@ class ModuleRegistry
      */
     public function findModuleByController($instance)
     {
-        return $this->findModuleByControllerClass(get_class($instance));
+        return $this->findModuleByControllerClass($instance::class);
     }
 
     /**

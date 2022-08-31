@@ -11,16 +11,6 @@ use Arbory\Base\Admin\Module\ModuleRoutesRegistry;
 class Admin
 {
     /**
-     * @var Sentinel
-     */
-    protected $sentinel;
-
-    /**
-     * @var AssetPipeline
-     */
-    protected $assets;
-
-    /**
      * @var ModuleRoutesRegistry
      */
     protected $routes;
@@ -31,24 +21,12 @@ class Admin
     protected $modules;
 
     /**
-     * @var Menu
-     */
-    protected $menu;
-
-    /**
      * Admin constructor.
-     *
-     * @param  Sentinel  $sentinel
-     * @param  Menu  $menu
-     * @param  AssetPipeline  $assets
      */
-    public function __construct(Sentinel $sentinel, Menu $menu, AssetPipeline $assets)
+    public function __construct(protected Sentinel $sentinel, protected Menu $menu, protected AssetPipeline $assets)
     {
-        $this->sentinel = $sentinel;
         $this->routes = new ModuleRoutesRegistry();
         $this->modules = new ModuleRegistry($this);
-        $this->menu = $menu;
-        $this->assets = $assets;
     }
 
     /**

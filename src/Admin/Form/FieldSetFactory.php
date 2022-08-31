@@ -8,18 +8,10 @@ use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 class FieldSetFactory
 {
     /**
-     * @var StyleManager
-     */
-    protected $styleManager;
-
-    /**
      * FieldSetFactory constructor.
-     *
-     * @param  StyleManager  $styleManager
      */
-    public function __construct(StyleManager $styleManager)
+    public function __construct(protected StyleManager $styleManager)
     {
-        $this->styleManager = $styleManager;
     }
 
     /**

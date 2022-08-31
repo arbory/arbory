@@ -9,19 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 
 trait BulkEdit
 {
-    /**
-     * @param  Form  $form
-     * @return Form
-     */
     protected function bulkEditForm(Form $form): Form
     {
         return $form;
     }
 
-    /**
-     * @param  Model  $model
-     * @return Form
-     */
     protected function buildBulkEditForm(Model $model): Form
     {
         $form = new Form($model);
@@ -33,10 +25,6 @@ trait BulkEdit
         return $form;
     }
 
-    /**
-     * @param  Form  $form
-     * @return Form
-     */
     protected function additionalFormControls(Form $form): Form
     {
         $bulkEditItemIds = request('bulk_edit_item_ids');
@@ -51,7 +39,6 @@ trait BulkEdit
     }
 
     /**
-     * @param  Request  $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     protected function confirmBulkEditDialog(Request $request): View
@@ -70,11 +57,7 @@ trait BulkEdit
         ]);
     }
 
-    /**
-     * @param  Request  $request
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function bulkUpdate(Request $request)
+    public function bulkUpdate(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $bulEditItemIds = $request->input('resource.bulk_edit_item_ids');
 
@@ -88,10 +71,6 @@ trait BulkEdit
         return $this->getAfterBulkEditResponse($request);
     }
 
-    /**
-     * @param  Form  $form
-     * @return Form
-     */
     protected function addCheckboxesToEachInput(Form $form): Form
     {
         $fieldSet = $form->fields();
@@ -122,7 +101,6 @@ trait BulkEdit
     /**
      * @param $fieldName
      * @param $fieldLabel
-     * @return Form\Fields\Checkbox
      */
     protected function getInputControlCheckbox($fieldName, $fieldLabel): Form\Fields\Checkbox
     {
@@ -134,10 +112,6 @@ trait BulkEdit
         return $checkbox;
     }
 
-    /**
-     * @param  Form  $form
-     * @return Form
-     */
     protected function prepareBulkFields(Form $form): Form
     {
         //change original
@@ -157,11 +131,7 @@ trait BulkEdit
         return $form;
     }
 
-    /**
-     * @param  Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    protected function getAfterBulkEditResponse(Request $request)
+    protected function getAfterBulkEditResponse(Request $request): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         return redirect()->back();
     }

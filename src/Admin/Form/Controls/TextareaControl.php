@@ -7,9 +7,6 @@ use Arbory\Base\Html\Elements\Element;
 
 class TextareaControl extends AbstractControl
 {
-    /**
-     * @return Element
-     */
     public function element(): Element
     {
         $textarea = Html::textarea(

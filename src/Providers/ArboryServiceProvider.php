@@ -29,9 +29,7 @@ class ArboryServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerLocales();
 
-        $this->app->singleton(AuthenticationMethod::class, function () {
-            return $this->app->make(Sentinel::class);
-        });
+        $this->app->singleton(AuthenticationMethod::class, fn() => $this->app->make(Sentinel::class));
     }
 
     /**
@@ -85,15 +83,11 @@ class ArboryServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param  string  $containerKey
-     * @param  string  $commandClass
      * @return void
      */
     private function registerCommand(string $containerKey, string $commandClass)
     {
-        $this->app->singleton($containerKey, function () use ($commandClass) {
-            return $this->app->make($commandClass);
-        });
+        $this->app->singleton($containerKey, fn() => $this->app->make($commandClass));
 
         $this->commands($containerKey);
     }
@@ -103,17 +97,13 @@ class ArboryServiceProvider extends ServiceProvider
      */
     private function registerModuleRegistry()
     {
-        $this->app->singleton('arbory', function () {
-            return new Admin(
-                $this->app['sentinel'],
-                new Menu(),
-                new AssetPipeline()
-            );
-        });
+        $this->app->singleton('arbory', fn() => new Admin(
+            $this->app['sentinel'],
+            new Menu(),
+            new AssetPipeline()
+        ));
 
-        $this->app->singleton(Admin::class, function () {
-            return $this->app['arbory'];
-        });
+        $this->app->singleton(Admin::class, fn() => $this->app['arbory']);
     }
 
     /**

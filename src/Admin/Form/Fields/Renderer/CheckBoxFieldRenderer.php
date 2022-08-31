@@ -2,8 +2,10 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\Checkbox;
+use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 /**
  * Class CheckBoxFieldRenderer.
@@ -11,9 +13,9 @@ use Arbory\Base\Html\Elements\Element;
 class CheckBoxFieldRenderer extends ControlFieldRenderer
 {
     /**
-     * @var \Arbory\Base\Admin\Form\Fields\Checkbox
+     * @var Checkbox
      */
-    protected $field;
+    protected ControlFieldInterface $field;
 
     /**
      * @return Element

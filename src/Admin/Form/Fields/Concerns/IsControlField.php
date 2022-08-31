@@ -21,18 +21,11 @@ trait IsControlField
      */
     protected $required = false;
 
-    /**
-     * @return bool
-     */
     public function isDisabled(): bool
     {
         return $this->disabled;
     }
 
-    /**
-     * @param  bool  $disabled
-     * @return FieldInterface
-     */
     public function setDisabled(bool $disabled = false): FieldInterface
     {
         $this->disabled = $disabled;
@@ -40,18 +33,11 @@ trait IsControlField
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isInteractive(): bool
     {
         return $this->interactive;
     }
 
-    /**
-     * @param  bool  $interactive
-     * @return FieldInterface
-     */
     public function setInteractive(bool $interactive = false): FieldInterface
     {
         $this->interactive = $interactive;
@@ -59,18 +45,11 @@ trait IsControlField
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isRequired(): bool
     {
         return $this->required;
     }
 
-    /**
-     * @param  bool  $required
-     * @return FieldInterface
-     */
     public function setRequired(bool $required = false): FieldInterface
     {
         $this->required = $required;

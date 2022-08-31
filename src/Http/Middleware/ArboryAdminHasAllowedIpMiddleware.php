@@ -13,7 +13,6 @@ class ArboryAdminHasAllowedIpMiddleware
      * Handle an incoming request.
      *
      * @param  Request  $request
-     * @param  \Closure  $next
      * @return RedirectResponse|null
      */
     public function handle($request, Closure $next)
@@ -25,10 +24,6 @@ class ArboryAdminHasAllowedIpMiddleware
         return abort(403);
     }
 
-    /**
-     * @param  Request  $request
-     * @return bool
-     */
     protected function isAllowedIp(Request $request): bool
     {
         $ips = $this->getAllowedIps();

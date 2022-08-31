@@ -12,21 +12,6 @@ use Illuminate\Support\Str;
 class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
 {
     /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $anchor;
-
-    /**
-     * @var NavigableInterface
-     */
-    protected $navigable;
-
-    /**
      * @var Item[]|Collection
      */
     protected $children;
@@ -41,28 +26,22 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
      */
     protected $order;
 
-    public function __construct(NavigableInterface $navigable, $title, $anchor = null)
+    /**
+     * @param string $title
+     * @param string $anchor
+     */
+    public function __construct(protected NavigableInterface $navigable, protected $title, protected $anchor = null)
     {
-        $this->navigable = $navigable;
-        $this->title = $title;
-        $this->anchor = $anchor;
         $this->reference = Str::random(16);
 
         $this->children = collect();
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param  string  $title
-     * @return Item
-     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -78,10 +57,6 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
         return $this->anchor;
     }
 
-    /**
-     * @param  string  $anchor
-     * @return Item
-     */
     public function setAnchor(string $anchor): self
     {
         $this->anchor = $anchor;
@@ -100,25 +75,18 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     /**
      * @param  Collection|Item[]  $children
      */
-    public function setChildren(Collection $children): self
+    public function setChildren(\Illuminate\Support\Collection|array $children): self
     {
         $this->children = $children;
 
         return $this;
     }
 
-    /**
-     * @return NavigableInterface
-     */
     public function getNavigable(): NavigableInterface
     {
         return $this->navigable;
     }
 
-    /**
-     * @param  NavigableInterface  $navigable
-     * @return Item
-     */
     public function setNavigable(NavigableInterface $navigable): self
     {
         $this->navigable = $navigable;
@@ -143,9 +111,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
             )
         )->append(
             Html::ul()->append(
-                $this->getChildren()->map(function ($value) {
-                    return $value->render();
-                })->all()
+                $this->getChildren()->map(fn($value) => $value->render())->all()
             )->addClass('children')
         )->addAttributes(
             [
@@ -154,9 +120,6 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
         );
     }
 
-    /**
-     * @return string
-     */
     public function getReference(): string
     {
         return $this->reference;
@@ -204,18 +167,11 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
         return $this->toArray();
     }
 
-    /**
-     * @return int
-     */
     public function getOrder(): int
     {
         return $this->order;
     }
 
-    /**
-     * @param  int  $order
-     * @return Item
-     */
     public function setOrder(int $order): self
     {
         $this->order = $order;

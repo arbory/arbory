@@ -22,8 +22,6 @@ class MultiCheckboxFilterType extends AbstractType implements FilterTypeInterfac
     protected $value;
 
     /**
-     * @param  FilterItem  $filterItem
-     * @return Element
      *
      * @throws BadMethodCallException
      */

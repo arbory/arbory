@@ -13,30 +13,22 @@ use Illuminate\Contracts\Support\Renderable;
 class Footer implements Renderable
 {
     /**
-     * @var string|null
-     */
-    protected $type;
-
-    /**
      * @var Collection
      */
     protected $rows;
 
     /**
      * Footer constructor.
-     *
-     * @param  string|null  $type
      */
-    public function __construct($type = null)
+    public function __construct(protected ?string $type = null)
     {
-        $this->type = $type;
         $this->rows = new Collection();
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }

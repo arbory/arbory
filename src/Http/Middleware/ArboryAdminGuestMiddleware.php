@@ -15,28 +15,20 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class ArboryAdminGuestMiddleware
 {
     /**
-     * @var Sentinel
-     */
-    protected $sentinel;
-
-    /**
      * ArboryAdminGuestMiddleware constructor.
      *
      * @param $sentinel
      */
-    public function __construct(Sentinel $sentinel)
+    public function __construct(protected Sentinel $sentinel)
     {
-        $this->sentinel = $sentinel;
     }
 
     /**
      * Handle an incoming request.
      *
      * @param  Request  $request
-     * @param  \Closure  $next
-     * @return JsonResponse|RedirectResponse
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
     {
         if ($this->sentinel->check()) {
             if ($request->ajax()) {
@@ -44,9 +36,7 @@ class ArboryAdminGuestMiddleware
 
                 return response()->json(['error' => $message], 401);
             } else {
-                $firstAvailableModule = \Admin::modules()->first(function ($module) {
-                    return $module->isAuthorized();
-                });
+                $firstAvailableModule = \Admin::modules()->first(fn($module) => $module->isAuthorized());
 
                 if (! $firstAvailableModule) {
                     throw new AccessDeniedHttpException();

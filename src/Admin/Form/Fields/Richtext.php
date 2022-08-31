@@ -37,9 +37,6 @@ class Richtext extends Textarea
         $this->allowedTags = config('arbory.fields.richtext.allowed_tags');
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function beforeModelSave(Request $request)
     {
         if ($this->isDisabled()) {
@@ -65,29 +62,18 @@ class Richtext extends Textarea
         return $this->attachmentsUploadUrl;
     }
 
-    /**
-     * @param  mixed  $attachmentsUploadUrl
-     * @return Richtext
-     */
-    public function setAttachmentsUploadUrl($attachmentsUploadUrl): self
+    public function setAttachmentsUploadUrl(mixed $attachmentsUploadUrl): self
     {
         $this->attachmentsUploadUrl = $attachmentsUploadUrl;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isCompact(): bool
     {
         return $this->isCompact;
     }
 
-    /**
-     * @param  bool  $isCompact
-     * @return Richtext
-     */
     public function setCompact(bool $isCompact): self
     {
         $this->isCompact = $isCompact;

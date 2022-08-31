@@ -11,7 +11,6 @@ use Arbory\Base\Admin\Form\Fields\NestedFieldInterface;
 trait HasNestedFieldSet
 {
     /**
-     * @param  FieldSet  $fieldSet
      * @return FieldSet
      */
     public function configureFieldSet(FieldSet $fieldSet)
@@ -23,7 +22,7 @@ trait HasNestedFieldSet
      * @param  Model  $model
      * @return FieldSet|FieldInterface[]
      */
-    public function getNestedFieldSet($model)
+    public function getNestedFieldSet($model): FieldSet|array
     {
         $fieldSet = new FieldSet($model, $this->getNamespacedName());
 
@@ -31,8 +30,6 @@ trait HasNestedFieldSet
     }
 
     /**
-     * @param  Request  $request
-     * @param  callable  $callback
      * @param  FieldInterface|null  $parent
      */
     public function iterate(Request $request, callable $callback, $parent = null)

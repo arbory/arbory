@@ -18,16 +18,13 @@ class Link extends Model
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->href;
+        return (string)$this->href;
     }
 
-    /**
-     * @return bool
-     */
     public function isNewTab(): bool
     {
-        return (bool) $this->new_tab;
+        return (bool)$this->new_tab;
     }
 }

@@ -2,14 +2,14 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Html\Html;
-use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Http\Request;
 
 /**
  * Class HasOne.
@@ -20,17 +20,14 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
 
     protected $style = 'section';
 
-    /**
-     * @return Element
-     */
-    public function render()
+    public function render(): Element
     {
         $item = $this->getValue() ?: $this->getRelatedModel();
 
         $block = Html::div()
-                     ->addClass('section content-fields')
-                     ->addAttributes($this->getAttributes())
-                     ->addClass(implode(' ', $this->getClasses()));
+            ->addClass('section content-fields')
+            ->addAttributes($this->getAttributes())
+            ->addClass(implode(' ', $this->getClasses()));
 
         $block->append(
             $this->getRelationFieldSet($item)->render()
@@ -40,7 +37,6 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
     }
 
     /**
-     * @param  Model  $relatedModel
      * @return FieldSet
      */
     public function getRelationFieldSet(Model $relatedModel)
@@ -48,21 +44,16 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         $fieldSet = $this->getNestedFieldSet($relatedModel);
 
         $fieldSet->hidden($relatedModel->getKeyName())
-                 ->setValue($relatedModel->getKey());
+            ->setValue($relatedModel->getKey());
 
         return $fieldSet;
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function beforeModelSave(Request $request)
     {
     }
 
     /**
-     * @param  Request  $request
-     *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function afterModelSave(Request $request)
@@ -76,7 +67,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
 
         if ($relation instanceof MorphOne) {
             $polymorphicFields = [
-                $relation->getMorphType() => get_class($relation->getParent()),
+                $relation->getMorphType() => $relation->getParent()::class,
                 $relation->getForeignKeyName() => $relation->getParent()->{$relatedModel->getKeyName()},
             ];
             $relatedModel->fill($polymorphicFields)->save();
@@ -84,7 +75,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
             $relatedModel->save();
 
             $this->getModel()->fill([
-                $relation->getMorphType() => get_class($relatedModel),
+                $relation->getMorphType() => $relatedModel::class,
                 $relation->getForeignKeyName() => $relatedModel->{$relatedModel->getKeyName()},
             ])->save();
         } elseif ($relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo) {
@@ -102,9 +93,6 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         }
     }
 
-    /**
-     * @return array
-     */
     public function getRules(): array
     {
         $rules = [];
@@ -114,7 +102,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         if ($relation instanceof MorphTo) {
             $model = clone $this->fieldSet->getModel();
 
-            $str = $this->getFieldSet()->getNamespace().'.'.$relation->getMorphType();
+            $str = $this->getFieldSet()->getNamespace() . '.' . $relation->getMorphType();
             $value = request()->input($str);
 
             // For deeply nested items if the key contains '*', request->input returns an array

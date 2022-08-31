@@ -2,45 +2,27 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Html;
-use Arbory\Base\Admin\Panels\Panel;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Admin\Form\Fields\Constructor;
 use Arbory\Base\Admin\Constructor\BlockInterface;
+use Arbory\Base\Admin\Form\Fields\Constructor;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Nested\PaneledItemRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Exceptions\BadMethodCallException;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 class ConstructorFieldRenderer implements RendererInterface
 {
     /**
-     * @var Constructor
-     */
-    protected $field;
-    /**
-     * @var PaneledItemRenderer
-     */
-    protected $itemRenderer;
-
-    /**
      * NestedFieldRenderer constructor.
-     *
-     * @param  Constructor  $field
-     * @param  ItemInterface  $itemRenderer
      */
-    public function __construct(Constructor $field, ItemInterface $itemRenderer)
+    public function __construct(protected Constructor $field, protected ItemInterface $itemRenderer)
     {
-        $this->field = $field;
-        $this->itemRenderer = $itemRenderer;
     }
 
-    /**
-     * @return Element
-     */
-    protected function getBody()
+    protected function getBody(): Element
     {
         $orderBy = $this->field->getOrderBy();
         $relationItems = [];
@@ -48,9 +30,7 @@ class ConstructorFieldRenderer implements RendererInterface
         if ($orderBy) {
             $this->field->setValue(
                 $this->field->getValue()->sortBy(
-                    function ($item) use ($orderBy) {
-                        return $item->{$orderBy};
-                    }
+                    fn($item) => $item->{$orderBy}
                 )
             );
         }
@@ -68,13 +48,10 @@ class ConstructorFieldRenderer implements RendererInterface
         return Html::div($relationItems)->addClass('body list');
     }
 
-    /**
-     * @return Element|null
-     */
-    protected function getFooter()
+    protected function getFooter(): ?Element
     {
-        if (! $this->field->canAddRelationItem()) {
-            return;
+        if (!$this->field->canAddRelationItem()) {
+            return null;
         }
 
         $title = trans('arbory::fields.has_many.add_item', ['name' => $this->field->getName()]);
@@ -105,7 +82,7 @@ class ConstructorFieldRenderer implements RendererInterface
                 ->addClass('button with-icon primary add-nested-item')
                 ->addAttributes(
                     [
-                        'type'  => 'button',
+                        'type' => 'button',
                         'title' => $title,
                     ]
                 )
@@ -113,24 +90,16 @@ class ConstructorFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param  BlockInterface  $block
-     * @param  FieldSet  $fieldSet
-     * @param  $index
-     * @return Panel|string
-     *
-     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     * @throws BadMethodCallException
      */
-    protected function getRelationItemHtml(BlockInterface $block, FieldSet $fieldSet, $index)
+    protected function getRelationItemHtml(BlockInterface $block, FieldSet $fieldSet, string $index): Element
     {
         return $this->itemRenderer->__invoke($this->field, $fieldSet, $index, [
             'title' => $block->title(),
         ]);
     }
 
-    /**
-     * @return Content
-     */
-    public function render()
+    public function render(): Content
     {
         return new Content(
             [
@@ -141,7 +110,6 @@ class ConstructorFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -151,9 +119,6 @@ class ConstructorFieldRenderer implements RendererInterface
         return $this;
     }
 
-    /**
-     * @return FieldInterface
-     */
     public function getField(): FieldInterface
     {
         return $this->field;
@@ -161,9 +126,6 @@ class ConstructorFieldRenderer implements RendererInterface
 
     /**
      * Configure the style before rendering the field.
-     *
-     * @param  StyleOptionsInterface  $options
-     * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {
@@ -177,12 +139,12 @@ class ConstructorFieldRenderer implements RendererInterface
         foreach ($this->field->getTypes() as $type => $object) {
             $fieldSet = $this->field->getRelationFieldSet($this->field->buildFromBlock($object), '_template_');
 
-            $templates[$object->name()] = (string) $this->getRelationItemHtml($object, $fieldSet, '_template_');
+            $templates[$object->name()] = (string)$this->getRelationItemHtml($object, $fieldSet, '_template_');
         }
 
         $options->addAttributes(
             [
-                'data-templates' => json_encode($templates->all()),
+                'data-templates' => json_encode($templates->all(), JSON_THROW_ON_ERROR),
                 'data-namespaced-name' => $this->field->getNameSpacedName(),
             ]
         );

@@ -48,10 +48,6 @@ class FilterItem
      */
     protected $owner;
 
-    /**
-     * @param  string  $name
-     * @return FilterItem
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -59,18 +55,11 @@ class FilterItem
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param  string  $title
-     * @return FilterItem
-     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -78,18 +67,11 @@ class FilterItem
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param  FilterTypeInterface  $type
-     * @return FilterItem
-     */
     public function setType(FilterTypeInterface $type): self
     {
         $this->type = $type;
@@ -97,19 +79,12 @@ class FilterItem
         return $this;
     }
 
-    /**
-     * @return FilterTypeInterface
-     */
     public function getType(): FilterTypeInterface
     {
         return $this->type;
     }
 
-    /**
-     * @param  mixed  $defaultValue
-     * @return FilterItem
-     */
-    public function setDefaultValue($defaultValue): self
+    public function setDefaultValue(mixed $defaultValue): self
     {
         $this->defaultValue = $defaultValue;
 
@@ -124,9 +99,6 @@ class FilterItem
         return $this->defaultValue;
     }
 
-    /**
-     * @return string
-     */
     public function getNamespacedName(): string
     {
         return implode('.', [$this->getNamespace(), $this->getName()]);
@@ -140,10 +112,6 @@ class FilterItem
         return $this->getManager()->getParameters()->getNamespace();
     }
 
-    /**
-     * @param  callable|null  $executor
-     * @return FilterItem
-     */
     public function setExecutor(?callable $executor): self
     {
         $this->executor = $executor;
@@ -151,18 +119,11 @@ class FilterItem
         return $this;
     }
 
-    /**
-     * @return callable|null
-     */
     public function getExecutor(): ?callable
     {
         return $this->executor;
     }
 
-    /**
-     * @param  FilterManager  $manager
-     * @return FilterItem
-     */
     public function setManager(FilterManager $manager): self
     {
         $this->manager = $manager;
@@ -170,9 +131,6 @@ class FilterItem
         return $this;
     }
 
-    /**
-     * @return FilterManager
-     */
     public function getManager(): FilterManager
     {
         return $this->manager;
@@ -180,7 +138,6 @@ class FilterItem
 
     /**
      * @param  bool  $isOpen
-     * @return FilterItem
      */
     public function setIsOpen(?bool $isOpen): self
     {
@@ -189,9 +146,6 @@ class FilterItem
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
     public function isOpen(): ?bool
     {
         return $this->isOpen;
@@ -199,7 +153,6 @@ class FilterItem
 
     /**
      * @param  object  $owner
-     * @return FilterItem
      */
     public function setOwner($owner): self
     {

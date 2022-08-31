@@ -16,31 +16,16 @@ use Illuminate\Contracts\Support\Renderable;
 class Row implements Renderable
 {
     /**
-     * @var Grid
-     */
-    protected $grid;
-
-    /**
-     * @var Model
-     */
-    protected $model;
-
-    /**
      * Row constructor.
-     *
-     * @param  Grid  $grid
-     * @param  Model  $model
      */
-    public function __construct(Grid $grid, Model $model)
+    public function __construct(protected Grid $grid, protected Model $model)
     {
-        $this->grid = $grid;
-        $this->model = $model;
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }
@@ -50,9 +35,7 @@ class Row implements Renderable
      */
     public function getCells(): Collection
     {
-        return $this->grid->getColumns()->map(function (Column $column) {
-            return new Cell($column, $this, $this->model);
-        });
+        return $this->grid->getColumns()->map(fn(Column $column) => new Cell($column, $this, $this->model));
     }
 
     /**
@@ -79,14 +62,9 @@ class Row implements Renderable
             ->addClass('row');
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
-        return $this->getCells()->mapWithKeys(function (Cell $cell) {
-            return [$cell->getColumn()->getName() => strip_tags($cell)];
-        })->toArray();
+        return $this->getCells()->mapWithKeys(fn(Cell $cell) => [$cell->getColumn()->getName() => strip_tags($cell)])->toArray();
     }
 
     /**

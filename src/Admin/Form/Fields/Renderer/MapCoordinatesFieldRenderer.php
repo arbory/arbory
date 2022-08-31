@@ -10,17 +10,8 @@ use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 class MapCoordinatesFieldRenderer implements RendererInterface
 {
-    /**
-     * @var MapCoordinates
-     */
-    protected $field;
-
-    /**
-     * @param  MapCoordinates  $field
-     */
-    public function __construct(MapCoordinates $field)
+    public function __construct(protected MapCoordinates $field)
     {
-        $this->field = $field;
     }
 
     /**
@@ -41,7 +32,6 @@ class MapCoordinatesFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -51,9 +41,6 @@ class MapCoordinatesFieldRenderer implements RendererInterface
         return $this;
     }
 
-    /**
-     * @return FieldInterface
-     */
     public function getField(): FieldInterface
     {
         return $this->field;
@@ -61,9 +48,6 @@ class MapCoordinatesFieldRenderer implements RendererInterface
 
     /**
      * Configure the style before rendering the field.
-     *
-     * @param  StyleOptionsInterface  $options
-     * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {

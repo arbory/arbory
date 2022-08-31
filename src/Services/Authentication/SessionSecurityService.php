@@ -10,24 +10,13 @@ use Arbory\Base\Support\Replies\SuccessReply;
 
 class SessionSecurityService implements SecurityStrategy
 {
-    /**
-     * @var Sentinel
-     */
-    private $sentinel;
-
-    /**
-     * @param  Sentinel  $sentinel
-     */
-    public function __construct(Sentinel $sentinel)
+    public function __construct(private Sentinel $sentinel)
     {
-        $this->sentinel = $sentinel;
     }
 
     /**
-     * @param  array  $credentials
      * @param  bool  $remember
      * @param  bool  $login
-     * @return Reply
      */
     public function authenticate(array $credentials, $remember = false, $login = true): Reply
     {
@@ -43,7 +32,6 @@ class SessionSecurityService implements SecurityStrategy
     /**
      * @param  UserInterface|null  $user
      * @param  bool  $everywhere
-     * @return Reply
      */
     public function logout(UserInterface $user = null, $everywhere = false): Reply
     {

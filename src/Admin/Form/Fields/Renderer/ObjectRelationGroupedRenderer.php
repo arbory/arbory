@@ -46,7 +46,6 @@ class ObjectRelationGroupedRenderer extends ObjectRelationRenderer
     }
 
     /**
-     * @param  Model  $relation
      * @return string
      */
     private function getGroupName(Model $relation)

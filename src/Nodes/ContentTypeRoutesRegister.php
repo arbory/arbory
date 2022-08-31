@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Nodes;
 
+use Arbory\Base\Exceptions\BadMethodCallException;
 use Closure;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Collection;
-use Arbory\Base\Exceptions\BadMethodCallException;
 
 /**
  * Class Router.
@@ -15,31 +15,20 @@ class ContentTypeRoutesRegister
     /**
      * @var array|Closure[]
      */
-    protected $contentTypeHandlers = [];
+    protected array $contentTypeHandlers = [];
 
-    /**
-     * @var ContentTypeRegister
-     */
-    protected $contentTypesRegister;
-
-    /**
-     * @param  ContentTypeRegister  $contentTypeRegister
-     */
-    public function __construct(ContentTypeRegister $contentTypeRegister)
+    public function __construct(protected ContentTypeRegister $contentTypesRegister)
     {
-        $this->contentTypesRegister = $contentTypeRegister;
     }
 
     /**
      * @param $contentType
-     * @param  Closure  $handler
      * @return $this
-     *
      * @throws BadMethodCallException
      */
     public function register($contentType, Closure $handler)
     {
-        if (! $this->contentTypesRegister->isValidContentType($contentType)) {
+        if (!$this->contentTypesRegister->isValidContentType($contentType)) {
             throw new BadMethodCallException('Invalid content type');
         }
 
@@ -54,7 +43,7 @@ class ContentTypeRoutesRegister
      */
     public function getContentTypeHandler($contentType)
     {
-        if (! array_key_exists($contentType, $this->contentTypeHandlers)) {
+        if (!array_key_exists($contentType, $this->contentTypeHandlers)) {
             return function () {
             };
         }
@@ -75,7 +64,7 @@ class ContentTypeRoutesRegister
      */
     public function getCurrentNode()
     {
-        if (! $this->getRouter()->getCurrentRoute()) {
+        if (!$this->getRouter()->getCurrentRoute()) {
             return;
         }
 
@@ -83,14 +72,13 @@ class ContentTypeRoutesRegister
     }
 
     /**
-     * @param  Route  $route
      * @return Node|null
      */
     public function getNodeFromRoute(Route $route)
     {
         $currentRouteName = $route->getName();
 
-        if (! preg_match('#^node\.(?P<id>.*?)\.#', $currentRouteName, $matches)) {
+        if (!preg_match('#^node\.(?P<id>.*?)\.#', $currentRouteName, $matches)) {
             return;
         }
 
@@ -100,21 +88,17 @@ class ContentTypeRoutesRegister
     /**
      * @return void
      */
-    public function registerNodes()
+    public function registerNodes(): void
     {
         $this->registerRoutesForNodeCollection(Node::all()->unorderedHierarchicalList());
     }
 
-    /**
-     * @param  NodeCollection|Node[]  $items
-     * @param  string  $base
-     */
-    protected function registerRoutesForNodeCollection(Collection $items, $base = '')
+    protected function registerRoutesForNodeCollection(Collection $items, string $base = ''): void
     {
         foreach ($items as $item) {
-            $slug = $base.'/'.$item->getSlug();
+            $slug = $base . '/' . $item->getSlug();
 
-            if (! $item->active) {
+            if (!$item->active) {
                 if (config('arbory.preview.enabled')) {
                     $this->registerPreviewRoutes($item, $slug);
                 }
@@ -129,29 +113,21 @@ class ContentTypeRoutesRegister
         }
     }
 
-    /**
-     * @param  Node  $item
-     * @param  string  $slug
-     */
-    protected function registerPreviewRoutes(Node $item, $slug)
+    protected function registerPreviewRoutes(Node $item, string $slug): void
     {
-        $this->registerNodeRoutes($item, 'preview-'.sha1(config('arbory.preview.slug_salt').$slug));
+        $this->registerNodeRoutes($item, 'preview-' . sha1(config('arbory.preview.slug_salt') . $slug));
 
         if ($item->children->count()) {
             $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
         }
     }
 
-    /**
-     * @param  NodeCollection|Node[]  $items
-     * @param  string  $base
-     */
-    protected function registerPreviewRoutesForNodeCollection(Collection $items, $base = '')
+    protected function registerPreviewRoutesForNodeCollection(Collection $items, string $base = ''): void
     {
         foreach ($items as $item) {
-            $slug = $base.'/'.$item->getSlug();
+            $slug = $base . '/' . $item->getSlug();
 
-            $this->registerNodeRoutes($item, 'preview-'.sha1(config('arbory.preview.slug_salt').$slug));
+            $this->registerNodeRoutes($item, 'preview-' . sha1(config('arbory.preview.slug_salt') . $slug));
 
             if ($item->children->count()) {
                 $this->registerPreviewRoutesForNodeCollection($item->children, $slug);
@@ -159,14 +135,10 @@ class ContentTypeRoutesRegister
         }
     }
 
-    /**
-     * @param  Node  $node
-     * @param $slug
-     */
-    protected function registerNodeRoutes(Node $node, $slug)
+    protected function registerNodeRoutes(Node $node, string $slug): void
     {
         $attributes = [
-            'as' => 'node.'.$node->getKey().'.',
+            'as' => 'node.' . $node->getKey() . '.',
             'prefix' => $slug,
             'namespace' => false,
             'middleware' => 'web',

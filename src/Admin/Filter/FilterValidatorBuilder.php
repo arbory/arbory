@@ -14,35 +14,17 @@ class FilterValidatorBuilder
     protected const VALIDATION_CONCERNS = [WithParameterValidation::class];
 
     /**
-     * @var ValidatorFactory
-     */
-    protected $validatorFactory;
-
-    /**
      * FilterValidator constructor.
-     *
-     * @param  ValidatorFactory  $validatorFactory
      */
-    public function __construct(ValidatorFactory $validatorFactory)
+    public function __construct(protected ValidatorFactory $validatorFactory)
     {
-        $this->validatorFactory = $validatorFactory;
     }
 
-    /**
-     * @param  FilterCollection  $filterCollection
-     * @param  FilterParameters  $filterParameters
-     * @return bool
-     */
     public function validate(FilterCollection $filterCollection, FilterParameters $filterParameters): bool
     {
         return $this->build($filterCollection, $filterParameters)->fails();
     }
 
-    /**
-     * @param  FilterCollection  $filterCollection
-     * @param  FilterParameters  $filterParameters
-     * @return Validator
-     */
     public function build(FilterCollection $filterCollection, FilterParameters $filterParameters): Validator
     {
         $validationObject = new FilterValidationObject();
@@ -63,12 +45,6 @@ class FilterValidatorBuilder
         return $validator;
     }
 
-    /**
-     * @param  FilterValidationObject  $validationObject
-     * @param  FilterItem  $filterItem
-     * @param  FilterParameters  $filterParameters
-     * @return void
-     */
     protected function buildFilterItem(
         FilterValidationObject $validationObject,
         FilterParameters $filterParameters,
@@ -89,9 +65,7 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param  array  $transformers
      * @param $validator
-     * @param  FilterParameters  $filterParameters
      */
     protected function applyTransformers(array $transformers, $validator, FilterParameters $filterParameters): void
     {
@@ -102,42 +76,21 @@ class FilterValidatorBuilder
         }
     }
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @param  FilterParameters  $filterParameters
-     * @return array
-     */
     public function buildRules(FilterItem $filterItem, FilterParameters $filterParameters): array
     {
         return $this->normalize($filterItem, $this->resolveMethod('rules', $filterItem, $filterParameters));
     }
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @param  FilterParameters  $filterParameters
-     * @return array
-     */
     public function buildMessages(FilterItem $filterItem, FilterParameters $filterParameters): array
     {
         return $this->normalize($filterItem, $this->resolveMethod('messages', $filterItem, $filterParameters), false);
     }
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @param  FilterParameters  $filterParameters
-     * @return array
-     */
     public function buildAttributes(FilterItem $filterItem, FilterParameters $filterParameters): array
     {
         return $this->normalize($filterItem, $this->resolveMethod('attributes', $filterItem, $filterParameters), false);
     }
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @param  array  $data
-     * @param  bool  $prependName
-     * @return array
-     */
     protected function normalize(FilterItem $filterItem, array $data, bool $prependName = true): array
     {
         // A single field with rules
@@ -163,9 +116,6 @@ class FilterValidatorBuilder
     }
 
     /**
-     * @param  string  $method
-     * @param  FilterItem  $filterItem
-     * @param  FilterParameters  $filterParameters
      * @return mixed
      */
     protected function resolveMethod(string $method, FilterItem $filterItem, FilterParameters $filterParameters)
@@ -178,14 +128,8 @@ class FilterValidatorBuilder
         return $type->{$method}($filterParameters, $this->getAttributeResolver($filterItem));
     }
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @return callable
-     */
     protected function getAttributeResolver(FilterItem $filterItem): callable
     {
-        return static function (?string $attribute = null) use ($filterItem) {
-            return $filterItem->getName().($attribute ? '.'.$attribute : '');
-        };
+        return static fn(?string $attribute = null) => $filterItem->getName().($attribute ? '.'.$attribute : '');
     }
 }

@@ -11,38 +11,22 @@ class BlockRegistry
      * @var Collection
      */
     protected $blocks;
-    /**
-     * @var Container
-     */
-    protected $container;
 
     /**
      * Registry constructor.
      *
-     * @param  Container  $container
      * @param  array  $blocks
      */
-    public function __construct(Container $container)
+    public function __construct(protected Container $container)
     {
-        $this->container = $container;
         $this->blocks = new Collection();
     }
 
-    /**
-     * @param  string  $resource
-     * @return BlockInterface|null
-     */
     public function findByResource(string $resource): ?BlockInterface
     {
-        return $this->blocks->first(function (BlockInterface $block) use ($resource) {
-            return $block->resource() === $resource;
-        });
+        return $this->blocks->first(fn(BlockInterface $block) => $block->resource() === $resource);
     }
 
-    /**
-     * @param  string  $block
-     * @return BlockRegistry
-     */
     public function register(string $block): self
     {
         $value = $this->container->make($block);
@@ -52,10 +36,6 @@ class BlockRegistry
         return $this;
     }
 
-    /**
-     * @param  string  $block
-     * @return BlockInterface|null
-     */
     public function resolve(string $block): ?BlockInterface
     {
         return $this->blocks->get($block);

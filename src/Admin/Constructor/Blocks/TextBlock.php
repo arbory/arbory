@@ -17,16 +17,12 @@ class TextBlock extends AbstractBlock implements BlockInterface
         return 'text_block';
     }
 
-    /**
-     * @return string
-     */
     public function resource(): string
     {
         return TextBlockModel::class;
     }
 
     /**
-     * @param  FieldSet  $fields
      * @return mixed
      */
     public function fields(FieldSet $fields)

@@ -14,9 +14,6 @@ use Illuminate\View\View;
  */
 trait FilterCrudify
 {
-    /**
-     * @return View
-     */
     protected function saveFilterDialog(): View
     {
         return view('arbory::dialogs.save_filter', [
@@ -24,10 +21,6 @@ trait FilterCrudify
         ]);
     }
 
-    /**
-     * @param  FilterStoreRequest  $request
-     * @return RedirectResponse
-     */
     public function storeFilter(FilterStoreRequest $request): RedirectResponse
     {
         $this->savedFilterRepository()->create([
@@ -40,7 +33,6 @@ trait FilterCrudify
     }
 
     /**
-     * @param  Request  $request
      * @return
      */
     public function deleteFilterDialog(Request $request): View
@@ -55,10 +47,6 @@ trait FilterCrudify
         ]);
     }
 
-    /**
-     * @param  int  $filterId
-     * @return RedirectResponse
-     */
     public function destroyFilter(int $filterId): RedirectResponse
     {
         $this->savedFilterRepository()
@@ -68,9 +56,6 @@ trait FilterCrudify
         return redirect()->back();
     }
 
-    /**
-     * @return SavedFilterRepository
-     */
     private function savedFilterRepository(): SavedFilterRepository
     {
         return app(SavedFilterRepository::class);

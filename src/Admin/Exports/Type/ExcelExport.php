@@ -12,43 +12,25 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelExport implements FromCollection, WithHeadings, ExportInterface
 {
-    const EXTENSION = 'xlsx';
-
-    /**
-     * @var DataSetExport
-     */
-    protected $export;
+    public const EXTENSION = 'xlsx';
 
     /**
      * ExcelExport constructor.
-     *
-     * @param  DataSetExport  $export
      */
-    public function __construct(DataSetExport $export)
+    public function __construct(protected DataSetExport $export)
     {
-        $this->export = $export;
     }
 
-    /**
-     * @return \Illuminate\Support\Collection
-     */
     public function collection(): Collection
     {
         return $this->export->getItems();
     }
 
-    /**
-     * @return array
-     */
     public function headings(): array
     {
         return $this->export->getColumns();
     }
 
-    /**
-     * @param  string  $fileName
-     * @return BinaryFileResponse
-     */
     public function download(string $fileName): BinaryFileResponse
     {
         return Excel::download($this, $fileName.'.'.self::EXTENSION);

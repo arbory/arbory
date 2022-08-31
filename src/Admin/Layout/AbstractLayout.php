@@ -12,10 +12,10 @@ abstract class AbstractLayout
 {
     use EventDispatcher;
 
-    const EVENT_APPLY = 'apply';
-    const EVENT_RENDER = 'render';
+    public const EVENT_APPLY = 'apply';
+    public const EVENT_RENDER = 'render';
 
-    const SLOTS = [];
+    public const SLOTS = [];
 
     /**
      * @var Slot
@@ -44,10 +44,9 @@ abstract class AbstractLayout
 
     /**
      * @param  string  $name
-     * @param  mixed  $content
      * @return Slot
      */
-    public function slot($name, $content = null)
+    public function slot($name, mixed $content = null)
     {
         if ($this->root === null) {
             $this->root = new Slot('root');
@@ -83,8 +82,6 @@ abstract class AbstractLayout
 
     /**
      * Executes when the layout is applied.
-     *
-     * @param  PageInterface  $page
      */
     public function applyToPage(PageInterface $page)
     {
@@ -120,8 +117,7 @@ abstract class AbstractLayout
                 $this->setContent($content);
 
                 return $this->render();
-            },
-            $this->manager()->getPage()
+            }
         );
 
         return $next($body);
@@ -154,9 +150,7 @@ abstract class AbstractLayout
             return $this->pipeline()
                         ->send($content)
                         ->then(
-                            function ($content) {
-                                return $content;
-                            }
+                            fn($content) => $content
                         );
         }
 
@@ -182,10 +176,9 @@ abstract class AbstractLayout
     /**
      * Set inner content of the layout.
      *
-     * @param  mixed  $content
      * @return LayoutInterface
      */
-    public function setContent($content): LayoutInterface
+    public function setContent(mixed $content): LayoutInterface
     {
         $this->content = $content;
 

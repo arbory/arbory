@@ -28,11 +28,6 @@ class Tag
     ];
 
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @var Attributes
      */
     protected $attributes;
@@ -46,16 +41,16 @@ class Tag
      * Tag constructor.
      *
      * @param $name
+     * @param string $name
      */
-    public function __construct($name)
+    public function __construct(protected $name)
     {
-        $this->name = $name;
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $attributes = $this->getAttributesString();
 
@@ -64,10 +59,10 @@ class Tag
             : $this->content;
 
         if ($this->isSelfClosing($this->name)) {
-            return '<'.$this->name.''.$attributes.'>'.$content;
+            return '<' . $this->name . '' . $attributes . '>' . $content;
         }
 
-        return '<'.$this->name.''.$attributes.'>'.$content.'</'.$this->name.'>';
+        return '<' . $this->name . '' . $attributes . '>' . $content . '</' . $this->name . '>';
     }
 
     /**
@@ -97,11 +92,10 @@ class Tag
     {
         $attributes = $this->getFilteredAttributes();
 
-        return $attributes->isNotEmpty() ? ' '.$attributes : '';
+        return $attributes->isNotEmpty() ? ' ' . $attributes : '';
     }
 
     /**
-     * @param  Attributes  $attributes
      * @return $this
      */
     public function setAttributes(Attributes $attributes)

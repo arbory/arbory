@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
@@ -12,32 +12,26 @@ use Illuminate\Contracts\Support\Renderable;
 class SearchField implements Renderable
 {
     /**
-     * @var
-     */
-    protected $action;
-
-    /**
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * SearchField constructor.
      *
      * @param $action
      */
-    public function __construct($action)
+    public function __construct(protected $action)
     {
-        $this->action = $action;
         $this->name = 'search';
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
@@ -62,10 +56,7 @@ class SearchField implements Renderable
             ->addAttributes(['action' => $this->action]);
     }
 
-    /**
-     * @return Element
-     */
-    public function render()
+    public function render(): Element
     {
         $searchInput = Html::input()
             ->setName($this->name)

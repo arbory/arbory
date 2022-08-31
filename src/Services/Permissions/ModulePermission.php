@@ -2,60 +2,34 @@
 
 namespace Arbory\Base\Services\Permissions;
 
-class ModulePermission
+class ModulePermission 
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $translationKeyPrefix = 'arbory::permissions.';
 
-    /**
-     * @var string
-     */
-    private $translationKeyPrefix = 'arbory::permissions.';
-
-    /**
-     * @var bool
-     */
-    private $allowed;
+    private ?bool $allowed = null;
 
     /**
      * ModulePermission constructor.
-     *
-     * @param  string  $name
      */
-    public function __construct(string $name)
+    public function __construct(private string $name)
     {
-        $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getTranslation(): string
     {
         return trans($this->translationKeyPrefix . $this->name);
     }
 
-    /**
-     * @param  bool  $allowed
-     */
     public function setAllowed(bool $allowed)
     {
         $this->allowed = $allowed;
     }
 
-    /**
-     * @return bool
-     */
     public function isAllowed(): bool
     {
         return $this->allowed;
@@ -64,7 +38,7 @@ class ModulePermission
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getTranslation();
     }

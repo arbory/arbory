@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @property string $permissions
  */
-class Role extends EloquentRole
+class Role extends EloquentRole 
 {
     /**
      * @var string
@@ -26,7 +26,7 @@ class Role extends EloquentRole
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->getName();
     }
@@ -41,8 +41,6 @@ class Role extends EloquentRole
 
     /**
      * The Users relationship.
-     *
-     * @return BelongsToMany
      */
     public function users(): BelongsToMany
     {

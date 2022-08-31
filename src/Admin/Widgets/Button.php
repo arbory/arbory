@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
@@ -11,39 +11,14 @@ use Illuminate\Contracts\Support\Renderable;
  */
 class Button implements Renderable
 {
-    /**
-     * @var Element
-     */
-    protected $element;
+    protected Element $element;
 
-    /**
-     * @var bool
-     */
-    protected $iconOnly;
+    protected bool $iconOnly = false;
 
-    /**
-     * @var string
-     */
-    protected $title;
+    protected string $title;
 
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var mixed
-     */
-    protected $value;
-
-    /**
-     * @param  string|null  $name
-     * @param  null  $value
-     */
-    public function __construct(string $name = null, $value = null)
+    public function __construct(protected ?string $name = null, protected $value = null)
     {
-        $this->name = $name;
-        $this->value = $value;
         $this->element = Html::button();
         $this->element->addClass('button ');
     }
@@ -51,9 +26,9 @@ class Button implements Renderable
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
@@ -91,7 +66,7 @@ class Button implements Renderable
     }
 
     /**
-     * @param  bool  $cache
+     * @param bool $cache
      * @return $this
      */
     public function asAjaxbox($cache = false)
@@ -107,7 +82,7 @@ class Button implements Renderable
 
     /**
      * @param $inputType
-     * @param  string|null  $visualType
+     * @param string|null $visualType
      * @return Button
      */
     public function type($inputType, $visualType = null)
@@ -161,8 +136,8 @@ class Button implements Renderable
     }
 
     /**
-     * @param  string|null  $name
-     * @param  string|null  $value
+     * @param string|null $name
+     * @param string|null $value
      * @return Button
      */
     public static function create(string $name = null, $value = null)

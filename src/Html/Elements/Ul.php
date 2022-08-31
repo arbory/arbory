@@ -7,8 +7,8 @@ class Ul extends Element
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->tag('ul', $this->content);
+        return (string)$this->tag('ul', $this->content);
     }
 }

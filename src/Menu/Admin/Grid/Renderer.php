@@ -16,23 +16,15 @@ use Illuminate\Contracts\Pagination\Paginator;
 class Renderer
 {
     /**
-     * @var Grid
-     */
-    protected $grid;
-
-    /**
      * @var Paginator
      */
     protected $page;
 
     /**
      * Renderer constructor.
-     *
-     * @param  Grid  $grid
      */
-    public function __construct(Grid $grid)
+    public function __construct(protected Grid $grid)
     {
-        $this->grid = $grid;
     }
 
     /**
@@ -63,7 +55,6 @@ class Renderer
     }
 
     /**
-     * @param  Collection  $items
      * @param  int  $level
      * @return Element
      */
@@ -113,7 +104,6 @@ class Renderer
     }
 
     /**
-     * @param  Collection  $items
      * @return void
      */
     protected function reorderItems(Collection $items)
@@ -124,9 +114,7 @@ class Renderer
                 continue;
             }
 
-            $afterItem = $items->filter(function (MenuItem $item) use ($model) {
-                return $item->getId() === $model->getAfterId();
-            })->first();
+            $afterItem = $items->filter(fn(MenuItem $item) => $item->getId() === $model->getAfterId())->first();
 
             $currentPosition = $items->search($model);
             $afterKey = $items->search($afterItem);
@@ -167,7 +155,6 @@ class Renderer
     }
 
     /**
-     * @param  Paginator  $page
      * @return Element
      */
     public function render(Paginator $page)

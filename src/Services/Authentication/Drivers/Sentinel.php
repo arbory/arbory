@@ -13,24 +13,13 @@ class Sentinel implements AuthenticationMethod
 {
     protected const LOGIN_VIEW = 'arbory::controllers.security.login';
 
-    /**
-     * @var SentinelService
-     */
-    private $sentinel;
-
-    /**
-     * @param  SentinelService  $sentinel
-     */
-    public function __construct(SentinelService $sentinel)
+    public function __construct(private SentinelService $sentinel)
     {
-        $this->sentinel = $sentinel;
     }
 
     /**
-     * @param  array  $credentials
      * @param  bool  $remember
      * @param  bool  $login
-     * @return bool
      */
     public function authenticate(array $credentials, $remember = false, $login = true): bool
     {
@@ -42,24 +31,17 @@ class Sentinel implements AuthenticationMethod
     /**
      * @param  UserInterface|null  $user
      * @param  bool  $everywhere
-     * @return bool
      */
     public function logout(UserInterface $user = null, $everywhere = false): bool
     {
         return $this->sentinel->logout($user, $everywhere) ? true : false;
     }
 
-    /**
-     * @return FormRequest
-     */
     public function getFormRequest(): FormRequest
     {
         return new LoginRequest();
     }
 
-    /**
-     * @return string
-     */
     public function getLoginView(): string
     {
         return static::LOGIN_VIEW;

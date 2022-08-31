@@ -22,10 +22,6 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
      */
     protected $config;
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @return \Arbory\Base\Html\Elements\Element
-     */
     public function render(FilterItem $filterItem): Element
     {
         return Html::div(
@@ -36,10 +32,6 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
         )->addClass('text');
     }
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @param  Builder  $builder
-     */
     public function execute(FilterItem $filterItem, Builder $builder): void
     {
         $type = $this->config->getType() ?? static::CONTAINS;
@@ -50,11 +42,6 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
         $builder->where($filterItem->getName(), $operator, $resolvedValue);
     }
 
-    /**
-     * @param  string  $type
-     * @param  string  $value
-     * @return string
-     */
     protected function resolveLikeQuery(string $type, string $value): string
     {
         if ($type === static::BEGINS_WITH) {
@@ -72,9 +59,6 @@ class TextFilterType extends AbstractType implements FilterTypeInterface, WithCu
         return $value;
     }
 
-    /**
-     * @return string|null
-     */
     public function getConfigType(): ?string
     {
         return TextLikeTypeConfig::class;

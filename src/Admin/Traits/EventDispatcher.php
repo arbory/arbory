@@ -28,17 +28,12 @@ trait EventDispatcher
 
     /**
      * @param $event
-     * @param  Closure  $callback
      */
     public function on($event, Closure $callback)
     {
         $this->addEventListener($event, $callback);
     }
 
-    /**
-     * @param  array  $events
-     * @param  Closure  $callback
-     */
     public function addEventListeners(array $events, Closure $callback)
     {
         foreach ((array) $events as $event) {
@@ -48,7 +43,6 @@ trait EventDispatcher
 
     /**
      * @param $event
-     * @param  Closure  $callback
      */
     public function addEventListener($event, Closure $callback)
     {

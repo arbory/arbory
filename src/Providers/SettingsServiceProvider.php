@@ -13,13 +13,9 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(SettingRegistry::class, function () {
-            return new SettingRegistry();
-        });
+        $this->app->singleton(SettingRegistry::class, fn() => new SettingRegistry());
 
-        $this->app->singleton('arbory_settings', function () {
-            return new Settings($this->app[SettingRegistry::class]);
-        });
+        $this->app->singleton('arbory_settings', fn() => new Settings($this->app[SettingRegistry::class]));
     }
 
     /**

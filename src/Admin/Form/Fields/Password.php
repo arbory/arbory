@@ -14,7 +14,7 @@ class Password extends ControlField
         'text',
     ];
 
-    protected $attributes = [
+    protected array $attributes = [
         'type' => 'password',
     ];
 
@@ -23,7 +23,6 @@ class Password extends ControlField
     }
 
     /**
-     * @param  Request  $request
      * @return void
      */
     public function beforeModelSave(Request $request)

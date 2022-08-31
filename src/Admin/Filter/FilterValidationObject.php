@@ -26,8 +26,6 @@ class FilterValidationObject
 
     /**
      * FilterValidationObject constructor.
-     *
-     * @param  array  $data
      */
     public function __construct(array $data = [])
     {
@@ -38,7 +36,6 @@ class FilterValidationObject
     }
 
     /**
-     * @param  array  $rules
      * @return $this
      */
     public function addRules(array $rules): self
@@ -49,7 +46,6 @@ class FilterValidationObject
     }
 
     /**
-     * @param  array  $messages
      * @return $this
      */
     public function addMessages(array $messages): self
@@ -60,7 +56,6 @@ class FilterValidationObject
     }
 
     /**
-     * @param  array  $attributes
      * @return $this
      */
     public function addAttributes(array $attributes): self
@@ -71,7 +66,6 @@ class FilterValidationObject
     }
 
     /**
-     * @param  array  $transformers
      * @return $this
      */
     public function addTransformers(array $transformers): self
@@ -81,33 +75,21 @@ class FilterValidationObject
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getRules(): array
     {
         return array_merge([], ...$this->rules);
     }
 
-    /**
-     * @return array
-     */
     public function getMessages(): array
     {
         return array_merge([], ...$this->messages);
     }
 
-    /**
-     * @return array
-     */
     public function getAttributes(): array
     {
         return array_merge([], ...$this->attributes);
     }
 
-    /**
-     * @return array
-     */
     public function getTransformers(): array
     {
         return $this->transformers;

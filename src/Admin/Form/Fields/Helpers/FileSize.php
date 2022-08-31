@@ -11,44 +11,30 @@ use Arbory\Base\Files\ArboryFile;
  */
 final class FileSize
 {
-    const UNIT_BYTE = 'B';
-    const UNIT_KILOBYTE = 'KB';
-    const UNIT_MEGABYTE = 'MB';
+    public const UNIT_BYTE = 'B';
+    public const UNIT_KILOBYTE = 'KB';
+    public const UNIT_MEGABYTE = 'MB';
 
-    const CLOSEST_UNIT_DIGIT_COUNT_DIFF = 3;
+    public const CLOSEST_UNIT_DIGIT_COUNT_DIFF = 3;
 
-    const UNITS = [
+    public const UNITS = [
         self::UNIT_BYTE,
         self::UNIT_KILOBYTE,
         self::UNIT_MEGABYTE,
     ];
 
     /**
-     * @var ArboryFile
-     */
-    private $file;
-
-    /**
      * FileSize constructor.
-     *
-     * @param  ArboryFile  $file
      */
-    public function __construct(ArboryFile $file)
+    public function __construct(private ArboryFile $file)
     {
-        $this->file = $file;
     }
 
-    /**
-     * @return int
-     */
     public function getSizeInBytes(): int
     {
         return $this->file->getSize();
     }
 
-    /**
-     * @return string
-     */
     public function getReadableSize(): string
     {
         $sizeInBytes = $this->getSizeInBytes();
@@ -63,11 +49,6 @@ final class FileSize
         return sprintf('%s %s', $roundedSize, $closestUnit);
     }
 
-    /**
-     * @param  int  $sizeInBytes
-     * @param  string  $unit
-     * @return float
-     */
     private function roundToUnit(int $sizeInBytes, string $unit): float
     {
         $unitIndex = array_search($unit, self::UNITS, true);

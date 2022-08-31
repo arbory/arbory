@@ -8,11 +8,6 @@ use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 
 class FilterExecutor
 {
-    /**
-     * @param  FilterManager  $filterManager
-     * @param  Builder  $builder
-     * @return Builder
-     */
     public function execute(FilterManager $filterManager, Builder $builder): Builder
     {
         $parameters = $filterManager->getParameters();
@@ -24,11 +19,6 @@ class FilterExecutor
         return $builder;
     }
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @param  FilterParameters  $parameters
-     * @param  Builder  $builder
-     */
     protected function executeForItem(FilterItem $filterItem, FilterParameters $parameters, Builder $builder): void
     {
         if (! $parameters->has($filterItem->getName())) {
@@ -53,11 +43,6 @@ class FilterExecutor
         $this->applyQuery($parameters, $filterItem, $builder);
     }
 
-    /**
-     * @param  FilterParameters  $parameters
-     * @param  FilterItem  $filterItem
-     * @param  Builder  $builder
-     */
     protected function applyQuery(FilterParameters $parameters, FilterItem $filterItem, Builder $builder): void
     {
         $value = $parameters->getFromFilter($filterItem);

@@ -10,7 +10,7 @@ use Illuminate\Contracts\Support\Renderable;
 
 class Grid implements Renderable
 {
-    const SIZE_MAX = 12;
+    public const SIZE_MAX = 12;
 
     /**
      * @var Row[]
@@ -43,11 +43,10 @@ class Grid implements Renderable
 
     /**
      * @param  int  $size
-     * @param  mixed  $content
      * @param  string|null  $breakpoint
      * @return Column
      */
-    public function column($size, $content, $breakpoint = null)
+    public function column($size, mixed $content, $breakpoint = null)
     {
         if (! $this->row) {
             $this->row = $this->row();
@@ -66,10 +65,7 @@ class Grid implements Renderable
         return static::SIZE_MAX;
     }
 
-    /**
-     * @return \Arbory\Base\Html\Elements\Element|string
-     */
-    public function render()
+    public function render(): \Arbory\Base\Html\Elements\Element|string
     {
         $content = Html::div(null)->addClass('grid');
 
@@ -82,7 +78,7 @@ class Grid implements Renderable
         return $content;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (new Content($this->render()))->__toString();
     }

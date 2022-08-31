@@ -4,17 +4,8 @@ namespace Arbory\Base\Menu;
 
 class MenuFactory
 {
-    /**
-     * @var MenuItemFactory
-     */
-    protected $menuItemFactory;
-
-    /**
-     * @param  MenuItemFactory  $menuItemFactory
-     */
-    public function __construct(MenuItemFactory $menuItemFactory)
+    public function __construct(protected MenuItemFactory $menuItemFactory)
     {
-        $this->menuItemFactory = $menuItemFactory;
     }
 
     /**

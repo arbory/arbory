@@ -18,9 +18,6 @@ class ValidationRulesServiceProvider extends ServiceProvider
      */
     protected $validator;
 
-    /**
-     * @param  ValidationFactory  $validator
-     */
     public function boot(ValidationFactory $validator)
     {
         $this->validator = $validator;
@@ -38,7 +35,6 @@ class ValidationRulesServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param  Request  $request
      * @param $attribute
      * @return bool
      */

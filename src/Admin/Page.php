@@ -10,7 +10,7 @@ use Arbory\Base\Admin\Layout\PageInterface;
 
 class Page extends Layout implements PageInterface
 {
-    const SLOTS = [
+    public const SLOTS = [
         'header_right',
     ];
 
@@ -40,16 +40,12 @@ class Page extends Layout implements PageInterface
         return $this;
     }
 
-    /**
-     * @return Breadcrumbs
-     */
     public function getBreadcrumbs(): Breadcrumbs
     {
         return $this->breadcrumbs;
     }
 
     /**
-     * @param  Breadcrumbs|null  $breadcrumbs
      * @return Page
      */
     public function setBreadcrumbs(?Breadcrumbs $breadcrumbs): PageInterface
@@ -91,18 +87,11 @@ class Page extends Layout implements PageInterface
         ]);
     }
 
-    /**
-     * @return string
-     */
     public function getView(): string
     {
         return $this->view;
     }
 
-    /**
-     * @param  string  $view
-     * @return Page
-     */
     public function setView(string $view): self
     {
         $this->view = $view;

@@ -33,8 +33,6 @@ class Select extends ControlField
     protected $optionTitleKey;
 
     /**
-     * @param  Request  $request
-     *
      * @throws \RuntimeException
      */
     public function beforeModelSave(Request $request)
@@ -60,16 +58,12 @@ class Select extends ControlField
         $this->getModel()->setAttribute($property, $value);
     }
 
-    /**
-     * @return bool
-     */
     public function isMultiple(): bool
     {
         return $this->multiple;
     }
 
     /**
-     * @param  bool  $multiple
      * @return self
      */
     public function setMultiple(bool $multiple)
@@ -79,11 +73,7 @@ class Select extends ControlField
         return $this;
     }
 
-    /**
-     * @param  mixed  $input
-     * @return bool
-     */
-    public function containsValidValues($input): bool
+    public function containsValidValues(mixed $input): bool
     {
         if (! is_array($input)) {
             $input = [$input];
@@ -120,9 +110,6 @@ class Select extends ControlField
         return $value;
     }
 
-    /**
-     * @return Collection
-     */
     public function getOptions(): Collection
     {
         if ($this->options === null && $this->isRelationship()) {

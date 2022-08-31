@@ -21,18 +21,11 @@ class Renderer
      */
     protected $action;
 
-    /**
-     * @return FilterManager
-     */
     public function getManager(): FilterManager
     {
         return $this->manager;
     }
 
-    /**
-     * @param  FilterManager  $manager
-     * @return Renderer
-     */
     public function setManager(FilterManager $manager): self
     {
         $this->manager = $manager;
@@ -40,9 +33,6 @@ class Renderer
         return $this;
     }
 
-    /**
-     * @return Element
-     */
     protected function filterHeader(): Element
     {
         return Html::div([
@@ -54,9 +44,6 @@ class Renderer
         ])->addClass('title-block');
     }
 
-    /**
-     * @return Button
-     */
     protected function filterButton(): Button
     {
         return Button::create()
@@ -64,9 +51,6 @@ class Renderer
             ->title(trans('arbory::filter.apply'));
     }
 
-    /**
-     * @return Link
-     */
     protected function saveButton(): Link
     {
         $linkUrl = $this->getManager()->getModule()->url('dialog', ['dialog' => 'save_filter']);
@@ -77,9 +61,6 @@ class Renderer
             ->title(trans('arbory::filter.save_as'));
     }
 
-    /**
-     * @return Button
-     */
     protected function resetButton(): Button
     {
         return Button::create()
@@ -87,27 +68,17 @@ class Renderer
             ->title(trans('arbory::filter.reset'));
     }
 
-    /**
-     * @return Content
-     */
     protected function renderFilters(): Content
     {
         return (new Content($this->manager->getFilters()))
             ->map(Closure::fromCallable([$this, 'renderFilter']));
     }
 
-    /**
-     * @return string
-     */
     public function getAction(): string
     {
         return $this->action;
     }
 
-    /**
-     * @param  string  $action
-     * @return Renderer
-     */
     public function setAction(string $action): self
     {
         $this->action = $action;
@@ -116,7 +87,6 @@ class Renderer
     }
 
     /**
-     * @param  FilterItem  $filterItem
      * @return Element
      */
     protected function renderFilter(FilterItem $filterItem)
@@ -141,10 +111,7 @@ class Renderer
         ])->addClass('accordion');
     }
 
-    /**
-     * @return Content|string
-     */
-    public function render()
+    public function render(): \Arbory\Base\Html\Elements\Content|string
     {
         return new Content([
             Html::form([

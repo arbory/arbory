@@ -22,8 +22,6 @@ class Filter implements Renderable
 
     /**
      * Filter constructor.
-     *
-     * @param  Grid  $grid
      */
     public function __construct(Grid $grid)
     {
@@ -31,9 +29,6 @@ class Filter implements Renderable
         $this->columns = $grid->getColumns();
     }
 
-    /**
-     * @return Element
-     */
     protected function filterHeader(): Element
     {
         return Html::div([
@@ -45,9 +40,6 @@ class Filter implements Renderable
         ])->addClass('title-block');
     }
 
-    /**
-     * @return array|null
-     */
     protected function addFields(): ?array
     {
         $fieldCollection = null;
@@ -71,7 +63,6 @@ class Filter implements Renderable
     /**
      * @param  object  $column
      * @param  null|object  $content
-     * @return Content
      */
     protected function addField($column, $content = null): Content
     {
@@ -103,9 +94,6 @@ class Filter implements Renderable
         return is_null($content) ? new $type(null, $column) : new $type($content, $column);
     }
 
-    /**
-     * @return Button
-     */
     protected function filterButton(): Button
     {
         return Button::create()
@@ -113,10 +101,7 @@ class Filter implements Renderable
             ->title(trans('arbory::filter.apply'));
     }
 
-    /**
-     * @return Content|string
-     */
-    public function render()
+    public function render(): \Arbory\Base\Html\Elements\Content|string
     {
         return new Content([
             Html::form([

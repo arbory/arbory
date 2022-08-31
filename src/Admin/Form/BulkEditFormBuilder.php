@@ -87,10 +87,7 @@ class BulkEditFormBuilder extends Builder
         return Html::footer($footerTools);
     }
 
-    /**
-     * @return Content|Element
-     */
-    public function render()
+    public function render(): \Arbory\Base\Html\Elements\Content|\Arbory\Base\Html\Elements\Element
     {
         $content = Html::div()->addClass('body');
 

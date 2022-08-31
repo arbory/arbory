@@ -19,28 +19,20 @@ class FieldTypeRegistry
      * @var
      */
     protected $reservedTypes = [];
-    /**
-     * @var Container
-     */
-    protected $app;
 
     /**
      * FieldTypeRegistry constructor.
      *
-     * @param  Container  $app
      *
      * @throws \ReflectionException
      */
-    public function __construct(Container $app)
+    public function __construct(protected Container $app)
     {
         $this->fieldTypes = new Collection();
         $this->reservedTypes = $this->getReservedMethods(FieldSet::class);
-        $this->app = $app;
     }
 
     /**
-     * @param  string  $type
-     * @param  string  $class
      * @return $this
      */
     public function register(string $type, string $class): self
@@ -65,7 +57,6 @@ class FieldTypeRegistry
 
     /**
      * @param  string  $type
-     * @return string|null
      */
     public function findByType($type): ?string
     {
@@ -74,7 +65,6 @@ class FieldTypeRegistry
 
     /**
      * @param  string  $type
-     * @return bool
      */
     public function has($type): bool
     {
@@ -85,8 +75,6 @@ class FieldTypeRegistry
      * Resolves a field class instance.
      *
      * @param  string  $type
-     * @param  array  $parameters
-     * @return FieldInterface
      */
     public function resolve($type, array $parameters): FieldInterface
     {
@@ -102,12 +90,10 @@ class FieldTypeRegistry
     /**
      * Finds any accessible functions which are defined in class.
      *
-     * @param  mixed  $class
      * @return array
-     *
      * @throws \ReflectionException
      */
-    protected function getReservedMethods($class)
+    protected function getReservedMethods(mixed $class)
     {
         $reflection = new ReflectionClass($class);
 
@@ -125,8 +111,6 @@ class FieldTypeRegistry
     /**
      * Builds an dictionary of parameters by name for an class from index based parameter list.
      *
-     * @param  string  $class
-     * @param  array  $parameters
      * @return array
      *
      * @throws \ReflectionException

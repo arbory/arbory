@@ -16,8 +16,8 @@ use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 
 class RangeFilterType extends AbstractType implements FilterTypeInterface, WithCustomExecutor, WithParameterValidation
 {
-    const KEY_MIN = 'min';
-    const KEY_MAX = 'max';
+    public const KEY_MIN = 'min';
+    public const KEY_MAX = 'max';
 
     protected $inputType = 'number';
 
@@ -50,7 +50,6 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param  string  $key
      * @return string|null
      */
     protected function getRangeValue(string $key): ?string
@@ -126,17 +125,13 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
         $validator->sometimes(
             $attributeResolver(static::KEY_MIN),
             "lte:{$maxAttribute}",
-            static function (Fluent $fluent) use ($maxAttribute) {
-                return ! blank(Arr::get($fluent->getAttributes(), $maxAttribute));
-            }
+            static fn(Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $maxAttribute))
         );
 
         $validator->sometimes(
             $attributeResolver(static::KEY_MAX),
             "gte:{$minAttribute}",
-            static function (Fluent $fluent) use ($minAttribute) {
-                return ! blank(Arr::get($fluent->getAttributes(), $minAttribute));
-            }
+            static fn(Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $minAttribute))
         );
     }
 }

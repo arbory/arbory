@@ -46,10 +46,6 @@ class FileFieldRenderer extends ControlFieldRenderer
         return $value;
     }
 
-    /**
-     * @param  ArboryFile  $file
-     * @return Element
-     */
     public function createFileDetails(ArboryFile $file): Element
     {
         $removeInput = null;

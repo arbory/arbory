@@ -29,7 +29,7 @@ class Select implements Renderable
     /**
      * @var array
      */
-    protected $attributes = [];
+    protected array $attributes = [];
 
     /**
      * Select constructor.
@@ -42,7 +42,7 @@ class Select implements Renderable
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }
@@ -70,10 +70,9 @@ class Select implements Renderable
     }
 
     /**
-     * @param  mixed  $value
      * @return self
      */
-    public function selected($value)
+    public function selected(mixed $value)
     {
         $this->selected = (array) $value;
 
@@ -81,7 +80,6 @@ class Select implements Renderable
     }
 
     /**
-     * @param  array  $attributes
      * @return self
      */
     public function attributes(array $attributes)

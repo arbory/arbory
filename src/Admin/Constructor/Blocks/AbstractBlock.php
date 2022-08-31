@@ -11,8 +11,6 @@ abstract class AbstractBlock
      * Before block save lifecycle event
      * Note: Gets called for every block.
      *
-     * @param  Request  $request
-     * @param  HasOne  $field
      * @return void
      */
     public function beforeModelSave(Request $request, HasOne $field)
@@ -24,8 +22,6 @@ abstract class AbstractBlock
      * After block save lifecycle event
      * Note: Gets called for every block.
      *
-     * @param  Request  $request
-     * @param  HasOne  $field
      * @return void
      */
     public function afterModelSave(Request $request, HasOne $field)

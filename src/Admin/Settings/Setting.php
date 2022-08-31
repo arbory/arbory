@@ -3,9 +3,9 @@
 namespace Arbory\Base\Admin\Settings;
 
 use Arbory\Base\Files\ArboryFile;
-use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Services\SettingRegistry;
 use Arbory\Base\Support\Translate\Translatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class Setting extends Model
@@ -49,19 +49,18 @@ class Setting extends Model
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->name;
+        return (string)$this->name;
     }
 
     /**
-     * @param  array  $attributes
      * @return Model|self
      *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      * @throws \ErrorException
      */
-    public function fill(array $attributes)
+    public function fill(array $attributes): \Illuminate\Database\Eloquent\Model|self
     {
         $name = Arr::get($attributes, 'name');
 
@@ -69,7 +68,7 @@ class Setting extends Model
     }
 
     /**
-     * @param  string  $key
+     * @param string $key
      * @return mixed
      */
     public function getAttribute($key)
@@ -86,11 +85,11 @@ class Setting extends Model
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed $value
      * @return Model|self
      */
-    public function setAttribute($key, $value)
+    public function setAttribute($key, $value): \Illuminate\Database\Eloquent\Model|self
     {
         if ($this->isTranslatable()) {
             return $this->setTranslatableAttribute($key, $value);
@@ -100,7 +99,6 @@ class Setting extends Model
     }
 
     /**
-     * @param  array  $options
      * @return bool
      */
     public function save(array $options = [])
@@ -113,10 +111,9 @@ class Setting extends Model
     }
 
     /**
-     * @param  mixed  $column
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function value($column = null)
+    public function value(mixed $column = null)
     {
         return $column ? parent::value($column) : $this->file();
     }
@@ -130,14 +127,13 @@ class Setting extends Model
     }
 
     /**
-     * @param  string|null  $settingName
-     * @return bool
+     * @param string|null $settingName
      */
     public function isTranslatable(string $settingName = null): bool
     {
-        $settingName = $settingName ?? $this->name;
+        $settingName ??= $this->name;
 
-        if (! $settingName) {
+        if (!$settingName) {
             return false;
         }
 

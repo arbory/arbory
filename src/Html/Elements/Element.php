@@ -26,7 +26,7 @@ class Element
      * Element constructor.
      *
      * @param $tag
-     * @param  null  $content
+     * @param null $content
      */
     public function __construct($tag, $content = null)
     {
@@ -40,7 +40,7 @@ class Element
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->tag->setContent($this->content)->__toString();
     }
@@ -48,16 +48,16 @@ class Element
     /**
      * @return Attributes
      */
-    public function attributes()
+    public function attributes(): Attributes
     {
         return $this->tag->getAttributes();
     }
 
     /**
-     * @param  array  $attributes
+     * @param array $attributes
      * @return $this
      */
-    public function addAttributes(array $attributes)
+    public function addAttributes(array $attributes): self
     {
         foreach ($attributes as $name => $value) {
             $this->attributes()->put($name, $value);
@@ -69,7 +69,7 @@ class Element
     /**
      * @return Content
      */
-    public function content()
+    public function content(): Content
     {
         if ($this->content === null) {
             $this->content = new Content;
@@ -78,23 +78,14 @@ class Element
         return $this->content;
     }
 
-    /**
-     * @param  string  $name
-     * @param  string|null  $content
-     * @return Tag
-     */
-    public function tag($name, $content = null)
+    public function tag(string $name, string $content = null): Tag
     {
         return (new Tag($name))
             ->setAttributes($this->attributes())
             ->setContent($content);
     }
 
-    /**
-     * @param  string  $class
-     * @return $this
-     */
-    public function addClass($class)
+    public function addClass(?string $class): self
     {
         $currentClass = $this->attributes()->get('class');
 
@@ -103,11 +94,7 @@ class Element
         return $this;
     }
 
-    /**
-     * @param  Element|array|string  $content
-     * @return $this
-     */
-    public function append($content)
+    public function append(mixed $content): self
     {
         if (is_array($content)) {
             foreach ($content as $item) {
@@ -126,11 +113,7 @@ class Element
         return $this;
     }
 
-    /**
-     * @param  Element|array|string  $content
-     * @return $this
-     */
-    public function prepend($content)
+    public function prepend(mixed $content): self
     {
         if (is_array($content)) {
             foreach ($content as $item) {
@@ -146,10 +129,10 @@ class Element
     }
 
     /**
-     * @param  string  $name
+     * @param string $name
      * @return string
      */
-    public static function formatName($name): string
+    public static function formatName(string $name): string
     {
         // Normalize multiple ending pattern
         $name = str_replace('[ ]', self::FIELD_NAME_MULTIPLE_ENDING, $name);
@@ -160,14 +143,14 @@ class Element
             $name = Str::substr($name, 0, strlen(self::FIELD_NAME_MULTIPLE_ENDING) * -1);
         }
 
-        $nameParts = preg_split('/\./', $name, null, PREG_SPLIT_NO_EMPTY);
+        $nameParts = preg_split('/\./', $name, -1, PREG_SPLIT_NO_EMPTY);
 
         $inputName = Arr::pull($nameParts, 0);
 
         if (count($nameParts) > 0) {
-            $inputName .= '['.implode('][', $nameParts).']';
+            $inputName .= '[' . implode('][', $nameParts) . ']';
         }
 
-        return $inputName.($multiple ? self::FIELD_NAME_MULTIPLE_ENDING : '');
+        return $inputName . ($multiple ? self::FIELD_NAME_MULTIPLE_ENDING : '');
     }
 }

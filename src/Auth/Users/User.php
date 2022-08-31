@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * Class User.
  */
-class User extends EloquentUser
+class User extends EloquentUser 
 {
     /**
      * @var string
@@ -48,7 +48,7 @@ class User extends EloquentUser
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getFullName();
     }
@@ -77,9 +77,6 @@ class User extends EloquentUser
         return $this->getFirstName().' '.$this->getLastName();
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(static::$rolesModel, 'admin_role_users', 'user_id', 'role_id')->withTimestamps();

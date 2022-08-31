@@ -18,16 +18,6 @@ class ArboryFilesRepository extends AbstractModelsRepository
     /**
      * @var string
      */
-    protected $modelClass = ArboryFile::class;
-
-    /**
-     * @var string
-     */
-    protected $diskName;
-
-    /**
-     * @var string
-     */
     protected $disk;
 
     /**
@@ -36,18 +26,12 @@ class ArboryFilesRepository extends AbstractModelsRepository
      * @param  string  $diskName
      * @param  string  $modelClass
      */
-    public function __construct($diskName, $modelClass = ArboryFile::class)
+    public function __construct(protected $diskName, protected $modelClass = ArboryFile::class)
     {
-        $this->diskName = $diskName;
-        $this->modelClass = $modelClass;
-
         parent::__construct();
     }
 
-    /**
-     * @return \Illuminate\Filesystem\FilesystemAdapter|string
-     */
-    public function getDisk()
+    public function getDisk(): \Illuminate\Filesystem\FilesystemAdapter|string
     {
         if (! $this->disk) {
             $this->disk = Storage::disk($this->diskName);
@@ -57,8 +41,6 @@ class ArboryFilesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param  UploadedFile  $file
-     * @param  Model  $owner
      * @return ArboryFile|null
      *
      * @throws RuntimeException
@@ -99,9 +81,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
     /**
      * @param $fileName
      * @param $fileContents
-     * @param  Model  $owner
      * @return ArboryFile|null
-     *
      * @throws RuntimeException
      */
     public function createFromBlob($fileName, $fileContents, Model $owner)
@@ -146,7 +126,6 @@ class ArboryFilesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param  UploadedFile  $file
      * @param  string  $localFileName
      * @return array
      */
@@ -186,17 +165,12 @@ class ArboryFilesRepository extends AbstractModelsRepository
 
     /**
      * @param $fileContents
-     * @return string
      */
     protected function getLocalFilenameForBlob($fileContents): string
     {
         return $this->getFreeFileName(sha1($fileContents));
     }
 
-    /**
-     * @param  UploadedFile  $file
-     * @return string
-     */
     protected function getLocalFilenameForUploadedFile(UploadedFile $file): string
     {
         return $this->getFreeFileName(sha1_file($file->getRealPath()).'.'.$file->getClientOriginalExtension());

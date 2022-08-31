@@ -28,23 +28,13 @@ class SettingsController extends Controller
      */
     protected $resource = Setting::class;
 
-    /**
-     * @var SettingRegistry
-     */
-    protected $settingRegistry;
-
-    /**
-     * @param  SettingRegistry  $settingRegistry
-     */
     public function __construct(
-        SettingRegistry $settingRegistry
+        protected SettingRegistry $settingRegistry
     ) {
-        $this->settingRegistry = $settingRegistry;
         $this->settingRegistry->importFromDatabase();
     }
 
     /**
-     * @param  Form  $form
      * @return Form
      */
     protected function form(Form $form)
@@ -60,7 +50,6 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)
@@ -105,11 +94,9 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param  Form\FieldSet  $fields
-     * @param  SettingDefinition  $definition
      * @return Form\Fields\AbstractField|Translatable
      */
-    protected function getField(Form\FieldSet $fields, SettingDefinition $definition)
+    protected function getField(Form\FieldSet $fields, SettingDefinition $definition): \Arbory\Base\Admin\Form\Fields\AbstractField|\Arbory\Base\Admin\Form\Fields\Translatable
     {
         /**
          * @var Form\Fields\AbstractField
@@ -162,9 +149,6 @@ class SettingsController extends Controller
         return $result;
     }
 
-    /**
-     * @param  \Arbory\Base\Admin\Tools\ToolboxMenu  $tools
-     */
     protected function toolbox(ToolboxMenu $tools)
     {
         $model = $tools->model();

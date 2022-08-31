@@ -7,11 +7,6 @@ use Illuminate\Support\Str;
 
 class PropertyRemover
 {
-    /**
-     * @param  Model  $model
-     * @param  string  $prefix
-     * @return Model
-     */
     public function remove(Model $model, string $prefix): Model
     {
         foreach (array_keys($model->getAttributes()) as $attribute) {

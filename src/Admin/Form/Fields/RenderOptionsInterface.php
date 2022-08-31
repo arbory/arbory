@@ -5,7 +5,7 @@ namespace Arbory\Base\Admin\Form\Fields;
 interface RenderOptionsInterface
 {
     /**
-     * @param  callable|null  $value
+     * @param callable|null $value
      * @return RenderOptionsInterface
      */
     public function setWrapper(?callable $value): self;
@@ -16,19 +16,19 @@ interface RenderOptionsInterface
     public function getWrapper(): ?callable;
 
     /**
-     * @param  array  $attributes
+     * @param array $attributes
      * @return mixed
      */
     public function addAttributes(array $attributes): self;
 
     /**
-     * @param  array  $attributes
+     * @param array $attributes
      * @return RenderOptionsInterface
      */
     public function setAttributes(array $attributes): self;
 
     /**
-     * @param  array  $attributes
+     * @param array $attributes
      * @return RenderOptionsInterface
      */
     public function removeAttributes(array $attributes): self;
@@ -39,22 +39,22 @@ interface RenderOptionsInterface
     public function getAttributes(): array;
 
     /**
-     * @param  string|array  $classes
+     * @param string|array $classes
      * @return mixed
      */
-    public function addClass($classes);
+    public function addClass(string|array $classes);
 
     /**
-     * @param  string|array  $classes
+     * @param array|string $classes
      * @return RenderOptionsInterface
      */
-    public function setClasses($classes): self;
+    public function setClasses(array|string $classes): self;
 
     /**
-     * @param  string|array  $classes
+     * @param array|string $classes
      * @return RenderOptionsInterface
      */
-    public function removeClasses($classes): self;
+    public function removeClasses(array|string $classes): self;
 
     /**
      * @return array

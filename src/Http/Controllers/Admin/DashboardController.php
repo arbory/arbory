@@ -17,10 +17,7 @@ class DashboardController extends Controller
         $this->middleware('arbory.admin_switched_off_module');
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index()
+    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
     {
         return view('arbory::controllers.dashboard.index');
     }

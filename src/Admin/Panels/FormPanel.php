@@ -32,18 +32,11 @@ class FormPanel extends Panel
         return $toolbox;
     }
 
-    /**
-     * @return Form
-     */
     public function getForm(): Form
     {
         return $this->form;
     }
 
-    /**
-     * @param  Form  $form
-     * @return FormPanel
-     */
     public function setForm(Form $form): self
     {
         $this->form = $form;

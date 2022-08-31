@@ -22,40 +22,21 @@ class ModulePermissionsRegistry
         'store' => 'create',
     ];
 
-    /**
-     * @var Collection
-     */
-    private $modulePermissions;
+    private \Illuminate\Support\Collection $modulePermissions;
 
-    /**
-     * @var string
-     */
-    private $controllerClass;
-
-    /**
-     * @var Sentinel
-     */
-    private $sentinel;
+    private \Cartalyst\Sentinel\Sentinel $sentinel;
 
     /**
      * ModulePermissionsRegistry constructor.
-     *
-     * @param  string  $controllerClass
      */
-    public function __construct(string $controllerClass)
+    public function __construct(private string $controllerClass)
     {
         /** @var Admin $admin */
         $admin = app(Admin::class);
         $this->sentinel = $admin->sentinel();
-        $this->controllerClass = $controllerClass;
         $this->setPermissions();
     }
 
-    /**
-     * @param  string  $permission
-     * @param  Role|null  $role
-     * @return bool
-     */
     public function accessible(string $permission, ?Role $role = null): bool
     {
         $permission = $this->getUnderlyingPermission($permission);
@@ -72,10 +53,6 @@ class ModulePermissionsRegistry
         return $this->sentinel->hasAccess($permissionName);
     }
 
-    /**
-     * @param  Role|null  $role
-     * @return Collection
-     */
     public function getPermissions(?Role $role = null): Collection
     {
         $this->modulePermissions->each(function (ModulePermission $permission) use ($role) {
@@ -85,18 +62,11 @@ class ModulePermissionsRegistry
         return $this->modulePermissions;
     }
 
-    /**
-     * @param  ModulePermission  $permission
-     */
     public function register(ModulePermission $permission)
     {
         $this->modulePermissions->put($permission->getName(), $permission);
     }
 
-    /**
-     * @param  string  $permission
-     * @return string
-     */
     protected function getUnderlyingPermission(string $permission): string
     {
         return self::LINKED_PERMISSIONS[$permission] ?? $permission;

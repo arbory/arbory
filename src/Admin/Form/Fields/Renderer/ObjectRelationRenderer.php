@@ -11,17 +11,8 @@ use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 
 class ObjectRelationRenderer implements RendererInterface
 {
-    /**
-     * @var ObjectRelation
-     */
-    protected $field;
-
-    /**
-     * @param  FieldInterface  $field
-     */
-    public function __construct(FieldInterface $field)
+    public function __construct(protected FieldInterface $field)
     {
-        $this->field = $field;
     }
 
     /**
@@ -110,11 +101,9 @@ class ObjectRelationRenderer implements RendererInterface
     }
 
     /**
-     * @param  mixed  $value
-     * @param  bool  $isRelated
      * @return Element
      */
-    protected function buildRelationalItemElement($value, bool $isRelated = false)
+    protected function buildRelationalItemElement(mixed $value, bool $isRelated = false)
     {
         $element = Html::div(
             Html::span(

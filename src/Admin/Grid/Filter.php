@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Filter\FilterManager;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
@@ -15,11 +15,6 @@ use Illuminate\Support\Str;
  */
 class Filter implements FilterInterface
 {
-    /**
-     * @var Model
-     */
-    protected $model;
-
     /**
      * @var QueryBuilder
      */
@@ -33,7 +28,7 @@ class Filter implements FilterInterface
     /**
      * @var bool
      */
-    protected $paginated = true;
+    protected bool $paginated = true;
 
     /**
      * @var int
@@ -48,49 +43,37 @@ class Filter implements FilterInterface
     /**
      * @var array
      */
-    protected $defaultOrderOptions;
+    protected array $defaultOrderOptions;
 
     /**
      * Filter constructor.
      *
-     * @param  Model  $model
+     * @param Model $model
      */
-    public function __construct(Model $model)
+    public function __construct(protected Model $model)
     {
-        $this->model = $model;
         $this->query = $model->newQuery();
         $this->request = request();
     }
 
-    /**
-     * @param  Collection|Column[]  $columns
-     * @return void
-     */
-    public function order(Collection $columns)
+    public function order(Collection $columns): void
     {
         $orderBy = $this->request->get('_order_by');
         $orderDirection = $this->request->get('_order', 'asc');
 
-        if (! $orderBy) {
+        if (!$orderBy) {
             return;
         }
 
-        $column = $columns->filter(function (Column $column) {
-            return $column->isSortable();
-        })->filter(static function (Column $column) use ($orderBy) {
-            return $column->getName() === $orderBy;
-        })->first();
+        $column = $columns->filter(fn(Column $column) => $column->isSortable())->filter(static fn(Column $column) => $column->getName() === $orderBy)->first();
 
-        if (! $column) {
+        if (!$column) {
             return;
         }
 
         $this->query->orderBy($column->getName(), $orderDirection);
     }
 
-    /**
-     * @return void
-     */
     public function filter(): void
     {
         if ($filterManager = $this->getFilterManager()) {
@@ -100,9 +83,9 @@ class Filter implements FilterInterface
 
     /**
      * @param $phrase
-     * @param  Collection|Column[]  $columns
+     * @param Collection|Column[] $columns
      */
-    public function search($phrase, $columns)
+    public function search($phrase, Collection|array $columns)
     {
         $phrase = Str::ascii($phrase);
         $keywords = explode(' ', $phrase);
@@ -110,7 +93,7 @@ class Filter implements FilterInterface
         foreach ($keywords as $string) {
             $this->query->where(function (QueryBuilder $query) use ($string, $columns) {
                 foreach ($columns as $column) {
-                    if (! $column->isSearchable()) {
+                    if (!$column->isSearchable()) {
                         continue;
                     }
 
@@ -127,7 +110,7 @@ class Filter implements FilterInterface
     {
         $result = $this->query;
 
-        if (! $this->isPaginated()) {
+        if (!$this->isPaginated()) {
             return $result->get();
         }
 
@@ -150,13 +133,9 @@ class Filter implements FilterInterface
         return $result;
     }
 
-    /**
-     * @param  Collection  $columns
-     * @return self
-     */
     public function execute(Collection $columns): self
     {
-        if ($this->request->has('search') && ! empty($this->request->get('search'))) {
+        if ($this->request->has('search') && !empty($this->request->get('search'))) {
             $this->search($this->request->get('search'), $columns);
         }
 
@@ -167,33 +146,21 @@ class Filter implements FilterInterface
         return $this;
     }
 
-    /**
-     * @param  string  $relationName
-     */
     public function withRelation(string $relationName)
     {
         $this->query->with($relationName);
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getQuery(): QueryBuilder
     {
         return $this->query;
     }
 
-    /**
-     * @return bool
-     */
     public function isPaginated(): bool
     {
         return $this->paginated;
     }
 
-    /**
-     * @param  bool  $paginated
-     */
     public function setPaginated(bool $paginated)
     {
         $this->paginated = $paginated;
@@ -207,27 +174,16 @@ class Filter implements FilterInterface
         return $this->perPage ?? config('arbory.pagination.items_per_page');
     }
 
-    /**
-     * @param  Column  $column
-     * @return array
-     */
     public function getFilterTypeAction(Column $column): array
     {
         return $column->getFilterType()->getAction();
     }
 
-    /**
-     * @param  int  $perPage
-     */
     public function setPerPage(int $perPage)
     {
         $this->perPage = $perPage;
     }
 
-    /**
-     * @param  FilterManager  $filterManager
-     * @return Filter
-     */
     public function setFilterManager(FilterManager $filterManager): self
     {
         $this->filterManager = $filterManager;
@@ -235,34 +191,23 @@ class Filter implements FilterInterface
         return $this;
     }
 
-    /**
-     * @return FilterManager|null
-     */
     public function getFilterManager(): ?FilterManager
     {
         return $this->filterManager;
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultOrderOptions(): array
     {
         return $this->defaultOrderOptions;
     }
 
-    /**
-     * @param  string  $orderBy
-     * @param  string  $orderDirection
-     * @return Filter
-     */
     public function setDefaultOrderBy(string $orderBy, string $orderDirection = 'desc'): self
     {
         $this->defaultOrderOptions = [$orderBy, $orderDirection];
 
         $isOrderBySpecified = $this->request->get('_order_by');
 
-        if (! $isOrderBySpecified) {
+        if (!$isOrderBySpecified) {
             $this->request->merge([
                 '_order_by' => $orderBy,
                 '_order' => $orderDirection,

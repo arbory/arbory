@@ -16,11 +16,6 @@ use Illuminate\Support\Str;
 class Router
 {
     /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
      * @var NodesRepository
      */
     protected $nodes;
@@ -37,12 +32,9 @@ class Router
 
     /**
      * Router constructor.
-     *
-     * @param  Application  $app
      */
-    public function __construct(Application $app)
+    public function __construct(protected Application $app)
     {
-        $this->app = $app;
     }
 
     /**
@@ -78,7 +70,6 @@ class Router
     }
 
     /**
-     * @param  Request  $request
      * @return Node|null
      */
     public function findNode(Request $request)
@@ -90,9 +81,6 @@ class Router
         return $this->currentNode;
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function register(Request $request)
     {
         $this->registerContentTypes($this->getContentTypes());
@@ -104,9 +92,6 @@ class Router
         }
     }
 
-    /**
-     * @param  array  $contentTypes
-     */
     protected function registerContentTypes(array $contentTypes)
     {
         foreach ($contentTypes as $contentType) {
@@ -119,9 +104,6 @@ class Router
         }
     }
 
-    /**
-     * @param  Node  $node
-     */
     protected function registerRouteForNode(Node $node)
     {
         $routes = $this->findRoutesForNode($node);
@@ -140,10 +122,9 @@ class Router
     }
 
     /**
-     * @param  Node  $node
      * @return Collection|\Illuminate\Routing\Route[]
      */
-    protected function findRoutesForNode(Node $node)
+    protected function findRoutesForNode(Node $node): \Illuminate\Support\Collection|array
     {
         $routes = $this->getRouter()->getRoutes()->getIterator();
 

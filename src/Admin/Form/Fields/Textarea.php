@@ -11,7 +11,7 @@ class Textarea extends ControlField
 {
     protected $control = TextareaControl::class;
 
-    protected $attributes = [
+    protected array $attributes = [
         'rows' => 5,
         'cols' => 50,
     ];
@@ -19,7 +19,7 @@ class Textarea extends ControlField
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->getValue();
     }

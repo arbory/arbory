@@ -22,12 +22,7 @@ use Illuminate\Contracts\Pagination\Paginator;
  */
 class Renderer implements Renderable
 {
-    const COOKIE_NAME_NODES = 'nodes';
-
-    /**
-     * @var Grid
-     */
-    protected $grid;
+    public const COOKIE_NAME_NODES = 'nodes';
 
     /**
      * @var Paginator
@@ -36,12 +31,9 @@ class Renderer implements Renderable
 
     /**
      * Renderer constructor.
-     *
-     * @param  Grid  $grid
      */
-    public function __construct(Grid $grid)
+    public function __construct(protected Grid $grid)
     {
-        $this->grid = $grid;
     }
 
     /**
@@ -72,7 +64,6 @@ class Renderer implements Renderable
     }
 
     /**
-     * @param  Collection  $items
      * @param  int  $level
      * @return Element
      */
@@ -181,7 +172,7 @@ class Renderer implements Renderable
     /**
      * @return Element
      */
-    public function render()
+    public function render(): Element
     {
         $this->page = $this->grid->getItems();
 
@@ -204,7 +195,6 @@ class Renderer implements Renderable
 
     /**
      * @param  string  $type
-     * @return string
      */
     protected function makeNameFromType($type): string
     {

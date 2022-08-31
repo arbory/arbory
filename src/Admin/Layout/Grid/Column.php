@@ -9,17 +9,12 @@ use Illuminate\Contracts\Support\Renderable;
 
 class Column implements Renderable
 {
-    const BREAKPOINT_XS = 'xs';
-    const BREAKPOINT_SM = 'sm';
-    const BREAKPOINT_MD = 'md';
-    const BREAKPOINT_LG = 'lg';
+    public const BREAKPOINT_XS = 'xs';
+    public const BREAKPOINT_SM = 'sm';
+    public const BREAKPOINT_MD = 'md';
+    public const BREAKPOINT_LG = 'lg';
 
-    const BREAKPOINT_DEFAULT = self::BREAKPOINT_XS;
-
-    /**
-     * @var Content
-     */
-    protected $content;
+    public const BREAKPOINT_DEFAULT = self::BREAKPOINT_XS;
 
     /**
      * @var array
@@ -35,14 +30,11 @@ class Column implements Renderable
      * Row constructor.
      *
      * @param  int  $size
-     * @param  mixed  $content
      * @param  string  $breakpoint
      */
-    public function __construct($size, $content, $breakpoint = self::BREAKPOINT_DEFAULT)
+    public function __construct($size, protected mixed $content, $breakpoint = self::BREAKPOINT_DEFAULT)
     {
-        $breakpoint = $breakpoint ?? static::BREAKPOINT_XS;
-
-        $this->content = $content;
+        $breakpoint ??= static::BREAKPOINT_XS;
 
         $this->breakpoints = [
             $breakpoint => $size,
@@ -53,9 +45,6 @@ class Column implements Renderable
      * Add breakpoints
      * Expected format:
      *  Breakpoint => Size.
-     *
-     * @param  array  $breakpoints
-     * @return Column
      */
     public function breakpoints(array $breakpoints): self
     {
@@ -66,7 +55,6 @@ class Column implements Renderable
 
     /**
      * @param $content
-     * @return Column
      */
     public function push($content): self
     {
@@ -77,7 +65,6 @@ class Column implements Renderable
 
     /**
      * @param $content
-     * @return Column
      */
     public function set($content): self
     {
@@ -99,7 +86,6 @@ class Column implements Renderable
      *
      * @param  int  $size
      * @param  string  $breakpoint
-     * @return Column
      */
     public function size($size, $breakpoint = self::BREAKPOINT_XS): self
     {

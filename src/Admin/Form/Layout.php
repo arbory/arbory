@@ -58,7 +58,6 @@ class Layout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param  Form  $form
      * @return $this
      */
     public function setForm(Form $form)
@@ -101,18 +100,11 @@ class Layout extends AbstractLayout implements FormLayoutInterface
         );
     }
 
-    /**
-     * @return Widgets\Controls
-     */
     public function getControls(): Widgets\Controls
     {
         return $this->controls;
     }
 
-    /**
-     * @param  Widgets\Controls  $controls
-     * @return Layout
-     */
     public function setControls(Widgets\Controls $controls): self
     {
         $this->controls = $controls;

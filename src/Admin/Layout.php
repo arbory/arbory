@@ -40,16 +40,15 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }
 
     /**
-     * @param  mixed  $content
      * @return Layout
      */
-    public function body($content)
+    public function body(mixed $content)
     {
         return $this->row($content);
     }

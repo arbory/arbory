@@ -9,27 +9,15 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class JsonExport implements ExportInterface
 {
-    const EXTENSION = 'json';
-
-    /**
-     * @var DataSetExport
-     */
-    protected $export;
+    public const EXTENSION = 'json';
 
     /**
      * ExcelExport constructor.
-     *
-     * @param  DataSetExport  $export
      */
-    public function __construct(DataSetExport $export)
+    public function __construct(protected DataSetExport $export)
     {
-        $this->export = $export;
     }
 
-    /**
-     * @param  string  $fileName
-     * @return BinaryFileResponse
-     */
     public function download(string $fileName): BinaryFileResponse
     {
         $fileName = vsprintf('%s-%s.%s', [

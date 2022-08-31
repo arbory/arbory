@@ -33,11 +33,6 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     protected $field;
 
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @var callable
      */
     protected $fieldConfigurator;
@@ -47,9 +42,8 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
      *
      * @param  string  $name
      */
-    public function __construct($name = 'blocks')
+    public function __construct(protected $name = 'blocks')
     {
-        $this->name = $name;
         $this->fieldConfigurator = function () {
             $this->field->setItemRenderer(new Form\Fields\Renderer\Nested\PaneledItemRenderer);
             $this->field->addClass('in-layout');
@@ -61,26 +55,16 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         };
     }
 
-    /**
-     * @return string
-     */
     protected function getFieldOrderBy(): string
     {
         return $this->field->getOrderBy() ?? 'position';
     }
 
-    /**
-     * @return Form
-     */
     public function getForm(): Form
     {
         return $this->form;
     }
 
-    /**
-     * @param  Form  $form
-     * @return FormLayoutInterface
-     */
     public function setForm(Form $form): FormLayoutInterface
     {
         $this->form = $form;
@@ -112,9 +96,6 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         return $content;
     }
 
-    /**
-     * @return Form\Fields\Constructor
-     */
     public function getField(): Form\Fields\Constructor
     {
         if ($this->field === null) {
@@ -199,7 +180,6 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 
     /**
      * @param $url
-     * @return ConstructorLayout
      */
     public function setModalUrl($url): self
     {

@@ -8,9 +8,6 @@ abstract class AbstractArrayBlock extends AbstractBlock
 {
     protected $casts = [];
 
-    /**
-     * @return string
-     */
     public function resource(): string
     {
         return ArrayBlock::class;

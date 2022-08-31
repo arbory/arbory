@@ -41,9 +41,6 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
         return $this;
     }
 
-    /**
-     * @param  Closure  $closure
-     */
     public function setPanels(Closure $closure)
     {
         $this->panels = $closure($this);
@@ -71,7 +68,6 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
     /**
      * Creates a new grid instance.
      *
-     * @param  callable|null  $closure
      * @return Grid
      */
     public function grid(?callable $closure = null)
@@ -81,12 +77,8 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
 
     /**
      * Creates a new fieldset and attaches its fields to the form.
-     *
-     * @param  callable  $closure
-     * @param  mixed  ...$parameters
-     * @return FieldSet
      */
-    public function fields(callable $closure, ...$parameters): FieldSet
+    public function fields(callable $closure, mixed ...$parameters): FieldSet
     {
         $fields = new FieldSet($this->form->getModel(), $this->form->fields()->getNamespace());
         $fields = $closure($fields, ...$parameters) ?: $fields;
@@ -136,18 +128,11 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
         return $contents;
     }
 
-    /**
-     * @return Form
-     */
     public function getForm(): Form
     {
         return $this->form;
     }
 
-    /**
-     * @param  Form  $form
-     * @return PanelLayout
-     */
     public function setForm(Form $form): self
     {
         $this->form = $form;

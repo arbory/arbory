@@ -18,39 +18,19 @@ use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 class NestedFieldRenderer implements RendererInterface
 {
     /**
-     * @var HasMany
-     */
-    protected $field;
-
-    /**
-     * @var ItemInterface
-     */
-    protected $itemRenderer;
-
-    /**
      * NestedFieldRenderer constructor.
-     *
-     * @param  HasMany  $field
-     * @param  ItemInterface  $itemRenderer
      */
-    public function __construct(HasMany $field, ItemInterface $itemRenderer)
+    public function __construct(protected HasMany $field, protected ItemInterface $itemRenderer)
     {
-        $this->field = $field;
-        $this->itemRenderer = $itemRenderer;
     }
 
-    /**
-     * @return Element
-     */
-    protected function getBody()
+    protected function getBody(): Element
     {
         $orderBy = $this->field->getOrderBy();
         $relationItems = [];
 
         if ($orderBy) {
-            $this->field->setValue($this->field->getValue()->sortBy(function ($item) use ($orderBy) {
-                return $item->{$orderBy};
-            }));
+            $this->field->setValue($this->field->getValue()->sortBy(fn($item) => $item->{$orderBy}));
         }
 
         foreach ($this->field->getValue() as $index => $item) {
@@ -63,13 +43,10 @@ class NestedFieldRenderer implements RendererInterface
         return Html::div($relationItems)->addClass('body list');
     }
 
-    /**
-     * @return Element|null
-     */
-    protected function getFooter()
+    protected function getFooter(): ?Element
     {
         if (! $this->field->canAddRelationItem()) {
-            return;
+            return null;
         }
 
         $title = trans('arbory::fields.has_many.add_item', ['name' => $this->field->getName()]);
@@ -87,18 +64,11 @@ class NestedFieldRenderer implements RendererInterface
         );
     }
 
-    /**
-     * @return NestedItemRenderer
-     */
-    public function getItemRenderer(): NestedItemRenderer
+    public function getItemRenderer(): ItemInterface
     {
         return $this->itemRenderer;
     }
 
-    /**
-     * @param  NestedItemRenderer  $itemRenderer
-     * @return NestedFieldRenderer
-     */
     public function setItemRenderer(NestedItemRenderer $itemRenderer): self
     {
         $this->itemRenderer = $itemRenderer;
@@ -106,30 +76,19 @@ class NestedFieldRenderer implements RendererInterface
         return $this;
     }
 
-    /**
-     * @param  FieldSet  $fieldSet
-     * @param $index
-     * @return Element
-     */
-    protected function getRelationItemHtml(FieldSet $fieldSet, $index)
+    protected function getRelationItemHtml(FieldSet $fieldSet, string $index)
     {
         return $this->itemRenderer->__invoke($this->field, $fieldSet, $index);
     }
 
-    /**
-     * @return Element
-     */
-    protected function getRelationFromTemplate()
+    protected function getRelationFromTemplate(): Element
     {
         $fieldSet = $this->field->getRelationFieldSet($this->field->getRelatedModel(), '_template_');
 
         return $this->getRelationItemHtml($fieldSet, '_template_');
     }
 
-    /**
-     * @return Element
-     */
-    public function render()
+    public function render(): Content
     {
         return new Content([
             $this->getBody(),
@@ -137,10 +96,6 @@ class NestedFieldRenderer implements RendererInterface
         ]);
     }
 
-    /**
-     * @param  FieldInterface  $field
-     * @return mixed
-     */
     public function setField(FieldInterface $field): RendererInterface
     {
         $this->field = $field;
@@ -148,9 +103,6 @@ class NestedFieldRenderer implements RendererInterface
         return $this;
     }
 
-    /**
-     * @return FieldInterface
-     */
     public function getField(): FieldInterface
     {
         return $this->field;
@@ -158,9 +110,6 @@ class NestedFieldRenderer implements RendererInterface
 
     /**
      * Configure the style before rendering the field.
-     *
-     * @param  StyleOptionsInterface  $options
-     * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {

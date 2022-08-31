@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Html\Elements;
 
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Collection;
 
 class Content extends Collection implements Renderable
 {
@@ -14,7 +14,7 @@ class Content extends Collection implements Renderable
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }
@@ -36,10 +36,10 @@ class Content extends Collection implements Renderable
         $className = null;
 
         if (is_object($value)) {
-            $className = get_class($value);
+            $className = $value::class;
 
             foreach ($this->handlers as $class => $name) {
-                if (! $value instanceof $class) {
+                if (!$value instanceof $class) {
                     continue;
                 }
 
@@ -49,7 +49,7 @@ class Content extends Collection implements Renderable
             }
 
             if (method_exists($value, '__toString')) {
-                return (string) $value;
+                return (string)$value;
             }
         }
 
@@ -57,15 +57,14 @@ class Content extends Collection implements Renderable
             return $value;
         }
 
-        throw new \LogicException('Cannot render the contents of '.gettype($value)." {$className}");
+        throw new \LogicException('Cannot render the contents of ' . gettype($value) . " {$className}");
     }
 
     /**
-     * @param  Renderable  $value
      * @return string
      */
     protected function renderable(Renderable $value)
     {
-        return (string) $value->render();
+        return (string)$value->render();
     }
 }

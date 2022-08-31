@@ -11,23 +11,13 @@ use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 class DefaultValueTransformer implements ParameterTransformerInterface
 {
     /**
-     * @var FilterManager
-     */
-    private $filterManager;
-
-    /**
      * DefaultValueTransformer constructor.
-     *
-     * @param  FilterManager  $filterManager
      */
-    public function __construct(FilterManager $filterManager)
+    public function __construct(private FilterManager $filterManager)
     {
-        $this->filterManager = $filterManager;
     }
 
     /**
-     * @param  FilterParameters  $parameters
-     * @param  callable  $next
      * @return mixed
      */
     public function transform(FilterParameters $parameters, callable $next)
@@ -45,10 +35,6 @@ class DefaultValueTransformer implements ParameterTransformerInterface
         return $next($parameters);
     }
 
-    /**
-     * @param  FilterParameters  $parameters
-     * @return string|null
-     */
     public function stringify(FilterParameters $parameters): ?string
     {
         return null;

@@ -12,18 +12,12 @@ use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 class ControlFieldRenderer implements RendererInterface
 {
     /**
-     * @var FieldInterface|ControlFieldInterface|RenderOptionsInterface
-     */
-    protected $field;
-
-    /**
      * ControlFieldRenderer constructor.
      *
      * @param  ControlFieldInterface  $field
      */
-    public function __construct(ControlFieldInterface $field)
+    public function __construct(protected ControlFieldInterface $field)
     {
-        $this->field = $field;
     }
 
     public function render()
@@ -35,7 +29,6 @@ class ControlFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param  InputControlInterface  $control
      * @return InputControlInterface
      */
     public function configureControl(InputControlInterface $control)

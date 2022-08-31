@@ -20,23 +20,15 @@ class Builder implements Renderable, WrappableInterface
     protected $id = 'edit-resource';
 
     /**
-     * @var Form
-     */
-    protected $form;
-
-    /**
      * @var mixed
      */
     protected $content;
 
     /**
      * Builder constructor.
-     *
-     * @param  Form  $form
      */
-    public function __construct(Form $form)
+    public function __construct(protected Form $form)
     {
-        $this->form = $form;
     }
 
     /**
@@ -105,7 +97,6 @@ class Builder implements Renderable, WrappableInterface
 
     /**
      * @param  mixed  $content
-     * @return Builder
      */
     public function setContent($content): self
     {
@@ -114,18 +105,11 @@ class Builder implements Renderable, WrappableInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    /**
-     * @param  string|null  $id
-     * @return Builder
-     */
     public function setId(?string $id): self
     {
         $this->id = $id;

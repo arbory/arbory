@@ -7,11 +7,6 @@ use Arbory\Base\Html\Html;
 class Row
 {
     /**
-     * @var mixed
-     */
-    protected $content;
-
-    /**
      * @var Column[]
      */
     protected $columns = [];
@@ -21,18 +16,16 @@ class Row
      *
      * @param $content
      */
-    public function __construct($content = null)
+    public function __construct(protected mixed $content = null)
     {
-        $this->content = $content;
     }
 
     /**
      * @param  int  $size
-     * @param  mixed  $body
      * @param  string|null  $breakpoint
      * @return Column
      */
-    public function column($size, $body, $breakpoint = null)
+    public function column($size, mixed $body, $breakpoint = null)
     {
         $content = new Column($size, $body, $breakpoint);
 

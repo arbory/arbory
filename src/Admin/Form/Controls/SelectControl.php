@@ -26,9 +26,6 @@ class SelectControl extends AbstractControl
      */
     protected $selected = [];
 
-    /**
-     * @return Element
-     */
     public function element(): Element
     {
         $select = Html::select($this->buildOptions());
@@ -78,18 +75,11 @@ class SelectControl extends AbstractControl
         return $content;
     }
 
-    /**
-     * @return bool
-     */
     public function isMultiple(): bool
     {
         return $this->multiple;
     }
 
-    /**
-     * @param  bool  $multiple
-     * @return SelectControl
-     */
     public function setMultiple(bool $multiple): self
     {
         $this->multiple = $multiple;
@@ -97,18 +87,11 @@ class SelectControl extends AbstractControl
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
-    /**
-     * @param  array  $options
-     * @return SelectControl
-     */
     public function setOptions(array $options): self
     {
         $this->options = $options;
@@ -116,19 +99,12 @@ class SelectControl extends AbstractControl
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getSelected(): array
     {
         return $this->selected;
     }
 
-    /**
-     * @param  mixed  $selected
-     * @return SelectControl
-     */
-    public function setSelected($selected): self
+    public function setSelected(mixed $selected): self
     {
         $this->selected = Arr::wrap($selected);
 

@@ -23,11 +23,6 @@ class Form
     public const INPUT_RETURN_URL = '_return_url';
 
     /**
-     * @var Model
-     */
-    protected $model;
-
-    /**
      * @var string
      */
     protected $action;
@@ -53,20 +48,15 @@ class Form
     protected $returnUrl;
 
     /**
-     * @var
-     */
-    protected $namespace = 'resource';
-
-    /**
      * Form constructor.
      *
-     * @param  Model  $model
      * @param  string  $namespace
      */
-    public function __construct(Model $model, $namespace = 'resource')
+    public function __construct(protected Model $model, /**
+     * @var
+     */
+    protected $namespace = 'resource')
     {
-        $this->model = $model;
-        $this->namespace = $namespace;
         $this->fields = new FieldSet($model, $this->namespace, app(StyleManager::class));
         $this->validator = app(Validator::class);
 
@@ -142,7 +132,6 @@ class Form
     }
 
     /**
-     * @param  \Closure  $fieldConstructor
      * @return $this
      */
     public function setFields(\Closure $fieldConstructor)
@@ -152,9 +141,6 @@ class Form
         return $this;
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function store(Request $request)
     {
         $this->trigger('create.before', $request);
@@ -166,9 +152,6 @@ class Form
         $this->model->push();
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function update(Request $request)
     {
         $this->trigger('update.before', $request);
@@ -214,10 +197,6 @@ class Form
         return $this->namespace;
     }
 
-    /**
-     * @param  string|null  $returnUrl
-     * @return Form
-     */
     public function setReturnUrl(?string $returnUrl): self
     {
         $this->returnUrl = $returnUrl;
@@ -225,9 +204,6 @@ class Form
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getReturnUrl(): ?string
     {
         if ($this->returnUrl) {
@@ -237,9 +213,6 @@ class Form
         return request(static::INPUT_RETURN_URL);
     }
 
-    /**
-     * @return void
-     */
     protected function registerEventListeners(): void
     {
         $this->addEventListeners(

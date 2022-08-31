@@ -13,18 +13,10 @@ use Arbory\Base\Admin\Layout\WrappableInterface;
 class WrapTransformer
 {
     /**
-     * @var WrappableInterface
-     */
-    protected $wrappable;
-
-    /**
      * Wrap constructor.
-     *
-     * @param  WrappableInterface  $wrappable
      */
-    public function __construct(WrappableInterface $wrappable)
+    public function __construct(protected WrappableInterface $wrappable)
     {
-        $this->wrappable = $wrappable;
     }
 
     public function __invoke(Body $body, callable $next)

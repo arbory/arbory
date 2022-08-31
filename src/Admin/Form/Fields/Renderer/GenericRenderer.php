@@ -23,7 +23,6 @@ class GenericRenderer implements RendererInterface
     }
 
     /**
-     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -33,9 +32,6 @@ class GenericRenderer implements RendererInterface
         return $this;
     }
 
-    /**
-     * @return FieldInterface
-     */
     public function getField(): FieldInterface
     {
         return $this->field;
@@ -43,9 +39,6 @@ class GenericRenderer implements RendererInterface
 
     /**
      * Configure the style before rendering the field.
-     *
-     * @param  StyleOptionsInterface  $options
-     * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {

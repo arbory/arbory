@@ -46,18 +46,11 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
         return new Content(Arr::wrap($content));
     }
 
-    /**
-     * @return int
-     */
     public function getWidth(): int
     {
         return $this->width;
     }
 
-    /**
-     * @param  int  $width
-     * @return SidebarLayout
-     */
     public function setWidth(int $width): self
     {
         $this->width = $width;
@@ -65,9 +58,6 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
         return $this;
     }
 
-    /**
-     * @return Slot
-     */
     public function getSidebar(): Slot
     {
         return $this->sidebar;
@@ -75,7 +65,6 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
 
     /**
      * @param  Slot  $sidebar
-     * @return SidebarLayout
      */
     public function setSidebar($sidebar): self
     {

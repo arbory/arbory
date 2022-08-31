@@ -11,16 +11,6 @@ use Arbory\Base\Admin\Form\Fields\Renderer\SlugFieldRenderer;
  */
 class Slug extends Text
 {
-    /**
-     * @var string
-     */
-    protected $apiUrl;
-
-    /**
-     * @var string
-     */
-    protected $fromFieldName;
-
     protected $rendererClass = SlugFieldRenderer::class;
 
     /**
@@ -28,11 +18,8 @@ class Slug extends Text
      * @param  string  $fromFieldName
      * @param  string  $apiUrl
      */
-    public function __construct($name, $fromFieldName, $apiUrl)
+    public function __construct($name, protected $fromFieldName, protected $apiUrl)
     {
-        $this->apiUrl = $apiUrl;
-        $this->fromFieldName = $fromFieldName;
-
         parent::__construct($name);
     }
 
@@ -112,9 +99,6 @@ class Slug extends Text
         return $this->getUriToExistingModel() ?: $this->getUriToNewModel();
     }
 
-    /**
-     * @return bool
-     */
     public function hasUriToSlug(): bool
     {
         return $this->getModel() instanceof Node;
@@ -134,17 +118,11 @@ class Slug extends Text
         return request('parent_id');
     }
 
-    /**
-     * @return string
-     */
     public function getApiUrl(): string
     {
         return $this->apiUrl;
     }
 
-    /**
-     * @return string
-     */
     public function getFromFieldName(): string
     {
         return $this->fromFieldName;

@@ -4,7 +4,7 @@ namespace Arbory\Base\Pages;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Redirect extends Model
+class Redirect extends Model 
 {
     public const AVAILABLE_STATUSES = [
         301,
@@ -23,7 +23,7 @@ class Redirect extends Model
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->to_url;
     }

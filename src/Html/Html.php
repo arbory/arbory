@@ -3,10 +3,10 @@
 namespace Arbory\Base\Html;
 
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Elements\Inputs\Option;
 use Arbory\Base\Html\Elements\Inputs\Select;
-use Arbory\Base\Html\Elements\Inputs\CheckBox;
 use Arbory\Base\Html\Elements\Inputs\Textarea;
 use Illuminate\Support\Arr;
 
@@ -51,7 +51,7 @@ use Illuminate\Support\Arr;
 class Html
 {
     /**
-     * @param  null  $content
+     * @param null $content
      * @return Input
      */
     public static function input($content = null)
@@ -60,7 +60,7 @@ class Html
     }
 
     /**
-     * @param  null  $content
+     * @param null $content
      * @return CheckBox
      */
     public static function checkbox($content = null)
@@ -69,7 +69,7 @@ class Html
     }
 
     /**
-     * @param  null  $content
+     * @param null $content
      * @return Select
      */
     public static function select($content = null)
@@ -78,7 +78,7 @@ class Html
     }
 
     /**
-     * @param  null  $content
+     * @param null $content
      * @return Option
      */
     public static function option($content = null)
@@ -87,7 +87,7 @@ class Html
     }
 
     /**
-     * @param  null  $content
+     * @param null $content
      * @return Textarea
      */
     public static function textarea($content = null)
@@ -96,7 +96,7 @@ class Html
     }
 
     /**
-     * @param  null  $content
+     * @param null $content
      * @return Element
      */
     public static function image($content = null)
@@ -105,7 +105,7 @@ class Html
     }
 
     /**
-     * @param  null  $content
+     * @param null $content
      * @return Element
      */
     public static function link($content = null)
@@ -115,10 +115,10 @@ class Html
 
     /**
      * @param $name
-     * @param  array  $arguments
+     * @param array $arguments
      * @return Element
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic($name, array $arguments)
     {
         $content = Arr::first($arguments);
 

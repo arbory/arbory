@@ -26,10 +26,6 @@ class FilterParameters extends ExtendedFluent
         return $this->namespace;
     }
 
-    /**
-     * @param  string|null  $namespace
-     * @return FilterParameters
-     */
     public function setNamespace(?string $namespace): self
     {
         $this->namespace = $namespace;
@@ -38,7 +34,6 @@ class FilterParameters extends ExtendedFluent
     }
 
     /**
-     * @param  FilterItem  $filterItem
      * @return mixed
      */
     public function getFromFilter(FilterItem $filterItem)
@@ -46,10 +41,6 @@ class FilterParameters extends ExtendedFluent
         return $this->get($filterItem->getName());
     }
 
-    /**
-     * @param  string|null  $fieldName
-     * @return array
-     */
     public function getErrors(?string $fieldName = null): array
     {
         if ($fieldName !== null) {
@@ -59,10 +50,6 @@ class FilterParameters extends ExtendedFluent
         return $this->errors;
     }
 
-    /**
-     * @param  array  $errors
-     * @return FilterParameters
-     */
     public function setErrors(array $errors): self
     {
         $this->errors = $errors;
@@ -70,11 +57,6 @@ class FilterParameters extends ExtendedFluent
         return $this;
     }
 
-    /**
-     * @param  string  $fieldName
-     * @param  array  $errors
-     * @return FilterParameters
-     */
     public function addErrors(string $fieldName, array $errors): self
     {
         $this->errors[$fieldName] = $errors;
@@ -82,10 +64,6 @@ class FilterParameters extends ExtendedFluent
         return $this;
     }
 
-    /**
-     * @param  string  $fieldName
-     * @return bool
-     */
     public function hasError(string $fieldName): bool
     {
         return Arr::has($this->errors, $fieldName);

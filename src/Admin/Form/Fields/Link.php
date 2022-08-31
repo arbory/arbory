@@ -15,7 +15,7 @@ class Link extends HasOne
     protected $urlRules;
 
     /**
-     * @param  string  $name
+     * @param string $name
      */
     public function __construct(string $name)
     {
@@ -57,10 +57,7 @@ class Link extends HasOne
         return $this->urlRules;
     }
 
-    /**
-     * @param  mixed  $urlRules
-     */
-    public function setUrlRules($urlRules): void
+    public function setUrlRules(mixed $urlRules): void
     {
         $this->urlRules = $urlRules;
     }

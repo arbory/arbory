@@ -21,21 +21,11 @@ class LanguageController extends Controller
      */
     protected $resource = Language::class;
 
-    /**
-     * @var LanguageRepository
-     */
-    protected $repository;
-
-    /**
-     * @param  LanguageRepository  $repository
-     */
-    public function __construct(LanguageRepository $repository)
+    public function __construct(protected LanguageRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     /**
-     * @param  Form  $form
      * @return Form
      */
     public function form(Form $form)
@@ -47,7 +37,6 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)
@@ -55,10 +44,8 @@ class LanguageController extends Controller
         $grid->setColumns(function (Grid $grid) {
             $grid->column('locale');
             $grid->column('name');
-            $grid->column('status')->display(function ($_, $__, Language $language) {
-                return Html::span($language->trashed() ?
-                    trans('arbory::resources.status.disabled') : trans('arbory::resources.status.enabled'));
-            });
+            $grid->column('status')->display(fn($_, $__, Language $language) => Html::span($language->trashed() ?
+                trans('arbory::resources.status.disabled') : trans('arbory::resources.status.enabled')));
         });
 
         return $grid
@@ -68,12 +55,11 @@ class LanguageController extends Controller
 
     /**
      * @param  int  $resourceId
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      *
      * @throws \Exception
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function restore($resourceId)
+    public function restore($resourceId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         /** @var Language $resource */
         $resource = $this->resource()->withTrashed()->findOrFail($resourceId);
@@ -85,12 +71,11 @@ class LanguageController extends Controller
 
     /**
      * @param  int  $resourceId
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      *
      * @throws \Exception
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function disable($resourceId)
+    public function disable($resourceId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         /** @var Language $resource */
         $resource = $this->resource()->findOrFail($resourceId);
@@ -102,9 +87,8 @@ class LanguageController extends Controller
 
     /**
      * @param $resourceId
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($resourceId)
+    public function destroy($resourceId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $resource = $this->resource()->withTrashed()->findOrFail($resourceId);
 
@@ -113,9 +97,6 @@ class LanguageController extends Controller
         return redirect($this->module()->url('index'));
     }
 
-    /**
-     * @param  \Arbory\Base\Admin\Tools\ToolboxMenu  $tools
-     */
     protected function toolbox(ToolboxMenu $tools)
     {
         /** @var Language $model */
@@ -135,11 +116,7 @@ class LanguageController extends Controller
         }
     }
 
-    /**
-     * @param  Request  $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function confirmDisableDialog(Request $request)
+    protected function confirmDisableDialog(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
     {
         $resourceId = $request->get('id');
         $model = $this->resource()->find($resourceId);
@@ -151,11 +128,7 @@ class LanguageController extends Controller
         ]);
     }
 
-    /**
-     * @param  Request  $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function confirmRestoreDialog(Request $request)
+    protected function confirmRestoreDialog(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
     {
         $resourceId = $request->get('id');
         $model = $this->resource()->withTrashed()->find($resourceId);

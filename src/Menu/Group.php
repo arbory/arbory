@@ -22,10 +22,6 @@ class Group extends AbstractItem
         $this->children = new Collection();
     }
 
-    /**
-     * @param  Elements\Element  $parentElement
-     * @return Elements\Element
-     */
     public function render(Elements\Element $parentElement): Elements\Element
     {
         $ul = Html::ul()->addClass('block');
@@ -59,18 +55,12 @@ class Group extends AbstractItem
                 ->append($ul);
     }
 
-    /**
-     * @return bool
-     */
     public function isActive(): bool
     {
-        return (bool) $this->getChildren()->first(function (Item $item) {
-            return $item->isActive();
-        });
+        return (bool) $this->getChildren()->first(fn(Item $item) => $item->isActive());
     }
 
     /**
-     * @param  AbstractItem  $child
      * @return void
      */
     public function addChild(AbstractItem $child)
@@ -78,25 +68,16 @@ class Group extends AbstractItem
         $this->children->push($child);
     }
 
-    /**
-     * @return Collection
-     */
     public function getChildren(): Collection
     {
         return $this->children;
     }
 
-    /**
-     * @param  Collection  $children
-     */
     public function setChildren(Collection $children)
     {
         $this->children = $children;
     }
 
-    /**
-     * @return bool
-     */
     public function isAccessible(): bool
     {
         foreach ($this->getChildren() as $item) {

@@ -10,7 +10,6 @@ interface NavigableInterface
     public function isNavigable(): bool;
 
     /**
-     * @param  Navigator  $navigator
      * @return mixed
      */
     public function navigator(Navigator $navigator);

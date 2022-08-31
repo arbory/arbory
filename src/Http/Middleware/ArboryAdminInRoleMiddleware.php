@@ -15,27 +15,16 @@ use Cartalyst\Sentinel\Roles\RoleInterface;
 class ArboryAdminInRoleMiddleware
 {
     /**
-     * @var Sentinel
-     */
-    protected $sentinel;
-
-    /**
      * ArboryAdminInRoleMiddleware constructor.
-     *
-     * @param  Sentinel  $sentinel
      */
-    public function __construct(Sentinel $sentinel)
+    public function __construct(protected Sentinel $sentinel)
     {
-        $this->sentinel = $sentinel;
     }
 
     /**
-     * @param  Request  $request
-     * @param  Closure  $next
-     * @param  string|int|RoleInterface  $role
      * @return JsonResponse|RedirectResponse|mixed
      */
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, string|int|\Cartalyst\Sentinel\Roles\RoleInterface $role)
     {
         if (! $this->sentinel->check()) {
             return $this->denied($request);
@@ -49,11 +38,7 @@ class ArboryAdminInRoleMiddleware
         return $next($request);
     }
 
-    /**
-     * @param  Request  $request
-     * @return JsonResponse|RedirectResponse
-     */
-    public function denied(Request $request)
+    public function denied(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
     {
         if ($request->ajax()) {
             $message = trans('arbory.admin_unauthorized', 'Unauthorized');

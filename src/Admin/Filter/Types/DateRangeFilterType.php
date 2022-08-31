@@ -13,10 +13,6 @@ class DateRangeFilterType extends RangeFilterType
 {
     protected $inputType = 'date';
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @param  Builder  $builder
-     */
     public function execute(FilterItem $filterItem, Builder $builder): void
     {
         $min = $this->getRangeValue(static::KEY_MIN);
@@ -31,11 +27,6 @@ class DateRangeFilterType extends RangeFilterType
         }
     }
 
-    /**
-     * @param  FilterParameters  $parameters
-     * @param  callable  $attributeResolver
-     * @return array
-     */
     public function rules(FilterParameters $parameters, callable $attributeResolver): array
     {
         return [
@@ -44,11 +35,6 @@ class DateRangeFilterType extends RangeFilterType
         ];
     }
 
-    /**
-     * @param  Validator  $validator
-     * @param  FilterParameters  $filterParameters
-     * @param  callable  $attributeResolver
-     */
     public function withValidator(
         Validator $validator,
         FilterParameters $filterParameters,
@@ -60,17 +46,13 @@ class DateRangeFilterType extends RangeFilterType
         $validator->sometimes(
             $attributeResolver(static::KEY_MIN),
             "before_or_equal:{$maxAttribute}",
-            static function (Fluent $fluent) use ($maxAttribute) {
-                return ! blank(Arr::get($fluent->getAttributes(), $maxAttribute));
-            }
+            static fn(Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $maxAttribute))
         );
 
         $validator->sometimes(
             $attributeResolver(static::KEY_MAX),
             "after_or_equal:{$minAttribute}",
-            static function (Fluent $fluent) use ($minAttribute) {
-                return ! blank(Arr::get($fluent->getAttributes(), $minAttribute));
-            }
+            static fn(Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $minAttribute))
         );
     }
 }

@@ -25,10 +25,8 @@ class Navigator implements Renderable
     }
 
     /**
-     * @param  NavigableInterface  $navigable
      * @param  $title
      * @param  null  $anchor
-     * @return Item
      */
     public function addItem(NavigableInterface $navigable, $title, $anchor = null): Item
     {
@@ -41,7 +39,7 @@ class Navigator implements Renderable
     /**
      * @return Item[]|Collection
      */
-    public function getItems()
+    public function getItems(): array|\Illuminate\Support\Collection
     {
         return $this->items;
     }

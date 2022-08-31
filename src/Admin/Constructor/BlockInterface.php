@@ -12,17 +12,11 @@ interface BlockInterface
 {
     /**
      * Handles all before save events for any fields, overwriting it means you'll have to call beforeSave for $field.
-     *
-     * @param  Request  $request
-     * @param  HasOne  $field
      */
     public function beforeModelSave(Request $request, HasOne $field);
 
     /**
      * Handles all after save events for any fields, overwriting it means you'll have to call afterSave for $field.
-     *
-     * @param  Request  $request
-     * @param  HasOne  $field
      */
     public function afterModelSave(Request $request, HasOne $field);
 
@@ -42,15 +36,11 @@ interface BlockInterface
 
     /**
      * Model name as string.
-     *
-     * @return string
      */
     public function resource(): string;
 
     /**
      * Defined fields for this block.
-     *
-     * @param  FieldSet  $fields
      */
     public function fields(FieldSet $fields);
 }

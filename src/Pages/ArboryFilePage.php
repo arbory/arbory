@@ -14,7 +14,6 @@ class ArboryFilePage extends Model implements PageInterface
     protected $fillable = ['arbory_file'];
 
     /**
-     * @param  FieldSet  $fieldSet
      * @return void
      */
     public function prepareFieldSet(FieldSet $fieldSet)

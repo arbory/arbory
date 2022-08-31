@@ -2,15 +2,13 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Form\Controls\InputControl;
-use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\ControlFieldRenderer;
+use Arbory\Base\Html\Elements\Element;
 
-class ControlField extends AbstractField implements ControlFieldInterface, RenderOptionsInterface
+class ControlField extends AbstractField implements RenderOptionsInterface
 {
-    use IsControlField;
     use HasRenderOptions;
 
     protected $control = InputControl::class;
@@ -67,11 +65,7 @@ class ControlField extends AbstractField implements ControlFieldInterface, Rende
         return $this->control;
     }
 
-    /**
-     * @param  mixed  $control
-     * @return ControlField
-     */
-    public function setControl($control): self
+    public function setControl(mixed $control): self
     {
         $this->control = $control;
 

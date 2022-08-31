@@ -28,22 +28,13 @@ class UsersController extends Controller
     protected $resource = User::class;
 
     /**
-     * @var Admin
-     */
-    protected $admin;
-
-    /**
      * UsersController constructor.
-     *
-     * @param  Admin  $admin
      */
-    public function __construct(Admin $admin)
+    public function __construct(protected Admin $admin)
     {
-        $this->admin = $admin;
     }
 
     /**
-     * @param  Form  $form
      * @return Form
      */
     protected function form(Form $form)
@@ -105,26 +96,20 @@ class UsersController extends Controller
     {
         return $grid->setColumns(function (Grid $grid) {
             $grid->column('email', 'avatar')
-                ->display(function ($value) {
-                    return Html::span(
-                        Html::image()->addAttributes([
-                            'src' => '//www.gravatar.com/avatar/'.md5($value).'?d=retro',
-                            'width' => 32,
-                            'alt' => $value,
-                        ])
-                    );
-                });
+                ->display(fn($value) => Html::span(
+                    Html::image()->addAttributes([
+                        'src' => '//www.gravatar.com/avatar/'.md5($value).'?d=retro',
+                        'width' => 32,
+                        'alt' => $value,
+                    ])
+                ));
             $grid->column('email')->sortable();
             $grid->column('first_name');
             $grid->column('last_name');
             $grid->column('roles.name')
-                ->display(function (Collection $value) {
-                    return Html::ul(
-                        $value->map(function ($role) {
-                            return Html::li((string) $role);
-                        })->toArray()
-                    );
-                });
+                ->display(fn(Collection $value) => Html::ul(
+                    $value->map(fn($role) => Html::li((string) $role))->toArray()
+                ));
             $grid->column('last_login');
         });
     }
@@ -137,10 +122,6 @@ class UsersController extends Controller
         return $this->admin->sentinel()->getActivationRepository();
     }
 
-    /**
-     * @param  EloquentUser  $user
-     * @return bool
-     */
     protected function isActivated(EloquentUser $user): bool
     {
         return $user->exists && $this->getActivations()->completed($user);

@@ -19,18 +19,13 @@ use Illuminate\Contracts\Support\Renderable as RenderableInterface;
 /**
  * Class Grid.
  */
-class Grid
+class Grid 
 {
     use ModuleComponent;
     use Renderable;
 
-    const FOOTER_SIDE_PRIMARY = 'primary';
-    const FOOTER_SIDE_SECONDARY = 'secondary';
-
-    /**
-     * @var Model
-     */
-    protected $model;
+    public const FOOTER_SIDE_PRIMARY = 'primary';
+    public const FOOTER_SIDE_SECONDARY = 'secondary';
 
     /**
      * @var Collection
@@ -97,12 +92,8 @@ class Grid
      */
     protected $hasToolbox = true;
 
-    /**
-     * @param  Model  $model
-     */
-    public function __construct(Model $model)
+    public function __construct(protected Model $model)
     {
-        $this->model = $model;
         $this->columns = new Collection();
         $this->rows = new Collection();
     }
@@ -110,13 +101,12 @@ class Grid
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }
 
     /**
-     * @param  Closure  $constructor
      * @return $this
      */
     public function setColumns(Closure $constructor): self
@@ -138,7 +128,6 @@ class Grid
     }
 
     /**
-     * @param  FilterInterface  $filter
      * @return Grid
      */
     public function setFilter(FilterInterface $filter)
@@ -156,16 +145,12 @@ class Grid
         return $this->filter;
     }
 
-    /**
-     * @return Model
-     */
     public function getModel(): Model
     {
         return $this->model;
     }
 
     /**
-     * @param  RenderableInterface  $tool
      * @param  string|null  $side
      * @return void
      */
@@ -174,9 +159,6 @@ class Grid
         $this->tools[] = [$tool, $side ?: self::FOOTER_SIDE_SECONDARY];
     }
 
-    /**
-     * @return \Arbory\Base\Admin\Grid
-     */
     public function showToolbox(): self
     {
         $this->hasToolbox = true;
@@ -184,9 +166,6 @@ class Grid
         return $this;
     }
 
-    /**
-     * @return \Arbory\Base\Admin\Grid
-     */
     public function hideToolbox(): self
     {
         $this->hasToolbox = false;
@@ -194,9 +173,6 @@ class Grid
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isToolboxEnable(): bool
     {
         return $this->hasToolbox;
@@ -222,10 +198,9 @@ class Grid
     }
 
     /**
-     * @param  array|Collection  $items
      * @return Grid
      */
-    public function items($items)
+    public function items(array|\Illuminate\Support\Collection $items)
     {
         if (is_array($items)) {
             $items = new Collection($items);
@@ -249,7 +224,6 @@ class Grid
     }
 
     /**
-     * @param  bool  $paginate
      * @return Grid
      */
     public function paginate(bool $paginate = true)
@@ -262,7 +236,7 @@ class Grid
     /**
      * @return Collection|Column[]
      */
-    public function getColumns()
+    public function getColumns(): \Illuminate\Support\Collection|array
     {
         return $this->columns;
     }
@@ -278,7 +252,6 @@ class Grid
     /**
      * @param  string|null  $name
      * @param  string|null  $label
-     * @return Column
      */
     public function column($name = null, $label = null): Column
     {
@@ -288,7 +261,6 @@ class Grid
     /**
      * @param  string|null  $name
      * @param  string|null  $label
-     * @return Column
      */
     public function appendColumn($name = null, $label = null): Column
     {
@@ -303,7 +275,6 @@ class Grid
     /**
      * @param  string|null  $name
      * @param  string|null  $label
-     * @return Column
      */
     public function prependColumn($name = null, $label = null): Column
     {
@@ -322,7 +293,7 @@ class Grid
      */
     protected function setColumnRelation($column, $name): Column
     {
-        if (strpos($name, '.') !== false) {
+        if (str_contains($name, '.')) {
             [$relationName, $relationColumn] = explode('.', $name);
 
             $this->filter->withRelation($relationName);
@@ -335,7 +306,6 @@ class Grid
     /**
      * @param  string|null  $name
      * @param  string|null  $label
-     * @return Column
      */
     protected function createColumn($name = null, $label = null): Column
     {
@@ -345,32 +315,21 @@ class Grid
         return $column;
     }
 
-    /**
-     * @param  Collection|LengthAwarePaginator  $items
-     */
-    protected function buildRows($items)
+    protected function buildRows(\Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator $items)
     {
         if ($items instanceof LengthAwarePaginator) {
             $items = new Collection($items->items());
         }
 
-        $this->rows = $items->map(function ($model) {
-            return new Row($this, $model);
-        });
+        $this->rows = $items->map(fn($model) => new Row($this, $model));
     }
 
-    /**
-     * @param  Closure  $callback
-     */
     public function filter(Closure $callback)
     {
         call_user_func($callback, $this->filter);
     }
 
-    /**
-     * @return LengthAwarePaginator|Collection
-     */
-    protected function fetchData()
+    protected function fetchData(): \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
     {
         if (method_exists($this->filter, 'setPaginated')) {
             $this->filter->setPaginated($this->paginated);
@@ -397,35 +356,21 @@ class Grid
         return $this->enabledDefaultTools;
     }
 
-    /**
-     * @return bool
-     */
     public function isPaginated(): bool
     {
         return $this->paginated;
     }
 
-    /**
-     * @return bool
-     */
     public function hasTools(): bool
     {
         return ! empty($this->enabledDefaultTools);
     }
 
-    /**
-     * @param  string  $tool
-     * @return bool
-     */
     public function hasTool(string $tool): bool
     {
         return in_array($tool, $this->enabledDefaultTools, false);
     }
 
-    /**
-     * @param  Model  $model
-     * @return string|null
-     */
     public function getRowUrl(Model $model): ?string
     {
         $filterParameters = $this->getFilterParameters();
@@ -448,18 +393,11 @@ class Grid
         return null;
     }
 
-    /**
-     * @return callable|null
-     */
     public function getRowUrlCallback(): ?callable
     {
         return $this->rowUrlCallback;
     }
 
-    /**
-     * @param  callable  $rowUrlCallback
-     * @return Grid
-     */
     public function setRowUrlCallback(callable $rowUrlCallback): self
     {
         $this->rowUrlCallback = $rowUrlCallback;
@@ -467,10 +405,6 @@ class Grid
         return $this;
     }
 
-    /**
-     * @param  Column  $column
-     * @return string|null
-     */
     public function getColumnOrderUrl(Column $column): ?string
     {
         $params = $this->getFilterParameters();
@@ -484,26 +418,16 @@ class Grid
         return $this->getModule()->url('index', $params);
     }
 
-    /**
-     * @return callable|null
-     */
     public function getOrderUrlCallback(): ?callable
     {
         return $this->orderUrlCallback;
     }
 
-    /**
-     * @param  callable  $orderUrlCallback
-     * @return Grid
-     */
     public function setOrderUrlCallback(callable $orderUrlCallback): self
     {
         $this->orderUrlCallback = $orderUrlCallback;
     }
 
-    /**
-     * @return bool
-     */
     public function isExportEnabled(): bool
     {
         return $this->isExportEnabled;
@@ -529,36 +453,22 @@ class Grid
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         $items = $this->fetchData();
 
         $this->buildRows($items);
 
-        $columns = $this->columns->map(function (Column $column) {
-            return (string) $column;
-        })->toArray();
+        $columns = $this->columns->map(fn(Column $column) => (string) $column)->toArray();
 
-        return $this->rows->map(function (Row $row) use ($columns) {
-            return array_combine($columns, $row->toArray());
-        })->toArray();
+        return $this->rows->map(fn(Row $row) => array_combine($columns, $row->toArray()))->toArray();
     }
 
-    /**
-     * @return FilterManager
-     */
     public function getFilterManager(): FilterManager
     {
         return $this->filterManager;
     }
 
-    /**
-     * @param  FilterManager  $filterManager
-     * @return Grid
-     */
     public function setFilterManager(FilterManager $filterManager): self
     {
         $filterManager->setModule($this->getModule());
@@ -567,10 +477,6 @@ class Grid
         return $this;
     }
 
-    /**
-     * @param  bool  $rememberFilters
-     * @return Grid
-     */
     public function setRememberFilters(bool $rememberFilters): self
     {
         $this->rememberFilters = $rememberFilters;
@@ -578,17 +484,11 @@ class Grid
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function rememberFilters(): bool
     {
         return $this->rememberFilters;
     }
 
-    /**
-     * @return array|null
-     */
     protected function getFilterParameters(): ?array
     {
         $filterParameters = $this->getFilterManager()->getParameters();

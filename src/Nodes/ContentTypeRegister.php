@@ -20,15 +20,12 @@ class ContentTypeRegister
     public function __construct()
     {
         $contentTypes = collect(config('arbory.content_types', []));
-        $contentTypeNames = $contentTypes->map(function ($item) {
-            return new ContentTypeDefinition($item);
-        });
+        $contentTypeNames = $contentTypes->map(fn($item) => new ContentTypeDefinition($item));
 
         $this->contentTypes = $contentTypes->combine($contentTypeNames);
     }
 
     /**
-     * @param  ContentTypeDefinition  $definition
      * @return void
      */
     public function register(ContentTypeDefinition $definition)
@@ -37,7 +34,6 @@ class ContentTypeRegister
     }
 
     /**
-     * @param  string  $class
      * @return ContentTypeDefinition|null
      */
     public function findByModelClass(string $class)
@@ -45,10 +41,6 @@ class ContentTypeRegister
         return $this->contentTypes->get($class);
     }
 
-    /**
-     * @param  Node  $parent
-     * @return Collection
-     */
     public function getAllowedChildTypes(Node $parent): Collection
     {
         if (! $parent->content || ! method_exists($parent->content, 'getAllowedChildTypes')) {
@@ -67,7 +59,7 @@ class ContentTypeRegister
     /**
      * @return \Illuminate\Support\Collection|string[]
      */
-    public function getAllContentTypes()
+    public function getAllContentTypes(): \Illuminate\Support\Collection|array
     {
         return $this->contentTypes;
     }
@@ -81,10 +73,6 @@ class ContentTypeRegister
         return $this->contentTypes->has($type);
     }
 
-    /**
-     * @param  Collection  $mappable
-     * @return Collection
-     */
     protected function mapToDefinitions(Collection $mappable): Collection
     {
         return $mappable->mapWithKeys(function ($item) {

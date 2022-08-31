@@ -21,26 +21,6 @@ class FilterManager
     protected $filters;
 
     /**
-     * @var FilterFactory
-     */
-    protected $filterTypeFactory;
-
-    /**
-     * @var FilterExecutor
-     */
-    protected $filterExecutor;
-
-    /**
-     * @var FilterParameterResolver
-     */
-    protected $filterParameterResolver;
-
-    /**
-     * @var SavedFilterRepository
-     */
-    protected $savedFilterRepository;
-
-    /**
      * @var FilterParameters
      */
     protected $parameters;
@@ -52,32 +32,16 @@ class FilterManager
 
     /**
      * FilterManager constructor.
-     *
-     * @param  FilterFactory  $filterTypeFactory
-     * @param  FilterExecutor  $filterExecutor
-     * @param  FilterParameterResolver  $filterParameterResolver
-     * @param  SavedFilterRepository  $savedFilterRepository
      */
     public function __construct(
-        FilterFactory $filterTypeFactory,
-        FilterExecutor $filterExecutor,
-        FilterParameterResolver $filterParameterResolver,
-        SavedFilterRepository $savedFilterRepository
+        protected FilterFactory $filterTypeFactory,
+        protected FilterExecutor $filterExecutor,
+        protected FilterParameterResolver $filterParameterResolver,
+        protected SavedFilterRepository $savedFilterRepository
     ) {
         $this->filters = new FilterCollection();
-        $this->filterTypeFactory = $filterTypeFactory;
-        $this->filterExecutor = $filterExecutor;
-        $this->filterParameterResolver = $filterParameterResolver;
-        $this->savedFilterRepository = $savedFilterRepository;
     }
 
-    /**
-     * @param  string  $name
-     * @param  string  $title
-     * @param  string  $filterType
-     * @param  iterable  $filterTypeConfig
-     * @return FilterItem
-     */
     public function addFilter(
         string $name,
         string $title,
@@ -101,9 +65,6 @@ class FilterManager
         return $this->filters;
     }
 
-    /**
-     * @return FilterParameters
-     */
     public function getParameters(): FilterParameters
     {
         if ($this->parameters === null) {
@@ -113,10 +74,6 @@ class FilterManager
         return $this->parameters;
     }
 
-    /**
-     * @param  Builder  $builder
-     * @return Builder
-     */
     public function apply(Builder $builder): Builder
     {
         return $this->filterExecutor->execute($this, $builder);
@@ -132,7 +89,6 @@ class FilterManager
 
     /**
      * @param $transformer
-     * @return FilterManager
      */
     public function addTransformer($transformer): self
     {

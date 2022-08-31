@@ -21,20 +21,10 @@ abstract class AbstractItem
      */
     protected $model;
 
-    /**
-     * @param  Element  $parentElement
-     * @return Element
-     */
     abstract public function render(Element $parentElement): Element;
 
-    /**
-     * @return bool
-     */
     abstract public function isAccessible(): bool;
 
-    /**
-     * @return bool
-     */
     abstract public function isActive(): bool;
 
     /**

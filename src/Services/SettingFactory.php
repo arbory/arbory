@@ -6,23 +6,10 @@ use Arbory\Base\Admin\Settings\Setting;
 
 class SettingFactory
 {
-    /**
-     * @var SettingRegistry
-     */
-    protected $settingRegistry;
-
-    /**
-     * @param  SettingRegistry  $settingRegistry
-     */
-    public function __construct(SettingRegistry $settingRegistry)
+    public function __construct(protected SettingRegistry $settingRegistry)
     {
-        $this->settingRegistry = $settingRegistry;
     }
 
-    /**
-     * @param  string  $key
-     * @return Setting
-     */
     public function build(string $key): Setting
     {
         $definition = $this->settingRegistry->find($key);

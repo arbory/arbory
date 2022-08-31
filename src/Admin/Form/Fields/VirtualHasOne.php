@@ -55,8 +55,6 @@ class VirtualHasOne extends HasOne
     }
 
     /**
-     * @param  Request  $request
-     *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function afterModelSave(Request $request)
@@ -77,9 +75,6 @@ class VirtualHasOne extends HasOne
         $model->save();
     }
 
-    /**
-     * @return array
-     */
     public function getRules(): array
     {
         $rules = [];
@@ -94,7 +89,6 @@ class VirtualHasOne extends HasOne
     }
 
     /**
-     * @param  Model  $relatedModel
      * @return FieldSet
      */
     public function getRelationFieldSet(Model $relatedModel)

@@ -32,30 +32,11 @@ class NodesController extends Controller
 
     protected $resource = Node::class;
 
-    /**
-     * @var Container
-     */
-    protected $container;
-
-    /**
-     * @var ContentTypeRegister
-     */
-    protected $contentTypeRegister;
-
-    /**
-     * @param  Container  $container
-     * @param  ContentTypeRegister  $contentTypeRegister
-     */
-    public function __construct(
-        Container $container,
-        ContentTypeRegister $contentTypeRegister
-    ) {
-        $this->container = $container;
-        $this->contentTypeRegister = $contentTypeRegister;
+    public function __construct(protected Container $container, protected ContentTypeRegister $contentTypeRegister)
+    {
     }
 
     /**
-     * @param  Form  $form
      * @param  LayoutInterface  $layout
      * @return Form
      */
@@ -102,7 +83,6 @@ class NodesController extends Controller
     }
 
     /**
-     * @param  Grid  $grid
      * @return Grid
      */
     public function grid(Grid $grid)
@@ -116,9 +96,6 @@ class NodesController extends Controller
         return $grid;
     }
 
-    /**
-     * @param  \Arbory\Base\Admin\Tools\ToolboxMenu  $tools
-     */
     protected function toolbox(ToolboxMenu $tools)
     {
         $node = $tools->model();
@@ -133,12 +110,7 @@ class NodesController extends Controller
         )->danger()->dialog();
     }
 
-    /**
-     * @param  Request  $request
-     * @param  LayoutManager  $manager
-     * @return RedirectResponse|Layout
-     */
-    public function create(Request $request, LayoutManager $manager)
+    public function create(Request $request, LayoutManager $manager): \Illuminate\Http\RedirectResponse|\Arbory\Base\Admin\Layout
     {
         $contentType = $request->get('content_type');
 
@@ -164,9 +136,6 @@ class NodesController extends Controller
         return $page;
     }
 
-    /**
-     * @param  Form  $form
-     */
     protected function afterSave(Form $form)
     {
         /**
@@ -197,7 +166,6 @@ class NodesController extends Controller
     }
 
     /**
-     * @param  Request  $request
      * @return \Illuminate\View\View
      */
     public function contentTypesDialog(Request $request)
@@ -206,24 +174,18 @@ class NodesController extends Controller
             $this->resource()->findOrNew($request->get('parent_id'))
         );
 
-        $types = $contentTypes->sort()->map(function (ContentTypeDefinition $definition, string $type) use ($request) {
-            return [
-                'title' => $definition->getName(),
-                'url'   => $this->url('create', [
-                    'content_type' => $type,
-                    'parent_id'    => $request->get('parent_id'),
-                ]),
-            ];
-        });
+        $types = $contentTypes->sort()->map(fn(ContentTypeDefinition $definition, string $type) => [
+            'title' => $definition->getName(),
+            'url'   => $this->url('create', [
+                'content_type' => $type,
+                'parent_id'    => $request->get('parent_id'),
+            ]),
+        ]);
 
         return view('arbory::dialogs.content_types', ['types' => $types]);
     }
 
-    /**
-     * @param  Request  $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function nodeRepositionApi(Request $request)
+    protected function nodeRepositionApi(Request $request): \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
     {
         /**
          * @var NodesRepository
@@ -244,7 +206,6 @@ class NodesController extends Controller
     }
 
     /**
-     * @param  Request  $request
      * @return string
      */
     protected function slugGeneratorApi(Request $request)
@@ -294,8 +255,6 @@ class NodesController extends Controller
     /**
      * Creates a closure for content field.
      *
-     * @param  ContentTypeDefinition  $definition
-     * @param  LayoutInterface|null  $layout
      * @return \Closure
      */
     protected function contentResolver(ContentTypeDefinition $definition, ?LayoutInterface $layout)
@@ -309,9 +268,6 @@ class NodesController extends Controller
 
     /**
      * Resolves content type based on the current model & form data.
-     *
-     * @param  Form  $form
-     * @return ContentTypeDefinition
      */
     protected function resolveContentDefinition(Form $form): ContentTypeDefinition
     {
@@ -333,7 +289,6 @@ class NodesController extends Controller
 
     /**
      * @param  string  $type
-     * @return string
      */
     protected function makeNameFromType($type): string
     {

@@ -8,11 +8,6 @@ use Illuminate\Support\Arr;
 class GridLayout extends AbstractLayout implements LayoutInterface
 {
     /**
-     * @var Grid
-     */
-    protected $grid;
-
-    /**
      * @var int
      */
     protected $width = 12;
@@ -29,13 +24,9 @@ class GridLayout extends AbstractLayout implements LayoutInterface
 
     /**
      * GridTemplate constructor.
-     *
-     * @param  Grid  $grid
      */
-    public function __construct(Grid $grid)
+    public function __construct(protected Grid $grid)
     {
-        $this->grid = $grid;
-
         $this->column = $this->grid->column($this->width, '');
     }
 
@@ -62,34 +53,22 @@ class GridLayout extends AbstractLayout implements LayoutInterface
      * @param  $size
      * @param  $content
      * @param  null  $breakpoint
-     * @return Column
      */
     public function addColumn($size, $content, $breakpoint = null): Column
     {
         return $this->grid->column($size, $content, $breakpoint);
     }
 
-    /**
-     * @return Column
-     */
     public function getColumn(): Column
     {
         return $this->column;
     }
 
-    /**
-     * @return int
-     */
     public function getWidth(): int
     {
         return $this->width;
     }
 
-    /**
-     * @param  int  $width
-     * @param  array|null  $breakpoints
-     * @return GridLayout
-     */
     public function setWidth(int $width, ?array $breakpoints = null): self
     {
         $this->width = $width;
@@ -101,18 +80,11 @@ class GridLayout extends AbstractLayout implements LayoutInterface
         return $this;
     }
 
-    /**
-     * @return null|array
-     */
     public function getBreakpoints(): ?array
     {
         return $this->breakpoints;
     }
 
-    /**
-     * @param  array  $breakpoints
-     * @return GridLayout
-     */
     public function setBreakpoints(array $breakpoints): self
     {
         $this->breakpoints = $breakpoints;

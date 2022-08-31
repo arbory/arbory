@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Html\Elements\Element;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -153,10 +155,9 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  mixed  $value
      * @return bool
      */
-    private function isEmptyCollection($value)
+    private function isEmptyCollection(mixed $value)
     {
         return $value instanceof Collection && $value->isEmpty();
     }
@@ -231,7 +232,6 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  FieldSet  $fieldSet
      * @return $this
      */
     public function setFieldSet(FieldSet $fieldSet)
@@ -241,9 +241,6 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         return $this;
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function beforeModelSave(Request $request)
     {
         if ($this->isDisabled()) {
@@ -257,10 +254,6 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         $this->getModel()->setAttribute($this->getName(), $value);
     }
 
-    /**
-     * @param  string  $rules
-     * @return FieldInterface
-     */
     public function rules(string $rules): FieldInterface
     {
         $this->rules = array_merge($this->rules, explode('|', $rules));
@@ -268,41 +261,25 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getRules(): array
     {
         return [$this->getNameSpacedName() => implode('|', $this->rules)];
     }
 
-    /**
-     * @param  Request  $request
-     */
     public function afterModelSave(Request $request)
     {
     }
 
-    /**
-     * @return View
-     */
-    public function render()
+    public function render(): mixed
     {
         return $this->getRenderer()->render();
     }
 
-    /**
-     * @return string|null
-     */
     public function getRendererClass(): ?string
     {
         return $this->rendererClass;
     }
 
-    /**
-     * @param  string|null  $rendererClass
-     * @return FieldInterface
-     */
     public function setRendererClass(?string $rendererClass = null): FieldInterface
     {
         $this->rendererClass = $rendererClass;
@@ -322,7 +299,6 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
 
     /**
      * @param  string|null  $content
-     * @return FieldInterface
      */
     public function setTooltip($content = null): FieldInterface
     {
@@ -340,9 +316,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  int  $rows
      * @param  array  $breakpoints
-     * @return FieldInterface
      */
     public function setRows(int $rows, $breakpoints = []): FieldInterface
     {
@@ -359,10 +333,6 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         return $this->style;
     }
 
-    /**
-     * @param  string  $style
-     * @return FieldInterface
-     */
     public function setStyle(string $style): FieldInterface
     {
         $this->style = $style;
@@ -370,12 +340,9 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getFieldClasses(): array
     {
-        $type = Str::snake(class_basename(get_class($this)), '-');
+        $type = Str::snake(class_basename($this::class), '-');
 
         return ["type-{$type}"];
     }
@@ -387,9 +354,6 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     {
     }
 
-    /**
-     * @return RendererInterface|null
-     */
     public function getRenderer(): ?RendererInterface
     {
         if (is_null($this->renderer) && $this->rendererClass) {
@@ -399,10 +363,6 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
         return $this->renderer;
     }
 
-    /**
-     * @param  RendererInterface|null  $renderer
-     * @return FieldInterface
-     */
     public function setRenderer(?RendererInterface $renderer): FieldInterface
     {
         $this->renderer = $renderer;
@@ -424,25 +384,17 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  RendererInterface  $renderer
      * @return mixed|void
      */
     public function beforeRender(RendererInterface $renderer)
     {
     }
 
-    /**
-     * @return bool
-     */
     public function isHidden(): bool
     {
         return $this->hidden;
     }
 
-    /**
-     * @param  bool  $hidden
-     * @return FieldInterface
-     */
     public function setHidden(bool $hidden): FieldInterface
     {
         $this->hidden = $hidden;

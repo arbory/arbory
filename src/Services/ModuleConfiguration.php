@@ -8,17 +8,12 @@ use Illuminate\Support\Str;
 /**
  * Class ModuleConfig.
  */
-class ModuleConfiguration
+class ModuleConfiguration 
 {
     /**
      * @var string
      */
     protected $name;
-
-    /**
-     * @var string
-     */
-    protected $controllerClass;
 
     /**
      * @var string
@@ -42,19 +37,16 @@ class ModuleConfiguration
 
     /**
      * ModuleConfiguration constructor.
-     *
-     * @param  string  $controllerClass
      */
-    public function __construct(string $controllerClass)
+    public function __construct(protected string $controllerClass)
     {
-        $this->controllerClass = $controllerClass;
         $this->name = $this->createNameFromClass($controllerClass);
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }
@@ -145,7 +137,6 @@ class ModuleConfiguration
 
     /**
      * @param $class
-     * @return string
      */
     protected function createNameFromClass(string $class): string
     {

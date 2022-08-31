@@ -13,7 +13,7 @@ trait IsTranslatable
      *
      * @return Translatable|\Arbory\Base\Admin\Form\Fields\FieldInterface
      */
-    public function translatable()
+    public function translatable(): \Arbory\Base\Admin\Form\Fields\Translatable|\Arbory\Base\Admin\Form\Fields\FieldInterface
     {
         /** @var FieldTypeRegistry $registry */
         $registry = app(FieldTypeRegistry::class);

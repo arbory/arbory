@@ -4,7 +4,7 @@ namespace Arbory\Base\Content;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Relation extends Model
+class Relation extends Model 
 {
     /**
      * @var array
@@ -20,7 +20,7 @@ class Relation extends Model
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->name;
     }

@@ -55,16 +55,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     protected $renderer;
 
     /**
-     * @var string
-     */
-    protected $namespace;
-
-    /**
-     * @var Model
-     */
-    protected $model;
-
-    /**
      * @var FieldTypeRegistry
      */
     protected $fieldTypeRegister;
@@ -87,20 +77,15 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * Resource constructor.
      *
-     * @param  Model  $model
      * @param  string  $namespace
-     * @param  StyleManager  $styleManager
      */
-    public function __construct(Model $model, $namespace, StyleManager $styleManager = null)
+    public function __construct(protected Model $model, protected $namespace, StyleManager $styleManager = null)
     {
         $this->items = collect();
 
         if (is_null($styleManager)) {
             $styleManager = app(StyleManager::class);
         }
-
-        $this->namespace = $namespace;
-        $this->model = $model;
         $this->fieldTypeRegister = app(FieldTypeRegistry::class);
         $this->styleManager = $styleManager;
         $this->defaultStyle = $styleManager->getDefaultStyle();
@@ -108,7 +93,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param  string  $inputName
      * @return AbstractField|null
      */
     public function findFieldByInputName(string $inputName)
@@ -120,7 +104,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param  string  $inputName
      * @return array
      */
     public function findFieldsByInputName(string $inputName)
@@ -129,18 +112,14 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param  string  $fieldName
      * @return AbstractField|null
      */
     public function getFieldByName(string $fieldName)
     {
-        return $this->getFields()->first(function (AbstractField $field) use ($fieldName) {
-            return $field->getName() === $fieldName;
-        });
+        return $this->getFields()->first(fn(AbstractField $field) => $field->getName() === $fieldName);
     }
 
     /**
-     * @param  string  $fieldName
      * @return Collection
      */
     public function getFieldsByName(string $fieldName)
@@ -160,7 +139,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * @return Collection|FieldInterface[]
      */
-    public function getFields()
+    public function getFields(): \Illuminate\Support\Collection|array
     {
         return $this->items;
     }
@@ -193,9 +172,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param  FieldInterface  $field
      * @param  string|int|null  $key
-     * @return Collection
      */
     public function prepend(FieldInterface $field, string|int $key = null): Collection
     {
@@ -207,7 +184,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param  FieldInterface  $field
      * @return FieldInterface
      */
     public function add(FieldInterface $field)
@@ -232,10 +208,8 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
     /**
      * Renders fieldSet with defined renderer.
-     *
-     * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
         return $this->renderer->render();
     }
@@ -248,18 +222,11 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         return $this->items->all();
     }
 
-    /**
-     * @return StyleManager
-     */
     public function getStyleManager(): StyleManager
     {
         return $this->styleManager;
     }
 
-    /**
-     * @param  StyleManager  $styleManager
-     * @return FieldSet
-     */
     public function setStyleManager(StyleManager $styleManager): self
     {
         $this->styleManager = $styleManager;
@@ -267,18 +234,11 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDefaultStyle(): string
     {
         return $this->defaultStyle;
     }
 
-    /**
-     * @param  string  $defaultStyle
-     * @return FieldSet
-     */
     public function setDefaultStyle(string $defaultStyle): self
     {
         $this->defaultStyle = $defaultStyle;
@@ -288,8 +248,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
     /**
      * Returns a iterator.
-     *
-     * @return ArrayIterator|Traversable
      */
     public function getIterator(): Traversable
     {
@@ -298,22 +256,16 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
     /**
      * Determine if an item exists at an offset.
-     *
-     * @param  mixed  $key
-     * @return bool
      */
-    public function offsetExists($key): bool
+    public function offsetExists(mixed $key): bool
     {
         return array_key_exists($key, $this->all());
     }
 
     /**
      * Get an item at a given offset.
-     *
-     * @param  mixed  $key
-     * @return mixed
      */
-    public function offsetGet($key): mixed
+    public function offsetGet(mixed $key): mixed
     {
         return $this->items[$key];
     }
@@ -322,7 +274,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      * Unset the item at a given offset.
      *
      * @param  string  $key
-     * @return void
      */
     public function offsetUnset($key): void
     {
@@ -331,8 +282,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
     /**
      * Counts elements.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -349,18 +298,11 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         return $this->items->toArray();
     }
 
-    /**
-     * @return FieldSetRendererInterface
-     */
     public function getRenderer(): FieldSetRendererInterface
     {
         return $this->renderer;
     }
 
-    /**
-     * @param  FieldSetRendererInterface  $renderer
-     * @return FieldSet
-     */
     public function setRenderer(FieldSetRendererInterface $renderer): self
     {
         $this->renderer = $renderer;

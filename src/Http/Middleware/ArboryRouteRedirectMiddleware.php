@@ -13,7 +13,6 @@ class ArboryRouteRedirectMiddleware
      * Handle an incoming request.
      *
      * @param  Request  $request
-     * @param  \Closure  $next
      * @return RedirectResponse
      */
     public function handle($request, Closure $next)

@@ -28,25 +28,19 @@ class ParameterTransformerPipeline
         $this->pipeline = new Pipeline($container);
     }
 
-    /**
-     * @return FilterParameters
-     */
     public function execute(): FilterParameters
     {
         return $this->pipeline
             ->through($this->transformers)
             ->via('transform')
             ->send($this->parameters)
-            ->then(function ($passable) {
-                return $passable;
-            });
+            ->then(fn($passable) => $passable);
     }
 
     /**
      * @param  callable|ParameterTransformerInterface  $transformer
-     * @return ParameterTransformerPipeline
      */
-    public function addTransformer($transformer): self
+    public function addTransformer(callable|\Arbory\Base\Admin\Filter\Parameters\Transformers\ParameterTransformerInterface $transformer): self
     {
         $this->transformers[] = $transformer;
 
@@ -55,7 +49,6 @@ class ParameterTransformerPipeline
 
     /**
      * @param  ParameterTransformerInterface[]  $transformers
-     * @return ParameterTransformerPipeline
      */
     public function setTransformers(array $transformers): self
     {
@@ -64,10 +57,6 @@ class ParameterTransformerPipeline
         return $this;
     }
 
-    /**
-     * @param  FilterParameters  $parameters
-     * @return ParameterTransformerPipeline
-     */
     public function setParameters(FilterParameters $parameters): self
     {
         $this->parameters = $parameters;
@@ -75,9 +64,6 @@ class ParameterTransformerPipeline
         return $this;
     }
 
-    /**
-     * @return FilterParameters
-     */
     public function getParameters(): FilterParameters
     {
         return $this->parameters;

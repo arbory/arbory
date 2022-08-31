@@ -34,7 +34,6 @@ trait HasActivationDates
     }
 
     /**
-     * @param  Builder  $query
      * @return Builder
      */
     public function scopeActive(Builder $query)
@@ -43,10 +42,8 @@ trait HasActivationDates
         $now = date('Y-m-d H:i:s');
 
         return $query->where($table.'.activate_at', '<=', $now)
-            ->where(function (Builder $query) use ($table, $now) {
-                return $query->where($table.'.expire_at', '>=', $now)
-                    ->orWhereNull($table.'.expire_at');
-            });
+            ->where(fn(Builder $query) => $query->where($table.'.expire_at', '>=', $now)
+                ->orWhereNull($table.'.expire_at'));
     }
 
     /**

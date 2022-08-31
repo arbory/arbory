@@ -14,18 +14,10 @@ use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 class TranslatableFieldRenderer implements RendererInterface
 {
     /**
-     * @var Translatable
-     */
-    protected $field;
-
-    /**
      * TranslatableFieldRenderer constructor.
-     *
-     * @param  Translatable  $field
      */
-    public function __construct(Translatable $field)
+    public function __construct(protected Translatable $field)
     {
-        $this->field = $field;
     }
 
     /**
@@ -128,7 +120,6 @@ class TranslatableFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -138,9 +129,6 @@ class TranslatableFieldRenderer implements RendererInterface
         return $field;
     }
 
-    /**
-     * @return FieldInterface
-     */
     public function getField(): FieldInterface
     {
         return $this->field;
@@ -148,9 +136,6 @@ class TranslatableFieldRenderer implements RendererInterface
 
     /**
      * Configure the style before rendering the field.
-     *
-     * @param  StyleOptionsInterface  $options
-     * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {

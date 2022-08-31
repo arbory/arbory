@@ -18,7 +18,6 @@ class ModuleRoutesRegistry
     protected $routes = [];
 
     /**
-     * @param  \Arbory\Base\Admin\Module  $module
      * @param  Closure|null  $callback
      * @return ResourceRoutes
      */
@@ -78,7 +77,6 @@ class ModuleRoutesRegistry
     }
 
     /**
-     * @param  Module  $module
      * @return ResourceRoutes
      */
     public function findByModule(Module $module)

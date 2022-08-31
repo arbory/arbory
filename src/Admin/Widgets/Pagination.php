@@ -14,34 +14,24 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class Pagination implements Renderable
 {
     /**
-     * @var Paginator|LengthAwarePaginator
-     */
-    private $paginator;
-
-    /**
      * Pagination constructor.
-     *
-     * @param  LengthAwarePaginator  $paginator
      */
-    public function __construct(LengthAwarePaginator $paginator)
+    public function __construct(private LengthAwarePaginator $paginator)
     {
-        $this->paginator = $paginator;
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }
 
     /**
      * Get the evaluated contents of the object.
-     *
-     * @return string|Element
      */
-    public function render()
+    public function render(): string|\Arbory\Base\Html\Elements\Element
     {
         return Html::div([
             $this->getPreviousPageButton(),

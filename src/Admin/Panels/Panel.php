@@ -90,10 +90,9 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * @param  mixed  $title
      * @return Panel
      */
-    public function setTitle($title)
+    public function setTitle(mixed $title)
     {
         $this->title = $title;
 
@@ -101,10 +100,9 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * @param  mixed  $buttons
      * @return Panel
      */
-    public function setButtons($buttons): self
+    public function setButtons(mixed $buttons): self
     {
         $this->buttons = $buttons;
 
@@ -128,7 +126,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * @param  Button  $button
      * @return $this
      */
     public function addButton(Button $button)
@@ -165,7 +162,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * @param  Navigator  $navigator
      * @return void
      */
     public function navigator(Navigator $navigator)
@@ -175,7 +171,7 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }
@@ -189,7 +185,6 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
     }
 
     /**
-     * @param  bool  $navigable
      * @return Panel
      */
     public function setNavigable(bool $navigable): self

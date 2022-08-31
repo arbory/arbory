@@ -11,11 +11,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class Filter implements FilterInterface
 {
     /**
-     * @var Model
-     */
-    protected $model;
-
-    /**
      * @var Builder
      */
     protected $query;
@@ -25,14 +20,12 @@ class Filter implements FilterInterface
      *
      * @param  Model  $model
      */
-    public function __construct(Model $model)
+    public function __construct(protected Model $model)
     {
-        $this->model = $model;
         $this->query = $model->newQuery();
     }
 
     /**
-     * @param  Collection  $columns
      * @return $this
      */
     public function execute(Collection $columns): self
@@ -52,7 +45,6 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param  string  $relationName
      * @return void
      */
     public function withRelation(string $relationName)
@@ -60,10 +52,7 @@ class Filter implements FilterInterface
         $this->query->with($relationName);
     }
 
-    /**
-     * @return Builder|\Illuminate\Database\Query\Builder
-     */
-    public function getQuery()
+    public function getQuery(): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder
     {
         return $this->query;
     }

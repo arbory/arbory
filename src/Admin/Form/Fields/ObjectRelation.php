@@ -16,11 +16,6 @@ use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationGroupedRenderer;
 class ObjectRelation extends AbstractField
 {
     /**
-     * @var string
-     */
-    protected $relatedModelType;
-
-    /**
      * @var Collection
      */
     protected $options;
@@ -30,15 +25,7 @@ class ObjectRelation extends AbstractField
      */
     protected $indentAttribute;
 
-    /**
-     * @var int|null
-     */
-    protected $limit;
-
-    /**
-     * @var string
-     */
-    private $groupByAttribute;
+    private ?string $groupByAttribute = null;
 
     /**
      * @var Closure|null
@@ -57,19 +44,16 @@ class ObjectRelation extends AbstractField
 
     /**
      * @param  string  $name
-     * @param  string|Collection  $relatedModelTypeOrCollection
+     * @param string|Collection $relatedModelType
      * @param  int  $limit
      */
-    public function __construct($name, $relatedModelTypeOrCollection, $limit = 0)
+    public function __construct($name, protected $relatedModelType, protected ?int $limit = 0)
     {
-        $this->relatedModelType = $relatedModelTypeOrCollection;
-        $this->limit = $limit;
+        if ($relatedModelType instanceof Collection) {
+            $this->options = $relatedModelType;
 
-        if ($relatedModelTypeOrCollection instanceof Collection) {
-            $this->options = $relatedModelTypeOrCollection;
-
-            if (! $relatedModelTypeOrCollection->isEmpty()) {
-                $this->relatedModelType = (new \ReflectionClass($relatedModelTypeOrCollection->first()))->getName();
+            if (! $relatedModelType->isEmpty()) {
+                $this->relatedModelType = (new \ReflectionClass($relatedModelType->first()))->getName();
             }
         }
 
@@ -97,7 +81,6 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param  string  $indentAttribute
      * @return self
      */
     public function setIndentAttribute(string $indentAttribute = null)
@@ -108,8 +91,6 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param  string  $attribute
-     * @param  Closure  $groupName
      * @return self
      */
     public function groupBy(string $attribute, Closure $groupName = null)
@@ -142,7 +123,6 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param  Request  $request
      * @return void
      */
     public function beforeModelSave(Request $request)
@@ -151,7 +131,6 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param  Request  $request
      * @return void
      *
      * @throws \Exception
@@ -243,10 +222,6 @@ class ObjectRelation extends AbstractField
         });
     }
 
-    /**
-     * @param  Model  $model
-     * @return bool
-     */
     public function hasRelationWith(Model $model): bool
     {
         return $this->getValue()->contains('related_id', $model->getKey());
@@ -255,20 +230,15 @@ class ObjectRelation extends AbstractField
     /**
      * @return \Illuminate\Database\Eloquent\Collection|Collection
      */
-    public function getOptions()
+    public function getOptions(): \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
     {
         $values = collect();
 
-        $values = $values->merge($this->options ?: $this->relatedModelType::all()->mapWithKeys(function ($item) {
-            return [$item->getKey() => $item];
-        }));
+        $values = $values->merge($this->options ?: $this->relatedModelType::all()->mapWithKeys(fn($item) => [$item->getKey() => $item]));
 
         return $this->groupByAttribute ? $values->groupBy($this->groupByAttribute) : $values;
     }
 
-    /**
-     * @param  Collection  $options
-     */
     public function setOptions(Collection $options)
     {
         $this->options = $options;
@@ -290,9 +260,6 @@ class ObjectRelation extends AbstractField
         return $this->getLimit() === 1;
     }
 
-    /**
-     * @return array
-     */
     public function getRules(): array
     {
         return $this->getInnerFieldSet()->getRules();
@@ -305,9 +272,7 @@ class ObjectRelation extends AbstractField
     {
         $fieldSet = new FieldSet($this->getModel(), $this->getNameSpacedName());
 
-        $ids = $this->getValue()->map(function ($item) {
-            return $item->related_id;
-        })->implode(',');
+        $ids = $this->getValue()->map(fn($item) => $item->related_id)->implode(',');
 
         $fieldSet->hidden('related_id')
             ->setValue($ids)->rules(implode('|', $this->rules))
@@ -321,9 +286,6 @@ class ObjectRelation extends AbstractField
         return $fieldSet;
     }
 
-    /**
-     * @return string
-     */
     public function getRelatedModelType(): string
     {
         return $this->relatedModelType;
@@ -336,7 +298,7 @@ class ObjectRelation extends AbstractField
     {
         try {
             return (new \ReflectionClass($this->getModel()))->getName();
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             return;
         }
     }
@@ -373,9 +335,6 @@ class ObjectRelation extends AbstractField
         return (bool) $this->groupByAttribute;
     }
 
-    /**
-     * @return array
-     */
     public function getFieldClasses(): array
     {
         $classes = parent::getFieldClasses();
@@ -394,18 +353,11 @@ class ObjectRelation extends AbstractField
         return $classes;
     }
 
-    /**
-     * @return string
-     */
     public function getGroupedRendererClass(): string
     {
         return $this->groupedRendererClass;
     }
 
-    /**
-     * @param  string  $groupedRendererClass
-     * @return ObjectRelation
-     */
     public function setGroupedRendererClass(string $groupedRendererClass): self
     {
         $this->groupedRendererClass = $groupedRendererClass;

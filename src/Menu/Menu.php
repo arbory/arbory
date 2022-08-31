@@ -2,15 +2,15 @@
 
 namespace Arbory\Base\Menu;
 
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Html\Elements;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Menu
 {
-    const COOKIE_NAME_MENU = 'menu';
+    public const COOKIE_NAME_MENU = 'menu';
 
     /**
      * @var Collection
@@ -18,7 +18,7 @@ class Menu
     protected $items;
 
     /**
-     * @param  Collection|null  $items
+     * @param Collection|null $items
      */
     public function __construct(Collection $items = null)
     {
@@ -26,7 +26,6 @@ class Menu
     }
 
     /**
-     * @param  AbstractItem  $item
      * @return void
      */
     public function addItem(AbstractItem $item)
@@ -42,10 +41,7 @@ class Menu
         return $this->items;
     }
 
-    /**
-     * @return Elements\Element
-     */
-    public function render()
+    public function render(): Element
     {
         $list = Html::ul()->addClass('block');
 
@@ -53,12 +49,12 @@ class Menu
             $name = Str::snake($item->getTitle());
             $collapsed = $this->getMenuItemCookie($name);
 
-            if (! $this->hasMenuItemCookie($name)) {
+            if (!$this->hasMenuItemCookie($name)) {
                 $collapsed = true;
             }
 
             /** @var AbstractItem $item */
-            if (! $item) {
+            if (!$item) {
                 continue;
             }
 
@@ -75,10 +71,7 @@ class Menu
         return $list;
     }
 
-    /**
-     * @return array
-     */
-    protected function getMenuCookie()
+    protected function getMenuCookie(): array
     {
         $menuCookie = Arr::get($_COOKIE, self::COOKIE_NAME_MENU);
 
@@ -86,24 +79,16 @@ class Menu
             return $menuCookie;
         }
 
-        return (array) json_decode($menuCookie, true);
+        return (array)json_decode($menuCookie, true);
     }
 
-    /**
-     * @param  string  $name
-     * @return bool
-     */
-    protected function hasMenuItemCookie(string $name)
+    protected function hasMenuItemCookie(string $name): bool
     {
         return Arr::has($this->getMenuCookie(), $name);
     }
 
-    /**
-     * @param  string  $name
-     * @return bool
-     */
-    protected function getMenuItemCookie(string $name)
+    protected function getMenuItemCookie(string $name): bool
     {
-        return Arr::get($this->getMenuCookie(), $name);
+        return Arr::get($this->getMenuCookie(), $name, false);
     }
 }

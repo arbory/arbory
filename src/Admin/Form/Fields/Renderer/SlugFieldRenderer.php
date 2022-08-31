@@ -2,37 +2,22 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Admin\Form\Fields\Slug;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
+use Arbory\Base\Html\Html;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Support\Facades\View;
 
-class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterface
+class SlugFieldRenderer extends ControlFieldRenderer
 {
-    /**
-     * @var Slug
-     */
-    protected $field;
-
-    /**
-     * SlugRenderer constructor.
-     *
-     * @param  FieldInterface  $field
-     */
-    public function __construct(FieldInterface $field)
-    {
-        $this->field = $field;
-    }
 
     /**
      * Get the evaluated contents of the object.
-     *
-     * @return string
      */
-    public function render()
+    public function render(): Content
     {
         $control = $this->getControl();
         $control = $this->configureControl($control);
@@ -69,7 +54,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
      */
     protected function getLinkElement()
     {
-        if (! $this->field->hasUriToSlug()) {
+        if (!$this->field->hasUriToSlug()) {
             return;
         }
 
@@ -85,7 +70,7 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
      */
     protected function getPreviewLinkElement()
     {
-        if (! $this->field->hasUriToSlug() || $this->field->getModel()->isActive() || ! $this->field->getValue()) {
+        if (!$this->field->hasUriToSlug() || $this->field->getModel()->isActive() || !$this->field->getValue()) {
             return;
         }
 
@@ -116,7 +101,6 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
     }
 
     /**
-     * @param  FieldInterface  $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -124,9 +108,6 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
         $this->field = $field;
     }
 
-    /**
-     * @return FieldInterface
-     */
     public function getField(): FieldInterface
     {
         return $this->field;
@@ -134,9 +115,6 @@ class SlugFieldRenderer extends ControlFieldRenderer implements RendererInterfac
 
     /**
      * Configure the style before rendering the field.
-     *
-     * @param  StyleOptionsInterface  $options
-     * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
     {

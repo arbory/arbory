@@ -29,26 +29,13 @@ class InstallCommand extends Command
     protected $description = '';
 
     /**
-     * @var Filesystem
-     */
-    protected $filesystem;
-
-    /**
-     * @var DatabaseManager
-     */
-    protected $databaseManager;
-
-    /**
      * @param  Filesystem  $filesystem
      * @param  DatabaseManager  $databaseManager
      */
     public function __construct(
-        Filesystem $filesystem,
-        DatabaseManager $databaseManager
+        protected Filesystem $filesystem,
+        protected DatabaseManager $databaseManager
     ) {
-        $this->filesystem = $filesystem;
-        $this->databaseManager = $databaseManager;
-
         parent::__construct();
     }
 
@@ -56,7 +43,7 @@ class InstallCommand extends Command
     {
         try {
             $this->databaseManager->connection();
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->error('Unable to connect to the database.');
             $this->error('Please fill valid database credentials into .env and run this command again.');
 

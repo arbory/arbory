@@ -25,10 +25,6 @@ class RoutesServiceProvider extends ServiceProvider
      */
     protected $router;
 
-    /**
-     * @param  Filesystem  $filesystem
-     * @param  Router  $router
-     */
     public function boot(Filesystem $filesystem, Router $router)
     {
         $this->filesystem = $filesystem;

@@ -24,10 +24,6 @@ class StyleOptions implements StyleOptionsInterface
         $this->additional = new Fluent();
     }
 
-    /**
-     * @param  array  $data
-     * @return StyleOptionsInterface
-     */
     public function setAdditional(array $data): StyleOptionsInterface
     {
         $this->additional = new Fluent($data);
@@ -35,10 +31,6 @@ class StyleOptions implements StyleOptionsInterface
         return $this;
     }
 
-    /**
-     * @param  array  $data
-     * @return StyleOptionsInterface
-     */
     public function addAdditional(array $data): StyleOptionsInterface
     {
         $this->additional = new Fluent(
@@ -48,9 +40,6 @@ class StyleOptions implements StyleOptionsInterface
         return $this;
     }
 
-    /**
-     * @return Fluent
-     */
     public function getAdditional(): Fluent
     {
         return $this->additional;
@@ -64,11 +53,6 @@ class StyleOptions implements StyleOptionsInterface
         return $this->rows;
     }
 
-    /**
-     * @param  int  $rows
-     * @param  array  $breakpoints
-     * @return StyleOptionsInterface
-     */
     public function setRows(int $rows, array $breakpoints = []): StyleOptionsInterface
     {
         $this->rows = ['size' => $rows, 'breakpoints' => $breakpoints];

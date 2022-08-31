@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $owner_class
  * @property string $local_name
  */
-class ArboryFile extends Model
+class ArboryFile extends Model 
 {
     use Uuid;
 
@@ -59,7 +59,7 @@ class ArboryFile extends Model
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->original_name;
     }

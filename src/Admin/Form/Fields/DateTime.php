@@ -2,33 +2,26 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Carbon\Carbon;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
+use Carbon\Carbon;
 
 /**
  * Class DateTime.
  */
 class DateTime extends Text
 {
-    protected $classes = [
+    protected array $classes = [
         'text',
         'datetime-picker',
     ];
 
-    protected $format = 'Y-m-d H:i';
+    protected string $format = 'Y-m-d H:i';
 
-    /**
-     * @return string
-     */
     public function getFormat(): string
     {
         return $this->format;
     }
 
-    /**
-     * @param  string  $format
-     * @return DateTime
-     */
     public function setFormat(string $format): self
     {
         $this->format = $format;
@@ -43,11 +36,13 @@ class DateTime extends Text
         if ($value) {
             return Carbon::parse($value)->format($this->getFormat());
         }
+
+        return '';
     }
 
     public function beforeRender(RendererInterface $renderer)
     {
-        if ($this->isDisabled() || ! $this->isInteractive()) {
+        if ($this->isDisabled() || !$this->isInteractive()) {
             $this->removeClasses('datetime-picker');
         }
     }

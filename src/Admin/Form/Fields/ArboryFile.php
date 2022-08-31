@@ -24,7 +24,7 @@ class ArboryFile extends ControlField
     /**
      * @var array
      */
-    protected $attributes = [
+    protected array $attributes = [
         'type' => 'file',
     ];
 
@@ -38,17 +38,11 @@ class ArboryFile extends ControlField
      */
     protected $disk = 'public';
 
-    /**
-     * @return string
-     */
     public function getDisk(): string
     {
         return $this->disk;
     }
 
-    /**
-     * @param  string  $disk
-     */
     public function setDisk(string $disk)
     {
         $this->disk = $disk;
@@ -106,7 +100,6 @@ class ArboryFile extends ControlField
     }
 
     /**
-     * @param  Request  $request
      * @return void
      */
     public function beforeModelSave(Request $request)
@@ -114,7 +107,6 @@ class ArboryFile extends ControlField
     }
 
     /**
-     * @param  Request  $request
      * @return void
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
@@ -139,7 +131,7 @@ class ArboryFile extends ControlField
              * @var BelongsTo
              */
             $relation = $model->{$this->getName()}();
-            $modelClass = get_class($relation->getRelated());
+            $modelClass = $relation->getRelated()::class;
 
             $factory = new ArboryFileFactory(
                 new ArboryFilesRepository($this->getDisk(), $modelClass)
@@ -148,9 +140,6 @@ class ArboryFile extends ControlField
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isRequired(): bool
     {
         return in_array('arbory_file_required', $this->getRules(), true) || $this->required;

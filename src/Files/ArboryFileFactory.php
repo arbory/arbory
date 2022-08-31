@@ -9,30 +9,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ArboryFileFactory
 {
-    /**
-     * @var ArboryFilesRepository
-     */
-    private $repository;
-
-    /**
-     * @param  ArboryFilesRepository  $repository
-     */
-    public function __construct(ArboryFilesRepository $repository)
+    public function __construct(private ArboryFilesRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     /**
-     * @param  Model  $model
-     * @param  UploadedFile|ArboryFile  $file
-     * @param  string  $relationName
      * @return ArboryFile
-     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function make(Model $model, $file, string $relationName)
+    public function make(Model $model, \Illuminate\Http\UploadedFile|\Arbory\Base\Files\ArboryFile $file, string $relationName)
     {
         $arboryFile = $this->writeFile($model, $file);
         $relation = $model->{$relationName}();
@@ -51,15 +38,13 @@ class ArboryFileFactory
     }
 
     /**
-     * @param  Model  $model
-     * @param  UploadedFile|ArboryFile  $file
      * @return ArboryFile|null
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    private function writeFile(Model $model, $file)
+    private function writeFile(Model $model, \Illuminate\Http\UploadedFile|\Arbory\Base\Files\ArboryFile $file)
     {
         $arboryFile = null;
 

@@ -7,26 +7,15 @@ use Arbory\Base\Services\SettingRegistry;
 
 class Settings
 {
-    /**
-     * @var SettingRegistry
-     */
-    protected $settingRegistry;
-
-    /**
-     * @param  SettingRegistry  $settingRegistry
-     */
-    public function __construct(SettingRegistry $settingRegistry)
+    public function __construct(protected SettingRegistry $settingRegistry)
     {
-        $this->settingRegistry = $settingRegistry;
         $this->settingRegistry->importFromDatabase();
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $default
      * @return mixed
      */
-    public function get(string $key, $default = null)
+    public function get(string $key, mixed $default = null)
     {
         $definition = $this->settingRegistry->find($key);
 
@@ -52,7 +41,6 @@ class Settings
     }
 
     /**
-     * @param  string  $key
      * @return bool
      */
     public function has(string $key)
@@ -61,12 +49,10 @@ class Settings
     }
 
     /**
-     * @param  string  $key
-     * @param  mixed  $value
      * @param  mixed  $type
      * @return void
      */
-    public function set(string $key, $value, string $type = null)
+    public function set(string $key, mixed $value, string $type = null)
     {
         $definition = new SettingDefinition($key, $value, $type);
 
@@ -75,13 +61,8 @@ class Settings
         $definition->save();
     }
 
-    /**
-     * @return Collection
-     */
     public function all(): Collection
     {
-        return $this->settingRegistry->getSettings()->mapWithKeys(function (SettingDefinition $definition) {
-            return [$definition->getKey() => $definition->getValue()];
-        });
+        return $this->settingRegistry->getSettings()->mapWithKeys(fn(SettingDefinition $definition) => [$definition->getKey() => $definition->getValue()]);
     }
 }

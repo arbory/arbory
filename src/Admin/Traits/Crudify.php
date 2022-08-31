@@ -45,10 +45,7 @@ trait Crudify
      */
     protected $module;
 
-    /**
-     * @return Model|Builder
-     */
-    public function resource()
+    public function resource(): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
     {
         $class = $this->resource;
 
@@ -58,26 +55,18 @@ trait Crudify
     protected function module(): Module
     {
         if ($this->module === null) {
-            $this->module = Admin::modules()->findModuleByControllerClass(get_class($this));
+            $this->module = Admin::modules()->findModuleByControllerClass($this::class);
         }
 
         return $this->module;
     }
 
-    /**
-     * @param Form $form
-     * @param Layout\FormLayoutInterface|null $layout
-     * @return Form
-     */
     protected function form(Form $form, ?Layout\FormLayoutInterface $layout = null): Form
     {
         return $form;
     }
 
     /**
-     * @param Model $model
-     * @param Layout\FormLayoutInterface|null $layout
-     * @return Form
      * @throws Exception
      */
     protected function buildForm(Model $model, ?Layout\FormLayoutInterface $layout = null): Form
@@ -91,19 +80,11 @@ trait Crudify
         return $this->form($form, $layout) ?: $form;
     }
 
-    /**
-     * @param Grid $grid
-     * @return Grid
-     */
     public function grid(Grid $grid): Grid
     {
         return $grid;
     }
 
-    /**
-     * @param  Model  $model
-     * @return Grid
-     */
     protected function buildGrid(Model $model): Grid
     {
         $grid = new Grid($model);
@@ -115,10 +96,6 @@ trait Crudify
         return $this->grid($grid) ?: $grid;
     }
 
-    /**
-     * @param  Layout\LayoutManager  $manager
-     * @return Layout
-     */
     public function index(Layout\LayoutManager $manager): Layout
     {
         $layout = $this->layout('grid');
@@ -140,7 +117,6 @@ trait Crudify
 
     /**
      * @param $resourceId
-     * @return RedirectResponse
      */
     public function show($resourceId): RedirectResponse
     {
@@ -148,8 +124,6 @@ trait Crudify
     }
 
     /**
-     * @param Layout\LayoutManager $manager
-     * @return Layout
      * @throws Exception
      */
     public function create(Layout\LayoutManager $manager): Layout
@@ -166,8 +140,6 @@ trait Crudify
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse|RedirectResponse|Redirector
      * @throws Exception
      */
     public function store(Request $request): JsonResponse|Redirector|RedirectResponse
@@ -188,7 +160,6 @@ trait Crudify
 
     /**
      * @param  $resourceId
-     * @param  Layout\LayoutManager  $manager
      * @return Layout
      */
     public function edit($resourceId, Layout\LayoutManager $manager)
@@ -205,11 +176,9 @@ trait Crudify
     }
 
     /**
-     * @param  Request  $request
      * @param $resourceId
-     * @return JsonResponse|RedirectResponse|Redirector
      */
-    public function update(Request $request, $resourceId)
+    public function update(Request $request, $resourceId): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $resource = $this->findOrNew($resourceId);
         $layout = $this->layout('form');
@@ -230,9 +199,8 @@ trait Crudify
 
     /**
      * @param $resourceId
-     * @return RedirectResponse|Redirector
      */
-    public function destroy($resourceId)
+    public function destroy($resourceId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $resource = $this->resource()->findOrFail($resourceId);
         $layout = $this->layout('form');
@@ -243,8 +211,6 @@ trait Crudify
     }
 
     /**
-     * @param  Request  $request
-     * @param  string  $name
      * @return mixed
      */
     public function dialog(Request $request, string $name)
@@ -259,8 +225,6 @@ trait Crudify
     }
 
     /**
-     * @param  string  $type
-     * @return BinaryFileResponse
      *
      * @throws Exception
      */
@@ -281,9 +245,6 @@ trait Crudify
     }
 
     /**
-     * @param  string  $type
-     * @param  DataSetExport  $dataSet
-     * @return ExportInterface
      *
      * @throws Exception
      */
@@ -296,10 +257,6 @@ trait Crudify
         return new self::$exportTypes[$type]($dataSet);
     }
 
-    /**
-     * @param  Request  $request
-     * @return string
-     */
     protected function toolboxDialog(Request $request): string
     {
         $node = $this->findOrNew($request->get('id'));
@@ -311,9 +268,6 @@ trait Crudify
         return $toolbox->render();
     }
 
-    /**
-     * @param ToolboxMenu $tools
-     */
     protected function toolbox(ToolboxMenu $tools)
     {
         $model = $tools->model();
@@ -326,7 +280,6 @@ trait Crudify
     }
 
     /**
-     * @param  Request  $request
      * @return View
      */
     protected function confirmDeleteDialog(Request $request)
@@ -342,8 +295,6 @@ trait Crudify
     }
 
     /**
-     * @param  Request  $request
-     * @param  string  $name
      * @return null
      */
     public function api(Request $request, string $name)
@@ -360,7 +311,6 @@ trait Crudify
     }
 
     /**
-     * @param  string  $route
      * @param  array  $parameters
      * @return string
      */
@@ -369,11 +319,7 @@ trait Crudify
         return $this->module()->url($route, $parameters);
     }
 
-    /**
-     * @param  mixed  $resourceId
-     * @return Model
-     */
-    protected function findOrNew($resourceId): Model
+    protected function findOrNew(mixed $resourceId): Model
     {
         /**
          * @var Model
@@ -391,9 +337,7 @@ trait Crudify
     }
 
     /**
-     * @param  Request  $request
      * @return string
-     *
      * @throws Exception
      */
     public function slugGeneratorApi(Request $request)
@@ -420,11 +364,9 @@ trait Crudify
     }
 
     /**
-     * @param  Request  $request
      * @param  Model  $model
-     * @return RedirectResponse|Redirector
      */
-    protected function getAfterEditResponse(Request $request, $model)
+    protected function getAfterEditResponse(Request $request, $model): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $defaultReturnUrl = $this->module()->url('index');
         $returnUrl = $request->has(Form::INPUT_RETURN_URL) ? $request->get(Form::INPUT_RETURN_URL) : $defaultReturnUrl;
@@ -433,11 +375,9 @@ trait Crudify
     }
 
     /**
-     * @param  Request  $request
      * @param  Model  $model
-     * @return RedirectResponse|Redirector
      */
-    protected function getAfterCreateResponse(Request $request, $model)
+    protected function getAfterCreateResponse(Request $request, $model): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $defaultReturnUrl = $this->module()->url('index');
         $returnUrl = $request->has(Form::INPUT_RETURN_URL) ? $request->get(Form::INPUT_RETURN_URL) : $defaultReturnUrl;
@@ -451,10 +391,9 @@ trait Crudify
      * Creates a layout instance.
      *
      * @param  string  $component
-     * @param  mixed  $with
      * @return LayoutInterface
      */
-    protected function layout($component, $with = null)
+    protected function layout($component, mixed $with = null)
     {
         $layouts = $this->layouts() ?: [];
 

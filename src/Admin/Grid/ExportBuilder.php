@@ -9,18 +9,10 @@ use Illuminate\Contracts\Support\Renderable;
 class ExportBuilder implements Renderable
 {
     /**
-     * @var AdminGrid
-     */
-    protected $grid;
-
-    /**
      * ExportBuilder constructor.
-     *
-     * @param  AdminGrid  $grid
      */
-    public function __construct(AdminGrid $grid)
+    public function __construct(protected AdminGrid $grid)
     {
-        $this->grid = $grid;
     }
 
     /**
@@ -42,9 +34,7 @@ class ExportBuilder implements Renderable
      */
     public function render()
     {
-        $items = $this->grid->getRows()->map(function (Row $row) {
-            return $row->toArray();
-        });
+        $items = $this->grid->getRows()->map(fn(Row $row) => $row->toArray());
 
         $columns = $this->getColumns();
 

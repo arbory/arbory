@@ -30,14 +30,9 @@ class FilterCollection extends Collection
      */
     public function findByOwner($owner): self
     {
-        return $this->filter(static function (FilterItem $filterItem) use ($owner) {
-            return $owner === $filterItem->getOwner();
-        });
+        return $this->filter(static fn(FilterItem $filterItem) => $owner === $filterItem->getOwner());
     }
 
-    /**
-     * @return FilterCollection
-     */
     public function findWithoutOwners(): self
     {
         return $this->findByOwner(null);

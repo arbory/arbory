@@ -9,8 +9,6 @@ use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 interface ItemInterface extends RenderOptionsInterface
 {
     /**
-     * @param  FieldInterface  $field
-     * @param  FieldSet  $fieldSet
      * @param  null  $index
      * @param  mixed  $parameters
      * @return mixed

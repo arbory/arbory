@@ -29,17 +29,10 @@ class CreateUserCommand extends Command
     protected $description = 'Create a new Arbory admin user';
 
     /**
-     * @var Sentinel
-     */
-    protected $sentinel;
-
-    /**
      * @param  Sentinel  $sentinel
      */
-    public function __construct(Sentinel $sentinel)
+    public function __construct(protected Sentinel $sentinel)
     {
-        $this->sentinel = $sentinel;
-
         parent::__construct();
     }
 
@@ -54,7 +47,7 @@ class CreateUserCommand extends Command
     /**
      * @return UserInterface|User
      */
-    protected function createAdminUser()
+    protected function createAdminUser(): \Cartalyst\Sentinel\Users\UserInterface|\Arbory\Base\Auth\Users\User
     {
         $this->info('Let\'s create admin user');
 
@@ -92,7 +85,6 @@ class CreateUserCommand extends Command
 
     /**
      * @param $login
-     * @return bool
      */
     protected function loginExists($login): bool
     {
@@ -103,10 +95,6 @@ class CreateUserCommand extends Command
         ])->exists();
     }
 
-    /**
-     * @param  UserInterface  $user
-     * @return bool
-     */
     protected function activateUser(UserInterface $user): bool
     {
         $activations = $this->sentinel->getActivationRepository();
@@ -115,9 +103,6 @@ class CreateUserCommand extends Command
         return $activations->complete($user, $activation->getCode());
     }
 
-    /**
-     * @return Role|RoleInterface
-     */
     protected function getUserRole(): RoleInterface
     {
         $repository = $this->sentinel->getRoleRepository();
@@ -134,9 +119,6 @@ class CreateUserCommand extends Command
         return $this->chooseFromExistingRoles();
     }
 
-    /**
-     * @return Role|RoleInterface
-     */
     private function createNewRole(): RoleInterface
     {
         $repository = $this->sentinel->getRoleRepository();
@@ -148,9 +130,6 @@ class CreateUserCommand extends Command
         ]);
     }
 
-    /**
-     * @return array
-     */
     private function getPermissions(): array
     {
         $permissions = [];
@@ -164,26 +143,19 @@ class CreateUserCommand extends Command
         return $permissions;
     }
 
-    /**
-     * @return Role|RoleInterface
-     */
     private function chooseFromExistingRoles(): RoleInterface
     {
         $repository = $this->sentinel->getRoleRepository();
         $roles = $repository->all();
 
-        $roleOptions = $roles->map(function (RoleInterface $role) {
-            return $role->getName();
-        })->toArray();
+        $roleOptions = $roles->map(fn(RoleInterface $role) => $role->getName())->toArray();
 
         $role = null;
 
         while ($role === null) {
             $name = $this->choice('Choose user role', $roleOptions);
 
-            $role = $roles->first(function (RoleInterface $role) use ($name) {
-                return $role->getName() === $name;
-            });
+            $role = $roles->first(fn(RoleInterface $role) => $role->getName() === $name);
         }
 
         return $role;

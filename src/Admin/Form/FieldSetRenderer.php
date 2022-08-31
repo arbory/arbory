@@ -17,39 +17,17 @@ class FieldSetRenderer implements FieldSetRendererInterface
     protected $defaultStyle;
 
     /**
-     * @var FieldSet
-     */
-    protected $fieldSet;
-
-    /**
-     * @var StyleManager
-     */
-    protected $styleManager;
-
-    /**
      * FieldSetRenderer constructor.
-     *
-     * @param  FieldSet  $fieldSet
-     * @param  StyleManager  $styleManager
      */
-    public function __construct(FieldSet $fieldSet, StyleManager $styleManager)
+    public function __construct(protected FieldSet $fieldSet, protected StyleManager $styleManager)
     {
-        $this->fieldSet = $fieldSet;
-        $this->styleManager = $styleManager;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDefaultStyle(): ?string
     {
         return $this->fieldSet->getDefaultStyle();
     }
 
-    /**
-     * @param  string  $value
-     * @return FieldSetRendererInterface
-     */
     public function setDefaultStyle(string $value): FieldSetRendererInterface
     {
         $this->defaultStyle = $value;
@@ -68,9 +46,7 @@ class FieldSetRenderer implements FieldSetRendererInterface
         $grid = new Grid();
         $columns = 0;
 
-        $hasRows = $collection->filter(function ($field) {
-            return $field->getRows();
-        })->count();
+        $hasRows = $collection->filter(fn($field) => $field->getRows())->count();
 
         if (! $hasRows) {
             return new Content(
@@ -114,7 +90,6 @@ class FieldSetRenderer implements FieldSetRendererInterface
     }
 
     /**
-     * @param  FieldInterface  $field
      * @return mixed|null
      */
     protected function renderField(FieldInterface $field)
@@ -131,7 +106,6 @@ class FieldSetRenderer implements FieldSetRendererInterface
     }
 
     /**
-     * @param  array  $rows
      * @param  $content
      * @return Column
      */

@@ -27,7 +27,6 @@ abstract class AbstractControl implements InputControlInterface
     abstract public function render(Element $control);
 
     /**
-     * @param  Element  $element
      * @return Element
      */
     public function applyAttributesAndClasses(Element $element)
@@ -56,7 +55,6 @@ abstract class AbstractControl implements InputControlInterface
 
     /**
      * @param $value
-     * @return InputControlInterface
      */
     public function setValue($value): InputControlInterface
     {
@@ -97,18 +95,11 @@ abstract class AbstractControl implements InputControlInterface
         return $this->readOnly;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param  string|null  $name
-     * @return InputControlInterface
-     */
     public function setName(?string $name): InputControlInterface
     {
         $this->name = $name;

@@ -17,10 +17,6 @@ class ArboryImage extends ArboryFile
         return (new parent)->getTable();
     }
 
-    /**
-     * @param  string  $preset
-     * @return string
-     */
     public function getUrl(string $preset = ''): string
     {
         /** @var ImageModificationService $modificationService */
@@ -29,9 +25,6 @@ class ArboryImage extends ArboryFile
         return $modificationService->modify($this, $preset);
     }
 
-    /**
-     * @return string
-     */
     public function getSourceUrl(): string
     {
         return parent::getUrl();

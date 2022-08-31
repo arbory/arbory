@@ -8,10 +8,9 @@ use Arbory\Base\Html\Elements\Element;
 abstract class AbstractInputField extends Element
 {
     /**
-     * @param  mixed  $value
      * @return self
      */
-    public function setValue($value)
+    public function setValue(mixed $value)
     {
         $this->attributes()->put('value', $value);
 

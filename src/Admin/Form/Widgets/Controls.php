@@ -11,10 +11,6 @@ use Illuminate\Contracts\Support\Renderable;
 class Controls implements Renderable
 {
     /**
-     * @var Tools
-     */
-    protected $tools;
-    /**
      * @var null
      */
     protected $backUrl;
@@ -22,12 +18,10 @@ class Controls implements Renderable
     /**
      * Controls constructor.
      *
-     * @param  Tools  $tools
      * @param  null  $backUrl
      */
-    public function __construct(Tools $tools, $backUrl = null)
+    public function __construct(protected Tools $tools, $backUrl = null)
     {
-        $this->tools = $tools;
         $this->backUrl = $backUrl;
 
         $this->compose();
@@ -74,18 +68,11 @@ class Controls implements Renderable
         return Html::footer($this->tools)->addClass('main');
     }
 
-    /**
-     * @return Tools
-     */
     public function getTools(): Tools
     {
         return $this->tools;
     }
 
-    /**
-     * @param  Tools  $tools
-     * @return Controls
-     */
     public function setTools(Tools $tools): self
     {
         $this->tools = $tools;

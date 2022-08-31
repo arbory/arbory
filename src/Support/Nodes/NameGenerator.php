@@ -4,10 +4,6 @@ namespace Arbory\Base\Support\Nodes;
 
 class NameGenerator
 {
-    /**
-     * @param  string  $type
-     * @return string
-     */
     public function generate(string $type): string
     {
         $className = class_basename($type);

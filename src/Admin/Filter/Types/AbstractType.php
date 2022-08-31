@@ -23,10 +23,9 @@ abstract class AbstractType
     protected $config;
 
     /**
-     * @param  mixed  $value
      * @return mixed
      */
-    public function setValue($value)
+    public function setValue(mixed $value)
     {
         $this->value = $value;
     }
@@ -39,24 +38,13 @@ abstract class AbstractType
         return $this->value;
     }
 
-    /**
-     * @param  FilterItem  $filterItem
-     * @return Element
-     */
     abstract public function render(FilterItem $filterItem): Element;
 
-    /**
-     * @return iterable|BaseConfig
-     */
     public function getConfig(): iterable
     {
         return $this->config;
     }
 
-    /**
-     * @param  iterable  $config
-     * @return FilterTypeInterface
-     */
     public function setConfig(iterable $config): FilterTypeInterface
     {
         $configType = $this->getConfigType();
@@ -70,9 +58,6 @@ abstract class AbstractType
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isEmpty(): bool
     {
         $value = $this->getValue();
@@ -84,9 +69,6 @@ abstract class AbstractType
         return blank($value);
     }
 
-    /**
-     * @return string|null
-     */
     public function getConfigType(): ?string
     {
         return null;

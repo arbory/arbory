@@ -38,10 +38,6 @@ class IconPicker extends Select
         parent::__construct($name);
     }
 
-    /**
-     * @param  string  $path
-     * @return IconPicker
-     */
     public function sprite(string $path): self
     {
         $this->spritePath = $path;
@@ -60,15 +56,11 @@ class IconPicker extends Select
     }
 
     /**
-     * @return Collection
-     *
      * @throws \InvalidArgumentException
      */
     public function getOptions(): Collection
     {
-        return $this->getIconIds()->mapWithKeys(function ($iconId) {
-            return [$iconId => $iconId];
-        });
+        return $this->getIconIds()->mapWithKeys(fn($iconId) => [$iconId => $iconId]);
     }
 
     /**
@@ -96,8 +88,6 @@ class IconPicker extends Select
     }
 
     /**
-     * @return Collection
-     *
      * @throws \InvalidArgumentException
      */
     protected function getIconIds(): Collection
@@ -134,9 +124,7 @@ class IconPicker extends Select
     }
 
     /**
-     * @param  Request  $request
      * @return void
-     *
      * @throws \InvalidArgumentException
      */
     public function beforeModelSave(Request $request)
@@ -165,16 +153,12 @@ class IconPicker extends Select
         return $this;
     }
 
-    /**
-     * @return array|null
-     */
     public function getDimensions(): ?array
     {
         return $this->dimensions;
     }
 
     /**
-     * @param  array|null  $dimensions
      * @return IconPicker
      */
     public function setDimensions(?array $dimensions)

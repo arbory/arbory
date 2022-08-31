@@ -8,32 +8,14 @@ use Waavi\Translation\Repositories\TranslationRepository;
 
 class MenuItemFactory
 {
-    /**
-     * @var Admin
-     */
-    protected $admin;
-
-    /**
-     * @var TranslationRepository
-     */
-    protected $translations;
-
-    /**
-     * @param  Admin  $admin
-     * @param  TranslationRepository  $translations
-     */
-    public function __construct(Admin $admin, TranslationRepository $translations)
+    public function __construct(protected Admin $admin, protected TranslationRepository $translations)
     {
-        $this->admin = $admin;
-        $this->translations = $translations;
     }
 
     /**
-     * @param  array|string  $definition
      * @param  null  $title
-     * @return AbstractItem
      */
-    public function build($definition, $title = null): AbstractItem
+    public function build(array|string $definition, $title = null): AbstractItem
     {
         $menuItem = null;
 
@@ -58,11 +40,7 @@ class MenuItemFactory
         return $menuItem;
     }
 
-    /**
-     * @param  array|string  $definition
-     * @return string
-     */
-    protected function getMenuItemName($definition): string
+    protected function getMenuItemName(array|string $definition): string
     {
         $name = is_array($definition) ? $definition[0] : $definition;
         $name = str_replace('Controller', '', class_basename($name));

@@ -15,15 +15,14 @@ trait HasRenderOptions
     /**
      * @var array
      */
-    protected $attributes = [];
+    protected array $attributes = [];
 
     /**
      * @var array
      */
-    protected $classes = [];
+    protected array $classes = [];
 
     /**
-     * @param  array  $attributes
      * @return mixed
      */
     public function addAttributes(array $attributes): RenderOptionsInterface
@@ -33,10 +32,6 @@ trait HasRenderOptions
         return $this;
     }
 
-    /**
-     * @param  array  $attributes
-     * @return RenderOptionsInterface
-     */
     public function setAttributes(array $attributes): RenderOptionsInterface
     {
         $this->attributes = $attributes;
@@ -44,10 +39,6 @@ trait HasRenderOptions
         return $this;
     }
 
-    /**
-     * @param  array  $attributeKeys
-     * @return RenderOptionsInterface
-     */
     public function removeAttributes(array $attributeKeys): RenderOptionsInterface
     {
         foreach ($attributeKeys as $key) {
@@ -58,10 +49,9 @@ trait HasRenderOptions
     }
 
     /**
-     * @param  string|array  $classes
      * @return mixed
      */
-    public function addClass($classes): RenderOptionsInterface
+    public function addClass(string|array $classes): RenderOptionsInterface
     {
         $classes = explode(' ', $classes);
 
@@ -75,60 +65,37 @@ trait HasRenderOptions
         return $this;
     }
 
-    /**
-     * @param $classes
-     * @return RenderOptionsInterface
-     */
-    public function setClasses($classes): RenderOptionsInterface
+    public function setClasses(array|string $classes): RenderOptionsInterface
     {
         $this->classes = Arr::wrap($classes);
 
         return $this;
     }
 
-    /**
-     * @param  string|array  $classes
-     * @return RenderOptionsInterface
-     */
-    public function removeClasses($classes): RenderOptionsInterface
+    public function removeClasses(array|string $classes): RenderOptionsInterface
     {
         $classes = Arr::wrap($classes);
 
-        $this->classes = array_filter($this->classes, function ($value) use ($classes) {
-            return ! in_array($value, $classes, true);
-        });
+        $this->classes = array_filter($this->classes, fn($value) => ! in_array($value, $classes, true));
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getAttributes(): array
     {
         return $this->attributes;
     }
 
-    /**
-     * @return array
-     */
     public function getClasses(): array
     {
         return $this->classes;
     }
 
-    /**
-     * @return callable|null
-     */
     public function getWrapper(): ?callable
     {
         return $this->wrapper;
     }
 
-    /**
-     * @param  callable|null  $value
-     * @return RenderOptionsInterface
-     */
     public function setWrapper(?callable $value): RenderOptionsInterface
     {
         $this->wrapper = $value;

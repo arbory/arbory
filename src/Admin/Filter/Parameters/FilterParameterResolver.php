@@ -8,32 +8,12 @@ use Arbory\Base\Admin\Filter\FilterValidatorBuilder;
 class FilterParameterResolver
 {
     /**
-     * @var ParameterTransformerPipeline
-     */
-    protected $transformerPipeline;
-    /**
-     * @var FilterValidatorBuilder
-     */
-    protected $filterValidator;
-
-    /**
      * ParameterResolver constructor.
-     *
-     * @param  ParameterTransformerPipeline  $transformerPipeline
-     * @param  FilterValidatorBuilder  $filterValidator
      */
-    public function __construct(
-        ParameterTransformerPipeline $transformerPipeline,
-        FilterValidatorBuilder $filterValidator
-    ) {
-        $this->transformerPipeline = $transformerPipeline;
-        $this->filterValidator = $filterValidator;
+    public function __construct(protected ParameterTransformerPipeline $transformerPipeline, protected FilterValidatorBuilder $filterValidator)
+    {
     }
 
-    /**
-     * @param  FilterManager  $filterManager
-     * @return FilterParameters
-     */
     public function resolve(FilterManager $filterManager): FilterParameters
     {
         $this->transformerPipeline->setParameters($this->createParameters());
@@ -44,11 +24,6 @@ class FilterParameterResolver
         return $this->filterInvalidParameterValues($parameters, $filterManager);
     }
 
-    /**
-     * @param  FilterParameters  $parameters
-     * @param  FilterManager  $filterManager
-     * @return FilterParameters
-     */
     protected function filterInvalidParameterValues(
         FilterParameters $parameters,
         FilterManager $filterManager
@@ -76,9 +51,6 @@ class FilterParameterResolver
         return $parameters;
     }
 
-    /**
-     * @return FilterParameters
-     */
     protected function createParameters(): FilterParameters
     {
         return new FilterParameters();

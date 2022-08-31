@@ -2,11 +2,13 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
+use Illuminate\View\View;
 
 /**
  * Interface FieldInterface.
@@ -68,7 +70,6 @@ interface FieldInterface
     public function getFieldSet();
 
     /**
-     * @param  FieldSet  $fieldSet
      * @return $this
      */
     public function setFieldSet(FieldSet $fieldSet);
@@ -89,20 +90,11 @@ interface FieldInterface
      */
     public function getRules(): array;
 
-    /**
-     * @param  Request  $request
-     */
     public function beforeModelSave(Request $request);
 
-    /**
-     * @param  Request  $request
-     */
     public function afterModelSave(Request $request);
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|Element|string
-     */
-    public function render();
+    public function render(): mixed;
 
     /**
      * @return string|null
@@ -175,7 +167,6 @@ interface FieldInterface
     public function getFieldId();
 
     /**
-     * @param  RendererInterface  $renderer
      * @return mixed
      */
     public function beforeRender(RendererInterface $renderer);

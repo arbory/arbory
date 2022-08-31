@@ -69,12 +69,10 @@ class TranslationServiceProvider extends ServiceProvider implements DeferrablePr
      */
     public function registerCacheRepository()
     {
-        $this->app->singleton('translation.cache.repository', function ($app) {
-            return RepositoryFactory::make(
-                $app['cache']->getStore(),
-                'translations'
-            );
-        });
+        $this->app->singleton('translation.cache.repository', fn($app) => RepositoryFactory::make(
+            $app['cache']->getStore(),
+            'translations'
+        ));
     }
 
     /**
