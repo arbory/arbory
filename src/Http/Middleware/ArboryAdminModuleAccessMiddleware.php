@@ -2,11 +2,14 @@
 
 namespace Arbory\Base\Http\Middleware;
 
-use Closure;
-use Illuminate\Http\Request;
+use Arbory\Base\Admin\Module;
+use Arbory\Base\Support\Facades\Admin;
 use Cartalyst\Sentinel\Sentinel;
+use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use RuntimeException;
 
 /**
  * Class ArboryAdminModuleAccessMiddleware.
@@ -22,26 +25,23 @@ class ArboryAdminModuleAccessMiddleware
 
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         $targetModule = $this->resolveTargetModule($request);
 
-        if (! $targetModule) {
-            throw new \RuntimeException('Could not find target module for route controller');
+        if (!$targetModule) {
+            throw new RuntimeException('Could not find target module for route controller');
         }
 
-        if (! $targetModule->isRequestAuthorized($request)) {
+        if (!$targetModule->isRequestAuthorized($request)) {
             return $this->denied($request);
         }
 
         return $next($request);
     }
 
-    private function denied(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    private function denied(Request $request): RedirectResponse|JsonResponse
     {
         $message = 'Unauthorized';
 
@@ -54,13 +54,10 @@ class ArboryAdminModuleAccessMiddleware
             ->withErrors($message);
     }
 
-    /**
-     * @return \Arbory\Base\Admin\Module|null
-     */
-    private function resolveTargetModule(Request $request)
+    private function resolveTargetModule(Request $request): ?Module
     {
         $controller = $request->route()->getController();
 
-        return \Admin::modules()->findModuleByController($controller);
+        return Admin::modules()->findModuleByController($controller);
     }
 }

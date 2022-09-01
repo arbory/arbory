@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Http\Middleware;
 
+use Cartalyst\Sentinel\Roles\RoleInterface;
+use Cartalyst\Sentinel\Sentinel;
 use Closure;
-use Sentinel;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Cartalyst\Sentinel\Roles\RoleInterface;
+use Illuminate\Http\Request;
 
 /**
  * Class SentinelUserInRole.
@@ -21,34 +21,31 @@ class ArboryAdminInRoleMiddleware
     {
     }
 
-    /**
-     * @return JsonResponse|RedirectResponse|mixed
-     */
-    public function handle(Request $request, Closure $next, string|int|\Cartalyst\Sentinel\Roles\RoleInterface $role)
+    public function handle(Request $request, Closure $next, string|int|RoleInterface $role): mixed
     {
-        if (! $this->sentinel->check()) {
+        if (!$this->sentinel->check()) {
             return $this->denied($request);
         }
 
         /* @noinspection PhpUndefinedMethodInspection */
-        if (! $this->sentinel->inRole($role)) {
+        if (!$this->sentinel->inRole($role)) {
             return $this->denied($request);
         }
 
         return $next($request);
     }
 
-    public function denied(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    public function denied(Request $request): RedirectResponse|JsonResponse
     {
         if ($request->ajax()) {
             $message = trans('arbory.admin_unauthorized', 'Unauthorized');
 
             return response()->json(['error' => $message], 401);
-        } else {
-            $message = trans('arbory.admin_need_permission', 'You do not have permission to do that.');
-            session()->flash('error', $message);
-
-            return redirect()->back();
         }
+
+        $message = trans('arbory.admin_need_permission', 'You do not have permission to do that.');
+        session()->flash('error', $message);
+
+        return redirect()->back();
     }
 }

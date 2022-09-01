@@ -2,25 +2,21 @@
 
 namespace Arbory\Base\Http\Middleware;
 
+use Arbory\Base\Pages\Redirect;
 use Closure;
 use Illuminate\Http\Request;
-use Arbory\Base\Pages\Redirect;
-use Illuminate\Http\RedirectResponse;
 
 class ArboryRouteRedirectMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  Request  $request
-     * @return RedirectResponse
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         $redirect = Redirect::query();
 
         $redirect->whereIn('from_url', [$request->url(), $request->path()]);
-        $redirect->orWhere('from_url', 'LIKE', '_'.$request->path().'_');
+        $redirect->orWhere('from_url', 'LIKE', '_' . $request->path() . '_');
 
         $redirect = $redirect->first(['to_url', 'status']);
 

@@ -15,15 +15,12 @@ class ArboryAdminSwitchedOffModuleMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  Request  $request
-     * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         $availableModule = $this->getFirstAvailableModule($request);
 
-        if (! $availableModule) {
+        if (!$availableModule) {
             throw new AccessDeniedHttpException();
         }
 
@@ -34,7 +31,7 @@ class ArboryAdminSwitchedOffModuleMiddleware
     {
         $switchedOffModule = $this->resolveSwitchedOffModule($request);
 
-        if (! $switchedOffModule) {
+        if (!$switchedOffModule) {
             return null;
         }
 
@@ -46,6 +43,6 @@ class ArboryAdminSwitchedOffModuleMiddleware
     {
         $controller = $request->route()->getController();
 
-        return \Admin::modules()->findModuleByController($controller);
+        return Admin::modules()->findModuleByController($controller);
     }
 }

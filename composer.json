@@ -18,10 +18,6 @@
         {
             "type": "git",
             "url": "https://github.com/abstractrs/translation.git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/dmitrijsmihailovs/baum.git"
         }
     ],
     "require": {
@@ -30,7 +26,7 @@
         "laravel/framework": "^9.0",
         "laravelcollective/html": "^6.0",
         "doctrine/dbal": "^2.5",
-        "baum/baum": "v2.x-dev",
+        "baum/baum": "3.x-dev",
         "goldspecdigital/laravel-eloquent-uuid": "^9.0",
         "astrotomic/laravel-translatable": "^11.6",
         "abstractrs/translation": "dev-master",

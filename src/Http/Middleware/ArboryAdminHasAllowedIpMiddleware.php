@@ -4,18 +4,12 @@ namespace Arbory\Base\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 
 class ArboryAdminHasAllowedIpMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Request  $request
-     * @return RedirectResponse|null
-     */
-    public function handle($request, Closure $next)
+
+    public function handle(Request $request, Closure $next): mixed
     {
         if ($this->isAllowedIp($request)) {
             return $next($request);
@@ -51,10 +45,7 @@ class ArboryAdminHasAllowedIpMiddleware
         return false;
     }
 
-    /**
-     * @return array
-     */
-    protected function getAllowedIps()
+    protected function getAllowedIps(): array
     {
         return config('arbory.auth.ip.allowed', []);
     }
