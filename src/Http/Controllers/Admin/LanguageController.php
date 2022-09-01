@@ -102,7 +102,7 @@ class LanguageController extends Controller
         /** @var Language $model */
         $model = $tools->model();
 
-        $tools->add('edit', $this->url('edit', $model->getKey()));
+        $tools->add('edit', $this->url('edit', [$model->getKey()]));
 
         $disableUrl = $this->url('dialog', ['dialog' => 'confirm_disable', 'id' => $model->getKey()]);
         $restoreUrl = $this->url('dialog', ['dialog' => 'confirm_restore', 'id' => $model->getKey()]);

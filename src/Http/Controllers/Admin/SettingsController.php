@@ -153,6 +153,6 @@ class SettingsController extends Controller
     {
         $model = $tools->model();
 
-        $tools->add('edit', $this->url('edit', $model->getKey()));
+        $tools->add('edit', $this->url('edit', [$model->getKey()]));
     }
 }

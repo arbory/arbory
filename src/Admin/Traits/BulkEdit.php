@@ -17,7 +17,7 @@ trait BulkEdit
     protected function buildBulkEditForm(Model $model): Form
     {
         $form = new Form($model);
-        $form->setAction($this->url('bulkupdate', $model->getKey()));
+        $form->setAction($this->url('bulkupdate', [$model->getKey()]));
         $form->setModule($this->module());
         $form->setRenderer(new Form\BulkEditFormBuilder($form));
         $this->bulkEditForm($form);
