@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Filter\Config;
 
+use ReflectionException;
 use ReflectionClass;
 use Illuminate\Support\Str;
 use Arbory\Base\Support\ExtendedFluent;
@@ -14,7 +15,7 @@ class BaseConfig extends ExtendedFluent
      * Returns defined config options.
      *
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function getAvailable(): array
     {

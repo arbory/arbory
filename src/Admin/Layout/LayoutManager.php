@@ -32,7 +32,7 @@ class LayoutManager
      *
      * @param $pageClass
      */
-    public function page($pageClass): \Arbory\Base\Admin\Layout\LayoutInterface|\Arbory\Base\Admin\Layout\PageInterface
+    public function page($pageClass): LayoutInterface|PageInterface
     {
         $this->page = $this->make($pageClass, 'page');
 

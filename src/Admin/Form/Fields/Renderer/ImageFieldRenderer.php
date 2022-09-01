@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Files\ArboryImage;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Inputs\Input;
@@ -15,7 +16,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 final class ImageFieldRenderer extends FileFieldRenderer
 {
     /**
-     * @return \Arbory\Base\Html\Elements\Element
+     * @return Element
      */
     public function render()
     {

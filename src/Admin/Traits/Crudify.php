@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Traits;
 
+use Arbory\Base\Admin\Layout\FormLayoutInterface;
+use Arbory\Base\Admin\Layout\LayoutManager;
 use Arbory\Base\Admin\Exports\DataSetExport;
 use Arbory\Base\Admin\Exports\ExportInterface;
 use Arbory\Base\Admin\Exports\Type\ExcelExport;
@@ -61,7 +63,7 @@ trait Crudify
         return $this->module;
     }
 
-    protected function form(Form $form, ?Layout\FormLayoutInterface $layout = null): Form
+    protected function form(Form $form, ?FormLayoutInterface $layout = null): Form
     {
         return $form;
     }
@@ -69,7 +71,7 @@ trait Crudify
     /**
      * @throws Exception
      */
-    protected function buildForm(Model $model, ?Layout\FormLayoutInterface $layout = null): Form
+    protected function buildForm(Model $model, ?FormLayoutInterface $layout = null): Form
     {
         $form = new Form($model);
         $form->setModule($this->module());
@@ -96,7 +98,7 @@ trait Crudify
         return $this->grid($grid) ?: $grid;
     }
 
-    public function index(Layout\LayoutManager $manager): Layout
+    public function index(LayoutManager $manager): Layout
     {
         $layout = $this->layout('grid');
 
@@ -126,7 +128,7 @@ trait Crudify
     /**
      * @throws Exception
      */
-    public function create(Layout\LayoutManager $manager): Layout
+    public function create(LayoutManager $manager): Layout
     {
         $layout = $this->layout('form');
         $form = $this->buildForm($this->resource(), $layout);
@@ -162,7 +164,7 @@ trait Crudify
      * @param  $resourceId
      * @return Layout
      */
-    public function edit($resourceId, Layout\LayoutManager $manager)
+    public function edit($resourceId, LayoutManager $manager)
     {
         $resource = $this->findOrNew($resourceId);
         $layout = $this->layout('form');

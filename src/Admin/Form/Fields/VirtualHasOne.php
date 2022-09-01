@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Illuminate\Database\Eloquent\MassAssignmentException;
 use Arbory\Base\Html\Html;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
@@ -55,7 +56,7 @@ class VirtualHasOne extends HasOne
     }
 
     /**
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws MassAssignmentException
      */
     public function afterModelSave(Request $request)
     {

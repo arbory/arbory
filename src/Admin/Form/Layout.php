@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form;
 
+use Arbory\Base\Admin\Form\Widgets\Controls;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Panels\FormPanel;
 use Arbory\Base\Admin\Layout\Footer\Tools;
@@ -58,7 +59,7 @@ class Layout extends AbstractLayout implements FormLayoutInterface
     public function setForm(Form $form)
     {
         $this->form = $form;
-        $this->controls = new Widgets\Controls(new Tools(), $this->url('index'));
+        $this->controls = new Controls(new Tools(), $this->url('index'));
 
         return $this;
     }
@@ -95,12 +96,12 @@ class Layout extends AbstractLayout implements FormLayoutInterface
         );
     }
 
-    public function getControls(): Widgets\Controls
+    public function getControls(): Controls
     {
         return $this->controls;
     }
 
-    public function setControls(Widgets\Controls $controls): self
+    public function setControls(Controls $controls): self
     {
         $this->controls = $controls;
 

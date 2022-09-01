@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Nodes\Routing;
 
+use Illuminate\Routing\Route;
 use Closure;
 use Arbory\Base\Nodes\Node;
 use Illuminate\Http\Request;
@@ -122,9 +123,9 @@ class Router
     }
 
     /**
-     * @return Collection|\Illuminate\Routing\Route[]
+     * @return Collection|Route[]
      */
-    protected function findRoutesForNode(Node $node): \Illuminate\Support\Collection|array
+    protected function findRoutesForNode(Node $node): Collection|array
     {
         $routes = $this->getRouter()->getRoutes()->getIterator();
 

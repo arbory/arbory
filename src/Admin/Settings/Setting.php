@@ -2,6 +2,9 @@
 
 namespace Arbory\Base\Admin\Settings;
 
+use Illuminate\Database\Eloquent\MassAssignmentException;
+use ErrorException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Services\SettingRegistry;
 use Arbory\Base\Support\Translate\Translatable;
@@ -57,10 +60,10 @@ class Setting extends Model
     /**
      * @return Model|self
      *
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
-     * @throws \ErrorException
+     * @throws MassAssignmentException
+     * @throws ErrorException
      */
-    public function fill(array $attributes): \Illuminate\Database\Eloquent\Model|self
+    public function fill(array $attributes): Model|self
     {
         $name = Arr::get($attributes, 'name');
 
@@ -89,7 +92,7 @@ class Setting extends Model
      * @param mixed $value
      * @return Model|self
      */
-    public function setAttribute($key, $value): \Illuminate\Database\Eloquent\Model|self
+    public function setAttribute($key, $value): Model|self
     {
         if ($this->isTranslatable()) {
             return $this->setTranslatableAttribute($key, $value);
@@ -111,7 +114,7 @@ class Setting extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function value(mixed $column = null)
     {
@@ -119,7 +122,7 @@ class Setting extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function file()
     {

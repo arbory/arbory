@@ -31,7 +31,7 @@ class Pagination implements Renderable
     /**
      * Get the evaluated contents of the object.
      */
-    public function render(): string|\Arbory\Base\Html\Elements\Element
+    public function render(): string|Element
     {
         return Html::div([
             $this->getPreviousPageButton(),

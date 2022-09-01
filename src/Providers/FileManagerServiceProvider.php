@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Providers;
 
+use UniSharp\LaravelFilemanager\Lfm;
+use Intervention\Image\Facades\Image;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -28,7 +30,7 @@ class FileManagerServiceProvider extends ServiceProvider
                 'prefix' => config('arbory.lfm.prefix'),
                 'middleware' => config('arbory.lfm.middleware'),
             ], function () {
-                \UniSharp\LaravelFilemanager\Lfm::routes();
+                Lfm::routes();
             });
         }
     }
@@ -41,6 +43,6 @@ class FileManagerServiceProvider extends ServiceProvider
 
     protected function registerAliases(): void
     {
-        AliasLoader::getInstance()->alias('Image', \Intervention\Image\Facades\Image::class);
+        AliasLoader::getInstance()->alias('Image', Image::class);
     }
 }

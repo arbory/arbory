@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Layout\Grid;
 
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 
 class Row
@@ -42,7 +43,7 @@ class Row
     }
 
     /**
-     * @return \Arbory\Base\Html\Elements\Element
+     * @return Element
      */
     public function render()
     {

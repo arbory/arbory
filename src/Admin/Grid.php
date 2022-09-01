@@ -200,7 +200,7 @@ class Grid
     /**
      * @return Grid
      */
-    public function items(array|\Illuminate\Support\Collection $items)
+    public function items(array|Collection $items)
     {
         if (is_array($items)) {
             $items = new Collection($items);
@@ -236,7 +236,7 @@ class Grid
     /**
      * @return Collection|Column[]
      */
-    public function getColumns(): \Illuminate\Support\Collection|array
+    public function getColumns(): Collection|array
     {
         return $this->columns;
     }
@@ -315,7 +315,7 @@ class Grid
         return $column;
     }
 
-    protected function buildRows(\Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator $items)
+    protected function buildRows(Collection|LengthAwarePaginator $items)
     {
         if ($items instanceof LengthAwarePaginator) {
             $items = new Collection($items->items());
@@ -329,7 +329,7 @@ class Grid
         call_user_func($callback, $this->filter);
     }
 
-    protected function fetchData(): \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
+    protected function fetchData(): LengthAwarePaginator|Collection
     {
         if (method_exists($this->filter, 'setPaginated')) {
             $this->filter->setPaginated($this->paginated);

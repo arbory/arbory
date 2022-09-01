@@ -2,6 +2,9 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use RuntimeException;
+use InvalidArgumentException;
 use Illuminate\Http\Request;
 use Arbory\Base\Files\ArboryFileFactory;
 use Arbory\Base\Repositories\ArboryFilesRepository;
@@ -109,9 +112,9 @@ class ArboryFile extends ControlField
     /**
      * @return void
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
+     * @throws FileNotFoundException
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     public function afterModelSave(Request $request)
     {

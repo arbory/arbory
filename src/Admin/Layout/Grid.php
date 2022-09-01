@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Layout;
 
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Layout\Grid\Row;
 use Arbory\Base\Html\Elements\Content;
@@ -65,7 +66,7 @@ class Grid implements Renderable
         return static::SIZE_MAX;
     }
 
-    public function render(): \Arbory\Base\Html\Elements\Element|string
+    public function render(): Element|string
     {
         $content = Html::div(null)->addClass('grid');
 

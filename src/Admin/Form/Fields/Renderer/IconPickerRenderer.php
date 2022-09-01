@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use SimpleXMLElement;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\HtmlString;
 use Arbory\Base\Html\Elements\Content;
@@ -94,7 +95,7 @@ class IconPickerRenderer extends SelectFieldRenderer
      * @param  int  $height
      * @return string
      */
-    protected function resolveViewBox(\SimpleXMLElement $iconNode, $width, $height)
+    protected function resolveViewBox(SimpleXMLElement $iconNode, $width, $height)
     {
         $resolver = $this->field->getViewboxResolver();
 

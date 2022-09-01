@@ -17,7 +17,7 @@ trait HasSelectOptions
     /**
      * @return $this
      */
-    public function options(\Illuminate\Support\Collection|array $options)
+    public function options(Collection|array $options)
     {
         if (is_array($options)) {
             $options = new Collection($options);

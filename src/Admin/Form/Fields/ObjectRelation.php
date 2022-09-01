@@ -2,6 +2,10 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use ReflectionClass;
+use Exception;
+use Illuminate\Database\Eloquent\MassAssignmentException;
+use ReflectionException;
 use Closure;
 use Arbory\Base\Nodes\Node;
 use Illuminate\Http\Request;
@@ -53,7 +57,7 @@ class ObjectRelation extends AbstractField
             $this->options = $relatedModelType;
 
             if (! $relatedModelType->isEmpty()) {
-                $this->relatedModelType = (new \ReflectionClass($relatedModelType->first()))->getName();
+                $this->relatedModelType = (new ReflectionClass($relatedModelType->first()))->getName();
             }
         }
 
@@ -133,8 +137,8 @@ class ObjectRelation extends AbstractField
     /**
      * @return void
      *
-     * @throws \Exception
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws Exception
+     * @throws MassAssignmentException
      */
     public function afterModelSave(Request $request)
     {
@@ -162,7 +166,7 @@ class ObjectRelation extends AbstractField
      * @param  int  $relationId
      * @return void
      *
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws MassAssignmentException
      */
     protected function saveOne($relationId)
     {
@@ -211,7 +215,7 @@ class ObjectRelation extends AbstractField
      * @param  array  $updatedRelationIds
      * @return void
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function deleteOldRelations($updatedRelationIds = [])
     {
@@ -230,7 +234,7 @@ class ObjectRelation extends AbstractField
     /**
      * @return \Illuminate\Database\Eloquent\Collection|Collection
      */
-    public function getOptions(): \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+    public function getOptions(): \Illuminate\Database\Eloquent\Collection|Collection
     {
         $values = collect();
 
@@ -279,7 +283,7 @@ class ObjectRelation extends AbstractField
             ->setDisabled($this->isDisabled())
             ->setInteractive($this->isInteractive());
         $fieldSet->hidden('related_type')
-            ->setValue((new \ReflectionClass($this->relatedModelType))->getName())
+            ->setValue((new ReflectionClass($this->relatedModelType))->getName())
             ->setDisabled($this->isDisabled())
             ->setInteractive($this->isInteractive());
 
@@ -297,8 +301,8 @@ class ObjectRelation extends AbstractField
     protected function getOwnerType()
     {
         try {
-            return (new \ReflectionClass($this->getModel()))->getName();
-        } catch (\ReflectionException) {
+            return (new ReflectionClass($this->getModel()))->getName();
+        } catch (ReflectionException) {
             return;
         }
     }

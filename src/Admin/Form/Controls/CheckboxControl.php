@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Controls;
 
+use Arbory\Base\Exceptions\BadMethodCallException;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Elements\Inputs\Input as InputElement;
@@ -17,7 +18,7 @@ class CheckboxControl extends InputControl
 
     /**
      * @return Content
-     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function render(Element $control)
     {

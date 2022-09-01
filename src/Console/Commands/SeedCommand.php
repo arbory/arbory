@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Console\Commands;
 
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Database\Seeders\ArboryDatabaseSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Database\Seeder;
@@ -38,7 +39,7 @@ class SeedCommand extends Command
     /**
      * @return void
      *
-     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function handle()
     {
@@ -56,7 +57,7 @@ class SeedCommand extends Command
     /**
      * @return Seeder
      *
-     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getSeeder()
     {
@@ -68,7 +69,7 @@ class SeedCommand extends Command
     /**
      * @return string
      *
-     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getDatabase()
     {

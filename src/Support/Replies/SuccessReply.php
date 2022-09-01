@@ -20,7 +20,7 @@ class SuccessReply extends Reply
     /**
      * @var string
      */
-    public function dispatch($url = '/'): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    public function dispatch($url = '/'): JsonResponse|RedirectResponse
     {
         $request = app('request');
 

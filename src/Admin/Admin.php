@@ -30,7 +30,7 @@ class Admin
     }
 
     /**
-     * @return \Cartalyst\Sentinel\Sentinel
+     * @return Sentinel
      */
     public function sentinel()
     {
@@ -38,7 +38,7 @@ class Admin
     }
 
     /**
-     * @return \Arbory\Base\Services\AssetPipeline
+     * @return AssetPipeline
      */
     public function assets()
     {
@@ -46,7 +46,7 @@ class Admin
     }
 
     /**
-     * @return \Arbory\Base\Admin\Module\ModuleRoutesRegistry
+     * @return ModuleRoutesRegistry
      */
     public function routes()
     {
@@ -54,7 +54,7 @@ class Admin
     }
 
     /**
-     * @return \Arbory\Base\Services\ModuleRegistry
+     * @return ModuleRegistry
      */
     public function modules()
     {
@@ -62,7 +62,7 @@ class Admin
     }
 
     /**
-     * @return \Arbory\Base\Menu\Menu
+     * @return Menu
      */
     public function menu()
     {

@@ -2,6 +2,9 @@
 
 namespace Arbory\Base\Files;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use InvalidArgumentException;
+use RuntimeException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Repositories\ArboryFilesRepository;
@@ -15,17 +18,17 @@ class ArboryFileFactory
 
     /**
      * @return ArboryFile
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws FileNotFoundException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
-    public function make(Model $model, \Illuminate\Http\UploadedFile|\Arbory\Base\Files\ArboryFile $file, string $relationName)
+    public function make(Model $model, UploadedFile|ArboryFile $file, string $relationName)
     {
         $arboryFile = $this->writeFile($model, $file);
         $relation = $model->{$relationName}();
 
         if (! $relation instanceof BelongsTo) {
-            throw new \InvalidArgumentException('Unsupported relation');
+            throw new InvalidArgumentException('Unsupported relation');
         }
 
         $localKey = explode('.', $relation->getQualifiedForeignKeyName())[1];
@@ -40,11 +43,11 @@ class ArboryFileFactory
     /**
      * @return ArboryFile|null
      *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @throws FileNotFoundException
      */
-    private function writeFile(Model $model, \Illuminate\Http\UploadedFile|\Arbory\Base\Files\ArboryFile $file)
+    private function writeFile(Model $model, UploadedFile|ArboryFile $file)
     {
         $arboryFile = null;
 
@@ -54,7 +57,7 @@ class ArboryFileFactory
             $contents = $this->repository->getDisk()->get($file->getLocalName());
             $arboryFile = $this->repository->createFromBlob($file->getLocalName(), $contents, $model);
         } else {
-            throw new \InvalidArgumentException('Invalid file source');
+            throw new InvalidArgumentException('Invalid file source');
         }
 
         return $arboryFile;

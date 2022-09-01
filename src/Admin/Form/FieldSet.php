@@ -2,6 +2,30 @@
 
 namespace Arbory\Base\Admin\Form;
 
+use Arbory\Base\Admin\Form\Fields\BelongsTo;
+use Arbory\Base\Admin\Form\Fields\BelongsToMany;
+use Arbory\Base\Admin\Form\Fields\Checkbox;
+use Arbory\Base\Admin\Form\Fields\DateTime;
+use Arbory\Base\Admin\Form\Fields\ArboryFile;
+use Arbory\Base\Admin\Form\Fields\HasMany;
+use Closure;
+use Arbory\Base\Admin\Form\Fields\HasOne;
+use Arbory\Base\Admin\Form\Fields\Hidden;
+use Arbory\Base\Admin\Form\Fields\IconPicker;
+use Arbory\Base\Admin\Form\Fields\ArboryImage;
+use Arbory\Base\Admin\Form\Fields\Link;
+use Arbory\Base\Admin\Form\Fields\MapCoordinates;
+use Arbory\Base\Admin\Form\Fields\CompactRichtext;
+use Arbory\Base\Admin\Form\Fields\MultipleSelect;
+use Arbory\Base\Admin\Form\Fields\ObjectRelation;
+use Arbory\Base\Admin\Form\Fields\Password;
+use Arbory\Base\Admin\Form\Fields\Richtext;
+use Arbory\Base\Admin\Form\Fields\Select;
+use Arbory\Base\Admin\Form\Fields\Slug;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\Fields\Textarea;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Form\Fields\Constructor;
 use Countable;
 use ArrayAccess;
 use Illuminate\Support\Arr;
@@ -23,29 +47,29 @@ use Waavi\Translation\Repositories\LanguageRepository;
 /**
  * Class FieldSet.
  *
- * @method \Arbory\Base\Admin\Form\Fields\BelongsTo belongsTo(string $relationName)
- * @method \Arbory\Base\Admin\Form\Fields\BelongsToMany belongsToMany(string $relationName)
- * @method \Arbory\Base\Admin\Form\Fields\Checkbox checkbox(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\DateTime dateTime(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\ArboryFile file(string $relationName)
- * @method \Arbory\Base\Admin\Form\Fields\HasMany hasMany(string $relationName, \Closure $fieldSetCallback)
- * @method \Arbory\Base\Admin\Form\Fields\HasOne hasOne(string $relationName, \Closure $fieldSetCallback)
- * @method \Arbory\Base\Admin\Form\Fields\Hidden hidden(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\IconPicker icon(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\ArboryImage image(string $relationName)
- * @method \Arbory\Base\Admin\Form\Fields\Link link(string $relationName)
- * @method \Arbory\Base\Admin\Form\Fields\MapCoordinates mapCoordinates(string $relationName)
- * @method \Arbory\Base\Admin\Form\Fields\CompactRichtext markup(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\MultipleSelect multipleSelect(string $relationName)
- * @method \Arbory\Base\Admin\Form\Fields\ObjectRelation objectRelation(string $relation, $relatedModel, $limit = 0)
- * @method \Arbory\Base\Admin\Form\Fields\Password password(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\Richtext richtext(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\Select select(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\Slug slug(string $fieldName, string $fromFieldName, string $apiUrl)
- * @method \Arbory\Base\Admin\Form\Fields\Text text(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\Textarea textarea(string $fieldName)
- * @method \Arbory\Base\Admin\Form\Fields\Translatable translatable(FieldInterface $field)
- * @method \Arbory\Base\Admin\Form\Fields\Constructor constructor( string $fieldName, ?BlockRegistry $registry = null)
+ * @method BelongsTo belongsTo(string $relationName)
+ * @method BelongsToMany belongsToMany(string $relationName)
+ * @method Checkbox checkbox(string $fieldName)
+ * @method DateTime dateTime(string $fieldName)
+ * @method ArboryFile file(string $relationName)
+ * @method HasMany hasMany(string $relationName, Closure $fieldSetCallback)
+ * @method HasOne hasOne(string $relationName, Closure $fieldSetCallback)
+ * @method Hidden hidden(string $fieldName)
+ * @method IconPicker icon(string $fieldName)
+ * @method ArboryImage image(string $relationName)
+ * @method Link link(string $relationName)
+ * @method MapCoordinates mapCoordinates(string $relationName)
+ * @method CompactRichtext markup(string $fieldName)
+ * @method MultipleSelect multipleSelect(string $relationName)
+ * @method ObjectRelation objectRelation(string $relation, $relatedModel, $limit = 0)
+ * @method Password password(string $fieldName)
+ * @method Richtext richtext(string $fieldName)
+ * @method Select select(string $fieldName)
+ * @method Slug slug(string $fieldName, string $fromFieldName, string $apiUrl)
+ * @method Text text(string $fieldName)
+ * @method Textarea textarea(string $fieldName)
+ * @method Translatable translatable(FieldInterface $field)
+ * @method Constructor constructor(string $fieldName, ?BlockRegistry $registry = null)
  */
 class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Renderable
 {
@@ -139,7 +163,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * @return Collection|FieldInterface[]
      */
-    public function getFields(): \Illuminate\Support\Collection|array
+    public function getFields(): Collection|array
     {
         return $this->items;
     }

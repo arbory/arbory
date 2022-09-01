@@ -27,7 +27,7 @@ class FileFieldRenderer extends ControlFieldRenderer
     }
 
     /**
-     * @return \Arbory\Base\Html\Elements\Element
+     * @return Element
      */
     public function render()
     {

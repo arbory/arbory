@@ -62,7 +62,7 @@ abstract class AbstractLayout
     /**
      * Returns defined slots.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function slots()
     {

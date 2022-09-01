@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Exception;
+use Arbory\Base\Admin\Grid\Layout;
 use Arbory\Base\Admin\Form\Fields\Checkbox;
 use Arbory\Base\Admin\Form\Fields\EmptyField;
 use Arbory\Base\Admin\Form;
@@ -53,7 +55,7 @@ class RolesController extends Controller
     /**
      * @return Form
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function form(Form $form, PanelLayout $layout)
     {
@@ -88,7 +90,7 @@ class RolesController extends Controller
     public function layouts()
     {
         return [
-            'grid' => Grid\Layout::class,
+            'grid' => Layout::class,
             'form' => PanelLayout::class,
         ];
     }
@@ -146,7 +148,7 @@ class RolesController extends Controller
         });
     }
 
-    protected function getPermissionCheckbox(Module $module, ModulePermission $permission): Form\Fields\Checkbox
+    protected function getPermissionCheckbox(Module $module, ModulePermission $permission): Checkbox
     {
         return (new Checkbox($permission->getName()))
             ->setValue($permission->isAllowed())
@@ -168,7 +170,7 @@ class RolesController extends Controller
         );
     }
 
-    protected function getSelectionField(): Form\Fields\EmptyField
+    protected function getSelectionField(): EmptyField
     {
         $selectAllButton = Html::link(trans('arbory::permissions.select_all'))
             ->addClass('button primary')

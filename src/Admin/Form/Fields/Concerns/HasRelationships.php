@@ -21,7 +21,7 @@ trait HasRelationships
     /**
      * @return Relation|BelongsTo|BelongsToMany|HasOne|HasMany|MorphOne|MorphMany|MorphTo
      */
-    public function getRelation(): \Illuminate\Database\Eloquent\Relations\Relation|\Illuminate\Database\Eloquent\Relations\BelongsTo|\Illuminate\Database\Eloquent\Relations\BelongsToMany|\Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Relations\MorphOne|\Illuminate\Database\Eloquent\Relations\MorphMany|\Illuminate\Database\Eloquent\Relations\MorphTo
+    public function getRelation(): Relation|BelongsTo|BelongsToMany|HasOne|HasMany|MorphOne|MorphMany|MorphTo
     {
         return $this->getModel()->{$this->getName()}();
     }
@@ -37,7 +37,7 @@ trait HasRelationships
     /**
      * @return Collection|Model[]
      */
-    public function getRelatedItems(): \Illuminate\Database\Eloquent\Collection|array
+    public function getRelatedItems(): Collection|array
     {
         return $this->getRelatedModel()->all()->keyBy($this->getRelatedModel()->getKeyName());
     }

@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Nested;
 
+use Arbory\Base\Exceptions\BadMethodCallException;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\FieldSet;
@@ -43,7 +44,7 @@ class PaneledItemRenderer implements ItemInterface
     }
 
     /**
-     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     * @throws BadMethodCallException
      */
     protected function addRemoveButton(FieldInterface $field, Panel $panel, Content $content, $name)
     {

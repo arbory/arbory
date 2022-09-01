@@ -2,6 +2,9 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Form\Fields\AbstractField;
+use App;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
@@ -41,7 +44,7 @@ class SettingsController extends Controller
     {
         $definition = $this->settingRegistry->find($form->getModel()->getKey());
 
-        $form->setFields(function (Form\FieldSet $fields) use ($definition) {
+        $form->setFields(function (FieldSet $fields) use ($definition) {
             $fields->add($this->getField($fields, $definition));
             $fields->hidden('type')->setValue($definition->getType());
         });
@@ -96,7 +99,7 @@ class SettingsController extends Controller
     /**
      * @return Form\Fields\AbstractField|Translatable
      */
-    protected function getField(Form\FieldSet $fields, SettingDefinition $definition): \Arbory\Base\Admin\Form\Fields\AbstractField|\Arbory\Base\Admin\Form\Fields\Translatable
+    protected function getField(FieldSet $fields, SettingDefinition $definition): AbstractField|Translatable
     {
         /**
          * @var Form\Fields\AbstractField
@@ -139,7 +142,7 @@ class SettingsController extends Controller
     protected function getSettings()
     {
         /** @var SettingFactory $factory */
-        $factory = \App::make(SettingFactory::class);
+        $factory = App::make(SettingFactory::class);
         $result = [];
 
         foreach ($this->settingRegistry->getSettings()->keys() as $key) {

@@ -2,6 +2,9 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Closure;
+use ReflectionClass;
 use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\Fields\Deactivator;
@@ -111,7 +114,7 @@ class NodesController extends Controller
         )->danger()->dialog();
     }
 
-    public function create(Request $request, LayoutManager $manager): \Illuminate\Http\RedirectResponse|\Arbory\Base\Admin\Layout
+    public function create(Request $request, LayoutManager $manager): RedirectResponse|Layout
     {
         $contentType = $request->get('content_type');
 
@@ -186,7 +189,7 @@ class NodesController extends Controller
         return view('arbory::dialogs.content_types', ['types' => $types]);
     }
 
-    protected function nodeRepositionApi(Request $request): \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+    protected function nodeRepositionApi(Request $request): ResponseFactory|\Symfony\Component\HttpFoundation\Response
     {
         /**
          * @var NodesRepository
@@ -253,7 +256,7 @@ class NodesController extends Controller
     /**
      * Creates a closure for content field.
      *
-     * @return \Closure
+     * @return Closure
      */
     protected function contentResolver(ContentTypeDefinition $definition, ?LayoutInterface $layout)
     {
@@ -279,7 +282,7 @@ class NodesController extends Controller
             $attribute = \request()->input("{$form->getNamespace()}.{$morphType}");
         }
 
-        $class = ( new \ReflectionClass($attribute) )->getName();
+        $class = ( new ReflectionClass($attribute) )->getName();
 
         return $this->contentTypeRegister->findByModelClass($class);
     }

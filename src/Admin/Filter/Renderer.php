@@ -111,7 +111,7 @@ class Renderer
         ])->addClass('accordion');
     }
 
-    public function render(): \Arbory\Base\Html\Elements\Content|string
+    public function render(): Content|string
     {
         return new Content([
             Html::form([

@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Settings;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class SettingTranslation extends Model
@@ -19,7 +20,7 @@ class SettingTranslation extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function setting()
     {

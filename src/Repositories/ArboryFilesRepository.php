@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Repositories;
 
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +32,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
         parent::__construct();
     }
 
-    public function getDisk(): \Illuminate\Filesystem\FilesystemAdapter|string
+    public function getDisk(): FilesystemAdapter|string
     {
         if (! $this->disk) {
             $this->disk = Storage::disk($this->diskName);

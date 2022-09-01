@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use App;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Form\FieldSet;
 use Waavi\Translation\Models\Language;
@@ -37,15 +38,15 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     public function __construct(protected FieldInterface $field)
     {
         /** @var LanguageRepository $languages */
-        $languages = \App::make(LanguageRepository::class);
-        $this->currentLocale = \App::getLocale();
+        $languages = App::make(LanguageRepository::class);
+        $this->currentLocale = App::getLocale();
 
         $this->locales = $languages->all()->map(fn(Language $language) => $language->locale)->toArray();
 
         parent::__construct('translations');
     }
 
-    public function getModel(): TranslatableModel|\Illuminate\Database\Eloquent\Model
+    public function getModel(): TranslatableModel|Model
     {
         return parent::getModel();
     }

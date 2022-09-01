@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Providers;
 
+use InvalidArgumentException;
 use Exception;
 use Illuminate\Http\Response;
 use Arbory\Base\Auth\Roles\Role;
@@ -136,7 +137,7 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function registerCheckpoints()
     {
@@ -282,7 +283,7 @@ class AuthServiceProvider extends ServiceProvider
             return $sentinel;
         });
 
-        $this->app->alias('sentinel', \Cartalyst\Sentinel\Sentinel::class);
+        $this->app->alias('sentinel', Sentinel::class);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,7 +35,7 @@ interface FilterInterface
     public function withRelation(string $relationName);
 
     /**
-     * @return \Illuminate\Database\Query\Builder
+     * @return Builder
      */
     public function getQuery();
 }

@@ -52,7 +52,7 @@ class Filter implements FilterInterface
         $this->query->with($relationName);
     }
 
-    public function getQuery(): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder
+    public function getQuery(): Builder|\Illuminate\Database\Query\Builder
     {
         return $this->query;
     }

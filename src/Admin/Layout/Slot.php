@@ -9,7 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 class Slot implements Renderable
 {
     /**
-     * @var \Illuminate\Support\Collection|Slot[]
+     * @var Collection|Slot[]
      */
     protected $children;
 
@@ -59,7 +59,7 @@ class Slot implements Renderable
         return $this->children->get($name);
     }
 
-    public function render(): \Arbory\Base\Html\Elements\Content|string
+    public function render(): Content|string
     {
         if (is_callable($this->contents)) {
             $content = $this->contents;

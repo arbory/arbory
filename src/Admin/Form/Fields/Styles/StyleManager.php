@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Styles;
 
+use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Illuminate\Foundation\Application;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\GenericRenderer;
@@ -12,7 +14,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 class StyleManager
 {
     /**
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     protected $styles;
 
@@ -73,7 +75,7 @@ class StyleManager
 
             return $style->render($renderer, $options);
         } else {
-            throw new \InvalidArgumentException("Unknown field style '{$name}'");
+            throw new InvalidArgumentException("Unknown field style '{$name}'");
         }
     }
 

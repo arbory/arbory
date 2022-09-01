@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Navigator;
 
+use JsonSerializable;
 use Arbory\Base\Html\Html;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Jsonable;
@@ -9,7 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
 
-class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
+class Item implements Renderable, Jsonable, JsonSerializable, Arrayable
 {
     /**
      * @var Item[]|Collection
@@ -75,7 +76,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     /**
      * @param  Collection|Item[]  $children
      */
-    public function setChildren(\Illuminate\Support\Collection|array $children): self
+    public function setChildren(Collection|array $children): self
     {
         $this->children = $children;
 

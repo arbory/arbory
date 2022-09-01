@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 class ContentTypeRegister
 {
     /**
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     protected $contentTypes;
 
@@ -57,9 +57,9 @@ class ContentTypeRegister
     }
 
     /**
-     * @return \Illuminate\Support\Collection|string[]
+     * @return Collection|string[]
      */
-    public function getAllContentTypes(): \Illuminate\Support\Collection|array
+    public function getAllContentTypes(): Collection|array
     {
         return $this->contentTypes;
     }

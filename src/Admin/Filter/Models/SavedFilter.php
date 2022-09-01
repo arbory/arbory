@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Filter\Models;
 
+use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -11,17 +13,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $module
  * @property string $filter
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter query()
- * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter whereModule($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter whereFilter($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter whereUpdatedAt($value)
+ * @method static Builder|SavedFilter newModelQuery()
+ * @method static Builder|SavedFilter newQuery()
+ * @method static Builder|SavedFilter query()
+ * @method static Builder|SavedFilter whereName($value)
+ * @method static Builder|SavedFilter whereModule($value)
+ * @method static Builder|SavedFilter whereFilter($value)
+ * @method static Builder|SavedFilter whereCreatedAt($value)
+ * @method static Builder|SavedFilter whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class SavedFilter extends Model

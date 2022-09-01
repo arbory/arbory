@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Form\FieldSet;
+use InvalidArgumentException;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
@@ -39,7 +41,7 @@ class UsersController extends Controller
      */
     protected function form(Form $form)
     {
-        $form->setFields(function (Form\FieldSet $fields, User $user) {
+        $form->setFields(function (FieldSet $fields, User $user) {
             $fields->text('first_name')->rules('required');
             $fields->text('last_name');
             $fields->text('email')->rules('required|unique:admin_users,email,'.$user->getKey());
@@ -50,7 +52,7 @@ class UsersController extends Controller
 
         $form->on('delete.before', function (Form $form) {
             if ($this->admin->sentinel()->getUser()->getKey() === $form->getModel()->getKey()) {
-                throw new \InvalidArgumentException('You cannot remove yourself!');
+                throw new InvalidArgumentException('You cannot remove yourself!');
             }
         });
 

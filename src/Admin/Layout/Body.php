@@ -2,12 +2,13 @@
 
 namespace Arbory\Base\Admin\Layout;
 
+use Closure;
 use Arbory\Base\Html\Elements\Content;
 
 class Body
 {
     /**
-     * @var \Closure
+     * @var Closure
      */
     protected $wrapper;
 
@@ -26,7 +27,7 @@ class Body
      *
      * @param  $page
      * @param  LayoutInterface  $target
-     * @param \Arbory\Base\Admin\Layout\PageInterface $page
+     * @param PageInterface $page
      */
     public function __construct(protected $page, protected $target = null)
     {

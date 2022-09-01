@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Layout;
 
+use RuntimeException;
 use Illuminate\Contracts\Container\Container;
 
 class LayoutResolver
@@ -79,7 +80,7 @@ class LayoutResolver
         $allowedSlots = $className::SLOTS;
 
         if (! in_array($name, $allowedSlots, true)) {
-            throw new \RuntimeException("Slot '{$name}' does not exist in layout '{$className}'");
+            throw new RuntimeException("Slot '{$name}' does not exist in layout '{$className}'");
         }
 
         $this->slots[$name] = $content;

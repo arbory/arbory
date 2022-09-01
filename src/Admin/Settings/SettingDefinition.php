@@ -22,7 +22,7 @@ class SettingDefinition
         protected mixed $value = null,
         string $type = null,
         protected mixed $configEntry = null,
-        protected ?\Arbory\Base\Admin\Settings\Setting $model = null
+        protected ?Setting $model = null
     ) {
         $this->type = $type ?? Text::class;
     }

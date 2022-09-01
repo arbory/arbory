@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Html\Elements;
 
+use LogicException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 
@@ -57,7 +58,7 @@ class Content extends Collection implements Renderable
             return $value;
         }
 
-        throw new \LogicException('Cannot render the contents of ' . gettype($value) . " {$className}");
+        throw new LogicException('Cannot render the contents of ' . gettype($value) . " {$className}");
     }
 
     /**

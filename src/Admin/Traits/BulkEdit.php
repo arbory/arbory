@@ -2,6 +2,13 @@
 
 namespace Arbory\Base\Admin\Traits;
 
+use Arbory\Base\Admin\Form\BulkEditFormBuilder;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Arbory\Base\Admin\Form\Fields\Checkbox;
 use Illuminate\View\View;
 use Arbory\Base\Admin\Form;
 use Illuminate\Http\Request;
@@ -19,7 +26,7 @@ trait BulkEdit
         $form = new Form($model);
         $form->setAction($this->url('bulkupdate', [$model->getKey()]));
         $form->setModule($this->module());
-        $form->setRenderer(new Form\BulkEditFormBuilder($form));
+        $form->setRenderer(new BulkEditFormBuilder($form));
         $this->bulkEditForm($form);
 
         return $form;
@@ -29,7 +36,7 @@ trait BulkEdit
     {
         $bulkEditItemIds = request('bulk_edit_item_ids');
         $form->title(trans('arbory::resources.bulk_edit_form_title', ['count' => count($bulkEditItemIds)]));
-        $form->setFields(function (Form\FieldSet $fieldSet) use ($bulkEditItemIds) {
+        $form->setFields(function (FieldSet $fieldSet) use ($bulkEditItemIds) {
             $fieldSet->hidden('bulk_edit_item_ids')->setValue(implode(',', $bulkEditItemIds));
         });
 
@@ -39,7 +46,7 @@ trait BulkEdit
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     protected function confirmBulkEditDialog(Request $request): View
     {
@@ -57,7 +64,7 @@ trait BulkEdit
         ]);
     }
 
-    public function bulkUpdate(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    public function bulkUpdate(Request $request): JsonResponse|RedirectResponse|Redirector
     {
         $bulEditItemIds = $request->input('resource.bulk_edit_item_ids');
 
@@ -102,9 +109,9 @@ trait BulkEdit
      * @param $fieldName
      * @param $fieldLabel
      */
-    protected function getInputControlCheckbox($fieldName, $fieldLabel): Form\Fields\Checkbox
+    protected function getInputControlCheckbox($fieldName, $fieldLabel): Checkbox
     {
-        $checkbox = new Form\Fields\Checkbox($fieldName.'_control');
+        $checkbox = new Checkbox($fieldName.'_control');
         $checkbox->addAttributes(['data-target' => $fieldName])
             ->addClass('bulk-control')
             ->setLabel(trans('arbory::resources.check_to_change', ['input' => $fieldLabel]));
@@ -131,7 +138,7 @@ trait BulkEdit
         return $form;
     }
 
-    protected function getAfterBulkEditResponse(Request $request): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    protected function getAfterBulkEditResponse(Request $request): RedirectResponse|Redirector
     {
         return redirect()->back();
     }

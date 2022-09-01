@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Constructor\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Model;
 
 class ConstructorPage extends Model
@@ -12,7 +13,7 @@ class ConstructorPage extends Model
     protected $table = 'constructor_pages';
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function blocks()
     {

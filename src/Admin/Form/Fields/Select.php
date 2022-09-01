@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Arbory\Base\Admin\Form\Controls\SelectControl;
+use RuntimeException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -18,7 +20,7 @@ class Select extends ControlField
     use HasSelectOptions;
     use HasRelationships;
 
-    protected $control = \Arbory\Base\Admin\Form\Controls\SelectControl::class;
+    protected $control = SelectControl::class;
 
     protected $rendererClass = SelectFieldRenderer::class;
 
@@ -33,7 +35,7 @@ class Select extends ControlField
     protected $optionTitleKey;
 
     /**
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function beforeModelSave(Request $request)
     {
@@ -43,7 +45,7 @@ class Select extends ControlField
             : null;
 
         if (! $this->containsValidValues($value)) {
-            throw new \RuntimeException(sprintf('Bad select field value for "%s"', $this->getName()));
+            throw new RuntimeException(sprintf('Bad select field value for "%s"', $this->getName()));
         }
 
         if (is_array($value)) {

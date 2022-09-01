@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Services\Content;
 
+use Arbory\Base\Exceptions\BadMethodCallException;
 use Closure;
 use Arbory\Base\Nodes\ContentTypeRegister;
 use Arbory\Base\Nodes\ContentTypeDefinition;
@@ -20,7 +21,7 @@ class PageBuilder
 
     /**
      * @return $this
-     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function register(string $model)
     {
@@ -44,7 +45,7 @@ class PageBuilder
 
     /**
      * @return $this
-     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function routes(Closure $routes)
     {
@@ -55,7 +56,7 @@ class PageBuilder
 
     /**
      * @return $this
-     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function fields(Closure $fieldSet)
     {

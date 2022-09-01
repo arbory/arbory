@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Services;
 
+use Closure;
+use LogicException;
 use Arbory\Base\Admin\Admin;
 use Arbory\Base\Admin\Module;
 use Arbory\Base\Services\Permissions\ModulePermissionsRegistry;
@@ -26,13 +28,13 @@ class ModuleRegistry
     }
 
     /**
-     * @param  \Closure|null  $routes
+     * @param Closure|null $routes
      * @return Module
      */
-    public function register(string $controllerClass, \Closure $routes = null)
+    public function register(string $controllerClass, Closure $routes = null)
     {
         if ($this->modules->has($controllerClass)) {
-            throw new \LogicException('Module with controller class "'.$controllerClass.'" already registered');
+            throw new LogicException('Module with controller class "'.$controllerClass.'" already registered');
         }
 
         $config = new ModuleConfiguration($controllerClass);

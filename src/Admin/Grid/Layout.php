@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Grid;
 
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Layout\Body;
 use Arbory\Base\Admin\Widgets\Button;
@@ -87,7 +88,7 @@ class Layout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @return \Arbory\Base\Html\Elements\Element
+     * @return Element
      */
     protected function searchField()
     {

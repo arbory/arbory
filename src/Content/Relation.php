@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Content;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Model;
 
 class Relation extends Model 
@@ -26,7 +27,7 @@ class Relation extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      */
     public function owner()
     {
@@ -34,7 +35,7 @@ class Relation extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      */
     public function related()
     {

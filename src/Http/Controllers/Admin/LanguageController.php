@@ -2,6 +2,12 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Form\FieldSet;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\Contracts\View\Factory;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
@@ -30,7 +36,7 @@ class LanguageController extends Controller
      */
     public function form(Form $form)
     {
-        return $form->setFields(function (Form\FieldSet $fields) {
+        return $form->setFields(function (FieldSet $fields) {
             $fields->text('locale')->rules('required');
             $fields->text('name')->rules('required');
         });
@@ -56,10 +62,10 @@ class LanguageController extends Controller
     /**
      * @param  int  $resourceId
      *
-     * @throws \Exception
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws Exception
+     * @throws ModelNotFoundException
      */
-    public function restore($resourceId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    public function restore($resourceId): RedirectResponse|Redirector
     {
         /** @var Language $resource */
         $resource = $this->resource()->withTrashed()->findOrFail($resourceId);
@@ -72,10 +78,10 @@ class LanguageController extends Controller
     /**
      * @param  int  $resourceId
      *
-     * @throws \Exception
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws Exception
+     * @throws ModelNotFoundException
      */
-    public function disable($resourceId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    public function disable($resourceId): RedirectResponse|Redirector
     {
         /** @var Language $resource */
         $resource = $this->resource()->findOrFail($resourceId);
@@ -88,7 +94,7 @@ class LanguageController extends Controller
     /**
      * @param $resourceId
      */
-    public function destroy($resourceId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    public function destroy($resourceId): RedirectResponse|Redirector
     {
         $resource = $this->resource()->withTrashed()->findOrFail($resourceId);
 
@@ -116,7 +122,7 @@ class LanguageController extends Controller
         }
     }
 
-    protected function confirmDisableDialog(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+    protected function confirmDisableDialog(Request $request): Factory|\Illuminate\View\View
     {
         $resourceId = $request->get('id');
         $model = $this->resource()->find($resourceId);
@@ -128,7 +134,7 @@ class LanguageController extends Controller
         ]);
     }
 
-    protected function confirmRestoreDialog(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+    protected function confirmRestoreDialog(Request $request): Factory|\Illuminate\View\View
     {
         $resourceId = $request->get('id');
         $model = $this->resource()->withTrashed()->find($resourceId);

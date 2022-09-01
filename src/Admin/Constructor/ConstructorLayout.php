@@ -2,6 +2,10 @@
 
 namespace Arbory\Base\Admin\Constructor;
 
+use Arbory\Base\Admin\Form\Fields\Renderer\Nested\PaneledItemRenderer;
+use Arbory\Base\Admin\Form\Fields\Constructor;
+use RuntimeException;
+use Closure;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Layout\Grid;
@@ -45,7 +49,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     public function __construct(protected $name = 'blocks')
     {
         $this->fieldConfigurator = function () {
-            $this->field->setItemRenderer(new Form\Fields\Renderer\Nested\PaneledItemRenderer);
+            $this->field->setItemRenderer(new PaneledItemRenderer);
             $this->field->addClass('in-layout');
             $this->field->sortable($this->getFieldOrderBy());
 
@@ -96,13 +100,13 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         return $content;
     }
 
-    public function getField(): Form\Fields\Constructor
+    public function getField(): Constructor
     {
         if ($this->field === null) {
             $field = $this->form->fields()->findFieldByInputName($this->name);
 
             if ($field === null) {
-                throw new \RuntimeException('Constructor field must be present in constructor layout');
+                throw new RuntimeException('Constructor field must be present in constructor layout');
             }
 
             if ($field) {
@@ -144,7 +148,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @return \Closure
+     * @return Closure
      */
     public function renderField()
     {

@@ -39,7 +39,7 @@ class Navigator implements Renderable
     /**
      * @return Item[]|Collection
      */
-    public function getItems(): array|\Illuminate\Support\Collection
+    public function getItems(): array|Collection
     {
         return $this->items;
     }

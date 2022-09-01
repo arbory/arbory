@@ -101,7 +101,7 @@ class Filter implements Renderable
             ->title(trans('arbory::filter.apply'));
     }
 
-    public function render(): \Arbory\Base\Html\Elements\Content|string
+    public function render(): Content|string
     {
         return new Content([
             Html::form([

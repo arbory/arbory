@@ -2,6 +2,10 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use DB;
+use App;
+use Admin;
+use stdClass;
 use Illuminate\View\View;
 use Arbory\Base\Html\Html;
 use Illuminate\Http\Request;
@@ -35,7 +39,7 @@ class TranslationsController extends Controller
     {
     }
 
-    public function index(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+    public function index(Request $request): Factory|\Illuminate\View\View
     {
         $this->request = $request;
 
@@ -45,7 +49,7 @@ class TranslationsController extends Controller
         /* @var $allItems Builder */
         $allItems = Translation::distinct()->select('item', 'group', 'namespace');
 
-        $translationsQuery = \DB::table(\DB::raw('('.$allItems->toSql().') as d1'));
+        $translationsQuery = DB::table(DB::raw('('.$allItems->toSql().') as d1'));
 
         $translationsQuery->addSelect('d1.*');
 
@@ -66,7 +70,7 @@ class TranslationsController extends Controller
                     $join
                         ->on($joinAlias.'.group', '=', 'd1.group')
                         ->on($joinAlias.'.item', '=', 'd1.item')
-                        ->on($joinAlias.'.locale', '=', \DB::raw('\''.$locale.'\''));
+                        ->on($joinAlias.'.locale', '=', DB::raw('\''.$locale.'\''));
                 }
             );
         }
@@ -164,7 +168,7 @@ class TranslationsController extends Controller
         );
     }
 
-    public function store(TranslationStoreRequest $request): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    public function store(TranslationStoreRequest $request): RedirectResponse|Redirector
     {
         $this->request = $request;
 
@@ -172,7 +176,7 @@ class TranslationsController extends Controller
         $languages = $this->languagesRepository->all();
 
         /** @var CacheRepositoryInterface $cache */
-        $cache = \App::make('translation.cache.repository');
+        $cache = App::make('translation.cache.repository');
 
         foreach ($languages as $language) {
             /** @noinspection PhpUndefinedFieldInspection */
@@ -199,7 +203,7 @@ class TranslationsController extends Controller
 
     protected function getIndexBreadcrumbs(): Breadcrumbs
     {
-        $module = \Admin::modules()->findModuleByController($this);
+        $module = Admin::modules()->findModuleByController($this);
 
         return (new Breadcrumbs)->addItem(
             $module->getConfiguration()->getName(),
@@ -216,7 +220,7 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param  \stdClass  $item
+     * @param stdClass $item
      * @return string
      */
     private function getEditUrl($item, LengthAwarePaginator $paginator)
@@ -234,7 +238,7 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator
      */
     private function getPaginatedItems(Builder $translationsQueryBuilder)
     {

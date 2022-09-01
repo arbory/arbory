@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use InvalidArgumentException;
+use SimpleXMLElement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Form\Fields\Renderer\IconPickerRenderer;
@@ -56,7 +58,7 @@ class IconPicker extends Select
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function getOptions(): Collection
     {
@@ -65,14 +67,14 @@ class IconPicker extends Select
 
     /**
      * @param  string  $iconId
-     * @return null|\SimpleXMLElement
+     * @return null|SimpleXMLElement
      */
     public function getIconContent($iconId)
     {
         $xml = simplexml_load_string(file_get_contents($this->spritePath));
 
         foreach ($xml->children()->symbol as $node) {
-            /** @var \SimpleXMLElement $node */
+            /** @var SimpleXMLElement $node */
             $id = null;
 
             foreach ($node->attributes() as $attributeName => $attributeValue) {
@@ -88,7 +90,7 @@ class IconPicker extends Select
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getIconIds(): Collection
     {
@@ -96,13 +98,13 @@ class IconPicker extends Select
 
         if (! file_exists($this->spritePath)) {
             $message = sprintf('Provided sprite-sheet [%s] doesn\'t exist', $this->spritePath);
-            throw new \InvalidArgumentException($message);
+            throw new InvalidArgumentException($message);
         }
 
         $xml = simplexml_load_string(file_get_contents($this->spritePath));
 
         foreach ($xml->children()->symbol as $node) {
-            /** @var \SimpleXMLElement $node */
+            /** @var SimpleXMLElement $node */
             $id = null;
 
             foreach ($node->attributes() as $attributeName => $attributeValue) {
@@ -125,7 +127,7 @@ class IconPicker extends Select
 
     /**
      * @return void
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function beforeModelSave(Request $request)
     {

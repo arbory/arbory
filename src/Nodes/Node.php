@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Nodes;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Collection;
 use Arbory\Base\Pages\PageInterface;
 use Baum\NestedSet\Node as BaumNode;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
@@ -82,15 +84,15 @@ class Node extends Model
         return parent::save($options);
     }
 
-    public function content(): \Illuminate\Database\Eloquent\Relations\MorphTo|\Arbory\Base\Pages\PageInterface
+    public function content(): MorphTo|PageInterface
     {
         return $this->morphTo();
     }
 
     /**
-     * @return \Illuminate\Support\Collection|Node[]
+     * @return Collection|Node[]
      */
-    public function parents(): \Illuminate\Support\Collection|array
+    public function parents(): Collection|array
     {
         return $this->ancestors()->get();
     }

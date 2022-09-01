@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Routing\Controller;
 
 /**
@@ -17,7 +18,7 @@ class DashboardController extends Controller
         $this->middleware('arbory.admin_switched_off_module');
     }
 
-    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+    public function index(): Factory|\Illuminate\View\View
     {
         return view('arbory::controllers.dashboard.index');
     }

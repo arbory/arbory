@@ -2,6 +2,10 @@
 
 namespace Arbory\Base\Support\Translate;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\MassAssignmentException;
+use ErrorException;
+use App;
 use Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,7 +26,7 @@ trait Translatable
      *
      * @param  string|null  $locale
      * @param  bool  $withFallback
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|null
      */
     public function translate($locale = null, $withFallback = false)
     {
@@ -33,7 +37,7 @@ trait Translatable
      * Alias for getTranslation().
      *
      * @param  string  $locale
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|null
      */
     public function translateOrDefault($locale)
     {
@@ -44,7 +48,7 @@ trait Translatable
      * Alias for getTranslationOrNew().
      *
      * @param  string  $locale
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|null
      */
     public function translateOrNew($locale)
     {
@@ -54,7 +58,7 @@ trait Translatable
     /**
      * @param  string|null  $locale
      * @param  bool  $withFallback
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|null
      */
     public function getTranslation($locale = null, $withFallback = null)
     {
@@ -133,7 +137,7 @@ trait Translatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function translations()
     {
@@ -221,7 +225,7 @@ trait Translatable
 
     /**
      * @param  string  $locale
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|null
      */
     protected function getTranslationOrNew($locale)
     {
@@ -235,8 +239,8 @@ trait Translatable
     /**
      * @return $this
      *
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
-     * @throws \ErrorException
+     * @throws MassAssignmentException
+     * @throws ErrorException
      */
     public function fill(array $attributes)
     {
@@ -327,7 +331,7 @@ trait Translatable
      * @param  string  $key
      * @return bool
      *
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     protected function isLocale($key)
     {
@@ -339,7 +343,7 @@ trait Translatable
     /**
      * @return array
      *
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     protected function getLocales()
     {
@@ -349,7 +353,7 @@ trait Translatable
             $errorMessage = 'Please make sure you have run "php artisan vendor:publish --tag=translatable"'.
                 ' and that the locales configuration is defined.';
 
-            throw new \ErrorException($errorMessage);
+            throw new ErrorException($errorMessage);
         }
 
         $locales = [];
@@ -404,7 +408,7 @@ trait Translatable
 
     /**
      * @param  string  $locale
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Model
      */
     public function getNewTranslation($locale)
     {
@@ -582,7 +586,7 @@ trait Translatable
      */
     private function getTranslationsTable()
     {
-        return \App::make($this->getTranslationModelName())->getTable();
+        return App::make($this->getTranslationModelName())->getTable();
     }
 
     /**
@@ -594,7 +598,7 @@ trait Translatable
             return $this->defaultLocale;
         }
 
-        return Config::get('translatable.locale') ?: \App::make('translator')->getLocale();
+        return Config::get('translatable.locale') ?: App::make('translator')->getLocale();
     }
 
     /**

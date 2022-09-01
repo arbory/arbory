@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Filter\Types;
 
+use Arbory\Base\Exceptions\BadMethodCallException;
 use Arbory\Base\Html\Html;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
@@ -23,9 +24,9 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
 
     /**
      * @param  FilterItem  $filterItem
-     * @return \Arbory\Base\Html\Elements\Element
+     * @return Element
      *
-     * @throws \Arbory\Base\Exceptions\BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function render(FilterItem $filterItem): Element
     {

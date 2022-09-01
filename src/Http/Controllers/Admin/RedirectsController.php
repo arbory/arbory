@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Pages\Redirect;
@@ -24,7 +25,7 @@ class RedirectsController extends Controller
      */
     protected function form(Form $form)
     {
-        return $form->setFields(function (Form\FieldSet $fieldSet) {
+        return $form->setFields(function (FieldSet $fieldSet) {
             $fieldSet->add(new Text('from_url'))
                 ->rules('required')
                 ->setLabel(trans('arbory::redirect.from_url'));

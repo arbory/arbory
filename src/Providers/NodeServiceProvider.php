@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Providers;
 
+use DB;
+use Exception;
 use Arbory\Base\Nodes\Mixins\Collection as NodesCollectionMixin;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Support\Facades\Page;
@@ -125,8 +127,8 @@ class NodeServiceProvider extends ServiceProvider
     protected function isDbConfigured(): bool
     {
         try {
-            \DB::connection()->getPdo();
-        } catch (\Exception) {
+            DB::connection()->getPdo();
+        } catch (Exception) {
             return false;
         }
 

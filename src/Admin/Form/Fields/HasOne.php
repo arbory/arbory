@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
+use Illuminate\Database\Eloquent\MassAssignmentException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Html\Elements\Element;
@@ -51,7 +53,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
     }
 
     /**
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws MassAssignmentException
      */
     public function afterModelSave(Request $request)
     {
@@ -75,7 +77,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
                 $relation->getMorphType() => $relatedModel::class,
                 $relation->getForeignKeyName() => $relatedModel->{$relatedModel->getKeyName()},
             ])->save();
-        } elseif ($relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo) {
+        } elseif ($relation instanceof BelongsTo) {
             $relatedModel->save();
 
             $this->getModel()->setAttribute($relation->getForeignKeyName(), $relatedModel->getKey());

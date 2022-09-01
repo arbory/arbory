@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Menu;
 
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements;
 use Illuminate\Support\Collection;
@@ -22,7 +23,7 @@ class Group extends AbstractItem
         $this->children = new Collection();
     }
 
-    public function render(Elements\Element $parentElement): Elements\Element
+    public function render(Element $parentElement): Element
     {
         $ul = Html::ul()->addClass('block');
 

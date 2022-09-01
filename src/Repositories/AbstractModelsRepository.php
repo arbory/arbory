@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -15,7 +16,7 @@ abstract class AbstractModelsRepository
     protected $modelClass;
 
     /**
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var Model
      */
     protected $model;
 
@@ -118,7 +119,7 @@ abstract class AbstractModelsRepository
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function newQuery()
     {

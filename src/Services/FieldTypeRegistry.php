@@ -2,6 +2,9 @@
 
 namespace Arbory\Base\Services;
 
+use ReflectionException;
+use InvalidArgumentException;
+use ReflectionMethod;
 use ReflectionClass;
 use Illuminate\Support\Collection;
 use Illuminate\Container\Container;
@@ -24,7 +27,7 @@ class FieldTypeRegistry
      * FieldTypeRegistry constructor.
      *
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function __construct(protected Container $app)
     {
@@ -39,7 +42,7 @@ class FieldTypeRegistry
     {
         if (in_array(strtolower($type), $this->reservedTypes, true)) {
             $message = 'The name '.$type.' is already being used by FieldSet class for a method';
-            throw new \InvalidArgumentException($message);
+            throw new InvalidArgumentException($message);
         }
 
         $this->fieldTypes->put($type, $class);
@@ -81,7 +84,7 @@ class FieldTypeRegistry
         $fieldClass = $this->findByType($type);
 
         if (! $fieldClass || ! class_exists($fieldClass)) {
-            throw new \InvalidArgumentException("Could not resolve a field for a type '{$type}'");
+            throw new InvalidArgumentException("Could not resolve a field for a type '{$type}'");
         }
 
         return $this->app->make($fieldClass, $this->bindParametersByIndex($fieldClass, $parameters));
@@ -91,13 +94,13 @@ class FieldTypeRegistry
      * Finds any accessible functions which are defined in class.
      *
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function getReservedMethods(mixed $class)
     {
         $reflection = new ReflectionClass($class);
 
-        $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
 
         $reservedMethods = [];
 
@@ -113,7 +116,7 @@ class FieldTypeRegistry
      *
      * @return array
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function bindParametersByIndex(string $class, array $parameters)
     {

@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Admin\Layout;
 
+use SplObjectStorage;
+use Arbory\Base\Admin\Form\Layout;
 use Closure;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Panels\Panel;
@@ -17,7 +19,7 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
     protected $panels = [];
 
     /**
-     * @var \SplObjectStorage
+     * @var SplObjectStorage
      */
     protected $fields;
 
@@ -30,7 +32,7 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
 
     public function __construct()
     {
-        $this->fields = new \SplObjectStorage();
+        $this->fields = new SplObjectStorage();
         $this->append = new Content();
     }
 
@@ -113,7 +115,7 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
                 )
             );
         } else {
-            $this->use((new Form\Layout())->setForm($this->form));
+            $this->use((new Layout())->setForm($this->form));
         }
     }
 

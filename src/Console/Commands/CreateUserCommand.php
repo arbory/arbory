@@ -47,7 +47,7 @@ class CreateUserCommand extends Command
     /**
      * @return UserInterface|User
      */
-    protected function createAdminUser(): \Cartalyst\Sentinel\Users\UserInterface|\Arbory\Base\Auth\Users\User
+    protected function createAdminUser(): UserInterface|User
     {
         $this->info('Let\'s create admin user');
 

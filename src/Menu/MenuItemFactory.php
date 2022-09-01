@@ -2,6 +2,8 @@
 
 namespace Arbory\Base\Menu;
 
+use DomainException;
+use App;
 use Arbory\Base\Admin\Admin;
 use Illuminate\Support\Str;
 use Waavi\Translation\Repositories\TranslationRepository;
@@ -29,7 +31,7 @@ class MenuItemFactory
             $module = $this->admin->modules()->findModuleByControllerClass($definition);
 
             if (! $module) {
-                throw new \DomainException(sprintf('No controller found for [%s] module ', $definition));
+                throw new DomainException(sprintf('No controller found for [%s] module ', $definition));
             }
 
             $menuItem = new Item($this->admin, $module);
@@ -53,7 +55,7 @@ class MenuItemFactory
             $generatedText = Str::title(str_replace('_', ' ', $name));
 
             $this->translations->create([
-                'locale' => \App::getLocale(),
+                'locale' => App::getLocale(),
                 'namespace' => 'arbory',
                 'group' => 'modules',
                 'item' => $name,

@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
@@ -24,14 +25,14 @@ class SecurityController extends BaseController
         ]);
     }
 
-    public function getLogin(Request $request): \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+    public function getLogin(Request $request): \Illuminate\View\View|Factory
     {
         return view($this->security->getLoginView(), [
             'input' => $request,
         ]);
     }
 
-    public function postLogin(): \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Support\Facades\Redirect
+    public function postLogin(): RedirectResponse|Response|Redirect
     {
         $request = $this->getFormRequest();
         $remember = (bool) $request->get('remember', false);

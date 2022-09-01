@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin;
 
+use Throwable;
 use Closure;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Content;
@@ -59,7 +60,7 @@ class Page extends Layout implements PageInterface
      * @param  mixed  $content
      * @return string
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function contents($content)
     {

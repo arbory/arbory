@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin;
 
+use Throwable;
 use Closure;
 use Arbory\Base\Admin\Layout\Row;
 use Illuminate\Support\Collection;
@@ -100,7 +101,7 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
      * @param  $content
      * @return string
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function contents($content)
     {

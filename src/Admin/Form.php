@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin;
 
+use Closure;
 use Illuminate\Http\Request;
 use Arbory\Base\Content\Relation;
 use Arbory\Base\Admin\Form\FieldSet;
@@ -134,7 +135,7 @@ class Form
     /**
      * @return $this
      */
-    public function setFields(\Closure $fieldConstructor)
+    public function setFields(Closure $fieldConstructor)
     {
         $fieldConstructor($this->fields(), $this->getModel());
 

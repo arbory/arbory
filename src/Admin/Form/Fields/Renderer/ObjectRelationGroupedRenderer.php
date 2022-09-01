@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
+use InvalidArgumentException;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Element;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ class ObjectRelationGroupedRenderer extends ObjectRelationRenderer
     public function render()
     {
         if ($this->field->hasIndentation()) {
-            throw new \InvalidArgumentException('Field cannot be grouped and indented at the same time');
+            throw new InvalidArgumentException('Field cannot be grouped and indented at the same time');
         }
 
         return parent::render()->addAttributes(['data-grouped' => $this->field->getGroupByAttribute()]);

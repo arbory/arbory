@@ -37,7 +37,7 @@ class ParameterTransformerPipeline
             ->then(fn($passable) => $passable);
     }
 
-    public function addTransformer(callable|\Arbory\Base\Admin\Filter\Parameters\Transformers\ParameterTransformerInterface $transformer): self
+    public function addTransformer(callable|ParameterTransformerInterface $transformer): self
     {
         $this->transformers[] = $transformer;
 

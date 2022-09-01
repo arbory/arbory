@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Nodes;
 
+use Illuminate\Routing\Router;
 use Arbory\Base\Exceptions\BadMethodCallException;
 use Closure;
 use Illuminate\Routing\Route;
@@ -52,7 +53,7 @@ class ContentTypeRoutesRegister
     }
 
     /**
-     * @return \Illuminate\Routing\Router
+     * @return Router
      */
     public function getRouter()
     {

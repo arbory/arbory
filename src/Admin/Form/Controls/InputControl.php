@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Form\Controls;
 
+use Arbory\Base\Html\Elements\Inputs\Input;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Element;
 
@@ -16,7 +17,7 @@ class InputControl extends AbstractControl
     }
 
     /**
-     * @return Element|\Arbory\Base\Html\Elements\Inputs\Input
+     * @return Element|Input
      */
     public function render(Element $element)
     {

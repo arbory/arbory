@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Admin\Widgets;
 
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Renderable;
@@ -49,7 +50,7 @@ class Breadcrumbs implements Renderable
     }
 
     /**
-     * @return \Arbory\Base\Html\Elements\Element
+     * @return Element
      */
     public function render()
     {
