@@ -60,7 +60,7 @@ class FieldSetFieldFinder
             $fields = [$this->initialField->getName() => $this->initialField];
         }
 
-        foreach ($inputNameParts as $index => $fieldName) {
+        foreach ($inputNameParts as $fieldName) {
             $field = null;
 
             if (! $previousFieldSet) {

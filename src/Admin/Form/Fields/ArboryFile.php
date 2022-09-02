@@ -59,7 +59,7 @@ class ArboryFile extends ControlField
         $value = parent::getValue();
 
         if (is_string($value)) {
-            $value = \Arbory\Base\Files\ArboryFile::where('id', $value)->first();
+            return \Arbory\Base\Files\ArboryFile::where('id', $value)->first();
         }
 
         return $value;

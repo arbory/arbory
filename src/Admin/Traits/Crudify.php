@@ -400,8 +400,6 @@ trait Crudify
 
     /**
      * Defined layouts.
-     *
-     * @return array
      */
     public function layouts(): array
     {

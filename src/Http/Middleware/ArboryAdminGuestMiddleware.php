@@ -15,8 +15,6 @@ class ArboryAdminGuestMiddleware
 {
     /**
      * ArboryAdminGuestMiddleware constructor.
-     *
-     * @param Sentinel $sentinel
      */
     public function __construct(protected Sentinel $sentinel)
     {

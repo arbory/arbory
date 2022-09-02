@@ -136,7 +136,7 @@ class ConstructorFieldRenderer implements RendererInterface
 
         $templates = collect();
 
-        foreach ($this->field->getTypes() as $type => $object) {
+        foreach ($this->field->getTypes() as $object) {
             $fieldSet = $this->field->getRelationFieldSet($this->field->buildFromBlock($object), '_template_');
 
             $templates[$object->name()] = (string)$this->getRelationItemHtml($object, $fieldSet, '_template_');

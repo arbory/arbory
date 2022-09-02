@@ -21,7 +21,7 @@ class FormPanel extends Panel
     public function toolbox(Toolbox $toolbox): Toolbox
     {
         if ($this->form->getModel()->getKey()) {
-            $toolbox = Toolbox::create(
+            return Toolbox::create(
                 $this->form->getModule()->url(
                     'dialog',
                     ['dialog' => 'toolbox', 'id' => $this->form->getModel()->getKey()]

@@ -145,7 +145,7 @@ abstract class Reply implements Jsonable, Arrayable
         }
 
         if ($this->hasPayload()) {
-            $dispatch = array_merge($dispatch, $this->payload);
+            return array_merge($dispatch, $this->payload);
         }
 
         return $dispatch;

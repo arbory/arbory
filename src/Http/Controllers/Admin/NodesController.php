@@ -234,7 +234,7 @@ class NodesController extends Controller
         }
 
         if (in_array($slug, $reservedSlugs, true)) {
-            $slug = Str::slug($from.'-'.random_int(0, 9999));
+            return Str::slug($from.'-'.random_int(0, 9999));
         }
 
         return $slug;

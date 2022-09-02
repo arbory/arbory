@@ -230,7 +230,7 @@ trait Translatable
     protected function getTranslationOrNew($locale)
     {
         if (($translation = $this->getTranslation($locale, false)) === null) {
-            $translation = $this->getNewTranslation($locale);
+            return $this->getNewTranslation($locale);
         }
 
         return $translation;

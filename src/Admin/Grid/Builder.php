@@ -174,9 +174,6 @@ class Builder implements Renderable
                 ->title(trans('arbory::resources.create_new'));
     }
 
-    /**
-     * @return Element
-     */
     protected function exportOptions(): Element
     {
         $parameters = request()->all();
@@ -197,9 +194,6 @@ class Builder implements Renderable
             ])->addClass('export');
     }
 
-    /**
-     * @return Tools
-     */
     protected function footerTools(): Tools
     {
         $tools = new Tools();

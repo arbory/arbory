@@ -12,9 +12,6 @@ use Arbory\Base\Html\Html;
  */
 class BulkEditFormBuilder extends Builder
 {
-    /**
-     * @return Element
-     */
     protected function header(): Element
     {
         return Html::header([

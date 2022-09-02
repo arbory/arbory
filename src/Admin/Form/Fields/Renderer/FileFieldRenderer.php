@@ -2,10 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
+use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
 use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
+use Arbory\Base\Html\Html;
 use Illuminate\Support\Str;
 
 /**
@@ -13,23 +14,14 @@ use Illuminate\Support\Str;
  */
 class FileFieldRenderer extends ControlFieldRenderer
 {
-    /**
-     * @var \Arbory\Base\Admin\Form\Fields\ArboryFile
-     */
-    protected $field;
+    protected ControlFieldInterface $field;
 
-    /**
-     * @return ArboryFile
-     */
-    protected function getFile()
+    protected function getFile(): ?ArboryFile
     {
         return $this->field->getValue();
     }
 
-    /**
-     * @return Element
-     */
-    public function render()
+    public function render(): Element
     {
         $value = Html::div();
 
@@ -39,7 +31,7 @@ class FileFieldRenderer extends ControlFieldRenderer
             $value->append($this->createFileDetails($file));
         }
 
-        if ($this->field->isInteractive() && ! $this->field->isDisabled()) {
+        if ($this->field->isInteractive() && !$this->field->isDisabled()) {
             $value->append(parent::render());
         }
 
@@ -53,14 +45,14 @@ class FileFieldRenderer extends ControlFieldRenderer
         $fileSize = (new FileSize($file))->getReadableSize();
 
         $fileDetails = Html::div()->addClass('file-details');
-        $downloadLink = Html::a(Str::limit($file->getOriginalName(), 20).' / '.$fileSize)->addAttributes([
+        $downloadLink = Html::a(Str::limit($file->getOriginalName(), 20) . ' / ' . $fileSize)->addAttributes([
             'href' => $file->getUrl(),
             'target' => '_blank',
             'title' => $file->getOriginalName(),
             'download',
         ]);
 
-        if ($this->field->isInteractive() && ! $this->field->isDisabled()) {
+        if ($this->field->isInteractive() && !$this->field->isDisabled()) {
             $removeButton =
                 Html::button('delete')->addClass('remove mt-icon')->addAttributes([
                     'type' => 'button',
@@ -68,14 +60,14 @@ class FileFieldRenderer extends ControlFieldRenderer
 
             $removeInput = Html::input()
                 ->setType('hidden')
-                ->setName($this->field->getNameSpacedName().'.remove')
+                ->setName($this->field->getNameSpacedName() . '.remove')
                 ->setValue('')
                 ->addClass('remove');
         }
 
         $fileDetails->append($downloadLink);
 
-        if (! $this->field->isRequired()) {
+        if (!$this->field->isRequired()) {
             $fileDetails->append($removeButton);
             $fileDetails->append($removeInput);
         }

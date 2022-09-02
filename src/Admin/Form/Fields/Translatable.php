@@ -127,7 +127,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         $resource = null;
 
         if ($this->getValue() && ! $this->getValue()->isEmpty()) {
-            foreach ($this->getValue() as $index => $item) {
+            foreach ($this->getValue() as $item) {
                 if ($item->{$this->getModel()->getLocaleKey()} === $locale) {
                     $resource = $item;
                 }

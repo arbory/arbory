@@ -94,7 +94,7 @@ class ValidationRulesServiceProvider extends ServiceProvider
                 return true;
             }
 
-            foreach (array_reverse($fields) as $index => $field) {
+            foreach (array_reverse($fields) as $field) {
                 if ($field instanceof Translatable) {
                     $translatable = $field;
                 }
@@ -115,7 +115,7 @@ class ValidationRulesServiceProvider extends ServiceProvider
                 }
             }
 
-            foreach ($checkLocales as $index => $checkLocale) {
+            foreach ($checkLocales as $checkLocale) {
                 $checkByAttribute = str_replace($attributeLocale, $checkLocale, $attribute);
                 $field = $fieldSet->findFieldByInputName($checkByAttribute);
 
