@@ -9,10 +9,10 @@ class CompactRichtext extends Richtext
     /**
      * @var bool
      */
-    protected $isCompact = true;
+    protected bool $isCompact = true;
 
     /**
      * @var string
      */
-    protected $rendererClass = RichtextFieldRenderer::class;
+    protected string $rendererClass = RichtextFieldRenderer::class;
 }

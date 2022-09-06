@@ -2,9 +2,8 @@
 
 namespace Arbory\Base\Admin\Form\Controls;
 
-use Arbory\Base\Html\Elements\Inputs\Input;
-use Arbory\Base\Html\Html;
 use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 class InputControl extends AbstractControl
 {
@@ -16,11 +15,8 @@ class InputControl extends AbstractControl
         return $this->applyAttributesAndClasses($input);
     }
 
-    /**
-     * @return Element|Input
-     */
-    public function render(Element $element)
+    public function render(Element $control): mixed
     {
-        return $element;
+        return $control;
     }
 }

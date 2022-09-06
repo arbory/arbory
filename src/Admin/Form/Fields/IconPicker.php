@@ -21,7 +21,7 @@ class IconPicker extends Select
      */
     protected $filter;
 
-    protected $rendererClass = IconPickerRenderer::class;
+    protected string $rendererClass = IconPickerRenderer::class;
 
     protected $viewboxResolver;
 
@@ -126,10 +126,9 @@ class IconPicker extends Select
     }
 
     /**
-     * @return void
      * @throws InvalidArgumentException
      */
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         $this->options($this->getOptions());
 

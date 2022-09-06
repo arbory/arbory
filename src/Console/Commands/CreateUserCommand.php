@@ -32,9 +32,6 @@ class CreateUserCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * @return void
-     */
     public function handle(): void
     {
         $this->createAdminUser();

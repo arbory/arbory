@@ -12,7 +12,7 @@ class ControlField extends AbstractField implements RenderOptionsInterface
     use HasRenderOptions;
 
     protected $control = InputControl::class;
-    protected $rendererClass = ControlFieldRenderer::class;
+    protected string $rendererClass = ControlFieldRenderer::class;
 
     /**
      * @return string|null

@@ -9,10 +9,8 @@ class AppendTransformer
 {
     /**
      * AppendTransformer constructor.
-     *
-     * @param string|Closure $content
      */
-    public function __construct(protected $content)
+    public function __construct(protected mixed $content)
     {
     }
 

@@ -10,6 +10,7 @@ use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\Renderer\ConstructorFieldRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
@@ -36,12 +37,12 @@ class Constructor extends AbstractRelationField implements RepeatableNestedField
     /**
      * @var string
      */
-    protected $rendererClass = ConstructorFieldRenderer::class;
+    protected string $rendererClass = ConstructorFieldRenderer::class;
 
     /**
      * @var string
      */
-    protected $style = 'nested';
+    protected string $style = 'nested';
 
     /**
      * @var bool
@@ -149,7 +150,7 @@ class Constructor extends AbstractRelationField implements RepeatableNestedField
         return $fieldSet;
     }
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
     }
 
@@ -358,10 +359,7 @@ class Constructor extends AbstractRelationField implements RepeatableNestedField
         return $this;
     }
 
-    /**
-     * @return Renderer\RendererInterface|mixed
-     */
-    public function newRenderer()
+    public function newRenderer(): RendererInterface
     {
         return app()->makeWith(
             $this->rendererClass,

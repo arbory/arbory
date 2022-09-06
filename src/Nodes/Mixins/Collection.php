@@ -17,6 +17,6 @@ class Collection
      */
     public function unorderedHierarchicalList()
     {
-        return fn() => $this->toHierarchy();
+        return fn () => $this->toHierarchy();
     }
 }

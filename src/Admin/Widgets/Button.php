@@ -23,12 +23,9 @@ class Button implements Renderable
         $this->element->addClass('button ');
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
-        return (string)$this->render();
+        return $this->render();
     }
 
     /**

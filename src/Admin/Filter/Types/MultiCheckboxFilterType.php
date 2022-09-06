@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Filter\Types;
 
-use Arbory\Base\Html\Html;
-use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Admin\Filter\Config\SelectLikeTypeConfig;
 use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Filter\FilterTypeInterface;
 use Arbory\Base\Exceptions\BadMethodCallException;
-use Arbory\Base\Admin\Filter\Config\SelectLikeTypeConfig;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 class MultiCheckboxFilterType extends AbstractType implements FilterTypeInterface
 {
@@ -22,7 +22,6 @@ class MultiCheckboxFilterType extends AbstractType implements FilterTypeInterfac
     protected $value;
 
     /**
-     *
      * @throws BadMethodCallException
      */
     public function render(FilterItem $filterItem): Element
@@ -39,7 +38,7 @@ class MultiCheckboxFilterType extends AbstractType implements FilterTypeInterfac
                     ->setType('checkbox')
                     ->addAttributes(['value' => $key])
                     ->addAttributes($checked ? ['checked' => true] : [])
-                    ->setName($filterItem->getNamespacedName().'[]'),
+                    ->setName($filterItem->getNamespacedName() . '[]'),
             ]);
         }
 

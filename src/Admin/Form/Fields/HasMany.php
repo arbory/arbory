@@ -6,6 +6,7 @@ use Arbory\Base\Admin\Form\Fields\Concerns\HasRelationships;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\NestedFieldRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
@@ -31,12 +32,12 @@ class HasMany extends AbstractRelationField implements RepeatableNestedFieldInte
     /**
      * @var string
      */
-    protected $rendererClass = NestedFieldRenderer::class;
+    protected string $rendererClass = NestedFieldRenderer::class;
 
     /**
      * @var string
      */
-    protected $style = 'nested';
+    protected string $style = 'nested';
 
     /**
      * @var bool
@@ -50,11 +51,8 @@ class HasMany extends AbstractRelationField implements RepeatableNestedFieldInte
 
     /**
      * AbstractRelationField constructor.
-     *
-     * @param string $name
-     * @param Closure $fieldSetCallback
      */
-    public function __construct($name, Closure $fieldSetCallback)
+    public function __construct(string $name, Closure $fieldSetCallback)
     {
         parent::__construct($name);
 
@@ -80,9 +78,8 @@ class HasMany extends AbstractRelationField implements RepeatableNestedFieldInte
     /**
      * @param $index
      * @param Model $model
-     * @return FieldSet
      */
-    public function getRelationFieldSet($model, $index)
+    public function getRelationFieldSet($model, $index): FieldSet
     {
         $fieldSet = new FieldSet($model, $this->getNameSpacedName() . '.' . $index);
         $fieldSetCallback = $this->fieldSetCallback;
@@ -103,11 +100,11 @@ class HasMany extends AbstractRelationField implements RepeatableNestedFieldInte
         return $fieldSet;
     }
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
     }
 
-    public function afterModelSave(Request $request)
+    public function afterModelSave(Request $request): void
     {
         $items = (array) $request->input($this->getNameSpacedName(), []);
 
@@ -220,7 +217,7 @@ class HasMany extends AbstractRelationField implements RepeatableNestedFieldInte
     /**
      * @return Renderer\RendererInterface|mixed
      */
-    public function newRenderer()
+    public function newRenderer(): RendererInterface
     {
         return app()->makeWith(
             $this->rendererClass,

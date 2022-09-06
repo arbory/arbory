@@ -2,16 +2,16 @@
 
 namespace Arbory\Base\Services;
 
-use Illuminate\Support\Collection;
-use Arbory\Base\Admin\Form\FieldSet;
-use Waavi\Translation\Models\Language;
-use Arbory\Base\Admin\Form\Fields\Link;
-use Arbory\Base\Admin\Form\Fields\HasMany;
-use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Form\Fields\AbstractField;
-use Waavi\Translation\Repositories\LanguageRepository;
+use Arbory\Base\Admin\Form\Fields\HasMany;
+use Arbory\Base\Admin\Form\Fields\Link;
 use Arbory\Base\Admin\Form\Fields\NestedFieldInterface;
 use Arbory\Base\Admin\Form\Fields\RepeatableNestedFieldInterface;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Support\Collection;
+use Waavi\Translation\Models\Language;
+use Waavi\Translation\Repositories\LanguageRepository;
 
 class FieldSetFieldFinder
 {
@@ -21,7 +21,7 @@ class FieldSetFieldFinder
     protected $attribute;
 
     /**
-     * @param  AbstractField|null  $initialField
+     * @param AbstractField|null $initialField
      */
     public function __construct(protected LanguageRepository $languageRepository, protected FieldSet $fieldSet, protected $initialField = null)
     {
@@ -104,13 +104,13 @@ class FieldSetFieldFinder
     }
 
     /**
-     * @param  string  $attribute
+     * @param string $attribute
      * @return array
      */
     protected function getActualFieldNames($attribute)
     {
         $parts = explode('.', $attribute);
-        $locales = $this->languageRepository->all()->map(fn(Language $language) => $language->locale)->toArray();
+        $locales = $this->languageRepository->all()->map(fn (Language $language) => $language->locale)->toArray();
 
         foreach ($parts as $index => $part) {
             if (is_numeric($part) || in_array($part, $locales, false)) {
@@ -122,8 +122,8 @@ class FieldSetFieldFinder
     }
 
     /**
-     * @param  Collection  $fields
-     * @param  string  $attribute
+     * @param Collection $fields
+     * @param string $attribute
      * @return AbstractField|null
      */
     protected function resolveMultipleFields($fields, $attribute)

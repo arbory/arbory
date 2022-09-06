@@ -20,7 +20,7 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     public const KEY_MIN = 'min';
     public const KEY_MAX = 'max';
 
-    protected $inputType = 'number';
+    protected string $inputType = 'number';
 
     /**
      * @param FilterItem $filterItem
@@ -50,9 +50,6 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
         ])->addClass('range');
     }
 
-    /**
-     * @return string|null
-     */
     protected function getRangeValue(string $key): ?string
     {
         return Arr::get($this->getValue(), $key);
@@ -77,11 +74,6 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
         }
     }
 
-    /**
-     * @param FilterParameters $parameters
-     * @param callable $attributeResolver
-     * @return array
-     */
     public function rules(FilterParameters $parameters, callable $attributeResolver): array
     {
         return [
@@ -90,21 +82,11 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
         ];
     }
 
-    /**
-     * @param FilterParameters $filterParameters
-     * @param callable $attributeResolver
-     * @return array
-     */
     public function messages(FilterParameters $filterParameters, callable $attributeResolver): array
     {
         return [];
     }
 
-    /**
-     * @param FilterParameters $filterParameters
-     * @param callable $attributeResolver
-     * @return array
-     */
     public function attributes(FilterParameters $filterParameters, callable $attributeResolver): array
     {
         return [];

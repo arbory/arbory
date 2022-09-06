@@ -18,7 +18,6 @@ class Slot implements Renderable
     /**
      * Slot constructor.
      *
-     * @param string $name
      * @param null $contents
      */
     public function __construct(protected string $name, protected $contents = null)

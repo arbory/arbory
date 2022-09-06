@@ -23,7 +23,7 @@ class Toolbox implements Renderable
      */
     public function render()
     {
-        if (!$this->url && !$this->menu) {
+        if (! $this->url && ! $this->menu) {
             return;
         }
 

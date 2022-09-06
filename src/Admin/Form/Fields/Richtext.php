@@ -18,12 +18,12 @@ class Richtext extends Textarea
     /**
      * @var bool
      */
-    protected $isCompact = false;
+    protected bool $isCompact = false;
 
     /**
      * @var string
      */
-    protected $rendererClass = RichtextFieldRenderer::class;
+    protected string $rendererClass = RichtextFieldRenderer::class;
 
     /**
      * @var null|array
@@ -37,7 +37,7 @@ class Richtext extends Textarea
         $this->allowedTags = config('arbory.fields.richtext.allowed_tags');
     }
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         if ($this->isDisabled()) {
             return;

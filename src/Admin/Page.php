@@ -57,12 +57,9 @@ class Page extends Layout implements PageInterface
     }
 
     /**
-     * @param  mixed  $content
-     * @return string
-     *
      * @throws Throwable
      */
-    public function contents($content)
+    public function contents(mixed $content): mixed
     {
         $content = new Content(
             [

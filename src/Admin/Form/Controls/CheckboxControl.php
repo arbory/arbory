@@ -9,18 +9,17 @@ use Arbory\Base\Html\Elements\Inputs\Input as InputElement;
 
 class CheckboxControl extends InputControl
 {
-    protected $type = 'checkbox';
+    protected string $type = 'checkbox';
 
     /**
      * @var bool
      */
-    protected $checked = false;
+    protected bool $checked = false;
 
     /**
-     * @return Content
      * @throws BadMethodCallException
      */
-    public function render(Element $control)
+    public function render(Element $control): Content
     {
         $control->setType($this->type);
         $input = parent::render($control);

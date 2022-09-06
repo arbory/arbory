@@ -79,12 +79,9 @@ class Column
     {
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
-        return (string)$this->getName();
+        return $this->getName();
     }
 
     /**
@@ -155,7 +152,6 @@ class Column
     }
 
     /**
-     * @param bool $isSortable
      * @return Column
      */
     public function sortable(bool $isSortable = true)
@@ -166,7 +162,6 @@ class Column
     }
 
     /**
-     * @param bool $isCheckable
      * @return $this
      */
     public function checkable(bool $isCheckable = true)
@@ -177,7 +172,6 @@ class Column
     }
 
     /**
-     * @param bool $isSearchable
      * @return Column
      */
     public function searchable(bool $isSearchable = true)
@@ -199,25 +193,16 @@ class Column
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isSortable(): bool
     {
         return $this->sortable && empty($this->relationName);
     }
 
-    /**
-     * @return bool
-     */
     public function isCheckable(): bool
     {
         return $this->checkable;
     }
 
-    /**
-     * @return bool
-     */
     public function isSearchable(): bool
     {
         return $this->searchable;
@@ -296,7 +281,7 @@ class Column
         $value = $this->getValue($model);
 
         if ($this->displayer === null) {
-            $value = (string)$value;
+            $value = (string) $value;
 
             if ($url = $this->grid->getRowUrl($model)) {
                 return Html::link($value)->addAttributes([

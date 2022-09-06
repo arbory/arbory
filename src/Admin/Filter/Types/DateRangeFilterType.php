@@ -11,7 +11,7 @@ use Illuminate\Validation\Validator;
 
 class DateRangeFilterType extends RangeFilterType
 {
-    protected $inputType = 'date';
+    protected string $inputType = 'date';
 
     public function execute(FilterItem $filterItem, Builder $builder): void
     {

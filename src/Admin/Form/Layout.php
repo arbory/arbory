@@ -64,7 +64,7 @@ class Layout extends AbstractLayout implements FormLayoutInterface
         return $this;
     }
 
-    public function contents($content)
+    public function contents(mixed $content): mixed
     {
         /**
          * @var WrappableInterface
@@ -81,7 +81,7 @@ class Layout extends AbstractLayout implements FormLayoutInterface
         $page->setBreadcrumbs($this->breadcrumbs());
     }
 
-    public function build()
+    public function build(): void
     {
         $this->use(
             new AppendTransformer(

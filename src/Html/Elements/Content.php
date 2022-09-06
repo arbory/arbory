@@ -8,13 +8,10 @@ use LogicException;
 
 class Content extends Collection implements Renderable
 {
-    protected $handlers = [
+    protected array $handlers = [
         Renderable::class => 'renderable',
     ];
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->render();
@@ -61,11 +58,8 @@ class Content extends Collection implements Renderable
         throw new LogicException('Cannot render the contents of ' . gettype($value) . " {$className}");
     }
 
-    /**
-     * @return string
-     */
-    protected function renderable(Renderable $value)
+    protected function renderable(Renderable $value): string
     {
-        return (string)$value->render();
+        return $value->render();
     }
 }

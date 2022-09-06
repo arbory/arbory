@@ -34,7 +34,7 @@ class ArboryFile extends ControlField
     /**
      * @var string
      */
-    protected $rendererClass = FileFieldRenderer::class;
+    protected string $rendererClass = FileFieldRenderer::class;
 
     /**
      * @var string
@@ -102,10 +102,7 @@ class ArboryFile extends ControlField
         $model->save();
     }
 
-    /**
-     * @return void
-     */
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
     }
 

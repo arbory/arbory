@@ -98,8 +98,11 @@ class Builder implements Renderable
     protected function getColumnHeader(Column $column): Element
     {
         if ($column->isCheckable() && $this->grid->hasTool('bulk-edit')) {
-            $input = Html::label([Html::checkbox()->addClass('js-bulk-edit-header-checkbox')
-                ->setName('bulk-edit-column'), $column->getLabel()]);
+            $input = Html::label([
+                Html::checkbox()->addClass('js-bulk-edit-header-checkbox')
+                    ->setName('bulk-edit-column'),
+                $column->getLabel()
+            ]);
 
             return Html::th($input)->addClass('bulk-check-column');
         }

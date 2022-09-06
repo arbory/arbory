@@ -15,14 +15,11 @@ class Deactivator extends Checkbox
     protected $expireAtName = 'expire_at';
 
     protected $control = CheckboxControl::class;
-    protected $rendererClass = CheckBoxFieldRenderer::class;
+    protected string $rendererClass = CheckBoxFieldRenderer::class;
 
-    protected $style = 'basic';
+    protected string $style = 'basic';
 
-    /**
-     * @param  string  $name
-     */
-    public function __construct($name = 'deactivate')
+    public function __construct(string $name = 'deactivate')
     {
         parent::__construct($name);
     }
@@ -47,7 +44,7 @@ class Deactivator extends Checkbox
         return $this->expireAtName;
     }
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         $value = $request->has($this->getNameSpacedName())
             ? $request->input($this->getNameSpacedName())

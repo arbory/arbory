@@ -43,10 +43,8 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 
     /**
      * ConstructorLayout constructor.
-     *
-     * @param  string  $name
      */
-    public function __construct(protected $name = 'blocks')
+    public function __construct(protected string $name = 'blocks')
     {
         $this->fieldConfigurator = function () {
             $this->field->setItemRenderer(new PaneledItemRenderer);
@@ -78,10 +76,8 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
 
     /**
      * Executes every time before render.
-     *
-     * @return mixed
      */
-    public function build()
+    public function build(): void
     {
         $gridLayout = new GridLayout(new Grid());
         $gridLayout->setWidth(9);
@@ -91,11 +87,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         $this->use($gridLayout);
     }
 
-    /**
-     * @param  mixed  $content
-     * @return mixed
-     */
-    public function contents($content)
+    public function contents(mixed $content): mixed
     {
         return $content;
     }

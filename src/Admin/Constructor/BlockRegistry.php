@@ -14,8 +14,6 @@ class BlockRegistry
 
     /**
      * Registry constructor.
-     *
-     * @param Container $container
      */
     public function __construct(protected Container $container)
     {

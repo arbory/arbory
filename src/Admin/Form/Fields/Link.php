@@ -10,7 +10,7 @@ class Link extends HasOne
 {
     use HasNestedFieldSet;
 
-    protected $style = 'nested';
+    protected string $style = 'nested';
 
     protected $urlRules;
 

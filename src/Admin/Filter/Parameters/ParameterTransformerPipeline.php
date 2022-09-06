@@ -44,9 +44,6 @@ class ParameterTransformerPipeline
         return $this;
     }
 
-    /**
-     * @param ParameterTransformerInterface[] $transformers
-     */
     public function setTransformers(array $transformers): self
     {
         $this->transformers = $transformers;

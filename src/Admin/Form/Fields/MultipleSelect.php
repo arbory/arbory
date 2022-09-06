@@ -10,7 +10,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\AssociatedSetRenderer;
  */
 class MultipleSelect extends AbstractField
 {
-    protected $rendererClass = AssociatedSetRenderer::class;
+    protected string $rendererClass = AssociatedSetRenderer::class;
 
     use HasSelectOptions;
 }

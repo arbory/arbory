@@ -2,34 +2,28 @@
 
 namespace Arbory\Base\Admin\Form\Controls;
 
-use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
+use Arbory\Base\Html\Elements\Element;
 
 abstract class AbstractControl implements InputControlInterface
 {
     use HasRenderOptions;
 
-    protected $value;
+    protected mixed $value;
 
-    protected $readOnly = false;
-    protected $disabled = false;
+    protected bool $readOnly = false;
+    protected bool $disabled = false;
 
     /**
      * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     abstract public function element(): Element;
 
-    /**
-     * @return Element
-     */
-    abstract public function render(Element $control);
+    abstract public function render(Element $control): mixed;
 
-    /**
-     * @return Element
-     */
-    public function applyAttributesAndClasses(Element $element)
+    public function applyAttributesAndClasses(Element $element): Element
     {
         $element->addAttributes($this->getAttributes());
         $element->addClass(
@@ -53,20 +47,14 @@ abstract class AbstractControl implements InputControlInterface
         return $element;
     }
 
-    /**
-     * @param $value
-     */
-    public function setValue($value): InputControlInterface
+    public function setValue(mixed $value): InputControlInterface
     {
         $this->value = $value;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
@@ -111,31 +99,21 @@ abstract class AbstractControl implements InputControlInterface
 
     /**
      * Converts dot donation name to a input name.
-     *
-     * @param $namespacedName
-     * @return string
      */
-    public function getInputName($namespacedName)
+    public function getInputName(string $namespacedName): string
     {
         return Element::formatName($namespacedName);
     }
 
     /**
      * Creates Input ID from input name.
-     *
-     * @param $inputName
-     * @return string
      */
-    public function getInputId($inputName)
+    public function getInputId(string $inputName): string
     {
         return rtrim(strtr($inputName, ['[' => '_', ']' => '']), '_');
     }
 
-    /**
-     * @param $namespacedName
-     * @return string
-     */
-    public function getInputIdFromNamespace($namespacedName)
+    public function getInputIdFromNamespace(string $namespacedName): string
     {
         return $this->getInputId(
             $this->getInputName($namespacedName)

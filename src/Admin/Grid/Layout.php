@@ -99,16 +99,12 @@ class Layout extends AbstractLayout implements LayoutInterface
         return (new SearchField($this->grid->getModule()->url('index')))->render();
     }
 
-    public function build()
+    public function build(): void
     {
         $this->setContent($this->getGrid()->render());
     }
 
-    /**
-     * @param  mixed  $content
-     * @return Content|mixed
-     */
-    public function contents($content)
+    public function contents(mixed $content): mixed
     {
         return new Content([
             $content,

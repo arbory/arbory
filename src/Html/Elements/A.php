@@ -7,13 +7,8 @@ namespace Arbory\Base\Html\Elements;
  */
 class A extends Element
 {
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
-        $tag = $this->tag('a', $this->content);
-
-        return (string)$tag;
+        return $this->tag('a', $this->content);
     }
 }

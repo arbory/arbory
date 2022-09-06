@@ -11,11 +11,11 @@ use Arbory\Base\Admin\Form\Controls\CheckboxControl;
  */
 class Checkbox extends ControlField
 {
-    protected $rendererClass = CheckBoxFieldRenderer::class;
+    protected string $rendererClass = CheckBoxFieldRenderer::class;
 
     protected $control = CheckboxControl::class;
 
-    protected $style = 'basic';
+    protected string $style = 'basic';
 
     /**
      * @var mixed
@@ -27,7 +27,7 @@ class Checkbox extends ControlField
      */
     protected $uncheckedValue = false;
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         $value = $request->has($this->getNameSpacedName()) ? $this->checkedValue : $this->uncheckedValue;
 

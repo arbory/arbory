@@ -16,10 +16,7 @@ class TextareaControl extends AbstractControl
         return $this->applyAttributesAndClasses($textarea);
     }
 
-    /**
-     * @return Element
-     */
-    public function render(Element $control)
+    public function render(Element $control): Element
     {
         return $control;
     }

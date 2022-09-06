@@ -15,8 +15,6 @@ class BelongsTo extends Select
 {
     use HasRelationships;
 
-    protected $rendererClass = SelectFieldRenderer::class;
-
     public function getValue()
     {
         $foreignKey = $this->getRelation()->getForeignKeyName();
@@ -33,7 +31,7 @@ class BelongsTo extends Select
         return $this->getRelatedItems();
     }
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         $this->getModel()->setAttribute(
             $this->getRelation()->getForeignKeyName(),

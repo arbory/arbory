@@ -110,7 +110,7 @@ class UsersController extends Controller
             $grid->column('last_name');
             $grid->column('roles.name')
                 ->display(fn (Collection $value) => Html::ul(
-                    $value->map(fn ($role) => Html::li((string)$role))->toArray()
+                    $value->map(fn ($role) => Html::li((string) $role))->toArray()
                 ));
             $grid->column('last_login');
         });

@@ -18,14 +18,12 @@ class Password extends ControlField
         'type' => 'password',
     ];
 
-    public function getValue()
+    public function getValue(): mixed
     {
+        return null;
     }
 
-    /**
-     * @return void
-     */
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         $password = $request->input($this->getNameSpacedName());
         $hasher = Sentinel::getUserRepository()->getHasher();

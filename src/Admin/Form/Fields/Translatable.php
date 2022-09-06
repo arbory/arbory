@@ -25,9 +25,9 @@ class Translatable extends AbstractField implements ProxyFieldInterface
      */
     protected $currentLocale;
 
-    protected $style = 'raw';
+    protected string $style = 'raw';
 
-    protected $rendererClass = TranslatableFieldRenderer::class;
+    protected string $rendererClass = TranslatableFieldRenderer::class;
 
     /**
      * Translatable constructor.
@@ -136,7 +136,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         return $resource;
     }
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         foreach ($this->locales as $locale) {
             foreach ($this->getTranslatableResource($locale)->getFields() as $field) {
@@ -167,10 +167,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         return $rules;
     }
 
-    /**
-     * @return string
-     */
-    public function getFieldTypeName()
+    public function getFieldTypeName(): string
     {
         return $this->field->getFieldTypeName();
     }

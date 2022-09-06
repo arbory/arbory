@@ -39,7 +39,7 @@ class ObjectRelation extends AbstractField
     /**
      * @var string
      */
-    protected $rendererClass = ObjectRelationRenderer::class;
+    protected string $rendererClass = ObjectRelationRenderer::class;
 
     /**
      * @var string
@@ -68,12 +68,9 @@ class ObjectRelation extends AbstractField
         parent::__construct($name);
     }
 
-    /**
-     * @return bool
-     */
-    public function hasIndentation()
+    public function hasIndentation(): bool
     {
-        return (bool)$this->getIndentAttribute();
+        return $this->getIndentAttribute();
     }
 
     /**
@@ -114,7 +111,7 @@ class ObjectRelation extends AbstractField
     /**
      * @return Relation|Collection|null
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         if (! $this->value) {
             $this->value = $this->getModel()
@@ -126,10 +123,7 @@ class ObjectRelation extends AbstractField
         return $this->value;
     }
 
-    /**
-     * @return void
-     */
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         $request->except($this->getNameSpacedName());
     }

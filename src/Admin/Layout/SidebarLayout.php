@@ -38,10 +38,9 @@ class SidebarLayout extends AbstractLayout implements LayoutInterface
     }
 
     /**
-     * @param  mixed  $content
      * @return Content
      */
-    public function contents($content)
+    public function contents(mixed $content)
     {
         return new Content(Arr::wrap($content));
     }

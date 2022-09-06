@@ -114,10 +114,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         $this->renderer = new FieldSetRenderer($this, $styleManager);
     }
 
-    /**
-     * @return AbstractField|null
-     */
-    public function findFieldByInputName(string $inputName)
+    public function findFieldByInputName(string $inputName): ?AbstractField
     {
         $inputNameParts = explode('.', $inputName);
         $fields = $this->findFieldsByInputName($inputName);
@@ -125,26 +122,17 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         return Arr::get($fields, end($inputNameParts));
     }
 
-    /**
-     * @return array
-     */
-    public function findFieldsByInputName(string $inputName)
+    public function findFieldsByInputName(string $inputName): array
     {
         return (new FieldSetFieldFinder(app(LanguageRepository::class), $this))->find($inputName);
     }
 
-    /**
-     * @return AbstractField|null
-     */
-    public function getFieldByName(string $fieldName)
+    public function getFieldByName(string $fieldName): ?AbstractField
     {
         return $this->getFields()->first(fn (AbstractField $field) => $field->getName() === $fieldName);
     }
 
-    /**
-     * @return Collection
-     */
-    public function getFieldsByName(string $fieldName)
+    public function getFieldsByName(string $fieldName): Collection
     {
         $fields = [];
 
@@ -158,31 +146,22 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         return new Collection($fields);
     }
 
-    /**
-     * @return Collection|FieldInterface[]
-     */
     public function getFields(): Collection|array
     {
         return $this->items;
     }
 
-    /**
-     * @return string
-     */
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return $this->namespace;
     }
 
-    /**
-     * @return Model
-     */
-    public function getModel()
+    public function getModel(): Model
     {
         return $this->model;
     }
 
-    public function getRules()
+    public function getRules(): array
     {
         $rules = [];
 
@@ -193,9 +172,6 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         return $rules;
     }
 
-    /**
-     * @param string|int|null $key
-     */
     public function prepend(FieldInterface $field, string|int $key = null): Collection
     {
         $field->setFieldSet($this);
@@ -205,10 +181,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         return $this->items->prepend(...$parameters);
     }
 
-    /**
-     * @return FieldInterface
-     */
-    public function add(FieldInterface $field)
+    public function add(FieldInterface $field): FieldInterface
     {
         $field->setFieldSet($this);
 
@@ -218,14 +191,14 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string $key
-     * @param FieldInterface $field
+     * @param $key
+     * @param $value
      */
-    public function offsetSet($key, $field): void
+    public function offsetSet($key, $value): void
     {
-        $field->setFieldSet($this);
+        $value->setFieldSet($this);
 
-        $this->items->offsetSet($key, $field);
+        $this->items->offsetSet($key, $value);
     }
 
     /**
@@ -236,10 +209,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
         return $this->renderer->render();
     }
 
-    /**
-     * @return array|FieldInterface[]
-     */
-    public function all()
+    public function all(): array
     {
         return $this->items->all();
     }
@@ -279,27 +249,25 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * Determine if an item exists at an offset.
      */
-    public function offsetExists(mixed $key): bool
+    public function offsetExists(mixed $offset): bool
     {
-        return array_key_exists($key, $this->all());
+        return array_key_exists($offset, $this->all());
     }
 
     /**
      * Get an item at a given offset.
      */
-    public function offsetGet(mixed $key): mixed
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->items[$key];
+        return $this->items[$offset];
     }
 
     /**
      * Unset the item at a given offset.
-     *
-     * @param string $key
      */
-    public function offsetUnset($key): void
+    public function offsetUnset(mixed $offset): void
     {
-        unset($this->items[$key]);
+        unset($this->items[$offset]);
     }
 
     /**
@@ -312,10 +280,8 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
     /**
      * Get the instance as an array.
-     *
-     * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->items->toArray();
     }
@@ -333,11 +299,9 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param string $method
-     * @param array $parameters
      * @return FieldInterface|mixed
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters)
     {
         if ($this->fieldTypeRegister->has($method)) {
             return $this->add(

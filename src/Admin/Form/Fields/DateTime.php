@@ -29,7 +29,7 @@ class DateTime extends Text
         return $this;
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         $value = parent::getValue();
 

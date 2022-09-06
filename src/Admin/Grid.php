@@ -98,12 +98,9 @@ class Grid
         $this->rows = new Collection();
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
-        return (string)$this->render();
+        return $this->render();
     }
 
     /**
@@ -459,7 +456,7 @@ class Grid
 
         $this->buildRows($items);
 
-        $columns = $this->columns->map(fn (Column $column) => (string)$column)->toArray();
+        $columns = $this->columns->map(fn (Column $column) => (string) $column)->toArray();
 
         return $this->rows->map(fn (Row $row) => array_combine($columns, $row->toArray()))->toArray();
     }

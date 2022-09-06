@@ -18,10 +18,7 @@ class FieldTypeRegistry
      */
     protected $fieldTypes;
 
-    /**
-     * @var
-     */
-    protected $reservedTypes = [];
+    protected array $reservedTypes = [];
 
     /**
      * FieldTypeRegistry constructor.
@@ -58,28 +55,20 @@ class FieldTypeRegistry
         return $this->fieldTypes;
     }
 
-    /**
-     * @param  string  $type
-     */
-    public function findByType($type): ?string
+    public function findByType(string $type): ?string
     {
         return $this->fieldTypes->get($type);
     }
 
-    /**
-     * @param  string  $type
-     */
-    public function has($type): bool
+    public function has(string $type): bool
     {
         return $this->fieldTypes->has($type);
     }
 
     /**
      * Resolves a field class instance.
-     *
-     * @param  string  $type
      */
-    public function resolve($type, array $parameters): FieldInterface
+    public function resolve(string $type, array $parameters): FieldInterface
     {
         $fieldClass = $this->findByType($type);
 
@@ -93,10 +82,10 @@ class FieldTypeRegistry
     /**
      * Finds any accessible functions which are defined in class.
      *
-     * @return array
+     *
      * @throws ReflectionException
      */
-    protected function getReservedMethods(mixed $class)
+    protected function getReservedMethods(mixed $class): array
     {
         $reflection = new ReflectionClass($class);
 

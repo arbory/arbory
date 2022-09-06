@@ -18,17 +18,16 @@ interface LayoutInterface extends Renderable, TransformableInterface
     /**
      * @return mixed
      */
-    public function getContent();
+    public function getContent(): mixed;
 
     /**
      * @param  mixed  $content
      * @return mixed
      */
-    public function contents($content);
+    public function contents(mixed $content): mixed;
 
     /**
-     * @param  LayoutInterface|TransformableInterface|string  $layout
      * @return mixed
      */
-    public function use($layout);
+    public function use(TransformableInterface|LayoutInterface|string $layout): mixed;
 }

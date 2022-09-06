@@ -290,7 +290,7 @@ trait Crudify
         return view('arbory::dialogs.confirm_delete', [
             'form_target' => $this->url('destroy', [$resourceId]),
             'list_url' => $this->url('index'),
-            'object_name' => (string)$model,
+            'object_name' => (string) $model,
         ]);
     }
 

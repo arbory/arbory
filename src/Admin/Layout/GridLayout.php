@@ -30,7 +30,7 @@ class GridLayout extends AbstractLayout implements LayoutInterface
         $this->column = $this->grid->column($this->width, '');
     }
 
-    public function build()
+    public function build(): void
     {
         $this->column->size($this->getWidth());
 
@@ -42,7 +42,7 @@ class GridLayout extends AbstractLayout implements LayoutInterface
     /**
      * {@inheritdoc}
      */
-    public function contents($content)
+    public function contents(mixed $content): mixed
     {
         $this->column->set($content);
 

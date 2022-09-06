@@ -24,8 +24,9 @@ class ContentTypeRoutesRegister
 
     /**
      * @param $contentType
-     *
+     * @param Closure $handler
      * @return $this
+     *
      * @throws BadMethodCallException
      */
     public function register($contentType, Closure $handler)
@@ -46,8 +47,7 @@ class ContentTypeRoutesRegister
     public function getContentTypeHandler($contentType)
     {
         if (! array_key_exists($contentType, $this->contentTypeHandlers)) {
-            return function () {
-            };
+            return function () {};
         }
 
         return $this->contentTypeHandlers[$contentType];

@@ -42,7 +42,7 @@ abstract class AbstractLayout
      */
     protected $content;
 
-    public function slot(string $name, mixed $content = null): Slot
+    public function slot(string $name, mixed $content = null): ?Slot
     {
         if ($this->root === null) {
             $this->root = new Slot('root');
@@ -60,7 +60,7 @@ abstract class AbstractLayout
      *
      * @return Collection
      */
-    public function slots()
+    public function slots(): Collection
     {
         if ($this->root === null) {
             return collect();
@@ -71,10 +71,8 @@ abstract class AbstractLayout
 
     /**
      * Executes every time before render.
-     *
-     * @return mixed
      */
-    abstract public function build();
+    abstract public function build(): void;
 
     /**
      * Executes when the layout is applied.
@@ -88,7 +86,7 @@ abstract class AbstractLayout
      *
      * @return Content
      */
-    public function render()
+    public function render(): Content
     {
         // Build layout
         $this->build();
@@ -120,12 +118,9 @@ abstract class AbstractLayout
     }
 
     /**
-     * Adds an transformer to the layout.
-     *
-     * @param LayoutInterface|string $layout
-     * @return $this
+     * Adds a transformer to the layout.
      */
-    public function use($layout): LayoutResolver
+    public function use(mixed $layout): LayoutResolver
     {
         $resolver = new LayoutResolver(app(), $layout);
 
@@ -155,8 +150,6 @@ abstract class AbstractLayout
 
     /**
      * Transformer pipeline.
-     *
-     * @return Pipeline
      */
     public function pipeline(): Pipeline
     {
@@ -171,8 +164,6 @@ abstract class AbstractLayout
 
     /**
      * Set inner content of the layout.
-     *
-     * @return LayoutInterface
      */
     public function setContent(mixed $content): LayoutInterface
     {
@@ -186,7 +177,7 @@ abstract class AbstractLayout
      *
      * @return mixed
      */
-    public function getContent()
+    public function getContent(): mixed
     {
         return $this->content;
     }
@@ -199,9 +190,6 @@ abstract class AbstractLayout
         return $this->layouts;
     }
 
-    /**
-     * @return LayoutManager
-     */
     public function manager(): LayoutManager
     {
         return app(LayoutManager::class);

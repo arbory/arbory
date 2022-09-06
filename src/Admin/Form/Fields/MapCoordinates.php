@@ -27,9 +27,9 @@ class MapCoordinates extends AbstractField implements NestedFieldInterface, Rend
      */
     protected $longitude;
 
-    protected $rendererClass = MapCoordinatesFieldRenderer::class;
+    protected string $rendererClass = MapCoordinatesFieldRenderer::class;
 
-    protected $style = 'nested';
+    protected string $style = 'nested';
 
     public function __construct(string $name)
     {

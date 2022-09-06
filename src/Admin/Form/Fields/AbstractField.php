@@ -22,7 +22,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @var mixed
@@ -37,12 +37,12 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @var string
      */
-    protected $label;
+    protected string $label;
 
     /**
      * @var array
      */
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * @var FieldSet
@@ -52,7 +52,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @var string
      */
-    protected $rendererClass;
+    protected string $rendererClass = '';
 
     /**
      * @var RendererInterface
@@ -72,19 +72,17 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @var string
      */
-    protected $style;
+    protected string $style = '';
 
     /**
      * @var bool
      */
-    protected $hidden = false;
+    protected bool $hidden = false;
 
     /**
      * AbstractField constructor.
-     *
-     * @param string $name
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->setName($name);
     }
@@ -92,7 +90,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -101,7 +99,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      * @param string $name
      * @return $this
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -111,7 +109,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return string
      */
-    public function getNameSpacedName()
+    public function getNameSpacedName(): string
     {
         return implode('.', [
             $this->getFieldSet()->getNamespace(),
@@ -122,7 +120,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return string
      */
-    public function getFieldTypeName()
+    public function getFieldTypeName(): string
     {
         return 'type-' . Str::camel(class_basename(static::class));
     }
@@ -130,7 +128,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         if ($this->value === null) {
             $this->value = $this->getModel()->getAttribute($this->getName());
@@ -146,7 +144,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return bool
      */
-    private function hasNoValue()
+    private function hasNoValue(): bool
     {
         return $this->value === null || $this->isEmptyCollection($this->value);
     }
@@ -154,7 +152,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return bool
      */
-    private function isEmptyCollection(mixed $value)
+    private function isEmptyCollection(mixed $value): bool
     {
         return $value instanceof Collection && $value->isEmpty();
     }
@@ -163,7 +161,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      * @param string $value
      * @return $this
      */
-    public function setValue($value)
+    public function setValue($value): self
     {
         $this->value = $value;
 
@@ -173,7 +171,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return mixed
      */
-    public function getDefaultValue()
+    public function getDefaultValue(): mixed
     {
         return $this->defaultValue;
     }
@@ -182,7 +180,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      * @param mixed $defaultValue
      * @return $this
      */
-    public function setDefaultValue($defaultValue)
+    public function setDefaultValue($defaultValue): self
     {
         $this->defaultValue = $defaultValue;
 
@@ -192,20 +190,16 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
-        if ($this->label === null) {
-            return $this->name;
-        }
-
-        return $this->label;
+        return $this->label ?? $this->name;
     }
 
     /**
      * @param string $label
      * @return $this
      */
-    public function setLabel($label)
+    public function setLabel($label): self
     {
         $this->label = $label;
 
@@ -215,7 +209,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return Model
      */
-    public function getModel()
+    public function getModel(): Model
     {
         return $this->getFieldSet()->getModel();
     }
@@ -223,7 +217,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return FieldSet
      */
-    public function getFieldSet()
+    public function getFieldSet(): FieldSet
     {
         return $this->fieldSet;
     }
@@ -231,14 +225,14 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return $this
      */
-    public function setFieldSet(FieldSet $fieldSet)
+    public function setFieldSet(FieldSet $fieldSet): self
     {
         $this->fieldSet = $fieldSet;
 
         return $this;
     }
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         if ($this->isDisabled()) {
             return;
@@ -289,7 +283,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return string|null
      */
-    public function getTooltip()
+    public function getTooltip(): ?string
     {
         return $this->tooltip;
     }
@@ -307,7 +301,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return mixed
      */
-    public function getRows()
+    public function getRows(): mixed
     {
         return $this->rows;
     }
@@ -325,7 +319,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return string|null
      */
-    public function getStyle()
+    public function getStyle(): ?string
     {
         return $this->style;
     }
@@ -370,7 +364,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * @return RendererInterface
      */
-    public function newRenderer()
+    public function newRenderer(): RendererInterface
     {
         return app()->makeWith(
             $this->rendererClass,

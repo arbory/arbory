@@ -13,7 +13,7 @@ class BelongsToMany extends AbstractField
 {
     use HasRelationships;
 
-    protected $rendererClass = AssociatedSetRenderer::class;
+    protected string $rendererClass = AssociatedSetRenderer::class;
 
     /**
      * @return bool
@@ -31,7 +31,7 @@ class BelongsToMany extends AbstractField
         return false;
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         $relatedModel = $this->getRelatedModel();
 
@@ -43,7 +43,7 @@ class BelongsToMany extends AbstractField
         return $this->getRelatedItems();
     }
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
     }
 

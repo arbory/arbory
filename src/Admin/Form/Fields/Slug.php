@@ -11,7 +11,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\SlugFieldRenderer;
  */
 class Slug extends Text
 {
-    protected $rendererClass = SlugFieldRenderer::class;
+    protected string $rendererClass = SlugFieldRenderer::class;
 
     /**
      * @param  string  $name

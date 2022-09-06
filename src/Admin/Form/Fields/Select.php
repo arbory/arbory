@@ -22,7 +22,7 @@ class Select extends ControlField
 
     protected $control = SelectControl::class;
 
-    protected $rendererClass = SelectFieldRenderer::class;
+    protected string $rendererClass = SelectFieldRenderer::class;
 
     /**
      * @var bool
@@ -37,7 +37,7 @@ class Select extends ControlField
     /**
      * @throws RuntimeException
      */
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
         $property = $this->getName();
         $value = $request->has($this->getNameSpacedName())
@@ -93,7 +93,7 @@ class Select extends ControlField
     /**
      * @return array|mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         $value = parent::getValue();
 

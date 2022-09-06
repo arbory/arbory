@@ -9,7 +9,7 @@ use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
  */
 class Hidden extends ControlField
 {
-    protected $style = 'raw';
+    protected string $style = 'raw';
 
     protected array $attributes = [
         'type' => 'hidden',

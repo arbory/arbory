@@ -20,7 +20,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
 {
     use HasRenderOptions;
 
-    protected $style = 'section';
+    protected string $style = 'section';
 
     public function render(): Element
     {
@@ -48,7 +48,7 @@ class HasOne extends AbstractRelationField implements RenderOptionsInterface
         return $fieldSet;
     }
 
-    public function beforeModelSave(Request $request)
+    public function beforeModelSave(Request $request): void
     {
     }
 

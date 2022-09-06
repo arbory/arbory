@@ -92,18 +92,15 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
         return $this;
     }
 
-    public function build()
+    public function build(): void
     {
         $this->use(new AppendTransformer(new Content($this->rows->all())));
     }
 
     /**
-     * @param  $content
-     * @return string
-     *
      * @throws Throwable
      */
-    public function contents($content)
+    public function contents(mixed $content): mixed
     {
         $variables = [
             'content' => $content,

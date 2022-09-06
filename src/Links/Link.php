@@ -20,11 +20,11 @@ class Link extends Model
      */
     public function __toString(): string
     {
-        return (string)$this->href;
+        return $this->href;
     }
 
     public function isNewTab(): bool
     {
-        return (bool)$this->new_tab;
+        return $this->new_tab;
     }
 }

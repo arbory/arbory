@@ -106,7 +106,7 @@ class ObjectRelationRenderer implements RendererInterface
     {
         $element = Html::div(
             Html::span(
-                (string)$value
+                (string) $value
             )->addClass('title')
         )->addClass('item');
 

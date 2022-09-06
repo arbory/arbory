@@ -20,10 +20,9 @@ class PageBuilder
     }
 
     /**
-     * @return $this
      * @throws BadMethodCallException
      */
-    public function register(string $model)
+    public function register(string $model): self
     {
         $this->definition = new ContentTypeDefinition($model);
 
@@ -33,10 +32,7 @@ class PageBuilder
         });
     }
 
-    /**
-     * @return $this
-     */
-    public function get(string $model)
+    public function get(string $model): self
     {
         $this->definition = $this->contentTypeRegister->findByModelClass($model);
 
@@ -44,31 +40,23 @@ class PageBuilder
     }
 
     /**
-     * @return $this
      * @throws BadMethodCallException
      */
-    public function routes(Closure $routes)
+    public function routes(Closure $routes): self
     {
         $this->contentTypeRoutesRegister->register($this->definition->getModel(), $routes);
 
         return $this;
     }
 
-    /**
-     * @return $this
-     * @throws BadMethodCallException
-     */
-    public function fields(Closure $fieldSet)
+    public function fields(Closure $fieldSet): self
     {
         $this->definition->setFieldSetHandler($fieldSet);
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function layout(Closure $layout)
+    public function layout(Closure $layout): self
     {
         $this->definition->setLayoutHandler($layout);
 

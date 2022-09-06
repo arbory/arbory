@@ -100,46 +100,32 @@ class Node extends Model
     /**
      * Use ancestors() instead.
      *
-     * @return Builder
      * @deprecated
-     *
      */
-    public function parentsQuery()
+    public function parentsQuery(): Builder
     {
         return $this->newQuery()
-            ->where($this->getLeftColumnName(), '<', (int)$this->getLeft())
-            ->where($this->getRightColumnName(), '>', (int)$this->getRight())
-            ->orderBy($this->getDepthColumnName(), 'asc');
+            ->where($this->getLeftColumnName(), '<', $this->getLeft())
+            ->where($this->getRightColumnName(), '>', $this->getRight())
+            ->orderBy($this->getDepthColumnName());
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getContentType()
+    public function getContentType(): string
     {
         return $this->content_type;
     }
 
-    /**
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @return string
-     */
-    public function getUri()
+    public function getUri(): string
     {
         $uri = [];
 
@@ -152,12 +138,7 @@ class Node extends Model
         return implode('/', $uri);
     }
 
-    /**
-     * @param  $name
-     * @param bool $absolute
-     * @return string|null
-     */
-    public function getUrl($name, array $parameters = [], $absolute = true)
+    public function getUrl(string $name, array $parameters = [], bool $absolute = true): ?string
     {
         $routes = app('routes');
         $routeName = 'node.' . $this->getKey() . '.' . $name;
@@ -166,18 +147,12 @@ class Node extends Model
         return $route ? route($routeName, $parameters, $absolute) : null;
     }
 
-    /**
-     * @return bool
-     */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->active;
     }
 
-    /**
-     * @return bool
-     */
-    public function getActiveAttribute()
+    public function getActiveAttribute(): bool
     {
         if (! $this->isPublic()) {
             return false;
@@ -190,20 +165,15 @@ class Node extends Model
         return true;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return $this->hasActivated() && ! $this->hasExpired();
     }
 
     /**
      * Return parent id (legacy support).
-     *
-     * @return mixed
      */
-    public function getParentId()
+    public function getParentId(): mixed
     {
         return $this->getAttribute($this->getParentColumnName());
     }

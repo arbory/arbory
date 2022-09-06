@@ -42,8 +42,8 @@ class RolesController extends Controller
      * RolesController constructor.
      */
     public function __construct(
-        protected Admin           $admin,
-        protected Request         $request,
+        protected Admin $admin,
+        protected Request $request,
         protected PropertyRemover $propertyRemover
     ) {
     }
@@ -122,7 +122,7 @@ class RolesController extends Controller
         $permissionsOutput = [];
         foreach ($permissionsInput as $moduleName => $permissions) {
             foreach ($permissions as $permissionName => $allowed) {
-                $permissionsOutput[$moduleName . '.' . $permissionName] = (bool)$allowed;
+                $permissionsOutput[$moduleName . '.' . $permissionName] = (bool) $allowed;
             }
         }
 

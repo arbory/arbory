@@ -94,14 +94,14 @@ class PanelLayout extends AbstractLayout implements FormLayoutInterface
         return $fields;
     }
 
-    public function contents($content)
+    public function contents(mixed $content): mixed
     {
         return new Content([
             $content,
         ]);
     }
 
-    public function build()
+    public function build(): void
     {
         // TODO: Options - 1. Remove builder from the layout, add an option disable it from transformers
 
