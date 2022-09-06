@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*",
         "laravel/framework": "^9.0",
         "laravelcollective/html": "^6.0",
