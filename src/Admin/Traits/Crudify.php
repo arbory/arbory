@@ -312,9 +312,9 @@ trait Crudify
     }
 
     /**
-     * @param ToolboxMenu $tools
+     * @param  ToolboxMenu  $tools
      */
-    protected function toolbox(ToolboxMenu $tools)
+    protected function toolbox(ToolboxMenu $tools): void
     {
         $model = $tools->model();
 
