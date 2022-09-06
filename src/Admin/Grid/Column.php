@@ -2,20 +2,20 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Closure;
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Filter\FilterCollection;
+use Arbory\Base\Admin\Filter\FilterItem;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Html\Elements\Element;
-use Illuminate\Database\Eloquent\Model;
-use Arbory\Base\Admin\Filter\FilterItem;
-use Arbory\Base\Admin\Filter\FilterCollection;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Arbory\Base\Html\Html;
+use Closure;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
  * Class Column.
  */
-class Column 
+class Column
 {
     /**
      * @var string
@@ -40,17 +40,17 @@ class Column
     /**
      * @var bool
      */
-    protected $sortable = false;
+    protected bool $sortable = false;
 
     /**
      * @var bool
      */
-    protected $searchable = true;
+    protected bool $searchable = true;
 
     /**
      * @var bool
      */
-    protected $hasFilter = false;
+    protected bool $hasFilter = false;
 
     /**
      * @var
@@ -60,7 +60,7 @@ class Column
     /**
      * @var bool
      */
-    protected $checkable = false;
+    protected bool $checkable = false;
 
     /**
      * @var callable
@@ -74,11 +74,8 @@ class Column
 
     /**
      * Column constructor.
-     *
-     * @param  string  $name
-     * @param  string  $label
      */
-    public function __construct(protected $name = null, protected $label = null)
+    public function __construct(protected ?string $name = null, protected ?string $label = null)
     {
     }
 
@@ -87,7 +84,7 @@ class Column
      */
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return (string)$this->getName();
     }
 
     /**
@@ -158,10 +155,10 @@ class Column
     }
 
     /**
-     * @param  bool  $isSortable
+     * @param bool $isSortable
      * @return Column
      */
-    public function sortable($isSortable = true)
+    public function sortable(bool $isSortable = true)
     {
         $this->sortable = $isSortable;
 
@@ -169,10 +166,10 @@ class Column
     }
 
     /**
-     * @param  bool  $isCheckable
+     * @param bool $isCheckable
      * @return $this
      */
-    public function checkable($isCheckable = true)
+    public function checkable(bool $isCheckable = true)
     {
         $this->checkable = $isCheckable;
 
@@ -180,10 +177,10 @@ class Column
     }
 
     /**
-     * @param  bool  $isSearchable
+     * @param bool $isSearchable
      * @return Column
      */
-    public function searchable($isSearchable = true)
+    public function searchable(bool $isSearchable = true)
     {
         $this->searchable = $isSearchable;
 
@@ -191,10 +188,10 @@ class Column
     }
 
     /**
-     * @param  string|null  $type
+     * @param string|null $type
      * @return $this
      */
-    public function setFilter($type = null)
+    public function setFilter(string $type = null)
     {
         $this->filterType = $type;
         $this->hasFilter = $type !== null;
@@ -205,7 +202,7 @@ class Column
     /**
      * @return bool
      */
-    public function isSortable()
+    public function isSortable(): bool
     {
         return $this->sortable && empty($this->relationName);
     }
@@ -213,7 +210,7 @@ class Column
     /**
      * @return bool
      */
-    public function isCheckable()
+    public function isCheckable(): bool
     {
         return $this->checkable;
     }
@@ -221,7 +218,7 @@ class Column
     /**
      * @return bool
      */
-    public function isSearchable()
+    public function isSearchable(): bool
     {
         return $this->searchable;
     }
@@ -299,7 +296,7 @@ class Column
         $value = $this->getValue($model);
 
         if ($this->displayer === null) {
-            $value = (string) $value;
+            $value = (string)$value;
 
             if ($url = $this->grid->getRowUrl($model)) {
                 return Html::link($value)->addAttributes([

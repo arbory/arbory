@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-use Illuminate\Support\Collection;
 use Arbory\Base\Html\Elements\Content;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Collection;
 
 class Slot implements Renderable
 {
@@ -18,11 +18,10 @@ class Slot implements Renderable
     /**
      * Slot constructor.
      *
-     * @param  $name
-     * @param  null  $contents
      * @param string $name
+     * @param null $contents
      */
-    public function __construct(protected $name, protected $contents = null)
+    public function __construct(protected string $name, protected $contents = null)
     {
         $this->children = collect();
     }
@@ -76,7 +75,7 @@ class Slot implements Renderable
 
         $contents = $contents->merge(
             $this->children->map(
-                static fn(self $value) => $value->render()
+                static fn (self $value) => $value->render()
             )
         );
 
@@ -92,7 +91,7 @@ class Slot implements Renderable
     }
 
     /**
-     * @param  mixed  $wrap
+     * @param mixed $wrap
      */
     public function setWrap(?callable $wrap): self
     {

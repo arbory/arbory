@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Filter;
 
+use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Closure;
 use Illuminate\Support\Arr;
-use Illuminate\Validation\Validator;
 use Illuminate\Validation\Factory as ValidatorFactory;
-use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
-use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
+use Illuminate\Validation\Validator;
 
 class FilterValidatorBuilder
 {
@@ -130,6 +130,6 @@ class FilterValidatorBuilder
 
     protected function getAttributeResolver(FilterItem $filterItem): callable
     {
-        return static fn(?string $attribute = null) => $filterItem->getName().($attribute ? '.'.$attribute : '');
+        return static fn (?string $attribute = null) => $filterItem->getName() . ($attribute ? '.' . $attribute : '');
     }
 }

@@ -2,25 +2,25 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Exception;
-use Arbory\Base\Admin\Grid\Layout;
+use Arbory\Base\Admin\Admin;
+use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\Fields\Checkbox;
 use Arbory\Base\Admin\Form\Fields\EmptyField;
-use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Grid;
-use Arbory\Base\Admin\Admin;
+use Arbory\Base\Admin\Grid\Layout;
+use Arbory\Base\Admin\Layout\Grid as LayoutGrid;
 use Arbory\Base\Admin\Layout\PanelLayout;
+use Arbory\Base\Admin\Module;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Html\Html;
 use Arbory\Base\Services\Permissions\ModulePermission;
 use Arbory\Base\Support\Models\PropertyRemover;
+use Exception;
 use Illuminate\Http\Request;
-use Arbory\Base\Admin\Module;
-use Arbory\Base\Auth\Roles\Role;
 use Illuminate\Routing\Controller;
-use Arbory\Base\Admin\Traits\Crudify;
 use Illuminate\Support\Str;
-use Arbory\Base\Admin\Layout\Grid as LayoutGrid;
 
 /**
  * Class RoleController.
@@ -42,14 +42,10 @@ class RolesController extends Controller
      * RolesController constructor.
      */
     public function __construct(
-        protected Admin $admin,
-        protected Request $request,
-        /**
-         * @var
-         */
+        protected Admin           $admin,
+        protected Request         $request,
         protected PropertyRemover $propertyRemover
-    )
-    {
+    ) {
     }
 
     /**
@@ -126,7 +122,7 @@ class RolesController extends Controller
         $permissionsOutput = [];
         foreach ($permissionsInput as $moduleName => $permissions) {
             foreach ($permissions as $permissionName => $allowed) {
-                $permissionsOutput[$moduleName . '.' . $permissionName] = (bool) $allowed;
+                $permissionsOutput[$moduleName . '.' . $permissionName] = (bool)$allowed;
             }
         }
 

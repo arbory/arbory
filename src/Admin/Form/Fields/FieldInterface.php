@@ -2,13 +2,10 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\Request;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Html\Elements\Element;
-use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
-use Illuminate\View\View;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 /**
  * Interface FieldInterface.
@@ -59,7 +56,7 @@ interface FieldInterface
     public function getLabel();
 
     /**
-     * @param  string  $label
+     * @param string $label
      * @return $this
      */
     public function setLabel($label);
@@ -106,12 +103,12 @@ interface FieldInterface
     public function getTooltip();
 
     /**
-     * @param  string|null  $content
+     * @param string|null $content
      */
     public function setTooltip($content = null): self;
 
     /**
-     * @param  array  $breakpoints
+     * @param array $breakpoints
      */
     public function setRows(int $rows, $breakpoints = []): self;
 

@@ -22,12 +22,12 @@ class ArboryAdminHasAccessMiddleware
 
     public function handle(Request $request, Closure $next, string $permission): mixed
     {
-        if (!$this->sentinel->check()) {
+        if (! $this->sentinel->check()) {
             return $this->denied($request);
         }
 
         /* @noinspection PhpUndefinedMethodInspection */
-        if (!$this->sentinel->hasAccess($permission)) {
+        if (! $this->sentinel->hasAccess($permission)) {
             return $this->denied($request);
         }
 

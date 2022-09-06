@@ -9,7 +9,6 @@ use Arbory\Base\Admin\Widgets\Link;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Nodes\MenuItem;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -107,11 +106,11 @@ class Renderer
     {
         foreach ($items as $model) {
             /** @var Model $model */
-            if (!$model->isAfter()) {
+            if (! $model->isAfter()) {
                 continue;
             }
 
-            $afterItem = $items->filter(fn(Model $item) => $item->getId() === $model->getAfterId())->first();
+            $afterItem = $items->filter(fn (Model $item) => $item->getId() === $model->getAfterId())->first();
 
             $currentPosition = $items->search($model);
             $afterKey = $items->search($afterItem);

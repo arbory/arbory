@@ -40,7 +40,7 @@ class Builder implements Renderable
 
     protected function bulkEdit(): ?Element
     {
-        if (!$this->grid->hasTool('bulk-edit')) {
+        if (! $this->grid->hasTool('bulk-edit')) {
             return null;
         }
 
@@ -73,7 +73,7 @@ class Builder implements Renderable
 
     protected function filter(): Content|string|null
     {
-        if (!$this->grid->hasTool('filter')) {
+        if (! $this->grid->hasTool('filter')) {
             return null;
         }
 
@@ -86,7 +86,7 @@ class Builder implements Renderable
 
     protected function getTableColumns(): Collection
     {
-        $tableColumns = $this->grid()->getColumns()->map(fn(Column $column) => $this->getColumnHeader($column));
+        $tableColumns = $this->grid()->getColumns()->map(fn (Column $column) => $this->getColumnHeader($column));
 
         if ($this->grid->isToolboxEnable()) {
             $tableColumns->push(Html::th(Html::span(' ')));
@@ -99,7 +99,7 @@ class Builder implements Renderable
     {
         if ($column->isCheckable() && $this->grid->hasTool('bulk-edit')) {
             $input = Html::label([Html::checkbox()->addClass('js-bulk-edit-header-checkbox')
-                ->setName('bulk-edit-column'), $column->getLabel(),]);
+                ->setName('bulk-edit-column'), $column->getLabel()]);
 
             return Html::th($input)->addClass('bulk-check-column');
         }
@@ -154,7 +154,7 @@ class Builder implements Renderable
                         Html::tr($this->getTableColumns()->toArray())
                     ),
                     Html::tbody(
-                        $this->grid()->getRows()->map(fn(Row $row) => $row->render())->toArray()
+                        $this->grid()->getRows()->map(fn (Row $row) => $row->render())->toArray()
                     )->addClass('tbody'),
                 ])->addClass('table')
             )->addClass('body'),
@@ -163,7 +163,7 @@ class Builder implements Renderable
 
     protected function createButton(): ?Link
     {
-        if (!$this->grid->hasTool('create')) {
+        if (! $this->grid->hasTool('create')) {
             return null;
         }
 

@@ -2,24 +2,24 @@
 
 namespace Arbory\Base\Admin;
 
-use Closure;
-use Illuminate\Support\Arr;
-use Arbory\Base\Admin\Grid\Row;
+use Arbory\Base\Admin\Filter\FilterManager;
 use Arbory\Base\Admin\Grid\Column;
 use Arbory\Base\Admin\Grid\Filter;
-use Illuminate\Support\Collection;
-use Arbory\Base\Html\Elements\Content;
-use Illuminate\Database\Eloquent\Model;
-use Arbory\Base\Admin\Traits\Renderable;
-use Arbory\Base\Admin\Filter\FilterManager;
 use Arbory\Base\Admin\Grid\FilterInterface;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Arbory\Base\Admin\Grid\Row;
+use Arbory\Base\Admin\Traits\Renderable;
+use Arbory\Base\Html\Elements\Content;
+use Closure;
 use Illuminate\Contracts\Support\Renderable as RenderableInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 /**
  * Class Grid.
  */
-class Grid 
+class Grid
 {
     use ModuleComponent;
     use Renderable;
@@ -40,12 +40,12 @@ class Grid
     /**
      * @var array
      */
-    protected $enabledDefaultTools = ['create', 'search'];
+    protected array $enabledDefaultTools = ['create', 'search'];
 
     /**
      * @var array
      */
-    protected $tools = [];
+    protected array $tools = [];
 
     /**
      * @var Collection|null
@@ -55,7 +55,7 @@ class Grid
     /**
      * @var bool
      */
-    protected $paginated = true;
+    protected bool $paginated = true;
 
     /**
      * @var Filter
@@ -80,17 +80,17 @@ class Grid
     /**
      * @var bool
      */
-    protected $isExportEnabled = false;
+    protected bool $isExportEnabled = false;
 
     /**
      * @var bool
      */
-    protected $rememberFilters = false;
+    protected bool $rememberFilters = false;
 
     /**
      * @var bool
      */
-    protected $hasToolbox = true;
+    protected bool $hasToolbox = true;
 
     public function __construct(protected Model $model)
     {
@@ -103,7 +103,7 @@ class Grid
      */
     public function __toString(): string
     {
-        return (string) $this->render();
+        return (string)$this->render();
     }
 
     /**
@@ -151,7 +151,7 @@ class Grid
     }
 
     /**
-     * @param  string|null  $side
+     * @param string|null $side
      * @return void
      */
     public function addTool(RenderableInterface $tool, string $side = null)
@@ -187,7 +187,7 @@ class Grid
     }
 
     /**
-     * @param  string[]  $tools
+     * @param string[] $tools
      * @return Grid
      */
     public function tools(array $tools)
@@ -250,8 +250,8 @@ class Grid
     }
 
     /**
-     * @param  string|null  $name
-     * @param  string|null  $label
+     * @param string|null $name
+     * @param string|null $label
      */
     public function column($name = null, $label = null): Column
     {
@@ -259,8 +259,8 @@ class Grid
     }
 
     /**
-     * @param  string|null  $name
-     * @param  string|null  $label
+     * @param string|null $name
+     * @param string|null $label
      */
     public function appendColumn($name = null, $label = null): Column
     {
@@ -273,8 +273,8 @@ class Grid
     }
 
     /**
-     * @param  string|null  $name
-     * @param  string|null  $label
+     * @param string|null $name
+     * @param string|null $label
      */
     public function prependColumn($name = null, $label = null): Column
     {
@@ -287,8 +287,8 @@ class Grid
     }
 
     /**
-     * @param  string  $column
-     * @param  string  $name
+     * @param string $column
+     * @param string $name
      * @return mixed
      */
     protected function setColumnRelation($column, $name): Column
@@ -304,8 +304,8 @@ class Grid
     }
 
     /**
-     * @param  string|null  $name
-     * @param  string|null  $label
+     * @param string|null $name
+     * @param string|null $label
      */
     protected function createColumn($name = null, $label = null): Column
     {
@@ -321,7 +321,7 @@ class Grid
             $items = new Collection($items->items());
         }
 
-        $this->rows = $items->map(fn($model) => new Row($this, $model));
+        $this->rows = $items->map(fn ($model) => new Row($this, $model));
     }
 
     public function filter(Closure $callback)
@@ -459,9 +459,9 @@ class Grid
 
         $this->buildRows($items);
 
-        $columns = $this->columns->map(fn(Column $column) => (string) $column)->toArray();
+        $columns = $this->columns->map(fn (Column $column) => (string)$column)->toArray();
 
-        return $this->rows->map(fn(Row $row) => array_combine($columns, $row->toArray()))->toArray();
+        return $this->rows->map(fn (Row $row) => array_combine($columns, $row->toArray()))->toArray();
     }
 
     public function getFilterManager(): FilterManager

@@ -2,20 +2,20 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Console\Commands\TranslationsCacheFlushCommand;
+use Arbory\Base\Console\Commands\TranslationsLoaderCommand;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Foundation\Application;
-use Illuminate\Translation\Translator;
 use Illuminate\Support\ServiceProvider;
-use Waavi\Translation\Loaders\FileLoader;
-use Waavi\Translation\Loaders\CacheLoader;
-use Waavi\Translation\Loaders\MixedLoader;
-use Waavi\Translation\Loaders\DatabaseLoader;
+use Illuminate\Translation\FileLoader as LaravelFileLoader;
+use Illuminate\Translation\Translator;
 use Waavi\Translation\Cache\RepositoryFactory;
+use Waavi\Translation\Loaders\CacheLoader;
+use Waavi\Translation\Loaders\DatabaseLoader;
+use Waavi\Translation\Loaders\FileLoader;
+use Waavi\Translation\Loaders\MixedLoader;
 use Waavi\Translation\Repositories\LanguageRepository;
 use Waavi\Translation\Repositories\TranslationRepository;
-use Arbory\Base\Console\Commands\TranslationsLoaderCommand;
-use Illuminate\Translation\FileLoader as LaravelFileLoader;
-use Arbory\Base\Console\Commands\TranslationsCacheFlushCommand;
 
 /**
  * Class TranslationServiceProvider.
@@ -49,7 +49,7 @@ class TranslationServiceProvider extends ServiceProvider implements DeferrablePr
         $this->registerFileLoader();
         $this->registerCacheFlusher();
 
-        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'arbory');
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'arbory');
     }
 
     /**
@@ -69,7 +69,7 @@ class TranslationServiceProvider extends ServiceProvider implements DeferrablePr
      */
     public function registerCacheRepository()
     {
-        $this->app->singleton('translation.cache.repository', fn($app) => RepositoryFactory::make(
+        $this->app->singleton('translation.cache.repository', fn ($app) => RepositoryFactory::make(
             $app['cache']->getStore(),
             'translations'
         ));

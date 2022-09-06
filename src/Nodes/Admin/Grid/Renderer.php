@@ -166,7 +166,7 @@ class Renderer implements Renderable
 
     protected function getNodeCookie(string $nodeId)
     {
-        $cookie = (array)json_decode(Arr::get($_COOKIE, self::COOKIE_NAME_NODES));
+        $cookie = (array) json_decode(Arr::get($_COOKIE, self::COOKIE_NAME_NODES));
 
         return Arr::get($cookie, $nodeId, true);
     }

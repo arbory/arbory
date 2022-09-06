@@ -53,7 +53,7 @@ class NestedItemRenderer implements ItemInterface
 
     protected function getSortableNavigation(FieldInterface $field): ?Element
     {
-        if (!$field->canSortRelationItems()) {
+        if (! $field->canSortRelationItems()) {
             return null;
         }
 
@@ -79,7 +79,7 @@ class NestedItemRenderer implements ItemInterface
      */
     protected function getFieldSetRemoveButton(FieldInterface $field, string $name)
     {
-        if (!$field->canRemoveRelationItems()) {
+        if (! $field->canRemoveRelationItems()) {
             return '';
         }
 

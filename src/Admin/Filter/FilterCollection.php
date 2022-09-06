@@ -12,7 +12,7 @@ class FilterCollection extends Collection
     protected $items = [];
 
     /**
-     * @param  string[]  $concerns
+     * @param string[] $concerns
      * @return FilterCollection|FilterItem[]
      */
     public function findByConcerns(array $concerns): self
@@ -30,7 +30,7 @@ class FilterCollection extends Collection
      */
     public function findByOwner($owner): self
     {
-        return $this->filter(static fn(FilterItem $filterItem) => $owner === $filterItem->getOwner());
+        return $this->filter(static fn (FilterItem $filterItem) => $owner === $filterItem->getOwner());
     }
 
     public function findWithoutOwners(): self

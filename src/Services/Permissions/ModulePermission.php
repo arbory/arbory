@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Services\Permissions;
 
-class ModulePermission 
+class ModulePermission
 {
     private string $translationKeyPrefix = 'arbory::permissions.';
 

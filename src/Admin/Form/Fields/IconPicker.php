@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use InvalidArgumentException;
-use SimpleXMLElement;
+use Arbory\Base\Admin\Form\Fields\Renderer\IconPickerRenderer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Arbory\Base\Admin\Form\Fields\Renderer\IconPickerRenderer;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
+use SimpleXMLElement;
 
 class IconPicker extends Select
 {
@@ -31,7 +31,7 @@ class IconPicker extends Select
     protected $dimensions;
 
     /**
-     * @param  string  $name
+     * @param string $name
      */
     public function __construct($name)
     {
@@ -62,11 +62,11 @@ class IconPicker extends Select
      */
     public function getOptions(): Collection
     {
-        return $this->getIconIds()->mapWithKeys(fn($iconId) => [$iconId => $iconId]);
+        return $this->getIconIds()->mapWithKeys(fn ($iconId) => [$iconId => $iconId]);
     }
 
     /**
-     * @param  string  $iconId
+     * @param string $iconId
      * @return null|SimpleXMLElement
      */
     public function getIconContent($iconId)
@@ -145,7 +145,7 @@ class IconPicker extends Select
     }
 
     /**
-     * @param  mixed  $viewboxResolver
+     * @param mixed $viewboxResolver
      * @return IconPicker
      */
     public function setViewboxResolver(callable $viewboxResolver)

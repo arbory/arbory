@@ -2,8 +2,6 @@
 
 namespace Arbory\Base\Admin\Traits;
 
-use Arbory\Base\Admin\Layout\FormLayoutInterface;
-use Arbory\Base\Admin\Layout\LayoutManager;
 use Arbory\Base\Admin\Exports\DataSetExport;
 use Arbory\Base\Admin\Exports\ExportInterface;
 use Arbory\Base\Admin\Exports\Type\ExcelExport;
@@ -13,7 +11,9 @@ use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Grid\ExportBuilder;
 use Arbory\Base\Admin\Layout;
+use Arbory\Base\Admin\Layout\FormLayoutInterface;
 use Arbory\Base\Admin\Layout\LayoutInterface;
+use Arbory\Base\Admin\Layout\LayoutManager;
 use Arbory\Base\Admin\Module;
 use Arbory\Base\Admin\Page;
 use Arbory\Base\Admin\Tools\ToolboxMenu;
@@ -219,7 +219,7 @@ trait Crudify
     {
         $method = Str::camel($name) . 'Dialog';
 
-        if (!$name || !method_exists($this, $method)) {
+        if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
         }
 
@@ -227,7 +227,6 @@ trait Crudify
     }
 
     /**
-     *
      * @throws Exception
      */
     public function export(string $type): BinaryFileResponse
@@ -247,12 +246,11 @@ trait Crudify
     }
 
     /**
-     *
      * @throws Exception
      */
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
-        if (!isset(self::$exportTypes[$type])) {
+        if (! isset(self::$exportTypes[$type])) {
             throw new Exception('Export Type not found - ' . $type);
         }
 
@@ -303,7 +301,7 @@ trait Crudify
     {
         $method = Str::camel($name) . 'Api';
 
-        if (!$name || !method_exists($this, $method)) {
+        if (! $name || ! method_exists($this, $method)) {
             app()->abort(Response::HTTP_NOT_FOUND);
 
             return;
@@ -335,10 +333,9 @@ trait Crudify
     }
 
     /**
-     * @return string
      * @throws Exception
      */
-    public function slugGeneratorApi(Request $request)
+    public function slugGeneratorApi(Request $request): string
     {
         /** @var Builder $query */
         $slug = Str::slug($request->input('from'));
@@ -391,7 +388,7 @@ trait Crudify
 
         $class = $layouts[$component] ?? null;
 
-        if (!$class && !class_exists($class)) {
+        if (! $class && ! class_exists($class)) {
             throw new RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
         }
 

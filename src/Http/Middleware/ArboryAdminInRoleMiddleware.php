@@ -23,12 +23,12 @@ class ArboryAdminInRoleMiddleware
 
     public function handle(Request $request, Closure $next, string|int|RoleInterface $role): mixed
     {
-        if (!$this->sentinel->check()) {
+        if (! $this->sentinel->check()) {
             return $this->denied($request);
         }
 
         /* @noinspection PhpUndefinedMethodInspection */
-        if (!$this->sentinel->inRole($role)) {
+        if (! $this->sentinel->inRole($role)) {
             return $this->denied($request);
         }
 

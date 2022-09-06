@@ -2,20 +2,20 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use ReflectionClass;
+use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationGroupedRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationRenderer;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Content\Relation;
+use Arbory\Base\Nodes\Node;
+use Closure;
 use Exception;
 use Illuminate\Database\Eloquent\MassAssignmentException;
-use ReflectionException;
-use Closure;
-use Arbory\Base\Nodes\Node;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Arbory\Base\Content\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Database\Eloquent\Model;
-use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationGroupedRenderer;
+use ReflectionClass;
+use ReflectionException;
 
 class ObjectRelation extends AbstractField
 {
@@ -47,9 +47,9 @@ class ObjectRelation extends AbstractField
     protected $groupedRendererClass = ObjectRelationGroupedRenderer::class;
 
     /**
-     * @param  string  $name
+     * @param string $name
      * @param string|Collection $relatedModelType
-     * @param  int  $limit
+     * @param int $limit
      */
     public function __construct($name, protected $relatedModelType, protected ?int $limit = 0)
     {
@@ -73,7 +73,7 @@ class ObjectRelation extends AbstractField
      */
     public function hasIndentation()
     {
-        return (bool) $this->getIndentAttribute();
+        return (bool)$this->getIndentAttribute();
     }
 
     /**
@@ -163,7 +163,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param  int  $relationId
+     * @param int $relationId
      * @return void
      *
      * @throws MassAssignmentException
@@ -189,7 +189,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param  int[]  $relationIds
+     * @param int[] $relationIds
      * @return void
      */
     protected function saveMany($relationIds)
@@ -212,7 +212,7 @@ class ObjectRelation extends AbstractField
     }
 
     /**
-     * @param  array  $updatedRelationIds
+     * @param array $updatedRelationIds
      * @return void
      *
      * @throws Exception
@@ -238,7 +238,7 @@ class ObjectRelation extends AbstractField
     {
         $values = collect();
 
-        $values = $values->merge($this->options ?: $this->relatedModelType::all()->mapWithKeys(fn($item) => [$item->getKey() => $item]));
+        $values = $values->merge($this->options ?: $this->relatedModelType::all()->mapWithKeys(fn ($item) => [$item->getKey() => $item]));
 
         return $this->groupByAttribute ? $values->groupBy($this->groupByAttribute) : $values;
     }
@@ -276,7 +276,7 @@ class ObjectRelation extends AbstractField
     {
         $fieldSet = new FieldSet($this->getModel(), $this->getNameSpacedName());
 
-        $ids = $this->getValue()->map(fn($item) => $item->related_id)->implode(',');
+        $ids = $this->getValue()->map(fn ($item) => $item->related_id)->implode(',');
 
         $fieldSet->hidden('related_id')
             ->setValue($ids)->rules(implode('|', $this->rules))

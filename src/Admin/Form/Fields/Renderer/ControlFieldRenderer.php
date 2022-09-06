@@ -2,19 +2,18 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
-use Arbory\Base\Admin\Form\Fields\RenderOptionsInterface;
 use Arbory\Base\Admin\Form\Controls\InputControlInterface;
+use Arbory\Base\Admin\Form\Fields\ControlFieldInterface;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
+use Arbory\Base\Html\Elements\Element;
 
 class ControlFieldRenderer implements RendererInterface
 {
     /**
      * ControlFieldRenderer constructor.
      *
-     * @param  ControlFieldInterface  $field
+     * @param ControlFieldInterface $field
      */
     public function __construct(protected ControlFieldInterface $field)
     {
@@ -28,10 +27,7 @@ class ControlFieldRenderer implements RendererInterface
         return $control->render($control->element());
     }
 
-    /**
-     * @return InputControlInterface
-     */
-    public function configureControl(InputControlInterface $control)
+    public function configureControl(InputControlInterface $control): InputControlInterface
     {
         $control->addAttributes(
             $this->field->getAttributes()
@@ -60,16 +56,12 @@ class ControlFieldRenderer implements RendererInterface
         return $control;
     }
 
-    /**
-     * @return InputControlInterface
-     */
     public function getControl(): InputControlInterface
     {
         return app()->make($this->field->getControl());
     }
 
     /**
-     * @param  FieldInterface  $field
      * @return self
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -88,7 +80,7 @@ class ControlFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param  StyleOptionsInterface  $options
+     * @param StyleOptionsInterface $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

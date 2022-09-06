@@ -24,7 +24,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
      */
     public function __construct(protected ControlFieldInterface $field)
     {
-        $this->values = (array)$field->getValue();
+        $this->values = (array) $field->getValue();
 
         parent::__construct($this->field);
     }
@@ -67,7 +67,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
         $checkbox->setValue($value);
 
         if ($this->field instanceof ControlFieldInterface) {
-            $checkbox->setReadOnly(!$this->field->isInteractive());
+            $checkbox->setReadOnly(! $this->field->isInteractive());
             $checkbox->setDisabled($this->field->isDisabled());
         }
 
@@ -77,7 +77,7 @@ class AssociatedSetRenderer extends ControlFieldRenderer
 
         return Html::div([
             $checkbox->render($checkbox->element()),
-            Html::label((string)$label)->addAttributes([
+            Html::label((string) $label)->addAttributes([
                 'for' => $checkbox->getAttributes()['id'] ?? $this->field->getFieldId(),
             ]),
         ])

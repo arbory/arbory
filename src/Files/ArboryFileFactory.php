@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Files;
 
+use Arbory\Base\Repositories\ArboryFilesRepository;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\UploadedFile;
 use InvalidArgumentException;
 use RuntimeException;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Database\Eloquent\Model;
-use Arbory\Base\Repositories\ArboryFilesRepository;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ArboryFileFactory
 {
@@ -18,6 +18,7 @@ class ArboryFileFactory
 
     /**
      * @return ArboryFile
+     *
      * @throws FileNotFoundException
      * @throws InvalidArgumentException
      * @throws RuntimeException

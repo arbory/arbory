@@ -20,7 +20,7 @@ class ContentTypeRegister
     public function __construct()
     {
         $contentTypes = collect(config('arbory.content_types', []));
-        $contentTypeNames = $contentTypes->map(fn($item) => new ContentTypeDefinition($item));
+        $contentTypeNames = $contentTypes->map(fn ($item) => new ContentTypeDefinition($item));
 
         $this->contentTypes = $contentTypes->combine($contentTypeNames);
     }

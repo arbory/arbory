@@ -2,15 +2,15 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Html;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
+use Arbory\Base\Admin\Form\Fields\HasMany;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\ItemInterface;
 use Arbory\Base\Admin\Form\Fields\Renderer\Nested\NestedItemRenderer;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
+use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Html\Elements\Content;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
 
 /**
  * Class NestedFieldRenderer.
@@ -30,7 +30,7 @@ class NestedFieldRenderer implements RendererInterface
         $relationItems = [];
 
         if ($orderBy) {
-            $this->field->setValue($this->field->getValue()->sortBy(fn($item) => $item->{$orderBy}));
+            $this->field->setValue($this->field->getValue()->sortBy(fn ($item) => $item->{$orderBy}));
         }
 
         foreach ($this->field->getValue() as $index => $item) {

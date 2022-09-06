@@ -2,15 +2,15 @@
 
 namespace Arbory\Base\Providers;
 
-use Arbory\Base\Menu\Menu;
 use Arbory\Base\Admin\Admin;
-use Arbory\Base\Services\AssetPipeline;
-use Illuminate\Support\ServiceProvider;
-use Arbory\Base\Console\Commands\SeedCommand;
-use Arbory\Base\Console\Commands\InstallCommand;
 use Arbory\Base\Console\Commands\CreateUserCommand;
-use Arbory\Base\Services\Authentication\Drivers\Sentinel;
+use Arbory\Base\Console\Commands\InstallCommand;
+use Arbory\Base\Console\Commands\SeedCommand;
+use Arbory\Base\Menu\Menu;
+use Arbory\Base\Services\AssetPipeline;
 use Arbory\Base\Services\Authentication\AuthenticationMethod;
+use Arbory\Base\Services\Authentication\Drivers\Sentinel;
+use Illuminate\Support\ServiceProvider;
 
 /**
  * Class ArboryServiceProvider.
@@ -29,7 +29,7 @@ class ArboryServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerLocales();
 
-        $this->app->singleton(AuthenticationMethod::class, fn() => $this->app->make(Sentinel::class));
+        $this->app->singleton(AuthenticationMethod::class, fn () => $this->app->make(Sentinel::class));
     }
 
     /**
@@ -37,7 +37,7 @@ class ArboryServiceProvider extends ServiceProvider
      */
     private function registerResources()
     {
-        $configFilename = __DIR__.'/../../config/arbory.php';
+        $configFilename = __DIR__ . '/../../config/arbory.php';
 
         $this->mergeConfigFrom($configFilename, 'arbory');
 
@@ -61,9 +61,9 @@ class ArboryServiceProvider extends ServiceProvider
             __DIR__ . '/../../dist/' => public_path('vendor/arbory'),
         ], 'assets');
 
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'arbory');
-        $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'arbory');
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'arbory');
+        $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'arbory');
     }
 
     /**
@@ -87,7 +87,7 @@ class ArboryServiceProvider extends ServiceProvider
      */
     private function registerCommand(string $containerKey, string $commandClass)
     {
-        $this->app->singleton($containerKey, fn() => $this->app->make($commandClass));
+        $this->app->singleton($containerKey, fn () => $this->app->make($commandClass));
 
         $this->commands($containerKey);
     }
@@ -97,13 +97,13 @@ class ArboryServiceProvider extends ServiceProvider
      */
     private function registerModuleRegistry()
     {
-        $this->app->singleton('arbory', fn() => new Admin(
+        $this->app->singleton('arbory', fn () => new Admin(
             $this->app['sentinel'],
             new Menu(),
             new AssetPipeline()
         ));
 
-        $this->app->singleton(Admin::class, fn() => $this->app['arbory']);
+        $this->app->singleton(Admin::class, fn () => $this->app['arbory']);
     }
 
     /**

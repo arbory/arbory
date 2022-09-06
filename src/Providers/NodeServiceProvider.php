@@ -2,25 +2,25 @@
 
 namespace Arbory\Base\Providers;
 
-use DB;
-use Exception;
+use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 use Arbory\Base\Nodes\Mixins\Collection as NodesCollectionMixin;
 use Arbory\Base\Nodes\Node;
-use Arbory\Base\Support\Facades\Page;
+use Arbory\Base\Repositories\NodesRepository;
+use Arbory\Base\Services\Content\PageBuilder;
 use Arbory\Base\Support\Facades\Admin;
+use Arbory\Base\Support\Facades\ArboryRouter;
+use Arbory\Base\Support\Facades\Page;
+use Arbory\Base\Support\Facades\Settings;
+use DB;
+use Exception;
 use File;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\ServiceProvider;
-use Arbory\Base\Support\Facades\Settings;
-use Arbory\Base\Nodes\ContentTypeRegister;
 use Illuminate\Routing\Events\RouteMatched;
-use Arbory\Base\Repositories\NodesRepository;
-use Arbory\Base\Services\Content\PageBuilder;
-use Arbory\Base\Support\Facades\ArboryRouter;
 use Illuminate\Routing\Router as LaravelRouter;
-use Arbory\Base\Nodes\ContentTypeRoutesRegister;
+use Illuminate\Support\ServiceProvider;
 use Schema;
 
 /**
@@ -58,11 +58,11 @@ class NodeServiceProvider extends ServiceProvider
             return $repository;
         });
 
-        $this->app->singleton(ContentTypeRegister::class, fn() => new ContentTypeRegister());
+        $this->app->singleton(ContentTypeRegister::class, fn () => new ContentTypeRegister());
 
-        $this->app->singleton('arbory_router', fn() => $this->app->make(ContentTypeRoutesRegister::class));
+        $this->app->singleton('arbory_router', fn () => $this->app->make(ContentTypeRoutesRegister::class));
 
-        $this->app->singleton('arbory_page_builder', fn() => new PageBuilder(
+        $this->app->singleton('arbory_page_builder', fn () => new PageBuilder(
             $this->app->make(ContentTypeRegister::class),
             $this->app->make('arbory_router')
         ));
@@ -116,7 +116,7 @@ class NodeServiceProvider extends ServiceProvider
         }
 
         $this->app->booted(function () {
-            $this->app->singleton(Node::class, fn() => $this->routes->getCurrentNode());
+            $this->app->singleton(Node::class, fn () => $this->routes->getCurrentNode());
         });
 
         if (! $this->app->routesAreCached()) {

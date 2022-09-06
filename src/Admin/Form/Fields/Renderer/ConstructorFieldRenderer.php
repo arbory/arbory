@@ -30,7 +30,7 @@ class ConstructorFieldRenderer implements RendererInterface
         if ($orderBy) {
             $this->field->setValue(
                 $this->field->getValue()->sortBy(
-                    fn($item) => $item->{$orderBy}
+                    fn ($item) => $item->{$orderBy}
                 )
             );
         }
@@ -50,7 +50,7 @@ class ConstructorFieldRenderer implements RendererInterface
 
     protected function getFooter(): ?Element
     {
-        if (!$this->field->canAddRelationItem()) {
+        if (! $this->field->canAddRelationItem()) {
             return null;
         }
 
@@ -139,7 +139,7 @@ class ConstructorFieldRenderer implements RendererInterface
         foreach ($this->field->getTypes() as $object) {
             $fieldSet = $this->field->getRelationFieldSet($this->field->buildFromBlock($object), '_template_');
 
-            $templates[$object->name()] = (string)$this->getRelationItemHtml($object, $fieldSet, '_template_');
+            $templates[$object->name()] = (string) $this->getRelationItemHtml($object, $fieldSet, '_template_');
         }
 
         $options->addAttributes(

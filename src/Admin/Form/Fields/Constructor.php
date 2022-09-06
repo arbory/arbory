@@ -155,7 +155,7 @@ class Constructor extends AbstractRelationField implements RepeatableNestedField
 
     public function afterModelSave(Request $request)
     {
-        $items = (array)$request->input($this->getNameSpacedName(), []);
+        $items = (array) $request->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
             $relatedModel = $this->createRelatedModelFromRequest($item);
@@ -235,7 +235,7 @@ class Constructor extends AbstractRelationField implements RepeatableNestedField
     {
         $rules = [[]];
 
-        $items = (array)request()->input($this->getNameSpacedName(), []);
+        $items = (array) request()->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
             // Do not add rules for fields which will be removed
@@ -316,7 +316,7 @@ class Constructor extends AbstractRelationField implements RepeatableNestedField
         $blockResource = Arr::get($item, $model->content()->getMorphType());
         $block = $this->resolveBlockByName($blockName);
 
-        if (!$block) {
+        if (! $block) {
             throw new LogicException("Unknown block '{$blockName}'");
         }
 
@@ -335,7 +335,7 @@ class Constructor extends AbstractRelationField implements RepeatableNestedField
         $relation = $this->getRelation();
         $relatedModel = $this->findRelatedModel($item);
 
-        if (!$relation instanceof MorphMany) {
+        if (! $relation instanceof MorphMany) {
             throw new LogicException('Unknown relation used');
         }
 

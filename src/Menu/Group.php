@@ -4,7 +4,6 @@ namespace Arbory\Base\Menu;
 
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Arbory\Base\Html\Elements;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -51,14 +50,14 @@ class Group extends AbstractItem
                         Html::span(Html::button(Html::i('arrow_drop_up')->addClass('mt-icon'))
                             ->addAttributes(['type' => 'button']))
                             ->addClass('collapser'),
-                    ])->addClass('trigger '.($this->isActive() ? 'active' : ''))
+                    ])->addClass('trigger ' . ($this->isActive() ? 'active' : ''))
                 )
                 ->append($ul);
     }
 
     public function isActive(): bool
     {
-        return (bool) $this->getChildren()->first(fn(Item $item) => $item->isActive());
+        return (bool) $this->getChildren()->first(fn (Item $item) => $item->isActive());
     }
 
     /**

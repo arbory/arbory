@@ -34,7 +34,7 @@ class ParameterTransformerPipeline
             ->through($this->transformers)
             ->via('transform')
             ->send($this->parameters)
-            ->then(fn($passable) => $passable);
+            ->then(fn ($passable) => $passable);
     }
 
     public function addTransformer(callable|ParameterTransformerInterface $transformer): self
@@ -45,7 +45,7 @@ class ParameterTransformerPipeline
     }
 
     /**
-     * @param  ParameterTransformerInterface[]  $transformers
+     * @param ParameterTransformerInterface[] $transformers
      */
     public function setTransformers(array $transformers): self
     {

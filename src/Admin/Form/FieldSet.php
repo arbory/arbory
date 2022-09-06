@@ -2,46 +2,46 @@
 
 namespace Arbory\Base\Admin\Form;
 
+use Arbory\Base\Admin\Constructor\BlockRegistry;
+use Arbory\Base\Admin\Form\Fields\AbstractField;
+use Arbory\Base\Admin\Form\Fields\ArboryFile;
+use Arbory\Base\Admin\Form\Fields\ArboryImage;
 use Arbory\Base\Admin\Form\Fields\BelongsTo;
 use Arbory\Base\Admin\Form\Fields\BelongsToMany;
 use Arbory\Base\Admin\Form\Fields\Checkbox;
+use Arbory\Base\Admin\Form\Fields\CompactRichtext;
+use Arbory\Base\Admin\Form\Fields\Constructor;
 use Arbory\Base\Admin\Form\Fields\DateTime;
-use Arbory\Base\Admin\Form\Fields\ArboryFile;
+use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\HasMany;
-use Closure;
 use Arbory\Base\Admin\Form\Fields\HasOne;
 use Arbory\Base\Admin\Form\Fields\Hidden;
 use Arbory\Base\Admin\Form\Fields\IconPicker;
-use Arbory\Base\Admin\Form\Fields\ArboryImage;
 use Arbory\Base\Admin\Form\Fields\Link;
 use Arbory\Base\Admin\Form\Fields\MapCoordinates;
-use Arbory\Base\Admin\Form\Fields\CompactRichtext;
 use Arbory\Base\Admin\Form\Fields\MultipleSelect;
 use Arbory\Base\Admin\Form\Fields\ObjectRelation;
 use Arbory\Base\Admin\Form\Fields\Password;
 use Arbory\Base\Admin\Form\Fields\Richtext;
 use Arbory\Base\Admin\Form\Fields\Select;
 use Arbory\Base\Admin\Form\Fields\Slug;
+use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Form\Fields\Textarea;
 use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Admin\Form\Fields\Constructor;
-use Countable;
-use ArrayAccess;
-use Illuminate\Support\Arr;
-use Traversable;
-use ArrayIterator;
-use IteratorAggregate;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Services\FieldSetFieldFinder;
 use Arbory\Base\Services\FieldTypeRegistry;
+use ArrayAccess;
+use ArrayIterator;
+use Closure;
+use Countable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
-use Arbory\Base\Services\FieldSetFieldFinder;
-use Arbory\Base\Admin\Constructor\BlockRegistry;
-use Arbory\Base\Admin\Form\Fields\AbstractField;
-use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use IteratorAggregate;
+use Traversable;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
@@ -100,10 +100,8 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
 
     /**
      * Resource constructor.
-     *
-     * @param  string  $namespace
      */
-    public function __construct(protected Model $model, protected $namespace, StyleManager $styleManager = null)
+    public function __construct(protected Model $model, protected string $namespace, StyleManager $styleManager = null)
     {
         $this->items = collect();
 
@@ -140,7 +138,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      */
     public function getFieldByName(string $fieldName)
     {
-        return $this->getFields()->first(fn(AbstractField $field) => $field->getName() === $fieldName);
+        return $this->getFields()->first(fn (AbstractField $field) => $field->getName() === $fieldName);
     }
 
     /**
@@ -196,7 +194,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param  string|int|null  $key
+     * @param string|int|null $key
      */
     public function prepend(FieldInterface $field, string|int $key = null): Collection
     {
@@ -220,8 +218,8 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param  string  $key
-     * @param  FieldInterface  $field
+     * @param string $key
+     * @param FieldInterface $field
      */
     public function offsetSet($key, $field): void
     {
@@ -297,7 +295,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     /**
      * Unset the item at a given offset.
      *
-     * @param  string  $key
+     * @param string $key
      */
     public function offsetUnset($key): void
     {
@@ -335,8 +333,8 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
     }
 
     /**
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array $parameters
      * @return FieldInterface|mixed
      */
     public function __call($method, $parameters)

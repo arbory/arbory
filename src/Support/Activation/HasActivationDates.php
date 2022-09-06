@@ -41,9 +41,9 @@ trait HasActivationDates
         $table = $this->getTable();
         $now = date('Y-m-d H:i:s');
 
-        return $query->where($table.'.activate_at', '<=', $now)
-            ->where(fn(Builder $query) => $query->where($table.'.expire_at', '>=', $now)
-                ->orWhereNull($table.'.expire_at'));
+        return $query->where($table . '.activate_at', '<=', $now)
+            ->where(fn (Builder $query) => $query->where($table . '.expire_at', '>=', $now)
+                ->orWhereNull($table . '.expire_at'));
     }
 
     /**

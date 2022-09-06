@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Providers;
 
-use Cartalyst\Support\ServiceProvider;
 use Arbory\Base\Admin\Settings\Settings;
 use Arbory\Base\Services\SettingRegistry;
+use Cartalyst\Support\ServiceProvider;
 
 class SettingsServiceProvider extends ServiceProvider
 {
@@ -13,9 +13,9 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(SettingRegistry::class, fn() => new SettingRegistry());
+        $this->app->singleton(SettingRegistry::class, fn () => new SettingRegistry());
 
-        $this->app->singleton('arbory_settings', fn() => new Settings($this->app[SettingRegistry::class]));
+        $this->app->singleton('arbory_settings', fn () => new Settings($this->app[SettingRegistry::class]));
     }
 
     /**
@@ -24,7 +24,7 @@ class SettingsServiceProvider extends ServiceProvider
     public function boot()
     {
         $paths = [
-            __DIR__.'/../../config/settings.php',
+            __DIR__ . '/../../config/settings.php',
             config_path('settings.php'),
         ];
 

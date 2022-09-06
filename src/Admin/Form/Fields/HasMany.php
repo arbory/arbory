@@ -109,7 +109,7 @@ class HasMany extends AbstractRelationField implements RepeatableNestedFieldInte
 
     public function afterModelSave(Request $request)
     {
-        $items = (array)$request->input($this->getNameSpacedName(), []);
+        $items = (array) $request->input($this->getNameSpacedName(), []);
 
         foreach ($items as $index => $item) {
             $relatedModel = $this->findRelatedModel($item);
@@ -127,7 +127,7 @@ class HasMany extends AbstractRelationField implements RepeatableNestedFieldInte
                 $relatedModel->setAttribute($relation->getMorphType(), $relation->getMorphClass());
             }
 
-            if (!$relation instanceof BelongsToMany) {
+            if (! $relation instanceof BelongsToMany) {
                 $relatedModel->setAttribute($relation->getForeignKeyName(), $this->getModel()->getKey());
             }
 

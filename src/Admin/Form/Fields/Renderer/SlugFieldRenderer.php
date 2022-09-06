@@ -8,8 +8,6 @@ use Arbory\Base\Admin\Widgets\Button;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Support\Facades\View;
 
 class SlugFieldRenderer extends ControlFieldRenderer
 {
@@ -54,7 +52,7 @@ class SlugFieldRenderer extends ControlFieldRenderer
      */
     protected function getLinkElement()
     {
-        if (!$this->field->hasUriToSlug()) {
+        if (! $this->field->hasUriToSlug()) {
             return;
         }
 
@@ -70,7 +68,7 @@ class SlugFieldRenderer extends ControlFieldRenderer
      */
     protected function getPreviewLinkElement()
     {
-        if (!$this->field->hasUriToSlug() || $this->field->getModel()->isActive() || !$this->field->getValue()) {
+        if (! $this->field->hasUriToSlug() || $this->field->getModel()->isActive() || ! $this->field->getValue()) {
             return;
         }
 

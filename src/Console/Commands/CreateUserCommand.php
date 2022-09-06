@@ -2,16 +2,15 @@
 
 namespace Arbory\Base\Console\Commands;
 
+use Arbory\Base\Auth\Users\User;
+use Arbory\Base\Http\Controllers\Admin\DashboardController;
 use Arbory\Base\Services\Permissions\ModulePermissionsRegistry;
+use Cartalyst\Sentinel\Roles\RoleInterface;
+use Cartalyst\Sentinel\Sentinel;
+use Cartalyst\Sentinel\Users\UserInterface;
+use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
-use Illuminate\Console\Command;
-use Arbory\Base\Auth\Roles\Role;
-use Arbory\Base\Auth\Users\User;
-use Cartalyst\Sentinel\Sentinel;
-use Cartalyst\Sentinel\Roles\RoleInterface;
-use Cartalyst\Sentinel\Users\UserInterface;
-use Arbory\Base\Http\Controllers\Admin\DashboardController;
 
 /**
  * Class CreateUserCommand.
@@ -28,9 +27,6 @@ class CreateUserCommand extends Command
      */
     protected $description = 'Create a new Arbory admin user';
 
-    /**
-     * @param  Sentinel  $sentinel
-     */
     public function __construct(protected Sentinel $sentinel)
     {
         parent::__construct();
@@ -39,7 +35,7 @@ class CreateUserCommand extends Command
     /**
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $this->createAdminUser();
     }
@@ -59,7 +55,7 @@ class CreateUserCommand extends Command
             $password = $this->secret('What is the password?');
 
             if ($this->loginExists($login)) {
-                $this->error('User with login "'.$login.'" already exists');
+                $this->error('User with login "' . $login . '" already exists');
                 continue;
             }
 
@@ -78,7 +74,7 @@ class CreateUserCommand extends Command
         $role = $this->getUserRole();
         $role->users()->attach($user);
 
-        $this->info('User '.$user->getUserLogin().' created.');
+        $this->info('User ' . $user->getUserLogin() . ' created.');
 
         return $user;
     }
@@ -148,14 +144,14 @@ class CreateUserCommand extends Command
         $repository = $this->sentinel->getRoleRepository();
         $roles = $repository->all();
 
-        $roleOptions = $roles->map(fn(RoleInterface $role) => $role->getName())->toArray();
+        $roleOptions = $roles->map(fn (RoleInterface $role) => $role->getName())->toArray();
 
         $role = null;
 
         while ($role === null) {
             $name = $this->choice('Choose user role', $roleOptions);
 
-            $role = $roles->first(fn(RoleInterface $role) => $role->getName() === $name);
+            $role = $roles->first(fn (RoleInterface $role) => $role->getName() === $name);
         }
 
         return $role;

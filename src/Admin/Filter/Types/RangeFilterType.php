@@ -2,18 +2,18 @@
 
 namespace Arbory\Base\Admin\Filter\Types;
 
+use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
+use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
+use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Admin\Filter\FilterTypeInterface;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 use Arbory\Base\Exceptions\BadMethodCallException;
+use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Illuminate\Validation\Validator;
-use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Admin\Filter\FilterItem;
-use Illuminate\Database\Eloquent\Builder;
-use Arbory\Base\Admin\Filter\FilterTypeInterface;
-use Arbory\Base\Admin\Filter\Concerns\WithCustomExecutor;
-use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
-use Arbory\Base\Admin\Filter\Concerns\WithParameterValidation;
 
 class RangeFilterType extends AbstractType implements FilterTypeInterface, WithCustomExecutor, WithParameterValidation
 {
@@ -23,7 +23,7 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     protected $inputType = 'number';
 
     /**
-     * @param  FilterItem  $filterItem
+     * @param FilterItem $filterItem
      * @return Element
      *
      * @throws BadMethodCallException
@@ -37,14 +37,14 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
                 Html::h4(trans('arbory::filter.range.from')),
                 Html::input()
                     ->setType($this->inputType)
-                    ->setName($filterItem->getNamespacedName().'.'.static::KEY_MIN)
+                    ->setName($filterItem->getNamespacedName() . '.' . static::KEY_MIN)
                     ->addAttributes(['step' => $step, 'value' => $this->getRangeValue(static::KEY_MIN)]),
             ])->addClass('column'),
             Html::div([
                 Html::h4(trans('arbory::filter.range.to')),
                 Html::input()
                     ->setType($this->inputType)
-                    ->setName($filterItem->getNamespacedName().'.'.static::KEY_MAX)
+                    ->setName($filterItem->getNamespacedName() . '.' . static::KEY_MAX)
                     ->addAttributes(['step' => $step, 'value' => $this->getRangeValue(static::KEY_MAX)]),
             ])->addClass('column'),
         ])->addClass('range');
@@ -59,8 +59,8 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param  FilterItem  $filterItem
-     * @param  Builder  $builder
+     * @param FilterItem $filterItem
+     * @param Builder $builder
      * @return void
      */
     public function execute(FilterItem $filterItem, Builder $builder): void
@@ -78,8 +78,8 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param  FilterParameters  $parameters
-     * @param  callable  $attributeResolver
+     * @param FilterParameters $parameters
+     * @param callable $attributeResolver
      * @return array
      */
     public function rules(FilterParameters $parameters, callable $attributeResolver): array
@@ -91,8 +91,8 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param  FilterParameters  $filterParameters
-     * @param  callable  $attributeResolver
+     * @param FilterParameters $filterParameters
+     * @param callable $attributeResolver
      * @return array
      */
     public function messages(FilterParameters $filterParameters, callable $attributeResolver): array
@@ -101,8 +101,8 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param  FilterParameters  $filterParameters
-     * @param  callable  $attributeResolver
+     * @param FilterParameters $filterParameters
+     * @param callable $attributeResolver
      * @return array
      */
     public function attributes(FilterParameters $filterParameters, callable $attributeResolver): array
@@ -111,28 +111,29 @@ class RangeFilterType extends AbstractType implements FilterTypeInterface, WithC
     }
 
     /**
-     * @param  Validator  $validator
-     * @param  FilterParameters  $filterParameters
-     * @param  callable  $attributeResolver
+     * @param Validator $validator
+     * @param FilterParameters $filterParameters
+     * @param callable $attributeResolver
      */
     public function withValidator(
-        Validator $validator,
+        Validator        $validator,
         FilterParameters $filterParameters,
-        callable $attributeResolver
-    ): void {
+        callable         $attributeResolver
+    ): void
+    {
         $minAttribute = $attributeResolver(static::KEY_MIN);
         $maxAttribute = $attributeResolver(static::KEY_MAX);
 
         $validator->sometimes(
             $attributeResolver(static::KEY_MIN),
             "lte:{$maxAttribute}",
-            static fn(Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $maxAttribute))
+            static fn (Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $maxAttribute))
         );
 
         $validator->sometimes(
             $attributeResolver(static::KEY_MAX),
             "gte:{$minAttribute}",
-            static fn(Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $minAttribute))
+            static fn (Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $minAttribute))
         );
     }
 }

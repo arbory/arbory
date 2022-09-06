@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Settings;
 
-use Illuminate\Support\Collection;
 use Arbory\Base\Services\SettingRegistry;
+use Illuminate\Support\Collection;
 
 class Settings
 {
@@ -32,9 +32,9 @@ class Settings
         if ($definition->isTranslatable()) {
             if ($model && $model->getAttribute('value')) {
                 return $model->getAttribute('value');
-            } else {
-                return $default;
             }
+
+            return $default;
         }
 
         return $definition->getValue() ?: $default;
@@ -49,7 +49,7 @@ class Settings
     }
 
     /**
-     * @param  mixed  $type
+     * @param mixed $type
      * @return void
      */
     public function set(string $key, mixed $value, string $type = null)
@@ -63,6 +63,6 @@ class Settings
 
     public function all(): Collection
     {
-        return $this->settingRegistry->getSettings()->mapWithKeys(fn(SettingDefinition $definition) => [$definition->getKey() => $definition->getValue()]);
+        return $this->settingRegistry->getSettings()->mapWithKeys(fn (SettingDefinition $definition) => [$definition->getKey() => $definition->getValue()]);
     }
 }

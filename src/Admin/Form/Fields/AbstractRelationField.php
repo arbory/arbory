@@ -22,7 +22,7 @@ abstract class AbstractRelationField extends AbstractField implements NestedFiel
 
     public function configureFieldSet(FieldSet $fieldSet)
     {
-        if (!is_callable($this->getFieldSetCallback())) {
+        if (! is_callable($this->getFieldSetCallback())) {
             return $fieldSet;
         }
 

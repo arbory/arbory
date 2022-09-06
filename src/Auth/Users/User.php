@@ -2,18 +2,18 @@
 
 namespace Arbory\Base\Auth\Users;
 
-use Arbory\Base\Auth\Roles\Role;
-use Arbory\Base\Auth\Reminders\Reminder;
-use Arbory\Base\Auth\Throttling\Throttle;
-use Cartalyst\Sentinel\Users\EloquentUser;
 use Arbory\Base\Auth\Activations\Activation;
 use Arbory\Base\Auth\Persistences\Persistence;
+use Arbory\Base\Auth\Reminders\Reminder;
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Auth\Throttling\Throttle;
+use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class User.
  */
-class User extends EloquentUser 
+class User extends EloquentUser
 {
     /**
      * @var string
@@ -74,7 +74,7 @@ class User extends EloquentUser
      */
     public function getFullName()
     {
-        return $this->getFirstName().' '.$this->getLastName();
+        return $this->getFirstName() . ' ' . $this->getLastName();
     }
 
     public function roles(): BelongsToMany

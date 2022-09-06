@@ -32,9 +32,9 @@ class ArboryAdminGuestMiddleware
                 return response()->json(['error' => $message], 401);
             }
 
-            $firstAvailableModule = Admin::modules()->first(fn($module) => $module->isAuthorized());
+            $firstAvailableModule = Admin::modules()->first(fn ($module) => $module->isAuthorized());
 
-            if (!$firstAvailableModule) {
+            if (! $firstAvailableModule) {
                 throw new AccessDeniedHttpException();
             }
 

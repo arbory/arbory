@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Grid;
-use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Tools\Toolbox;
 use Arbory\Base\Html\Elements\Element;
-use Illuminate\Database\Eloquent\Model;
+use Arbory\Base\Html\Html;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * Class Row.
@@ -35,7 +35,7 @@ class Row implements Renderable
      */
     public function getCells(): Collection
     {
-        return $this->grid->getColumns()->map(fn(Column $column) => new Cell($column, $this, $this->model));
+        return $this->grid->getColumns()->map(fn (Column $column) => new Cell($column, $this, $this->model));
     }
 
     /**
@@ -64,7 +64,7 @@ class Row implements Renderable
 
     public function toArray(): array
     {
-        return $this->getCells()->mapWithKeys(fn(Cell $cell) => [$cell->getColumn()->getName() => strip_tags($cell)])->toArray();
+        return $this->getCells()->mapWithKeys(fn (Cell $cell) => [$cell->getColumn()->getName() => strip_tags($cell)])->toArray();
     }
 
     /**

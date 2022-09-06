@@ -2,29 +2,29 @@
 
 namespace Arbory\Base\Providers;
 
-use InvalidArgumentException;
+use Arbory\Base\Auth\Activations\Activation;
+use Arbory\Base\Auth\Persistences\Persistence;
+use Arbory\Base\Auth\Reminders\Reminder;
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Auth\Throttling\Throttle;
+use Arbory\Base\Auth\Users\User;
+use Cartalyst\Sentinel\Activations\IlluminateActivationRepository;
+use Cartalyst\Sentinel\Checkpoints\ActivationCheckpoint;
+use Cartalyst\Sentinel\Checkpoints\ThrottleCheckpoint;
+use Cartalyst\Sentinel\Cookies\IlluminateCookie;
+use Cartalyst\Sentinel\Hashing\NativeHasher;
+use Cartalyst\Sentinel\Persistences\IlluminatePersistenceRepository;
+use Cartalyst\Sentinel\Reminders\IlluminateReminderRepository;
+use Cartalyst\Sentinel\Roles\IlluminateRoleRepository;
+use Cartalyst\Sentinel\Sentinel;
+use Cartalyst\Sentinel\Sessions\IlluminateSession;
+use Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository;
+use Cartalyst\Sentinel\Users\IlluminateUserRepository;
 use Exception;
 use Illuminate\Http\Response;
-use Arbory\Base\Auth\Roles\Role;
-use Arbory\Base\Auth\Users\User;
-use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
-use Arbory\Base\Auth\Reminders\Reminder;
-use Arbory\Base\Auth\Throttling\Throttle;
-use Arbory\Base\Auth\Activations\Activation;
-use Cartalyst\Sentinel\Hashing\NativeHasher;
-use Arbory\Base\Auth\Persistences\Persistence;
-use Cartalyst\Sentinel\Cookies\IlluminateCookie;
-use Cartalyst\Sentinel\Sessions\IlluminateSession;
-use Cartalyst\Sentinel\Checkpoints\ThrottleCheckpoint;
-use Cartalyst\Sentinel\Roles\IlluminateRoleRepository;
-use Cartalyst\Sentinel\Users\IlluminateUserRepository;
-use Cartalyst\Sentinel\Checkpoints\ActivationCheckpoint;
-use Cartalyst\Sentinel\Reminders\IlluminateReminderRepository;
-use Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository;
-use Cartalyst\Sentinel\Activations\IlluminateActivationRepository;
-use Cartalyst\Sentinel\Persistences\IlluminatePersistenceRepository;
+use InvalidArgumentException;
 
 /**
  * Class AuthServiceProvider.
@@ -62,7 +62,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerSession();
         $this->registerCookie();
 
-        $this->app->singleton('sentinel.persistence', fn($app) => new IlluminatePersistenceRepository(
+        $this->app->singleton('sentinel.persistence', fn ($app) => new IlluminatePersistenceRepository(
             $app['sentinel.session'],
             $app['sentinel.cookie'],
             Persistence::class
@@ -76,7 +76,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerSession()
     {
-        $this->app->singleton('sentinel.session', fn($app) => new IlluminateSession(
+        $this->app->singleton('sentinel.session', fn ($app) => new IlluminateSession(
             $app['session.store'],
             'arbory_admin'
         ));
@@ -89,7 +89,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerCookie()
     {
-        $this->app->singleton('sentinel.cookie', fn($app) => new IlluminateCookie(
+        $this->app->singleton('sentinel.cookie', fn ($app) => new IlluminateCookie(
             $app['request'],
             $app['cookie'],
             'arbory_admin'
@@ -105,7 +105,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerHasher();
 
-        $this->app->singleton('sentinel.users', fn($app) => new IlluminateUserRepository(
+        $this->app->singleton('sentinel.users', fn ($app) => new IlluminateUserRepository(
             $app['sentinel.hasher'],
             $app['events'],
             User::class
@@ -119,7 +119,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerHasher()
     {
-        $this->app->singleton('sentinel.hasher', fn() => new NativeHasher);
+        $this->app->singleton('sentinel.hasher', fn () => new NativeHasher);
     }
 
     /**
@@ -129,7 +129,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerRoles()
     {
-        $this->app->singleton('sentinel.roles', fn() => new IlluminateRoleRepository(Role::class));
+        $this->app->singleton('sentinel.roles', fn () => new IlluminateRoleRepository(Role::class));
     }
 
     /**
@@ -145,7 +145,7 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->registerThrottleCheckpoint();
 
-        $this->app->singleton('sentinel.checkpoints', fn($app) => [
+        $this->app->singleton('sentinel.checkpoints', fn ($app) => [
             $app['sentinel.checkpoint.throttle'],
             $app['sentinel.checkpoint.activation'],
         ]);
@@ -160,7 +160,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerActivations();
 
-        $this->app->singleton('sentinel.checkpoint.activation', fn($app) => new ActivationCheckpoint($app['sentinel.activations']));
+        $this->app->singleton('sentinel.checkpoint.activation', fn ($app) => new ActivationCheckpoint($app['sentinel.activations']));
     }
 
     /**
@@ -170,7 +170,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerActivations()
     {
-        $this->app->singleton('sentinel.activations', fn($app) => new IlluminateActivationRepository(
+        $this->app->singleton('sentinel.activations', fn ($app) => new IlluminateActivationRepository(
             Activation::class,
             $app['config']->get('arbory.auth.activations.expires', 259200)
         ));
@@ -185,7 +185,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerThrottling();
 
-        $this->app->singleton('sentinel.checkpoint.throttle', fn($app) => new ThrottleCheckpoint(
+        $this->app->singleton('sentinel.checkpoint.throttle', fn ($app) => new ThrottleCheckpoint(
             $app['sentinel.throttling'],
             $app['request']->getClientIp()
         ));
@@ -229,7 +229,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerReminders()
     {
-        $this->app->singleton('sentinel.reminders', fn($app) => new IlluminateReminderRepository(
+        $this->app->singleton('sentinel.reminders', fn ($app) => new IlluminateReminderRepository(
             $app['sentinel.users'],
             Reminder::class,
             $app['config']->get('arbory.auth.reminders.expires', 14400)

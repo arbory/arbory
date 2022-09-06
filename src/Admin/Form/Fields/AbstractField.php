@@ -2,17 +2,14 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Arbory\Base\Html\Elements\Element;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Support\Str;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 use Arbory\Base\Admin\Form\Fields\Concerns\IsControlField;
 use Arbory\Base\Admin\Form\Fields\Concerns\IsTranslatable;
 use Arbory\Base\Admin\Form\Fields\Renderer\RendererInterface;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * Class AbstractField.
@@ -85,7 +82,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     /**
      * AbstractField constructor.
      *
-     * @param  string  $name
+     * @param string $name
      */
     public function __construct($name)
     {
@@ -101,7 +98,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  string  $name
+     * @param string $name
      * @return $this
      */
     public function setName($name)
@@ -127,7 +124,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
      */
     public function getFieldTypeName()
     {
-        return 'type-'.Str::camel(class_basename(static::class));
+        return 'type-' . Str::camel(class_basename(static::class));
     }
 
     /**
@@ -163,7 +160,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  string  $value
+     * @param string $value
      * @return $this
      */
     public function setValue($value)
@@ -182,7 +179,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  mixed  $defaultValue
+     * @param mixed $defaultValue
      * @return $this
      */
     public function setDefaultValue($defaultValue)
@@ -205,7 +202,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  string  $label
+     * @param string $label
      * @return $this
      */
     public function setLabel($label)
@@ -298,7 +295,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  string|null  $content
+     * @param string|null $content
      */
     public function setTooltip($content = null): FieldInterface
     {
@@ -316,7 +313,7 @@ abstract class AbstractField implements FieldInterface, ControlFieldInterface
     }
 
     /**
-     * @param  array  $breakpoints
+     * @param array $breakpoints
      */
     public function setRows(int $rows, $breakpoints = []): FieldInterface
     {

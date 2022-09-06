@@ -2,15 +2,14 @@
 
 namespace Arbory\Base\Menu;
 
-use InvalidArgumentException;
-use Arbory\Base\Html\Elements\Element;
-use ReflectionClass;
-use Route;
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Admin;
 use Arbory\Base\Admin\Module;
-use Arbory\Base\Html\Elements;
 use Arbory\Base\Admin\Module\ResourceRoutes;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
+use InvalidArgumentException;
+use ReflectionClass;
+use Route;
 
 class Item extends AbstractItem
 {
@@ -19,7 +18,6 @@ class Item extends AbstractItem
     }
 
     /**
-     *
      * @throws InvalidArgumentException
      */
     public function render(Element $parentElement): Element
@@ -30,7 +28,7 @@ class Item extends AbstractItem
                     Html::abbr($this->getAbbreviation())->addAttributes(['title' => $this->getTitle()]),
                     Html::span($this->getTitle())->addClass('name'),
                 ])
-                    ->addClass('trigger '.($this->isActive() ? 'active' : ''))
+                    ->addClass('trigger ' . ($this->isActive() ? 'active' : ''))
                     ->addAttributes(['href' => $this->getUrl()])
             );
     }

@@ -61,13 +61,13 @@ class Filter implements FilterInterface
         $orderBy = $this->request->get('_order_by');
         $orderDirection = $this->request->get('_order', 'asc');
 
-        if (!$orderBy) {
+        if (! $orderBy) {
             return;
         }
 
-        $column = $columns->filter(fn(Column $column) => $column->isSortable())->filter(static fn(Column $column) => $column->getName() === $orderBy)->first();
+        $column = $columns->filter(fn (Column $column) => $column->isSortable())->filter(static fn (Column $column) => $column->getName() === $orderBy)->first();
 
-        if (!$column) {
+        if (! $column) {
             return;
         }
 
@@ -93,7 +93,7 @@ class Filter implements FilterInterface
         foreach ($keywords as $string) {
             $this->query->where(function (QueryBuilder $query) use ($string, $columns) {
                 foreach ($columns as $column) {
-                    if (!$column->isSearchable()) {
+                    if (! $column->isSearchable()) {
                         continue;
                     }
 
@@ -110,7 +110,7 @@ class Filter implements FilterInterface
     {
         $result = $this->query;
 
-        if (!$this->isPaginated()) {
+        if (! $this->isPaginated()) {
             return $result->get();
         }
 
@@ -135,7 +135,7 @@ class Filter implements FilterInterface
 
     public function execute(Collection $columns): self
     {
-        if ($this->request->has('search') && !empty($this->request->get('search'))) {
+        if ($this->request->has('search') && ! empty($this->request->get('search'))) {
             $this->search($this->request->get('search'), $columns);
         }
 
@@ -207,7 +207,7 @@ class Filter implements FilterInterface
 
         $isOrderBySpecified = $this->request->get('_order_by');
 
-        if (!$isOrderBySpecified) {
+        if (! $isOrderBySpecified) {
             $this->request->merge([
                 '_order_by' => $orderBy,
                 '_order' => $orderDirection,

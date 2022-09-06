@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Support;
 
-use Traversable;
 use ArrayIterator;
-use IteratorAggregate;
 use Illuminate\Support\Fluent;
+use IteratorAggregate;
+use Traversable;
 
 class ExtendedFluent extends Fluent implements IteratorAggregate
 {
@@ -60,7 +60,7 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
             return blank($item);
         }
 
-        return count(array_filter($item, fn($item) => ! $this->isEmptyDeep($item), ARRAY_FILTER_USE_BOTH)) === 0;
+        return count(array_filter($item, fn ($item) => ! $this->isEmptyDeep($item), ARRAY_FILTER_USE_BOTH)) === 0;
     }
 
     /**

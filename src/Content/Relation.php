@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Content;
 
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Relation extends Model 
+class Relation extends Model
 {
     /**
      * @var array

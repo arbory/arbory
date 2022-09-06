@@ -3,6 +3,7 @@
 namespace Arbory\Base\Menu;
 
 use DomainException;
+
 class MenuFactory
 {
     public function __construct(protected MenuItemFactory $menuItemFactory)
@@ -10,7 +11,7 @@ class MenuFactory
     }
 
     /**
-     * @param  mixed[]  $items
+     * @param mixed[] $items
      * @return Menu
      *
      * @throws DomainException

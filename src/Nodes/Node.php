@@ -2,15 +2,15 @@
 
 namespace Arbory\Base\Nodes;
 
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Support\Collection;
 use Arbory\Base\Pages\PageInterface;
-use Baum\NestedSet\Node as BaumNode;
-use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Repositories\NodesRepository;
 use Arbory\Base\Support\Activation\HasActivationDates;
+use Baum\NestedSet\Node as BaumNode;
+use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Collection;
 
 /**
  * Class Node.
@@ -22,7 +22,7 @@ use Arbory\Base\Support\Activation\HasActivationDates;
  * @property string $slug
  * @property bool $active
  */
-class Node extends Model 
+class Node extends Model
 {
     use Uuid;
     use HasActivationDates;
@@ -41,12 +41,12 @@ class Node extends Model
     /**
      * @var string
      */
-    protected $leftColumnName = 'lft';
+    protected string $leftColumnName = 'lft';
 
     /**
      * @var string
      */
-    protected $rightColumnName = 'rgt';
+    protected string $rightColumnName = 'rgt';
 
     /**
      * @var array
@@ -71,7 +71,7 @@ class Node extends Model
      */
     public function __toString(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
     /**
@@ -100,15 +100,15 @@ class Node extends Model
     /**
      * Use ancestors() instead.
      *
+     * @return Builder
      * @deprecated
      *
-     * @return Builder
      */
     public function parentsQuery()
     {
         return $this->newQuery()
-            ->where($this->getLeftColumnName(), '<', (int) $this->getLeft())
-            ->where($this->getRightColumnName(), '>', (int) $this->getRight())
+            ->where($this->getLeftColumnName(), '<', (int)$this->getLeft())
+            ->where($this->getRightColumnName(), '>', (int)$this->getRight())
             ->orderBy($this->getDepthColumnName(), 'asc');
     }
 
@@ -154,13 +154,13 @@ class Node extends Model
 
     /**
      * @param  $name
-     * @param  bool  $absolute
+     * @param bool $absolute
      * @return string|null
      */
     public function getUrl($name, array $parameters = [], $absolute = true)
     {
         $routes = app('routes');
-        $routeName = 'node.'.$this->getKey().'.'.$name;
+        $routeName = 'node.' . $this->getKey() . '.' . $name;
         $route = $routes->getByName($routeName);
 
         return $route ? route($routeName, $parameters, $absolute) : null;

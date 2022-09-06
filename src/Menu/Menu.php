@@ -49,12 +49,12 @@ class Menu
             $name = Str::snake($item->getTitle());
             $collapsed = $this->getMenuItemCookie($name);
 
-            if (!$this->hasMenuItemCookie($name)) {
+            if (! $this->hasMenuItemCookie($name)) {
                 $collapsed = true;
             }
 
             /** @var AbstractItem $item */
-            if (!$item) {
+            if (! $item) {
                 continue;
             }
 
@@ -79,7 +79,7 @@ class Menu
             return $menuCookie;
         }
 
-        return (array)json_decode($menuCookie, true);
+        return (array) json_decode($menuCookie, true);
     }
 
     protected function hasMenuItemCookie(string $name): bool

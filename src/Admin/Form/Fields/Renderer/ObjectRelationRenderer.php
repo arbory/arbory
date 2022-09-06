@@ -2,12 +2,11 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Html;
-use Arbory\Base\Html\Elements\Element;
-use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
-use Arbory\Base\Admin\Form\Fields\ObjectRelation;
 use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
+use Arbory\Base\Html\Elements\Element;
+use Arbory\Base\Html\Html;
+use Illuminate\Database\Eloquent\Model;
 
 class ObjectRelationRenderer implements RendererInterface
 {
@@ -107,7 +106,7 @@ class ObjectRelationRenderer implements RendererInterface
     {
         $element = Html::div(
             Html::span(
-                (string) $value
+                (string)$value
             )->addClass('title')
         )->addClass('item');
 
@@ -123,7 +122,7 @@ class ObjectRelationRenderer implements RendererInterface
     }
 
     /**
-     * @param  FieldInterface  $field
+     * @param FieldInterface $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -144,7 +143,7 @@ class ObjectRelationRenderer implements RendererInterface
     /**
      * Configure the style before rendering the field.
      *
-     * @param  StyleOptionsInterface  $options
+     * @param StyleOptionsInterface $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface

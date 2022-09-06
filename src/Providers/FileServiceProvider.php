@@ -3,8 +3,8 @@
 namespace Arbory\Base\Providers;
 
 use Arbory\Base\Files\ArboryFile;
-use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Repositories\ArboryFilesRepository;
+use Illuminate\Support\ServiceProvider;
 
 class FileServiceProvider extends ServiceProvider
 {
@@ -15,6 +15,6 @@ class FileServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('arbory_files', fn() => new ArboryFilesRepository('local', ArboryFile::class));
+        $this->app->singleton('arbory_files', fn () => new ArboryFilesRepository('local', ArboryFile::class));
     }
 }

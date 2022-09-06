@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Nodes;
 
-use Illuminate\Routing\Router;
 use Arbory\Base\Exceptions\BadMethodCallException;
 use Closure;
 use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 
 /**
@@ -24,12 +24,13 @@ class ContentTypeRoutesRegister
 
     /**
      * @param $contentType
+     *
      * @return $this
      * @throws BadMethodCallException
      */
     public function register($contentType, Closure $handler)
     {
-        if (!$this->contentTypesRegister->isValidContentType($contentType)) {
+        if (! $this->contentTypesRegister->isValidContentType($contentType)) {
             throw new BadMethodCallException('Invalid content type');
         }
 
@@ -44,7 +45,7 @@ class ContentTypeRoutesRegister
      */
     public function getContentTypeHandler($contentType)
     {
-        if (!array_key_exists($contentType, $this->contentTypeHandlers)) {
+        if (! array_key_exists($contentType, $this->contentTypeHandlers)) {
             return function () {
             };
         }
@@ -65,7 +66,7 @@ class ContentTypeRoutesRegister
      */
     public function getCurrentNode()
     {
-        if (!$this->getRouter()->getCurrentRoute()) {
+        if (! $this->getRouter()->getCurrentRoute()) {
             return;
         }
 
@@ -79,7 +80,7 @@ class ContentTypeRoutesRegister
     {
         $currentRouteName = $route->getName();
 
-        if (!preg_match('#^node\.(?P<id>.*?)\.#', $currentRouteName, $matches)) {
+        if (! preg_match('#^node\.(?P<id>.*?)\.#', $currentRouteName, $matches)) {
             return;
         }
 
@@ -96,7 +97,7 @@ class ContentTypeRoutesRegister
         foreach ($items as $item) {
             $slug = $base . '/' . $item->getSlug();
 
-            if (!$item->active) {
+            if (! $item->active) {
                 if (config('arbory.preview.enabled')) {
                     $this->registerPreviewRoutes($item, $slug);
                 }

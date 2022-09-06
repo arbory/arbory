@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer\Nested;
 
-use Arbory\Base\Exceptions\BadMethodCallException;
 use Arbory\Base\Admin\Form\Fields\Concerns\HasRenderOptions;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Panels\Panel;
 use Arbory\Base\Admin\Widgets\Button;
+use Arbory\Base\Exceptions\BadMethodCallException;
 use Arbory\Base\Html\Elements\Content;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -48,7 +48,7 @@ class PaneledItemRenderer implements ItemInterface
      */
     protected function addRemoveButton(FieldInterface $field, Panel $panel, Content $content, $name)
     {
-        if (!$field->canRemoveRelationItems()) {
+        if (! $field->canRemoveRelationItems()) {
             return;
         }
 
@@ -76,7 +76,7 @@ class PaneledItemRenderer implements ItemInterface
      */
     protected function addSortableNavigation(FieldInterface $field, Panel $panel)
     {
-        if (!$field->canSortRelationItems()) {
+        if (! $field->canSortRelationItems()) {
             return;
         }
 

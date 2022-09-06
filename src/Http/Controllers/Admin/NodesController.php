@@ -2,9 +2,6 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Closure;
-use ReflectionClass;
 use Arbory\Base\Admin\Constructor\BlockRegistry;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\Fields\Deactivator;
@@ -22,13 +19,16 @@ use Arbory\Base\Nodes\ContentTypeDefinition;
 use Arbory\Base\Nodes\ContentTypeRegister;
 use Arbory\Base\Nodes\Node;
 use Arbory\Base\Repositories\NodesRepository;
-use Illuminate\Support\Str;
+use Arbory\Base\Support\Nodes\NameGenerator;
+use Closure;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Arbory\Base\Support\Nodes\NameGenerator;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use ReflectionClass;
 
 class NodesController extends Controller
 {
@@ -41,7 +41,7 @@ class NodesController extends Controller
     }
 
     /**
-     * @param  LayoutInterface  $layout
+     * @param LayoutInterface $layout
      * @return Form
      */
     protected function form(Form $form, ?LayoutInterface $layout)
@@ -119,7 +119,7 @@ class NodesController extends Controller
         $contentType = $request->get('content_type');
 
         if (! $this->contentTypeRegister->isValidContentType($contentType)) {
-            return redirect($this->url('index'))->withErrors('Undefined content type "'.$contentType.'"');
+            return redirect($this->url('index'))->withErrors('Undefined content type "' . $contentType . '"');
         }
 
         $node = $this->resource();
@@ -135,7 +135,7 @@ class NodesController extends Controller
 
         $page = $manager->page(Page::class);
         $page->use($layout);
-        $page->bodyClass('controller-'.Str::slug($this->module()->name()).' view-edit');
+        $page->bodyClass('controller-' . Str::slug($this->module()->name()) . ' view-edit');
 
         return $page;
     }
@@ -178,11 +178,11 @@ class NodesController extends Controller
             $this->resource()->findOrNew($request->get('parent_id'))
         );
 
-        $types = $contentTypes->sort()->map(fn(ContentTypeDefinition $definition, string $type) => [
+        $types = $contentTypes->sort()->map(fn (ContentTypeDefinition $definition, string $type) => [
             'title' => $definition->getName(),
-            'url'   => $this->url('create', [
+            'url' => $this->url('create', [
                 'content_type' => $type,
-                'parent_id'    => $request->get('parent_id'),
+                'parent_id' => $request->get('parent_id'),
             ]),
         ]);
 
@@ -218,23 +218,23 @@ class NodesController extends Controller
 
         if ($request->has('parent_id')) {
             $reservedSlugs = $this->resource()
-                                  ->where([
-                                      ['parent_id', $request->get('parent_id')],
-                                      ['id', '<>', $request->get('object_id')],
-                                  ])
-                                  ->pluck('slug')
-                                  ->toArray();
+                ->where([
+                    ['parent_id', $request->get('parent_id')],
+                    ['id', '<>', $request->get('object_id')],
+                ])
+                ->pluck('slug')
+                ->toArray();
         }
 
         $from = $request->get('from');
         $slug = Str::slug($from);
 
         if (in_array($slug, $reservedSlugs, true) && $request->has('id')) {
-            $slug = Str::slug($request->get('id').'-'.$from);
+            $slug = Str::slug($request->get('id') . '-' . $from);
         }
 
         if (in_array($slug, $reservedSlugs, true)) {
-            return Str::slug($from.'-'.random_int(0, 9999));
+            return Str::slug($from . '-' . random_int(0, 9999));
         }
 
         return $slug;
@@ -282,7 +282,7 @@ class NodesController extends Controller
             $attribute = \request()->input("{$form->getNamespace()}.{$morphType}");
         }
 
-        $class = ( new ReflectionClass($attribute) )->getName();
+        $class = (new ReflectionClass($attribute))->getName();
 
         return $this->contentTypeRegister->findByModelClass($class);
     }

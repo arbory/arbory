@@ -76,7 +76,7 @@ trait HasRenderOptions
     {
         $classes = Arr::wrap($classes);
 
-        $this->classes = array_filter($this->classes, fn($value) => ! in_array($value, $classes, true));
+        $this->classes = array_filter($this->classes, fn ($value) => ! in_array($value, $classes, true));
 
         return $this;
     }

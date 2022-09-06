@@ -3,9 +3,9 @@
 namespace Arbory\Base\Files;
 
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class ArboryFile.
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $owner_class
  * @property string $local_name
  */
-class ArboryFile extends Model 
+class ArboryFile extends Model
 {
     use Uuid;
 
@@ -56,12 +56,9 @@ class ArboryFile extends Model
      */
     protected $updateFile;
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
-        return (string) $this->original_name;
+        return $this->original_name;
     }
 
     /**

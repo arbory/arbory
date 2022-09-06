@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Form;
 
-use Closure;
-use Arbory\Base\Admin\Layout\Grid;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Admin\Layout\Grid\Column;
 use Arbory\Base\Admin\Form\Fields\FieldInterface;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
+use Arbory\Base\Admin\Layout\Grid;
+use Arbory\Base\Admin\Layout\Grid\Column;
+use Arbory\Base\Html\Elements\Content;
+use Closure;
 
 class FieldSetRenderer implements FieldSetRendererInterface
 {
@@ -46,7 +46,7 @@ class FieldSetRenderer implements FieldSetRendererInterface
         $grid = new Grid();
         $columns = 0;
 
-        $hasRows = $collection->filter(fn($field) => $field->getRows())->count();
+        $hasRows = $collection->filter(fn ($field) => $field->getRows())->count();
 
         if (! $hasRows) {
             return new Content(
@@ -69,9 +69,9 @@ class FieldSetRenderer implements FieldSetRendererInterface
             }
 
             $rows = $field->getRows() ?? [
-                'size' => $grid->getRowSize(),
-                'breakpoints' => [],
-            ];
+                    'size' => $grid->getRowSize(),
+                    'breakpoints' => [],
+                ];
 
             $columnsExpected = $columns + $rows['size'];
 

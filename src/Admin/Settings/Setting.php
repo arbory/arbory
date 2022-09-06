@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Admin\Settings;
 
-use Illuminate\Database\Eloquent\MassAssignmentException;
-use ErrorException;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Services\SettingRegistry;
 use Arbory\Base\Support\Translate\Translatable;
+use ErrorException;
+use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 
 class Setting extends Model
@@ -28,7 +28,7 @@ class Setting extends Model
     /**
      * @var string
      */
-    protected $translationForeignKey = 'setting_name';
+    protected string $translationForeignKey = 'setting_name';
 
     /**
      * @var bool
@@ -45,7 +45,7 @@ class Setting extends Model
     /**
      * @var array
      */
-    protected $translatedAttributes = [
+    protected array $translatedAttributes = [
         'value',
     ];
 
@@ -54,7 +54,7 @@ class Setting extends Model
      */
     public function __toString(): string
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 
     /**
@@ -136,7 +136,7 @@ class Setting extends Model
     {
         $settingName ??= $this->name;
 
-        if (!$settingName) {
+        if (! $settingName) {
             return false;
         }
 

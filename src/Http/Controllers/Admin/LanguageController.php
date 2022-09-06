@@ -2,20 +2,20 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Form\FieldSet;
+use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Traits\Crudify;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Support\Translate\Language;
 use Exception;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
-use Illuminate\Contracts\View\Factory;
-use Arbory\Base\Html\Html;
-use Arbory\Base\Admin\Form;
-use Arbory\Base\Admin\Grid;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
-use Arbory\Base\Support\Translate\Language;
+use Illuminate\Routing\Redirector;
 use Waavi\Translation\Repositories\LanguageRepository;
 
 class LanguageController extends Controller
@@ -50,7 +50,7 @@ class LanguageController extends Controller
         $grid->setColumns(function (Grid $grid) {
             $grid->column('locale');
             $grid->column('name');
-            $grid->column('status')->display(fn($_, $__, Language $language) => Html::span($language->trashed() ?
+            $grid->column('status')->display(fn ($_, $__, Language $language) => Html::span($language->trashed() ?
                 trans('arbory::resources.status.disabled') : trans('arbory::resources.status.enabled')));
         });
 
@@ -60,7 +60,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param  int  $resourceId
+     * @param int $resourceId
      *
      * @throws Exception
      * @throws ModelNotFoundException
@@ -76,7 +76,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param  int  $resourceId
+     * @param int $resourceId
      *
      * @throws Exception
      * @throws ModelNotFoundException

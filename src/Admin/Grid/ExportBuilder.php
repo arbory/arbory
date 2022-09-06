@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Grid;
 
-use Arbory\Base\Admin\Grid as AdminGrid;
 use Arbory\Base\Admin\Exports\DataSetExport;
+use Arbory\Base\Admin\Grid as AdminGrid;
 use Illuminate\Contracts\Support\Renderable;
 
 class ExportBuilder implements Renderable
@@ -34,7 +34,7 @@ class ExportBuilder implements Renderable
      */
     public function render()
     {
-        $items = $this->grid->getRows()->map(fn(Row $row) => $row->toArray());
+        $items = $this->grid->getRows()->map(fn (Row $row) => $row->toArray());
 
         $columns = $this->getColumns();
 

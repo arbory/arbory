@@ -23,6 +23,7 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
+        "ext-simplexml": "*",
         "laravel/framework": "^9.0",
         "laravelcollective/html": "^6.0",
         "doctrine/dbal": "^2.5",

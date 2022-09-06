@@ -3,6 +3,7 @@
 namespace Arbory\Base\Exceptions;
 
 use Exception;
+
 /**
  * Class BadMethodCallException.
  */

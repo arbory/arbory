@@ -2,11 +2,9 @@
 
 namespace Arbory\Base\Admin\Constructor;
 
-use Illuminate\Http\Request;
-use Arbory\Base\Admin\Form\FieldSet;
-use Arbory\Base\Services\AssetPipeline;
-use Illuminate\Database\Eloquent\Model;
 use Arbory\Base\Admin\Form\Fields\HasOne;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Http\Request;
 
 interface BlockInterface
 {

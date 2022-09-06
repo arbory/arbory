@@ -42,7 +42,7 @@ class DateTime extends Text
 
     public function beforeRender(RendererInterface $renderer)
     {
-        if ($this->isDisabled() || !$this->isInteractive()) {
+        if ($this->isDisabled() || ! $this->isInteractive()) {
             $this->removeClasses('datetime-picker');
         }
     }

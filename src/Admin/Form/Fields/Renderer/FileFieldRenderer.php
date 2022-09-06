@@ -31,7 +31,7 @@ class FileFieldRenderer extends ControlFieldRenderer
             $value->append($this->createFileDetails($file));
         }
 
-        if ($this->field->isInteractive() && !$this->field->isDisabled()) {
+        if ($this->field->isInteractive() && ! $this->field->isDisabled()) {
             $value->append(parent::render());
         }
 
@@ -52,7 +52,7 @@ class FileFieldRenderer extends ControlFieldRenderer
             'download',
         ]);
 
-        if ($this->field->isInteractive() && !$this->field->isDisabled()) {
+        if ($this->field->isInteractive() && ! $this->field->isDisabled()) {
             $removeButton =
                 Html::button('delete')->addClass('remove mt-icon')->addAttributes([
                     'type' => 'button',
@@ -67,7 +67,7 @@ class FileFieldRenderer extends ControlFieldRenderer
 
         $fileDetails->append($downloadLink);
 
-        if (!$this->field->isRequired()) {
+        if (! $this->field->isRequired()) {
             $fileDetails->append($removeButton);
             $fileDetails->append($removeInput);
         }

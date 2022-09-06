@@ -3,13 +3,12 @@
 namespace Arbory\Base\Admin\Form\Fields;
 
 use App;
-use Illuminate\Http\Request;
-use Arbory\Base\Admin\Form\FieldSet;
-use Waavi\Translation\Models\Language;
-use Illuminate\Database\Eloquent\Model;
-use Waavi\Translation\Repositories\LanguageRepository;
-use Dimsav\Translatable\Translatable as TranslatableModel;
 use Arbory\Base\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Waavi\Translation\Models\Language;
+use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
  * Class Translatable.
@@ -33,7 +32,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     /**
      * Translatable constructor.
      *
-     * @param  FieldInterface  $field
+     * @param FieldInterface $field
      */
     public function __construct(protected FieldInterface $field)
     {
@@ -41,12 +40,12 @@ class Translatable extends AbstractField implements ProxyFieldInterface
         $languages = App::make(LanguageRepository::class);
         $this->currentLocale = App::getLocale();
 
-        $this->locales = $languages->all()->map(fn(Language $language) => $language->locale)->toArray();
+        $this->locales = $languages->all()->map(fn (Language $language) => $language->locale)->toArray();
 
         parent::__construct('translations');
     }
 
-    public function getModel(): TranslatableModel|Model
+    public function getModel(): Model
     {
         return parent::getModel();
     }
@@ -98,7 +97,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     {
         $fieldSet = new FieldSet(
             $model,
-            $this->getNameSpacedName().'.'.$locale
+            $this->getNameSpacedName() . '.' . $locale
         );
 
         $field = clone $this->field;
@@ -117,10 +116,10 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     }
 
     /**
-     * @see \Arbory\Base\Http\Controllers\Admin\SettingsController::getField
-     *
      * @param $locale
      * @return Model|null
+     * @see \Arbory\Base\Http\Controllers\Admin\SettingsController::getField
+     *
      */
     public function getDefaultResourceForLocale($locale)
     {

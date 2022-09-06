@@ -2,9 +2,9 @@
 
 namespace Arbory\Base\Html\Elements;
 
-use LogicException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use LogicException;
 
 class Content extends Collection implements Renderable
 {
@@ -40,7 +40,7 @@ class Content extends Collection implements Renderable
             $className = $value::class;
 
             foreach ($this->handlers as $class => $name) {
-                if (!$value instanceof $class) {
+                if (! $value instanceof $class) {
                     continue;
                 }
 
@@ -50,7 +50,7 @@ class Content extends Collection implements Renderable
             }
 
             if (method_exists($value, '__toString')) {
-                return (string)$value;
+                return (string) $value;
             }
         }
 

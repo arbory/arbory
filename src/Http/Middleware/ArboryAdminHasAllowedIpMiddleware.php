@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 
 class ArboryAdminHasAllowedIpMiddleware
 {
-
     public function handle(Request $request, Closure $next): mixed
     {
         if ($this->isAllowedIp($request)) {

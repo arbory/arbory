@@ -32,7 +32,7 @@ class Row implements Renderable
      */
     public function __toString(): string
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     public function render(): Content

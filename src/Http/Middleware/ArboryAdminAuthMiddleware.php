@@ -25,7 +25,7 @@ class ArboryAdminAuthMiddleware
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        if (!$this->sentinel->check()) {
+        if (! $this->sentinel->check()) {
             return $this->denied($request);
         }
 

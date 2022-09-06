@@ -2,11 +2,11 @@
 
 namespace Arbory\Base\Admin\Layout;
 
+use Arbory\Base\Admin\Traits\EventDispatcher;
+use Arbory\Base\Html\Elements\Content;
 use Closure;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
-use Arbory\Base\Html\Elements\Content;
-use Arbory\Base\Admin\Traits\EventDispatcher;
 
 abstract class AbstractLayout
 {
@@ -42,11 +42,7 @@ abstract class AbstractLayout
      */
     protected $content;
 
-    /**
-     * @param  string  $name
-     * @return Slot
-     */
-    public function slot($name, mixed $content = null)
+    public function slot(string $name, mixed $content = null): Slot
     {
         if ($this->root === null) {
             $this->root = new Slot('root');
@@ -126,7 +122,7 @@ abstract class AbstractLayout
     /**
      * Adds an transformer to the layout.
      *
-     * @param  LayoutInterface|string  $layout
+     * @param LayoutInterface|string $layout
      * @return $this
      */
     public function use($layout): LayoutResolver
@@ -148,10 +144,10 @@ abstract class AbstractLayout
     {
         if (count($this->getPipes())) {
             return $this->pipeline()
-                        ->send($content)
-                        ->then(
-                            fn($content) => $content
-                        );
+                ->send($content)
+                ->then(
+                    fn ($content) => $content
+                );
         }
 
         return $content;

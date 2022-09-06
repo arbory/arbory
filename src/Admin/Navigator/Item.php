@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Admin\Navigator;
 
-use JsonSerializable;
 use Arbory\Base\Html\Html;
-use Illuminate\Support\Collection;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use JsonSerializable;
 
 class Item implements Renderable, Jsonable, JsonSerializable, Arrayable
 {
@@ -27,11 +27,7 @@ class Item implements Renderable, Jsonable, JsonSerializable, Arrayable
      */
     protected $order;
 
-    /**
-     * @param string $title
-     * @param string $anchor
-     */
-    public function __construct(protected NavigableInterface $navigable, protected $title, protected $anchor = null)
+    public function __construct(protected NavigableInterface $navigable, protected string $title, protected ?string $anchor = null)
     {
         $this->reference = Str::random(16);
 
@@ -74,7 +70,7 @@ class Item implements Renderable, Jsonable, JsonSerializable, Arrayable
     }
 
     /**
-     * @param  Collection|Item[]  $children
+     * @param Collection|Item[] $children
      */
     public function setChildren(Collection|array $children): self
     {
@@ -112,7 +108,7 @@ class Item implements Renderable, Jsonable, JsonSerializable, Arrayable
             )
         )->append(
             Html::ul()->append(
-                $this->getChildren()->map(fn($value) => $value->render())->all()
+                $this->getChildren()->map(fn ($value) => $value->render())->all()
             )->addClass('children')
         )->addAttributes(
             [
@@ -129,7 +125,7 @@ class Item implements Renderable, Jsonable, JsonSerializable, Arrayable
     /**
      * Convert the object to its JSON representation.
      *
-     * @param  int  $options
+     * @param int $options
      * @return string
      */
     public function toJson($options = 0)
@@ -145,11 +141,11 @@ class Item implements Renderable, Jsonable, JsonSerializable, Arrayable
     public function toArray()
     {
         return [
-            'title'     => $this->getTitle(),
-            'anchor'    => $this->getAnchor(),
-            'order'     => $this->getOrder(),
+            'title' => $this->getTitle(),
+            'anchor' => $this->getAnchor(),
+            'order' => $this->getOrder(),
             'reference' => $this->getReference(),
-            'children'  => $this->children->toArray(),
+            'children' => $this->children->toArray(),
         ];
     }
 

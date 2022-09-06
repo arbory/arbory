@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Layout;
 
-use Closure;
 use Arbory\Base\Html\Elements\Content;
+use Closure;
 
 class Body
 {
@@ -24,16 +24,12 @@ class Body
 
     /**
      * Body constructor.
-     *
-     * @param  $page
-     * @param  LayoutInterface  $target
-     * @param PageInterface $page
      */
-    public function __construct(protected $page, protected $target = null)
+    public function __construct(protected PageInterface $page, protected ?LayoutInterface $target = null)
     {
         $this->prepended = new Content();
         $this->appended = new Content();
-        $this->wrapper = fn($content) => $content;
+        $this->wrapper = fn ($content) => $content;
     }
 
     /**
@@ -43,7 +39,7 @@ class Body
     {
         $call = $this->wrapper;
 
-        $this->wrapper = fn($content) => $call($wrapper($content));
+        $this->wrapper = fn ($content) => $call($wrapper($content));
 
         return $this;
     }
@@ -77,8 +73,8 @@ class Body
         $call = $this->wrapper;
 
         return $this->prepended->render()
-            .$call($content)
-            .$this->appended->render();
+            . $call($content)
+            . $this->appended->render();
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace Arbory\Base\Admin\Constructor;
 
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Collection;
 
 class BlockRegistry
 {
@@ -15,7 +15,7 @@ class BlockRegistry
     /**
      * Registry constructor.
      *
-     * @param  array  $blocks
+     * @param Container $container
      */
     public function __construct(protected Container $container)
     {
@@ -24,7 +24,7 @@ class BlockRegistry
 
     public function findByResource(string $resource): ?BlockInterface
     {
-        return $this->blocks->first(fn(BlockInterface $block) => $block->resource() === $resource);
+        return $this->blocks->first(fn (BlockInterface $block) => $block->resource() === $resource);
     }
 
     public function register(string $block): self

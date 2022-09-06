@@ -2,12 +2,12 @@
 
 namespace Arbory\Base\Admin\Filter\Types;
 
+use Arbory\Base\Admin\Filter\FilterItem;
+use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Illuminate\Validation\Validator;
-use Arbory\Base\Admin\Filter\FilterItem;
-use Illuminate\Database\Eloquent\Builder;
-use Arbory\Base\Admin\Filter\Parameters\FilterParameters;
 
 class DateRangeFilterType extends RangeFilterType
 {
@@ -46,13 +46,13 @@ class DateRangeFilterType extends RangeFilterType
         $validator->sometimes(
             $attributeResolver(static::KEY_MIN),
             "before_or_equal:{$maxAttribute}",
-            static fn(Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $maxAttribute))
+            static fn (Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $maxAttribute))
         );
 
         $validator->sometimes(
             $attributeResolver(static::KEY_MAX),
             "after_or_equal:{$minAttribute}",
-            static fn(Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $minAttribute))
+            static fn (Fluent $fluent) => ! blank(Arr::get($fluent->getAttributes(), $minAttribute))
         );
     }
 }

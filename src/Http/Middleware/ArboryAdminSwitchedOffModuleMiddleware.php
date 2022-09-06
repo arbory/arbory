@@ -20,7 +20,7 @@ class ArboryAdminSwitchedOffModuleMiddleware
     {
         $availableModule = $this->getFirstAvailableModule($request);
 
-        if (!$availableModule) {
+        if (! $availableModule) {
             throw new AccessDeniedHttpException();
         }
 
@@ -31,11 +31,11 @@ class ArboryAdminSwitchedOffModuleMiddleware
     {
         $switchedOffModule = $this->resolveSwitchedOffModule($request);
 
-        if (!$switchedOffModule) {
+        if (! $switchedOffModule) {
             return null;
         }
 
-        return Admin::modules()->first(fn(Module $module) => $module->isAuthorized()
+        return Admin::modules()->first(fn (Module $module) => $module->isAuthorized()
             && $module->getControllerClass() !== $switchedOffModule->getControllerClass());
     }
 

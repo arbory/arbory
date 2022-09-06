@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 /**
  * Class ModuleConfig.
  */
-class ModuleConfiguration 
+class ModuleConfiguration
 {
     /**
      * @var string
@@ -52,7 +52,7 @@ class ModuleConfiguration
     }
 
     /**
-     * @param  string  $controllerClass
+     * @param string $controllerClass
      * @return $this
      */
     public function setControllerClass($controllerClass)
@@ -63,7 +63,7 @@ class ModuleConfiguration
     }
 
     /**
-     * @param  string  $authorizationType
+     * @param string $authorizationType
      * @return $this
      */
     public function setAuthorizationType($authorizationType)
@@ -74,7 +74,7 @@ class ModuleConfiguration
     }
 
     /**
-     * @param  \array[]  $authorizedRoles
+     * @param \array[] $authorizedRoles
      * @return $this
      */
     public function setAuthorizedRoles($authorizedRoles)
@@ -85,7 +85,7 @@ class ModuleConfiguration
     }
 
     /**
-     * @param  array  $requiredPermissions
+     * @param array $requiredPermissions
      * @return $this
      */
     public function setRequiredPermissions($requiredPermissions)
