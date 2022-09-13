@@ -1,12 +1,11 @@
 language: php
 php:
-- '8.0'
+- '8.1'
 branches:
   only:
   - master
-  - 1.0
 env:
-- LARAVEL_VERSION=^8.0
+- LARAVEL_VERSION=^9.0
 matrix:
   fast_finish: true
 before_install:

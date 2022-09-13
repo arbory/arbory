@@ -2,10 +2,16 @@
 
 namespace Arbory\Base\Admin\Traits;
 
+use Admin;
 use Arbory\Base\Admin\Filter\FilterManager;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Page;
+use DB;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Arbory\Base\Admin\Layout;
@@ -20,6 +26,8 @@ use Arbory\Base\Admin\Layout\LayoutInterface;
 use Arbory\Base\Admin\Exports\ExportInterface;
 use Arbory\Base\Admin\Exports\Type\JsonExport;
 use Arbory\Base\Admin\Exports\Type\ExcelExport;
+use Illuminate\View\View;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Crudify
@@ -53,7 +61,7 @@ trait Crudify
     protected function module()
     {
         if ($this->module === null) {
-            $this->module = \Admin::modules()->findModuleByControllerClass(get_class($this));
+            $this->module = Admin::modules()->findModuleByControllerClass(get_class($this));
         }
 
         return $this->module;
@@ -80,9 +88,7 @@ trait Crudify
         $form->setModule($this->module());
         $form->setRenderer(new Form\Builder($form));
 
-        if ($layout) {
-            $layout->setForm($form);
-        }
+        $layout?->setForm($form);
 
         return $this->form($form, $layout) ?: $form;
     }
@@ -136,7 +142,7 @@ trait Crudify
 
     /**
      * @param $resourceId
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function show($resourceId)
     {
@@ -162,14 +168,12 @@ trait Crudify
 
     /**
      * @param  Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function store(Request $request)
     {
         $layout = $this->layout('form');
         $form = $this->buildForm($this->resource(), $layout);
-
-        $request->request->add(['fields' => $form->fields()]);
 
         $form->validate();
 
@@ -203,7 +207,7 @@ trait Crudify
     /**
      * @param  Request  $request
      * @param $resourceId
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return JsonResponse|RedirectResponse|Redirector
      */
     public function update(Request $request, $resourceId)
     {
@@ -212,8 +216,6 @@ trait Crudify
         $form = $this->buildForm($resource, $layout);
 
         $layout->setForm($form);
-
-        $request->request->add(['fields' => $form->fields()]);
 
         $form->validate();
 
@@ -228,7 +230,7 @@ trait Crudify
 
     /**
      * @param $resourceId
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function destroy($resourceId)
     {
@@ -260,7 +262,7 @@ trait Crudify
      * @param  string  $type
      * @return BinaryFileResponse
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function export(string $type): BinaryFileResponse
     {
@@ -283,12 +285,12 @@ trait Crudify
      * @param  DataSetExport  $dataSet
      * @return ExportInterface
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
         if (! isset(self::$exportTypes[$type])) {
-            throw new \Exception('Export Type not found - '.$type);
+            throw new Exception('Export Type not found - '.$type);
         }
 
         return new self::$exportTypes[$type]($dataSet);
@@ -310,9 +312,9 @@ trait Crudify
     }
 
     /**
-     * @param  \Arbory\Base\Admin\Tools\ToolboxMenu  $tools
+     * @param  ToolboxMenu  $tools
      */
-    protected function toolbox(ToolboxMenu $tools)
+    protected function toolbox(ToolboxMenu $tools): void
     {
         $model = $tools->model();
 
@@ -325,7 +327,7 @@ trait Crudify
 
     /**
      * @param  Request  $request
-     * @return \Illuminate\View\View
+     * @return View
      */
     protected function confirmDeleteDialog(Request $request)
     {
@@ -392,7 +394,7 @@ trait Crudify
      * @param  Request  $request
      * @return string
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function slugGeneratorApi(Request $request)
     {
@@ -400,7 +402,7 @@ trait Crudify
         $slug = Str::slug($request->input('from'));
         $column = $request->input('column_name');
 
-        $query = \DB::table($request->input('model_table'))->where($column, $slug);
+        $query = DB::table($request->input('model_table'))->where($column, $slug);
 
         if ($locale = $request->input('locale')) {
             $query->where('locale', $locale);
@@ -420,7 +422,7 @@ trait Crudify
     /**
      * @param  Request  $request
      * @param  Model  $model
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     protected function getAfterEditResponse(Request $request, $model)
     {
@@ -433,7 +435,7 @@ trait Crudify
     /**
      * @param  Request  $request
      * @param  Model  $model
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     protected function getAfterCreateResponse(Request $request, $model)
     {
@@ -459,7 +461,7 @@ trait Crudify
         $class = $layouts[$component] ?? null;
 
         if (! $class && ! class_exists($class)) {
-            throw new \RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
+            throw new RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
         }
 
         return $with ? app()->makeWith($class, $with) : app()->make($class);
