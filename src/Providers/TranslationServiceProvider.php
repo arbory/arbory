@@ -49,7 +49,7 @@ class TranslationServiceProvider extends ServiceProvider implements DeferrablePr
         $this->registerFileLoader();
         $this->registerCacheFlusher();
 
-        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'arbory');
+        $this->loadTranslationsFrom(__DIR__.'/../../lang', 'arbory');
     }
 
     /**
@@ -88,7 +88,7 @@ class TranslationServiceProvider extends ServiceProvider implements DeferrablePr
             $defaultLocale = $app->getLocale();
             $cacheTimeout = config('translator.cache.timeout', 60);
 
-            $laravelFileLoader = new LaravelFileLoader($app['files'], base_path('/resources/lang'));
+            $laravelFileLoader = new LaravelFileLoader($app['files'], base_path('/lang'));
             $fileLoader = new FileLoader($defaultLocale, $laravelFileLoader);
             $databaseLoader = new DatabaseLoader($defaultLocale, $app->make(TranslationRepository::class));
             $loader = new MixedLoader($defaultLocale, $databaseLoader, $fileLoader);
@@ -108,7 +108,7 @@ class TranslationServiceProvider extends ServiceProvider implements DeferrablePr
         $defaultLocale = config('app.locale');
         $languageRepository = $app->make(LanguageRepository::class);
         $translationRepository = $app->make(TranslationRepository::class);
-        $translationsPath = base_path('resources/lang');
+        $translationsPath = base_path('lang');
         $command = new TranslationsLoaderCommand(
             $languageRepository,
             $translationRepository,
