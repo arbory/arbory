@@ -56,7 +56,7 @@ class ArboryServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->publishes([
-            __DIR__ . '/../../resources/lang/' => base_path('resources/lang/vendor/arbory'),
+            __DIR__ . '/../../lang/' => base_path('lang/vendor/arbory'),
         ], 'lang');
 
         $this->publishes([
@@ -65,7 +65,7 @@ class ArboryServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'arbory');
-        $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'arbory');
+        $this->loadTranslationsFrom(__DIR__.'/lang', 'arbory');
     }
 
     /**
