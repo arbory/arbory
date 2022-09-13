@@ -7,6 +7,7 @@ use Arbory\Base\Admin\Filter\FilterManager;
 use Arbory\Base\Admin\Form;
 use Arbory\Base\Admin\Grid;
 use Arbory\Base\Admin\Page;
+use Arbory\Base\Exceptions\ExportException;
 use DB;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +28,6 @@ use Arbory\Base\Admin\Exports\ExportInterface;
 use Arbory\Base\Admin\Exports\Type\JsonExport;
 use Arbory\Base\Admin\Exports\Type\ExcelExport;
 use Illuminate\View\View;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Crudify
@@ -290,7 +290,7 @@ trait Crudify
     protected function getExporter(string $type, DataSetExport $dataSet): ExportInterface
     {
         if (! isset(self::$exportTypes[$type])) {
-            throw new Exception('Export Type not found - '.$type);
+            throw new ExportException('Export Type not found - '.$type);
         }
 
         return new self::$exportTypes[$type]($dataSet);
@@ -461,7 +461,7 @@ trait Crudify
         $class = $layouts[$component] ?? null;
 
         if (! $class && ! class_exists($class)) {
-            throw new RuntimeException("Layout class '{$class}' for '{$component}' does not exist");
+            throw new ExportException("Layout class '{$class}' for '{$component}' does not exist");
         }
 
         return $with ? app()->makeWith($class, $with) : app()->make($class);
