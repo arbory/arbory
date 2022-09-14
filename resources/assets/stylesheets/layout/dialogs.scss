@@ -1,7 +1,6 @@
-@import 'vendor/magnific-popup/main';
+@import '../vendor/magnific-popup/main';
 
-.dialog
-{
+.dialog {
     @include pop-up-shadow;
 
     margin: 0 auto;
@@ -13,117 +12,91 @@
         width: steps(33 * 2);
     }
 
-    main &
-    {
+    main & {
         margin-top: steps(4);
     }
 
-    &:not(.initialized)
-    {
+    &:not(.initialized) {
         visibility: hidden;
     }
 
-    header
-    {
+    header {
         padding-right: steps(4);
     }
 
-    section.body
-    {
+    section.body {
         position: relative;
     }
 
-    footer
-    {
+    footer {
         position: relative;
         background-color: $color-background-darker;
         border-top: $color-border-dark 1px solid;
         text-align: right;
 
-        form
-        {
+        form {
             display: inline-block;
         }
 
-        .button.secondary
-        {
+        .button.secondary {
             border-left: $color-border-dark 1px solid;
         }
 
     }
-
 }
 
-
-.ajaxbox-inner
-{
+.ajaxbox-inner {
     .dialog header .close,
-    > .close
-    {
+    > .close {
         position: absolute;
         right: 0;
         top: 0;
     }
 
-    .dialog header
-    {
+    .dialog header {
         margin-top: 0;
     }
-
 }
 
-
-
-@mixin dialog-with-icon
-{
-    .body
-    {
+@mixin dialog-with-icon {
+    .body {
         padding: steps(3) steps(2) 0;
         text-align: center;
 
-        .mt-icon
-        {
+        .mt-icon {
             display: block;
             margin: 0 auto;
             border-radius: steps(4);
             width: steps(6);
             background-color: $color-background-darker;
             color: $color-text-inverted-lightest;
-            font-size:   steps(4);
+            font-size: steps(4);
             line-height: steps(4);
-            padding:     steps(1);
+            padding: steps(1);
             text-align: center;
             margin-bottom: steps(2)
         }
 
-        .question
-        {
+        .question {
             @include heading-text;
             margin-bottom: steps(3);
         }
 
-        .description
-        {
+        .description {
             color: $color-highlight-normal;
             @include font-size-larger;
         }
-
     }
-
 }
 
-
-.dialog.confirm
-{
+.dialog.confirm {
     @include dialog-with-icon;
 }
 
-.dialog.refused-destroy
-{
+.dialog.refused-destroy {
     @include dialog-with-icon;
 
-    .body .restricted-relations
-    {
+    .body .restricted-relations {
         @include block-list;
         margin-top: steps(1);
         overflow-y: auto;
@@ -131,12 +104,7 @@
         @include font-size-larger;
     }
 
-    .body .relations
-    {
+    .body .relations {
         @include block-list;
     }
-
 }
-
-
-
