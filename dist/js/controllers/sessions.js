@@ -1,1 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[5],{2:function(n,o,p){n.exports=p("8mvK")},"8mvK":function(n,o){}},[[2,0]]]);
+(self.webpackChunkarbory=self.webpackChunkarbory||[]).push([[396],{943:()=>{}},a=>{var r;r=943,a(a.s=r)}]);
