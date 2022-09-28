@@ -175,6 +175,8 @@ trait Crudify
         $layout = $this->layout('form');
         $form = $this->buildForm($this->resource(), $layout);
 
+        $this->addFieldsToRequest($request, $form);
+
         $form->validate();
 
         if ($request->ajax()) {
@@ -216,6 +218,8 @@ trait Crudify
         $form = $this->buildForm($resource, $layout);
 
         $layout->setForm($form);
+
+        $this->addFieldsToRequest($request, $form);
 
         $form->validate();
 
@@ -478,5 +482,12 @@ trait Crudify
             'grid' => Grid\Layout::class,
             'form' => Form\Layout::class,
         ];
+    }
+
+    private function addFieldsToRequest($request, Form $form): void
+    {
+        // ensapsulate fields in array, as FieldSet itself
+        // cannot be directly added to request
+        $request->request->add(['fields' => [$form->fields()]]);
     }
 }

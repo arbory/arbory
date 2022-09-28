@@ -44,7 +44,7 @@ class ValidationRulesServiceProvider extends ServiceProvider
      */
     private function isDestroyed(Request $request, $attribute)
     {
-        $fieldSet = $request->get('fields');
+        $fieldSet = $this->getFieldsFromRequest($request);
         $fields = $fieldSet->findFieldsByInputName($attribute);
         $fields = array_reverse($fields);
 
@@ -69,7 +69,7 @@ class ValidationRulesServiceProvider extends ServiceProvider
         $this->validator->extendImplicit('arbory_file_required', function ($attribute) {
             /** @var FieldSet $fields */
             $request = \request();
-            $fields = $request->get('fields');
+            $fields = $this->getFieldsFromRequest($request);
             $field = $fields->findFieldByInputName($attribute);
             $file = $request->file($attribute);
 
@@ -90,7 +90,7 @@ class ValidationRulesServiceProvider extends ServiceProvider
         $this->validator->extendImplicit('arbory_require_one_localized', function ($attribute, $value) {
             /** @var FieldSet $fieldSet */
             $request = \request();
-            $fieldSet = $request->request->get('fields');
+            $fieldSet = $this->getFieldsFromRequest($request);
             $fields = $fieldSet->findFieldsByInputName($attribute);
             $translatable = null;
 
@@ -132,5 +132,10 @@ class ValidationRulesServiceProvider extends ServiceProvider
 
             return false;
         });
+    }
+
+    private function getFieldsFromRequest($request): FieldSet
+    {
+        return $request->get('fields')[0];
     }
 }
