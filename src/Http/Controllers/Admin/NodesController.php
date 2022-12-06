@@ -25,6 +25,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Arbory\Base\Support\Nodes\NameGenerator;
+use Arbory\Base\Services\NodeRouteCache;
 
 class NodesController extends Controller
 {
@@ -103,10 +104,11 @@ class NodesController extends Controller
     {
         $form->addEventListeners(['create.after'], function () use ($form) {
             $this->afterSave($form);
+            NodeRouteCache::setLastUpdateTimestamp(time());
         });
 
         $form->addEventListeners(['delete.after'], function () {
-            (new NodesRepository)->setLastUpdateTimestamp(time());
+            NodeRouteCache::setLastUpdateTimestamp(time());
         });
     }
 

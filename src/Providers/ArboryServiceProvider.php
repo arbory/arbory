@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Console\Commands\RefreshObsoleteRouteCache;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Admin\Admin;
 use Arbory\Base\Services\AssetPipeline;
@@ -77,6 +78,7 @@ class ArboryServiceProvider extends ServiceProvider
             'arbory.seed' => SeedCommand::class,
             'arbory.create-user' => CreateUserCommand::class,
             'arbory.install' => InstallCommand::class,
+            'arbory.refresh-obsolete-route-cache' => RefreshObsoleteRouteCache::class,
         ];
 
         foreach ($commands as $containerKey => $commandClass) {

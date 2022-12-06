@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Console;
 
+use Arbory\Base\Console\Commands\RefreshObsoleteRouteCache;
 use Arbory\Base\Console\Commands\SeedCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,6 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        RefreshObsoleteRouteCache::class,
         SeedCommand::class,
     ];
 }

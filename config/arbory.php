@@ -4,6 +4,8 @@ return [
     'title' => 'Arbory',
     'uri' => 'admin',
 
+    'refresh_route_cache' => env('ARBORY_REFRESH_ROUTE_CACHE', false),
+
     'locales' => [
         'en',
     ],
