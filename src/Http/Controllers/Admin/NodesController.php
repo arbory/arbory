@@ -59,7 +59,7 @@ class NodesController extends Controller
      * @param  LayoutInterface  $layout
      * @return Form
      */
-    protected function form(Form $form, ?LayoutInterface $layout)
+    protected function form(Form $form, ?LayoutInterface $layout): Form
     {
         $definition = $this->resolveContentDefinition($form);
 
@@ -94,11 +94,20 @@ class NodesController extends Controller
             $form->title(sprintf('%s (%s)', $form->getTitle(), $this->makeNameFromType($contentType)));
         }
 
+        $this->addFormListeners($form);
+
+        return $form;
+    }
+
+    protected function addFormListeners(Form $form): void
+    {
         $form->addEventListeners(['create.after'], function () use ($form) {
             $this->afterSave($form);
         });
 
-        return $form;
+        $form->addEventListeners(['delete.after'], function () {
+            (new NodesRepository)->setLastUpdateTimestamp(time());
+        });
     }
 
     /**
