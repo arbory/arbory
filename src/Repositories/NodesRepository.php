@@ -2,9 +2,10 @@
 
 namespace Arbory\Base\Repositories;
 
-use Settings;
+use Arbory\Base\Admin\Settings\Setting;
 use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Builder;
+use Settings;
 
 /**
  * Class NodesRepository.
@@ -36,9 +37,9 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param  Node  $node
-     * @param  string|null  $key
-     * @param  mixed|null  $value
+     * @param Node $node
+     * @param string|null $key
+     * @param mixed|null $value
      * @return Builder
      */
     public function findUnder(Node $node, string $key = null, $value = null)
@@ -55,9 +56,9 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param  Node  $node
-     * @param  string|null  $key
-     * @param  mixed|null  $value
+     * @param Node $node
+     * @param string|null $key
+     * @param mixed|null $value
      * @return Builder
      */
     public function findAbove(Node $node, string $key = null, $value = null)
@@ -104,23 +105,6 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @return mixed
-     */
-    public function getLastUpdateTimestamp()
-    {
-        return Settings::get('nodes.last_update');
-    }
-
-    /**
-     * @param  int  $time
-     * @return void
-     */
-    public function setLastUpdateTimestamp(int $time)
-    {
-        Settings::set('nodes.last_update', $time);
-    }
-
-    /**
      * @return bool
      */
     public function isQueryingOnlyActiveNodes(): bool
@@ -129,7 +113,7 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param  bool  $onlyActiveNodes
+     * @param bool $onlyActiveNodes
      */
     public function setQueryOnlyActiveNodes(bool $onlyActiveNodes)
     {

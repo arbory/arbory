@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Arbory\Base\Repositories\NodesRepository;
 use Arbory\Base\Support\Activation\HasActivationDates;
+use Arbory\Base\Services\NodeRoutesCache;
 
 /**
  * Class Node.
@@ -77,7 +78,7 @@ class Node extends Model
      */
     public function save(array $options = [])
     {
-        (new NodesRepository)->setLastUpdateTimestamp(time());
+        NodeRoutesCache::setLastUpdateTimestamp(time());
 
         return parent::save($options);
     }

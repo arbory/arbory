@@ -4,6 +4,7 @@ namespace Arbory\Base\Providers;
 
 use Arbory\Base\Nodes\Mixins\Collection as NodesCollectionMixin;
 use Arbory\Base\Nodes\Node;
+use Arbory\Base\Services\NodeRoutesCache;
 use Arbory\Base\Support\Facades\Page;
 use Arbory\Base\Support\Facades\Admin;
 use File;
@@ -18,6 +19,8 @@ use Arbory\Base\Repositories\NodesRepository;
 use Arbory\Base\Services\Content\PageBuilder;
 use Arbory\Base\Support\Facades\ArboryRouter;
 use Illuminate\Routing\Router as LaravelRouter;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Console\Scheduling\Schedule;
 use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 use Schema;
 
@@ -85,6 +88,7 @@ class NodeServiceProvider extends ServiceProvider
         $this->registerNodes();
         $this->detectCurrentLocaleFromRoute($this->app['router']);
         $this->purgeOutdatedRouteCache();
+        $this->refreshObsoleteRouteCache();
     }
 
     /**
@@ -149,34 +153,24 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function purgeOutdatedRouteCache()
     {
-        if ($this->app->routesAreCached()) {
-            $path = $this->app->getCachedRoutesPath();
+        if (!config('arbory.clear_onbsolete_route_cache')) {
+            return;
+        }
 
-            if ($this->canReadSettings() && $this->isRouteCacheOutdated($path)) {
-                File::delete($path);
-            }
+        if ($this->app->routesAreCached() && $this->canReadSettings() && NodeRoutesCache::isRouteCacheObsolete()) {
+            NodeRoutesCache::clearCache();
         }
     }
 
-    /**
-     * @param  string  $path
-     * @return bool
-     */
-    protected function isRouteCacheOutdated(string $path)
+    protected function refreshObsoleteRouteCache(): void
     {
-        $modified = File::lastModified($path);
+        if (!config('arbory.refresh_route_cache')) {
+            return;
+        }
 
-        return $modified < $this->getNodeModificationTimestamp();
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getNodeModificationTimestamp()
-    {
-        $repository = new NodesRepository;
-
-        return $repository->getLastUpdateTimestamp();
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+            $schedule->call(fn() => Artisan::call('arbory:route-cache'))->everyMinute();
+        });
     }
 
     /**
