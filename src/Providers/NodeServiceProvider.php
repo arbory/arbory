@@ -153,6 +153,10 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function purgeOutdatedRouteCache()
     {
+        if (!config('arbory.clear_onbsolete_route_cache')) {
+            return;
+        }
+
         if ($this->app->routesAreCached() && $this->canReadSettings() && NodeRoutesCache::isRouteCacheObsolete()) {
             NodeRoutesCache::clearCache();
         }
