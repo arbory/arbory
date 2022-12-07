@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Services;
 
+use Arbory\Base\Admin\Form\Fields\Text;
 use Arbory\Base\Admin\Settings\Setting;
 use Illuminate\Support\Facades\Artisan;
 
@@ -74,7 +75,7 @@ class NodeRoutesCache
     {
         Setting::updateOrCreate(
             ['name' => self::CACHE_KEY],
-            ['value' => $time]
+            ['value' => $time, 'type' => Text::class]
         );
     }
 }
