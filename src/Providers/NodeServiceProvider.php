@@ -169,7 +169,7 @@ class NodeServiceProvider extends ServiceProvider
         }
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->call(fn() => Artisan::call('arbory:refresh-obsolete-route-cache'))->everyMinute();
+            $schedule->call(fn() => Artisan::call('arbory:route-cache'))->everyMinute();
         });
     }
 
