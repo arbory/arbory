@@ -145,4 +145,8 @@ return [
             ],
         ],
     ],
+
+    'settings' => [
+        'relations' => ['translations', 'file']
+    ]
 ];

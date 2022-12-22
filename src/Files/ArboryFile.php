@@ -2,10 +2,12 @@
 
 namespace Arbory\Base\Files;
 
+use Database\Factories\ArboryFileModelFactory;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class ArboryFile.
@@ -22,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class ArboryFile extends Model
 {
     use Uuid;
+    use HasFactory;
 
     /**
      * @var bool
@@ -134,5 +137,13 @@ class ArboryFile extends Model
     public function getLocalName()
     {
         return $this->local_name;
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return ArboryFileModelFactory::new();
     }
 }

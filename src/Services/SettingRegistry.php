@@ -2,18 +2,18 @@
 
 namespace Arbory\Base\Services;
 
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Settings\Setting;
+use Arbory\Base\Admin\Settings\SettingDefinition;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Arbory\Base\Admin\Settings\Setting;
-use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Admin\Settings\SettingDefinition;
 
 class SettingRegistry
 {
     /**
      * @var Collection
      */
-    protected $settings;
+    protected Collection $settings;
 
     /**
      * SettingRegistry constructor.
@@ -24,28 +24,28 @@ class SettingRegistry
     }
 
     /**
-     * @param  SettingDefinition  $definition
+     * @param SettingDefinition $definition
      * @return void
      */
-    public function register(SettingDefinition $definition)
+    public function register(SettingDefinition $definition): void
     {
         $this->settings->put($definition->getKey(), $definition);
     }
 
     /**
-     * @param  string  $key
+     * @param string $key
      * @return SettingDefinition|null
      */
-    public function find(string $key)
+    public function find(string $key): ?SettingDefinition
     {
         return $this->settings->get($key);
     }
 
     /**
-     * @param  string  $key
+     * @param string $key
      * @return bool
      */
-    public function contains(string $key)
+    public function contains(string $key): bool
     {
         return $this->settings->has($key);
     }
@@ -61,29 +61,31 @@ class SettingRegistry
     /**
      * @return void
      */
-    public function importFromDatabase()
+    public function importFromDatabase(): void
     {
-        Setting::with('translations', 'file')->get()->each(function (Setting $setting) {
-            $definition = $this->find($setting->name);
+        Setting::with(config('arbory.settings.relations', ['translations', 'file']))
+            ->get()
+            ->each(function (Setting $setting) {
+                $definition = $this->find($setting->name);
 
-            if ($definition) {
-                $definition->setModel($setting);
-                $definition->setValue($setting->value);
-            }
-        });
+                if ($definition) {
+                    $definition->setModel($setting);
+                    $definition->setValue($setting->value);
+                }
+            });
     }
 
     /**
-     * @param  array  $properties
-     * @param  string  $before
+     * @param array $properties
+     * @param string $before
      */
-    public function importFromConfig(array $properties, $before = '')
+    public function importFromConfig(array $properties, string $before = ''): void
     {
         foreach ($properties as $key => $data) {
             if (is_array($data) && ! empty($data) && ! array_key_exists('value', $data)) {
-                $this->importFromConfig($data, $before.$key.'.');
+                $this->importFromConfig($data, $before . $key . '.');
             } else {
-                $key = $before.$key;
+                $key = $before . $key;
                 $value = $data['value'] ?? $data;
                 $type = $data['type'] ?? null;
 
