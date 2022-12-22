@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Arbory\Base\Files\ArboryFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 class ArboryFileModelFactory extends Factory
 {
