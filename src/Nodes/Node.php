@@ -3,13 +3,14 @@
 namespace Arbory\Base\Nodes;
 
 use Arbory\Base\Pages\PageInterface;
-use Baum\NestedSet\Node as BaumNode;
-use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Arbory\Base\Repositories\NodesRepository;
-use Arbory\Base\Support\Activation\HasActivationDates;
 use Arbory\Base\Services\NodeRoutesCache;
+use Arbory\Base\Support\Activation\HasActivationDates;
+use Baum\NestedSet\Node as BaumNode;
+use Database\Factories\NodeFactory;
+use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Node.
@@ -26,6 +27,7 @@ class Node extends Model
     use Uuid;
     use HasActivationDates;
     use BaumNode;
+    use HasFactory;
 
     /**
      * @var bool
@@ -209,5 +211,13 @@ class Node extends Model
     public function getParentId()
     {
         return $this->getAttribute($this->getParentColumnName());
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return NodeFactory::new();
     }
 }

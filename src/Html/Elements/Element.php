@@ -160,7 +160,7 @@ class Element
             $name = Str::substr($name, 0, strlen(self::FIELD_NAME_MULTIPLE_ENDING) * -1);
         }
 
-        $nameParts = preg_split('/\./', $name, null, PREG_SPLIT_NO_EMPTY);
+        $nameParts = preg_split('/\./', $name, -1, PREG_SPLIT_NO_EMPTY);
 
         $inputName = Arr::pull($nameParts, 0);
 
