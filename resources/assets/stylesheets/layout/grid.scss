@@ -50,7 +50,7 @@ $fg-breakpoints: (
  * Calculate column size percentage
  */
 @function get-col-percent($column-num) {
-    @return calc($column-num / $fg-columns) * 100%;
+    @return calc((#{$column-num} / #{$fg-columns}) * 100%);
 }
 
 /**

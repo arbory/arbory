@@ -1,5 +1,5 @@
 $form-gutter-width: steps(4);
-$form-gutter-half: calc($form-gutter-width / 2);
+$form-gutter-half: calc(#{$form-gutter-width} / 2);
 
 $input-height: steps(3);
 $textarea-height: steps(10);
