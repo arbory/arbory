@@ -80,7 +80,7 @@ class Menu
      */
     protected function getMenuCookie()
     {
-        $menuCookie = Arr::get($_COOKIE, self::COOKIE_NAME_MENU);
+        $menuCookie = Arr::get($_COOKIE, self::COOKIE_NAME_MENU, []);
 
         if (is_array($menuCookie)) {
             return $menuCookie;
