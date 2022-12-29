@@ -147,6 +147,6 @@ return [
     ],
 
     'settings' => [
-        'relations' => ['translations', 'file']
-    ]
+        'relations' => ['translations', 'file'],
+    ],
 ];

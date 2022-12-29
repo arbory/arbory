@@ -2,18 +2,18 @@
 
 namespace Arbory\Base\Services;
 
-use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Admin\Settings\Setting;
-use Arbory\Base\Admin\Settings\SettingDefinition;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Arbory\Base\Admin\Settings\Setting;
+use Arbory\Base\Admin\Form\Fields\Translatable;
+use Arbory\Base\Admin\Settings\SettingDefinition;
 
 class SettingRegistry
 {
     /**
      * @var Collection
      */
-    protected Collection $settings;
+    protected $settings;
 
     /**
      * SettingRegistry constructor.
@@ -24,28 +24,28 @@ class SettingRegistry
     }
 
     /**
-     * @param SettingDefinition $definition
+     * @param  SettingDefinition  $definition
      * @return void
      */
-    public function register(SettingDefinition $definition): void
+    public function register(SettingDefinition $definition)
     {
         $this->settings->put($definition->getKey(), $definition);
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return SettingDefinition|null
      */
-    public function find(string $key): ?SettingDefinition
+    public function find(string $key)
     {
         return $this->settings->get($key);
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return bool
      */
-    public function contains(string $key): bool
+    public function contains(string $key)
     {
         return $this->settings->has($key);
     }
@@ -76,8 +76,8 @@ class SettingRegistry
     }
 
     /**
-     * @param array $properties
-     * @param string $before
+     * @param  array  $properties
+     * @param  string  $before
      */
     public function importFromConfig(array $properties, string $before = ''): void
     {
@@ -93,11 +93,9 @@ class SettingRegistry
                     $value = Arr::get($data, 'value');
                 }
 
-                if (is_array($value)) {
-                    if ($type === Translatable::class) {
-                        $value = Arr::get($value, 'value');
-                        $value = Arr::get($value, request()->getLocale(), $value);
-                    }
+                if (is_array($value) && $type === Translatable::class) {
+                    $value = Arr::get($value, 'value');
+                    $value = Arr::get($value, request()->getLocale(), $value);
                 }
 
                 $definition = new SettingDefinition($key, $value, $type, $data);

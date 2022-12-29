@@ -3,15 +3,14 @@
 namespace Arbory\Base\Nodes;
 
 use Arbory\Base\Pages\PageInterface;
+use Arbory\Base\Services\NodeRoutesCache;
+use Arbory\Base\Support\Activation\HasActivationDates;
 use Baum\NestedSet\Node as BaumNode;
 use Database\Factories\NodeFactory;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Arbory\Base\Repositories\NodesRepository;
-use Arbory\Base\Support\Activation\HasActivationDates;
-use Arbory\Base\Services\NodeRoutesCache;
 
 /**
  * Class Node.
