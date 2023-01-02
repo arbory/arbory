@@ -153,7 +153,7 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function purgeOutdatedRouteCache()
     {
-        if (!config('arbory.clear_onbsolete_route_cache')) {
+        if (!config('arbory.clear_obsolete_route_cache')) {
             return;
         }
 
