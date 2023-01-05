@@ -2,7 +2,7 @@
 
 namespace Arbory\Base\Files;
 
-use Database\Factories\ArboryFileModelFactory;
+use Database\Factories\Files\ArboryFileModelFactory;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

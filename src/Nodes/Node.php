@@ -6,7 +6,7 @@ use Arbory\Base\Pages\PageInterface;
 use Arbory\Base\Services\NodeRoutesCache;
 use Arbory\Base\Support\Activation\HasActivationDates;
 use Baum\NestedSet\Node as BaumNode;
-use Database\Factories\NodeFactory;
+use Database\Factories\Nodes\NodeFactory;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

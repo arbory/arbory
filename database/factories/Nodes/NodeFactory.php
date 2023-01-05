@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Nodes;
 
 use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Factories\Factory;
