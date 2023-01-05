@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Files;
 
 use Arbory\Base\Files\ArboryFile;
 use Illuminate\Database\Eloquent\Factories\Factory;

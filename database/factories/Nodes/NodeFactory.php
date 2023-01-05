@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Nodes;
 
 use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,7 +24,6 @@ class NodeFactory extends Factory
             'locale' => null,
             'activate_at' => now(),
             'expire_at' => null,
-            'include_in_sitemap' => 0,
         ];
     }
 }
