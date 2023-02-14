@@ -8,13 +8,20 @@ use Arbory\Base\Auth\Throttling\Throttle;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Arbory\Base\Auth\Activations\Activation;
 use Arbory\Base\Auth\Persistences\Persistence;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterFace;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Laragear\TwoFactor\Contracts\TwoFactorAuthenticatable;
+use Laragear\TwoFactor\TwoFactorAuthentication;
 
 /**
  * Class User.
  */
-class User extends EloquentUser
+class User extends EloquentUser implements TwoFactorAuthenticatable, AuthenticatableInterFace
 {
+    use TwoFactorAuthentication;
+    use Authenticatable;
+
     /**
      * @var string
      */

@@ -2,16 +2,16 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Services\Authentication\AuthenticationMethod;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Arbory\Base\Services\Authentication\AuthenticationMethod;
+use Illuminate\Support\Facades\Redirect;
 
 class SecurityController extends BaseController
 {
@@ -23,7 +23,7 @@ class SecurityController extends BaseController
     protected $security;
 
     /**
-     * @param  AuthenticationMethod  $security
+     * @param AuthenticationMethod $security
      */
     public function __construct(AuthenticationMethod $security)
     {
@@ -35,7 +35,7 @@ class SecurityController extends BaseController
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function getLogin(Request $request)
@@ -51,14 +51,25 @@ class SecurityController extends BaseController
     public function postLogin()
     {
         $request = $this->getFormRequest();
-        $remember = (bool) $request->get('remember', false);
+        $remember = (bool)$request->get('remember', false);
 
         return $this->attemptLogin($request->validated(), $remember);
     }
 
     /**
-     * @param  array  $credentials
-     * @param  bool  $remember
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function getConfirm(Request $request)
+    {
+        return view('arbory::controllers.security.confirm', [
+            'input' => $request,
+        ]);
+    }
+
+    /**
+     * @param array $credentials
+     * @param bool $remember
      * @return RedirectResponse
      */
     protected function attemptLogin(array $credentials, bool $remember): RedirectResponse

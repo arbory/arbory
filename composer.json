@@ -33,8 +33,9 @@
         "cartalyst/sentinel": "^6.0",
         "spatie/laravel-glide": "^3.6.1",
         "spatie/laravel-sluggable": "^3.1.0",
-        "maatwebsite/excel": "^3.0.5",
-        "unisharp/laravel-filemanager": "^2.0"
+        "maatwebsite/excel": "^3.1",
+        "unisharp/laravel-filemanager": "^2.0",
+        "laragear/two-factor": "^1.1"
     },
     "require-dev" : {
         "php-coveralls/php-coveralls": "^2.0",
@@ -67,7 +68,8 @@
                 "Arbory\\Base\\Providers\\LayoutServiceProvider",
                 "Arbory\\Base\\Providers\\ValidationRulesServiceProvider",
                 "Arbory\\Base\\Providers\\ConstructorServiceProvider",
-                "Waavi\\Translation\\TranslationServiceProvider"
+                "Waavi\\Translation\\TranslationServiceProvider",
+                "Arbory\\Base\\Providers\\TwoFactorServiceProvider"
             ],
             "aliases": {
                 "Activation": "Cartalyst\\Sentinel\\Laravel\\Facades\\Activation",
@@ -76,7 +78,8 @@
             },
             "dont-discover": [
                 "cartalyst/sentinel",
-                "unisharp/laravel-filemanager"
+                "unisharp/laravel-filemanager",
+                "laragear/two-factor"
             ]
         },
         "foxy": true

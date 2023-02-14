@@ -2,7 +2,11 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Services\Authentication\Drivers\Sentinel\SentinelService;
+use Arbory\Base\Services\Authentication\Helpers\TwoFactorAuth;
+use Arbory\Base\Services\Authentication\Helpers\TwoFactorLoginHelper;
 use Exception;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Response;
 use Arbory\Base\Auth\Roles\Role;
 use Arbory\Base\Auth\Users\User;
@@ -265,7 +269,7 @@ class AuthServiceProvider extends ServiceProvider
     protected function registerSentinel()
     {
         $this->app->singleton('sentinel', function ($app) {
-            $sentinel = new Sentinel(
+            $sentinel = new SentinelService(
                 $app['sentinel.persistence'],
                 $app['sentinel.users'],
                 $app['sentinel.roles'],
