@@ -32,6 +32,13 @@ class TwoFactorServiceProvider extends \Laragear\TwoFactor\TwoFactorServiceProvi
         });
     }
 
+    public function boot(): void
+    {
+        parent::boot();
+
+        $this->loadMigrationsFrom(static::DB);
+    }
+
     /**
      * Publish config and migrations files.
      *
@@ -39,8 +46,6 @@ class TwoFactorServiceProvider extends \Laragear\TwoFactor\TwoFactorServiceProvi
      */
     protected function publishFiles(): void
     {
-        $this->publishesMigrations(static::DB);
-
         $this->publishes([static::CONFIG => $this->app->configPath('two-factor.php')], 'config');
     }
 }
