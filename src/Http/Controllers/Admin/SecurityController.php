@@ -34,7 +34,7 @@ class SecurityController extends BaseController
     public function postLogin(): RedirectResponse
     {
         $request = $this->getFormRequest();
-        $remember = (bool)$request->get('remember', false);
+        $remember = (bool) $request->get('remember', false);
 
         return $this->attemptLogin($request->validated(), $remember);
     }

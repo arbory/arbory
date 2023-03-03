@@ -108,7 +108,7 @@ class UsersController extends Controller
                 ->display(function (Collection $value) {
                     return Html::ul(
                         $value->map(function ($role) {
-                            return Html::li((string)$role);
+                            return Html::li((string) $role);
                         })->toArray()
                     );
                 });
