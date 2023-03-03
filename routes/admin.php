@@ -8,7 +8,6 @@ use Arbory\Base\Http\Controllers\Admin\RolesController;
 use Arbory\Base\Http\Controllers\Admin\SettingsController;
 use Arbory\Base\Http\Controllers\Admin\TranslationsController;
 use Arbory\Base\Http\Controllers\Admin\UsersController;
-use Illuminate\Routing\Router;
 
 Route::get('/', ['as' => 'login.form', 'uses' => 'Admin\SecurityController@getLogin']);
 Route::post('login', ['as' => 'login.attempt', 'uses' => 'Admin\SecurityController@postLogin']);
@@ -55,21 +54,21 @@ Route::group(['middleware' => 'arbory.admin_auth'], function () {
 
     Route::get('profile/two-factor', [
         'as' => 'profile.two-factor',
-        'uses' => 'Admin\ProfileController@twoFactor'
+        'uses' => 'Admin\ProfileController@twoFactor',
     ]);
 
     Route::get('profile/two-factor/enable', [
         'as' => 'profile.two-factor.enable',
-        'uses' => 'Admin\ProfileController@enableTwoFactor'
+        'uses' => 'Admin\ProfileController@enableTwoFactor',
     ]);
 
     Route::post('profile/two-factor/activate', [
         'as' => 'profile.two-factor.activate',
-        'uses' => 'Admin\ProfileController@activateTwoFactor'
+        'uses' => 'Admin\ProfileController@activateTwoFactor',
     ]);
 
     Route::post('profile/two-factor/disable', [
         'as' => 'profile.two-factor.disable',
-        'uses' => 'Admin\ProfileController@disableTwoFactor'
+        'uses' => 'Admin\ProfileController@disableTwoFactor',
     ]);
 });

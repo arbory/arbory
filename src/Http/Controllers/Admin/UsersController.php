@@ -27,28 +27,16 @@ class UsersController extends Controller
     /**
      * @var string
      */
-    protected $resource = User::class;
-
-    /**
-     * @var Admin
-     */
-    protected $admin;
+    protected string $resource = User::class;
 
     /**
      * UsersController constructor.
-     *
-     * @param Admin $admin
      */
-    public function __construct(Admin $admin)
+    public function __construct(protected Admin $admin)
     {
-        $this->admin = $admin;
     }
 
-    /**
-     * @param Form $form
-     * @return Form
-     */
-    protected function form(Form $form)
+    protected function form(Form $form): Form
     {
         $form->setFields(function (Form\FieldSet $fields, User $user) {
             $fields->text('first_name')->rules('required');
@@ -100,10 +88,7 @@ class UsersController extends Controller
         return $form;
     }
 
-    /**
-     * @return Grid
-     */
-    public function grid(Grid $grid)
+    public function grid(Grid $grid): Grid
     {
         return $grid->setColumns(function (Grid $grid) {
             $grid->column('email', 'avatar')
@@ -147,18 +132,11 @@ class UsersController extends Controller
         )->dialog()->danger();
     }
 
-    /**
-     * @return ActivationRepositoryInterface
-     */
-    protected function getActivations()
+    protected function getActivations(): ActivationRepositoryInterface
     {
         return $this->admin->sentinel()->getActivationRepository();
     }
 
-    /**
-     * @param EloquentUser $user
-     * @return bool
-     */
     protected function isActivated(EloquentUser $user): bool
     {
         return $user->exists && $this->getActivations()->completed($user);

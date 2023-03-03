@@ -8,14 +8,7 @@ use Cartalyst\Sentinel\Users\UserInterface;
 
 class SentinelService extends Sentinel
 {
-    /**
-     * Authenticates a user, with "remember" flag.
-     *
-     * @param array|UserInterface $credentials
-     * @param bool $remember
-     * @param bool $login
-     */
-    public function authenticate($credentials, bool $remember = false, bool $login = true)
+    public function authenticate($credentials, bool $remember = false, bool $login = true): UserInterface|bool|null
     {
         $response = $this->fireEvent('sentinel.authenticating', [$credentials], true);
 
@@ -60,15 +53,6 @@ class SentinelService extends Sentinel
         return parent::cycleCheckpoints($method, $user, $halt);
     }
 
-    /**
-     * Fires an event.
-     *
-     * @param string $event
-     * @param mixed $payload
-     * @param bool $halt
-     *
-     * @return mixed
-     */
     public function fireEvent($event, $payload = [], $halt = false): mixed
     {
         return parent::fireEvent($event, $payload, $halt);

@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
  */
 class LoginRequest extends FormRequest
 {
-
     public function rules(): array
     {
         if ($this->isNotFilled('2fa_code') && Route::current()->getName() === 'admin.login.attempt') {
@@ -21,7 +20,7 @@ class LoginRequest extends FormRequest
         }
 
         return [
-            '2fa_code' => 'required'
+            '2fa_code' => 'required',
         ];
     }
 

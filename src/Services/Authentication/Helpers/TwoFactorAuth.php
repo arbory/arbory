@@ -16,19 +16,19 @@ class TwoFactorAuth extends TwoFactorLoginHelper
 
     public function __construct(
         AuthManager $auth,
-        Session     $session,
-        Request     $request,
-        string      $view,
-        string      $sessionKey,
-        bool        $useFlash,
-        string      $input = '2fa_code'
+        Session $session,
+        Request $request,
+        string $view,
+        string $sessionKey,
+        bool $useFlash,
+        string $input = '2fa_code'
     ) {
         $this->twoFactor = app(TwoFactor::class, ['input' => $input]);
 
         parent::__construct($auth, $session, $request, $view, $sessionKey, $useFlash, $input);
     }
 
-    public function verify($user, array $credentials = [], bool $remember = false)
+    public function verify($user, array $credentials = [], bool $remember = false): bool
     {
         if (! $this->twoFactor->validate($user)) {
             $this->flashData($credentials, $remember);
@@ -39,13 +39,6 @@ class TwoFactorAuth extends TwoFactorLoginHelper
         return true;
     }
 
-    /**
-     * Retrieve the flashed credentials in the session, and merges with the new on top.
-     *
-     * @param array{credentials:array, remember:bool} $credentials
-     * @param mixed $remember
-     * @return array
-     */
     public function getFlashedData(array $credentials, mixed $remember): array
     {
         $original = $this->session->pull("$this->sessionKey.credentials", []);

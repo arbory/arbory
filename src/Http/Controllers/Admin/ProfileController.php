@@ -13,7 +13,7 @@ class ProfileController extends Controller
     public function twoFactor(): View
     {
         return view('arbory::controllers.profile.two-factor', [
-            'user' => Sentinel::getUser()
+            'user' => Sentinel::getUser(),
         ]);
     }
 
@@ -36,14 +36,14 @@ class ProfileController extends Controller
     public function activateTwoFactor(Request $request): RedirectResponse|View
     {
         $request->validate([
-            'code' => 'required|numeric'
+            'code' => 'required|numeric',
         ]);
 
         $activated = Sentinel::getUser()->confirmTwoFactorAuth($request->code);
 
         if (! $activated) {
             return redirect()->back()->withErrors([
-                'code' => __('arbory::two-factor.messages.invalid_code')
+                'code' => __('arbory::two-factor.messages.invalid_code'),
             ]);
         }
 
