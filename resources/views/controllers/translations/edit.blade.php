@@ -16,7 +16,7 @@
             {{ csrf_field() }}
 
             <header>
-                <h1>{{trans('arbory.translations.edit')}} {{$namespace}}::{{$group}}.{{$item}}</h1>
+                <h1>{{trans('arbory::resources.edit')}} {{$namespace}}::{{$group}}.{{$item}}</h1>
             </header>
 
             <div class="body">
@@ -46,14 +46,14 @@
             <footer class="main">
                 <div class="tools">
                     <div class="primary">
-                        <button class="button with-icon primary" title="{{trans('arbory.translations.save')}}" type="submit" data-type="ok">
-                            <i class="mt-icon">check</i>{{trans('arbory.translations.save')}}
+                        <button class="button with-icon primary" title="{{trans('arbory::resources.save')}}" type="submit" data-type="ok">
+                            <i class="mt-icon">check</i>{{trans('arbory::resources.save')}}
                         </button>
                     </div>
                     <div class="secondary">
                         <a class="button with-icon secondary"
-                           title="{{trans('arbory.translations.back_to_index')}}"
-                           href="{{$back_to_index_url}}"><i class="mt-icon">arrow_left</i>{{trans('arbory.translations.back_to_index')}}
+                           title="{{trans('arbory::resources.back_to_list')}}"
+                           href="{{$back_to_index_url}}"><i class="mt-icon">arrow_left</i>{{trans('arbory::resources.back_to_list')}}
                         </a></div>
                 </div>
             </footer>

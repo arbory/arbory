@@ -3,6 +3,7 @@
 return [
     'all_resources' => 'All resources',
     'create_new' => 'Create new resource',
+    'edit' => 'Edit',
     'nothing_found' => 'Nothing Found',
     'export' => 'Export',
     'save_and_return' => 'Save and Return',
