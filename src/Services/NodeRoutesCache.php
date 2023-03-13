@@ -30,11 +30,11 @@ class NodeRoutesCache
     {
         $cachedRoutesTimestampPath = self::getCachedRoutesTimestampPath();
 
-        if (!file_exists($cachedRoutesTimestampPath)) {
+        if (! file_exists($cachedRoutesTimestampPath)) {
             return null;
         }
 
-        return (int)file_get_contents($cachedRoutesTimestampPath);
+        return (int) file_get_contents($cachedRoutesTimestampPath);
     }
 
     // use dedicated timestamp file to fix filesystem vs laravel app timezone problems
@@ -47,13 +47,13 @@ class NodeRoutesCache
     {
         $currentCacheTimestamp = self::getCurrentCacheTimestamp();
 
-        if (!$currentCacheTimestamp) {
+        if (! $currentCacheTimestamp) {
             return true;
         }
 
         $lastModifiedTimestamp = self::getLatestNodeUpdateTimestamp();
 
-        if (!$lastModifiedTimestamp) {
+        if (! $lastModifiedTimestamp) {
             return false;
         }
 
@@ -64,11 +64,11 @@ class NodeRoutesCache
     {
         $lastUpdate = Setting::query()->where('name', self::CACHE_KEY)->first();
 
-        if (!$lastUpdate) {
+        if (! $lastUpdate) {
             return null;
         }
 
-        return (int)$lastUpdate->value;
+        return (int) $lastUpdate->value;
     }
 
     public static function setLastUpdateTimestamp(int $time): void

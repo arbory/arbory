@@ -87,7 +87,7 @@ class Item extends AbstractItem
     }
 
     /**
-     * @param Module $module
+     * @param  Module  $module
      */
     public function setModule(Module $module)
     {

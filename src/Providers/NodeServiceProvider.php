@@ -154,7 +154,7 @@ class NodeServiceProvider extends ServiceProvider
      */
     protected function purgeOutdatedRouteCache()
     {
-        if (!config('arbory.clear_obsolete_route_cache')) {
+        if (! config('arbory.clear_obsolete_route_cache')) {
             return;
         }
 
@@ -165,12 +165,12 @@ class NodeServiceProvider extends ServiceProvider
 
     protected function refreshObsoleteRouteCache(): void
     {
-        if (!config('arbory.refresh_route_cache')) {
+        if (! config('arbory.refresh_route_cache')) {
             return;
         }
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->call(fn() => Artisan::call('arbory:route-cache'))->everyMinute();
+            $schedule->call(fn () => Artisan::call('arbory:route-cache'))->everyMinute();
         });
     }
 
