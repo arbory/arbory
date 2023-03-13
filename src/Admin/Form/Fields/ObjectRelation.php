@@ -2,16 +2,16 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Closure;
-use Arbory\Base\Nodes\Node;
-use Illuminate\Http\Request;
+use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationGroupedRenderer;
+use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationRenderer;
+use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Content\Relation;
+use Arbory\Base\Nodes\Node;
+use Closure;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Arbory\Base\Admin\Form\FieldSet;
-use Illuminate\Database\Eloquent\Model;
-use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationRenderer;
-use Arbory\Base\Admin\Form\Fields\Renderer\ObjectRelationGroupedRenderer;
 
 class ObjectRelation extends AbstractField
 {
@@ -191,7 +191,7 @@ class ObjectRelation extends AbstractField
             return;
         }
 
-        $relation = Relation::firstOrNew([
+        $relation = Relation::query()->firstOrNew([
             'name' => $this->getName(),
             'owner_id' => $this->getOwnerId(),
             'owner_type' => $this->getOwnerType(),
@@ -216,7 +216,7 @@ class ObjectRelation extends AbstractField
                 continue;
             }
 
-            $relation = Relation::firstOrNew([
+            $relation = Relation::query()->firstOrNew([
                 'name' => $this->getName(),
                 'owner_id' => $this->getOwnerId(),
                 'owner_type' => $this->getOwnerType(),

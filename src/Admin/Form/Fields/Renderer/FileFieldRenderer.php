@@ -2,10 +2,10 @@
 
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
-use Arbory\Base\Html\Html;
+use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
 use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Html\Elements\Element;
-use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
+use Arbory\Base\Html\Html;
 use Illuminate\Support\Str;
 
 /**
@@ -57,7 +57,7 @@ class FileFieldRenderer extends ControlFieldRenderer
         $fileSize = (new FileSize($file))->getReadableSize();
 
         $fileDetails = Html::div()->addClass('file-details');
-        $downloadLink = Html::a(Str::limit($file->getOriginalName(), 20).' / '.$fileSize)->addAttributes([
+        $downloadLink = Html::link(Str::limit($file->getOriginalName(), 20).' / '.$fileSize)->addAttributes([
             'href' => $file->getUrl(),
             'target' => '_blank',
             'title' => $file->getOriginalName(),

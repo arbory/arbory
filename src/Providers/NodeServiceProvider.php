@@ -2,27 +2,28 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Nodes\ContentTypeRegister;
+use Arbory\Base\Nodes\ContentTypeRoutesRegister;
 use Arbory\Base\Nodes\Mixins\Collection as NodesCollectionMixin;
 use Arbory\Base\Nodes\Node;
+use Arbory\Base\Repositories\NodesRepository;
+use Arbory\Base\Services\Content\PageBuilder;
 use Arbory\Base\Services\NodeRoutesCache;
-use Arbory\Base\Support\Facades\Page;
 use Arbory\Base\Support\Facades\Admin;
-use File;
+use Arbory\Base\Support\Facades\ArboryRouter;
+use Arbory\Base\Support\Facades\Page;
+use Arbory\Base\Support\Facades\Settings;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\ServiceProvider;
-use Arbory\Base\Support\Facades\Settings;
-use Arbory\Base\Nodes\ContentTypeRegister;
 use Illuminate\Routing\Events\RouteMatched;
-use Arbory\Base\Repositories\NodesRepository;
-use Arbory\Base\Services\Content\PageBuilder;
-use Arbory\Base\Support\Facades\ArboryRouter;
 use Illuminate\Routing\Router as LaravelRouter;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Console\Scheduling\Schedule;
-use Arbory\Base\Nodes\ContentTypeRoutesRegister;
-use Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 
 /**
  * Class NodeServiceProvider.
@@ -140,7 +141,7 @@ class NodeServiceProvider extends ServiceProvider
     protected function isDbConfigured(): bool
     {
         try {
-            \DB::connection()->getPdo();
+            DB::connection()->getPdo();
         } catch (\Exception $e) {
             return false;
         }

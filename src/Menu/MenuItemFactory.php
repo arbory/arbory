@@ -3,6 +3,7 @@
 namespace Arbory\Base\Menu;
 
 use Arbory\Base\Admin\Admin;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Waavi\Translation\Repositories\TranslationRepository;
 
@@ -35,8 +36,6 @@ class MenuItemFactory
      */
     public function build($definition, $title = null): AbstractItem
     {
-        $menuItem = null;
-
         if (is_array($definition)) {
             $menuItem = new Group();
 
@@ -75,7 +74,7 @@ class MenuItemFactory
             $generatedText = Str::title(str_replace('_', ' ', $name));
 
             $this->translations->create([
-                'locale' => \App::getLocale(),
+                'locale' => App::getLocale(),
                 'namespace' => 'arbory',
                 'group' => 'modules',
                 'item' => $name,

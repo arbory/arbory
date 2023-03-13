@@ -62,7 +62,7 @@ class NodeRoutesCache
 
     public static function getLatestNodeUpdateTimestamp(): ?int
     {
-        $lastUpdate = Setting::where('name', self::CACHE_KEY)->first();
+        $lastUpdate = Setting::query()->where('name', self::CACHE_KEY)->first();
 
         if (!$lastUpdate) {
             return null;
@@ -73,7 +73,7 @@ class NodeRoutesCache
 
     public static function setLastUpdateTimestamp(int $time): void
     {
-        Setting::updateOrCreate(
+        Setting::query()->updateOrCreate(
             ['name' => self::CACHE_KEY],
             ['value' => $time, 'type' => Text::class]
         );
