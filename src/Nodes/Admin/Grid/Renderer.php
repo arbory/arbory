@@ -103,7 +103,7 @@ class Renderer implements Renderable
                     'data-level' => $level,
                     'data-id' => $item->getKey(),
                 ])
-                ->addClass((($hasChildren) ? 'has-children' : null));
+                ->addClass($hasChildren ? 'has-children' : null);
 
             if ($collapsed) {
                 $li->addClass('collapsed');
