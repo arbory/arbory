@@ -2,28 +2,28 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Auth\Activations\Activation;
+use Arbory\Base\Auth\Persistences\Persistence;
+use Arbory\Base\Auth\Reminders\Reminder;
+use Arbory\Base\Auth\Roles\Role;
+use Arbory\Base\Auth\Throttling\Throttle;
+use Arbory\Base\Auth\Users\User;
+use Arbory\Base\Services\Authentication\Drivers\Sentinel\SentinelService;
+use Cartalyst\Sentinel\Activations\IlluminateActivationRepository;
+use Cartalyst\Sentinel\Checkpoints\ActivationCheckpoint;
+use Cartalyst\Sentinel\Checkpoints\ThrottleCheckpoint;
+use Cartalyst\Sentinel\Cookies\IlluminateCookie;
+use Cartalyst\Sentinel\Hashing\NativeHasher;
+use Cartalyst\Sentinel\Persistences\IlluminatePersistenceRepository;
+use Cartalyst\Sentinel\Reminders\IlluminateReminderRepository;
+use Cartalyst\Sentinel\Roles\IlluminateRoleRepository;
+use Cartalyst\Sentinel\Sessions\IlluminateSession;
+use Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository;
+use Cartalyst\Sentinel\Users\IlluminateUserRepository;
 use Exception;
 use Illuminate\Http\Response;
-use Arbory\Base\Auth\Roles\Role;
-use Arbory\Base\Auth\Users\User;
-use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
-use Arbory\Base\Auth\Reminders\Reminder;
-use Arbory\Base\Auth\Throttling\Throttle;
-use Arbory\Base\Auth\Activations\Activation;
-use Cartalyst\Sentinel\Hashing\NativeHasher;
-use Arbory\Base\Auth\Persistences\Persistence;
-use Cartalyst\Sentinel\Cookies\IlluminateCookie;
-use Cartalyst\Sentinel\Sessions\IlluminateSession;
-use Cartalyst\Sentinel\Checkpoints\ThrottleCheckpoint;
-use Cartalyst\Sentinel\Roles\IlluminateRoleRepository;
-use Cartalyst\Sentinel\Users\IlluminateUserRepository;
-use Cartalyst\Sentinel\Checkpoints\ActivationCheckpoint;
-use Cartalyst\Sentinel\Reminders\IlluminateReminderRepository;
-use Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository;
-use Cartalyst\Sentinel\Activations\IlluminateActivationRepository;
-use Cartalyst\Sentinel\Persistences\IlluminatePersistenceRepository;
 
 /**
  * Class AuthServiceProvider.
@@ -265,7 +265,7 @@ class AuthServiceProvider extends ServiceProvider
     protected function registerSentinel()
     {
         $this->app->singleton('sentinel', function ($app) {
-            $sentinel = new Sentinel(
+            $sentinel = new SentinelService(
                 $app['sentinel.persistence'],
                 $app['sentinel.users'],
                 $app['sentinel.roles'],

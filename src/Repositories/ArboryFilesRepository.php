@@ -137,7 +137,7 @@ class ArboryFilesRepository extends AbstractModelsRepository
             $fileNameParts = pathinfo($fileName);
             $fileName = $fileNameParts['filename'].'-'.Str::random(10);
 
-            if (($extension = Arr::get($fileNameParts, 'extension', false))) {
+            if ($extension = Arr::get($fileNameParts, 'extension', false)) {
                 $fileName .= '.'.$extension;
             }
         }

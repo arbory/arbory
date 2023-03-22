@@ -3,27 +3,28 @@
 namespace Arbory\Base\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Class LoginRequest.
  */
 class LoginRequest extends FormRequest
 {
-    /**
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
+        if ($this->isNotFilled('2fa_code') && Route::current()->getName() === 'admin.login.attempt') {
+            return [
+                'user.email' => 'required|email',
+                'user.password' => 'required',
+            ];
+        }
+
         return [
-            'user.email' => 'required|email',
-            'user.password' => 'required',
+            '2fa_code' => 'required',
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'user.email' => trans('arbory::security.email'),
@@ -31,10 +32,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    /**
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }

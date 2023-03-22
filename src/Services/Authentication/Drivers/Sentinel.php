@@ -2,28 +2,22 @@
 
 namespace Arbory\Base\Services\Authentication\Drivers;
 
+use Arbory\Base\Services\Authentication\Drivers\Sentinel\SentinelService;
 use Illuminate\Support\Arr;
 use Arbory\Base\Http\Requests\LoginRequest;
 use Cartalyst\Sentinel\Users\UserInterface;
 use Illuminate\Foundation\Http\FormRequest;
-use Cartalyst\Sentinel\Sentinel as SentinelService;
 use Arbory\Base\Services\Authentication\AuthenticationMethod;
 
 class Sentinel implements AuthenticationMethod
 {
     protected const LOGIN_VIEW = 'arbory::controllers.security.login';
 
-    /**
-     * @var SentinelService
-     */
-    private $sentinel;
+    private SentinelService $sentinel;
 
-    /**
-     * @param  SentinelService  $sentinel
-     */
-    public function __construct(SentinelService $sentinel)
+    public function __construct()
     {
-        $this->sentinel = $sentinel;
+        $this->sentinel = app('sentinel');
     }
 
     /**
@@ -46,7 +40,7 @@ class Sentinel implements AuthenticationMethod
      */
     public function logout(UserInterface $user = null, $everywhere = false): bool
     {
-        return $this->sentinel->logout($user, $everywhere) ? true : false;
+        return $this->sentinel->logout($user, $everywhere);
     }
 
     /**
