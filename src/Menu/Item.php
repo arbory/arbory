@@ -2,11 +2,14 @@
 
 namespace Arbory\Base\Menu;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Admin;
 use Arbory\Base\Admin\Module;
-use Arbory\Base\Html\Elements;
 use Arbory\Base\Admin\Module\ResourceRoutes;
+use Arbory\Base\Html\Elements;
+use Arbory\Base\Html\Html;
+use Illuminate\Support\Facades\Route;
+use InvalidArgumentException;
+use ReflectionClass;
 
 class Item extends AbstractItem
 {
@@ -16,7 +19,7 @@ class Item extends AbstractItem
     protected $admin;
 
     /**
-     * @var \Arbory\Base\Admin\Module
+     * @var Module
      */
     protected $module;
 
@@ -32,7 +35,7 @@ class Item extends AbstractItem
      * @param  Elements\Element  $parentElement
      * @return Elements\Element
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function render(Elements\Element $parentElement): Elements\Element
     {
@@ -58,7 +61,7 @@ class Item extends AbstractItem
     /**
      * @return string
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getUrl()
     {
@@ -70,13 +73,13 @@ class Item extends AbstractItem
      */
     public function isActive(): bool
     {
-        $currentController = (new \ReflectionClass(\Route::getCurrentRoute()->getController()))->getName();
+        $currentController = (new ReflectionClass(Route::getCurrentRoute()->getController()))->getName();
 
         return $currentController === $this->module->getControllerClass();
     }
 
     /**
-     * @return \Arbory\Base\Admin\Module
+     * @return Module
      */
     public function getModule(): Module
     {
@@ -84,7 +87,7 @@ class Item extends AbstractItem
     }
 
     /**
-     * @param  \Arbory\Base\Admin\Module  $module
+     * @param  Module  $module
      */
     public function setModule(Module $module)
     {
