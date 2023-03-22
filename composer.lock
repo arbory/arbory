@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1db7dd6f2f91cf91f5aeaab341a2a3b2",
+    "content-hash": "53bb829f73d4836744105c20b5ac06c8",
     "packages": [
         {
             "name": "arbory/translation",
-            "version": "dev-master",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arbory/translation.git",
@@ -23,7 +23,6 @@
                 "orchestra/testbench": "^8",
                 "phpunit/phpunit": "^10"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1752,16 +1751,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.3.3",
+            "version": "v10.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "90f24d9e2860ecf6b5492e966956270ceb98c03d"
+                "reference": "7d15f7eef442633cff108f83d9fe43d8c3b8b76f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/90f24d9e2860ecf6b5492e966956270ceb98c03d",
-                "reference": "90f24d9e2860ecf6b5492e966956270ceb98c03d",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/7d15f7eef442633cff108f83d9fe43d8c3b8b76f",
+                "reference": "7d15f7eef442633cff108f83d9fe43d8c3b8b76f",
                 "shasum": ""
             },
             "require": {
@@ -1860,7 +1859,7 @@
                 "league/flysystem-read-only": "^3.3",
                 "league/flysystem-sftp-v3": "^3.0",
                 "mockery/mockery": "^1.5.1",
-                "orchestra/testbench-core": "^8.0",
+                "orchestra/testbench-core": "^8.1",
                 "pda/pheanstalk": "^4.0",
                 "phpstan/phpdoc-parser": "^1.15",
                 "phpstan/phpstan": "^1.4.7",
@@ -1948,7 +1947,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-03-09T14:00:53+00:00"
+            "time": "2023-03-18T11:34:02+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -7455,56 +7454,6 @@
             "time": "2022-09-13T09:34:59+00:00"
         },
         {
-            "name": "docopt/docopt",
-            "version": "1.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/docopt/docopt.php.git",
-                "reference": "bf3683a16e09fa1665e493eb4d5a29469e132a4f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/docopt/docopt.php/zipball/bf3683a16e09fa1665e493eb4d5a29469e132a4f",
-                "reference": "bf3683a16e09fa1665e493eb4d5a29469e132a4f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.1.*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/docopt.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Blake Williams",
-                    "email": "code@shabbyrobe.org",
-                    "homepage": "http://docopt.org/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Port of Python's docopt for PHP >=5.3",
-            "homepage": "http://github.com/docopt/docopt.php",
-            "keywords": [
-                "cli",
-                "docs"
-            ],
-            "support": {
-                "issues": "https://github.com/docopt/docopt.php/issues",
-                "source": "https://github.com/docopt/docopt.php/tree/1.0.4"
-            },
-            "time": "2019-12-03T02:48:46+00:00"
-        },
-        {
             "name": "doctrine/collections",
             "version": "2.1.2",
             "source": {
@@ -8361,16 +8310,16 @@
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v8.0.4",
+            "version": "v8.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "7ca8d678ff5c4aab40af0e72b2592b540602ab5c"
+                "reference": "fa72d1867fcd0b1f693e6d8d56a6f24ee27ba459"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/7ca8d678ff5c4aab40af0e72b2592b540602ab5c",
-                "reference": "7ca8d678ff5c4aab40af0e72b2592b540602ab5c",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/fa72d1867fcd0b1f693e6d8d56a6f24ee27ba459",
+                "reference": "fa72d1867fcd0b1f693e6d8d56a6f24ee27ba459",
                 "shasum": ""
             },
             "require": {
@@ -8379,11 +8328,11 @@
             },
             "require-dev": {
                 "fakerphp/faker": "^1.21",
-                "laravel/framework": "^10.3.1",
+                "laravel/framework": "^10.4",
                 "laravel/pint": "^1.6",
                 "mockery/mockery": "^1.5.1",
-                "orchestra/canvas": "^8.0",
-                "phpstan/phpstan": "^1.10.5",
+                "orchestra/canvas": "^8.1",
+                "phpstan/phpstan": "^1.10.7",
                 "phpunit/phpunit": "^9.6 || ^10.0.7",
                 "spatie/laravel-ray": "^1.32",
                 "symfony/process": "^6.2",
@@ -8393,7 +8342,7 @@
             "suggest": {
                 "brianium/paratest": "Allow using parallel tresting (^6.4 || ^7.0).",
                 "fakerphp/faker": "Allow using Faker for testing (^1.21).",
-                "laravel/framework": "Required for testing (^10.3.1).",
+                "laravel/framework": "Required for testing (^10.4).",
                 "mockery/mockery": "Allow using Mockery for testing (^1.5.1).",
                 "nunomaduro/collision": "Allow using Laravel style tests output and parallel testing (^6.4 || ^7.0).",
                 "orchestra/testbench-browser-kit": "Allow using legacy Laravel BrowserKit for testing (^8.0).",
@@ -8444,7 +8393,7 @@
                 "issues": "https://github.com/orchestral/testbench/issues",
                 "source": "https://github.com/orchestral/testbench-core"
             },
-            "time": "2023-03-09T03:53:39+00:00"
+            "time": "2023-03-22T07:28:32+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -9088,16 +9037,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.5",
+            "version": "1.10.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "1fb6f494d82455151ecf15c5c191923f5d84324e"
+                "reference": "b10ceb526d9607903c5b2673f1fc8775dbe48975"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1fb6f494d82455151ecf15c5c191923f5d84324e",
-                "reference": "1fb6f494d82455151ecf15c5c191923f5d84324e",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b10ceb526d9607903c5b2673f1fc8775dbe48975",
+                "reference": "b10ceb526d9607903c5b2673f1fc8775dbe48975",
                 "shasum": ""
             },
             "require": {
@@ -9126,8 +9075,11 @@
                 "static analysis"
             ],
             "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.10.5"
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
             },
             "funding": [
                 {
@@ -9143,7 +9095,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-07T16:48:45+00:00"
+            "time": "2023-03-16T15:24:20+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -11332,40 +11284,47 @@
         },
         {
             "name": "wapmorgan/php-deprecation-detector",
-            "version": "2.0.17",
+            "version": "2.0.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wapmorgan/PhpDeprecationDetector.git",
-                "reference": "914f6133870843a01ef5cd07b2b781edb29d1c49"
+                "reference": "108dfd61629e6dce63452e2110cb682372deff5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wapmorgan/PhpDeprecationDetector/zipball/914f6133870843a01ef5cd07b2b781edb29d1c49",
-                "reference": "914f6133870843a01ef5cd07b2b781edb29d1c49",
+                "url": "https://api.github.com/repos/wapmorgan/PhpDeprecationDetector/zipball/108dfd61629e6dce63452e2110cb682372deff5d",
+                "reference": "108dfd61629e6dce63452e2110cb682372deff5d",
                 "shasum": ""
             },
             "require": {
-                "docopt/docopt": "~1.0",
+                "ext-json": "*",
                 "ext-tokenizer": "*",
-                "php": ">=5.4"
+                "php": ">=5.4",
+                "symfony/console": "^3.4|^4.0|^5.0|^6.0"
+            },
+            "replace": {
+                "wapmorgan/php-code-fixer": "self.version"
+            },
+            "suggest": {
+                "ext-json": "Adds ability to store report in JSON format"
             },
             "bin": [
-                "bin/phpcf"
+                "bin/phpdd"
             ],
             "type": "package",
             "extra": {
                 "phar-builder": {
                     "compression": "BZip2",
-                    "name": "phpcf-dev.phar",
+                    "name": "phpdd-dev.phar",
                     "output-dir": "./",
-                    "entry-point": "bin/phpcf",
+                    "entry-point": "bin/phpdd",
                     "include": [
                         "bin",
                         "data"
                     ],
                     "events": {
                         "command.package.start": "git describe --tags > bin/version.txt",
-                        "command.package.end": "cp phpcf-dev.phar phpcf-`cat bin/version.txt`.phar && chmod +x phpcf.phar && rm bin/version.txt"
+                        "command.package.end": "cp phpdd-dev.phar phpdd-`cat bin/version.txt`.phar && chmod +x phpdd-`cat bin/version.txt`.phar && rm bin/version.txt"
                     }
                 }
             },
@@ -11381,19 +11340,18 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": "A scanner that checks compatibility of your code with new interpreter versions.",
+            "description": "Analyzer of PHP code to search issues with deprecated functionality in newer interpreter versions.",
             "support": {
                 "issues": "https://github.com/wapmorgan/PhpDeprecationDetector/issues",
-                "source": "https://github.com/wapmorgan/PhpDeprecationDetector/tree/2.0.17"
+                "source": "https://github.com/wapmorgan/PhpDeprecationDetector/tree/2.0.31"
             },
-            "time": "2019-02-07T15:45:40+00:00"
+            "time": "2023-03-17T17:12:48+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "baum/baum": 20,
-        "arbory/translation": 20
+        "baum/baum": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -11402,5 +11360,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
