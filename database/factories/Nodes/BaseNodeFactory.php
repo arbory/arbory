@@ -5,7 +5,7 @@ namespace Database\Factories\Nodes;
 use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class NodeFactory extends Factory
+class BaseNodeFactory extends Factory
 {
     protected $model = Node::class;
 
