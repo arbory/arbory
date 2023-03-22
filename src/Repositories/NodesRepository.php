@@ -2,10 +2,8 @@
 
 namespace Arbory\Base\Repositories;
 
-use Arbory\Base\Admin\Settings\Setting;
 use Arbory\Base\Nodes\Node;
 use Illuminate\Database\Eloquent\Builder;
-use Settings;
 
 /**
  * Class NodesRepository.
@@ -37,9 +35,9 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param Node $node
-     * @param string|null $key
-     * @param mixed|null $value
+     * @param  Node  $node
+     * @param  string|null  $key
+     * @param  mixed|null  $value
      * @return Builder
      */
     public function findUnder(Node $node, string $key = null, $value = null)
@@ -56,9 +54,9 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param Node $node
-     * @param string|null $key
-     * @param mixed|null $value
+     * @param  Node  $node
+     * @param  string|null  $key
+     * @param  mixed|null  $value
      * @return Builder
      */
     public function findAbove(Node $node, string $key = null, $value = null)
@@ -113,7 +111,7 @@ class NodesRepository extends AbstractModelsRepository
     }
 
     /**
-     * @param bool $onlyActiveNodes
+     * @param  bool  $onlyActiveNodes
      */
     public function setQueryOnlyActiveNodes(bool $onlyActiveNodes)
     {

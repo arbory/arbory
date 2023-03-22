@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter whereFilter($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SavedFilter whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class SavedFilter extends Model
