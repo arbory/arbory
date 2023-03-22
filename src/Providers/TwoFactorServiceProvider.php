@@ -2,8 +2,11 @@
 
 namespace Arbory\Base\Providers;
 
+use Arbory\Base\Rules\Totp;
 use Arbory\Base\Services\Authentication\Helpers\TwoFactorAuth;
 use Illuminate\Foundation\Application;
+use Laragear\TwoFactor\Http\Middleware\ConfirmTwoFactorCode;
+use Laragear\TwoFactor\Http\Middleware\RequireTwoFactorEnabled;
 
 class TwoFactorServiceProvider extends \Laragear\TwoFactor\TwoFactorServiceProvider
 {
@@ -34,9 +37,18 @@ class TwoFactorServiceProvider extends \Laragear\TwoFactor\TwoFactorServiceProvi
 
     public function boot(): void
     {
-        parent::boot();
-
+        $this->loadViewsFrom(static::VIEWS, 'two-factor');
+        $this->loadTranslationsFrom(static::LANG, 'two-factor');
         $this->loadMigrationsFrom(static::DB);
+
+        $this->withMiddleware(RequireTwoFactorEnabled::class)->as('2fa.enabled');
+        $this->withMiddleware(ConfirmTwoFactorCode::class)->as('2fa.confirm');
+
+        $this->withValidationRule('totp', Totp::class);
+
+        if ($this->app->runningInConsole()) {
+            $this->publishFiles();
+        }
     }
 
     /**
