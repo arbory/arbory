@@ -19,12 +19,6 @@
             "email": "roberts@cubesystems.lv"
         }
     ],
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/arbory/translation.git"
-        }
-    ],
     "require": {
         "php": "^8.1",
         "ext-json": "*",

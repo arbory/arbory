@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a52be26ddf7badb49383fc6d39d78062",
+    "content-hash": "053e0aee384aabeb048b3a16a5b8c749",
     "packages": [
         {
             "name": "arbory/translation",
@@ -13,6 +13,12 @@
                 "type": "git",
                 "url": "https://github.com/arbory/translation.git",
                 "reference": "c2d0d8c6d98c79bf6873b0d2db23da18d4789a60"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arbory/translation/zipball/c2d0d8c6d98c79bf6873b0d2db23da18d4789a60",
+                "reference": "c2d0d8c6d98c79bf6873b0d2db23da18d4789a60",
+                "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "^3.6",
@@ -29,16 +35,7 @@
                     "Waavi\\Translation\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Waavi\\Translation\\Test\\": "tests"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -58,6 +55,9 @@
                 "translator",
                 "waavi"
             ],
+            "support": {
+                "source": "https://github.com/arbory/translation/tree/2.7.0"
+            },
             "time": "2023-03-09T14:13:06+00:00"
         },
         {
@@ -11678,5 +11678,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
