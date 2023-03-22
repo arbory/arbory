@@ -2,13 +2,13 @@
 
 namespace Arbory\Base\Admin\Form\Fields;
 
-use Illuminate\Http\Request;
-use Arbory\Base\Admin\Form\FieldSet;
-use Waavi\Translation\Models\Language;
-use Illuminate\Database\Eloquent\Model;
-use Waavi\Translation\Repositories\LanguageRepository;
-use Dimsav\Translatable\Translatable as TranslatableModel;
 use Arbory\Base\Admin\Form\Fields\Renderer\TranslatableFieldRenderer;
+use Arbory\Base\Admin\Form\FieldSet;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Waavi\Translation\Models\Language;
+use Waavi\Translation\Repositories\LanguageRepository;
 
 /**
  * Class Translatable.
@@ -42,10 +42,10 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     public function __construct(FieldInterface $field)
     {
         /** @var LanguageRepository $languages */
-        $languages = \App::make(LanguageRepository::class);
+        $languages = App::make(LanguageRepository::class);
 
         $this->field = $field;
-        $this->currentLocale = \App::getLocale();
+        $this->currentLocale = App::getLocale();
 
         $this->locales = $languages->all()->map(function (Language $language) {
             return $language->locale;
@@ -55,7 +55,7 @@ class Translatable extends AbstractField implements ProxyFieldInterface
     }
 
     /**
-     * @return TranslatableModel|Model
+     * @return Model
      */
     public function getModel()
     {

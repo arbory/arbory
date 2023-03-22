@@ -2,23 +2,25 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Illuminate\View\View;
+use Arbory\Base\Admin\Widgets\Breadcrumbs;
+use Arbory\Base\Admin\Widgets\SearchField;
 use Arbory\Base\Html\Html;
+use Arbory\Base\Http\Requests\TranslationStoreRequest;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Query\Builder;
-use Waavi\Translation\Models\Language;
-use Illuminate\Database\Query\JoinClause;
-use Waavi\Translation\Models\Translation;
-use Arbory\Base\Admin\Widgets\Breadcrumbs;
-use Arbory\Base\Admin\Widgets\SearchField;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Waavi\Translation\Cache\CacheRepositoryInterface;
-use Arbory\Base\Http\Requests\TranslationStoreRequest;
+use Waavi\Translation\Models\Language;
+use Waavi\Translation\Models\Translation;
 use Waavi\Translation\Repositories\LanguageRepository;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Waavi\Translation\Repositories\TranslationRepository;
 
 /**
@@ -67,9 +69,9 @@ class TranslationsController extends Controller
 
         /** @noinspection PhpUndefinedMethodInspection */
         /* @var $allItems Builder */
-        $allItems = Translation::distinct()->select('item', 'group', 'namespace');
+        $allItems = Translation::query()->distinct()->select('item', 'group', 'namespace');
 
-        $translationsQuery = \DB::table(\DB::raw('('.$allItems->toSql().') as d1'));
+        $translationsQuery = DB::table(DB::raw('('.$allItems->toSql().') as d1'));
 
         $translationsQuery->addSelect('d1.*');
 
@@ -90,7 +92,7 @@ class TranslationsController extends Controller
                     $join
                         ->on($joinAlias.'.group', '=', 'd1.group')
                         ->on($joinAlias.'.item', '=', 'd1.item')
-                        ->on($joinAlias.'.locale', '=', \DB::raw('\''.$locale.'\''));
+                        ->on($joinAlias.'.locale', '=', DB::raw('\''.$locale.'\''));
                 }
             );
         }
@@ -201,7 +203,7 @@ class TranslationsController extends Controller
         $languages = $this->languagesRepository->all();
 
         /** @var CacheRepositoryInterface $cache */
-        $cache = \App::make('translation.cache.repository');
+        $cache = App::make('translation.cache.repository');
 
         foreach ($languages as $language) {
             /** @noinspection PhpUndefinedFieldInspection */

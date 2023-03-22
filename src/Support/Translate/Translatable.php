@@ -2,12 +2,13 @@
 
 namespace Arbory\Base\Support\Translate;
 
-use Config;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 trait Translatable
@@ -601,7 +602,7 @@ trait Translatable
      */
     private function getTranslationsTable()
     {
-        return \App::make($this->getTranslationModelName())->getTable();
+        return App::make($this->getTranslationModelName())->getTable();
     }
 
     /**
@@ -613,7 +614,7 @@ trait Translatable
             return $this->defaultLocale;
         }
 
-        return Config::get('translatable.locale') ?: \App::make('translator')->getLocale();
+        return Config::get('translatable.locale') ?: App::make('translator')->getLocale();
     }
 
     /**

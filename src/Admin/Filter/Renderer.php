@@ -78,12 +78,12 @@ class Renderer
     }
 
     /**
-     * @return Button
+     * @return Link
      */
-    protected function resetButton(): Button
+    protected function resetButton(): Link
     {
-        return Button::create()
-            ->type('reset', 'full-width reset secondary')
+        return Link::create(\Request::url())
+            ->asButton('full-width reset secondary')
             ->title(trans('arbory::filter.reset'));
     }
 

@@ -2,22 +2,23 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
-use Arbory\Base\Html\Html;
 use Arbory\Base\Admin\Form;
+use Arbory\Base\Admin\Form\Fields\Text;
+use Arbory\Base\Admin\Form\Fields\Translatable;
 use Arbory\Base\Admin\Grid;
+use Arbory\Base\Admin\Settings\Setting;
+use Arbory\Base\Admin\Settings\SettingDefinition;
+use Arbory\Base\Admin\Settings\SettingTranslation;
+use Arbory\Base\Admin\Tools\ToolboxMenu;
+use Arbory\Base\Admin\Traits\Crudify;
 use Arbory\Base\Files\ArboryFile;
+use Arbory\Base\Html\Html;
+use Arbory\Base\Services\SettingFactory;
+use Arbory\Base\Services\SettingRegistry;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Arbory\Base\Admin\Traits\Crudify;
-use Arbory\Base\Admin\Form\Fields\Text;
-use Arbory\Base\Admin\Settings\Setting;
-use Arbory\Base\Admin\Tools\ToolboxMenu;
-use Arbory\Base\Services\SettingFactory;
-use Arbory\Base\Services\SettingRegistry;
-use Arbory\Base\Admin\Form\Fields\Translatable;
-use Arbory\Base\Admin\Settings\SettingDefinition;
-use Arbory\Base\Admin\Settings\SettingTranslation;
+use Illuminate\Support\Facades\App;
 
 class SettingsController extends Controller
 {
@@ -152,7 +153,7 @@ class SettingsController extends Controller
     protected function getSettings()
     {
         /** @var SettingFactory $factory */
-        $factory = \App::make(SettingFactory::class);
+        $factory = App::make(SettingFactory::class);
         $result = [];
 
         foreach ($this->settingRegistry->getSettings()->keys() as $key) {
