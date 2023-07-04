@@ -21,6 +21,8 @@ class LanguageController extends Controller
      */
     protected $resource = Language::class;
 
+    public string $searchBy = 'name';
+
     /**
      * @var LanguageRepository
      */

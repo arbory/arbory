@@ -33,6 +33,8 @@ class NodesController extends Controller
 
     protected $resource = Node::class;
 
+    public string $searchBy = 'name';
+
     /**
      * @var Container
      */

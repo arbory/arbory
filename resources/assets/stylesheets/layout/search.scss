@@ -1,70 +1,57 @@
-form.search
-{
+form.search, .global-search {
     text-align: right;
     float: right;
     display: inline-block;
     margin-left: auto;
 
-    &.has-extra-search:not(.has-text-search)
-    {
+    &.has-extra-search:not(.has-text-search) {
         clear: left;
     }
 
-    .search-field
-    {
+    .search-field {
         display: inline-block;
         margin-left: steps(2);
 
         label,
         input,
-        select
-        {
+        select {
             margin-left: steps(1);
         }
     }
 
-    .text-search
-    {
+    .text-search {
 
-        .search-field[data-name="search"]
-        {
+        .search-field[data-name="search"] {
             position: relative;
 
-            input[type="search"]
-            {
+            input[type="search"] {
                 width: steps(18);
                 border-color: $color-border-light;
 
                 &::-webkit-search-decoration,
                 &::-webkit-search-cancel-button,
                 &::-webkit-search-results-button,
-                &::-webkit-search-results-decoration
-                {
+                &::-webkit-search-results-decoration {
                     display: none;
                 }
 
             }
 
-            .button
-            {
+            .button {
                 position: absolute;
                 right: 0;
                 top: 0;
                 background: transparent;
                 color: $color-highlight-normal;
 
-                &:hover
-                {
+                &:hover {
                     color: $color-text-light;
                 }
             }
         }
-
-
     }
 
-    .extras
-    {
+    .extras {
         @include clear-inside;
 
         background-color: $color-background-lighter;
@@ -73,16 +60,59 @@ form.search
         padding: steps(2);
 
         input:not([type="checkbox"]):not([type="radio"]),
-        select
-        {
+        select {
             width: steps(14);
         }
 
-        .button
-        {
+        .button {
             margin-left: steps(2);
         }
+    }
+}
 
+.global-search {
+    position: relative;
+    padding: 0 24px;
+
+    .search-field, input {
+        margin-left: 0 !important;
     }
 
+    .results-list {
+        position: absolute;
+        margin-top: 20px;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        width: 192px;
+        border-radius: 4px;
+
+        div {
+            text-align: left;
+            cursor: pointer;
+            background-color: #FFFFFF;
+
+            h4 {
+                background: #252529;
+                color: #FFFFFF;
+                padding: 4px 12px;
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+
+                li {
+                    padding: 4px 12px;
+                }
+            }
+
+            .no-results {
+                background: #FFFFFF;
+                padding: 4px 12px;
+            }
+        }
+    }
 }

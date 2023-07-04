@@ -36,6 +36,8 @@ class RolesController extends Controller
      */
     protected $resource = Role::class;
 
+    public string $searchBy = 'name';
+
     /**
      * @var Admin
      */

@@ -1,34 +1,40 @@
-body > header
-{
-    @include inverted( $background-color: $color-background-inverted-darkest );
+body > header {
+    @include inverted($background-color: $color-background-inverted-darkest);
     @include font-size-larger;
 
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    .home
-    {
+    .home {
         display: block;
         text-decoration: none;
         text-align: left;
         float: left;
         margin: steps(1) 0 0 steps(1);
-        img 
-        {
+
+        img {
             width: steps(10);
         }
     }
 
+    .logo {
+
+    }
+
+    .menu {
+        display: flex;
+        align-items: center;
+    }
 
     .profile,
-    form.sign-out
-    {
+    form.sign-out {
         display: inline-block;
         vertical-align: top;
     }
 
     .profile.button,
-    form.sign-out .button
-    {
+    form.sign-out .button {
         position: relative;
         padding-top: steps(1.5);
         padding-bottom: steps(1.5);
@@ -36,20 +42,17 @@ body > header
         margin-left: -1px;
     }
 
-    .profile.button
-    {
-        padding-left:  steps(2);
+    .profile.button {
+        padding-left: steps(2);
         padding-right: steps(2);
     }
 
-    form.sign-out .button
-    {
+    form.sign-out .button {
         position: relative;
-        width:  steps(5);
+        width: steps(5);
         height: auto;
 
-        .mt-icon
-        {
+        .mt-icon {
             @include icon-large;
             vertical-align: top;
         }
