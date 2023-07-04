@@ -17,7 +17,7 @@ class GlobalSearchController extends Controller
         $term = $request->get('term');
         $results = [];
 
-        if (!$term) {
+        if (! $term) {
             return response()->json(['no_results' => trans('arbory::search.no_results')]);
         }
 
@@ -28,7 +28,7 @@ class GlobalSearchController extends Controller
             $configuration = $module->getConfiguration();
 
             $controller = app($configuration->getControllerClass());
-            if (!property_exists($controller, 'module')) {
+            if (! property_exists($controller, 'module')) {
                 continue;
             }
 
@@ -37,7 +37,7 @@ class GlobalSearchController extends Controller
              */
             $model = $controller->resource();
 
-            if (property_exists($controller, 'searchBy') && !empty($controller->searchBy)) {
+            if (property_exists($controller, 'searchBy') && ! empty($controller->searchBy)) {
                 $searchFields = $controller->searchBy;
 
                 $searchQuery = $model::query()
@@ -56,14 +56,14 @@ class GlobalSearchController extends Controller
                 }
 
                 $foundResults = $searchQuery->take(5)->get();
-                if (!$foundResults->count()) {
+                if (! $foundResults->count()) {
                     continue;
                 }
 
                 $foundResults = $foundResults->map(function ($row) use ($module) {
                     return [
                         'title' => Str::of((string)$row)->limit(20)->ucfirst(),
-                        'url' => $module->url('edit', $row->getKey())
+                        'url' => $module->url('edit', $row->getKey()),
                     ];
                 });
 
