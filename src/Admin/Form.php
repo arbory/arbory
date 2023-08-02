@@ -7,6 +7,7 @@ use Arbory\Base\Content\Relation;
 use Arbory\Base\Admin\Form\FieldSet;
 use Arbory\Base\Admin\Form\Validator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 use Arbory\Base\Admin\Traits\Renderable;
 use Arbory\Base\Admin\Traits\EventDispatcher;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
@@ -186,9 +187,11 @@ class Form
 
         $this->model->delete();
 
-        $this->model->morphMany(Relation::class, 'related')->get()->each(function (Relation $relation) {
-            $relation->delete();
-        });
+        if (Schema::hasTable(app(Relation::class)->getTable())) {
+            $this->model->morphMany(Relation::class, 'related')->get()->each(function (Relation $relation) {
+                $relation->delete();
+            });
+        }
 
         $this->trigger('delete.after', $this);
     }
