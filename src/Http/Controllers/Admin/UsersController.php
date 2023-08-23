@@ -29,7 +29,7 @@ class UsersController extends Controller
      */
     protected string $resource = User::class;
 
-    public array $searchBy = ['first_name', 'last_name'];
+    public array $searchBy = ['first_name', 'last_name', 'roles.name'];
 
     /**
      * UsersController constructor.
