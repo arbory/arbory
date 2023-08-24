@@ -20,7 +20,7 @@ class ArboryAdminGuestMiddleware
     /**
      * @var Sentinel
      */
-    protected $sentinel;
+    protected  $sentinel;
 
     /**
      * ArboryAdminGuestMiddleware constructor.
