@@ -20,12 +20,12 @@ class ArboryAdminGuestMiddleware
     /**
      * @var Sentinel
      */
-    protected  $sentinel;
+    protected $sentinel;
 
     /**
      * ArboryAdminGuestMiddleware constructor.
      *
-     * @param $sentinel
+     * @param  $sentinel
      */
     public function __construct(Sentinel $sentinel)
     {
