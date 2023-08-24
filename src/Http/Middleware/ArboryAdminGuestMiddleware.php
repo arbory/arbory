@@ -2,11 +2,14 @@
 
 namespace Arbory\Base\Http\Middleware;
 
+use Arbory\Base\Admin\Module;
+use Arbory\Base\Support\Facades\Admin;
 use Closure;
 use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -22,7 +25,7 @@ class ArboryAdminGuestMiddleware
     /**
      * ArboryAdminGuestMiddleware constructor.
      *
-     * @param $sentinel
+     * @param  $sentinel
      */
     public function __construct(Sentinel $sentinel)
     {
@@ -44,9 +47,7 @@ class ArboryAdminGuestMiddleware
 
                 return response()->json(['error' => $message], 401);
             } else {
-                $firstAvailableModule = \Admin::modules()->first(function ($module) {
-                    return $module->isAuthorized();
-                });
+                $firstAvailableModule = $this->getFirstAvailableModule();
 
                 if (! $firstAvailableModule) {
                     throw new AccessDeniedHttpException();
@@ -57,5 +58,17 @@ class ArboryAdminGuestMiddleware
         }
 
         return $next($request);
+    }
+
+    /**
+     * @return Module|null
+     */
+    private function getFirstAvailableModule(): ?Module
+    {
+        $menuOrder = array_reverse(Arr::flatten(config('arbory.menu')));
+
+        return Admin::modules()
+            ->sortByDesc(fn (Module $module) => array_search($module->getControllerClass(), $menuOrder))
+            ->first(fn (Module $module) => $module->isAuthorized());
     }
 }
