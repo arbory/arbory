@@ -3,6 +3,7 @@
 namespace Arbory\Base\Admin\Form\Fields\Renderer;
 
 use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
+use Arbory\Base\Admin\Form\Fields\Renderer\Styles\Options\StyleOptionsInterface;
 use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Html\Elements\Element;
 use Arbory\Base\Html\Html;
@@ -85,5 +86,16 @@ class FileFieldRenderer extends ControlFieldRenderer
         }
 
         return $fileDetails;
+    }
+
+    /**
+     * @param  StyleOptionsInterface  $options
+     * @return StyleOptionsInterface
+     */
+    public function configure(StyleOptionsInterface $options): StyleOptionsInterface
+    {
+        $options->addClass('type-item type-file');
+
+        return $options;
     }
 }
