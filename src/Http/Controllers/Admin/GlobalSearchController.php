@@ -2,6 +2,7 @@
 
 namespace Arbory\Base\Http\Controllers\Admin;
 
+use Arbory\Base\Exceptions\GlobalSearchException;
 use Arbory\Base\Services\GlobalSearchService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,9 @@ class GlobalSearchController extends Controller
     {
     }
 
+    /**
+     * @throws GlobalSearchException
+     */
     public function search(Request $request): JsonResponse
     {
         $term = $request->get('term');

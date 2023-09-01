@@ -29,7 +29,7 @@ class GlobalSearchService
             $configuration = $module->getConfiguration();
 
             $controller = app($configuration->getControllerClass());
-            if (!property_exists($controller, 'module')) {
+            if (!property_exists($controller, 'module') || !$module->isAuthorized()) {
                 continue;
             }
 
