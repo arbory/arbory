@@ -7,8 +7,9 @@
     <div class="menu">
         <form id="global-search-form" class="global-search" action="{{ route('admin.search') }}">
             @csrf
+
             <div class="search-field">
-                <input type="search" name="term" class="text global-search-input">
+                <input type="search" name="term" class="text global-search-input" placeholder="{{ trans('arbory::search.placeholder') }}">
             </div>
 
             <div class="results-list"></div>

@@ -4,19 +4,20 @@ namespace Arbory\Base\Services;
 
 use Arbory\Base\Admin\Admin;
 use Arbory\Base\Admin\Module;
+use Arbory\Base\Exceptions\GlobalSearchException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class GlobalSearchService
 {
-    protected const MODULE_RESULTS_COUNT = 5;
-    protected const RESULT_TITLE_LENGTH = 20;
-
     public function __construct(protected Admin $admin)
     {
     }
 
+    /**
+     * @throws GlobalSearchException
+     */
     public function search(string $term): array
     {
         $results = [];
@@ -44,6 +45,11 @@ class GlobalSearchService
 
                 foreach ($searchFields as $searchField) {
                     $searchField = Str::of($searchField)->explode('.');
+
+                    if ($searchField->count() > 2) {
+                        throw new GlobalSearchException('Only one level nested relationship search is allowed');
+                    }
+
                     if ($searchField->count() === 2) {
                         $searchQuery->orWhereHas($searchField[0], function (Builder $query) use ($searchField, $term) {
                             return $query->where($searchField[1], 'LIKE', '%' . $term . '%');
@@ -53,14 +59,17 @@ class GlobalSearchService
                     }
                 }
 
-                $foundResults = $searchQuery->take(self::MODULE_RESULTS_COUNT)->get();
+                $foundResults = $searchQuery->take(config('arbory.search.results_count_per_module', 5))
+                    ->get();
                 if (!$foundResults->count()) {
                     continue;
                 }
 
                 $foundResults = $foundResults->map(function ($row) use ($module) {
                     return [
-                        'title' => Str::of((string) $row)->limit(self::RESULT_TITLE_LENGTH)->ucfirst(),
+                        'title' => Str::of((string) $row)
+                            ->limit(config('arbory.search.result_title_length', 20))
+                            ->ucfirst(),
                         'url' => $module->url('edit', $row->getKey()),
                     ];
                 });
