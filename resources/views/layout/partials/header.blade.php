@@ -9,10 +9,13 @@
             @csrf
 
             <div class="search-field">
-                <input type="search" name="term" class="text global-search-input" placeholder="{{ trans('arbory::search.placeholder') }}">
+                <input type="text" name="term" class="text global-search-input" placeholder="{{ trans('arbory::search.placeholder') }}">
             </div>
 
-            <div class="results-list"></div>
+            <div class="results-list">
+                <span class="close">x</span>
+                <div class="records"></div>
+            </div>
         </form>
         <a class="button profile" href="{{ route('admin.users.update', ['user' => $user->id]) }}">
         <span class="name">
@@ -32,4 +35,3 @@
         </form>
     </div>
 </header>
-

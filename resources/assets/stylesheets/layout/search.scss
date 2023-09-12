@@ -88,14 +88,32 @@ form.search, .global-search {
         width: 192px;
         border-radius: 4px;
 
+        span {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: -18%;
+            padding: 4px 12px;
+            background: #D3D3D3;
+            color: #000000;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .records {
+            border: 1px solid #D3D3D3;
+            border-radius: 4px;
+            display: none;
+        }
+
         div {
             text-align: left;
             cursor: pointer;
             background-color: #FFFFFF;
 
             h4 {
-                background: #252529;
-                color: #FFFFFF;
+                background: #D3D3D3;
+                color: #000000;
                 padding: 4px 12px;
             }
 
@@ -103,6 +121,11 @@ form.search, .global-search {
                 list-style: none;
                 padding: 0;
                 margin: 0;
+
+                i {
+                    color: #000000;
+                    vertical-align: middle;
+                }
 
                 li {
                     padding: 4px 12px;
