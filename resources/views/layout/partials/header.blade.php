@@ -5,18 +5,21 @@
         </a>
     </div>
     <div class="menu">
-        <form id="global-search-form" class="global-search" action="{{ route('admin.search') }}">
-            @csrf
+        @if (config('arbory.search.enabled', false))
+            <form id="global-search-form" class="global-search" action="{{ route('admin.search') }}">
+                @csrf
 
-            <div class="search-field">
-                <input type="text" name="term" class="text global-search-input" placeholder="{{ trans('arbory::search.placeholder') }}">
-            </div>
+                <div class="search-field">
+                    <input type="text" name="term" class="text global-search-input"
+                           placeholder="{{ trans('arbory::search.placeholder') }}">
+                </div>
 
-            <div class="results-list">
-                <span class="close">x</span>
-                <div class="records"></div>
-            </div>
-        </form>
+                <div class="results-list">
+                    <span class="close">x</span>
+                    <div class="records"></div>
+                </div>
+            </form>
+        @endif
         <a class="button profile" href="{{ route('admin.users.update', ['user' => $user->id]) }}">
         <span class="name">
             @if($user->first_name)
