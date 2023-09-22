@@ -85,12 +85,13 @@ form.search, .global-search {
         border-top: none;
         z-index: 99;
         top: 100%;
-        width: 192px;
+        width: 186px;
         border-radius: 4px;
 
-        span {
+        .close {
             display: none;
             position: absolute;
+            height: 32px;
             top: 0;
             right: -18%;
             padding: 4px 12px;
@@ -104,6 +105,7 @@ form.search, .global-search {
             border: 1px solid #D3D3D3;
             border-radius: 4px;
             display: none;
+            height: 32px;
         }
 
         div {
@@ -115,6 +117,7 @@ form.search, .global-search {
                 background: #D3D3D3;
                 color: #000000;
                 padding: 4px 12px;
+                height: 32px;
             }
 
             ul {
@@ -137,5 +140,42 @@ form.search, .global-search {
                 padding: 4px 12px;
             }
         }
+    }
+
+    .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #D3D3D3;
+        color: #19a55c;
+        padding: 4px 12px;
+        height: 32px;
+    }
+
+    .loading-dots {
+        width: 12px;
+        height: 12px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        animation: dots 1s infinite linear alternate;
+    }
+}
+
+@keyframes dots {
+    0% {
+        box-shadow: 20px 0 #000, -20px 0 #0002;
+        background: #000
+    }
+    33% {
+        box-shadow: 20px 0 #000, -20px 0 #0002;
+        background: #0002
+    }
+    66% {
+        box-shadow: 20px 0 #0002, -20px 0 #000;
+        background: #0002
+    }
+    100% {
+        box-shadow: 20px 0 #0002, -20px 0 #000;
+        background: #000
     }
 }
