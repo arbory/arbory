@@ -95,14 +95,14 @@ form.search, .global-search {
             top: 0;
             right: -18%;
             padding: 4px 12px;
-            background: #D3D3D3;
-            color: #000000;
+            background: $color-medium-gray;
+            color: $color-black;
             cursor: pointer;
             border-radius: 4px;
         }
 
         .records {
-            border: 1px solid #D3D3D3;
+            border: 1px solid $color-medium-gray;
             border-radius: 4px;
             display: none;
             height: 32px;
@@ -111,11 +111,11 @@ form.search, .global-search {
         div {
             text-align: left;
             cursor: pointer;
-            background-color: #FFFFFF;
+            background-color: $color-white;
 
             h4 {
-                background: #D3D3D3;
-                color: #000000;
+                background: $color-medium-gray;
+                color: $color-black;
                 padding: 4px 12px;
                 height: 32px;
             }
@@ -126,7 +126,7 @@ form.search, .global-search {
                 margin: 0;
 
                 i {
-                    color: #000000;
+                    color: $color-black;
                     vertical-align: middle;
                 }
 
@@ -136,7 +136,7 @@ form.search, .global-search {
             }
 
             .no-results {
-                background: #FFFFFF;
+                background: $color-white;
                 padding: 4px 12px;
             }
         }
@@ -146,7 +146,7 @@ form.search, .global-search {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: #D3D3D3;
+        background: $color-medium-gray;
         color: #19a55c;
         padding: 4px 12px;
         height: 32px;
@@ -163,19 +163,19 @@ form.search, .global-search {
 
 @keyframes dots {
     0% {
-        box-shadow: 20px 0 #000, -20px 0 #0002;
-        background: #000
+        box-shadow: 20px 0 $color-black, -20px 0 $color-lighter-black;
+        background: $color-black;
     }
     33% {
-        box-shadow: 20px 0 #000, -20px 0 #0002;
-        background: #0002
+        box-shadow: 20px 0 $color-black, -20px 0 $color-lighter-black;
+        background: $color-lighter-black;
     }
     66% {
-        box-shadow: 20px 0 #0002, -20px 0 #000;
-        background: #0002
+        box-shadow: 20px 0 $color-lighter-black, -20px 0 $color-black;
+        background: $color-lighter-black;
     }
     100% {
-        box-shadow: 20px 0 #0002, -20px 0 #000;
-        background: #000
+        box-shadow: 20px 0 $color-lighter-black, -20px 0 $color-black;
+        background: $color-black;
     }
 }

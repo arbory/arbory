@@ -6,7 +6,11 @@
     </div>
     <div class="menu">
         @if (config('arbory.search.enabled', false))
-            <form id="global-search-form" class="global-search" action="{{ route('admin.search') }}" data-min-length="{{ config('arbory.search.min_length') }}">
+            <form id="global-search-form"
+                  class="global-search"
+                  action="{{ route('admin.search') }}"
+                  data-min-length="{{ config('arbory.search.min_length') }}"
+            >
                 @csrf
 
                 <div class="search-field">

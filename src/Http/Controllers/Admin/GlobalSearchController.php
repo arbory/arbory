@@ -21,7 +21,7 @@ class GlobalSearchController extends Controller
     {
         $term = $request->get('term');
 
-        if (!$term) {
+        if (! $term) {
             return response()->json(['no_results' => trans('arbory::search.no_results')]);
         }
 

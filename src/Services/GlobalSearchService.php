@@ -23,42 +23,38 @@ class GlobalSearchService
      */
     public function search(string $term): array
     {
-        return $this->admin->modules()->all()->filter(function ($module) {
-            /**
-             * @var Module $module
-             */
-            $configuration = $module->getConfiguration();
-            $controller = app($configuration->getControllerClass());
+        $searchableModules = $this->admin
+            ->modules()
+            ->all()
+            ->filter(function ($module) {
+                /**
+                 * @var Module $module
+                 */
+                $configuration = $module->getConfiguration();
+                $controller = app($configuration->getControllerClass());
 
-            return property_exists($controller, 'module') &&
-                $module->isAuthorized() &&
-                property_exists($controller, 'searchBy') &&
-                !empty($controller->searchBy);
-        })->mapWithKeys(function ($module) use ($term) {
+                return property_exists($controller, 'module') &&
+                    $module->isAuthorized() &&
+                    property_exists($controller, 'searchBy') &&
+                    ! empty($controller->searchBy);
+            });
+
+        return $searchableModules->mapWithKeys(function ($module) use ($term) {
             $configuration = $module->getConfiguration();
             $controller = app($configuration->getControllerClass());
             $searchFields = $controller->searchBy;
             $model = $controller->resource();
 
-            $foundResults = $this->findResults($model, $searchFields, $term);
-            if (!$foundResults->count()) {
+            $formattedResults = $this->findResults($module, $model, $searchFields, $term);
+            if (! $formattedResults->count()) {
                 return [];
             }
 
-            $foundResults = $foundResults->map(function ($row) use ($module) {
-                return [
-                    'title' => Str::of((string)$row)
-                        ->limit(config('arbory.search.result_title_length', 20))
-                        ->ucfirst(),
-                    'url' => $module->url('edit', $row->getKey()),
-                ];
-            });
-
-            return [ucfirst($module->name()) => $foundResults];
+            return [ucfirst($module->name()) => $formattedResults];
         })->toArray();
     }
 
-    protected function findResults(Model $model, array $searchFields, string $term): Collection
+    protected function findResults(Module $module, Model $model, array $searchFields, string $term): Collection
     {
         $searchQuery = $model::query();
 
@@ -78,6 +74,20 @@ class GlobalSearchService
             }
         }
 
-        return $searchQuery->take(config('arbory.search.results_count_per_module', 5))->get();
+        $results = $searchQuery->take(config('arbory.search.results_count_per_module'))->get();
+
+        return $this->formattedResults($module, $results);
+    }
+
+    protected function formattedResults(Module $module, Collection $results): Collection
+    {
+        return $results->map(function ($row) use ($module) {
+            return [
+                'title' => Str::of((string) $row)
+                    ->limit(config('arbory.search.result_title_length'))
+                    ->ucfirst(),
+                'url' => $module->url('edit', $row->getKey()),
+            ];
+        });
     }
 }
