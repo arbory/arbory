@@ -19,7 +19,9 @@ class LanguageController extends Controller
     /**
      * @var string
      */
-    protected $resource = Language::class;
+    protected string $resource = Language::class;
+
+    public array $searchBy = ['name'];
 
     /**
      * @var LanguageRepository
@@ -101,7 +103,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @param $resourceId
+     * @param  $resourceId
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($resourceId)

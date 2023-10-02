@@ -149,4 +149,11 @@ return [
     'settings' => [
         'relations' => ['translations', 'file'],
     ],
+
+    'search' => [
+        'enabled' => true,
+        'min_length' => 3,
+        'results_count_per_module' => 5,
+        'result_title_length' => 20,
+    ],
 ];

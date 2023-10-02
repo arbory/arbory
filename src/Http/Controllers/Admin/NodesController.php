@@ -31,7 +31,9 @@ class NodesController extends Controller
 {
     use Crudify;
 
-    protected $resource = Node::class;
+    protected string $resource = Node::class;
+
+    public array $searchBy = ['name'];
 
     /**
      * @var Container

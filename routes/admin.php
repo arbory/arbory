@@ -71,4 +71,9 @@ Route::group(['middleware' => 'arbory.admin_auth'], function () {
         'as' => 'profile.two-factor.disable',
         'uses' => 'Admin\ProfileController@disableTwoFactor',
     ]);
+
+    Route::post('search', [
+        'as' => 'search',
+        'uses' => 'Admin\GlobalSearchController@search',
+    ]);
 });
