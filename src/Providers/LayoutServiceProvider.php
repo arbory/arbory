@@ -11,6 +11,7 @@ use Arbory\Base\Menu\MenuItemFactory;
 use Illuminate\Support\ServiceProvider;
 use Arbory\Base\Admin\Layout\LayoutManager;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Laragear\TwoFactor\Contracts\TwoFactorAuthenticatable;
 
 class LayoutServiceProvider extends ServiceProvider
 {
@@ -35,9 +36,12 @@ class LayoutServiceProvider extends ServiceProvider
 
             $this->loadThirdPartyAssets($assets);
 
+            $user = $admin->sentinel()->getUser();
+
             $view->with([
                 'assets' => $assets,
-                'user' => $admin->sentinel()->getUser(),
+                'two_factor_auth_alert' => $this->viewTwoFactorAuthAlert($user),
+                'user' => $user,
                 'menu' => $this->buildMenu()->render(),
             ]);
         });
@@ -52,6 +56,11 @@ class LayoutServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(LayoutManager::class);
+    }
+
+    protected function viewTwoFactorAuthAlert(TwoFactorAuthenticatable $user): bool
+    {
+        return config('two-factor.mandatory') && !$user->hasTwoFactorEnabled();
     }
 
     /**

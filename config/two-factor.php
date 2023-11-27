@@ -12,6 +12,8 @@ return [
     |
     */
 
+    'mandatory' => env('ARBORY_2FA_MANDATORY', false),
+
     'cache' => [
         'store' => null,
         'prefix' => '2fa.code',

@@ -23,6 +23,15 @@ body > header {
         align-items: center;
     }
 
+    .two-factor-auth-alert {
+        background-color: $color-notification-error-background;
+        color: $color-notification-error-text;
+        position: relative;
+        top: steps(1);
+        left: steps(1);
+        padding: steps(1);
+    }
+
     .profile,
     form.sign-out {
         display: inline-block;
