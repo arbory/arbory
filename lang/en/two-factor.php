@@ -8,6 +8,7 @@ return [
         'disable' => 'Disable',
         'confirm' => 'Confirm',
     ],
+    '2fa_alert' => 'Two-Factor Authentication (2FA) is currently not active on your account. For enhanced security, click here to enable 2FA. This message will disappear once 2FA is enabled.',
     'enable' => [
         'description' => 'Scan this QR code using an authenticator (for example, Google Authenticator) to setup & enter OTP to activate 2FA',
     ],

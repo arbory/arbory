@@ -11,6 +11,10 @@
                   action="{{ route('admin.search') }}"
                   data-min-length="{{ config('arbory.search.min_length') }}"
             >
+                @if($two_factor_auth_alert)
+                    <a class="two-factor-auth-alert" href="{{ route('admin.profile.two-factor')  }}">{{ trans('arbory::two-factor.2fa_alert') }}</a>
+                @endif
+
                 @csrf
 
                 <div class="search-field">
