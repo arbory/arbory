@@ -18,9 +18,22 @@ use Illuminate\Database\Eloquent\Model;
  * @property Model|null $content
  * @property string $name
  * @property string $id
+ * @property int $content_id
  * @property string $content_type
  * @property string $slug
  * @property bool $active
+ * @property int $item_position
+ * @property string $parent_id
+ * @property string $locale
+ * @property string $meta_title
+ * @property string $meta_author
+ * @property string $meta_keywords
+ * @property string $meta_description
+ * @property string $activate_at
+ * @property string $expire_at
+ * @property int $lft
+ * @property int $rgt
+ * @property int $depth
  */
 class Node extends Model
 {
