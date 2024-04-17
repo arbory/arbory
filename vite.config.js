@@ -6,6 +6,7 @@ import copy from 'vite-plugin-copy';
 export default defineConfig({
     plugins: [
         laravel({
+            buildDirectory: 'arbory',
             input: [
                 'resources/assets/js/application.js',
                 'resources/assets/stylesheets/application.scss',
@@ -14,9 +15,9 @@ export default defineConfig({
                 'resources/assets/js/controllers/nodes.js',
                 'resources/assets/js/controllers/roles.js',
                 'resources/assets/js/controllers/sessions.js',
-                'resources/assets/js/include/**/*.js',
+                'resources/assets/js/include/**/*.js'
             ],
-            refresh: true,
+            refresh: true
         }),
         copy({
             targets: [
