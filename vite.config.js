@@ -1,12 +1,17 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import path from 'path';
-import copy from 'vite-plugin-copy';
+import { copy } from 'vite-plugin-copy';
+import { globSync } from "glob";
 
+    
 export default defineConfig({
     plugins: [
         laravel({
-            buildDirectory: 'arbory',
+            buildDirectory: 'dist',
+            // input: globSync("resources/{css,js}/**/*.*", {
+            //     ignore: "resources/js/bootstrap.js",
+            // }),
             input: [
                 'resources/assets/js/application.js',
                 'resources/assets/stylesheets/application.scss',
@@ -15,17 +20,17 @@ export default defineConfig({
                 'resources/assets/js/controllers/nodes.js',
                 'resources/assets/js/controllers/roles.js',
                 'resources/assets/js/controllers/sessions.js',
-                'resources/assets/js/include/**/*.js'
+                ...globSync("resources/assets/js/include/*.js")
             ],
             refresh: true
         }),
         copy({
             targets: [
-                { src: 'node_modules/ckeditor4/**/*', dest: 'public/ckeditor' },
-                { src: 'resources/assets/js/ckeditor_plugins/**/*', dest: 'public/ckeditor/plugins' },
-                { src: 'resources/assets/images/**/*', dest: 'public/images' },
-                { src: 'resources/assets/fonts/**/*', dest: 'public/fonts' },
-                { src: 'node_modules/material-icons/iconfont/*.{woff,woff2,eot,ttf}', dest: 'public/fonts/material-icons' },
+                { src: 'node_modules/ckeditor4/**/*', dest: 'dist/ckeditor' },
+                { src: 'resources/assets/js/ckeditor_plugins/**/*', dest: 'dist/ckeditor/plugins' },
+                { src: 'resources/assets/images/**/*', dest: 'dist/images' },
+                { src: 'resources/assets/fonts/**/*', dest: 'dist/fonts' },
+                { src: 'node_modules/material-icons/iconfont/*.{woff,woff2,eot,ttf}', dest: 'dist/fonts/material-icons' },
             ],
             hook: 'writeBundle' // Use the `writeBundle` hook to copy assets after Vite build
         })
