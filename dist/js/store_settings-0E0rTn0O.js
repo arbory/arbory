@@ -1,0 +1,1 @@
+jQuery(function(){var a=jQuery("body"),e=a.data("settings-path");a.on("settingssave",function(i,n,s){if(e){var t=n;typeof t=="string"&&(t={},t[n]=s),jQuery.ajax({url:e,data:{settings:t},type:"POST",dataType:"json"})}})});

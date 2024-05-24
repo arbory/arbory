@@ -1,3 +1,4 @@
+
 const COOKIE_NAME_NODES = 'bulk';
 
 jQuery(document).ready(($) => {

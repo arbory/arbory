@@ -3,6 +3,8 @@
 namespace Arbory\Base\Providers;
 
 use Arbory\Base\Services\AssetPipeline;
+use Exception;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\View\View;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Admin\Admin;
@@ -26,13 +28,32 @@ class LayoutServiceProvider extends ServiceProvider
         $assets = $admin->assets();
 
         $view->composer('arbory::layout.main', function (View $view) use ($assets, $admin) {
-            $assets->css(mix('css/application.css', 'vendor/arbory'));
-            $assets->css(mix('css/material-icons.css', 'vendor/arbory'));
 
-            $assets->prependJs(mix('js/application.js', 'vendor/arbory'));
-            $assets->prependJs(mix('js/includes.js', 'vendor/arbory'));
-            $assets->prependJs(mix('js/vendor.js', 'vendor/arbory'));
-            $assets->prependJs(mix('js/manifest.js', 'vendor/arbory'));
+            $manifestPath = public_path('vendor/arbory/manifest.json');
+            if (!file_exists($manifestPath)) {
+                throw new Exception('The Vite manifest file does not exist.');
+            }
+
+            $manifest = json_decode(file_get_contents($manifestPath), true);
+
+            foreach($manifest as $key => $file) {
+                if(strpos($key, ".scss") !== false) {
+                    continue;
+                }
+                if(strpos($key, "application.js") !== false) {
+                    continue;
+                }
+                $assets->prependJs($this->vite_asset($key, 'vendor/arbory'));
+            }
+
+
+            $assets->css($this->vite_asset('resources/assets/stylesheets/application.scss', 'vendor/arbory'));
+            $assets->css($this->vite_asset('resources/assets/stylesheets/material-icons.scss', 'vendor/arbory'));
+
+//            $assets->prependJs($this->vite_asset('resources/assets/js/application.js', 'vendor/arbory'));
+//            $assets->prependJs($this->vite_asset('js/includes.js', 'vendor/arbory'));
+//            $assets->prependJs($this->vite_asset('js/vendor.js', 'vendor/arbory'));
+//            $assets->prependJs($this->vite_asset('js/manifest.js', 'vendor/arbory'));
 
             $this->loadThirdPartyAssets($assets);
 
@@ -47,8 +68,8 @@ class LayoutServiceProvider extends ServiceProvider
         });
 
         $view->composer('arbory::layout.public', function (View $view) use ($assets) {
-            $assets->css(mix('css/application.css', 'vendor/arbory'));
-            $assets->css(mix('css/controllers/sessions.css', 'vendor/arbory'));
+            $assets->css($this->vite_asset('resources/assets/stylesheets/application.scss', 'vendor/arbory'));
+            $assets->css($this->vite_asset('resources/assets/stylesheets/controllers/sessions.scss', 'vendor/arbory'));
 
             $view->with([
                 'assets' => $assets,
@@ -56,6 +77,23 @@ class LayoutServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(LayoutManager::class);
+    }
+
+    public function vite_asset($path, $manifestDirectory)
+    {
+        $manifestPath = public_path($manifestDirectory .'/manifest.json');
+
+        if (!file_exists($manifestPath)) {
+            throw new Exception('The Vite manifest file does not exist.');
+        }
+
+        $manifest = json_decode(file_get_contents($manifestPath), true);
+
+        if (!isset($manifest[$path])) {
+            throw new Exception("Unable to locate Vite asset: {$path}.");
+        }
+
+        return asset($manifestDirectory . '/' . $manifest[$path]['file']);
     }
 
     protected function viewTwoFactorAuthAlert(TwoFactorAuthenticatable $user): bool

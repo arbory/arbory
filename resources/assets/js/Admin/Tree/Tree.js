@@ -1,6 +1,5 @@
 import Item from "./Item";
 import Store from "./Store";
-
 export default class Tree {
     /**
      * @param {HTMLElement} collectionElement

@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
         event.preventDefault();
 
         const animationSpeed = 150;
-        
+
         var accordion = $(event.target).closest('.accordion');
         var accordionContent = $(accordion).children('.body');
         var accordionToggle = $(accordion).find('.fa');

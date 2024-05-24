@@ -1,4 +1,3 @@
-
 export default class IconPicker {
     constructor(element) {
         this.element = element;
@@ -58,7 +57,7 @@ export default class IconPicker {
     {
         let disabled =  jQuery(this.element).data('disabled');
         let interactive = jQuery(this.element).data('interactive') == 1;
-        
+
         return interactive && !disabled;
     }
 }

@@ -1,4 +1,3 @@
-
 export default class MapCoordinates {
     /**
      * @param element
@@ -16,10 +15,10 @@ export default class MapCoordinates {
      */
     registerEventHandlers() {
         let field = this.getField();
-        
+
         this.canvas = field.find('.canvas');
         this.coordinatesInput = this.getInput();
-        
+
         this.map = new google.maps.Map(this.canvas[0], {
             zoom: this.coordinatesInput.data('zoom'),
             center: this.getCenterPosition()
@@ -45,7 +44,7 @@ export default class MapCoordinates {
             if(!this.isInteractive()) {
                 return false;
             }
-            
+
             this.clearSearch();
             this.marker.setPosition(event.latLng);
             this.writeCoordinates(this.marker);

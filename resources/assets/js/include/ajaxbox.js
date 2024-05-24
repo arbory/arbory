@@ -1,7 +1,7 @@
 import 'magnific-popup';
-import 'jquery-ui/ui/widgets/draggable';
 
 import UrlBuilder from '../modules/UrlBuilder';
+
 
 jQuery(document).ready( function()
 {

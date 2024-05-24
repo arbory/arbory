@@ -1,4 +1,3 @@
-
 jQuery(function()
 {
     var body = jQuery('body');
