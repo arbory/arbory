@@ -30,13 +30,13 @@ class LayoutServiceProvider extends ServiceProvider
         $view->composer('arbory::layout.main', function (View $view) use ($assets, $admin) {
 
             $manifestPath = public_path('vendor/arbory/manifest.json');
-            if (!file_exists($manifestPath)) {
+            if (! file_exists($manifestPath)) {
                 throw new Exception('The Vite manifest file does not exist.');
             }
 
             $manifest = json_decode(file_get_contents($manifestPath), true);
 
-            foreach($manifest as $key => $file) {
+            foreach ($manifest as $key => $file) {
                 if(strpos($key, ".scss") !== false) {
                     continue;
                 }
@@ -74,7 +74,7 @@ class LayoutServiceProvider extends ServiceProvider
 
     protected function viewTwoFactorAuthAlert(TwoFactorAuthenticatable $user): bool
     {
-        return config('two-factor.mandatory') && !$user->hasTwoFactorEnabled();
+        return config('two-factor.mandatory') && ! $user->hasTwoFactorEnabled();
     }
 
     /**

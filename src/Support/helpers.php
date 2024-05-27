@@ -5,13 +5,13 @@ if (! function_exists('vite_asset')) {
     {
         $manifestPath = public_path($manifestDirectory . '/manifest.json');
 
-        if (!file_exists($manifestPath)) {
+        if (! file_exists($manifestPath)) {
             throw new Exception('The Vite manifest file does not exist.');
         }
 
         $manifest = json_decode(file_get_contents($manifestPath), true);
 
-        if (!isset($manifest[$path])) {
+        if (! isset($manifest[$path])) {
             throw new Exception("Unable to locate Vite asset: {$path}.");
         }
 
