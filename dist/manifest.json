@@ -1,21 +1,7 @@
 {
-  "__commonjsHelpers-Cpj98o6Y.js": {
-    "file": "js/_commonjsHelpers-Cpj98o6Y.js",
-    "name": "_commonjsHelpers"
-  },
-  "_jquery-5zavhwfs.js": {
-    "file": "js/jquery-5zavhwfs.js",
-    "name": "jquery",
-    "imports": [
-      "__commonjsHelpers-Cpj98o6Y.js"
-    ]
-  },
-  "_js.cookie-4MBKI6gU.js": {
-    "file": "js/js.cookie-4MBKI6gU.js",
-    "name": "js.cookie",
-    "imports": [
-      "__commonjsHelpers-Cpj98o6Y.js"
-    ]
+  "_js.cookie-CFT9JG7m.js": {
+    "file": "js/js.cookie-CFT9JG7m.js",
+    "name": "js.cookie"
   },
   "resources/assets/js/Admin/AdminPanel.js": {
     "file": "js/AdminPanel-DDNbUXFm.js",
@@ -39,15 +25,13 @@
     ]
   },
   "resources/assets/js/application.js": {
-    "file": "js/application-4lUa6bov.js",
+    "file": "js/application-jk2R0nUk.js",
     "name": "application",
     "src": "resources/assets/js/application.js",
     "isEntry": true,
     "imports": [
-      "_jquery-5zavhwfs.js",
       "resources/assets/js/Admin/FieldRegistry.js",
-      "resources/assets/js/Admin/AdminPanel.js",
-      "__commonjsHelpers-Cpj98o6Y.js"
+      "resources/assets/js/Admin/AdminPanel.js"
     ]
   },
   "resources/assets/js/controllers/nodes.js": {
@@ -75,20 +59,18 @@
     "isEntry": true
   },
   "resources/assets/js/include/ajax.js": {
-    "file": "js/ajax-LyCfDykV.js",
+    "file": "js/ajax-CFlLPjII.js",
     "name": "ajax",
     "src": "resources/assets/js/include/ajax.js",
     "isEntry": true
   },
   "resources/assets/js/include/ajaxbox.js": {
-    "file": "js/ajaxbox-CYijVoop.js",
+    "file": "js/ajaxbox-BUOTGlb-.js",
     "name": "ajaxbox",
     "src": "resources/assets/js/include/ajaxbox.js",
     "isEntry": true,
     "imports": [
-      "_jquery-5zavhwfs.js",
-      "resources/assets/js/modules/UrlBuilder.js",
-      "__commonjsHelpers-Cpj98o6Y.js"
+      "resources/assets/js/modules/UrlBuilder.js"
     ]
   },
   "resources/assets/js/include/constructor.js": {
@@ -146,13 +128,12 @@
     "isEntry": true
   },
   "resources/assets/js/include/menu.js": {
-    "file": "js/menu-Di37L2IK.js",
+    "file": "js/menu-Cd8h9qhi.js",
     "name": "menu",
     "src": "resources/assets/js/include/menu.js",
     "isEntry": true,
     "imports": [
-      "_js.cookie-4MBKI6gU.js",
-      "__commonjsHelpers-Cpj98o6Y.js"
+      "_js.cookie-CFT9JG7m.js"
     ]
   },
   "resources/assets/js/include/nested_fields.js": {
@@ -162,13 +143,12 @@
     "isEntry": true
   },
   "resources/assets/js/include/nodes.js": {
-    "file": "js/nodes-lk76PpE-.js",
+    "file": "js/nodes-R3_3yhLi.js",
     "name": "nodes",
     "src": "resources/assets/js/include/nodes.js",
     "isEntry": true,
     "imports": [
-      "_js.cookie-4MBKI6gU.js",
-      "__commonjsHelpers-Cpj98o6Y.js"
+      "_js.cookie-CFT9JG7m.js"
     ]
   },
   "resources/assets/js/include/notifications.js": {

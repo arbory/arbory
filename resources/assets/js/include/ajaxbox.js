@@ -1,7 +1,4 @@
-import 'magnific-popup';
-
 import UrlBuilder from '../modules/UrlBuilder';
-
 
 jQuery(document).ready( function()
 {

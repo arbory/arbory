@@ -1,1 +1,0 @@
-import{j as i}from"./jquery-5zavhwfs.js";import{F as e}from"./FieldRegistry-BXoE9PZY.js";import{A as m}from"./AdminPanel-DDNbUXFm.js";import"./_commonjsHelpers-Cpj98o6Y.js";Object.assign(window,{$:i,jQuery:i});let r=new m(e);r.initialize();

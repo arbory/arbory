@@ -1,6 +1,7 @@
 <script type="text/javascript" src="/vendor/arbory/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/vendor/arbory/jquery/jquery-ui.min.js"></script>
-@vite('resources/assets/js/application.js', 'vendor/arbory')
+<script type="text/javascript" src="/vendor/arbory/jquery/jquery.magnific-popup.min.js"></script>
+
 @foreach($assets->getJs() as $script)
     <script type="module" src="{{ asset($script) }}"></script>
 @endforeach

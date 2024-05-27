@@ -3,10 +3,6 @@ import laravel from 'laravel-vite-plugin';
 import path from 'path';
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { globSync } from "glob";
-import inject from '@rollup/plugin-inject';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import amd from 'rollup-plugin-amd';
 
 
 export default defineConfig({
@@ -37,7 +33,8 @@ export default defineConfig({
                 { src: 'resources/assets/fonts/*', dest: 'fonts' },
                 { src: 'node_modules/material-icons/iconfont/*.{woff,woff2,eot,ttf}', dest: 'fonts' },
                 { src: 'node_modules/jquery/dist/jquery.min.js', dest: 'jquery' },
-                { src: 'node_modules/jquery-ui/dist/jquery-ui.min.js', dest: 'jquery' }
+                { src: 'node_modules/jquery-ui/dist/jquery-ui.min.js', dest: 'jquery' },
+                { src: 'node_modules/magnific-popup/dist/jquery.magnific-popup.min.js', dest: 'jquery' }
             ]
         })
     ],

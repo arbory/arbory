@@ -40,9 +40,7 @@ class LayoutServiceProvider extends ServiceProvider
                 if(strpos($key, ".scss") !== false) {
                     continue;
                 }
-                if(strpos($key, "application.js") !== false) {
-                    continue;
-                }
+
                 $assets->prependJs($this->vite_asset($key, 'vendor/arbory'));
             }
 
