@@ -41,17 +41,12 @@ class LayoutServiceProvider extends ServiceProvider
                     continue;
                 }
 
-                $assets->prependJs($this->vite_asset($key, 'vendor/arbory'));
+                $assets->prependJs(vite_asset($key, 'vendor/arbory'));
             }
 
 
-            $assets->css($this->vite_asset('resources/assets/stylesheets/application.scss', 'vendor/arbory'));
-            $assets->css($this->vite_asset('resources/assets/stylesheets/material-icons.scss', 'vendor/arbory'));
-
-//            $assets->prependJs($this->vite_asset('resources/assets/js/application.js', 'vendor/arbory'));
-//            $assets->prependJs($this->vite_asset('js/includes.js', 'vendor/arbory'));
-//            $assets->prependJs($this->vite_asset('js/vendor.js', 'vendor/arbory'));
-//            $assets->prependJs($this->vite_asset('js/manifest.js', 'vendor/arbory'));
+            $assets->css(vite_asset('resources/assets/stylesheets/application.scss', 'vendor/arbory'));
+            $assets->css(vite_asset('resources/assets/stylesheets/material-icons.scss', 'vendor/arbory'));
 
             $this->loadThirdPartyAssets($assets);
 
@@ -66,8 +61,8 @@ class LayoutServiceProvider extends ServiceProvider
         });
 
         $view->composer('arbory::layout.public', function (View $view) use ($assets) {
-            $assets->css($this->vite_asset('resources/assets/stylesheets/application.scss', 'vendor/arbory'));
-            $assets->css($this->vite_asset('resources/assets/stylesheets/controllers/sessions.scss', 'vendor/arbory'));
+            $assets->css(vite_asset('resources/assets/stylesheets/application.scss', 'vendor/arbory'));
+            $assets->css(vite_asset('resources/assets/stylesheets/controllers/sessions.scss', 'vendor/arbory'));
 
             $view->with([
                 'assets' => $assets,
@@ -75,23 +70,6 @@ class LayoutServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(LayoutManager::class);
-    }
-
-    public function vite_asset($path, $manifestDirectory)
-    {
-        $manifestPath = public_path($manifestDirectory .'/manifest.json');
-
-        if (!file_exists($manifestPath)) {
-            throw new Exception('The Vite manifest file does not exist.');
-        }
-
-        $manifest = json_decode(file_get_contents($manifestPath), true);
-
-        if (!isset($manifest[$path])) {
-            throw new Exception("Unable to locate Vite asset: {$path}.");
-        }
-
-        return asset($manifestDirectory . '/' . $manifest[$path]['file']);
     }
 
     protected function viewTwoFactorAuthAlert(TwoFactorAuthenticatable $user): bool
