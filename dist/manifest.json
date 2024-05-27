@@ -3,36 +3,11 @@
     "file": "js/js.cookie-CFT9JG7m.js",
     "name": "js.cookie"
   },
-  "resources/assets/js/Admin/AdminPanel.js": {
-    "file": "js/AdminPanel-DDNbUXFm.js",
-    "name": "AdminPanel",
-    "src": "resources/assets/js/Admin/AdminPanel.js",
-    "isEntry": true
-  },
-  "resources/assets/js/Admin/FieldRegistry.js": {
-    "file": "js/FieldRegistry-BXoE9PZY.js",
-    "name": "FieldRegistry",
-    "src": "resources/assets/js/Admin/FieldRegistry.js",
-    "isEntry": true
-  },
-  "resources/assets/js/admin.js": {
-    "file": "js/admin-Dflxmr1h.js",
-    "name": "admin",
-    "src": "resources/assets/js/admin.js",
-    "isEntry": true,
-    "imports": [
-      "resources/assets/js/Admin/FieldRegistry.js"
-    ]
-  },
   "resources/assets/js/application.js": {
-    "file": "js/application-jk2R0nUk.js",
+    "file": "js/application-CLlRbvzM.js",
     "name": "application",
     "src": "resources/assets/js/application.js",
-    "isEntry": true,
-    "imports": [
-      "resources/assets/js/Admin/FieldRegistry.js",
-      "resources/assets/js/Admin/AdminPanel.js"
-    ]
+    "isEntry": true
   },
   "resources/assets/js/controllers/nodes.js": {
     "file": "js/nodes-DDqVezmr.js",

@@ -11,7 +11,6 @@ export default defineConfig({
             buildDirectory: 'dist',
             input: [
                 'resources/assets/js/application.js',
-                'resources/assets/js/admin.js',
                 'resources/assets/js/controllers/nodes.js',
                 'resources/assets/js/controllers/roles.js',
                 'resources/assets/js/controllers/sessions.js',
@@ -19,7 +18,6 @@ export default defineConfig({
                 'resources/assets/stylesheets/application.scss',
                 'resources/assets/stylesheets/material-icons.scss',
                 'resources/assets/stylesheets/controllers/sessions.scss',
-                ...globSync("resources/assets/js/Admin/*.js"),
                 ...globSync("resources/assets/js/include/*.js")
             ],
             refresh: true,
@@ -50,7 +48,9 @@ export default defineConfig({
                 chunkFileNames: 'js/[name]-[hash].js',
                 entryFileNames: 'js/[name]-[hash].js',
                 assetFileNames: assetInfo => {
-                    if (assetInfo.name.endsWith('.css')) return 'css/[name]-[hash][extname]';
+                    if (assetInfo.name.endsWith('.css')) {
+                        return 'css/[name]-[hash][extname]';
+                    }
                     return 'assets/[name]-[hash][extname]';
                 }
             }
