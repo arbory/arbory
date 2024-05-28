@@ -4,7 +4,6 @@ namespace Arbory\Base\Providers;
 
 use Arbory\Base\Services\AssetPipeline;
 use Exception;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\View\View;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Admin\Admin;
@@ -37,7 +36,7 @@ class LayoutServiceProvider extends ServiceProvider
             $manifest = json_decode(file_get_contents($manifestPath), true);
 
             foreach ($manifest as $key => $file) {
-                if(strpos($key, ".scss") !== false) {
+                if( strpos($key, ".scss") !== false) {
                     continue;
                 }
 
