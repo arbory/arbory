@@ -1,3 +1,5 @@
+// import 'jquery-ui/ui/widgets/sortable';
+
 jQuery(document).ready(function()
 {
     var body = jQuery('body');

@@ -1,0 +1,1 @@
+const e="permissions_select_all",s="permissions_select_none",t="#"+e+", #"+s;jQuery(document).ready(function(){jQuery(".type-empty-field").on("click",t,function(){const c=jQuery(this).attr("id")===e?"checked":!1;jQuery('input[type="checkbox"][name^="resource[permissions]"]').attr("checked",c)})});

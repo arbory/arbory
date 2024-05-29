@@ -1,0 +1,219 @@
+{
+  "_js.cookie-CFT9JG7m.js": {
+    "file": "js/js.cookie-CFT9JG7m.js",
+    "name": "js.cookie"
+  },
+  "resources/assets/js/application.js": {
+    "file": "js/application-CLlRbvzM.js",
+    "name": "application",
+    "src": "resources/assets/js/application.js",
+    "isEntry": true
+  },
+  "resources/assets/js/controllers/nodes.js": {
+    "file": "js/nodes-DDqVezmr.js",
+    "name": "nodes",
+    "src": "resources/assets/js/controllers/nodes.js",
+    "isEntry": true
+  },
+  "resources/assets/js/controllers/roles.js": {
+    "file": "js/roles-BAaYj7l3.js",
+    "name": "roles",
+    "src": "resources/assets/js/controllers/roles.js",
+    "isEntry": true
+  },
+  "resources/assets/js/controllers/sessions.js": {
+    "file": "js/sessions-l0sNRNKZ.js",
+    "name": "sessions",
+    "src": "resources/assets/js/controllers/sessions.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/accordion.js": {
+    "file": "js/accordion-Ba5hyF_x.js",
+    "name": "accordion",
+    "src": "resources/assets/js/include/accordion.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/ajax.js": {
+    "file": "js/ajax-CFlLPjII.js",
+    "name": "ajax",
+    "src": "resources/assets/js/include/ajax.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/ajaxbox.js": {
+    "file": "js/ajaxbox-Dkzw2HBE.js",
+    "name": "ajaxbox",
+    "src": "resources/assets/js/include/ajaxbox.js",
+    "isEntry": true,
+    "imports": [
+      "resources/assets/js/modules/UrlBuilder.js"
+    ]
+  },
+  "resources/assets/js/include/constructor.js": {
+    "file": "js/constructor-_lzgwqLi.js",
+    "name": "constructor",
+    "src": "resources/assets/js/include/constructor.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/dialogs.js": {
+    "file": "js/dialogs-CVE20cLq.js",
+    "name": "dialogs",
+    "src": "resources/assets/js/include/dialogs.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/field.type_associated_set.js": {
+    "file": "js/field.type_associated_set-Dyof0VTr.js",
+    "name": "field.type_associated_set",
+    "src": "resources/assets/js/include/field.type_associated_set.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/field.type_date_or_datetime_or_time.js": {
+    "file": "js/field.type_date_or_datetime_or_time-Cjpv8kL0.js",
+    "name": "field.type_date_or_datetime_or_time",
+    "src": "resources/assets/js/include/field.type_date_or_datetime_or_time.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/filter.js": {
+    "file": "js/filter-CJWj_eBf.js",
+    "name": "filter",
+    "src": "resources/assets/js/include/filter.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/global-search.js": {
+    "file": "js/global-search-Do-_IYK0.js",
+    "name": "global-search",
+    "src": "resources/assets/js/include/global-search.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/loader.js": {
+    "file": "js/loader-CnH1EBKM.js",
+    "name": "loader",
+    "src": "resources/assets/js/include/loader.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/localization.js": {
+    "file": "js/localization-B5c6qbWl.js",
+    "name": "localization",
+    "src": "resources/assets/js/include/localization.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/mass.js": {
+    "file": "js/mass-DujCg6nx.js",
+    "name": "mass",
+    "src": "resources/assets/js/include/mass.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/menu.js": {
+    "file": "js/menu-Cd8h9qhi.js",
+    "name": "menu",
+    "src": "resources/assets/js/include/menu.js",
+    "isEntry": true,
+    "imports": [
+      "_js.cookie-CFT9JG7m.js"
+    ]
+  },
+  "resources/assets/js/include/nested_fields.js": {
+    "file": "js/nested_fields-CflIyU7E.js",
+    "name": "nested_fields",
+    "src": "resources/assets/js/include/nested_fields.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/nodes.js": {
+    "file": "js/nodes-R3_3yhLi.js",
+    "name": "nodes",
+    "src": "resources/assets/js/include/nodes.js",
+    "isEntry": true,
+    "imports": [
+      "_js.cookie-CFT9JG7m.js"
+    ]
+  },
+  "resources/assets/js/include/notifications.js": {
+    "file": "js/notifications-DY7Cl_Yw.js",
+    "name": "notifications",
+    "src": "resources/assets/js/include/notifications.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/object_polyfill.js": {
+    "file": "js/object_polyfill-BVq7H6Wg.js",
+    "name": "object_polyfill",
+    "src": "resources/assets/js/include/object_polyfill.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/pagination.js": {
+    "file": "js/pagination-Cav93o0V.js",
+    "name": "pagination",
+    "src": "resources/assets/js/include/pagination.js",
+    "isEntry": true,
+    "imports": [
+      "resources/assets/js/modules/UrlBuilder.js"
+    ]
+  },
+  "resources/assets/js/include/remote_validator.js": {
+    "file": "js/remote_validator-BUN92TFp.js",
+    "name": "remote_validator",
+    "src": "resources/assets/js/include/remote_validator.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/search.js": {
+    "file": "js/search-B6GRZx_P.js",
+    "name": "search",
+    "src": "resources/assets/js/include/search.js",
+    "isEntry": true,
+    "imports": [
+      "resources/assets/js/modules/UrlBuilder.js"
+    ]
+  },
+  "resources/assets/js/include/sidebar.js": {
+    "file": "js/sidebar-DIr4U2Ai.js",
+    "name": "sidebar",
+    "src": "resources/assets/js/include/sidebar.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/sortable.js": {
+    "file": "js/sortable-B3Fa66wV.js",
+    "name": "sortable",
+    "src": "resources/assets/js/include/sortable.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/store_settings.js": {
+    "file": "js/store_settings-0E0rTn0O.js",
+    "name": "store_settings",
+    "src": "resources/assets/js/include/store_settings.js",
+    "isEntry": true
+  },
+  "resources/assets/js/include/toolbox.js": {
+    "file": "js/toolbox-ZbfsgQCx.js",
+    "name": "toolbox",
+    "src": "resources/assets/js/include/toolbox.js",
+    "isEntry": true,
+    "imports": [
+      "resources/assets/js/modules/UrlBuilder.js"
+    ]
+  },
+  "resources/assets/js/include/url_builder.js": {
+    "file": "js/url_builder-l0sNRNKZ.js",
+    "name": "url_builder",
+    "src": "resources/assets/js/include/url_builder.js",
+    "isEntry": true
+  },
+  "resources/assets/js/modules/UrlBuilder.js": {
+    "file": "js/UrlBuilder-DtWhPO4P.js",
+    "name": "UrlBuilder",
+    "src": "resources/assets/js/modules/UrlBuilder.js",
+    "isEntry": true
+  },
+  "resources/assets/stylesheets/application.scss": {
+    "file": "css/application-Y4Zp0LGj.css",
+    "src": "resources/assets/stylesheets/application.scss",
+    "isEntry": true
+  },
+  "resources/assets/stylesheets/controllers/sessions.scss": {
+    "file": "css/sessions-B9aTb3PU.css",
+    "src": "resources/assets/stylesheets/controllers/sessions.scss",
+    "isEntry": true
+  },
+  "resources/assets/stylesheets/material-icons.scss": {
+    "file": "css/material-icons-BFMpLW4x.css",
+    "src": "resources/assets/stylesheets/material-icons.scss",
+    "isEntry": true
+  }
+}

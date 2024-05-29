@@ -1,6 +1,5 @@
-import 'jquery-ui/ui/widgets/sortable';
+// import 'jquery-ui/ui/widgets/sortable';
 import Tree from '../Admin/Tree/Tree';
-
 
 const COOKIE_NAME_NODES = 'nodes';
 

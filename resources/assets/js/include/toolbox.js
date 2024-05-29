@@ -1,5 +1,4 @@
 import UrlBuilder from '../modules/UrlBuilder';
-
 jQuery(function()
 {
     var body = jQuery('body');

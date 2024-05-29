@@ -1,5 +1,4 @@
 import Navigator from "./Services/Navigator";
-
 export default class AdminPanel {
     /**
      * @param {FieldRegistry} registry

@@ -44,6 +44,9 @@
         "orchestra/testbench-core": "^8"
     },
     "autoload": {
+        "files": [
+            "src/Support/helpers.php"
+        ],
         "psr-4": {
             "Arbory\\Base\\": "src",
             "Database\\Factories\\": "database/factories/",

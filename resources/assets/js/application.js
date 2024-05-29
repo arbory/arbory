@@ -6,4 +6,3 @@ let adminPanel = new AdminPanel(FieldRegistry);
 adminPanel.initialize();
 
 export default adminPanel;
-

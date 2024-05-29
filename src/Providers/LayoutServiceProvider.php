@@ -3,6 +3,7 @@
 namespace Arbory\Base\Providers;
 
 use Arbory\Base\Services\AssetPipeline;
+use Exception;
 use Illuminate\View\View;
 use Arbory\Base\Menu\Menu;
 use Arbory\Base\Admin\Admin;
@@ -26,13 +27,23 @@ class LayoutServiceProvider extends ServiceProvider
         $assets = $admin->assets();
 
         $view->composer('arbory::layout.main', function (View $view) use ($assets, $admin) {
-            $assets->css(mix('css/application.css', 'vendor/arbory'));
-            $assets->css(mix('css/material-icons.css', 'vendor/arbory'));
+            $manifestPath = public_path('vendor/arbory/manifest.json');
+            if (! file_exists($manifestPath)) {
+                throw new Exception('The Vite manifest file does not exist.');
+            }
 
-            $assets->prependJs(mix('js/application.js', 'vendor/arbory'));
-            $assets->prependJs(mix('js/includes.js', 'vendor/arbory'));
-            $assets->prependJs(mix('js/vendor.js', 'vendor/arbory'));
-            $assets->prependJs(mix('js/manifest.js', 'vendor/arbory'));
+            $manifest = json_decode(file_get_contents($manifestPath), true);
+
+            foreach ($manifest as $key => $file) {
+                if (strpos($key, '.scss') !== false) {
+                    continue;
+                }
+
+                $assets->prependJs(vite_asset($key, 'vendor/arbory'));
+            }
+
+            $assets->css(vite_asset('resources/assets/stylesheets/application.scss', 'vendor/arbory'));
+            $assets->css(vite_asset('resources/assets/stylesheets/material-icons.scss', 'vendor/arbory'));
 
             $this->loadThirdPartyAssets($assets);
 
@@ -47,8 +58,8 @@ class LayoutServiceProvider extends ServiceProvider
         });
 
         $view->composer('arbory::layout.public', function (View $view) use ($assets) {
-            $assets->css(mix('css/application.css', 'vendor/arbory'));
-            $assets->css(mix('css/controllers/sessions.css', 'vendor/arbory'));
+            $assets->css(vite_asset('resources/assets/stylesheets/application.scss', 'vendor/arbory'));
+            $assets->css(vite_asset('resources/assets/stylesheets/controllers/sessions.scss', 'vendor/arbory'));
 
             $view->with([
                 'assets' => $assets,
@@ -60,7 +71,7 @@ class LayoutServiceProvider extends ServiceProvider
 
     protected function viewTwoFactorAuthAlert(TwoFactorAuthenticatable $user): bool
     {
-        return config('two-factor.mandatory') && !$user->hasTwoFactorEnabled();
+        return config('two-factor.mandatory') && ! $user->hasTwoFactorEnabled();
     }
 
     /**
