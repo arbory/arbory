@@ -36,7 +36,7 @@ class LayoutServiceProvider extends ServiceProvider
             $manifest = json_decode(file_get_contents($manifestPath), true);
 
             foreach ($manifest as $key => $file) {
-                if( strpos($key, ".scss") !== false) {
+                if (strpos($key, ".scss") !== false) {
                     continue;
                 }
 
