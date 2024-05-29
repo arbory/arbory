@@ -27,7 +27,6 @@ class LayoutServiceProvider extends ServiceProvider
         $assets = $admin->assets();
 
         $view->composer('arbory::layout.main', function (View $view) use ($assets, $admin) {
-
             $manifestPath = public_path('vendor/arbory/manifest.json');
             if (! file_exists($manifestPath)) {
                 throw new Exception('The Vite manifest file does not exist.');
@@ -42,7 +41,6 @@ class LayoutServiceProvider extends ServiceProvider
 
                 $assets->prependJs(vite_asset($key, 'vendor/arbory'));
             }
-
 
             $assets->css(vite_asset('resources/assets/stylesheets/application.scss', 'vendor/arbory'));
             $assets->css(vite_asset('resources/assets/stylesheets/material-icons.scss', 'vendor/arbory'));
