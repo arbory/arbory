@@ -39,7 +39,6 @@ class TwoFactorServiceProvider extends \Laragear\TwoFactor\TwoFactorServiceProvi
     {
         $this->loadViewsFrom(static::VIEWS, 'two-factor');
         $this->loadTranslationsFrom(static::LANG, 'two-factor');
-        $this->loadMigrationsFrom(static::DB);
 
         $this->withMiddleware(RequireTwoFactorEnabled::class)->as('2fa.enabled');
         $this->withMiddleware(ConfirmTwoFactorCode::class)->as('2fa.confirm');
@@ -58,6 +57,8 @@ class TwoFactorServiceProvider extends \Laragear\TwoFactor\TwoFactorServiceProvi
      */
     protected function publishFiles(): void
     {
+        $this->publishMigrations();
+
         $this->publishes([static::CONFIG => $this->app->configPath('two-factor.php')], 'config');
     }
 }
