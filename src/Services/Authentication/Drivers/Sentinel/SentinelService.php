@@ -33,7 +33,7 @@ class SentinelService extends Sentinel
             }
         }
 
-        if (! $this->twoFactor()->verify($user, $credentials, $remember)) {
+        if (config('two-factor.enabled', false) && !$this->twoFactor()->verify($user, $credentials, $remember)) {
             return false;
         }
 
