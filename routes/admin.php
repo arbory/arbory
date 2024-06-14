@@ -52,25 +52,27 @@ Route::group(['middleware' => 'arbory.admin_auth'], function () {
         'uses' => 'Admin\UploadController@upload',
     ]);
 
-    Route::get('profile/two-factor', [
-        'as' => 'profile.two-factor',
-        'uses' => 'Admin\ProfileController@twoFactor',
-    ]);
+    if (config('two-factor.enabled', false)) {
+        Route::get('profile/two-factor', [
+            'as' => 'profile.two-factor',
+            'uses' => 'Admin\ProfileController@twoFactor',
+        ]);
 
-    Route::get('profile/two-factor/enable', [
-        'as' => 'profile.two-factor.enable',
-        'uses' => 'Admin\ProfileController@enableTwoFactor',
-    ]);
+        Route::get('profile/two-factor/enable', [
+            'as' => 'profile.two-factor.enable',
+            'uses' => 'Admin\ProfileController@enableTwoFactor',
+        ]);
 
-    Route::post('profile/two-factor/activate', [
-        'as' => 'profile.two-factor.activate',
-        'uses' => 'Admin\ProfileController@activateTwoFactor',
-    ]);
+        Route::post('profile/two-factor/activate', [
+            'as' => 'profile.two-factor.activate',
+            'uses' => 'Admin\ProfileController@activateTwoFactor',
+        ]);
 
-    Route::post('profile/two-factor/disable', [
-        'as' => 'profile.two-factor.disable',
-        'uses' => 'Admin\ProfileController@disableTwoFactor',
-    ]);
+        Route::post('profile/two-factor/disable', [
+            'as' => 'profile.two-factor.disable',
+            'uses' => 'Admin\ProfileController@disableTwoFactor',
+        ]);
+    }
 
     Route::post('search', [
         'as' => 'search',
