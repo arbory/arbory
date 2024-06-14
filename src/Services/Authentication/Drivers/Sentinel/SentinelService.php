@@ -16,7 +16,9 @@ class SentinelService extends Sentinel
             return false;
         }
 
-        [$credentials, $remember] = $this->twoFactor()->getFlashedData($credentials, $remember);
+        if (config('two-factor.enabled', false)) {
+            [$credentials, $remember] = $this->twoFactor()->getFlashedData($credentials, $remember);
+        }
 
         if ($credentials instanceof UserInterface) {
             $user = $credentials;

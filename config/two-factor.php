@@ -1,6 +1,10 @@
 <?php
 
 return [
+
+    'enabled' => env('ARBORY_2FA_ENABLED', false),
+    'mandatory' => env('ARBORY_2FA_MANDATORY', false),
+
     /*
     |--------------------------------------------------------------------------
     | Cache Store
@@ -11,8 +15,6 @@ return [
     | cache store to use. Using "null" will use the default cache store.
     |
     */
-
-    'mandatory' => env('ARBORY_2FA_MANDATORY', false),
 
     'cache' => [
         'store' => null,

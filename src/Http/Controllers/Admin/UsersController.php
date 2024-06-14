@@ -124,7 +124,7 @@ class UsersController extends Controller
 
         $tools->add('edit', $this->url('edit', $model->getKey()));
 
-        if ($model->getKey() === Sentinel::getUser()->getUserId()) {
+        if (config('two-factor.enabled', false) && $model->getKey() === Sentinel::getUser()->getUserId()) {
             $tools->add('two factor auth', route('admin.profile.two-factor'));
         }
 
