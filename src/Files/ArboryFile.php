@@ -3,7 +3,7 @@
 namespace Arbory\Base\Files;
 
 use Database\Factories\Files\ArboryFileModelFactory;
-use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -23,8 +23,8 @@ use Illuminate\Support\Facades\Storage;
  */
 class ArboryFile extends Model
 {
-    use Uuid;
     use HasFactory;
+    use HasUuids;
 
     /**
      * @var bool

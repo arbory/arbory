@@ -5,9 +5,8 @@ namespace Arbory\Base\Nodes;
 use Arbory\Base\Pages\PageInterface;
 use Arbory\Base\Services\NodeRoutesCache;
 use Arbory\Base\Support\Activation\HasActivationDates;
-use Baum\Traits\NestedSet;
+use Baum\NestedSet\Node as BaumNode;
 use Database\Factories\Nodes\BaseNodeFactory;
-use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,10 +37,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Node extends Model
 {
-    use HasUuids;
+    use BaumNode;
     use HasActivationDates;
-    use NestedSet;
     use HasFactory;
+    use HasUuids;
 
     /**
      * @var bool
