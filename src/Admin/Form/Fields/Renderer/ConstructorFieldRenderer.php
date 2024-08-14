@@ -105,7 +105,7 @@ class ConstructorFieldRenderer implements RendererInterface
                 ->addClass('button with-icon primary add-nested-item')
                 ->addAttributes(
                     [
-                        'type'  => 'button',
+                        'type' => 'button',
                         'title' => $title,
                     ]
                 )
@@ -177,7 +177,7 @@ class ConstructorFieldRenderer implements RendererInterface
         foreach ($this->field->getTypes() as $type => $object) {
             $fieldSet = $this->field->getRelationFieldSet($this->field->buildFromBlock($object), '_template_');
 
-            $templates[$object->name()] = (string) $this->getRelationItemHtml($object, $fieldSet, '_template_');
+            $templates[$object->name()] = (string)$this->getRelationItemHtml($object, $fieldSet, '_template_');
         }
 
         $options->addAttributes(

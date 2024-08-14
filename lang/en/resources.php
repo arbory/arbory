@@ -13,7 +13,7 @@ return [
     'bulk_edit_form_title' => 'Update :count items',
     'bulk_edit' => 'Mass edit',
     'check_to_change' => 'Check to save ":input" field',
-    'cancel'    => 'Cancel',
+    'cancel' => 'Cancel',
     'status' => [
         'enabled' => 'Enabled',
         'disabled' => 'Disabled',

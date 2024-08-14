@@ -181,11 +181,11 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     public function toArray()
     {
         return [
-            'title'     => $this->getTitle(),
-            'anchor'    => $this->getAnchor(),
-            'order'     => $this->getOrder(),
+            'title' => $this->getTitle(),
+            'anchor' => $this->getAnchor(),
+            'order' => $this->getOrder(),
             'reference' => $this->getReference(),
-            'children'  => $this->children->toArray(),
+            'children' => $this->children->toArray(),
         ];
     }
 

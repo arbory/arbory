@@ -22,20 +22,20 @@ class PaneledItemRenderer implements ItemInterface
         $panel = new Panel();
         $panel->setTitle($title);
         $panel->addClass('item type-association')
-              ->addAttributes(
-                  [
-                      'data-title' => $title,
-                      'data-name'  => $field->getName(),
-                      'data-index' => $index,
-                  ]
-              );
+            ->addAttributes(
+                [
+                    'data-title' => $title,
+                    'data-name' => $field->getName(),
+                    'data-index' => $index,
+                ]
+            );
 
         $content = new Content([
             $fieldSet->render(),
         ]);
 
         $this->addSortableNavigation($field, $panel);
-        $this->addRemoveButton($field, $panel, $content, $fieldSet->getNamespace().'._destroy');
+        $this->addRemoveButton($field, $panel, $content, $fieldSet->getNamespace() . '._destroy');
 
         $panel->setContent($content);
 
@@ -58,16 +58,16 @@ class PaneledItemRenderer implements ItemInterface
         }
 
         $button = Button::create()
-                        ->title(trans('arbory::fields.relation.remove'))
-                        ->type('button', 'only-icon danger remove-nested-item')
-                        ->withIcon('delete_outline')
-                        ->iconOnly();
+            ->title(trans('arbory::fields.relation.remove'))
+            ->type('button', 'only-icon danger remove-nested-item')
+            ->withIcon('delete_outline')
+            ->iconOnly();
 
         $input = Html::input()
-                     ->setType('hidden')
-                     ->setName($name)
-                     ->setValue('false')
-                     ->addClass('destroy');
+            ->setType('hidden')
+            ->setName($name)
+            ->setValue('false')
+            ->addClass('destroy');
 
         $panel->addButton($button);
 
@@ -89,18 +89,18 @@ class PaneledItemRenderer implements ItemInterface
 
         $panel->addButton(
             Button::create()
-                  ->title(trans('arbory::fields.relation.moveDown'))
-                  ->type('button', 'only-icon secondary sortable-navigation move-down')
-                  ->withIcon('keyboard_arrow_down')
-                  ->iconOnly()
+                ->title(trans('arbory::fields.relation.moveDown'))
+                ->type('button', 'only-icon secondary sortable-navigation move-down')
+                ->withIcon('keyboard_arrow_down')
+                ->iconOnly()
         );
 
         $panel->addButton(
             Button::create()
-                  ->title(trans('arbory::fields.relation.moveUp'))
-                  ->type('button', 'only-icon secondary sortable-navigation move-up')
-                  ->withIcon('keyboard_arrow_up')
-                  ->iconOnly()
+                ->title(trans('arbory::fields.relation.moveUp'))
+                ->type('button', 'only-icon secondary sortable-navigation move-up')
+                ->withIcon('keyboard_arrow_up')
+                ->iconOnly()
         );
     }
 }

@@ -7,9 +7,9 @@ return [
         'cancel' => 'Cancel',
     ],
     'bulk' => [
-        'empty'    => 'Empty selection',
+        'empty' => 'Empty selection',
         'question' => 'Please mark at least one row!',
-        'ok'       => 'Ok',
+        'ok' => 'Ok',
     ],
     'constructor_types' => [
         'title' => 'Add a new block',

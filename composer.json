@@ -22,25 +22,22 @@
     "require": {
         "php": "^8.1",
         "ext-json": "*",
-        "laravel/framework": "^10.0",
-        "laravelcollective/html": "^6.0",
-        "doctrine/dbal": "^3.6",
+        "laravel/framework": "^11.0",
+        "doctrine/dbal": "^3.8",
         "baum/baum": "3.x-dev",
-        "goldspecdigital/laravel-eloquent-uuid": "^10",
         "astrotomic/laravel-translatable": "^11.6",
-        "arbory/translation": "^2.7",
-        "cartalyst/sentinel": "^7.0",
-        "spatie/laravel-glide": "^3.7",
-        "spatie/laravel-sluggable": "^3.4",
-        "laragear/two-factor": "^1.2",
+        "arbory/translation": "^2.8",
+        "cartalyst/sentinel": "8.x-dev",
+        "spatie/laravel-glide": "^3.8",
+        "spatie/laravel-sluggable": "^3.6",
+        "laragear/two-factor": "^2.0",
         "maatwebsite/excel": "^3.1",
-        "unisharp/laravel-filemanager": "^2.6"
+        "unisharp/laravel-filemanager": "^2.9"
     },
     "require-dev": {
-        "php-coveralls/php-coveralls": "^2.0",
-        "phpunit/phpunit": "^9.5",
-        "mockery/mockery": "^1.4.4",
-        "cubesystems/static-analysers": "^3.0",
+        "php-coveralls/php-coveralls": "^2.7",
+        "phpunit/phpunit": "^10",
+        "mockery/mockery": "^1.6",
         "orchestra/testbench-core": "^8"
     },
     "autoload": {

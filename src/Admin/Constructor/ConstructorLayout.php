@@ -149,15 +149,17 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         $panel = new Panel();
 
         $panel->setTitle('Overview');
-        $panel->setContent(new Content([
-            Html::div(
-                Link::create($this->getModalUrl())
-                    ->asButton('primary new-constructor-item')
-                    ->asAjaxbox(true)
-                    ->withIcon('add')
-                    ->title(trans('arbory::constructor.new_block_btn'))
-            )->addClass('constructor-button-wrapper'),
-        ]))->addClass('overview-panel');
+        $panel->setContent(
+            new Content([
+                Html::div(
+                    Link::create($this->getModalUrl())
+                        ->asButton('primary new-constructor-item')
+                        ->asAjaxbox(true)
+                        ->withIcon('add')
+                        ->title(trans('arbory::constructor.new_block_btn'))
+                )->addClass('constructor-button-wrapper'),
+            ])
+        )->addClass('overview-panel');
 
         return $panel;
     }
