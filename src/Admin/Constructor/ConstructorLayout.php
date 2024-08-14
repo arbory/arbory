@@ -45,7 +45,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     /**
      * ConstructorLayout constructor.
      *
-     * @param string $name
+     * @param  string  $name
      */
     public function __construct($name = 'blocks')
     {
@@ -78,7 +78,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param Form $form
+     * @param  Form  $form
      * @return FormLayoutInterface
      */
     public function setForm(Form $form): FormLayoutInterface
@@ -104,7 +104,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param mixed $content
+     * @param  mixed  $content
      * @return mixed
      */
     public function contents($content)
@@ -149,15 +149,17 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
         $panel = new Panel();
 
         $panel->setTitle('Overview');
-        $panel->setContent(new Content([
-            Html::div(
-                Link::create($this->getModalUrl())
-                    ->asButton('primary new-constructor-item')
-                    ->asAjaxbox(true)
-                    ->withIcon('add')
-                    ->title(trans('arbory::constructor.new_block_btn'))
-            )->addClass('constructor-button-wrapper'),
-        ]))->addClass('overview-panel');
+        $panel->setContent(
+            new Content([
+                Html::div(
+                    Link::create($this->getModalUrl())
+                        ->asButton('primary new-constructor-item')
+                        ->asAjaxbox(true)
+                        ->withIcon('add')
+                        ->title(trans('arbory::constructor.new_block_btn'))
+                )->addClass('constructor-button-wrapper'),
+            ])
+        )->addClass('overview-panel');
 
         return $panel;
     }
@@ -169,7 +171,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     {
         $constructor = $this->getField();
 
-        if (!$constructor->getFieldSet()) {
+        if (! $constructor->getFieldSet()) {
             return;
         }
 

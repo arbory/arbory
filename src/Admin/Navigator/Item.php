@@ -60,7 +60,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param string $title
+     * @param  string  $title
      * @return Item
      */
     public function setTitle(string $title): self
@@ -79,7 +79,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param string $anchor
+     * @param  string  $anchor
      * @return Item
      */
     public function setAnchor(string $anchor): self
@@ -98,7 +98,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param Collection|Item[] $children
+     * @param  Collection|Item[]  $children
      */
     public function setChildren(Collection $children): self
     {
@@ -116,7 +116,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param NavigableInterface $navigable
+     * @param  NavigableInterface  $navigable
      * @return Item
      */
     public function setNavigable(NavigableInterface $navigable): self
@@ -165,7 +165,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     /**
      * Convert the object to its JSON representation.
      *
-     * @param int $options
+     * @param  int  $options
      * @return string
      */
     public function toJson($options = 0)
@@ -213,7 +213,7 @@ class Item implements Renderable, Jsonable, \JsonSerializable, Arrayable
     }
 
     /**
-     * @param int $order
+     * @param  int  $order
      * @return Item
      */
     public function setOrder(int $order): self

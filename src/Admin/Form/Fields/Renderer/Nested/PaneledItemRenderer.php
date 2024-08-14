@@ -43,9 +43,9 @@ class PaneledItemRenderer implements ItemInterface
     }
 
     /**
-     * @param FieldInterface $field
-     * @param Panel $panel
-     * @param Content $content
+     * @param  FieldInterface  $field
+     * @param  Panel  $panel
+     * @param  Content  $content
      * @param  $name
      * @return Element|null
      *
@@ -53,7 +53,7 @@ class PaneledItemRenderer implements ItemInterface
      */
     protected function addRemoveButton(FieldInterface $field, Panel $panel, Content $content, $name)
     {
-        if (!$field->canRemoveRelationItems()) {
+        if (! $field->canRemoveRelationItems()) {
             return;
         }
 
@@ -77,13 +77,13 @@ class PaneledItemRenderer implements ItemInterface
     }
 
     /**
-     * @param FieldInterface $field
-     * @param Panel $panel
+     * @param  FieldInterface  $field
+     * @param  Panel  $panel
      * @return Element
      */
     protected function addSortableNavigation(FieldInterface $field, Panel $panel)
     {
-        if (!$field->canSortRelationItems()) {
+        if (! $field->canSortRelationItems()) {
             return;
         }
 
