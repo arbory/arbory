@@ -45,7 +45,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     /**
      * ConstructorLayout constructor.
      *
-     * @param  string  $name
+     * @param string $name
      */
     public function __construct($name = 'blocks')
     {
@@ -78,7 +78,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param  Form  $form
+     * @param Form $form
      * @return FormLayoutInterface
      */
     public function setForm(Form $form): FormLayoutInterface
@@ -104,7 +104,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     }
 
     /**
-     * @param  mixed  $content
+     * @param mixed $content
      * @return mixed
      */
     public function contents($content)
@@ -169,7 +169,7 @@ class ConstructorLayout extends AbstractLayout implements FormLayoutInterface
     {
         $constructor = $this->getField();
 
-        if (! $constructor->getFieldSet()) {
+        if (!$constructor->getFieldSet()) {
             return;
         }
 

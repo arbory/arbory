@@ -3,7 +3,6 @@
 namespace Arbory\Base\Services\Authentication\Helpers;
 
 use Illuminate\Auth\AuthManager;
-use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Session\EncryptedStore;

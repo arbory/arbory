@@ -28,8 +28,8 @@ class ConstructorFieldRenderer implements RendererInterface
     /**
      * NestedFieldRenderer constructor.
      *
-     * @param  Constructor  $field
-     * @param  ItemInterface  $itemRenderer
+     * @param Constructor $field
+     * @param ItemInterface $itemRenderer
      */
     public function __construct(Constructor $field, ItemInterface $itemRenderer)
     {
@@ -73,7 +73,7 @@ class ConstructorFieldRenderer implements RendererInterface
      */
     protected function getFooter()
     {
-        if (! $this->field->canAddRelationItem()) {
+        if (!$this->field->canAddRelationItem()) {
             return;
         }
 
@@ -105,7 +105,7 @@ class ConstructorFieldRenderer implements RendererInterface
                 ->addClass('button with-icon primary add-nested-item')
                 ->addAttributes(
                     [
-                        'type'  => 'button',
+                        'type' => 'button',
                         'title' => $title,
                     ]
                 )
@@ -113,8 +113,8 @@ class ConstructorFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param  BlockInterface  $block
-     * @param  FieldSet  $fieldSet
+     * @param BlockInterface $block
+     * @param FieldSet $fieldSet
      * @param  $index
      * @return Panel|string
      *
@@ -141,7 +141,7 @@ class ConstructorFieldRenderer implements RendererInterface
     }
 
     /**
-     * @param  FieldInterface  $field
+     * @param FieldInterface $field
      * @return mixed
      */
     public function setField(FieldInterface $field): RendererInterface
@@ -162,7 +162,7 @@ class ConstructorFieldRenderer implements RendererInterface
     /**
      * Configure the style before rendering the field.
      *
-     * @param  StyleOptionsInterface  $options
+     * @param StyleOptionsInterface $options
      * @return StyleOptionsInterface
      */
     public function configure(StyleOptionsInterface $options): StyleOptionsInterface
@@ -177,7 +177,7 @@ class ConstructorFieldRenderer implements RendererInterface
         foreach ($this->field->getTypes() as $type => $object) {
             $fieldSet = $this->field->getRelationFieldSet($this->field->buildFromBlock($object), '_template_');
 
-            $templates[$object->name()] = (string) $this->getRelationItemHtml($object, $fieldSet, '_template_');
+            $templates[$object->name()] = (string)$this->getRelationItemHtml($object, $fieldSet, '_template_');
         }
 
         $options->addAttributes(
