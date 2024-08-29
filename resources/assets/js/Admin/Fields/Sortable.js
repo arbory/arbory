@@ -12,6 +12,7 @@ export default class Sortable {
         this.container = jQuery(this.element).find('.body:first')[0];
 
         this.registerEventHandlers();
+        this.setupMutationObserver();
     }
 
     registerEventHandlers() {
@@ -36,7 +37,23 @@ export default class Sortable {
         container.on('click', '> .item > .sortable-navigation .button', event => this.manualSort(event));
         // Panel layouts
         container.on('click', '> .item > header .sortable-navigation.button', event => this.manualSort(event));
-        container.on('DOMNodeInserted DOMNodeRemoved', () => this.handleUpdate());
+    }
+
+    setupMutationObserver() {
+        const observer = new MutationObserver((mutationsList) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    this.handleUpdate();
+                }
+            }
+        });
+
+        const config = {
+            childList: true,
+            subtree: false
+        };
+
+        observer.observe(this.container, config);
     }
 
     handleUpdate() {
