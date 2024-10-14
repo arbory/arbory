@@ -3,7 +3,6 @@
 namespace Arbory\Base\Console\Commands;
 
 use Arbory\Base\Services\NodeRoutesCache;
-use Illuminate\Console\Command;
 use Illuminate\Foundation\Console\RouteCacheCommand as LaravelRouteCacheCommand;
 
 class RouteCacheCommand extends LaravelRouteCacheCommand
@@ -68,12 +67,15 @@ class RouteCacheCommand extends LaravelRouteCacheCommand
 
         // write to temporary file
         $temporaryRoutePath = NodeRoutesCache::getCachedRoutesPath('tmp');
-        $this->files->put($temporaryRoutePath, self::buildRouteCacheFile($routes));
+        $this->files->put($temporaryRoutePath, $this->buildRouteCacheFile($routes));
 
         // make atomic filesytem operation
         $this->files->move($temporaryRoutePath, NodeRoutesCache::getCachedRoutesPath());
 
         // store update timestamp file
-        $this->files->put(NodeRoutesCache::getCachedRoutesTimestampPath(), NodeRoutesCache::getLatestNodeUpdateTimestamp());
+        $this->files->put(
+            NodeRoutesCache::getCachedRoutesTimestampPath(),
+            NodeRoutesCache::getLatestNodeUpdateTimestamp()
+        );
     }
 }
