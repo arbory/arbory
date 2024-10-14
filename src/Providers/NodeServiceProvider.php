@@ -159,7 +159,7 @@ class NodeServiceProvider extends ServiceProvider
         }
 
         if ($this->app->routesAreCached() && $this->canReadSettings() && NodeRoutesCache::isRouteCacheObsolete()) {
-            NodeRoutesCache::clearCache();
+            Artisan::call('arbory:route:clear');
         }
     }
 
@@ -170,7 +170,7 @@ class NodeServiceProvider extends ServiceProvider
         }
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->call(fn () => Artisan::call('arbory:route-cache'))->everyMinute();
+            $schedule->call(fn () => Artisan::call('arbory:route:cache'))->everyMinute();
         });
     }
 
