@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2d8402712e988a3cba922064359f61a",
+    "content-hash": "12f4d02468de0d29ddf88d4341597099",
     "packages": [
         {
             "name": "arbory/translation",
-            "version": "2.8.0",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arbory/translation.git",
-                "reference": "f626d563fddd4e13db0d7610bc91e99170fc7dda"
+                "reference": "d93ab11641944407701b2886a51d530ce4d37006"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arbory/translation/zipball/f626d563fddd4e13db0d7610bc91e99170fc7dda",
-                "reference": "f626d563fddd4e13db0d7610bc91e99170fc7dda",
+                "url": "https://api.github.com/repos/arbory/translation/zipball/d93ab11641944407701b2886a51d530ce4d37006",
+                "reference": "d93ab11641944407701b2886a51d530ce4d37006",
                 "shasum": ""
             },
             "require": {
@@ -56,9 +56,9 @@
                 "waavi"
             ],
             "support": {
-                "source": "https://github.com/arbory/translation/tree/2.8.0"
+                "source": "https://github.com/arbory/translation/tree/2.8.1"
             },
-            "time": "2024-03-12T15:43:46+00:00"
+            "time": "2024-10-13T12:12:15+00:00"
         },
         {
             "name": "astrotomic/laravel-translatable",

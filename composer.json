@@ -26,7 +26,7 @@
         "doctrine/dbal": "^3.8",
         "baum/baum": "3.x-dev",
         "astrotomic/laravel-translatable": "^11.6",
-        "arbory/translation": "^2.8",
+        "arbory/translation": "^2",
         "cartalyst/sentinel": "8.x-dev",
         "spatie/laravel-glide": "^3.8",
         "spatie/laravel-sluggable": "^3.6",
