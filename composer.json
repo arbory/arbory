@@ -34,7 +34,7 @@
         "spatie/laravel-sluggable": "^3.4",
         "laragear/two-factor": "^1.2",
         "maatwebsite/excel": "^3.1",
-        "unisharp/laravel-filemanager": "^2.6"
+        "unisharp/laravel-filemanager": "^2.9"
     },
     "require-dev": {
         "php-coveralls/php-coveralls": "^2.0",
