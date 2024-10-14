@@ -28,7 +28,7 @@
         "baum/baum": "3.x-dev",
         "goldspecdigital/laravel-eloquent-uuid": "^10",
         "astrotomic/laravel-translatable": "^11.6",
-        "arbory/translation": "^2.7",
+        "arbory/translation": "^2",
         "cartalyst/sentinel": "^7.0",
         "spatie/laravel-glide": "^3.7",
         "spatie/laravel-sluggable": "^3.4",

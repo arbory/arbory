@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "053e0aee384aabeb048b3a16a5b8c749",
+    "content-hash": "26aa79236989dba93ba5df1fb3118b00",
     "packages": [
         {
             "name": "arbory/translation",
-            "version": "2.7.0",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arbory/translation.git",
-                "reference": "c2d0d8c6d98c79bf6873b0d2db23da18d4789a60"
+                "reference": "d93ab11641944407701b2886a51d530ce4d37006"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arbory/translation/zipball/c2d0d8c6d98c79bf6873b0d2db23da18d4789a60",
-                "reference": "c2d0d8c6d98c79bf6873b0d2db23da18d4789a60",
+                "url": "https://api.github.com/repos/arbory/translation/zipball/d93ab11641944407701b2886a51d530ce4d37006",
+                "reference": "d93ab11641944407701b2886a51d530ce4d37006",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "^3.6",
-                "laravel/framework": "^10.0"
+                "laravel/framework": "^10.0|^11.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.5",
@@ -56,9 +56,9 @@
                 "waavi"
             ],
             "support": {
-                "source": "https://github.com/arbory/translation/tree/2.7.0"
+                "source": "https://github.com/arbory/translation/tree/2.8.1"
             },
-            "time": "2023-03-09T14:13:06+00:00"
+            "time": "2024-10-13T12:12:15+00:00"
         },
         {
             "name": "astrotomic/laravel-translatable",
