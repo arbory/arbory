@@ -34,7 +34,7 @@ class RouteCacheCommand extends LaravelRouteCacheCommand
             $updated = false;
 
             if (NodeRoutesCache::isRouteCacheNeeded()) {
-                $this->createCache();
+                $this->storeRouteCache($this->getRouteCache());
                 $updated = true;
             }
 
@@ -53,21 +53,27 @@ class RouteCacheCommand extends LaravelRouteCacheCommand
         }
     }
 
-    public function createCache()
+    protected function getRouteCache(): ?string
     {
         $routes = $this->getFreshApplicationRoutes();
 
         if (count($routes) === 0) {
-            return $this->components->error("Your application doesn't have any routes.");
+            $this->components->error("Your application doesn't have any routes.");
+            return null;
         }
 
         foreach ($routes as $route) {
             $route->prepareForSerialization();
         }
 
+        return $this->buildRouteCacheFile($routes);
+    }
+
+    protected function storeRouteCache(?string $routeCache): void
+    {
         // write to temporary file
         $temporaryRoutePath = NodeRoutesCache::getCachedRoutesPath('tmp');
-        $this->files->put($temporaryRoutePath, $this->buildRouteCacheFile($routes));
+        $this->files->put($temporaryRoutePath, $routeCache);
 
         // make atomic filesytem operation
         $this->files->move($temporaryRoutePath, NodeRoutesCache::getCachedRoutesPath());
