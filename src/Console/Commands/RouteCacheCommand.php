@@ -34,7 +34,7 @@ class RouteCacheCommand extends LaravelRouteCacheCommand
             $updated = false;
 
             if (NodeRoutesCache::isRouteCacheNeeded()) {
-                $this->storeRouteCache($this->getRouteCache());
+                $this->storeRouteCache($this->getRouteCache(), NodeRoutesCache::getLatestNodeUpdateTimestamp());
                 $updated = true;
             }
 
@@ -69,8 +69,12 @@ class RouteCacheCommand extends LaravelRouteCacheCommand
         return $this->buildRouteCacheFile($routes);
     }
 
-    protected function storeRouteCache(?string $routeCache): void
+    protected function storeRouteCache(?string $routeCache, ?int $timestamp): void
     {
+        if ($routeCache === null) {
+            return;
+        }
+
         // write to temporary file
         $temporaryRoutePath = NodeRoutesCache::getCachedRoutesPath('tmp');
         $this->files->put($temporaryRoutePath, $routeCache);
@@ -79,9 +83,6 @@ class RouteCacheCommand extends LaravelRouteCacheCommand
         $this->files->move($temporaryRoutePath, NodeRoutesCache::getCachedRoutesPath());
 
         // store update timestamp file
-        $this->files->put(
-            NodeRoutesCache::getCachedRoutesTimestampPath(),
-            NodeRoutesCache::getLatestNodeUpdateTimestamp()
-        );
+        $this->files->put(NodeRoutesCache::getCachedRoutesTimestampPath(), $timestamp);
     }
 }
