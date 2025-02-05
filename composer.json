@@ -22,7 +22,7 @@
     "require": {
         "php": "^8.2|^8.3",
         "ext-json": "*",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^11.41",
         "doctrine/dbal": "^3.8",
         "baum/baum": "3.x-dev",
         "astrotomic/laravel-translatable": "^11.6",
