@@ -32,27 +32,6 @@ class ExtendedFluent extends Fluent implements IteratorAggregate
     }
 
     /**
-     * @param  string  $attribute
-     * @return bool
-     */
-    public function has(string $attribute): bool
-    {
-        return $this->offsetExists($attribute);
-    }
-
-    /**
-     * @param  string  $attribute
-     * @param $value
-     * @return static
-     */
-    public function set(string $attribute, $value): self
-    {
-        $this->offsetSet($attribute, $value);
-
-        return $this;
-    }
-
-    /**
      * @param  string|null  $attribute
      * @return bool
      */
