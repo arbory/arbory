@@ -1,6 +1,6 @@
 ﻿/**
- * Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
- * CKEditor 4 LTS ("Long Term Support") is available under the terms of the Extended Support Model.
+ * Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /* exported initSample */
@@ -30,34 +30,10 @@ var initSample = ( function() {
 
 		// Depending on the wysiwygarea plugin availability initialize classic or inline editor.
 		if ( wysiwygareaAvailable ) {
-			CKEDITOR.replace( 'editor', {
-				on: {
-					contentPreview: function( evt ) {
-						evt.data.dataValue = '<div style="padding: 1.5em;border: 3px #f00 solid">' +
-								'<h1>Content Preview was blocked</h1>' +
-								'<p>To ensure the highest security, the content preview in samples was blocked.</p>' +
-								'<p>Please refer to our ' +
-									'<a href="https://ckeditor.com/docs/ckeditor4/latest/guide/dev_best_practices.html#validate-preview-content">' +
-									'best practices on security</a> to learn more how to properly configure and secure the content preview.</p>' +
-							'</div>';
-					}
-				}
-			} );
+			CKEDITOR.replace( 'editor' );
 		} else {
 			editorElement.setAttribute( 'contenteditable', 'true' );
-			CKEDITOR.inline( 'editor', {
-				on: {
-					contentPreview: function( evt ) {
-						evt.data.dataValue = '<div style="padding: 1.5em;border: 3px #f00 solid">' +
-								'<h1>Content Preview was blocked</h1>' +
-								'<p>To ensure the highest security, the content preview in samples was blocked.</p>' +
-								'<p>Please refer to our ' +
-									'<a href="https://ckeditor.com/docs/ckeditor4/latest/guide/dev_best_practices.html#validate-preview-content">' +
-									'best practices on security</a> to learn more how to properly configure and secure the content preview.</p>' +
-							'</div>';
-					}
-				}
-			} );
+			CKEDITOR.inline( 'editor' );
 
 			// TODO we can consider displaying some info box that
 			// without wysiwygarea the classic editor may not work.
