@@ -32,6 +32,7 @@ export default class RichText {
         let config = Object.assign(this.getDefaultConfig(), {
             width: '100%',
             height: textarea.outerHeight(),
+            versionCheck: false,
             filebrowserImageBrowseUrl: window.FILE_BROWSER_BROWSE_BASEPATH + '?type=Images',
             filebrowserImageUploadUrl: window.FILE_BROWSER_UPLOAD_BASEPATH + '?type=Images&responseType=json&_token=' + token,
             filebrowserBrowseUrl: window.FILE_BROWSER_BROWSE_BASEPATH + '?type=Files',
