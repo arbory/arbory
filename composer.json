@@ -22,8 +22,8 @@
     "require": {
         "php": "^8.2|^8.3",
         "ext-json": "*",
-        "laravel/framework": "^11.41",
-        "doctrine/dbal": "^3.8",
+        "laravel/framework": "^11.41|^12.0",
+        "doctrine/dbal": "^3.8|^4.2",
         "baum/baum": "3.x-dev",
         "astrotomic/laravel-translatable": "^11.6",
         "arbory/translation": "^2",
@@ -38,7 +38,7 @@
         "php-coveralls/php-coveralls": "^2.7",
         "phpunit/phpunit": "^10",
         "mockery/mockery": "^1.6",
-        "orchestra/testbench-core": "^8"
+        "orchestra/testbench-core": "^8|^9.10"
     },
     "autoload": {
         "files": [
