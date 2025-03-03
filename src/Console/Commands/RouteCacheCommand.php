@@ -34,6 +34,8 @@ class RouteCacheCommand extends LaravelRouteCacheCommand
             $updated = false;
 
             if (NodeRoutesCache::isRouteCacheNeeded()) {
+                $this->callSilent('route:clear');
+
                 $this->storeRouteCache($this->getRouteCache(), NodeRoutesCache::getLatestNodeUpdateTimestamp());
                 $updated = true;
             }
