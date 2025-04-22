@@ -100,7 +100,7 @@ class MenuItem {
 
 class MenuStore {
     static getStored() {
-        const storedData = Cookies.getJSON(COOKIE_NAME_MENU);
+        const storedData = Cookies.get(COOKIE_NAME_MENU);
 
         if (typeof storedData === 'undefined') {
             MenuStore.save({});
@@ -108,7 +108,7 @@ class MenuStore {
             return {};
         }
 
-        return storedData;
+        return JSON.parse(storedData);
     }
 
     static get(id) {

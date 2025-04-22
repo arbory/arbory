@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 
 const COOKIE_NAME_NODES = 'nodes';
 
@@ -47,11 +48,11 @@ class Node {
 
 class NodeStore {
     static getStored() {
-        if (typeof jQuery.cookie(COOKIE_NAME_NODES) === 'undefined') {
+        if (typeof Cookies.get(COOKIE_NAME_NODES) === 'undefined') {
             NodeStore.save({});
         }
 
-        return JSON.parse(jQuery.cookie(COOKIE_NAME_NODES));
+        return JSON.parse(Cookies.get(COOKIE_NAME_NODES));
     }
 
     static get(id) {
@@ -75,7 +76,7 @@ class NodeStore {
     }
 
     static save(data) {
-        jQuery.cookie(COOKIE_NAME_NODES, JSON.stringify(data));
+        Cookies.set(COOKIE_NAME_NODES, JSON.stringify(data));
     }
 }
 

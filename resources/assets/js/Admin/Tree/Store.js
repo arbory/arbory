@@ -17,15 +17,15 @@ export default class Store {
      * @returns {Object}
      */
     getStored() {
-        const storedData = Cookies.getJSON(this.storeName);
+        const storedData = Cookies.get(this.storeName);
 
-        if (typeof storedData !== 'object') {
+        if (typeof storedData === 'undefined') {
             this.save({});
 
             return {};
         }
 
-        return storedData;
+        return JSON.parse(storedData);
     }
 
     /**
@@ -59,7 +59,7 @@ export default class Store {
      * @param {*} data
      */
     save(data) {
-        Cookies.set(this.storeName, data);
+        Cookies.set(this.storeName, JSON.stringify(data));
     }
 
     /**
