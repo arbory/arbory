@@ -11,7 +11,6 @@ export default defineConfig({
             buildDirectory: 'dist',
             input: [
                 'resources/assets/js/application.js',
-                'resources/assets/js/controllers/nodes.js',
                 'resources/assets/js/controllers/roles.js',
                 'resources/assets/js/controllers/sessions.js',
                 'resources/assets/js/modules/UrlBuilder.js',

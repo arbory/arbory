@@ -9,15 +9,6 @@
     "src": "resources/assets/js/application.js",
     "isEntry": true
   },
-  "resources/assets/js/controllers/nodes.js": {
-    "file": "js/nodes-CuKjGWYc.js",
-    "name": "nodes",
-    "src": "resources/assets/js/controllers/nodes.js",
-    "isEntry": true,
-    "imports": [
-      "_js.cookie-Cz0CWeBA.js"
-    ]
-  },
   "resources/assets/js/controllers/roles.js": {
     "file": "js/roles-BAaYj7l3.js",
     "name": "roles",
