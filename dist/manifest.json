@@ -1,18 +1,12 @@
 {
-  "_js.cookie-CFT9JG7m.js": {
-    "file": "js/js.cookie-CFT9JG7m.js",
+  "_js.cookie-Cz0CWeBA.js": {
+    "file": "js/js.cookie-Cz0CWeBA.js",
     "name": "js.cookie"
   },
   "resources/assets/js/application.js": {
     "file": "js/application-BYLC-R_l.js",
     "name": "application",
     "src": "resources/assets/js/application.js",
-    "isEntry": true
-  },
-  "resources/assets/js/controllers/nodes.js": {
-    "file": "js/nodes-DDqVezmr.js",
-    "name": "nodes",
-    "src": "resources/assets/js/controllers/nodes.js",
     "isEntry": true
   },
   "resources/assets/js/controllers/roles.js": {
@@ -103,12 +97,12 @@
     "isEntry": true
   },
   "resources/assets/js/include/menu.js": {
-    "file": "js/menu-Cd8h9qhi.js",
+    "file": "js/menu-CjSwCm7W.js",
     "name": "menu",
     "src": "resources/assets/js/include/menu.js",
     "isEntry": true,
     "imports": [
-      "_js.cookie-CFT9JG7m.js"
+      "_js.cookie-Cz0CWeBA.js"
     ]
   },
   "resources/assets/js/include/nested_fields.js": {
@@ -118,12 +112,12 @@
     "isEntry": true
   },
   "resources/assets/js/include/nodes.js": {
-    "file": "js/nodes-R3_3yhLi.js",
+    "file": "js/nodes-BtU8Ud6z.js",
     "name": "nodes",
     "src": "resources/assets/js/include/nodes.js",
     "isEntry": true,
     "imports": [
-      "_js.cookie-CFT9JG7m.js"
+      "_js.cookie-Cz0CWeBA.js"
     ]
   },
   "resources/assets/js/include/notifications.js": {
