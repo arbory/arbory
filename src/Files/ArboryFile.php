@@ -44,6 +44,13 @@ class ArboryFile extends Model
     /**
      * @var array
      */
+    protected $casts = [
+        'size' => 'integer',
+    ];
+
+    /**
+     * @var array
+     */
     protected $fillable = [
         'owner_id',
         'owner_type',
