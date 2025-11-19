@@ -31,7 +31,7 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "glob": "^10.3.12",
+        "glob": "^10.5.0",
         "laravel-mix": "^6.0.49",
         "laravel-vite-plugin": "^1.0.2",
         "material-icons": "^0.3.1",
