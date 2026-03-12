@@ -5,7 +5,7 @@ namespace Arbory\Base\Nodes;
 use Arbory\Base\Pages\PageInterface;
 use Arbory\Base\Services\NodeRoutesCache;
 use Arbory\Base\Support\Activation\HasActivationDates;
-use Baum\NestedSet\Node as BaumNode;
+use Baum\Node as BaumNode;
 use Database\Factories\Nodes\BaseNodeFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -35,9 +35,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $rgt
  * @property int $depth
  */
-class Node extends Model
+class Node extends BaumNode
 {
-    use BaumNode;
     use HasActivationDates;
     use HasFactory;
     use HasUuids;
