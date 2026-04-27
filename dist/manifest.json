@@ -1,6 +1,6 @@
 {
-  "_js.cookie-Cz0CWeBA.js": {
-    "file": "js/js.cookie-Cz0CWeBA.js",
+  "_js.cookie-C2b7Ongr.js": {
+    "file": "js/js.cookie-C2b7Ongr.js",
     "name": "js.cookie"
   },
   "resources/assets/js/application.js": {
@@ -61,7 +61,7 @@
     "isEntry": true
   },
   "resources/assets/js/include/field.type_date_or_datetime_or_time.js": {
-    "file": "js/field.type_date_or_datetime_or_time-Cjpv8kL0.js",
+    "file": "js/field.type_date_or_datetime_or_time-QiaBuhsC.js",
     "name": "field.type_date_or_datetime_or_time",
     "src": "resources/assets/js/include/field.type_date_or_datetime_or_time.js",
     "isEntry": true
@@ -97,12 +97,12 @@
     "isEntry": true
   },
   "resources/assets/js/include/menu.js": {
-    "file": "js/menu-CjSwCm7W.js",
+    "file": "js/menu-DqJcxitD.js",
     "name": "menu",
     "src": "resources/assets/js/include/menu.js",
     "isEntry": true,
     "imports": [
-      "_js.cookie-Cz0CWeBA.js"
+      "_js.cookie-C2b7Ongr.js"
     ]
   },
   "resources/assets/js/include/nested_fields.js": {
@@ -112,12 +112,12 @@
     "isEntry": true
   },
   "resources/assets/js/include/nodes.js": {
-    "file": "js/nodes-BtU8Ud6z.js",
+    "file": "js/nodes-DQJN1g-I.js",
     "name": "nodes",
     "src": "resources/assets/js/include/nodes.js",
     "isEntry": true,
     "imports": [
-      "_js.cookie-Cz0CWeBA.js"
+      "_js.cookie-C2b7Ongr.js"
     ]
   },
   "resources/assets/js/include/notifications.js": {
@@ -196,18 +196,30 @@
     "isEntry": true
   },
   "resources/assets/stylesheets/application.scss": {
-    "file": "css/application-tYwyN2x7.css",
+    "file": "css/application-BvzQM4MB.css",
     "src": "resources/assets/stylesheets/application.scss",
-    "isEntry": true
+    "isEntry": true,
+    "name": "application",
+    "names": [
+      "application.css"
+    ]
   },
   "resources/assets/stylesheets/controllers/sessions.scss": {
     "file": "css/sessions-bkBJjYcg.css",
     "src": "resources/assets/stylesheets/controllers/sessions.scss",
-    "isEntry": true
+    "isEntry": true,
+    "name": "sessions",
+    "names": [
+      "sessions.css"
+    ]
   },
   "resources/assets/stylesheets/material-icons.scss": {
     "file": "css/material-icons-DxxD_jpM.css",
     "src": "resources/assets/stylesheets/material-icons.scss",
-    "isEntry": true
+    "isEntry": true,
+    "name": "material-icons",
+    "names": [
+      "material-icons.css"
+    ]
   }
 }
