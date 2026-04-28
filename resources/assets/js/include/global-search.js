@@ -11,6 +11,10 @@ jQuery(function () {
     let loadingWrapper = $('<span>', {class: 'loading'});
     let loadingDots = $('<span>', {class: 'loading-dots'});
 
+    form.on('submit', function (event) {
+        event.preventDefault();
+    });
+
     globalSearchInput.on('input', debounce(function (event) {
         if (!event.currentTarget.value || event.currentTarget.value.length < minLength) {
             return;
