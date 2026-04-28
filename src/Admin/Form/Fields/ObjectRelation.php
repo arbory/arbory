@@ -72,9 +72,9 @@ class ObjectRelation extends AbstractField
             $this->options = $relatedModelTypeOrCollection;
 
             if (!$relatedModelTypeOrCollection->isEmpty()) {
-                $this->relatedModelType = new \ReflectionClass(
+                $this->relatedModelType = (new \ReflectionClass(
                     $relatedModelTypeOrCollection->first(),
-                )->getName();
+                ))->getName();
             }
         }
 
@@ -329,7 +329,7 @@ class ObjectRelation extends AbstractField
             ->setInteractive($this->isInteractive());
         $fieldSet
             ->hidden("related_type")
-            ->setValue(new \ReflectionClass($this->relatedModelType)->getName())
+            ->setValue((new \ReflectionClass($this->relatedModelType))->getName())
             ->setDisabled($this->isDisabled())
             ->setInteractive($this->isInteractive());
 
@@ -350,7 +350,7 @@ class ObjectRelation extends AbstractField
     protected function getOwnerType()
     {
         try {
-            return new \ReflectionClass($this->getModel())->getName();
+            return (new \ReflectionClass($this->getModel()))->getName();
         } catch (\ReflectionException $e) {
             return;
         }
