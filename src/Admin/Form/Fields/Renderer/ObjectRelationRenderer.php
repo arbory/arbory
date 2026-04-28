@@ -123,11 +123,16 @@ class ObjectRelationRenderer implements RendererInterface
         )->addClass('item');
 
         if ($value instanceof Model) {
-            $element->addAttributes([
+            $attributes = [
                 'data-key' => $value->getKey(),
-                'data-level' => $value->getAttributeValue($this->field->getIndentAttribute()),
                 'data-inactive' => $isRelated && $this->field->hasIndentation() ? 'true' : 'false',
-            ]);
+            ];
+
+            if ($this->field->hasIndentation()) {
+                $attributes['data-level'] = $value->getAttributeValue($this->field->getIndentAttribute());
+            }
+
+            $element->addAttributes($attributes);
         }
 
         return $element;
