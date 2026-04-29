@@ -59,7 +59,7 @@ class SearchField implements Renderable
     {
         return Html::form($content)
             ->addClass('search has-text-search')
-            ->addAttributes(['action' => $this->action]);
+            ->addAttributes(['action' => $this->action, 'method' => 'post']);
     }
 
     /**
@@ -82,12 +82,16 @@ class SearchField implements Renderable
                 'autocomplete' => 'off',
             ]);
 
-        return $this->createForm(
+        $form = $this->createForm(
             Html::div(
                 Html::div([$searchInput, $submitButton])
                     ->addClass('search-field')
                     ->addAttributes(['data-name' => 'search'])
             )->addClass('text-search')
         );
+
+        $form->append(csrf_field());
+
+        return $form;
     }
 }

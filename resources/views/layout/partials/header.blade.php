@@ -9,6 +9,7 @@
             <form id="global-search-form"
                   class="global-search"
                   action="{{ route('admin.search') }}"
+                  method="post"
                   data-min-length="{{ config('arbory.search.min_length') }}"
             >
                 @if($two_factor_auth_alert)
