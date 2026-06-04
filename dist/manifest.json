@@ -1,6 +1,6 @@
 {
-  "_js.cookie-C2b7Ongr.js": {
-    "file": "js/js.cookie-C2b7Ongr.js",
+  "_js.cookie-CQ7tqgma.js": {
+    "file": "js/js.cookie-CQ7tqgma.js",
     "name": "js.cookie"
   },
   "resources/assets/js/application.js": {
@@ -97,12 +97,12 @@
     "isEntry": true
   },
   "resources/assets/js/include/menu.js": {
-    "file": "js/menu-DqJcxitD.js",
+    "file": "js/menu-D1KTcD37.js",
     "name": "menu",
     "src": "resources/assets/js/include/menu.js",
     "isEntry": true,
     "imports": [
-      "_js.cookie-C2b7Ongr.js"
+      "_js.cookie-CQ7tqgma.js"
     ]
   },
   "resources/assets/js/include/nested_fields.js": {
@@ -112,12 +112,12 @@
     "isEntry": true
   },
   "resources/assets/js/include/nodes.js": {
-    "file": "js/nodes-DQJN1g-I.js",
+    "file": "js/nodes-62F6Y4lW.js",
     "name": "nodes",
     "src": "resources/assets/js/include/nodes.js",
     "isEntry": true,
     "imports": [
-      "_js.cookie-C2b7Ongr.js"
+      "_js.cookie-CQ7tqgma.js"
     ]
   },
   "resources/assets/js/include/notifications.js": {

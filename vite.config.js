@@ -24,7 +24,7 @@ export default defineConfig({
         }),
         viteStaticCopy({
             targets: [
-                { src: 'node_modules/ckeditor4/*', dest: 'ckeditor' },
+                { src: ['node_modules/ckeditor4/*', '!node_modules/ckeditor4/samples'], dest: 'ckeditor' },
                 { src: 'resources/assets/js/ckeditor_plugins/**/*', dest: 'ckeditor/plugins' },
                 { src: 'resources/assets/images/*', dest: 'images' },
                 { src: 'resources/assets/fonts/*', dest: 'fonts' },
