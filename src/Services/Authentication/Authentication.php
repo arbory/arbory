@@ -35,7 +35,7 @@ class Authentication
      * @param  bool  $everywhere
      * @return bool
      */
-    public function logout(UserInterface $user = null, $everywhere = false): bool
+    public function logout(?UserInterface $user = null, $everywhere = false): bool
     {
         return $this->driver->logout($user, $everywhere);
     }

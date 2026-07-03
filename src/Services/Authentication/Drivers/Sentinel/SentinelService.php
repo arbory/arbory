@@ -48,7 +48,7 @@ class SentinelService extends Sentinel
         return $this->user = $user;
     }
 
-    public function cycleCheckpoints(string $method, UserInterface $user = null, bool $halt = true): bool
+    public function cycleCheckpoints(string $method, ?UserInterface $user = null, bool $halt = true): bool
     {
         return parent::cycleCheckpoints($method, $user, $halt);
     }

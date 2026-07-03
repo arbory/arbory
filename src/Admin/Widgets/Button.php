@@ -40,7 +40,7 @@ class Button implements Renderable
      * @param  string|null  $name
      * @param  null  $value
      */
-    public function __construct(string $name = null, $value = null)
+    public function __construct(?string $name = null, $value = null)
     {
         $this->name = $name;
         $this->value = $value;
@@ -165,7 +165,7 @@ class Button implements Renderable
      * @param  string|null  $value
      * @return Button
      */
-    public static function create(string $name = null, $value = null)
+    public static function create(?string $name = null, $value = null)
     {
         return new static($name, $value);
     }

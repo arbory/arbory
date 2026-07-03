@@ -22,7 +22,7 @@ class ModuleRoutesRegistry
      * @param  Closure|null  $callback
      * @return ResourceRoutes
      */
-    public function register(Module $module, Closure $callback = null)
+    public function register(Module $module, ?Closure $callback = null)
     {
         $class = $module->getControllerClass();
         $slug = $module->name();

@@ -45,7 +45,7 @@ class SessionSecurityService implements SecurityStrategy
      * @param  bool  $everywhere
      * @return Reply
      */
-    public function logout(UserInterface $user = null, $everywhere = false): Reply
+    public function logout(?UserInterface $user = null, $everywhere = false): Reply
     {
         $this->sentinel->logout($user, $everywhere);
 

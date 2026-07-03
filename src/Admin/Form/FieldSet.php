@@ -91,7 +91,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      * @param  string  $namespace
      * @param  StyleManager  $styleManager
      */
-    public function __construct(Model $model, $namespace, StyleManager $styleManager = null)
+    public function __construct(Model $model, $namespace, ?StyleManager $styleManager = null)
     {
         $this->items = collect();
 
@@ -197,7 +197,7 @@ class FieldSet implements ArrayAccess, IteratorAggregate, Countable, Arrayable, 
      * @param  string|int|null  $key
      * @return Collection
      */
-    public function prepend(FieldInterface $field, string|int $key = null): Collection
+    public function prepend(FieldInterface $field, string|int|null $key = null): Collection
     {
         $field->setFieldSet($this);
 

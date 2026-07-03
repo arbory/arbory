@@ -28,7 +28,7 @@ class Layout extends AbstractLayout implements Renderable, LayoutInterface
      *
      * @param  Closure|null  $callback
      */
-    public function __construct(Closure $callback = null)
+    public function __construct(?Closure $callback = null)
     {
         $this->rows = new Collection();
 

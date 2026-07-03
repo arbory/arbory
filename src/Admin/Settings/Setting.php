@@ -133,7 +133,7 @@ class Setting extends Model
      * @param  string|null  $settingName
      * @return bool
      */
-    public function isTranslatable(string $settingName = null): bool
+    public function isTranslatable(?string $settingName = null): bool
     {
         $settingName = $settingName ?? $this->name;
 

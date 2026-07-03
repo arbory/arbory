@@ -44,9 +44,9 @@ class SettingDefinition
     public function __construct(
         string $key,
         $value = null,
-        string $type = null,
+        ?string $type = null,
         $configEntry = null,
-        Setting $databaseEntry = null
+        ?Setting $databaseEntry = null
     ) {
         $this->key = $key;
         $this->value = $value;

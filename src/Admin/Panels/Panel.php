@@ -39,7 +39,7 @@ class Panel implements PanelInterface, WrappableInterface, NavigableInterface
 
     protected $navigable = true;
 
-    public function __construct(RenderableInterface $renderer = null)
+    public function __construct(?RenderableInterface $renderer = null)
     {
         $this->renderer = $renderer ?: new Renderer($this);
         $this->toolbox = new Toolbox(null);

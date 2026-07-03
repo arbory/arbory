@@ -40,7 +40,7 @@ class NodesRepository extends AbstractModelsRepository
      * @param  mixed|null  $value
      * @return Builder
      */
-    public function findUnder(Node $node, string $key = null, $value = null)
+    public function findUnder(Node $node, ?string $key = null, $value = null)
     {
         $query = $this->newQuery()
             ->whereBetween($node->getLeftColumnName(), [$node->getLeft() + 1, $node->getRight() - 1])
@@ -59,7 +59,7 @@ class NodesRepository extends AbstractModelsRepository
      * @param  mixed|null  $value
      * @return Builder
      */
-    public function findAbove(Node $node, string $key = null, $value = null)
+    public function findAbove(Node $node, ?string $key = null, $value = null)
     {
         $query = $this->newQuery()
             ->where($node->getLeftColumnName(), '<=', $node->getLeft())

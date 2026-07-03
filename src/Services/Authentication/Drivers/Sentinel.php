@@ -38,7 +38,7 @@ class Sentinel implements AuthenticationMethod
      * @param  bool  $everywhere
      * @return bool
      */
-    public function logout(UserInterface $user = null, $everywhere = false): bool
+    public function logout(?UserInterface $user = null, $everywhere = false): bool
     {
         return $this->sentinel->logout($user, $everywhere);
     }

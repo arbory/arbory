@@ -27,7 +27,7 @@ class Toolbox implements Renderable
      * @param  string  $url
      * @param  ToolboxMenu|null  $menu
      */
-    public function __construct($url = null, ToolboxMenu $menu = null)
+    public function __construct($url = null, ?ToolboxMenu $menu = null)
     {
         $this->url = $url;
         $this->menu = $menu;

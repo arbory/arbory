@@ -66,7 +66,7 @@ class Settings
      * @param  mixed  $type
      * @return void
      */
-    public function set(string $key, $value, string $type = null)
+    public function set(string $key, $value, ?string $type = null)
     {
         $definition = new SettingDefinition($key, $value, $type);
 

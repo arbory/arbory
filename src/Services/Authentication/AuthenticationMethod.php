@@ -20,7 +20,7 @@ interface AuthenticationMethod
      * @param  bool  $everywhere
      * @return bool
      */
-    public function logout(UserInterface $user = null, $everywhere = false): bool;
+    public function logout(?UserInterface $user = null, $everywhere = false): bool;
 
     /**
      * @return FormRequest

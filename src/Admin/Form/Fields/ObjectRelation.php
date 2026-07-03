@@ -105,7 +105,7 @@ class ObjectRelation extends AbstractField
      * @param  string  $indentAttribute
      * @return self
      */
-    public function setIndentAttribute(string $indentAttribute = null)
+    public function setIndentAttribute(?string $indentAttribute = null)
     {
         $this->indentAttribute = $indentAttribute;
 
@@ -117,7 +117,7 @@ class ObjectRelation extends AbstractField
      * @param  Closure  $groupName
      * @return self
      */
-    public function groupBy(string $attribute, Closure $groupName = null)
+    public function groupBy(string $attribute, ?Closure $groupName = null)
     {
         $this->setIndentAttribute(null);
 

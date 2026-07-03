@@ -169,7 +169,7 @@ class Grid
      * @param  string|null  $side
      * @return void
      */
-    public function addTool(RenderableInterface $tool, string $side = null)
+    public function addTool(RenderableInterface $tool, ?string $side = null)
     {
         $this->tools[] = [$tool, $side ?: self::FOOTER_SIDE_SECONDARY];
     }

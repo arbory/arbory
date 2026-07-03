@@ -45,7 +45,7 @@ abstract class Reply implements Jsonable, Arrayable
      * @param  array  $payload
      * @param  Exception  $exception
      */
-    public function __construct($message = '', array $payload = [], Exception $exception = null)
+    public function __construct($message = '', array $payload = [], ?Exception $exception = null)
     {
         $this->message = $message;
         $this->payload = $payload;

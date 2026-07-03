@@ -20,7 +20,7 @@ class Menu
     /**
      * @param  Collection|null  $items
      */
-    public function __construct(Collection $items = null)
+    public function __construct(?Collection $items = null)
     {
         $this->items = $items ?: new Collection();
     }
