@@ -12,7 +12,7 @@ class FileManagerServiceProvider extends ServiceProvider
     {
         $this->registerServiceProviders();
 
-        $langSourcePath = base_path('vendor/unisharp/laravel-filemanager/src/lang');
+        $langSourcePath = base_path('vendor/unisharp/laravel-filemanager/resources/lang');
         $langDestPath = base_path('lang/vendor/laravel-filemanager');
 
         $this->publishes([$langSourcePath => $langDestPath], 'lfm_lang');
