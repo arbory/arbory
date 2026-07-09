@@ -22,23 +22,23 @@
     "require": {
         "php": "^8.3",
         "ext-json": "*",
-        "laravel/framework": "^12",
+        "laravel/framework": "^12|^13",
         "doctrine/dbal": "^4",
-        "toponepercent/baum": "^3.3",
+        "ttbooking/baum": "^1.4",
         "astrotomic/laravel-translatable": "^11.6",
-        "arbory/translation": "^2",
-        "cartalyst/sentinel": "^9",
-        "spatie/laravel-glide": "^3.8.1",
+        "arbory/translation": "^3",
+        "cartalyst/sentinel": "^9|^10",
+        "league/glide": "^3",
         "spatie/laravel-sluggable": "^3.8",
-        "laragear/two-factor": "^3.0",
+        "laragear/two-factor": "^4",
         "maatwebsite/excel": "^3.1",
         "unisharp/laravel-filemanager": "^2.10"
     },
     "require-dev": {
         "php-coveralls/php-coveralls": "^2.9",
-        "phpunit/phpunit": "^10",
+        "phpunit/phpunit": "^10|^11|^12",
         "mockery/mockery": "^1.6",
-        "orchestra/testbench-core": "^10"
+        "orchestra/testbench-core": "^10|^11"
     },
     "autoload": {
         "files": [

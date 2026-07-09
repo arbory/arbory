@@ -3,14 +3,12 @@
 namespace Tests\Html\Elements;
 
 use Illuminate\Support\Arr;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Arbory\Base\Html\Elements\Element;
 
-/**
- * Class ElementTest.
- *
- * @covers \Arbory\Base\Html\Elements\Element
- */
+#[CoversClass(Element::class)]
 final class ElementTest extends TestCase
 {
     /**
@@ -35,11 +33,7 @@ final class ElementTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldAddClass()
     {
         $element = $this->getElement();
@@ -50,11 +44,7 @@ final class ElementTest extends TestCase
         $this->assertEquals('box bright_green', Arr::get($element->attributes()->toArray(), 'class'));
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldAppendElementToContents()
     {
         $existingElement = $this->getElement();
@@ -70,11 +60,7 @@ final class ElementTest extends TestCase
         $this->assertEquals($newElement, $content->get(1));
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldPrependElementToContents()
     {
         $existingElement = $this->getElement();
@@ -90,11 +76,7 @@ final class ElementTest extends TestCase
         $this->assertEquals($existingElement, $content->get(1));
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldHaveAttributes()
     {
         $element = $this->getElement();
@@ -104,11 +86,7 @@ final class ElementTest extends TestCase
         $this->assertEquals($this->attributes, $element->attributes()->toArray());
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldFormatNameWithMultipleValues()
     {
         $supportedEndingFormats = ['[]', '[ ]'];

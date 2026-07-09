@@ -6,6 +6,8 @@ use Illuminate\Support\Arr;
 use Mockery;
 use Mockery\Mock;
 use Arbory\Base\Admin\Form;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Support\Collection;
 use Arbory\Base\Admin\Form\FieldSet;
@@ -20,11 +22,7 @@ use Arbory\Base\Admin\Form\Fields\AbstractField;
 use Arbory\Base\Admin\Form\Fields\Styles\StyleManager;
 use Waavi\Translation\Repositories\LanguageRepository;
 
-/**
- * Class FieldSetFieldFinderTest.
- *
- * @covers \Arbory\Base\Services\FieldSetFieldFinder
- */
+#[CoversClass(FieldSetFieldFinder::class)]
 final class FieldSetFieldFinderTest extends TestCase
 {
     /**
@@ -64,11 +62,7 @@ final class FieldSetFieldFinderTest extends TestCase
         Mockery::close();
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldFindFieldInRoot()
     {
         $text = new Text('name');
@@ -82,11 +76,7 @@ final class FieldSetFieldFinderTest extends TestCase
         $this->assertContainsField($result, $text);
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldFindNestedField()
     {
         /**
@@ -105,11 +95,7 @@ final class FieldSetFieldFinderTest extends TestCase
         $this->assertContainsField($result, $text);
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldFindCorrectFieldInTranslatables()
     {
         /**

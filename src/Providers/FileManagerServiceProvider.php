@@ -2,21 +2,15 @@
 
 namespace Arbory\Base\Providers;
 
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Intervention\Image\ImageServiceProvider;
 use UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider;
 
 class FileManagerServiceProvider extends ServiceProvider
 {
-    /**
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->registerServiceProviders();
-        $this->registerAliases();
 
         $langSourcePath = base_path('vendor/unisharp/laravel-filemanager/src/lang');
         $langDestPath = base_path('lang/vendor/laravel-filemanager');
@@ -33,20 +27,8 @@ class FileManagerServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return void
-     */
     protected function registerServiceProviders(): void
     {
         $this->app->register(LaravelFilemanagerServiceProvider::class);
-        $this->app->register(ImageServiceProvider::class);
-    }
-
-    /**
-     * @return void
-     */
-    protected function registerAliases(): void
-    {
-        AliasLoader::getInstance()->alias('Image', \Intervention\Image\Facades\Image::class);
     }
 }

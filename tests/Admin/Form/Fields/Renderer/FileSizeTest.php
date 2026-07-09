@@ -6,15 +6,13 @@ namespace Tests\Admin\Form\Fields\Renderer;
 
 use Mockery;
 use Mockery\Mock;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Arbory\Base\Files\ArboryFile;
 use Arbory\Base\Admin\Form\Fields\Helpers\FileSize;
 
-/**
- * Class FileSizeTest.
- *
- * @covers \Arbory\Base\Admin\Form\Fields\Helpers\FileSize
- */
+#[CoversClass(FileSize::class)]
 final class FileSizeTest extends TestCase
 {
     /**
@@ -44,11 +42,7 @@ final class FileSizeTest extends TestCase
         Mockery::close();
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldHaveSizeInBytes()
     {
         $expectedFileSize = 1234560;
@@ -58,11 +52,7 @@ final class FileSizeTest extends TestCase
         $this->assertEquals($this->fileSize->getSizeInBytes(), $expectedFileSize);
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    #[Test]
     public function itShouldConvertSizeInBytesToReadableValue()
     {
         $this->assertSizeGetsConvertedToReadableValue(123, '0.12 KB');
