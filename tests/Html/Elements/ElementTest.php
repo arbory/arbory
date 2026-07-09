@@ -100,7 +100,7 @@ final class ElementTest extends TestCase
      * @param  array|null  $content
      * @return Element
      */
-    private function getElement(array $content = null)
+    private function getElement(?array $content = null)
     {
         return new Element(uniqid('', true), $content);
     }
