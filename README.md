@@ -4,10 +4,15 @@
 [![StyleCI](https://github.styleci.io/repos/44740139/shield?branch=master&style=flat)](https://github.styleci.io/repos/44740139)
 [![Coverage Status](https://coveralls.io/repos/github/arbory/arbory/badge.svg?branch=master)](https://coveralls.io/github/arbory/arbory?branch=master)
 
+## Requirements
+
+* PHP `^8.3`
+* Laravel `^12` or `^13`
+
 ## Installation
 #### Create new Laravel project
 ```bash
-composer create-project --prefer-dist laravel/laravel=8.0 my-project
+composer create-project --prefer-dist laravel/laravel my-project
 ```
 
 #### Go to project root
@@ -71,7 +76,7 @@ $nodes->findUnder( $currentNode );
 
 ## Validation
 
-[Validation rules](https://laravel.com/docs/5.8/validation) can be attached to any field, like so
+[Validation rules](https://laravel.com/docs/validation) can be attached to any field, like so
 
 ```php
 $form->addField( new Text( 'title' ) )->setRules( 'required' );
@@ -191,7 +196,7 @@ php artisan arbory:create-user
 
 # Contributing
 
-To submit SCSS/Js changes you must rebuild `dist` directory containing compiled assets. Run `npm run prod` to do that.
+To submit SCSS/Js changes you must rebuild the `dist` directory containing compiled assets. Run `npm run build` to do that.
 
 ## Coding style
 

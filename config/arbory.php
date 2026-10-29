@@ -133,6 +133,7 @@ return [
     ],
 
     'glide' => [
+        'driver' => 'gd',
         'output_disk_name' => 'public',
         'modifiable_image_extensions' => ['jpeg', 'jpg', 'png', 'webp'],
         'presets' => [

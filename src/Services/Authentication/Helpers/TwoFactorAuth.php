@@ -26,7 +26,16 @@ class TwoFactorAuth extends TwoFactorLoginHelper
     ) {
         $this->twoFactor = app(TwoFactor::class, ['input' => $input, 'safeDeviceInput' => 'safe_device']);
 
-        parent::__construct($auth, $session, $request, $view, $sessionKey, $useFlash, $input, $redirect);
+        parent::__construct(
+            $auth,
+            $session,
+            $request,
+            $view,
+            $sessionKey,
+            $useFlash,
+            $input,
+            redirect: $redirect,
+        );
     }
 
     public function verify($user, array $credentials = [], bool $remember = false): bool

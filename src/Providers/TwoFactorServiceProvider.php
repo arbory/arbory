@@ -4,6 +4,7 @@ namespace Arbory\Base\Providers;
 
 use Arbory\Base\Rules\Totp;
 use Arbory\Base\Services\Authentication\Helpers\TwoFactorAuth;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Application;
 use Laragear\TwoFactor\Console\TwoFactorInstallCommand;
 use Laragear\TwoFactor\Http\Middleware\ConfirmTwoFactorCode;
@@ -38,7 +39,7 @@ class TwoFactorServiceProvider extends \Laragear\TwoFactor\TwoFactorServiceProvi
         });
     }
 
-    public function boot(): void
+    public function boot(Repository $config): void
     {
         $this->loadViewsFrom(static::VIEWS, 'two-factor');
         $this->loadTranslationsFrom(static::LANG, 'two-factor');
