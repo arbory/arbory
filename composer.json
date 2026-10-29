@@ -31,7 +31,7 @@
         "league/glide": "^3",
         "spatie/laravel-sluggable": "^3.8",
         "laragear/two-factor": "^4",
-        "phpoffice/phpspreadsheet": "^5",
+        "maatwebsite/excel": "^4.0",
         "unisharp/laravel-filemanager": "^2.10"
     },
     "require-dev": {
@@ -59,6 +59,7 @@
                 "Arbory\\Base\\Providers\\FileServiceProvider",
                 "Arbory\\Base\\Providers\\AuthServiceProvider",
                 "Arbory\\Base\\Providers\\SettingsServiceProvider",
+                "Maatwebsite\\Excel\\ExcelServiceProvider",
                 "Arbory\\Base\\Providers\\FormBuilderServiceProvider",
                 "Arbory\\Base\\Providers\\FileManagerServiceProvider",
                 "Arbory\\Base\\Providers\\RoutesServiceProvider",
@@ -71,7 +72,8 @@
             ],
             "aliases": {
                 "Activation": "Cartalyst\\Sentinel\\Laravel\\Facades\\Activation",
-                "Reminder": "Cartalyst\\Sentinel\\Laravel\\Facades\\Reminde"
+                "Reminder": "Cartalyst\\Sentinel\\Laravel\\Facades\\Reminde",
+                "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
             },
             "dont-discover": [
                 "cartalyst/sentinel",

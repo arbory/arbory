@@ -4,32 +4,33 @@ namespace Arbory\Base\Admin\Exports\Type;
 
 use Arbory\Base\Admin\Exports\DataSetExport;
 use Arbory\Base\Admin\Exports\ExportInterface;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class ExcelExport implements ExportInterface
+class ExcelExport implements FromCollection, WithHeadings, ExportInterface
 {
     const EXTENSION = 'xlsx';
 
     public function __construct(
-        protected DataSetExport $export
+        protected DataSetExport $export,
     ) {
+    }
+
+    public function collection(): Collection
+    {
+        return $this->export->getItems();
+    }
+
+    public function headings(): array
+    {
+        return $this->export->getColumns();
     }
 
     public function download(string $fileName): BinaryFileResponse
     {
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        $sheet->fromArray($this->export->getColumns(), null, 'A1');
-        $sheet->fromArray($this->export->getItems()->toArray(), null, 'A2');
-
-        $tempPath = tempnam(sys_get_temp_dir(), 'arbory_export_');
-
-        (new Xlsx($spreadsheet))->save($tempPath);
-        $spreadsheet->disconnectWorksheets();
-
-        return response()->download($tempPath, $fileName . '.' . self::EXTENSION)->deleteFileAfterSend();
+        return Excel::download($this, $fileName . '.' . self::EXTENSION);
     }
 }
